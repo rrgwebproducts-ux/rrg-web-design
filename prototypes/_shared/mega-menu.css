@@ -3,15 +3,16 @@
    client Figma exports reviewed 2026-09-13). Content comes from nav-data.js. */
 
 /* Not position:relative here on purpose — the drawer below needs its containing block to be
-   .rrg-main-header (full-bleed, position:relative in shared.css), not this small nav item,
-   so left:0/right:0 on the drawer spans the full header width instead of just this button. */
+   .rrg-header-shell (full-bleed, position:relative in shared.css — wraps both header bars),
+   not this small nav item, so left:0/right:0 on the drawer spans the full header width
+   instead of just this button. */
 .mega-menu-toggle{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-black);display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
 .mega-menu-toggle:hover{color:var(--rrg-red);}
 .mega-menu-toggle svg{width:16px;height:16px;}
 
 /* Backdrop — dims the rest of the page while the menu is open, so focus stays on the header
-   + drawer (Brenton, 2026-09-13). z-index sits below .rrg-utility-bar/.rrg-main-header (both
-   given a higher z-index in shared.css) so the header and the drawer, its descendant, stay
+   + drawer (Brenton, 2026-09-13). z-index sits below .rrg-header-shell (z-index:85 in
+   shared.css, wraps both header bars) so the header and the drawer, its descendant, stay
    fully bright; everything else in normal page flow has no z-index and sits below this. */
 .mega-menu-backdrop{position:fixed;inset:0;background:rgba(20,16,14,.55);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:80;}
 .mega-menu-backdrop.visible{opacity:1;pointer-events:auto;}
@@ -28,8 +29,10 @@
    L1/L2 row (see mega-menu.js), so they always occupy the drawer's full height regardless of
    which row triggered them — a flyout anchored to the row itself can't do that. `.mega-menu`
    isn't position:relative here on purpose: the drawer needs to span the full viewport width,
-   so it's anchored to `.rrg-main-header` (position:relative, full-bleed, set in shared.css)
-   instead of the small Products button. */
+   so it's anchored to `.rrg-header-shell` (position:relative, full-bleed, set in shared.css —
+   wraps both header bars) instead of the small Products button. `top:100%` still lands at the
+   same pixel as before this anchored to `.rrg-main-header` directly, since main-header is the
+   shell's last child with nothing after it. */
 .mega-menu-drawer{position:absolute;top:100%;left:0;right:0;background:#fff;border-top:1px solid var(--rrg-line);box-shadow:var(--shadow);display:none;z-index:90;}
 .mega-menu.open .mega-menu-drawer{display:block;}
 .mega-menu-drawer-inner{display:flex;align-items:flex-start;}

@@ -61,17 +61,23 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-logo b{color:var(--rrg-red);}
 
 /* Site header — matches "Navbar - Logged In - Final.png" */
-/* position + z-index here (and on .rrg-main-header below) so this bar renders above
-   .mega-menu-backdrop (mega-menu.css, z-index:80) when the Products drawer is open — the
-   backdrop dims the rest of the page, but the header itself (and the drawer, its descendant
-   once .rrg-main-header becomes a stacking context) needs to stay undimmed. One higher than
-   .rrg-main-header specifically (2026-09-13 fix) — each is position:relative with its own
-   z-index, so each forms its own stacking context; the Region Selector dropdown
-   (.region-switcher-menu) is a descendant of THIS bar and drops down into the main header's
-   box below it, so this bar's whole stacking context — dropdown included — needs to paint
-   above .rrg-main-header's, not just tie with it (a tie resolves to DOM order, which put the
-   later .rrg-main-header on top, clipping the dropdown's top half behind it). */
-.rrg-utility-bar{position:relative;z-index:86;background:var(--rrg-red);color:#fff;font-size:12.5px;}
+/* .rrg-header-shell (2026-09-14 fix, wraps .rrg-utility-bar + .rrg-main-header in every
+   template's markup) is the ONE positioned/z-indexed ancestor for both bars, replacing an
+   earlier attempt that gave each bar its OWN position+z-index directly. That earlier version
+   couldn't win both ways at once: .rrg-utility-bar and .rrg-main-header each formed their own
+   stacking context, so whichever had the higher z-index trapped the OTHER's cross-boundary
+   content behind it regardless of that content's own z-index — the Region Selector dropdown
+   (.region-switcher-menu, a descendant of the utility bar, drops DOWN into the main header's
+   box) needed the utility bar to win, while the UK region logo (.rrg-main-header .rrg-logo
+   img, below) bleeds UP into the utility bar's box and needed main-header to win — no single
+   ordering of the two satisfies both. Removing position/z-index from each bar and putting it
+   on their shared wrapper instead means neither bar is its own stacking context any more, so
+   both cross-boundary elements are compared directly in the SAME context and simply paint
+   above the plain (non-positioned) bar backgrounds either direction, as intended. The shell
+   still needs its own z-index above .mega-menu-backdrop (mega-menu.css, z-index:80) so the
+   whole header stays undimmed while the backdrop dims the rest of the page. */
+.rrg-header-shell{position:relative;z-index:85;}
+.rrg-utility-bar{background:var(--rrg-red);color:#fff;font-size:12.5px;}
 .rrg-utility-inner{display:flex;align-items:center;justify-content:space-between;padding:9px 24px;gap:20px;flex-wrap:wrap;}
 .rrg-utility-left,.rrg-utility-right{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
 .u-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
@@ -93,7 +99,7 @@ button{font-family:inherit;cursor:pointer;}
 .region-switcher-menu a:hover{background:#f4f4f4;color:var(--rrg-red);}
 .region-switcher-menu a.current{color:var(--rrg-red);background:#faf0ef;}
 
-.rrg-main-header{background:#fff;border-bottom:1px solid var(--rrg-line);padding:16px 0;position:relative;z-index:85;}
+.rrg-main-header{background:#fff;border-bottom:1px solid var(--rrg-line);padding:16px 0;}
 .rrg-main-inner{display:flex;align-items:center;gap:32px;padding:0 24px;flex-wrap:wrap;}
 .rrg-main-inner .rrg-logo{flex:0 0 auto;}
 .rrg-logo img{height:34px;width:auto;display:block;}
