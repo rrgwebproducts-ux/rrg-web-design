@@ -10,6 +10,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Lato:wght@400;700;900&display=swap">
 <link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
 <!-- Leaflet — Showroom Finder interactive map, see applyShowroomMapFlag() in shared.js.
      Free, no API key. Script deferred (2026-09-11, mobile audit): its init is now
      lazy-loaded on scroll-into-view anyway (see buildAdminPanel() in shared.js), so it no
@@ -65,8 +67,8 @@
 <div class="rrg-utility-bar">
   <div class="wrap rrg-utility-inner">
     <div class="rrg-utility-left">
-      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg> <span class="u-item-label">Your Nearest Store:</span> <a href="#" data-admin-trigger data-region-nearest-store>North Lakes</a></span>
-      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg> <span class="u-item-label">Your Vehicle:</span> <a href="#">Toyota Hilux</a></span>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg> <span class="u-item-label" data-session-store-label>Your Nearest Store:</span> <a href="#" data-admin-trigger data-region-nearest-store>North Lakes</a></span>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg> <a href="#" data-session="vehicleSet">Your Vehicle: Toyota Hilux</a></span>
     </div>
     <div class="rrg-utility-right">
       <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"/></svg> Call Us</span>
@@ -79,7 +81,7 @@
           <a href="#" data-region="UK"><span class="flag-emoji">🇬🇧</span> United Kingdom</a>
         </div>
       </div>
-      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg> <a href="#">Graham</a></span>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg> <a href="#" data-session="loggedIn">Graham</a></span>
     </div>
   </div>
 </div>
@@ -88,18 +90,16 @@
     <button type="button" class="mobile-nav-toggle" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="rrg-logo"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></div>
     <nav class="rrg-nav">
-      <div class="template-switcher">
-        <button type="button" class="template-switcher-toggle" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="width:16px;height:16px;"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Products</button>
-        <div class="template-switcher-menu">
-          <span class="tsm-label">Prototype Templates</span>
-          <a href="../simple/index.html" data-template="simple">Simple</a>
-          <a href="../config-variant/index.html" data-template="config-variant">Config-Variant</a>
-          <a href="../sibling-color/index.html" data-template="sibling-color">Sibling-Color</a>
-          <a href="../vehicle-specific/index.html" data-template="vehicle-specific">Vehicle-Specific</a>
-          <a href="../grouped-bundle/index.html" data-template="grouped-bundle">Grouped/Bundle</a>
+      <div class="mega-menu">
+        <button type="button" class="mega-menu-toggle" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Products</button>
+        <div class="mega-menu-drawer">
+          <div class="wrap mega-menu-drawer-inner">
+            <div class="mega-menu-l1"></div>
+            <div class="mega-menu-l2"></div>
+            <div class="mega-menu-l3"></div>
+          </div>
         </div>
       </div>
-      <a href="../../dev-brief-viewer.html" target="_blank" rel="noopener" title="Internal only — not part of the shipped site">Dev Brief</a>
       <span class="sep">|</span>
       <a href="#">Store Finder</a>
       <a href="#">Fit My Vehicle</a>
@@ -127,6 +127,29 @@
   <div class="rrg-cart">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
     <span class="cart-badge">0</span>
+  </div>
+</div>
+
+<!-- Full-screen mobile menu takeover (header-spec.md Section 3.6) — its own self-contained
+     header (logo/login/vehicle/search) is why it doesn't depend on the real page header's
+     scroll position at all; buildMegaMenuMobile() (mega-menu.js) only ever writes into
+     .mega-menu-mobile, hiding the topbar/search itself (via a data-screen attribute on this
+     wrapper) once drilled past the root screen. -->
+<div class="mm-mobile-takeover">
+  <div class="mm-mobile-panel">
+    <div class="mm-mobile-topbar">
+      <a class="mm-mobile-logo" href="index.html" aria-label="Roof Racks Galore — home"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></a>
+      <div class="mm-mobile-utility">
+        <a href="#" class="mm-mobile-utility-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg><span data-session="loggedIn">Graham</span></a>
+        <a href="#" class="mm-mobile-utility-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg><span data-session="vehicleSet">Your Vehicle: Toyota Hilux</span></a>
+      </div>
+      <button type="button" class="mm-mobile-close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="mm-mobile-search">
+      <input type="text" placeholder="Search Roof Racks or Accessories">
+      <button type="button" class="mm-mobile-search-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <div class="mega-menu-mobile"></div>
   </div>
 </div>
 
@@ -638,6 +661,10 @@
   </div>
 </div>
 
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
 <script src="../_shared/shared.js"></script>
 <script>
 const MAXTRAX_FAMILY = {

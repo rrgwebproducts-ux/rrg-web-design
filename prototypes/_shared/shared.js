@@ -1525,12 +1525,32 @@ function applyRegionShowroomHeading(region, heading) {
 // caching pattern as applyRegionShowroomHeading() above: cache the real per-page AU value the
 // first time this runs, NZ/UK reuse the same REGION_SINGLE_STORES name already driving the
 // Showroom heading and Click & Collect single-store copy (Auckland/Bolton for free).
+// Stores the resolved name on the link's dataset rather than writing it straight to
+// textContent (2026-09-13, header integration) — the "Nearest Store Set?" session toggle
+// (Site Admin Panel, session-state.js) now also governs what actually renders, so the real
+// display is deferred to applyStoreSessionDisplay() below.
 function applyRegionNearestStore(region) {
   const link = document.querySelector('[data-region-nearest-store]');
   if (!link) return;
   if (!link.dataset.auStore) link.dataset.auStore = link.textContent;
-  link.textContent = region === 'AU' ? link.dataset.auStore : REGION_SINGLE_STORES[region].name;
+  link.dataset.currentStoreName = region === 'AU' ? link.dataset.auStore : REGION_SINGLE_STORES[region].name;
+  applyStoreSessionDisplay();
 }
+
+// "Nearest store set?" (Site Admin Panel, session-state.js) interacts with the region-driven
+// store name above rather than being a simple on/off text swap, so it's handled here instead
+// of in session-state.js's generic loop — re-applied both when region changes (name changes,
+// via applyRegionNearestStore above) and when the session toggle itself changes
+// ('rrg-session-change' event, dispatched by session-state.js).
+function applyStoreSessionDisplay() {
+  const link = document.querySelector('[data-region-nearest-store]');
+  const label = document.querySelector('[data-session-store-label]');
+  if (!link) return;
+  const on = rrgSessionGet('storeSet');
+  if (label) label.hidden = !on;
+  link.textContent = on ? link.dataset.currentStoreName : 'Find A Store';
+}
+document.addEventListener('rrg-session-change', applyStoreSessionDisplay);
 
 function applyRegion(region) {
   currentRegion = region;
@@ -1991,31 +2011,6 @@ function initCopyButtons() {
   });
 }
 
-// Template Switcher — dropdown on the header's "Products" item, internal-only, for
-// jumping between the 5 prototype templates without going back to prototypes/index.html.
-function initTemplateSwitcher() {
-  const wrap = document.querySelector('.template-switcher');
-  if (!wrap) return;
-  const toggle = wrap.querySelector('.template-switcher-toggle');
-  const menu = wrap.querySelector('.template-switcher-menu');
-
-  const currentFolder = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0];
-  menu.querySelectorAll('a[data-template]').forEach(a => {
-    if (a.dataset.template === currentFolder) a.classList.add('current');
-  });
-
-  toggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = wrap.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open);
-  });
-  menu.addEventListener('click', (e) => e.stopPropagation());
-  document.addEventListener('click', () => {
-    wrap.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-  });
-}
-
 // "Read more" under the clamped short-desc line jumps to the Details tab
 // (2026-09-10, Graham Sowerby meeting). The tabs accordion is pure CSS (a radio input +
 // label + sibling-selector .content, no JS anywhere) — a plain anchor jump would scroll to
@@ -2157,40 +2152,41 @@ function initTabJumpLinks() {
   });
 }
 
-// Mobile nav drawer (2026-09-11, mobile audit) — .rrg-nav (Products / Store Finder /
-// Fit My Vehicle / Catalogue / Services) previously just display:none'd below 900px
-// with nothing replacing it, making the whole main nav unreachable on mobile/tablet.
-// Two hamburger triggers now exist (the top-of-page header and the sticky condensed
-// header, see .rrg-sticky-header below) — both open the same drawer, so this wires up
-// every .mobile-nav-toggle found rather than just the first. The drawer is
-// position:fixed (not absolute) since it needs to work correctly whichever header
-// triggered it — top's natural position vs. the sticky header's fixed position — so its
-// `top` offset is computed from whichever header the click came from, not fixed in CSS.
-// Otherwise mirrors initTemplateSwitcher()'s toggle/click-outside-to-close pattern.
+// Mobile menu (2026-09-13, header integration) — opens the full-screen takeover
+// (.mm-mobile-takeover, populated by mega-menu.js's buildMegaMenuMobile()), replacing the
+// .rrg-nav slide-down drawer this used to toggle (2026-09-11, mobile audit): that drawer
+// stayed at a fixed scroll position while the page scrolled past it, visually detaching from
+// the sticky header, since it wasn't part of the same self-contained unit. The takeover fixes
+// this by being position:fixed to the full viewport, with its own logo/login/vehicle/search,
+// independent of the real header's scroll position entirely. Two hamburger triggers exist
+// (the top-of-page header and the sticky condensed header) — both open the same takeover, so
+// this wires up every .mobile-nav-toggle found rather than just the first.
 function initMobileNav() {
   const toggles = document.querySelectorAll('.mobile-nav-toggle');
-  const nav = document.querySelector('.rrg-nav');
-  if (!toggles.length || !nav) return;
+  const takeover = document.querySelector('.mm-mobile-takeover');
+  const closeBtn = takeover ? takeover.querySelector('.mm-mobile-close') : null;
+  if (!toggles.length || !takeover) return;
   const setExpanded = (open) => toggles.forEach(t => t.setAttribute('aria-expanded', open));
+  const open = () => {
+    takeover.classList.add('open');
+    document.body.classList.add('mm-mobile-locked');
+    setExpanded(true);
+    if (window.rrgResetMobileMenu) window.rrgResetMobileMenu();
+  };
+  const close = () => {
+    takeover.classList.remove('open');
+    document.body.classList.remove('mm-mobile-locked');
+    setExpanded(false);
+  };
   toggles.forEach(toggle => {
     toggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      const header = toggle.closest('.rrg-sticky-header') || toggle.closest('.rrg-main-header');
-      if (header) nav.style.top = header.getBoundingClientRect().bottom + 'px';
-      const open = nav.classList.toggle('mobile-open');
-      setExpanded(open);
+      if (takeover.classList.contains('open')) close(); else open();
     });
   });
-  nav.addEventListener('click', (e) => e.stopPropagation());
-  document.addEventListener('click', () => {
-    nav.classList.remove('mobile-open');
-    setExpanded(false);
-  });
+  if (closeBtn) closeBtn.addEventListener('click', close);
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 900 && nav.classList.contains('mobile-open')) {
-      nav.classList.remove('mobile-open');
-      setExpanded(false);
-    }
+    if (window.innerWidth > 900 && takeover.classList.contains('open')) close();
   });
 }
 
@@ -2220,7 +2216,6 @@ document.addEventListener('DOMContentLoaded', () => {
   buildFitGallerySlideout();
   initCopyButtons();
   initFitGalleryCarousel();
-  initTemplateSwitcher();
   initRegionSwitcher();
   layoutShortDesc();
   window.addEventListener('resize', () => {
@@ -2442,4 +2437,19 @@ function buildAdminPanel() {
   reapplyFittedOption();
 }
 
-document.addEventListener('DOMContentLoaded', buildAdminPanel);
+document.addEventListener('DOMContentLoaded', () => {
+  buildAdminPanel();
+  // Header integration (2026-09-13) — mega menu ("Products"), the Site Admin Panel (Template
+  // Switcher + Dev Brief links, moved out of the old .rrg-nav dropdown), and session-state
+  // (logged in / vehicle set / nearest store set), all built in isolation in
+  // prototypes/header/ first per header-spec.md, now live on every PDP template. Run after
+  // buildAdminPanel() above so its .admin-fab already exists by the time buildSiteAdminPanel()
+  // decides whether it also needs to bind the shared mobile data-admin-trigger link (see
+  // admin-panel.js). currentTemplateKey mirrors the old initTemplateSwitcher()'s folder-name
+  // lookup so Site Admin Panel can mark the current template — 2 path segments up from the
+  // page itself (prototypes/<key>/).
+  const currentTemplateKey = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0];
+  initMegaMenu();
+  buildSiteAdminPanel(currentTemplateKey);
+  rrgApplySessionState();
+});

@@ -61,7 +61,17 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-logo b{color:var(--rrg-red);}
 
 /* Site header — matches "Navbar - Logged In - Final.png" */
-.rrg-utility-bar{background:var(--rrg-red);color:#fff;font-size:12.5px;}
+/* position + z-index here (and on .rrg-main-header below) so this bar renders above
+   .mega-menu-backdrop (mega-menu.css, z-index:80) when the Products drawer is open — the
+   backdrop dims the rest of the page, but the header itself (and the drawer, its descendant
+   once .rrg-main-header becomes a stacking context) needs to stay undimmed. One higher than
+   .rrg-main-header specifically (2026-09-13 fix) — each is position:relative with its own
+   z-index, so each forms its own stacking context; the Region Selector dropdown
+   (.region-switcher-menu) is a descendant of THIS bar and drops down into the main header's
+   box below it, so this bar's whole stacking context — dropdown included — needs to paint
+   above .rrg-main-header's, not just tie with it (a tie resolves to DOM order, which put the
+   later .rrg-main-header on top, clipping the dropdown's top half behind it). */
+.rrg-utility-bar{position:relative;z-index:86;background:var(--rrg-red);color:#fff;font-size:12.5px;}
 .rrg-utility-inner{display:flex;align-items:center;justify-content:space-between;padding:9px 24px;gap:20px;flex-wrap:wrap;}
 .rrg-utility-left,.rrg-utility-right{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
 .u-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
@@ -71,8 +81,9 @@ button{font-family:inherit;cursor:pointer;}
 
 /* Region Selector (2026-09-11, backlog item 21) — the utility bar's country item, previously
    static/decorative, is now a working dropdown. Same toggle-a-class-on-click,
-   click-outside-to-close interaction as .template-switcher below, just recoloured for
-   sitting on the red utility bar (white trigger text) instead of the white main header. */
+   click-outside-to-close interaction as the Site Admin Panel's own dropdowns
+   (admin-panel.css), just recoloured for sitting on the red utility bar (white trigger text)
+   instead of the white main header. */
 .region-switcher{position:relative;}
 .region-switcher-toggle{background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:#fff;cursor:pointer;}
 .region-switcher-menu{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;padding:8px;display:none;flex-direction:column;gap:1px;z-index:80;}
@@ -82,7 +93,7 @@ button{font-family:inherit;cursor:pointer;}
 .region-switcher-menu a:hover{background:#f4f4f4;color:var(--rrg-red);}
 .region-switcher-menu a.current{color:var(--rrg-red);background:#faf0ef;}
 
-.rrg-main-header{background:#fff;border-bottom:1px solid var(--rrg-line);padding:16px 0;}
+.rrg-main-header{background:#fff;border-bottom:1px solid var(--rrg-line);padding:16px 0;position:relative;z-index:85;}
 .rrg-main-inner{display:flex;align-items:center;gap:32px;padding:0 24px;flex-wrap:wrap;}
 .rrg-main-inner .rrg-logo{flex:0 0 auto;}
 .rrg-logo img{height:34px;width:auto;display:block;}
@@ -91,18 +102,6 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-nav a:hover{color:var(--rrg-red);}
 .rrg-nav .sep{color:var(--rrg-line);}
 
-/* Template Switcher — internal-only dropdown on the header's "Products" item for jumping
-   between the 5 prototype templates without going back to prototypes/index.html. Not part
-   of the shipped design (mirrors the Demo State Panel's reviewer-tool status). */
-.template-switcher{position:relative;}
-.template-switcher-toggle{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-black);display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
-.template-switcher-toggle:hover{color:var(--rrg-red);}
-.template-switcher-menu{position:absolute;top:calc(100% + 16px);left:0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:210px;padding:8px;display:none;flex-direction:column;gap:1px;z-index:80;}
-.template-switcher.open .template-switcher-menu{display:flex;}
-.template-switcher-menu .tsm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#999;padding:6px 10px 4px;}
-.template-switcher-menu a{padding:9px 10px;border-radius:7px;font-size:13.5px;font-weight:600;color:var(--rrg-black);text-decoration:none;}
-.template-switcher-menu a:hover{background:#f4f4f4;color:var(--rrg-red);}
-.template-switcher-menu a.current{color:var(--rrg-red);background:#faf0ef;}
 .rrg-search{flex:1 1 260px;max-width:420px;display:flex;align-items:center;border:1.5px solid var(--rrg-line);border-radius:8px;overflow:hidden;margin-left:auto;}
 .rrg-search input{flex:1;border:none;padding:11px 14px;font-size:13.5px;font-family:inherit;outline:none;min-width:0;}
 /* Clear (x) button — matched to client-supplied Figma export "Navbar - Logged In -
@@ -122,13 +121,12 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-cart svg{width:24px;height:24px;}
 .cart-badge{position:absolute;top:-6px;right:-8px;background:var(--rrg-red);color:#fff;font-size:10px;font-weight:900;border-radius:999px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}
 
-/* Mobile nav toggle + drawer (2026-09-11, mobile audit) — .rrg-nav (Products / Store
-   Finder / Fit My Vehicle / Catalogue / Services) used to just display:none below 900px
-   with nothing replacing it, making the entire main nav unreachable on mobile/tablet.
-   Hidden by default (desktop hamburger icon would be pointless); shown + wired up to
-   toggle .rrg-nav open only inside the 900px media query below. Reuses the same
-   toggle-a-class-on-click, click-outside-to-close pattern as .template-switcher
-   (initTemplateSwitcher() in shared.js) via the new initMobileNav(). */
+/* Mobile nav toggle (2026-09-11, mobile audit; behaviour replaced 2026-09-13, header
+   integration) — hidden by default (desktop hamburger icon would be pointless), shown only
+   inside the 900px media query below. Opens the full-screen mega-menu takeover
+   (.mm-mobile-takeover, initMobileNav() in shared.js) rather than .rrg-nav itself, which is
+   just hidden outright on mobile now — its content (mega menu + the 4 plain nav links) is
+   fully mirrored inside the takeover for that viewport instead. */
 .mobile-nav-toggle{display:none;background:none;border:none;padding:10px;margin:-10px;color:var(--rrg-black);flex:0 0 auto;}
 .mobile-nav-toggle svg{width:22px;height:22px;display:block;}
 /* Main header, mobile layout (2026-09-11, matched to client-supplied Figma export "Navbar
@@ -137,29 +135,13 @@ button{font-family:inherit;cursor:pointer;}
    desktop. Grid (not flex) so the search row can sit on an explicit row 2 without needing
    flex `order` tricks that would also disturb the hamburger/logo/cart row. */
 @media (max-width:900px){
-  .rrg-main-header{position:relative;}
   .mobile-nav-toggle{display:flex;align-items:center;justify-content:center;}
   .rrg-main-inner{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;column-gap:12px;row-gap:10px;}
   .mobile-nav-toggle{grid-row:1;grid-column:1;}
   .rrg-main-inner .rrg-logo{grid-row:1;grid-column:2;justify-self:center;}
   .rrg-cart{grid-row:1;grid-column:3;justify-self:end;}
   .rrg-search{grid-row:2;grid-column:1/-1;margin-left:0;max-width:none;}
-  /* .rrg-nav is position:fixed (see below) so it's out of normal flow — no grid placement
-     needed for it, its own top offset is computed at open-time in initMobileNav(). */
-  .rrg-nav{
-    display:none;
-    position:fixed;left:0;right:0;
-    flex-direction:column;align-items:stretch;gap:0;
-    background:#fff;border-top:1px solid var(--rrg-line);box-shadow:0 12px 24px rgba(0,0,0,.14);
-    padding:4px 24px 16px;z-index:56;max-height:calc(100vh - 60px);overflow-y:auto;
-  }
-  .rrg-nav.mobile-open{display:flex;}
-  .rrg-nav .sep{display:none;}
-  .rrg-nav > a,
-  .rrg-nav .template-switcher-toggle{
-    width:100%;padding:15px 2px;border-bottom:1px solid #f0f0f0;
-    justify-content:space-between;font-size:15px;
-  }
+  .rrg-nav{display:none;}
 }
 
 /* Sticky condensed header (2026-09-11, matched to client-supplied Figma export "Mob
