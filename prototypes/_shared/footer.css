@@ -1,0 +1,114 @@
+/* Global footer — footer-spec.md. Colours/measurements sampled directly from
+   `Footer Design/Footer Component - Desktop.png` (bg #211E20, bottom bar #F5F5F5). Added to
+   all 5 PDP templates identically (footer-spec.md Section 0 — no per-template variation). */
+
+.rrg-footer{background:#211E20;color:#fff;margin-top:48px;}
+.rrg-footer .wrap{padding-top:56px;padding-bottom:40px;}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.2fr 1.3fr;
+  gap:32px;
+}
+
+.rrg-footer h4{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  font-size:17px;
+  margin:0 0 16px;
+  /* shared.css's global `h1,h2,h3,h4{color:var(--rrg-black)}` otherwise wins over inheriting
+     .rrg-footer's white text colour, since it sets `color` explicitly on the element itself
+     (inheritance only applies when nothing more specific sets it) — headings rendered near-
+     black on the dark footer until this was added. */
+  color:#fff;
+}
+.footer-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+.footer-col a{color:#fff;text-decoration:none;font-size:14px;}
+.footer-col a:hover{text-decoration:underline;}
+
+.footer-col + .footer-col{margin-top:0;}
+
+.footer-info-block{display:flex;flex-direction:column;gap:28px;}
+.footer-store-finder{display:flex;gap:10px;font-size:14px;line-height:1.5;}
+.footer-store-finder svg{flex:0 0 auto;margin-top:2px;}
+.footer-store-finder a{color:#fff;text-decoration:underline;}
+
+.footer-enquiries p{font-size:14px;line-height:1.55;margin:0 0 14px;color:#e7e5e6;}
+.footer-contact-row{display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:10px;}
+.footer-contact-row:last-child{margin-bottom:0;}
+.footer-contact-row svg{flex:0 0 auto;}
+.footer-contact-row a{color:#fff;text-decoration:none;}
+.footer-contact-row a[href^="tel:"]{text-decoration:underline;}
+
+.footer-brand-col{display:flex;flex-direction:column;align-items:flex-end;gap:28px;text-align:right;}
+.footer-brand-col .rrg-logo img{height:52px;width:auto;display:block;}
+/* UK's logo (brand-roofbox-uk-logo.svg) is a portrait badge, not a wide wordmark — needs its
+   own height to read at a comparable visual size to the AU/NZ lockup. Swapped in for free by
+   the existing applyRegionBrand() (targets every `.rrg-logo img` on the page); this only
+   overrides its size once body.region-uk is toggled. See footer-spec.md Section 3. */
+body.region-uk .footer-brand-col .rrg-logo img{height:76px;}
+
+/* UK-only tagline (Brenton, 2026-09-14) — real TRBC brand copy, "#TakeMoreDoMore" set in
+   Kalam, the same handwriting-style Google Font roofbox.co.uk itself uses for it (confirmed
+   via computed style on the live page, not guessed). Shown/hidden per region by
+   applyRegionFooter() toggling the `hidden` attribute, not by CSS — AU/NZ have no equivalent
+   tagline. */
+.footer-tagline{
+  font-family:'Kalam',cursive;
+  font-weight:700;
+  font-size:22px;
+  color:#fff;
+  margin:-8px 0 0;
+}
+
+.footer-social h4,
+.footer-payment h4{text-align:right;}
+.footer-social-icons,
+.footer-payment-icons{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+
+/* AU/NZ solid style — no real social accounts yet (footer-spec.md Section 4), generic glyphs
+   in a solid white circle button. */
+.footer-social-icons a.social-btn-solid{
+  width:34px;height:34px;border-radius:50%;background:#fff;color:#211E20;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+}
+.footer-social-icons a.social-btn-solid svg{width:17px;height:17px;}
+
+/* UK outline style — real TRBC icon assets (thin white ring + glyph baked into the SVG itself,
+   vendored from roofbox.co.uk), so the button itself stays transparent rather than adding a
+   second circle behind it. */
+.footer-social-icons a.social-btn-outline{
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+}
+.footer-social-icons a.social-btn-outline img{width:100%;height:100%;display:block;}
+
+.footer-payment-icons{align-items:center;}
+.footer-payment-icons .payment-icon{height:24px;display:flex;align-items:center;}
+.footer-payment-icons .payment-icon img{height:100%;width:auto;max-width:60px;display:block;object-fit:contain;}
+
+.footer-bottom{background:#F5F5F5;color:#3a3a3a;text-align:center;font-size:13px;padding:14px 24px;line-height:1.6;}
+
+/* UK brand colour (Brenton, 2026-09-14) — matches roofbox.co.uk's real footer, which is one
+   continuous blue block (no separate light bottom bar the way AU/NZ's is) — #2E41AE is
+   already this project's UK brand-blue token (`body.region-uk{--rrg-red:#2E41AE}` in
+   shared.css, used for the header/logo skin), reused here rather than a second colour value. */
+body.region-uk .rrg-footer{background:#2E41AE;}
+body.region-uk .footer-bottom{background:#2E41AE;color:#fff;}
+
+@media (max-width:900px){
+  .footer-grid{grid-template-columns:1fr 1fr;row-gap:36px;}
+  .footer-info-block{grid-column:1 / -1;display:flex;flex-direction:column;gap:36px;}
+  .footer-brand-col{grid-column:1 / -1;align-items:center;text-align:center;order:3;}
+  /* Mobile Figma order within the brand column is Follow Us -> Payment Options -> logo,
+     the reverse of desktop's logo-first stack — see footer-spec.md Section 1. */
+  .footer-brand-col .footer-social{order:1;}
+  .footer-brand-col .footer-payment{order:2;}
+  .footer-brand-col .footer-logo{order:3;}
+  .footer-social h4,
+  .footer-payment h4{text-align:center;}
+  .footer-social-icons,
+  .footer-payment-icons{justify-content:center;}
+  .rrg-footer .wrap{padding-top:40px;}
+}

@@ -708,6 +708,8 @@ Brenton spotted these live while reviewing the Region Selector screenshots just 
 
 **2026-09-13:** The header/utility-bar markup embedded in every template here is a placeholder only (inert nav links, dev tooling mixed into the visible nav) — it now has its own separate project, spec, and eventual dev brief: see `header-spec.md`. Don't extend or "fix" the current placeholder header as part of PDP work; header changes belong in that file.
 
+**2026-09-14:** None of the 5 templates have a footer at all — that's now its own separate project, spec, and eventual dev brief: see `footer-spec.md`. Footer changes belong in that file, not here.
+
 `DEVELOPER-BRIEF.md` (project root) is the internal-developer-facing handover document for building the real Magento 2 templates from these prototypes — instructions, screenshots of where each widget sits on the page, and copy-paste-ready code for external integrations (starting with REVIEWS.io). It's separate from this spec: `spec.md` is the build log/backlog aimed at whoever is directing this prototyping work; `DEVELOPER-BRIEF.md` is aimed at the person who will actually build the production templates and doesn't need this file's full history to do that.
 
 **Convention going forward:** whenever a section of `DEVELOPER-BRIEF.md` is added or updated, note it here with a one-line pointer (date + what changed), rather than duplicating its content into this file.

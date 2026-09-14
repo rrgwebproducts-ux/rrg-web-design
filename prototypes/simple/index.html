@@ -8,10 +8,11 @@
      old @import, which blocked font discovery until the whole stylesheet was parsed. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
 <link rel="stylesheet" href="../_shared/shared.css">
 <link rel="stylesheet" href="../_shared/mega-menu.css">
 <link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
 <!-- Leaflet — Showroom Finder interactive map, see applyShowroomMapFlag() in shared.js.
      Free, no API key. Script deferred (2026-09-11, mobile audit): its init is now
      lazy-loaded on scroll-into-view anyway (see buildAdminPanel() in shared.js), so it no
@@ -682,6 +683,76 @@
     <button class="btn btn-primary" data-cta-label>Add To Cart</button>
   </div>
 </div>
+
+<!-- Global footer — footer-spec.md. Added identically to all 5 PDP templates (Section 0);
+     region-aware text/asset swaps (brand, copyright, phone, store copy, payment icons) are
+     driven by applyRegionFooter() in shared.js, Section 3. -->
+<footer class="rrg-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Opening Hours</a></li>
+          <li><a href="#">Wholesale Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Feedback</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Checkout Error Form</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="#">Terms and Conditions</a></li>
+          <li><a href="#">Warranty</a></li>
+          <li><a href="#">Payment and Pricing</a></li>
+          <li><a href="#">Shipping &amp; Delivery</a></li>
+          <li><a href="#">Refund &amp; Exchange</a></li>
+          <li><a href="#">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+      <div class="footer-info-block">
+        <div class="footer-col">
+          <h4>Store Finder</h4>
+          <div class="footer-store-finder">
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" fill="#FFCA48"/></svg>
+            <p><a href="#">Click here</a> <span data-footer-store-copy>to find your closest store from our <strong>35 nationwide locations</strong>.</span></p>
+          </div>
+        </div>
+        <div class="footer-col footer-enquiries">
+          <h4>Online Orders and Enquiries</h4>
+          <p>Our team is here to support you. Phone and chat is open Monday to Friday, 8:30am to 5pm AEST (closed Public Hols).</p>
+          <div class="footer-contact-row">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="9" fill="#fff"/><rect x="8" y="7.5" width="2" height="6" rx="1" fill="#211E20"/><rect x="8" y="4.5" width="2" height="2" rx="1" fill="#211E20"/></svg>
+            <a href="mailto:help@roofracksgalore.com.au" data-footer-email>help@roofracksgalore.com.au</a>
+          </div>
+          <div class="footer-contact-row" data-trust="phone">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2.6 1.2 5.4 1c.5 0 1 .3 1.1.8l.8 2.9c.1.4 0 .9-.3 1.2L5.6 7.3a11 11 0 0 0 4.1 4.1l1.4-1.4c.3-.3.8-.4 1.2-.3l2.9.8c.5.1.8.6.8 1.1l-.2 2.8c0 .6-.5 1-1.1 1C7.3 15.4 1.6 9.7 1.6 2.3c0-.6.4-1 1-1.1Z" fill="#fff"/></svg>
+            <span>Call Us <a href="tel:1300071264">1300 071 264</a></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-col footer-brand-col">
+        <div class="footer-logo rrg-logo"><img src="../_shared/headerlogo-white.png" alt="Roof Racks Galore"></div>
+        <div class="footer-tagline" data-footer-tagline hidden>#TakeMoreDoMore</div>
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="footer-social-icons" data-footer-social-icons></div>
+        </div>
+        <div class="footer-payment">
+          <h4>Payment Options</h4>
+          <div class="footer-payment-icons" data-footer-payment-icons></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-footer-copyright>© 2026 Roof Racks Galore</span>
+  </div>
+</footer>
 
 <script src="../_shared/nav-data.js"></script>
 <script src="../_shared/session-state.js"></script>

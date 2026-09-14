@@ -1482,6 +1482,121 @@ const REGION_SINGLE_STORES = {
 // `p.textContent = ...` swap (as used for the other two trust items) would silently destroy.
 const REGION_PHONE = { AU: '1300 071 264', NZ: '09 481 1910', UK: '01204 899778' };
 
+// Footer region copy (footer-spec.md Section 3) — support-email domain per region. NZ/UK
+// emails are a placeholder (no real address exists anywhere in this project yet — footer-
+// spec.md Section 4 data gap, needs Brenton to confirm before this leaves prototype stage),
+// built as the equivalent domain so the footer isn't left blank.
+const REGION_FOOTER_EMAIL = { AU: 'help@roofracksgalore.com.au', NZ: 'help@roofracksgalore.co.nz', UK: 'help@roofbox.co.uk' };
+
+// Real UK legal/company footer line (Brenton, 2026-09-14) — TRBC's actual registered-company
+// details, replacing the generic "© 2026 [brand]" line AU/NZ use. Not a placeholder like the
+// email above; this is the real text, copied verbatim.
+const REGION_FOOTER_LEGAL = {
+  AU: '© 2026 Roof Racks Galore',
+  NZ: '© 2026 Roof Racks Galore',
+  UK: '© The Roof Box Company (TRBC) Ltd, Unit 4 Station Yard, Station Road, Sedbergh, Cumbria, LA10 5HP<br>Registered in England No. 16901742&nbsp;&nbsp;&nbsp;&nbsp;VAT No. 512 2969 95'
+};
+
+// Real TRBC social accounts + their own site's real icon assets (thin white ring + glyph,
+// transparent background — vendored into prototypes/_shared/social-icons/, fetched live from
+// roofbox.co.uk 2026-09-14, not traced/recreated) — visually distinct from AU/NZ's solid-white-
+// circle-button treatment, which has no real social accounts yet (`href="#"` placeholders).
+// Platform set also genuinely differs: TRBC runs Facebook/YouTube/Twitter/Instagram, no TikTok.
+const REGION_FOOTER_SOCIAL = {
+  default: [
+    { label: 'YouTube', href: '#', kind: 'solid', svg: '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm-2 14V8l7 4-7 4Z"/></svg>' },
+    { label: 'Facebook', href: '#', kind: 'solid', svg: '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.3-1.5 1.6-1.5H16.7V3.7c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.2H7.6V13h2.7v8h3.2Z"/></svg>' },
+    { label: 'Instagram', href: '#', kind: 'solid', svg: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>' },
+    { label: 'TikTok', href: '#', kind: 'solid', svg: '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8c-.9-.6-1.5-1.6-1.6-2.8h-3v13c0 1.3-1.1 2.4-2.4 2.4a2.4 2.4 0 0 1 0-4.8c.3 0 .5 0 .8.1v-3c-.3 0-.5-.1-.8-.1a5.4 5.4 0 1 0 5.4 5.4V9.2a7.4 7.4 0 0 0 4 1.2v-3c-.9 0-1.7-.2-2.4-.6Z"/></svg>' }
+  ],
+  UK: [
+    { label: 'Facebook', href: 'https://www.facebook.com/The-Roof-Box-Company-160612236596/?ref=ts', kind: 'outline', img: 'trbc-facebook.svg' },
+    { label: 'YouTube', href: 'https://www.youtube.com/user/RoofBoxCompany', kind: 'outline', img: 'trbc-youtube.svg' },
+    { label: 'Twitter', href: 'https://twitter.com/roofbox_company', kind: 'outline', img: 'trbc-twitter.svg' },
+    { label: 'Instagram', href: 'https://www.instagram.com/roofboxcompany/', kind: 'outline', img: 'trbc-instagram.svg' }
+  ]
+};
+
+function renderFooterSocial(region) {
+  const set = REGION_FOOTER_SOCIAL[region] || REGION_FOOTER_SOCIAL.default;
+  document.querySelectorAll('[data-footer-social-icons]').forEach(container => {
+    container.innerHTML = set.map(item => {
+      const inner = item.img ? `<img src="../_shared/social-icons/${item.img}" alt="">` : item.svg;
+      const external = item.href.startsWith('http');
+      return `<a href="${item.href}" aria-label="${item.label}" class="social-btn-${item.kind}"${external ? ' target="_blank" rel="noopener"' : ''}>${inner}</a>`;
+    }).join('');
+  });
+}
+
+// Footer Store Finder blurb — AU's real "35 nationwide locations" claim doesn't apply to
+// NZ/UK, which reuse REGION_SINGLE_STORES (already the source of truth for this store data
+// elsewhere, e.g. the Showroom Finder heading) rather than duplicating it here.
+function regionFooterStoreCopy(region) {
+  if (region === 'AU') return 'to find your closest store from our <strong>35 nationwide locations</strong>.';
+  return `to find our <strong>${REGION_SINGLE_STORES[region].name}</strong> store.`;
+}
+
+// Footer "Payment Options" row (footer-spec.md Section 3.5) — card networks/wallets
+// (Visa/MasterCard/Apple Pay/Google Pay) are shown in every region; only the BNPL providers
+// change, reusing the same real per-region set as paymentBadgeSet() above rather than a
+// second copy of that data.
+const REGION_FOOTER_BNPL = { AU: ['zip', 'afterpay'], NZ: ['afterpay'], UK: ['clearpay', 'klarna'] };
+
+// "-dark" assets are real brand marks built to sit directly on a dark background with no
+// added white chip behind them (Brenton's ask, 2026-09-14) — distinct from this same folder's
+// plain versions (paypal.svg, zip.svg, etc.), which are colour logos meant for a light
+// background and used elsewhere (e.g. the Decision Panel's payment badges). Visa, MasterCard,
+// Apple Pay, Google Pay and Klarna are real CC0 monochrome marks from Simple Icons
+// (cdn.simpleicons.org, requested pre-coloured white); Zip and Clearpay have no equivalent
+// there, so their existing local assets were recoloured by hand instead — Zip keeps its real
+// purple accent and turns its dark wordmark white (matching Zip's own official "on dark"
+// lockup), Clearpay's solid-black wordmark is turned fully white.
+const FOOTER_PAYMENT_ICON = {
+  paypal: ['paypal-dark.svg', 'PayPal'],
+  visa: ['visa-dark.svg', 'Visa'],
+  mastercard: ['mastercard-dark.svg', 'MasterCard'],
+  'apple-pay': ['applepay-dark.svg', 'Apple Pay'],
+  'google-pay': ['googlepay-dark.svg', 'Google Pay'],
+  zip: ['zip-dark.svg', 'Zip'],
+  afterpay: ['afterpay-dark.svg', 'Afterpay'],
+  clearpay: ['clearpay-dark.svg', 'Clearpay'],
+  klarna: ['klarna-dark.svg', 'Klarna']
+};
+
+function renderFooterPayments(region) {
+  document.querySelectorAll('[data-footer-payment-icons]').forEach(container => {
+    const order = ['paypal', 'visa', 'mastercard', ...REGION_FOOTER_BNPL[region], 'apple-pay', 'google-pay'];
+    container.innerHTML = order.map(key => {
+      const [src, alt] = FOOTER_PAYMENT_ICON[key];
+      return `<span class="payment-icon"><img src="../_shared/payment-logos/${src}" alt="${alt}"></span>`;
+    }).join('');
+  });
+}
+
+// Footer region sweep — copyright/email/store-copy text swaps plus the payment-icon re-render
+// above. Brand logo swap needs no footer-specific code: the footer logo carries the same
+// `.rrg-logo` class as the header, so it's already covered by applyRegionBrand() below; its
+// UK sizing override lives in footer.css (`body.region-uk .footer-brand-col .rrg-logo img`).
+// Phone number reuses the existing `[data-trust="phone"]` sweep earlier in applyRegion() —
+// the footer's Call Us row carries that same data attribute, not a separate one.
+function applyRegionFooter(region) {
+  document.querySelectorAll('[data-footer-copyright]').forEach(el => {
+    el.innerHTML = REGION_FOOTER_LEGAL[region];
+  });
+  document.querySelectorAll('[data-footer-email]').forEach(a => {
+    a.textContent = REGION_FOOTER_EMAIL[region];
+    a.href = `mailto:${REGION_FOOTER_EMAIL[region]}`;
+  });
+  document.querySelectorAll('[data-footer-store-copy]').forEach(el => {
+    el.innerHTML = regionFooterStoreCopy(region);
+  });
+  document.querySelectorAll('[data-footer-tagline]').forEach(el => {
+    el.hidden = region !== 'UK';
+  });
+  renderFooterPayments(region);
+  renderFooterSocial(region);
+}
+
 const REGION_LABELS = { AU: 'Australia', NZ: 'New Zealand', UK: 'United Kingdom' };
 const REGION_FLAGS = { AU: '🇦🇺', NZ: '🇳🇿', UK: '🇬🇧' };
 
@@ -1632,6 +1747,10 @@ function applyRegion(region) {
   // something about to be overwritten.
   applyRegionCurrency(region);
   applyRegionBrand(region);
+
+  // Footer text/asset swaps (footer-spec.md Section 3) — run last for the same reason as the
+  // two calls above: acts on final DOM state, not something about to be overwritten.
+  applyRegionFooter(region);
 }
 
 // fmtAud()/fmtMoney() (this file + the per-template inline scripts) already pick up the
@@ -1672,14 +1791,25 @@ function applyRegionCurrency(region) {
 // Cart button (which isn't on the `--rrg-red` token to begin with — it's RRG's separate
 // locked-in gold default, see shared.css).
 const RRG_LOGO = { src: '../_shared/headerlogo.png', alt: 'Roof Racks Galore' };
+// White-on-transparent recolour of RRG_LOGO (footer-spec.md Section 3) — the header's logo is
+// black text built for its white background; the footer's background is dark, so it needs
+// its own variant. UK reuses the same self-contained badge everywhere (it already carries its
+// own background box, so it works on both the light header and the dark footer unchanged).
+const RRG_LOGO_WHITE = { src: '../_shared/headerlogo-white.png', alt: 'Roof Racks Galore' };
 const UK_LOGO = { src: '../_shared/brand-roofbox-uk-logo.svg', alt: 'The Roof Box Company' };
 
 function applyRegionBrand(region) {
   document.body.classList.toggle('region-uk', region === 'UK');
   const logo = region === 'UK' ? UK_LOGO : RRG_LOGO;
   document.querySelectorAll('.rrg-logo img').forEach(img => {
+    if (img.closest('.rrg-footer')) return;
     img.src = logo.src;
     img.alt = logo.alt;
+  });
+  const footerLogo = region === 'UK' ? UK_LOGO : RRG_LOGO_WHITE;
+  document.querySelectorAll('.rrg-footer .rrg-logo img').forEach(img => {
+    img.src = footerLogo.src;
+    img.alt = footerLogo.alt;
   });
 }
 
