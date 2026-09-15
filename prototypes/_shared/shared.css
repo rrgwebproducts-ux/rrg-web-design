@@ -1161,13 +1161,20 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
 /* Section heading style — shared by every top-level section label (Related Products,
    Showroom Finder's "See It In Person...", the Fitment Gallery panel) so they all read as
-   one consistent typographic level, per client request 2026-09-10. */
+   one consistent typographic level, per client request 2026-09-10. Extended 2026-09-15 to
+   cover the Vehicle Landing Page's own top-level section labels (Fit Finder, the fitment
+   education intro, the Trust Banner heading) — those were built with page-local font-size
+   overrides that drifted from this scale; now genuinely the same shared rule everywhere,
+   sitewide, not a same-looking copy. */
 .related-heading,
 .showroom-widget h3,
 .fit-gallery-title h2,
 .faq-heading,
 .tabs-heading,
-.showroom-heading{
+.showroom-heading,
+.ff-head h2,
+.vlp-content h2,
+.vlp-trust-inner h2{
   font-family:'Barlow Condensed',Arial,sans-serif;
   font-weight:700;
   font-style:italic;
