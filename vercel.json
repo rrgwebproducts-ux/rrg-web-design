@@ -1,5 +1,8 @@
 {
   "redirects": [
-    { "source": "/", "destination": "/prototypes/index.html", "permanent": false }
+    { "source": "/", "destination": "/prototypes/index.html", "permanent": false },
+    { "source": "/dev-brief-viewer.html", "destination": "/docs/pdp/dev-brief-viewer.html", "permanent": false },
+    { "source": "/header-dev-brief-viewer.html", "destination": "/docs/header/header-dev-brief-viewer.html", "permanent": false },
+    { "source": "/footer-dev-brief-viewer.html", "destination": "/docs/footer/footer-dev-brief-viewer.html", "permanent": false }
   ]
 }
