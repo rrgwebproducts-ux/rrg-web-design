@@ -2,7 +2,7 @@
 
 Reference for naming the parts of the product page (PDP) templates, so "gallery," "widget," "panel," etc. all mean one specific thing in conversation. Split into **Sections** (structural blocks that lay out the page) and **Widgets** (interactive components that live inside sections). Where a name has caused confusion before, that's called out explicitly.
 
-Applies across the 5 templates in `prototypes/`: **Simple**, **Sibling-Color**, **Config-Variant**, **Vehicle-Specific**, **Grouped-Bundle**.
+Applies across the 5 PDP templates in `prototypes/`: **Simple**, **Sibling-Color**, **Config-Variant**, **Vehicle-Specific**, **Grouped-Bundle**. The **Vehicle Landing Page** (`prototypes/vehicle-landing/`, added 2026-09-15) is a different page type — one page per make/model rather than per product — and gets its own short section near the end of this file rather than being folded into the tables below, which are PDP-specific.
 
 ---
 
@@ -87,4 +87,18 @@ Interactive or reusable components that live inside the sections above.
 
 ---
 
-*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
+## Vehicle Landing Page (`prototypes/vehicle-landing/`)
+
+Not a PDP — a make/model landing page (2026-09-15), one per make/model rather than per exact fitment, built to capture proven search terms ("Ford Ranger Roof Racks"). Reuses the global Header/Footer and the shared `.faq-section`/`.faq-item` FAQ component as-is; everything else below is new to this page.
+
+| Name | Description |
+|---|---|
+| **Fit Finder** | Dark widget below the hero — 5 selects (Make/Model/Year/Body/Roof Type) + "View Results". Make/Model are locked to the page's own vehicle; "View Results" stays disabled until Year/Body/Roof are all chosen, then stubs out (`data-vlp-cta`) since no category/PLP page exists yet for it to hand off to. — `.fit-finder-widget` |
+| **Fitment Gallery** | **The exact same widget as Vehicle-Specific's Fitment Gallery** (2026-09-15 correction — a first version built a bespoke "Recent Fits" carousel instead, replaced per Brenton: same widget, same function, same look everywhere). Markup, CSS, and JS (`initFitGalleryCarousel()`/`buildFitGallerySlideout()` in shared.js) are all unchanged from the PDP version — the only real difference is what the backend would populate `FIT_GALLERY_PHOTOS` with (a whole vehicle's fitments here, one SKU's on a PDP). Currently reuses the same real **Toyota Hilux N80** placeholder photos as vehicle-specific since no real Ford Ranger fitment photography exists yet. The slide-out's per-fitment detail view still reads `<h1>`/`.package-items`/`.decision-panel` off the page (PDP-only concepts) — on this page those degrade gracefully to the page's own H1, an empty Rack Components list, and a "Back to Product" button that just closes the drawer, rather than erroring. — `.fit-gallery-section` / `.fit-gallery-panel` |
+| **Fitment education content** | Plain-content section ("What Roof Racks Fit My Ford Ranger?") explaining why fitment varies by generation/roof type — real copy, not placeholder. — `.vlp-content` |
+| **Trust banner** | Full-bleed installer-photo banner adapting the PDP's `.install-cta-panel` pattern to two CTAs (Book An Installation / Store Finder) instead of one. — `.vlp-trust-banner` |
+| **Shop The Best Brands** | Full-width logo strip below the FAQ. Only brands with real assets already in `_shared/` are shown (Rhino Rack, Yakima, Front Runner, MAXTRAX) — Thule/Wedgetail/Cruiz from the Figma reference are omitted, not fabricated. — `.brands-section` / `.brands-track` |
+
+---
+
+*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Landing Page section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
