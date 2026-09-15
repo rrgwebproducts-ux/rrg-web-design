@@ -42,8 +42,10 @@ function buildSiteAdminPanel(currentKey) {
       <div class="site-admin-section">
         <h5>Developer Briefs</h5>
         <div class="site-admin-links">
-          <a href="../../dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
-          <a href="../../header-dev-brief-viewer.html" target="_blank" rel="noopener">Header Developer Brief</a>
+          <a href="../../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
+          <a href="../../docs/header/header-dev-brief-viewer.html" target="_blank" rel="noopener">Header Developer Brief</a>
+          <a href="../../docs/footer/footer-dev-brief-viewer.html" target="_blank" rel="noopener">Footer Developer Brief</a>
+          <a href="../../docs/vehicle-landing/vlp-dev-brief-viewer.html" target="_blank" rel="noopener">Vehicle Landing Page Developer Brief</a>
         </div>
       </div>
       <div class="site-admin-section">
