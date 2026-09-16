@@ -228,8 +228,8 @@ body.mm-mobile-locked{overflow:hidden;}
 .mm-mobile-head{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--rrg-line);}
 .mm-mobile-back{background:none;border:none;padding:4px;color:var(--rrg-red);display:flex;cursor:pointer;}
 .mm-mobile-back svg{width:18px;height:18px;}
-.mm-mobile-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.02em;}
-.mm-mobile-subrow{display:flex;align-items:center;gap:8px;padding:10px 0;color:#666;font-size:12.5px;font-weight:700;border-bottom:1px solid var(--rrg-bg);}
+.mm-mobile-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
+.mm-mobile-subrow{display:flex;align-items:center;gap:8px;padding:10px 0;color:#666;font-size:14px;font-weight:700;border-bottom:1px solid var(--rrg-bg);}
 .mm-mobile-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;font-size:14px;font-weight:600;color:var(--rrg-black);text-decoration:none;border-bottom:1px solid var(--rrg-bg);}
 .mm-mobile-row .mm-chev{color:#999;}
 /* Category rows only (root screen) — icon + label grouped as one flex item so

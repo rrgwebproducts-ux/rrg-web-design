@@ -51,7 +51,7 @@
 
   .vlp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:32px 0 28px;}
   .vlp-hero h1{margin-bottom:14px;}
-  .vlp-hero p{font-size:15px;color:#444;line-height:1.6;max-width:560px;margin-bottom:22px;}
+  .vlp-hero p{font-size:16px;color:#444;line-height:1.6;max-width:560px;margin-bottom:22px;}
   /* aspect-ratio:3/2 replaces the original 4/3 (2026-09-16) — chosen against the source
      photo's own real content, not guessed: a pixel bounding-box scan of
      vehicle-toyota-hilux.webp found the truck occupies only x:64-955, y:268-771 of its
@@ -154,12 +154,8 @@
      Hilux N80 fitment-centre installs, same source array as vehicle-specific/index.html)
      are genuine content for this page rather than a flagged Hilux-standing-in-for-Ranger
      placeholder mismatch. */
-  .vlp-content{margin:40px 0;}
-  .vlp-content h2{margin-bottom:12px;}
-  .vlp-content p{font-size:14.5px;color:#333;line-height:1.7;margin-bottom:16px;}
-  .vlp-content h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;margin:22px 0 8px;}
-  .vlp-content ul{margin:0 0 16px;padding-left:20px;}
-  .vlp-content li{font-size:14.5px;color:#333;line-height:1.7;margin-bottom:8px;}
+  /* .content-block (h2/h3/p/li typography + margin) now lives in shared.css — see the
+     comment there (2026-09-16) for why this moved out of a page-local rule. */
 
   /* Trust/install banner — full-bleed, adapts the existing .install-cta-panel "no-video"
      component (photo bg + dark overlay + USP list + CTA) to a full-width band with two
@@ -195,14 +191,14 @@
      sheet); this needs a real multi-column data table with a header row. */
   .vlp-gen-table-wrap{overflow-x:auto;margin-bottom:8px;}
   .vlp-gen-table{width:100%;border-collapse:collapse;min-width:640px;}
-  .vlp-gen-table caption{text-align:left;font-size:12.5px;color:#767676;padding-bottom:8px;}
+  .vlp-gen-table caption{text-align:left;font-size:14px;color:#767676;padding-bottom:8px;}
   .vlp-gen-table th,.vlp-gen-table td{text-align:left;padding:12px 14px;font-size:13.5px;line-height:1.5;border-bottom:1px solid var(--rrg-line);vertical-align:top;}
-  .vlp-gen-table thead th{background:var(--rrg-black);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:12.5px;}
+  .vlp-gen-table thead th{background:var(--rrg-black);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:14px;}
   .vlp-gen-table tbody tr:nth-child(even){background:var(--rrg-bg);}
   .vlp-gen-table td:first-child,.vlp-gen-table th:first-child{white-space:nowrap;}
   .vlp-gen-table .gen-name{font-weight:700;color:var(--rrg-black);}
-  .vlp-gen-table .gen-codes{color:#555;font-size:12.5px;}
-  .vlp-gen-table-note{font-size:12.5px;color:#767676;line-height:1.6;margin-top:10px;}
+  .vlp-gen-table .gen-codes{color:#555;font-size:14px;}
+  .vlp-gen-table-note{font-size:14px;color:#767676;line-height:1.6;margin-top:10px;}
 
   .brands-section{background:var(--rrg-bg);padding:36px 0;margin-bottom:0;}
   .brands-section h2{text-align:center;color:var(--rrg-red);margin-bottom:24px;}
@@ -429,7 +425,7 @@
 </main>
 
 <main class="wrap">
-  <section class="vlp-content">
+  <section class="content-block">
     <h2>What Roof Racks Fit My Toyota Hilux?</h2>
     <p>The short answer: it depends on your Hilux's generation and what — if anything — is fitted to your roof, not just the model name. An N80 with a factory-fitted sports bar and an N70 base-model with a completely bare roof need completely different mounting systems — even though they're both "Hilux". Get the roof type wrong and you're looking at a rack that either won't fit or won't carry its rated load safely.</p>
 

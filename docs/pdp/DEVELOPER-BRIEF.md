@@ -16,6 +16,10 @@ RRG's current live PDP is being rebuilt from scratch for conversion (not a re-sk
 
 A quick reference for the page's real type scale and colour tokens, pulled from `prototypes/_shared/shared.css`'s base rules — so every Component Library section from here on can just say "uses the shared heading style" instead of repeating the same font spec 20+ times. Only bespoke deviations from this scale are called out on a widget's own entry.
 
+**Standing rule (2026-09-16, Brenton):** all heading and body-text typography (font-family/size/weight/style/transform/letter-spacing/colour/line-height) is defined once in `shared.css` and shared sitewide by default — a template's own `<style>` block should never re-declare it, even identically, unless there's an explicit, documented reason it must differ on that one page. This was prompted by an audit that found real drift: `.details-sub h3` (Details/Gold Guarantee/Shipping Info sub-headings — "Consists Of," "Key Features and Benefits," "About Rhino-Rack," etc.) was silently rendering two different ways, because Simple and Grouped-Bundle had each locally overridden the shared rule while the other three templates used it as-is. Fixed by consolidating onto one style (uppercase Barlow Condensed, matching what Simple/Grouped-Bundle already had) and deleting the local overrides. Several other byte-identical duplicates (`.variant-label-row h3`/`.swatch-label-row h3`, `.short-desc`, `.sku-row`, `.variant-help`, `.variant-option .v-note`) were the same underlying problem without visible drift yet, and were consolidated the same way. The Vehicle Landing Page's fitment-education content heading/body tier (`.vlp-content`, VLP-only) was likewise renamed to a generic `.content-block` and moved into `shared.css`, so any future PDP content needing that same "sub-heading → paragraph → list" tier reuses it instead of a new page-local rule (see `PAGE-GLOSSARY.md`'s "Fitment education content" entry, and the Vehicle Landing brief's Section 2).
+
+**2026-09-16 sitewide size pass** (Brenton's request): every `12.5px` → `14px`, `15px` → `16px`, `19px` → `18px`, and the shared section-heading `37px` → `40px`, applied across every template and `shared.css` (including the mobile floor-bump `!important` overrides). Two deliberate exceptions kept off this blanket rule, both Brenton's explicit call: `.price-was`/`.price-line-was .price-label` went to `20px` instead of `18px` (was originally Playwright-measured to visually match the Save-badge pill's height at 19px; 20px is the closest value in the new scale, no longer an exact pixel match); `.ff-badge` (VLP Fit Finder icon badge, previously matched the heading's font-size 1:1) was left at `37px` rather than following the heading to `40px`, so it's now decoupled from the heading size. The table below reflects the post-pass values.
+
 **Fonts:** two families only, loaded via Google Fonts `<link>` tags in every page's `<head>` (not `@import` — that blocks font discovery until the whole stylesheet parses, a real mobile performance cost, fixed 2026-09-11).
 - **Barlow Condensed** — every heading, price, and button. Bold (700) by default; the shared section-heading style below also uses italic.
 - **Lato** — everything else (body copy, labels, form fields). Falls back to Arial/Helvetica/sans-serif.
@@ -23,14 +27,15 @@ A quick reference for the page's real type scale and colour tokens, pulled from 
 | Element | Font | Size | Weight/style | Colour | Notes |
 |---|---|---|---|---|---|
 | Product title (`h1`, Decision Panel) | Barlow Condensed | ~23–26px (varies slightly per template, longest titles set smaller) | 700, uppercase | `--rrg-black` (`#000`) | line-height ~1.05–1.12 |
-| Shared section heading (Related Products, Showroom Finder, Fitment Gallery, FAQ, Tabs) | Barlow Condensed | 37px | 700, *italic*, uppercase | `--rrg-black` | One shared rule (`.related-heading, .showroom-widget h3, .fit-gallery-title h2, .faq-heading, .tabs-heading, .showroom-heading`) so every top-level section reads as one consistent level — sized so its rendered cap-height matches the 26px icon badges next to it |
+| Shared section heading (Related Products, Showroom Finder, Fitment Gallery, FAQ, Tabs, VLP Fit Finder/Trust banner) | Barlow Condensed | 40px | 700, *italic*, uppercase | `--rrg-black` | One shared rule (`.related-heading, .showroom-widget h3, .fit-gallery-title h2, .faq-heading, .tabs-heading, .showroom-heading, .ff-head h2, .content-block h2, .vlp-trust-inner h2`) so every top-level section reads as one consistent level — was 37px, sized so its rendered cap-height roughly matched the 26px icon badges next to it; that match is now approximate rather than verified since the 2026-09-16 bump to 40px |
 | Body copy | Lato | 16px (site base) | 400 | `#232323` | line-height 1.45 |
-| Short description (Decision Panel, under title) | Lato | 14px desktop / 16px mobile (floor bump) | 400 | `#555` | 2-line clamp + "Read more" |
-| SKU row / labels / microcopy | Lato | 12.5px desktop / 14px mobile (floor bump) | 400 | `#767676` | Google mobile-readability floor applied 2026-09-11 |
-| Price (current) | Barlow Condensed | 34px | 700 | `--rrg-black` | `.price-now` |
-| Price (was/struck-through) | Lato | 16px | 400, strikethrough | `#8a8a8a` | `.price-was` |
-| Button text (all buttons) | Barlow Condensed | 15px | 900, uppercase, `letter-spacing:.03em` | varies — see button colours below | `.btn` base rule |
-| Stock-status line | Lato | 12.5px desktop / 14px mobile | 700 | varies by state — see colour tokens below | `.stock-status-line` |
+| Content-block sub-heading (VLP fitment-education content, e.g. "Why fitment varies on the Hilux") | Barlow Condensed | 21px | 700, plain (not uppercase/italic) | `--rrg-black` | `.content-block h3` — a distinct tier between body copy and the 40px section heading; shared (not page-scoped), see the standing-rule note above |
+| Short description (Decision Panel, under title) | Lato | 14px desktop / 16px mobile (floor bump) | 400 | `#555` | 2-line clamp + "Read more"; `.short-desc` — now defined once in `shared.css`, not per-template |
+| SKU row / labels / microcopy | Lato | 14px (desktop and mobile — no longer a separate floor bump, both now the same value) | 400 | `#767676` | `.sku-row` — now defined once in `shared.css`, not per-template |
+| Price (current) | Barlow Condensed | 42px | 700 | `--rrg-black` | `.price-now` |
+| Price (was/struck-through) | Lato | 20px | 400, strikethrough | `#434343` | `.price-was` / `.price-line-was .price-label` — see the sitewide-pass exception note above |
+| Button text (all buttons) | Barlow Condensed | 16px | 900, uppercase, `letter-spacing:.03em` | varies — see button colours below | `.btn` base rule |
+| Stock-status line | Lato | 14px (desktop and mobile) | 700 | varies by state — see colour tokens below | `.stock-status-line` |
 
 **Colour tokens** (`:root` custom properties, `shared.css`):
 
@@ -516,7 +521,7 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 
 **Purpose:** lets in-store staff or the shopper copy a SKU/part number without a separate button — the text itself is the click target (no icon button, removed as a 2026-09-10 simplification).
 
-**Typography:** standard SKU-row scale (Section 2, 12.5px/14px), underlined on hover to signal it's clickable; turns green (`--rrg-fits`) with "✓ Copied" feedback on click.
+**Typography:** standard SKU-row scale (Section 2, 14px), underlined on hover to signal it's clickable; turns green (`--rrg-fits`) with "✓ Copied" feedback on click.
 
 **Region differences:** none.
 
@@ -581,7 +586,7 @@ Add `data-review-sku` (same semicolon-separated SKU list as the Reviews tab, 4.3
 #### CSS
 
 ```css
-.stars{color:#E8A83C;letter-spacing:1px;font-size:15px;}
+.stars{color:#E8A83C;letter-spacing:1px;font-size:16px;}
 .stars .stars-empty{opacity:.35;}
 ```
 
@@ -961,7 +966,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Purpose:** quick-scan trust signals (tenure, expertise, network size, contact) right below the fold, reinforcing credibility before the shopper scrolls further.
 
-**Typography:** 26px icon (`--rrg-red`); label is `h4`, 15px bold; body copy 12.5px, `#666` (bumped to 14px on mobile). The "Need Help" tile's phone number is bold red, not the default grey.
+**Typography:** 26px icon (`--rrg-red`); label is `h4`, 16px bold; body copy 14px, `#666` (desktop and mobile — no separate floor bump needed since the 2026-09-16 sitewide pass). The "Need Help" tile's phone number is bold red, not the default grey.
 
 **Region differences:** 2 of the 4 tiles are region-aware, swapped by `applyRegion()` via `REGION_TRUST_COPY`: "Trusted Since 1989" (`[data-trust="founded"]`) and "Australia's Largest" (`[data-trust="network"]`) — NZ/UK show placeholder region-appropriate wording (e.g. NZ: "Visit In Person" / "Check it out at our Auckland showroom"), flagged as needing real client-approved copy before production. The "Need Help" tile's phone number + `tel:` link is separately region-aware via `REGION_PHONE` (AU `1300 071 264` / NZ `09 481 1910` / UK `01204 899778`) — handled as its own pass since it nests a link inside the `<p>`, unlike the other two tiles' plain-text swap. "Trained Professionals" is not region-aware — identical copy everywhere.
 

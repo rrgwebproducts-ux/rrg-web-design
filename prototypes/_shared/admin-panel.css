@@ -4,13 +4,13 @@
    Panel. See header-spec.md Section 5. Positioned bottom-LEFT so it never overlaps the
    Demo State Panel's own FAB (bottom-right) once both exist together on a PDP template. */
 
-.site-admin-fab{position:fixed;left:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:#333;color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
+.site-admin-fab{position:fixed;left:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:#333;color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
 .site-admin-fab svg{width:18px;height:18px;}
 @media (max-width:900px){.site-admin-fab{display:none;}}
 
 .site-admin-panel{position:fixed;left:20px;bottom:78px;z-index:61;width:300px;max-height:70vh;overflow-y:auto;background:#fff;border-radius:var(--radius);box-shadow:0 20px 50px rgba(0,0,0,.3);display:none;flex-direction:column;}
 .site-admin-panel.open{display:flex;}
-.site-admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:#333;color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.02em;}
+.site-admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:#333;color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .site-admin-close{background:none;border:none;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:0 4px;}
 .site-admin-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:16px;}
 .site-admin-section h5{margin:0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#999;}

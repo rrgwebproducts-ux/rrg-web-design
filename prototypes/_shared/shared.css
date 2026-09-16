@@ -87,7 +87,7 @@ button{font-family:inherit;cursor:pointer;}
    still needs its own z-index above .mega-menu-backdrop (mega-menu.css, z-index:80) so the
    whole header stays undimmed while the backdrop dims the rest of the page. */
 .rrg-header-shell{position:relative;z-index:85;}
-.rrg-utility-bar{background:var(--rrg-red);color:#fff;font-size:12.5px;}
+.rrg-utility-bar{background:var(--rrg-red);color:#fff;font-size:14px;}
 .rrg-utility-inner{display:flex;align-items:center;justify-content:space-between;padding:9px 24px;gap:20px;flex-wrap:wrap;}
 .rrg-utility-left,.rrg-utility-right{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
 .u-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
@@ -101,7 +101,7 @@ button{font-family:inherit;cursor:pointer;}
    (admin-panel.css), just recoloured for sitting on the red utility bar (white trigger text)
    instead of the white main header. */
 .region-switcher{position:relative;}
-.region-switcher-toggle{background:none;border:none;padding:0;font:inherit;font-size:12.5px;color:#fff;cursor:pointer;}
+.region-switcher-toggle{background:none;border:none;padding:0;font:inherit;font-size:14px;color:#fff;cursor:pointer;}
 .region-switcher-menu{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;padding:8px;display:none;flex-direction:column;gap:1px;z-index:80;}
 .region-switcher.open .region-switcher-menu{display:flex;}
 .region-switcher-menu .tsm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#999;padding:6px 10px 4px;}
@@ -208,7 +208,7 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-crumbs a:hover{text-decoration:underline;}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:6px;padding:15px 28px;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;text-align:center;transition:transform .12s, box-shadow .12s;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:6px;padding:15px 28px;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;text-align:center;transition:transform .12s, box-shadow .12s;}
 .btn-primary{background:var(--rrg-red);color:#fff;}
 .btn-primary:hover{background:var(--rrg-red-dark);}
 .btn-primary:active{transform:scale(.98);}
@@ -347,7 +347,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    of the icon's current fitment-state colour. */
 .dot-copy{cursor:pointer;}
 .dot-copy.copied{color:var(--rrg-fits)!important;}
-.fitment strong{display:block;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin-bottom:2px;}
+.fitment strong{display:block;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:16px;letter-spacing:.02em;margin-bottom:2px;}
 .fitment.fits{border-left:3px solid var(--rrg-fits);}
 .fitment.fits strong{color:var(--rrg-fits);}
 .fitment.fits .dot{color:var(--rrg-fits);}
@@ -360,7 +360,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fitment .actions{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;}
 /* min-height 48px (2026-09-11, mobile audit) — was 6px/12px padding at 12px font, well
    under Google's 48px tap-target minimum for a real "change vehicle"-type action. */
-.fitment .actions button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;background:#fff;border:1px solid var(--rrg-line);border-radius:6px;padding:6px 16px;font-size:12.5px;font-weight:700;color:#333;}
+.fitment .actions button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;background:#fff;border:1px solid var(--rrg-line);border-radius:6px;padding:6px 16px;font-size:14px;font-weight:700;color:#333;}
 
 /* Rack Fit Guarantee (2026-09-10, Graham Sowerby meeting) — real client asset + copy.
    Main decision panel gets icon+text packed into the fitment card's top-right corner;
@@ -387,7 +387,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
 /* reviews strip */
 .reviews-strip{display:flex;align-items:center;gap:8px;font-size:13px;color:#232323;}
-.stars{color:#E8A83C;letter-spacing:1px;font-size:15px;}
+.stars{color:#E8A83C;letter-spacing:1px;font-size:16px;}
 .stars .stars-empty{opacity:.35;}
 .reviews-strip a{font-weight:700;text-decoration:underline;color:var(--rrg-black);}
 
@@ -433,7 +433,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    (family/weight/size/colour) rather than just its colour — the whole "RRP $319.00" then
    reads as one consistent phrase, which also makes the shared text-decoration:line-through
    on both spans look like one continuous strike rather than two different-weight pieces. */
-.price-line-was .price-label{font-family:inherit;font-weight:400;font-size:19px;color:#434343;text-decoration:line-through;}
+.price-line-was .price-label{font-family:inherit;font-weight:400;font-size:20px;color:#434343;text-decoration:line-through;}
 /* "Now" only reads red in contrast against a real "RRP" price (.price-block.on-sale,
    toggled by syncPriceLabels() off the same .price-was.hidden state that already drove
    the old single-row layout) — a plain full price stays neutral black, same as before
@@ -442,17 +442,19 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    was flagged as a judgement call at plan review. */
 .price-block.on-sale .price-now,.price-block.on-sale .price-line-now .price-label{color:var(--rrg-red);}
 .price-now{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:700;color:var(--rrg-black);}
-/* font-size 19px (2026-09-12 follow-up) — sized to match .badge-save's real rendered
-   height (measured via Playwright: badge ~27.4px tall at 12px/1.45 line-height; 19px at
-   the same inherited line-height renders ~27.6px), per Brenton's ask that the RRP price
-   visually match the Save-badge pill's height rather than sitting noticeably smaller. */
-.price-was{font-size:19px;color:#434343;text-decoration:line-through;}
+/* Originally 19px (2026-09-12), Playwright-measured to match .badge-save's rendered
+   height (badge ~27.4px tall at 12px/1.45 line-height; 19px rendered ~27.6px), per
+   Brenton's ask that the RRP price visually match the Save-badge pill's height rather
+   than sitting noticeably smaller. Bumped to 20px (2026-09-16 sitewide font-size pass,
+   Brenton's explicit call) — no longer an exact Playwright match to the badge height,
+   kept as the closest value in the updated scale. */
+.price-was{font-size:20px;color:#434343;text-decoration:line-through;}
 
 /* Stock status line — replaces the old generic "estimate shipping" copy with the
    product's actual stock state (mirrors the fitment-state colour language: green/amber/
    red). Driven by the demo admin panel's 4-way "Stock status" control, see
    applyStockStatus() in shared.js — defaults to whatever's in the static markup below. */
-.stock-status-line{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px;margin-top:4px;}
+.stock-status-line{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;margin-top:4px;}
 .stock-status-line.in-stock{color:var(--rrg-fits);}
 .stock-status-line.low-stock{color:var(--rrg-unknown);}
 .stock-status-line.not-in-stock{color:var(--rrg-nofit);}
@@ -490,8 +492,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .trust-row .item{padding:20px 18px;border-left:1px solid var(--rrg-line);}
 .trust-row .item:first-child{border-left:0;}
 .trust-icon{width:26px;height:26px;color:var(--rrg-red);margin-bottom:10px;display:block;}
-.trust-row h4{font-size:15px;margin-bottom:4px;}
-.trust-row p{font-size:12.5px;color:#666;margin:0;}
+.trust-row h4{font-size:16px;margin-bottom:4px;}
+.trust-row p{font-size:14px;color:#666;margin:0;}
 /* Phone number link (2026-09-11 follow-up) — bold RRG red so the tappable number stands
    out from the surrounding trust-copy grey, no underline needed at that weight/colour. */
 .trust-row p a[href^="tel:"]{color:var(--rrg-red);font-weight:900;text-decoration:none;}
@@ -561,6 +563,15 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .decision-panel-top .brand-logo,.decision-panel-top .brand-logo-text{margin-bottom:0;flex:0 0 auto;}
 .decision-panel-top .sku-row{margin-bottom:0;flex:0 0 auto;white-space:nowrap;}
 
+/* Variant/Swatch picker label row — consolidated 2026-09-16 (was byte-identical
+   .variant-label-row h3 in config-variant/vehicle-specific and .swatch-label-row h3 in
+   sibling-color, each defined locally instead of once here). Structural .variant-option/
+   .variant-picker rules are still per-template (out of scope for this pass — layout, not
+   typography). */
+.variant-label-row h3,.swatch-label-row h3{font-size:13px;color:#767676;text-transform:uppercase;letter-spacing:.03em;margin:0;}
+.variant-help{font-size:11.5px;color:#999;}
+.variant-option .v-note{font-size:12px;color:#555;margin-top:6px;line-height:1.3;}
+
 /* Gold Guarantee tab condensed to 2 USP lines + a "Learn more" link, rather than the full
    guarantee copy inline (2026-09-10, Graham Sowerby meeting). No dedicated guarantee page
    exists yet to link to — href="#" placeholder, same convention as other not-yet-built
@@ -584,10 +595,18 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    **Changed 2026-09-12 (Section 12 item 40):** "Read more" no longer jumps to the Details tab
    — it expands the full text in place, with a "See less" link to re-collapse, animated via the
    max-height transition below (toggleShortDesc() in shared.js drives .expanded on/off; the
-   markup's old data-jump-tab attribute was removed so initTabJumpLinks() no longer binds it). */
-.short-desc{overflow:hidden;transition:max-height .3s ease;}
-.short-desc-readmore{margin-left:4px;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:none;cursor:pointer;white-space:nowrap;}
+   markup's old data-jump-tab attribute was removed so initTabJumpLinks() no longer binds it).
+   Font-size/colour used to be "declared per-template" (byte-identical in all 5) rather than
+   here — consolidated 2026-09-16 per Brenton's standing rule that heading/body typography is
+   shared sitewide unless explicitly stated otherwise; do not re-declare this in a template's
+   own <style> block. */
+.short-desc{overflow:hidden;transition:max-height .3s ease;font-size:14px;color:#555;margin-bottom:14px;}
+.short-desc-readmore{margin-left:4px;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:none;cursor:pointer;white-space:nowrap;}
 .short-desc-readmore:hover{text-decoration:underline;}
+
+/* SKU row — consolidated 2026-09-16 (was byte-identical in all 5 PDP templates' own
+   <style> blocks); same standing typography rule as .short-desc above. */
+.sku-row{display:flex;align-items:center;gap:10px;font-size:14px;color:#767676;margin-bottom:10px;}
 
 /* Sticky left column (desktop only): when the decision-panel column ends up taller than
    the gallery/video/install column (variant pickers, showroom finder, package contents
@@ -680,7 +699,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .install-usps .usp-item{gap:6px;}
 .install-usps .usp-icon{width:13px;height:13px;flex:0 0 13px;color:#fff;}
 .install-usps .usp-item p{margin:0;font-size:12px;line-height:1.3;color:#eee;}
-.install-cta-panel .btn{align-self:flex-start;padding:10px 18px;font-size:12.5px;line-height:1.2;}
+.install-cta-panel .btn{align-self:flex-start;padding:10px 18px;font-size:14px;line-height:1.2;}
 .install-media-row.no-video .install-cta-panel{aspect-ratio:auto;min-height:230px;}
 .install-media-row.no-video .install-body{max-width:460px;padding:22px 26px;gap:12px;}
 .install-media-row.no-video .install-head{gap:12px;}
@@ -747,11 +766,11 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    that expands into a panel for toggling simulated product states (video, sale, stock,
    shipping/click&collect availability) and, on vehicle-specific, the session vehicle used
    for fitment. Replaces the old fixed top "REVIEWER DEMO" bar. */
-.admin-fab{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:var(--rrg-black);color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
+.admin-fab{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:var(--rrg-black);color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
 .admin-fab svg{width:18px;height:18px;flex:0 0 auto;}
 .admin-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:300px;max-width:calc(100vw - 40px);max-height:calc(100vh - 40px);background:#fff;border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.28);display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);opacity:0;pointer-events:none;transition:transform .15s ease, opacity .15s ease;}
 .admin-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
-.admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:var(--rrg-black);color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.02em;}
+.admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:var(--rrg-black);color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .admin-panel-head button{background:none;border:none;color:#fff;font-size:18px;line-height:1;padding:2px;opacity:.7;}
 .admin-panel-head button:hover{opacity:1;}
 .admin-panel-body{padding:16px;overflow-y:auto;}
@@ -759,7 +778,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .admin-section:last-child{margin-bottom:0;}
 .admin-section h5{font-size:11.5px;color:#767676;text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
 .admin-vehicle-row{display:flex;flex-direction:column;gap:6px;}
-.admin-vehicle-row button{background:#f2f2f2;border:1px solid var(--rrg-line);border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:700;text-align:left;color:var(--rrg-black);}
+.admin-vehicle-row button{background:#f2f2f2;border:1px solid var(--rrg-line);border-radius:8px;padding:9px 12px;font-size:14px;font-weight:700;text-align:left;color:var(--rrg-black);}
 .admin-vehicle-row button.active{background:var(--rrg-red);border-color:var(--rrg-red);color:#fff;}
 .admin-toggle-label{padding:9px 0 0;font-size:13px;color:#232323;}
 .admin-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:13px;color:#232323;border-bottom:1px solid #f0f0f0;cursor:pointer;}
@@ -783,7 +802,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
 /* Shown in place of the Delivery/Click & Collect widget when the demo admin panel has
    both availability toggles switched off */
-.dc-unavailable-note{font-size:12.5px;color:#767676;padding:12px 14px;border:1px dashed var(--rrg-line);border-radius:6px;}
+.dc-unavailable-note{font-size:14px;color:#767676;padding:12px 14px;border:1px dashed var(--rrg-line);border-radius:6px;}
 
 /* Special order banner — sits above Add to Cart, demo admin panel "Special order" toggle */
 /* Text recoloured black (2026-09-11, legibility fix) — box stays amber-tinted
@@ -815,7 +834,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .brand-logo{max-width:160px;max-height:32px;width:auto;height:auto;object-fit:contain;display:block;margin-bottom:12px;}
 /* Text fallback for brands with no supplied logo file yet (see grouped-bundle template,
    which introduces Yakima — no real logo asset on hand, unlike the other three brands). */
-.brand-logo-text{height:26px;line-height:26px;font-family:Arial,Helvetica,sans-serif;font-weight:900;font-size:19px;letter-spacing:.01em;color:#111;text-transform:uppercase;margin-bottom:12px;}
+.brand-logo-text{height:26px;line-height:26px;font-family:Arial,Helvetica,sans-serif;font-weight:900;font-size:18px;letter-spacing:.01em;color:#111;text-transform:uppercase;margin-bottom:12px;}
 
 /* Sale tag — absolutely positioned against .price-block (not just .price-row), vertically
    centered against the whole block (price row + stock-status line beneath it), not just
@@ -846,17 +865,21 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    button, so instore staff can copy individual part numbers without hunting through specs */
 .package-items{margin:16px 0;border:1px solid var(--rrg-line);border-radius:6px;overflow:hidden;}
 .package-items h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#767676;padding:10px 12px;margin:0;background:#f7f7f7;border-bottom:1px solid var(--rrg-line);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
-.package-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;font-size:12.5px;border-top:1px solid var(--rrg-line);}
+.package-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;font-size:14px;border-top:1px solid var(--rrg-line);}
 .package-item:first-of-type{border-top:none;}
 .package-item .pi-name{flex:1;color:#333;text-decoration:none;}
 .package-item .pi-name:hover{text-decoration:underline;}
 /* Tab-panel sub-headings (Details/Gold Guarantee/Shipping Info content) were plain <h5>
-   with no rule of their own, relying entirely on the browser's UA-default h5 styling
-   (not the shared h1-h4 Barlow Condensed/uppercase rule above). Promoted to <h3> for a
-   correct heading outline (spec.md backlog item 12-6) — this reproduces that exact
-   UA-default look (relative sizing/margin, not the shared heading treatment) so nothing
-   visually changes. */
-.details-sub h3{font-family:'Lato',Arial,Helvetica,sans-serif;font-weight:700;font-size:.83em;text-transform:none;letter-spacing:normal;margin:1.67em 0;color:inherit;}
+   with no rule of their own, relying entirely on the browser's UA-default h5 styling.
+   Promoted to <h3> for a correct heading outline (spec.md backlog item 12-6). Originally
+   reproduced the UA-default look verbatim so nothing visually changed at the time — but
+   Simple and Grouped-Bundle had separately (and only locally) overridden this exact
+   selector with the condensed-uppercase treatment below, so this heading tier silently
+   rendered two different ways across templates. Consolidated 2026-09-16 (Brenton's call,
+   audit triggered by the VLP h3 question) onto the Simple/Grouped-Bundle look as the one
+   sitewide style, since that's the clearer sub-heading treatment — this is now the only
+   place this selector is defined; do not re-declare it in a template's own <style> block. */
+.details-sub h3{font-size:13px;text-transform:uppercase;color:#767676;margin:14px 0 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
 /* Quantity per row (2026-09-10, Graham Sowerby meeting) — so a customer adding what looks
    like one product isn't confused when a multi-part kit arrives with no visible reason
    why. Real per-component quantities aren't confirmed by the client yet — see spec.md §7. */
@@ -890,13 +913,13 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    stylesheet load order); Mode 2 uses the plain upsell-checkbox styling below instead. */
 .variant-option.fitted-option{grid-column:1/-1;background:var(--rrg-gold-bg);border-color:var(--rrg-gold);}
 .variant-option.fitted-option.selected{border-color:var(--rrg-gold);box-shadow:0 0 0 1px var(--rrg-gold);}
-.fitted-upsell-checkbox{display:flex;align-items:flex-start;gap:10px;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:6px;padding:10px 12px;font-size:12.5px;color:#5c4d34;cursor:pointer;margin-bottom:2px;}
+.fitted-upsell-checkbox{display:flex;align-items:flex-start;gap:10px;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:6px;padding:10px 12px;font-size:14px;color:#5c4d34;cursor:pointer;margin-bottom:2px;}
 .fitted-upsell-checkbox input{margin-top:2px;flex:0 0 auto;}
 .fitted-upsell-checkbox .fitted-sub{display:block;color:#8a7a5c;font-size:12px;margin-top:2px;}
 
 .admin-section h5 .admin-note{text-transform:none;font-weight:400;color:#aaa;letter-spacing:0;}
 .admin-radio-row{display:flex;flex-direction:column;gap:6px;margin:8px 0 0;padding-top:8px;border-top:1px dashed #eee;}
-.admin-radio-row label{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#333;cursor:pointer;}
+.admin-radio-row label{display:flex;align-items:center;gap:8px;font-size:14px;color:#333;cursor:pointer;}
 
 /* Ex-Demo slide-out — right-edge drawer, backlog item 4 (2026-09-11: replaces the previous
    centered modal to match the Store Slide-out pattern below). Structurally identical to
@@ -908,8 +931,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .exdemo-slideout{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:90vw;background:#fff;box-shadow:-16px 0 40px rgba(0,0,0,.25);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;}
 .exdemo-slideout-backdrop.open .exdemo-slideout{transform:translateX(0);}
 .exdemo-slideout-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.exdemo-slideout-head h2{font-size:19px;margin:0 0 4px;}
-.exdemo-slideout-head p{font-size:12.5px;color:#666;margin:0;}
+.exdemo-slideout-head h2{font-size:18px;margin:0 0 4px;}
+.exdemo-slideout-head p{font-size:14px;color:#666;margin:0;}
 .exdemo-slideout-close{background:#f2f2f2;border:none;border-radius:50%;width:48px;height:48px;font-size:16px;flex:0 0 auto;color:#333;}
 .exdemo-slideout-body{padding:16px 22px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;flex:1 1 auto;}
 .exdemo-option{border:1px solid var(--rrg-line);border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
@@ -944,7 +967,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .dc-results{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
 .dc-option,.dc-store{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--rrg-line);border-radius:6px;padding:12px 14px;font-size:13.5px;}
 .dc-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;}
-.muted{color:#767676;font-size:12.5px;}
+.muted{color:#767676;font-size:14px;}
 .stock-chip{display:inline-block;white-space:nowrap;font-size:11px;font-weight:900;text-transform:uppercase;padding:2px 8px;border-radius:6px;margin-left:6px;color:#333;}
 .stock-chip.in{background:var(--rrg-fits-bg);}
 .stock-chip.order{background:var(--rrg-unknown-bg);}
@@ -997,7 +1020,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .store-slideout{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:90vw;background:#fff;box-shadow:-16px 0 40px rgba(0,0,0,.25);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;}
 .store-slideout-backdrop.open .store-slideout{transform:translateX(0);}
 .store-slideout-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.store-slideout-head h2{font-size:19px;margin:0;}
+.store-slideout-head h2{font-size:18px;margin:0;}
 .store-slideout-close{background:#f2f2f2;border:none;border-radius:50%;width:48px;height:48px;font-size:16px;color:#333;flex:0 0 auto;}
 .store-slideout-body{padding:16px 22px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;flex:1 1 auto;}
 /* Groups (2026-09-11, backlog item 14): native <details>/<summary>, same no-JS accordion
@@ -1027,7 +1050,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-slideout{position:fixed;top:0;right:0;bottom:0;width:600px;max-width:90vw;background:#fff;box-shadow:-16px 0 40px rgba(0,0,0,.25);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;}
 .fit-gallery-slideout-backdrop.open .fit-gallery-slideout{transform:translateX(0);}
 .fit-gallery-slideout-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.fit-gallery-slideout-head h2{font-size:19px;margin:0;}
+.fit-gallery-slideout-head h2{font-size:18px;margin:0;}
 .fit-gallery-slideout-close{background:#f2f2f2;border:none;border-radius:50%;width:48px;height:48px;font-size:16px;color:#333;flex:0 0 auto;}
 .fit-gallery-slideout-body{padding:16px 22px 22px;overflow-y:auto;flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;align-content:start;}
 .fit-gallery-slideout-body img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#eee;}
@@ -1138,7 +1161,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    flexible width itself (2026-09-11, backlog item 10) — both flex:1 1 0 so it settles to
    roughly half its old width. */
 .persistent-bar .fitment{margin:0;flex:1 1 0;min-width:0;padding:8px 12px;font-size:12px;}
-.persistent-bar .fitment strong{font-size:12.5px;}
+.persistent-bar .fitment strong{font-size:14px;}
 /* Compact fitment content (icon + short label only, see renderFitmentHTML() in
    shared.js) — centered as a row instead of top-aligned against a taller text block,
    since there's no detail paragraph underneath to align against anymore. */
@@ -1201,15 +1224,31 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .tabs-heading,
 .showroom-heading,
 .ff-head h2,
-.vlp-content h2,
+.content-block h2,
 .vlp-trust-inner h2{
   font-family:'Barlow Condensed',Arial,sans-serif;
   font-weight:700;
   font-style:italic;
   text-transform:uppercase;
-  font-size:37px;
+  font-size:40px;
   letter-spacing:.01em;
 }
+
+/* Prose content block — plain, non-heading-scale sub-sections of body copy (currently
+   used by the Vehicle Landing Page's fitment-education content, e.g. "Why fitment varies
+   on the Hilux"). Renamed from the VLP-only .vlp-content (was also defined only in
+   vehicle-landing/index.html's own <style> block) to this generic name and moved here
+   2026-09-16, per Brenton's standing rule that heading/body typography is shared sitewide
+   unless explicitly stated otherwise — any future PDP content needing this same "content
+   heading > paragraph > list" sub-tier should reuse this class rather than re-declaring
+   it locally. The h2 above (.content-block h2) already shares the sitewide 40px section-
+   heading rule; only the h3/p/li sub-tier below was previously page-scoped. */
+.content-block{margin:40px 0;}
+.content-block h2{margin-bottom:12px;}
+.content-block h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;margin:22px 0 8px;}
+.content-block p{font-size:14.5px;color:#333;line-height:1.7;margin-bottom:16px;}
+.content-block ul{margin:0 0 16px;padding-left:20px;}
+.content-block li{font-size:14.5px;color:#333;line-height:1.7;margin-bottom:8px;}
 /* Fit Finder / Fitment Gallery only (2026-09-16, Brenton) — just the first word of these two
    headings ("Fit"/"Fitment") stays italic, the rest ("Finder"/"Gallery") upright. Every other
    heading in the shared list above keeps the full-italic treatment unchanged; these two get
@@ -1244,7 +1283,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .faq-item{border:1px solid var(--rrg-line);border-radius:6px;padding:0 16px;background:#fff;}
 .faq-item summary{list-style:none;cursor:pointer;padding:14px 26px 14px 0;font-weight:700;font-size:14.5px;position:relative;}
 .faq-item summary::-webkit-details-marker{display:none;}
-.faq-item summary::after{content:'+';position:absolute;right:2px;top:12px;font-size:19px;color:#767676;}
+.faq-item summary::after{content:'+';position:absolute;right:2px;top:12px;font-size:18px;color:#767676;}
 .faq-item[open] summary::after{content:'\2212';}
 .faq-answer{padding:0 0 16px;font-size:13.5px;color:#404247;}
 .faq-answer p{margin:0;}
@@ -1292,11 +1331,11 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .fitment{font-size:16px!important;}
   .tabs .content{font-size:16px!important;}
   .short-desc{font-size:16px!important;}
-  .specs-table th,.specs-table td{font-size:15px!important;}
+  .specs-table th,.specs-table td{font-size:16px!important;}
   .guarantee-usps li{font-size:16px!important;}
   .usp-item p{font-size:16px!important;}
-  .vehicle-fit-notes{font-size:15px!important;}
-  .dc-option,.dc-store{font-size:15px!important;}
+  .vehicle-fit-notes{font-size:16px!important;}
+  .dc-option,.dc-store{font-size:16px!important;}
   .product-card h3{font-size:14.5px!important;}
   /* Inputs specifically need >=16px on iOS Safari, or focusing one auto-zooms the whole
      page in — a real, well-known mobile bug, not just a readability nicety here. */

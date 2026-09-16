@@ -18,6 +18,8 @@
 
 Same type scale and colour tokens as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings/buttons, Lato for body text, the full `--rrg-*` custom-property table) — not repeated here. No page-specific typography deviations; every heading/label on this page uses the shared scale as-is.
 
+The Fitment Education Content section (Section 3, item 5) uses `.content-block` — a shared h3/p/li sub-heading tier in `shared.css` (21px Barlow Condensed h3, e.g. "Why fitment varies on the Hilux," between body copy and the 40px section-heading scale). This was originally a VLP-only `.vlp-content` rule defined in this page's own `<style>` block; renamed and promoted into `shared.css` 2026-09-16 so it's genuinely reusable by any future PDP content needing the same tier, per the standing rule that heading/body typography lives in `shared.css` unless a page has an explicit, stated reason to deviate (see `DEVELOPER-BRIEF.md` Section 2 for the full rationale). The one exception left deliberately page-specific: `.ff-badge` (the Fit Finder icon badge) stays hardcoded to `37px` rather than following the shared section heading's `40px`, since Brenton's call was to decouple the two rather than have the badge track the heading size.
+
 ---
 
 ## 3. Page Layout — Vehicle Landing Page
