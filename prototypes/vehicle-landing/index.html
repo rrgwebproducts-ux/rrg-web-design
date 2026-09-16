@@ -52,16 +52,43 @@
   .vlp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:32px 0 28px;}
   .vlp-hero h1{margin-bottom:14px;}
   .vlp-hero p{font-size:15px;color:#444;line-height:1.6;max-width:560px;margin-bottom:22px;}
-  .vlp-hero-media{position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;}
+  /* aspect-ratio:3/2 replaces the original 4/3 (2026-09-16) — chosen against the source
+     photo's own real content, not guessed: a pixel bounding-box scan of
+     vehicle-toyota-hilux.webp found the truck occupies only x:64-955, y:268-771 of its
+     1024x1024 canvas (a huge baked-in white margin above/below, standard for this kind of
+     studio cutout). object-fit:contain (below) was rendering that WHOLE square, dead margin
+     included, so enlarging the box for the "bigger on desktop"/"bigger on mobile" asks
+     scaled the empty margin right along with the truck — the direct cause of the "very large
+     padding space" Brenton flagged next. 3/2 + object-fit:cover crops that margin away
+     instead of scaling it: at this ratio the crop removes 170.7px top and bottom in source
+     pixels, leaving 97px clear above the truck and 82px below it (both still comfortably
+     positive — nothing of the actual vehicle gets clipped) while showing none of the dead
+     space. Same ratio now used at every breakpoint (desktop widths only change the box's
+     WIDTH below, not its shape), so this one rule change fixes the gap everywhere at once. */
+  .vlp-hero-media{position:relative;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;}
+  /* Desktop-only enlargement (2026-09-16, Brenton: "a bit small on desktop") — only above
+     1280px, where .wrap (--maxw) is pinned at its own max and this column's rendered width
+     is always exactly 517px, so 556px is a real measured ~7.5% width bump, not a guess.
+     Confirmed ~116px of clear space between this box's new left edge and the hero
+     paragraph's own right edge at this breakpoint, so it can't ever overlap the copy.
+     Deliberately NOT applied below 1280px (including the 901-1279px "narrow desktop" band)
+     — the column is narrower there and the paragraph has no spare margin left to grow into,
+     so this exact fixed sizing would overlap real text; that band simply keeps the original,
+     already-safe proportions. Mobile (≤900px) gets its own full-width treatment below. */
+  @media (min-width:1280px){
+    .vlp-hero-media{width:556px;justify-self:end;}
+  }
   /* Real client-supplied vehicle photo (hilux-image.webp, added 2026-09-15, saved to
-     _shared/vehicle-toyota-hilux.webp) — a studio cutout on a white background, so
-     object-fit:contain + padding rather than cover (this isn't a scene photo to crop into,
-     and cover would zoom into the transparent margin). Source photo faced left; flipped
-     horizontally on save so it faces right, matching the Ranger asset's orientation
-     convention (front of vehicle toward the CTA/text side). Per-make/model, same as the
-     rest of this page — a future VLP for a different vehicle swaps this one image rather
-     than needing a second placeholder system. */
-  .vlp-hero-media img{width:100%;height:100%;object-fit:contain;padding:28px;}
+     _shared/vehicle-toyota-hilux.webp) — a studio cutout on a white background. Was
+     object-fit:contain + padding (crop into a transparent margin looked wrong when this was
+     first built); switched to cover + no padding 2026-09-16 once enlarging the box for
+     desktop/mobile exposed how much of that "margin" was actually dead white space baked
+     into the file itself (see the aspect-ratio comment above) — cover crops that away rather
+     than scaling it up. Source photo faced left; flipped horizontally on save so it faces
+     right, matching the Ranger asset's orientation convention (front of vehicle toward the
+     CTA/text side). Per-make/model, same as the rest of this page — a future VLP for a
+     different vehicle swaps this one image rather than needing a second placeholder system. */
+  .vlp-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center;}
   /* Real Toyota emblem (toyota badge.png, added 2026-09-15, cropped to its content bounds
      and saved to _shared/brand-toyota-badge.png) — swapped in for the plain text pill the
      Ranger version used ("Ford" as a text label), since a real brand mark reads better than
@@ -74,13 +101,17 @@
   .vlp-hero-make-badge img{width:100%;height:100%;object-fit:contain;padding:0;}
   @media (max-width:900px){
     .vlp-hero{grid-template-columns:1fr;gap:20px;padding-top:18px;}
-    .vlp-hero-media{order:-1;aspect-ratio:16/9;}
+    /* No aspect-ratio override needed any more — inherits the shared 3/2 cover-crop rule
+       above, same fix as desktop. (Briefly 1/1 same day, when the fix for "small on mobile"
+       was still just resizing the box rather than cropping the source photo's own dead
+       margin — see the aspect-ratio comment above for why that approach was replaced.) */
+    .vlp-hero-media{order:-1;}
   }
 
   /* Fit Finder — dark widget, same "own trust-building block" convention as
      .showroom-widget, styled locally here since this is the first template that needs it.
      If a future PLP/category template reuses it, promote this block into shared.css. */
-  .fit-finder-widget{background:var(--rrg-black);color:#fff;border-radius:var(--radius);padding:26px 28px;margin-bottom:36px;}
+  .fit-finder-widget{background:rgba(0,0,0,.7);color:#fff;border-radius:var(--radius);padding:26px 28px;margin-bottom:36px;}
   .ff-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
   .ff-badge{flex:0 0 auto;width:42px;height:42px;border-radius:10px;background:var(--rrg-gold);display:flex;align-items:center;justify-content:center;}
   .ff-badge svg{width:22px;height:22px;color:#fff;}
@@ -312,7 +343,7 @@
     <div>
       <h1>Toyota Hilux Roof Racks</h1>
       <p>The Toyota Hilux has been Australia's best-selling ute for years running, but almost every Hilux leaves the factory with a bare roof — no rails at all. What fits yours depends on which generation you're driving (N70, N80, N90 or an earlier model — see the <a href="#genTable">generation table below</a>), whether you've got a Single, Xtra or Double Cab, and — the detail most buyers miss — whether your Hilux has genuine roof rails, a non-load-rated styling bar, or nothing fitted at all. Rather than guess, select your vehicle below and we'll show you exactly what fits.</p>
-      <a href="#fitFinder" class="btn btn-primary" data-vlp-cta="change-vehicle">Change Vehicle</a>
+      <a href="#fitFinder" class="btn btn-gold" data-vlp-cta="change-vehicle">Change Vehicle</a>
     </div>
     <div class="vlp-hero-media">
       <img src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="1024" height="1024" fetchpriority="high">
@@ -354,7 +385,7 @@
         <option value="styling-bar">Styling Bars Only (Non Load-Rated)</option>
         <option value="aftermarket-rails">Aftermarket Rails Fitted</option>
       </select>
-      <button type="button" class="btn btn-primary" id="ffSubmit" data-vlp-cta="view-results" disabled>View Results</button>
+      <button type="button" class="btn btn-gold" id="ffSubmit" data-vlp-cta="view-results" disabled>View Results</button>
     </div>
   </section>
 

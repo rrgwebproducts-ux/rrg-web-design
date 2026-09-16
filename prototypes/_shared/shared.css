@@ -213,6 +213,14 @@ button{font-family:inherit;cursor:pointer;}
 .btn-lg{padding:18px 28px;font-size:16px;}
 .btn-outline{background:#fff;border:1.5px solid var(--rrg-black);color:var(--rrg-black);}
 
+/* Same gold as Add to Cart, for other pages' primary actions that aren't literally an Add
+   to Cart button (2026-09-16, Vehicle Landing Page's hero/Fit Finder CTAs) — a plain visual
+   variant, not [data-cta-label], so it never gets pulled into that attribute's fitment/
+   region-swap JS (shared.js) meant for the real Add to Cart button. Always this gold
+   regardless of region, unlike [data-cta-label] which turns UK green. */
+.btn-gold{background:#FFCA48;color:#000;}
+.btn-gold:hover{background:#e6b53f;}
+
 /* UK brand skin (Region Selector, 2026-09-11) — RRG trades in the UK as "The Roof Box
    Company" (roofbox.co.uk), a real sister brand. Scope confirmed with Brenton: logo + core
    colour only, not a typography change. Overriding --rrg-red/--rrg-red-dark here recolours
