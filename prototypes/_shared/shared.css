@@ -21,7 +21,17 @@
   --rrg-nofit-bg:#FDEAEC;
   --rrg-display:#1A56DB;
   --rrg-display-bg:#EAF1FD;
-  --radius:12px;
+  /* 6px, matching the Figma spec (2026-09-16, Brenton) — was 12px. Cascades to every
+     var(--radius) usage sitewide (cards, panels, widgets) in one place; every other
+     hardcoded rounded-rectangle radius (buttons, inputs, thumbnails, tags, banners — was a
+     scattered mix of 7/8/9/10/999px) was normalized to a literal 6px the same day so
+     everything shares one real value instead of a same-looking approximation. Elements
+     drawn as genuine circles (close buttons, carousel arrows, map pins, notification dots,
+     radio buttons, color swatches, toggle knobs) were deliberately left on 50%/999px —
+     flattening those to 6px would turn round icon buttons into barely-rounded squares, a
+     different shape language than what the Figma reference (a rounded-rectangle button)
+     was showing. */
+  --radius:6px;
   --shadow:0 8px 22px rgba(0,0,0,.06);
   --maxw:1280px;
 }
@@ -95,7 +105,7 @@ button{font-family:inherit;cursor:pointer;}
 .region-switcher-menu{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;padding:8px;display:none;flex-direction:column;gap:1px;z-index:80;}
 .region-switcher.open .region-switcher-menu{display:flex;}
 .region-switcher-menu .tsm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#999;padding:6px 10px 4px;}
-.region-switcher-menu a{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;font-size:13.5px;font-weight:600;color:var(--rrg-black);text-decoration:none;}
+.region-switcher-menu a{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:6px;font-size:13.5px;font-weight:600;color:var(--rrg-black);text-decoration:none;}
 .region-switcher-menu a:hover{background:#f4f4f4;color:var(--rrg-red);}
 .region-switcher-menu a.current{color:var(--rrg-red);background:#faf0ef;}
 
@@ -108,7 +118,7 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-nav a:hover{color:var(--rrg-red);}
 .rrg-nav .sep{color:var(--rrg-line);}
 
-.rrg-search{flex:1 1 260px;max-width:420px;display:flex;align-items:center;border:1.5px solid var(--rrg-line);border-radius:8px;overflow:hidden;margin-left:auto;}
+.rrg-search{flex:1 1 260px;max-width:420px;display:flex;align-items:center;border:1.5px solid var(--rrg-line);border-radius:6px;overflow:hidden;margin-left:auto;}
 .rrg-search input{flex:1;border:none;padding:11px 14px;font-size:13.5px;font-family:inherit;outline:none;min-width:0;}
 /* Clear (x) button — matched to client-supplied Figma export "Navbar - Logged In -
    Final.png", which shows it beside the search icon on mobile. Generic, so it also shows
@@ -198,7 +208,7 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-crumbs a:hover{text-decoration:underline;}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:999px;padding:15px 28px;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;text-align:center;transition:transform .12s, box-shadow .12s;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:6px;padding:15px 28px;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;text-align:center;transition:transform .12s, box-shadow .12s;}
 .btn-primary{background:var(--rrg-red);color:#fff;}
 .btn-primary:hover{background:var(--rrg-red-dark);}
 .btn-primary:active{transform:scale(.98);}
@@ -308,11 +318,15 @@ body.region-uk .rrg-sticky-header .rrg-logo{position:relative;align-self:flex-st
 body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left:50%;transform:translateX(-50%);height:60px;width:49px;z-index:5;}
 
 /* badges */
-.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;padding:5px 12px;border-radius:999px;}
-/* border-radius override only (spec.md Section 12 item 23, Figma reference) — rectangular,
-   not the shared .badge pill shape. Scoped to -save specifically since .badge is never
-   reused for anything else in this project (confirmed via repo-wide search). */
-.badge-save{background:var(--rrg-red);color:#fff;border-radius:8px;text-transform:none;letter-spacing:normal;}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;padding:5px 12px;border-radius:6px;}
+/* .badge-save no longer needs its own border-radius override (2026-09-16) — it was
+   originally scoped specifically because .badge was a full pill (spec.md Section 12 item
+   23, Figma reference) and -save needed to be rectangular instead. Now that every
+   rounded-rectangle radius sitewide is a flat 6px, .badge itself is already rectangular, so
+   this rule no longer needs to fight it — kept as its own selector since .badge is never
+   reused for anything else in this project (confirmed via repo-wide search), not because it
+   still needs a differing radius. */
+.badge-save{background:var(--rrg-red);color:#fff;text-transform:none;letter-spacing:normal;}
 
 /* fitment states — softened 2026-09-10 per client feedback: was a full solid-tinted
    box (heavy fill + full-strength border all round); now a near-white card with a
@@ -346,7 +360,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fitment .actions{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;}
 /* min-height 48px (2026-09-11, mobile audit) — was 6px/12px padding at 12px font, well
    under Google's 48px tap-target minimum for a real "change vehicle"-type action. */
-.fitment .actions button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;background:#fff;border:1px solid var(--rrg-line);border-radius:999px;padding:6px 16px;font-size:12.5px;font-weight:700;color:#333;}
+.fitment .actions button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;background:#fff;border:1px solid var(--rrg-line);border-radius:6px;padding:6px 16px;font-size:12.5px;font-weight:700;color:#333;}
 
 /* Rack Fit Guarantee (2026-09-10, Graham Sowerby meeting) — real client asset + copy.
    Main decision panel gets icon+text packed into the fitment card's top-right corner;
@@ -608,7 +622,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    the old 4-column grid look when there are <=4 images; 5+ scroll. */
 .gallery-thumbs-wrap{position:relative;}
 .gallery-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
-.gallery-thumbs img{flex:0 0 calc((100% - 24px)/4);width:calc((100% - 24px)/4);aspect-ratio:1/1;object-fit:cover;border-radius:8px;border:1px solid var(--rrg-line);cursor:pointer;scroll-snap-align:start;}
+.gallery-thumbs img{flex:0 0 calc((100% - 24px)/4);width:calc((100% - 24px)/4);aspect-ratio:1/1;object-fit:cover;border-radius:6px;border:1px solid var(--rrg-line);cursor:pointer;scroll-snap-align:start;}
 .gallery-thumbs img.active{border-color:var(--rrg-red);border-width:2px;}
 .thumb-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid var(--rrg-line);box-shadow:0 2px 6px rgba(0,0,0,.15);align-items:center;justify-content:center;color:var(--rrg-black);padding:0;z-index:2;}
 .thumb-nav svg{width:16px;height:16px;}
@@ -709,7 +723,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-carousel{position:relative;}
 .fit-gallery-track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .fit-gallery-track::-webkit-scrollbar{display:none;}
-.fit-gallery-track img{flex:0 0 calc((100% - 60px)/7);aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#eee;scroll-snap-align:start;cursor:pointer;transition:opacity .15s ease;}
+.fit-gallery-track img{flex:0 0 calc((100% - 60px)/7);aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#eee;scroll-snap-align:start;cursor:pointer;transition:opacity .15s ease;}
 .fit-gallery-track img:hover{opacity:.8;}
 .fit-gallery-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:var(--fg-nav-bg);color:var(--fg-nav-fg);border:1px solid var(--fg-nav-border);align-items:center;justify-content:center;font-size:18px;line-height:1;cursor:pointer;z-index:2;}
 .fit-gallery-nav:disabled{opacity:.3;cursor:default;}
@@ -759,16 +773,16 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 
 /* Out-of-stock banner, inserted above the Add to Cart column by the demo admin panel */
-.stock-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-nofit);background:var(--rrg-nofit-bg);border:1px solid var(--rrg-nofit);border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+.stock-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-nofit);background:var(--rrg-nofit-bg);border:1px solid var(--rrg-nofit);border-radius:6px;padding:10px 12px;margin-bottom:10px;}
 
 /* Shown in place of the Delivery/Click & Collect widget when the demo admin panel has
    both availability toggles switched off */
-.dc-unavailable-note{font-size:12.5px;color:#767676;padding:12px 14px;border:1px dashed var(--rrg-line);border-radius:8px;}
+.dc-unavailable-note{font-size:12.5px;color:#767676;padding:12px 14px;border:1px dashed var(--rrg-line);border-radius:6px;}
 
 /* Special order banner — sits above Add to Cart, demo admin panel "Special order" toggle */
 /* Text recoloured black (2026-09-11, legibility fix) — box stays amber-tinted
    (background/border), only the yellow/orange text itself was hard to read. */
-.special-order-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#000;background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+.special-order-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#000;background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:6px;padding:10px 12px;margin-bottom:10px;}
 
 /* Compatibility banner — sits above Add to Cart, demo admin panel "Cart contents"
    toggle (backlog item 24, 2026-09-11 backlog). Same amber informational tier as
@@ -777,12 +791,12 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    run with an embedded <strong>, and flex turns each text/element chunk into its own
    anonymous flex item/column instead of one wrapping paragraph, which read as broken
    multi-column text. Plain block flow wraps it correctly as a single paragraph. */
-.cart-conflict-banner{font-size:13px;font-weight:700;color:#000;background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:8px;padding:10px 12px;margin-bottom:10px;line-height:1.4;}
+.cart-conflict-banner{font-size:13px;font-weight:700;color:#000;background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:6px;padding:10px 12px;margin-bottom:10px;line-height:1.4;}
 
 /* Discontinued banner — sits above Add to Cart in place of the button/payment-badges
    (which are hidden via .cta-col[hidden] while this state is active), demo admin panel
    "Discontinued" stock-status option, backlog item 23, 2026-09-11. */
-.discontinued-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#000;background:var(--rrg-nofit-bg);border:1px solid var(--rrg-nofit);border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+.discontinued-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#000;background:var(--rrg-nofit-bg);border:1px solid var(--rrg-nofit);border-radius:6px;padding:10px 12px;margin-bottom:10px;}
 
 /* Brand logo — required on every product page, sits at the top of the decision panel.
    Fixed height/auto width made MAXTRAX (and Front Runner, same source aspect ratio)
@@ -824,7 +838,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
 /* Package contents (vehicle-specific kits) — each included item with its own SKU + copy
    button, so instore staff can copy individual part numbers without hunting through specs */
-.package-items{margin:16px 0;border:1px solid var(--rrg-line);border-radius:10px;overflow:hidden;}
+.package-items{margin:16px 0;border:1px solid var(--rrg-line);border-radius:6px;overflow:hidden;}
 .package-items h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#767676;padding:10px 12px;margin:0;background:#f7f7f7;border-bottom:1px solid var(--rrg-line);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
 .package-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;font-size:12.5px;border-top:1px solid var(--rrg-line);}
 .package-item:first-of-type{border-top:none;}
@@ -870,7 +884,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    stylesheet load order); Mode 2 uses the plain upsell-checkbox styling below instead. */
 .variant-option.fitted-option{grid-column:1/-1;background:var(--rrg-gold-bg);border-color:var(--rrg-gold);}
 .variant-option.fitted-option.selected{border-color:var(--rrg-gold);box-shadow:0 0 0 1px var(--rrg-gold);}
-.fitted-upsell-checkbox{display:flex;align-items:flex-start;gap:10px;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5c4d34;cursor:pointer;margin-bottom:2px;}
+.fitted-upsell-checkbox{display:flex;align-items:flex-start;gap:10px;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:6px;padding:10px 12px;font-size:12.5px;color:#5c4d34;cursor:pointer;margin-bottom:2px;}
 .fitted-upsell-checkbox input{margin-top:2px;flex:0 0 auto;}
 .fitted-upsell-checkbox .fitted-sub{display:block;color:#8a7a5c;font-size:12px;margin-top:2px;}
 
@@ -892,8 +906,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .exdemo-slideout-head p{font-size:12.5px;color:#666;margin:0;}
 .exdemo-slideout-close{background:#f2f2f2;border:none;border-radius:50%;width:48px;height:48px;font-size:16px;flex:0 0 auto;color:#333;}
 .exdemo-slideout-body{padding:16px 22px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;flex:1 1 auto;}
-.exdemo-option{border:1px solid var(--rrg-line);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
-.exdemo-option .eo-img{width:64px;height:64px;object-fit:contain;background:#f7f7f7;border-radius:8px;padding:6px;flex:0 0 auto;}
+.exdemo-option{border:1px solid var(--rrg-line);border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
+.exdemo-option .eo-img{width:64px;height:64px;object-fit:contain;background:#f7f7f7;border-radius:6px;padding:6px;flex:0 0 auto;}
 .exdemo-option .eo-info{flex:1;min-width:0;}
 /* Sizing kept identical to .stock-chip (padding/font-size/weight) — same status-pill family,
    per Brenton's 2026-09-12 ask to unify every status pill on the page to one look. */
@@ -920,9 +934,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .dc-postcode-row{display:flex;gap:10px;flex-wrap:wrap;padding:16px 18px 0;}
 .dc-panel{padding:12px 18px 16px;}
 .dc-row{display:flex;gap:10px;flex-wrap:wrap;}
-.dc-input{flex:1 1 220px;border:1px solid var(--rrg-line);border-radius:8px;padding:12px 14px;font-size:14px;font-family:inherit;}
+.dc-input{flex:1 1 220px;border:1px solid var(--rrg-line);border-radius:6px;padding:12px 14px;font-size:14px;font-family:inherit;}
 .dc-results{margin-top:16px;display:flex;flex-direction:column;gap:10px;}
-.dc-option,.dc-store{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--rrg-line);border-radius:8px;padding:12px 14px;font-size:13.5px;}
+.dc-option,.dc-store{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--rrg-line);border-radius:6px;padding:12px 14px;font-size:13.5px;}
 .dc-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;}
 .muted{color:#767676;font-size:12.5px;}
 .stock-chip{display:inline-block;white-space:nowrap;font-size:11px;font-weight:900;text-transform:uppercase;padding:2px 8px;border-radius:6px;margin-left:6px;color:#333;}
@@ -936,13 +950,13 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    is hidden once a postcode is committed, replaced by that tab's own results-head + body. */
 .dc-prompt{padding:14px 18px 0;margin:0 0 8px;font-size:13.5px;color:#333;}
 .dc-shared .dc-postcode-row{padding-top:0;}
-.dc-error-banner{margin:10px 18px 0;padding:10px 14px;border-radius:8px;background:var(--rrg-nofit-bg);color:var(--rrg-nofit);font-size:13px;line-height:1.4;}
+.dc-error-banner{margin:10px 18px 0;padding:10px 14px;border-radius:6px;background:var(--rrg-nofit-bg);color:var(--rrg-nofit);font-size:13px;line-height:1.4;}
 .dc-input.error{border-color:var(--rrg-nofit);}
 .dc-results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;}
 .dc-results-head h3{margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;text-transform:none;}
 .dc-change-link{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--rrg-red);text-decoration:underline;white-space:nowrap;flex:0 0 auto;}
 .dc-select-list{display:flex;flex-direction:column;gap:10px;}
-.dc-select-option{display:flex;align-items:center;gap:12px;border:1.5px solid var(--rrg-line);border-radius:8px;padding:12px 14px;font-size:13.5px;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
+.dc-select-option{display:flex;align-items:center;gap:12px;border:1.5px solid var(--rrg-line);border-radius:6px;padding:12px 14px;font-size:13.5px;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
 .dc-select-option:hover{border-color:#b8b8b8;}
 .dc-select-option:has(input:checked){border-color:var(--rrg-red);box-shadow:0 0 0 1px var(--rrg-red);}
 .dc-select-option input[type=radio]{accent-color:var(--rrg-red);width:18px;height:18px;flex:0 0 auto;}
@@ -1010,7 +1024,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-slideout-head h2{font-size:19px;margin:0;}
 .fit-gallery-slideout-close{background:#f2f2f2;border:none;border-radius:50%;width:48px;height:48px;font-size:16px;color:#333;flex:0 0 auto;}
 .fit-gallery-slideout-body{padding:16px 22px 22px;overflow-y:auto;flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;align-content:start;}
-.fit-gallery-slideout-body img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#eee;}
+.fit-gallery-slideout-body img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#eee;}
 .fit-gallery-slideout-body img[data-fgs-open-index]{cursor:pointer;transition:opacity .15s ease;}
 .fit-gallery-slideout-body img[data-fgs-open-index]:hover{opacity:.8;}
 
@@ -1024,15 +1038,15 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    reference. Body switches to a simple flex column (overriding the grid display above via
    the extra .fgs-detail-body class) since it's a single-column detail layout, not a grid. */
 .fgs-detail-body{display:flex;flex-direction:column;gap:16px;}
-.fgs-browse-bar{display:flex;align-items:center;justify-content:space-between;background:#f4f4f4;border-radius:8px;padding:10px 14px;font-size:13px;color:#555;}
+.fgs-browse-bar{display:flex;align-items:center;justify-content:space-between;background:#f4f4f4;border-radius:6px;padding:10px 14px;font-size:13px;color:#555;}
 .fgs-browse-bar strong{color:var(--rrg-black);}
 .fgs-fit-id{font-weight:700;color:var(--rrg-black);}
 .fgs-nav-row{display:flex;gap:10px;}
 .fgs-nav-row .btn{flex:1 1 0;padding:10px;font-size:13px;}
 .fgs-nav-row .btn:disabled{opacity:.35;cursor:default;}
-.fgs-main-image img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;background:#eee;}
+.fgs-main-image img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;background:#eee;}
 .fgs-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.fgs-thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:#eee;}
+.fgs-thumbs img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;background:#eee;}
 .fgs-product-title{margin:0;font-size:17px;line-height:1.3;}
 .fgs-vehicle-line{display:flex;align-items:center;gap:8px;color:#555;font-size:13.5px;}
 .fgs-vehicle-line svg{width:16px;height:16px;flex:0 0 auto;color:#888;}
@@ -1040,7 +1054,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fgs-components h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#767676;}
 .fgs-component-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13.5px;}
 .fgs-component-row:last-child{border-bottom:none;}
-.fgs-c-qty{background:var(--rrg-black);color:#fff;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700;flex:0 0 auto;}
+.fgs-c-qty{background:var(--rrg-black);color:#fff;border-radius:6px;padding:2px 9px;font-size:11px;font-weight:700;flex:0 0 auto;}
 .fgs-note{font-size:12px;color:#888;line-height:1.5;margin:0;}
 .fgs-back-to-product{width:100%;}
 
@@ -1083,7 +1097,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .showroom-widget.split-view{grid-template-columns:1fr;min-height:0;}
   .showroom-widget.split-view .showroom-map{height:280px;}
 }
-.showroom-map{margin-top:18px;height:320px;border-radius:10px;overflow:hidden;position:relative;z-index:0;}
+.showroom-map{margin-top:18px;height:320px;border-radius:6px;overflow:hidden;position:relative;z-index:0;}
 .showroom-map .leaflet-container{height:100%;width:100%;font-family:inherit;}
 
 /* Map rework (2026-09-11, backlog item 22) — custom divIcon pins (no image assets) instead
@@ -1213,7 +1227,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .faq-section{margin:40px 0;}
 .faq-heading{margin-bottom:16px;}
 .faq-list{display:flex;flex-direction:column;gap:10px;}
-.faq-item{border:1px solid var(--rrg-line);border-radius:8px;padding:0 16px;background:#fff;}
+.faq-item{border:1px solid var(--rrg-line);border-radius:6px;padding:0 16px;background:#fff;}
 .faq-item summary{list-style:none;cursor:pointer;padding:14px 26px 14px 0;font-weight:700;font-size:14.5px;position:relative;}
 .faq-item summary::-webkit-details-marker{display:none;}
 .faq-item summary::after{content:'+';position:absolute;right:2px;top:12px;font-size:19px;color:#767676;}
@@ -1223,7 +1237,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
 .nav-strip{background:#fff;border-bottom:1px solid var(--rrg-line);padding:12px 0;font-size:13px;}
 .nav-strip .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
-.nav-strip a.tag{padding:6px 14px;border-radius:999px;border:1px solid var(--rrg-line);text-decoration:none;font-weight:700;}
+.nav-strip a.tag{padding:6px 14px;border-radius:6px;border:1px solid var(--rrg-line);text-decoration:none;font-weight:700;}
 .nav-strip a.tag.current{background:var(--rrg-black);color:#fff;border-color:var(--rrg-black);}
 
 @media (max-width: 900px){

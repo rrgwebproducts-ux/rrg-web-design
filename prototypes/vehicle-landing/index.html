@@ -112,13 +112,25 @@
      .showroom-widget, styled locally here since this is the first template that needs it.
      If a future PLP/category template reuses it, promote this block into shared.css. */
   .fit-finder-widget{background:rgba(0,0,0,.7);color:#fff;border-radius:var(--radius);padding:26px 28px;margin-bottom:36px;}
-  .ff-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
-  .ff-badge{flex:0 0 auto;width:42px;height:42px;border-radius:10px;background:var(--rrg-gold);display:flex;align-items:center;justify-content:center;}
-  .ff-badge svg{width:22px;height:22px;color:#fff;}
-  .ff-head h2{margin:0 0 4px;color:#fff;}
-  .ff-head p{margin:0;font-size:14px;color:#ccc;max-width:520px;}
+  /* Restructured 2026-09-16 per Brenton: badge/heading/paragraph are now flex siblings in
+     one row (was heading+paragraph stacked in their own inner div) so the paragraph can sit
+     beside "Fit Finder" on desktop instead of below it. flex-wrap + the paragraph's
+     flex-basis:100% on narrow screens (below) puts it back on its own full-width line under
+     the badge+heading on mobile, matching the original stacked layout there. */
+  .ff-head{display:flex;align-items:center;flex-wrap:wrap;gap:14px 20px;margin-bottom:20px;}
+  /* Badge height matches the "Fit Finder" heading's own font-size (37px, the shared
+     section-heading scale) — corrected 2026-09-16 per Brenton, who felt the first pass
+     (54px, the heading's full line-height box including its leading) looked too big; this
+     matches the heading text itself, not the whitespace around it. */
+  .ff-badge{flex:0 0 auto;width:37px;height:37px;border-radius:6px;background:var(--rrg-gold);display:flex;align-items:center;justify-content:center;}
+  .ff-badge svg{width:19px;height:19px;color:#fff;}
+  .ff-head h2{margin:0;color:#fff;flex:0 0 auto;}
+  .ff-head p{margin:0;font-size:14px;color:#ccc;max-width:520px;flex:1 1 280px;}
+  @media (max-width:900px){
+    .ff-head p{flex-basis:100%;}
+  }
   .ff-row{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px;align-items:stretch;}
-  .ff-row select{width:100%;background:#fff;border:1px solid #3a3a3a;border-radius:8px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--rrg-black);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;}
+  .ff-row select{width:100%;background:#fff;border:1px solid #3a3a3a;border-radius:6px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--rrg-black);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;}
   .ff-row select:disabled{background-color:#eee;color:#999;cursor:not-allowed;}
   .ff-row .btn{white-space:nowrap;}
   .ff-row .btn:disabled{opacity:.5;cursor:not-allowed;}
@@ -354,10 +366,8 @@
   <section class="fit-finder-widget" id="fitFinder">
     <div class="ff-head">
       <span class="ff-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l1.6-4.8A2 2 0 0 1 6.5 7h11a2 2 0 0 1 1.9 1.4L21 13"/><rect x="2" y="13" width="20" height="5.5" rx="1.5"/><circle cx="7" cy="18.5" r="1.8"/><circle cx="17" cy="18.5" r="1.8"/></svg></span>
-      <div>
-        <h2>Fit Finder</h2>
-        <p>Looking for Complete Racks for your vehicle? Select your vehicle to find the perfect fit.</p>
-      </div>
+      <h2>Fit Finder</h2>
+      <p>Looking for Complete Racks for your vehicle? Select your vehicle to find the perfect fit.</p>
     </div>
     <div class="ff-row">
       <select id="ffMake" aria-label="Make">

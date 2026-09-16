@@ -200,7 +200,7 @@ body.mm-mobile-locked{overflow:hidden;}
 .mm-mobile-head-close{margin-left:auto;margin-top:0;}
 
 .mm-mobile-search{padding:12px 16px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;position:relative;}
-.mm-mobile-search input{width:100%;box-sizing:border-box;padding:10px 40px 10px 14px;border:1px solid var(--rrg-line);border-radius:999px;font:inherit;font-size:14px;background:var(--rrg-bg);}
+.mm-mobile-search input{width:100%;box-sizing:border-box;padding:10px 40px 10px 14px;border:1px solid var(--rrg-line);border-radius:6px;font:inherit;font-size:14px;background:var(--rrg-bg);}
 .mm-mobile-search-btn{position:absolute;right:28px;top:50%;transform:translateY(-50%);background:none;border:none;color:#999;display:flex;cursor:pointer;}
 .mm-mobile-search-btn svg{width:16px;height:16px;}
 
