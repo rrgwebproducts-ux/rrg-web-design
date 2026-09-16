@@ -16,13 +16,16 @@ function buildSiteAdminPanel(currentKey) {
   fab.setAttribute('aria-label', 'Open site admin panel');
   fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg> Site Admin';
 
+  // PDP prototypes only (2026-09-17, per Brenton) — Mark's dev focus is the PDP templates
+  // right now, so the standalone header build's own entry was removed here (it's still
+  // reachable directly, just no longer advertised in this panel) to stop it reading as
+  // in-scope work alongside the PDP templates.
   const templates = [
     { key: 'simple', label: 'Simple', href: '../simple/index.html' },
     { key: 'config-variant', label: 'Config-Variant', href: '../config-variant/index.html' },
     { key: 'sibling-color', label: 'Sibling-Color', href: '../sibling-color/index.html' },
     { key: 'vehicle-specific', label: 'Vehicle-Specific', href: '../vehicle-specific/index.html' },
     { key: 'grouped-bundle', label: 'Grouped/Bundle', href: '../grouped-bundle/index.html' },
-    { key: 'header', label: 'Header (this build)', href: '../header/index.html' },
   ];
 
   const panel = document.createElement('div');
@@ -42,10 +45,9 @@ function buildSiteAdminPanel(currentKey) {
       <div class="site-admin-section">
         <h5>Developer Briefs</h5>
         <div class="site-admin-links">
+          <!-- PDP only (2026-09-17, per Brenton) — Header/Footer/VLP dev briefs pulled out of
+               this panel so Mark isn't shown background work alongside his current PDP focus. -->
           <a href="../../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
-          <a href="../../docs/header/header-dev-brief-viewer.html" target="_blank" rel="noopener">Header Developer Brief</a>
-          <a href="../../docs/footer/footer-dev-brief-viewer.html" target="_blank" rel="noopener">Footer Developer Brief</a>
-          <a href="../../docs/vehicle-landing/vlp-dev-brief-viewer.html" target="_blank" rel="noopener">Vehicle Landing Page Developer Brief</a>
         </div>
       </div>
       <div class="site-admin-section">
