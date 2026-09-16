@@ -716,8 +716,14 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 .fit-gallery-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
 .fit-gallery-title{display:flex;align-items:center;gap:10px;}
-.fit-gallery-badge{width:26px;height:26px;flex:0 0 auto;border-radius:6px;background:var(--rrg-gold);color:#fff;display:flex;align-items:center;justify-content:center;}
-.fit-gallery-badge svg{width:15px;height:15px;}
+/* 37x37/19x19 (2026-09-16) — was 26x26/15x15, resized to match the Vehicle Landing Page's
+   Fit Finder badge (.ff-badge) so the two widgets, which sit directly above/below each
+   other on that page, use one consistent badge size. Also matches this heading's own
+   font-size (37px, the shared section-heading scale — same principle already applied to
+   .ff-badge: the badge matches the heading text itself, not the padded line-height box
+   around it). */
+.fit-gallery-badge{width:37px;height:37px;flex:0 0 auto;border-radius:6px;background:var(--rrg-gold);color:#fff;display:flex;align-items:center;justify-content:center;}
+.fit-gallery-badge svg{width:19px;height:19px;}
 .fit-gallery-title h2{margin:0;line-height:1;color:var(--fg-fg);}
 .fit-gallery-viewall{margin-left:auto;color:var(--fg-link);font-weight:700;font-size:13px;text-decoration:underline;white-space:nowrap;}
 .fit-gallery-carousel{position:relative;}
@@ -1204,6 +1210,14 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   font-size:37px;
   letter-spacing:.01em;
 }
+/* Fit Finder / Fitment Gallery only (2026-09-16, Brenton) — just the first word of these two
+   headings ("Fit"/"Fitment") stays italic, the rest ("Finder"/"Gallery") upright. Every other
+   heading in the shared list above keeps the full-italic treatment unchanged; these two get
+   their own font-style:normal override plus .italic-lead on a wrapping span around the first
+   word in the markup. */
+.fit-gallery-title h2,
+.ff-head h2{font-style:normal;}
+.italic-lead{font-style:italic;}
 .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;}
 .product-card{border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;background:#fff;display:flex;flex-direction:column;}
 .product-card img{aspect-ratio:1/1;object-fit:contain;background:#f7f7f7;padding:12px;}
