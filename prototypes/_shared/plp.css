@@ -35,16 +35,24 @@
 
 /* ---- SHOP BY row (spec Section 5) ---- */
 .plp-shopby{margin:24px 0;}
-.plp-shopby-head{display:flex;flex-direction:column;gap:2px;margin-bottom:14px;}
+.plp-shopby-head{margin-bottom:14px;}
 .plp-shopby-head h2{color:var(--rrg-red);font-size:22px;margin:0;}
-.plp-shopby-showall{color:var(--rrg-red);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;text-decoration:underline;}
-.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
-/* Only the active tile is a filled tile (matches the Figma reference exactly — inactive
-   tiles carry no box/border at all, just icon + label, which is what makes this read as a
-   tab strip rather than a row of equal-weight buttons). */
-.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:104px;min-height:80px;border:none;border-radius:var(--radius);background:none;padding:10px 8px;text-align:center;}
+/* overflow-x:auto with overflow-y left unset computes overflow-y to auto too (CSS Overflow
+   spec's "not both visible" rule) — harmless normally, but the active tile's margin-bottom:-1px
+   (below) nudges the track's content box 1px taller than the track itself, which was enough
+   for that implicit auto-y to detect overflow and draw a phantom vertical scrollbar. Pin
+   overflow-y:hidden so only the intended horizontal scroll can ever trigger. */
+.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--rrg-line);}
+/* Figma reference: a line runs under the whole row, and the active tile's border meets it —
+   its top/left/right border is gold, its bottom border is the same colour as its own fill
+   (not transparent), so that colour masks the exact 1px of the track's grey line sitting
+   under it (margin-bottom:-1px pulls the tile down onto that line). The result reads as one
+   continuous strip with a tab popping up out of it, not a row of individual buttons —
+   inactive tiles still carry no box/border at all, just icon + label, so they sit flush on
+   the line like unselected tabs rather than competing boxes. */
+.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:104px;min-height:80px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-1px;}
 .plp-shopby-tile:not(.active):hover{background:var(--rrg-bg);}
-.plp-shopby-tile.active{background:var(--rrg-gold);}
+.plp-shopby-tile.active{background:var(--rrg-gold-bg);border-color:var(--rrg-gold) var(--rrg-gold) var(--rrg-gold-bg);}
 .plp-shopby-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
 .plp-shopby-icon svg{width:100%;height:100%;}
 .plp-shopby-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
@@ -129,6 +137,13 @@
 .plp-ribbon-bestseller{background:var(--rrg-black);}
 .plp-ribbon-staffpick{background:var(--rrg-red);}
 
+/* Same seasonal sale-tag graphic as the PDP gallery/price-block (shared.css .gallery-sale-tag
+   / .price-block .sale-tag), same conditional logic: only rendered when the product actually
+   has a wasPrice (plp.js plpSaleTagHTML mirrors plpPriceHTML's own on-sale check). Sits below
+   the full-width ribbon bar when both are present on the same card. */
+.plp-card-media .plp-sale-tag{position:absolute;top:8px;right:8px;width:72px;height:auto;padding:0;z-index:3;pointer-events:none;}
+.plp-card-media:has(.plp-ribbon) .plp-sale-tag{top:36px;}
+
 /* White, not grey — every real product photo in this catalogue already sits on a white
    background, so a tinted card behind it just reads as a rendering bug. Minimal padding
    (not the old 16px) so the photo itself reads bigger, matching the Figma reference. */
@@ -154,9 +169,8 @@
 .plp-card-title{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:14.5px;letter-spacing:0;line-height:1.3;color:#232323;margin:0 0 6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
 .plp-rating{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#666;margin-bottom:8px;min-height:17px;}
 .plp-rating .stars{font-size:14px;}
-.plp-price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.plp-price{display:flex;flex-direction:column;gap:2px;margin-bottom:4px;}
 .plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;color:var(--rrg-black);}
-.plp-price .plp-price-was ~ .plp-price-now,
 .plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
 .plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;}
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
@@ -169,6 +183,9 @@
 .plp-specs{margin-bottom:10px;}
 .plp-specs-toggle{list-style:none;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
 .plp-specs-toggle::-webkit-details-marker{display:none;}
+.plp-specs-toggle-hide{display:none;}
+.plp-specs[open] .plp-specs-toggle-show{display:none;}
+.plp-specs[open] .plp-specs-toggle-hide{display:inline;}
 .plp-specs-panel{margin-top:8px;display:flex;flex-direction:column;gap:6px;background:#faf9f7;border-radius:6px;padding:10px 12px;}
 .plp-spec-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#333;}
 .plp-spec-icon{flex:0 0 auto;}

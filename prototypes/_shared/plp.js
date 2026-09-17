@@ -76,9 +76,9 @@ function plpFilteredSortedProducts() {
 // ==== SHOP BY row ============================================================
 // Real build: each tile is its own fixed URL (plp-spec.md Section 5) — this demo simulates
 // that navigation in-page (reset filters/paging, swap the result set) rather than an
-// AJAX in-place filter, since there's no second real page to link to. Shared by both the
-// tile clicks and the standalone "Show All" link (spec/Figma: "Show All" sits under the
-// SHOP BY heading as its own link, not a tile in the row itself).
+// AJAX in-place filter, since there's no second real page to link to. "Show All" is always
+// the first tile in the row itself (not a separate link above it) so the whole row reads as
+// one tab strip with a permanent "all" tab, per the Figma reference.
 function plpSelectSubcat(key) {
   plpState.activeSubcat = key;
   plpState.activeFilters = {};
@@ -89,11 +89,14 @@ function plpSelectSubcat(key) {
   plpRenderResults();
 }
 
+const PLP_SHOWALL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
+
 function plpRenderShopBy() {
   const cfg = window.PLP_CONFIG;
   const track = document.getElementById('plpShopByTrack');
   if (!track) return;
-  track.innerHTML = cfg.shopBy.map(t => `
+  const tiles = [{ key: 'all', label: 'Show All', icon: PLP_SHOWALL_ICON }, ...cfg.shopBy];
+  track.innerHTML = tiles.map(t => `
     <button type="button" class="plp-shopby-tile ${plpState.activeSubcat === t.key ? 'active' : ''}" data-shopby="${t.key}">
       <span class="plp-shopby-icon">${t.icon}</span>
       <span class="plp-shopby-label">${t.label}</span>
@@ -102,12 +105,6 @@ function plpRenderShopBy() {
   track.querySelectorAll('[data-shopby]').forEach(btn => {
     btn.addEventListener('click', () => plpSelectSubcat(btn.dataset.shopby));
   });
-}
-
-function plpInitShopByShowAll() {
-  const link = document.getElementById('plpShopByShowAll');
-  if (!link) return;
-  link.addEventListener('click', (e) => { e.preventDefault(); plpSelectSubcat('all'); });
 }
 
 // ==== Filters sidebar ========================================================
@@ -261,14 +258,20 @@ function plpPriceHTML(product) {
   const now = plpFmtMoney(product.price);
   if (!product.wasPrice) return `<div class="plp-price"><span class="plp-price-now">${now}</span></div>`;
   const was = plpFmtMoney(product.wasPrice);
-  const savePct = Math.round((1 - product.price / product.wasPrice) * 100);
   return `
     <div class="plp-price">
       <span class="plp-price-now">${now}</span>
       <span class="plp-price-was">${was}</span>
-      <span class="badge badge-save">Save ${savePct}%</span>
     </div>
   `;
+}
+
+// Same seasonal graphic + same on-sale condition as the PDP gallery/price-block sale tag
+// (shared.css .gallery-sale-tag / .price-block .sale-tag) — only shown when the product
+// actually has a wasPrice, mirroring plpPriceHTML's own check above.
+function plpSaleTagHTML(product) {
+  if (!product.wasPrice) return '';
+  return `<img class="plp-sale-tag" src="../_shared/sale-tag.png" alt="Sale">`;
 }
 
 function plpFmtMoney(n) {
@@ -290,7 +293,7 @@ function plpSpecsHTML(product) {
   if (!product.specs || !product.specs.length) return '';
   return `
     <details class="plp-specs">
-      <summary class="plp-specs-toggle">Show Specs</summary>
+      <summary class="plp-specs-toggle"><span class="plp-specs-toggle-show">Show Specs</span><span class="plp-specs-toggle-hide">Hide Specs</span></summary>
       <div class="plp-specs-panel">
         ${product.specs.map(s => `<div class="plp-spec-row"><span class="plp-spec-icon">${s.icon}</span><span class="plp-spec-label">${s.label}</span><span class="plp-spec-value">${s.value}</span></div>`).join('')}
       </div>
@@ -343,6 +346,7 @@ function plpCardHTML(product, cfg) {
     <div class="plp-card" data-product-id="${product.id}">
       <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
         ${plpRibbonHTML(product)}
+        ${plpSaleTagHTML(product)}
         ${product.imageSvg ? product.imageSvg : `<img src="${product.image}" alt="${product.name}">`}
       </div>
       <div class="plp-card-body">
@@ -386,13 +390,14 @@ function plpRenderResults() {
   const cardsArr = visible.map(p => plpCardHTML(p, cfg));
 
   // Fitment Gallery, once per results page, at position 2 (spec Section 9): 2nd row in list
-  // view (index 2), directly after the first full row in grid view (index 4, a 4-column
-  // desktop row — the closest fixed position to "first full row" without measuring live
-  // responsive reflow, same simplification this prototype set already applies elsewhere to
-  // "row"-based rules that only truly hold at one breakpoint). Only on VRS categories with a
-  // vehicle set — never standard PLPs, never Simple state.
+  // view (index 2), directly after the first full row in grid view (index 3, a 3-column
+  // desktop row at the sidebar+main layout's actual auto-fill width — the closest fixed
+  // position to "first full row" without measuring live responsive reflow, same
+  // simplification this prototype set already applies elsewhere to "row"-based rules that
+  // only truly hold at one breakpoint). Only on VRS categories with a vehicle set — never
+  // standard PLPs, never Simple state.
   if (cfg.vrs && plpVehicleIsSet() && total > 0) {
-    const insertAt = Math.min(plpState.view === 'list' ? 2 : 4, cardsArr.length);
+    const insertAt = Math.min(plpState.view === 'list' ? 2 : 3, cardsArr.length);
     cardsArr.splice(insertAt, 0, plpFitGallerySectionHTML());
   }
 
@@ -782,7 +787,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
   plpRenderShopBy();
-  plpInitShopByShowAll();
   plpRenderFilters();
   plpBuildFilterDrawer();
   plpInitToolbar();
