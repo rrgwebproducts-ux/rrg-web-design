@@ -2384,6 +2384,16 @@ function initStickyCta() {
 }
 
 function buildAdminPanel() {
+  // PLP/VPLP (docs/plp/plp-spec.md) — gated behind a [data-plp-page] marker so the 5 PDP
+  // templates and Vehicle Landing Page (none of which carry that marker) render exactly as
+  // before. The Simple/Vehicle-Set hero state itself isn't controlled here — it reuses the
+  // Site Admin Panel's existing, already-wired "Vehicle Set" session toggle (see
+  // plp.js:plpVehicleIsSet()), per the 2026-09-17 build-plan decision not to add a new
+  // vehicle-selection UI this round. This section only covers the two things that ARE new
+  // demo-only previews for these two templates: the default Grid/List view, and the
+  // Compare Products feature gate (spec Section 12 — off by default until the client signs
+  // off on it).
+  const isPlpPage = !!document.querySelector('[data-plp-page]');
   const needsVehicleDemo = !!document.querySelector('[data-fitment-slot]');
   const hasVariantPicker = !!document.querySelector('.variant-picker');
   const hasFitGallery = !!document.getElementById('fitGallerySection');
@@ -2477,6 +2487,16 @@ function buildAdminPanel() {
           <label><input type="radio" name="fittedMode" value="checkbox"> Mode 2 — upsell checkbox</label>
         </div>
       </div>` : ''}
+      ${isPlpPage ? `
+      <div class="admin-section">
+        <h5>PLP Preview</h5>
+        <div class="admin-toggle-label"><span>Default view</span></div>
+        <div class="admin-radio-row">
+          <label><input type="radio" name="plpView" value="grid" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? '' : 'checked'}> Grid</label>
+          <label><input type="radio" name="plpView" value="list" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? 'checked' : ''}> List</label>
+        </div>
+        <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
+      </div>` : ''}
       <div class="admin-section">
         <h5>Widget Previews</h5>
         <label class="admin-toggle"><span>New Delivery/Click &amp; Collect design <span class="admin-note">(preview, AU only)</span></span><input type="checkbox" data-admin-flag="dcWidgetV2"></label>
@@ -2529,8 +2549,13 @@ function buildAdminPanel() {
         case 'fitGallery': applyFitGalleryFlag(on); break;
         case 'vehicleFitNotes': applyVehicleFitNotesFlag(on); break;
         case 'dcWidgetV2': applyDcWidgetV2Flag(on); break;
+        case 'plpCompare': if (typeof applyPlpCompareFlag === 'function') applyPlpCompareFlag(on); break;
       }
     });
+  });
+
+  panel.querySelectorAll('input[name="plpView"]').forEach(input => {
+    input.addEventListener('change', () => { if (input.checked && typeof applyPlpViewFlag === 'function') applyPlpViewFlag(input.value); });
   });
 
   panel.querySelectorAll('[data-admin-input]').forEach(input => {

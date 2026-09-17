@@ -1,0 +1,232 @@
+/* Roof Racks Galore — PLP / VPLP component library (docs/plp/plp-spec.md)
+   New components for the category listing pages that neither the 5 PDP templates nor the
+   Vehicle Landing Page need — kept out of shared.css (mirrors the existing mega-menu.css/
+   admin-panel.css split) so that file, already relied on by 6 live templates, isn't touched
+   by this work. Loaded only by prototypes/plp/ and prototypes/vplp/, alongside shared.css.
+   Every class here is plp- prefixed (or reuses a shared.css class verbatim, called out where
+   it happens) so nothing here can collide with shared.css's own PDP-specific classes. */
+
+/* ---- Hero (Simple / Vehicle-Set states, spec Section 4) ---- */
+.plp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:28px 0;}
+.plp-hero h1{margin-bottom:12px;}
+.plp-hero p{font-size:16px;color:#444;line-height:1.6;max-width:560px;margin-bottom:20px;}
+.plp-hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.plp-hero-cta-row .btn{padding:11px 18px;font-size:13px;}
+.plp-hero-media{position:relative;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;}
+.plp-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center;}
+.plp-hero-make-badge{position:absolute;top:16px;right:16px;width:56px;height:56px;background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;padding:9px;}
+.plp-hero-make-badge img{width:100%;height:100%;object-fit:contain;}
+/* Simple state (Section 4.2): no vehicle photo at all when the category has no fallback
+   image configured — not a placeholder graphic, no broken layout, just a narrower text
+   column with no media column reserved. */
+.plp-hero.no-media{grid-template-columns:1fr;}
+.plp-hero.no-media p{max-width:720px;}
+@media (max-width:900px){
+  .plp-hero{grid-template-columns:1fr;gap:18px;padding-top:16px;}
+  .plp-hero-media{order:-1;}
+}
+
+/* VRS, no vehicle set — real unfiltered catalogue stays visible (never gated/empty), plus
+   this CTA banner in place of the vehicle-set hero framing (spec Section 2 live-site
+   finding). Reuses the Showroom Finder's black-CTA visual language. */
+.plp-vrs-banner{background:var(--rrg-black);color:#fff;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.plp-vrs-banner p{margin:0;color:#ddd;font-size:14px;max-width:560px;}
+.plp-vrs-banner h3{color:#fff;margin:0 0 4px;}
+
+/* ---- SHOP BY row (spec Section 5) ---- */
+.plp-shopby{margin:24px 0;}
+.plp-shopby-head{display:flex;flex-direction:column;gap:2px;margin-bottom:14px;}
+.plp-shopby-head h2{color:var(--rrg-red);font-size:22px;margin:0;}
+.plp-shopby-showall{color:var(--rrg-red);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;text-decoration:underline;}
+.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
+/* Only the active tile is a filled tile (matches the Figma reference exactly — inactive
+   tiles carry no box/border at all, just icon + label, which is what makes this read as a
+   tab strip rather than a row of equal-weight buttons). */
+.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:104px;min-height:80px;border:none;border-radius:var(--radius);background:none;padding:10px 8px;text-align:center;}
+.plp-shopby-tile:not(.active):hover{background:var(--rrg-bg);}
+.plp-shopby-tile.active{background:var(--rrg-gold);}
+.plp-shopby-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
+.plp-shopby-icon svg{width:100%;height:100%;}
+.plp-shopby-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
+
+/* ---- Toolbar (result count / view toggle / sort, spec Sections 7-8) ---- */
+.plp-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rrg-line);margin-bottom:20px;}
+.plp-toolbar-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+#plpResultCount{font-size:13px;color:#666;}
+.plp-view-toggle{display:flex;border:1px solid var(--rrg-line);border-radius:6px;overflow:hidden;}
+.plp-view-toggle button{background:#fff;border:none;padding:8px 12px;display:flex;align-items:center;color:#666;}
+.plp-view-toggle button.active{background:var(--rrg-black);color:#fff;}
+.plp-view-toggle svg{width:16px;height:16px;}
+.plp-toolbar-right{display:flex;align-items:center;gap:10px;}
+.plp-toolbar-right label{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:.03em;font-weight:700;}
+#plpSort{border:1px solid var(--rrg-line);border-radius:6px;padding:9px 12px;font-size:13.5px;font-family:inherit;background:#fff;}
+.plp-refine-btn-mobile{display:none;}
+@media (max-width:900px){
+  .plp-refine-btn-mobile{display:inline-flex;}
+}
+
+/* ---- Layout: sidebar + main ---- */
+.plp-layout{display:grid;grid-template-columns:270px 1fr;gap:32px;align-items:start;padding-bottom:40px;}
+@media (max-width:900px){
+  .plp-layout{grid-template-columns:1fr;}
+}
+.plp-sidebar{display:none;}
+@media (min-width:901px){
+  .plp-sidebar{display:block;}
+}
+/* min-width:0 on both grid items — without it, a grid item defaults to min-width:auto,
+   which refuses to shrink below its content's intrinsic (unwrapped) width. A nowrap label
+   inside (a filter chip, a "Fitment Gallery (283)" button) would otherwise force this whole
+   column — and the .wrap/body ancestors above it — wider than the viewport instead of
+   scrolling within its own overflow-x:auto container, causing real page-level horizontal
+   scroll on mobile. */
+.plp-main,.plp-sidebar{min-width:0;}
+
+/* ---- Filters (spec Section 6) ---- */
+.plp-filter-priority{background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+.plp-filter-priority-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#8a6d1f;margin-bottom:10px;}
+.plp-filter-priority-group{margin-bottom:14px;}
+.plp-filter-priority-group:last-child{margin-bottom:0;}
+.plp-filter-priority-group h4{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;margin:0 0 8px;color:#000;}
+.plp-filter-group{border-bottom:1px solid var(--rrg-line);padding:12px 0;}
+.plp-filter-group summary{list-style:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;position:relative;padding-right:20px;}
+.plp-filter-group summary::-webkit-details-marker{display:none;}
+.plp-filter-group summary::after{content:'\2212';position:absolute;right:0;top:0;color:#767676;}
+.plp-filter-group:not([open]) summary::after{content:'+';}
+.plp-filter-options{display:flex;flex-direction:column;gap:2px;margin-top:10px;}
+.plp-filter-option{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13.5px;color:#333;cursor:pointer;}
+.plp-filter-option input{accent-color:var(--rrg-red);width:16px;height:16px;flex:0 0 auto;}
+.plp-filter-option span:nth-child(2){flex:1;}
+.plp-filter-option.is-zero{opacity:.4;}
+.plp-filter-count{color:#999;font-size:12px;}
+
+/* Mobile priority chips — quick-access row above "Refine Results" (Section 6) */
+.plp-filter-chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;}
+.plp-filter-chip{flex:0 0 auto;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:var(--radius);padding:8px 14px;font-size:12.5px;font-weight:700;color:#5c4d1f;white-space:nowrap;}
+@media (min-width:901px){
+  .plp-filter-chips,.plp-refine-btn-standalone{display:none;}
+}
+
+/* Filter drawer — reuses .store-slideout*'s right-edge convention verbatim (see plp.js
+   plpBuildFilterDrawer()); these rules only add what's specific to holding filters. */
+.plp-filter-slideout-body{padding-bottom:0;}
+.plp-filter-slideout-foot{padding:14px 22px;border-top:1px solid var(--rrg-line);flex:0 0 auto;}
+
+/* ---- Product grid / list + card (spec Section 7) ---- */
+.plp-results.is-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
+.plp-results.is-list .plp-card{flex-direction:row;}
+.plp-results.is-list{display:flex;flex-direction:column;gap:14px;}
+
+.plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;}
+.plp-fitgallery-inline{grid-column:1/-1;}
+.plp-results.is-grid .plp-fitgallery-inline{margin:4px 0;}
+
+/* Full-width bar across the top of the card's media (matches the Figma reference exactly —
+   not a corner badge), so it lives inside .plp-card-media rather than .plp-card: that keeps
+   it scoped to the image's own width in both grid (image spans the full card) and list
+   (image is a fixed-width column) layouts. */
+.plp-ribbon{position:absolute;top:0;left:0;right:0;z-index:2;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding:7px 12px;color:#fff;}
+.plp-ribbon-bestseller{background:var(--rrg-black);}
+.plp-ribbon-staffpick{background:var(--rrg-red);}
+
+/* White, not grey — every real product photo in this catalogue already sits on a white
+   background, so a tinted card behind it just reads as a rendering bug. Minimal padding
+   (not the old 16px) so the photo itself reads bigger, matching the Figma reference. */
+.plp-card-media{position:relative;background:#fff;flex:0 0 auto;}
+.plp-results.is-grid .plp-card-media{aspect-ratio:1/1;}
+.plp-card-media img{width:100%;height:100%;object-fit:contain;padding:6px;display:block;}
+/* Placeholder product art (Bike Racks demo dataset — no real bike-carrier photography
+   exists in this asset pool yet, unlike the Roof Racks dataset, which reuses real scraped
+   Rhino-Rack/Front Runner platform photos already in _shared/. Flagged the same way this
+   prototype set already flags its other stand-in graphics, e.g. the Rack Fit Guarantee
+   icon.) Renders a generic bike-carrier silhouette in place of a photo, on the same white
+   ground as every real photo elsewhere in the grid — only the icon itself reads as a
+   stand-in, not the card behind it. */
+.plp-card-media.is-placeholder{display:flex;align-items:center;justify-content:center;}
+.plp-card-media.is-placeholder svg{width:52%;height:52%;color:#c2c2c2;}
+.plp-results.is-list .plp-card-media{width:220px;}
+.plp-card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;min-width:0;}
+.plp-card-brand-logo{max-width:100px;max-height:20px;width:auto;height:auto;object-fit:contain;display:block;margin-bottom:5px;}
+.plp-card-brand-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:#767676;margin-bottom:5px;}
+/* Clamped to exactly 2 lines, short or long — this is what keeps the rating/price/stock
+   lines below starting at the same height card-to-card in a grid row, regardless of how
+   long any one product's name is. */
+.plp-card-title{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:14.5px;letter-spacing:0;line-height:1.3;color:#232323;margin:0 0 6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
+.plp-rating{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#666;margin-bottom:8px;min-height:17px;}
+.plp-rating .stars{font-size:14px;}
+.plp-price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px;}
+.plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;color:var(--rrg-black);}
+.plp-price .plp-price-was ~ .plp-price-now,
+.plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
+.plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;}
+.plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
+.plp-stock-line.low-stock{color:var(--rrg-unknown);}
+
+/* Show Specs — collapsed by default on every card, grid and list (Section 7, Section 14
+   item 2, Brenton "lukewarm" flagged assumption). Every spec value lives behind this single
+   toggle — no separate always-visible strip duplicating the same data. Native <details>,
+   no-JS, same accordion convention as the FAQ section. */
+.plp-specs{margin-bottom:10px;}
+.plp-specs-toggle{list-style:none;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
+.plp-specs-toggle::-webkit-details-marker{display:none;}
+.plp-specs-panel{margin-top:8px;display:flex;flex-direction:column;gap:6px;background:#faf9f7;border-radius:6px;padding:10px 12px;}
+.plp-spec-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#333;}
+.plp-spec-icon{flex:0 0 auto;}
+.plp-spec-label{color:#767676;}
+.plp-spec-value{margin-left:auto;font-weight:700;}
+
+.plp-card-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
+.plp-vrs-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.plp-vrs-actions .btn{flex:1 1 auto;padding:10px 12px;font-size:12px;white-space:nowrap;}
+.plp-fitgallery-btn svg{width:14px;height:14px;}
+
+.plp-compare-check{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#555;cursor:pointer;}
+.plp-compare-check.is-disabled{opacity:.4;cursor:default;}
+.plp-compare-check input{width:15px;height:15px;}
+
+.plp-no-results{grid-column:1/-1;padding:60px 20px;text-align:center;color:#767676;font-size:15px;}
+
+@media (max-width:640px){
+  .plp-results.is-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;}
+  .plp-results.is-list .plp-card{flex-direction:column;}
+  .plp-results.is-list .plp-card-media{width:100%;aspect-ratio:1/1;}
+  /* Stack rather than sit side-by-side — each button's label (e.g. "Fitment Gallery (283)")
+     stays on one line via white-space:nowrap, so at narrow widths two of them side by side
+     have no room to shrink into and were forcing the whole page to scroll horizontally. */
+  .plp-vrs-actions{flex-direction:column;}
+}
+
+/* ---- Pagination (spec Section 8) ---- */
+.plp-pagination{display:flex;justify-content:center;gap:6px;margin-top:28px;}
+.plp-page-btn{min-width:36px;height:36px;border:1px solid var(--rrg-line);border-radius:6px;background:#fff;font-weight:700;font-size:13px;color:#333;}
+.plp-page-btn.active{background:var(--rrg-red);border-color:var(--rrg-red);color:#fff;}
+.plp-page-btn:disabled{opacity:.35;}
+.plp-pagination-mobile{margin-top:20px;}
+@media (min-width:901px){.plp-pagination-mobile{display:none;}}
+@media (max-width:900px){.plp-pagination{display:none;}}
+
+/* ---- Category videos (spec Section 10) ---- */
+.plp-video-sidebar{margin-top:24px;padding-top:20px;border-top:1px solid var(--rrg-line);}
+.plp-video-sidebar-heading{font-size:13px;color:#767676;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
+.plp-video-tile{position:relative;display:block;border-radius:6px;overflow:hidden;margin-bottom:10px;text-decoration:none;}
+.plp-video-tile img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.plp-video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.plp-video-title{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);color:#fff;font-size:12px;font-weight:700;}
+.plp-video-carousel-section{margin:48px 0;}
+.plp-video-carousel-track{display:flex;gap:16px;overflow-x:auto;padding-bottom:6px;}
+.plp-video-carousel-track .plp-video-tile{flex:0 0 260px;margin-bottom:0;}
+
+/* ---- Compare Products (spec Section 12) ---- */
+.plp-compare-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:50;background:var(--rrg-black);color:#fff;border-radius:var(--radius);padding:12px 12px 12px 20px;display:flex;align-items:center;gap:14px;font-size:13.5px;box-shadow:0 10px 26px rgba(0,0,0,.3);}
+.plp-compare-bar .btn{padding:9px 18px;font-size:12.5px;}
+.plp-compare-heads{display:grid;grid-template-columns:110px 1fr 1fr;gap:12px;align-items:end;margin-bottom:14px;}
+.plp-compare-head{text-align:center;}
+.plp-compare-head img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#f7f7f7;border-radius:6px;margin-bottom:8px;}
+.plp-compare-head h4{font-size:13px;margin:0 0 4px;}
+.plp-compare-table th{width:110px;}
+
+@media (max-width:640px){
+  .plp-hero p{font-size:16px!important;}
+  .plp-card-title{font-size:14.5px!important;}
+  .plp-price-now{font-size:20px;}
+}
