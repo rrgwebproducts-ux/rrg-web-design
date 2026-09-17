@@ -50,12 +50,18 @@
    continuous strip with a tab popping up out of it, not a row of individual buttons —
    inactive tiles still carry no box/border at all, just icon + label, so they sit flush on
    the line like unselected tabs rather than competing boxes. */
-.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:104px;min-height:80px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-1px;}
+.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:140px;min-height:110px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-1px;}
 .plp-shopby-tile:not(.active):hover{background:var(--rrg-bg);}
-.plp-shopby-tile.active{background:var(--rrg-gold-bg);border-color:var(--rrg-gold) var(--rrg-gold) var(--rrg-gold-bg);}
-.plp-shopby-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
+/* Same gold as Add to Cart / the hero CTA buttons (shared.css .btn-gold, #FFCA48) — the old
+   --rrg-gold/--rrg-gold-bg pairing (a muted tan) read as a warning colour, not a selection
+   state, so the active tile now fills solid with the real cart gold instead. */
+.plp-shopby-tile.active{background:#FFCA48;border-color:#FFCA48 #FFCA48 #FFCA48;}
+.plp-shopby-icon{width:60px;height:60px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
 .plp-shopby-icon svg{width:100%;height:100%;}
-.plp-shopby-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
+.plp-shopby-icon img{width:100%;height:100%;object-fit:contain;}
+/* Matches the hero section's .btn font-size (shared.css) so the tab labels read at the same
+   weight as the page's other primary CTAs. */
+.plp-shopby-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
 
 /* ---- Toolbar (result count / view toggle / sort, spec Sections 7-8) ---- */
 .plp-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rrg-line);margin-bottom:20px;}

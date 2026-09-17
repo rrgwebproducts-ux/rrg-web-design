@@ -95,7 +95,7 @@ function plpRenderShopBy() {
   const cfg = window.PLP_CONFIG;
   const track = document.getElementById('plpShopByTrack');
   if (!track) return;
-  const tiles = [{ key: 'all', label: 'Show All', icon: PLP_SHOWALL_ICON }, ...cfg.shopBy];
+  const tiles = [{ key: 'all', label: 'Show All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...cfg.shopBy];
   track.innerHTML = tiles.map(t => `
     <button type="button" class="plp-shopby-tile ${plpState.activeSubcat === t.key ? 'active' : ''}" data-shopby="${t.key}">
       <span class="plp-shopby-icon">${t.icon}</span>
