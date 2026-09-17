@@ -77,7 +77,7 @@
 <main class="wrap">
   <div class="page-head">
     <h1>Product &amp; Landing Page Templates</h1>
-    <p>Five product-type templates, each built against real scraped data (not placeholder content), plus the Vehicle (Make/Model) Landing Page. All share one component library (<code>_shared/shared.css</code>, <code>_shared/shared.js</code>) — trust icons, tabs, gallery, Delivery/Click &amp; Collect widget — but each sequences and weights those components differently for its own conversion challenge, per the design mandate.</p>
+    <p>Five product-type templates, each built against real scraped data (not placeholder content), plus the Vehicle Category (Make/Model) Landing Page (VCLP) and the PLP/VPLP category listing pages. All share one component library (<code>_shared/shared.css</code>, <code>_shared/shared.js</code>) — trust icons, tabs, gallery, Delivery/Click &amp; Collect widget — but each sequences and weights those components differently for its own conversion challenge, per the design mandate.</p>
   </div>
 
   <div class="template-grid">
@@ -127,12 +127,30 @@
       </div>
     </div>
     <div class="tpl-card">
-      <div class="thumb">Vehicle Landing Page</div>
+      <div class="thumb">Vehicle Category Landing Page (VCLP)</div>
       <div class="body">
         <div class="example">Toyota Hilux Roof Racks — Make/Model landing page</div>
         <h3>Fit Finder → Category Handoff</h3>
         <p>Not a PDP — one page per make/model (not per exact variant), built to capture proven search terms like "Toyota Hilux Roof Racks". Leads with a Fit Finder that's meant to hand off to a category/PLP filtered to the visitor's exact vehicle, plus the same Fitment Gallery widget as Vehicle-Specific (scoped to the whole vehicle, not one SKU — and genuinely Hilux content here, not a placeholder standing in for a different vehicle), fitment-education content, and an FAQ.</p>
-        <a class="btn btn-primary" href="vehicle-landing/index.html">Open Template</a>
+        <a class="btn btn-primary" href="vehicle-category-landing/index.html">Open Template</a>
+      </div>
+    </div>
+    <div class="tpl-card">
+      <div class="thumb">Category Listing (PLP)</div>
+      <div class="body">
+        <div class="example">Bike Racks — Toyota Hilux (standard, non-fitment-locked category)</div>
+        <h3>Simple vs Vehicle-Set States</h3>
+        <p>A normal ecommerce category grid/list — but once a vehicle is set in session, it actively communicates "shopping for your Toyota Hilux" even though Bike Racks isn't itself fitment-locked. Includes the Grid/List toggle, subcategory tabs, filters, sort/pagination, and category FAQ.</p>
+        <a class="btn btn-primary" href="plp/index.html">Open Template</a>
+      </div>
+    </div>
+    <div class="tpl-card">
+      <div class="thumb">Category Listing (VPLP)</div>
+      <div class="body">
+        <div class="example">Roof Racks — Toyota Hilux (VRS, fitment-locked category)</div>
+        <h3>Exact-Fitment Category + Fitment Gallery</h3>
+        <p>The fitment-locked branch of the same Vehicle-Set PLP, for categories like Roof Racks whose products are strictly locked to an exact vehicle roof spec. List-view layout, real vehicle-specific FAQ content, and the same Fitment Gallery widget as the PDP/VCLP templates.</p>
+        <a class="btn btn-primary" href="vplp/index.html">Open Template</a>
       </div>
     </div>
   </div>

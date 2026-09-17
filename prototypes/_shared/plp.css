@@ -1,6 +1,6 @@
 /* Roof Racks Galore — PLP / VPLP component library (docs/plp/plp-spec.md)
    New components for the category listing pages that neither the 5 PDP templates nor the
-   Vehicle Landing Page need — kept out of shared.css (mirrors the existing mega-menu.css/
+   Vehicle Category Landing Page need — kept out of shared.css (mirrors the existing mega-menu.css/
    admin-panel.css split) so that file, already relied on by 6 live templates, isn't touched
    by this work. Loaded only by prototypes/plp/ and prototypes/vplp/, alongside shared.css.
    Every class here is plp- prefixed (or reuses a shared.css class verbatim, called out where

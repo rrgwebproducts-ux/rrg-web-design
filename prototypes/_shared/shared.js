@@ -2385,7 +2385,7 @@ function initStickyCta() {
 
 function buildAdminPanel() {
   // PLP/VPLP (docs/plp/plp-spec.md) — gated behind a [data-plp-page] marker so the 5 PDP
-  // templates and Vehicle Landing Page (none of which carry that marker) render exactly as
+  // templates and Vehicle Category Landing Page (none of which carry that marker) render exactly as
   // before. The Simple/Vehicle-Set hero state itself isn't controlled here — it reuses the
   // Site Admin Panel's existing, already-wired "Vehicle Set" session toggle (see
   // plp.js:plpVehicleIsSet()), per the 2026-09-17 build-plan decision not to add a new

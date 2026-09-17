@@ -45,7 +45,7 @@ function buildSiteAdminPanel(currentKey) {
       <div class="site-admin-section">
         <h5>Developer Briefs</h5>
         <div class="site-admin-links">
-          <!-- PDP only (2026-09-17, per Brenton) — Header/Footer/VLP dev briefs pulled out of
+          <!-- PDP only (2026-09-17, per Brenton) — Header/Footer/VCLP dev briefs pulled out of
                this panel so Mark isn't shown background work alongside his current PDP focus. -->
           <a href="../../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
         </div>

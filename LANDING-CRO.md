@@ -1,6 +1,6 @@
 # Landing Page CRO Analysis
-## Vehicle Landing Page — Ford Ranger Roof Racks
-### File analyzed: `prototypes/vehicle-landing/index.html` (static prototype, not live traffic)
+## Vehicle Category Landing Page — Ford Ranger Roof Racks
+### File analyzed: `prototypes/vehicle-category-landing/index.html` (static prototype, not live traffic)
 ### Analysis Date: 2026-09-15
 
 ---
@@ -24,7 +24,7 @@ Reasonable for a fitment tool with only 3 required fields on a page that's alrea
 **Findings:**
 - H1 "Ford Ranger Roof Racks" is concise (4 words) and keyword-matched, but it's a label, not a benefit — it tells the visitor *what page this is*, not *what they get*.
 - The paragraph under the H1 is doing subheadline duty but is 5 sentences of dense body copy (~75 words). It's genuinely well-written and specific (calls out generation, cab type, roof-rail type as the real fitment variables) but it reads as an FAQ answer, not a scannable subhead — most visitors won't read it before deciding whether to engage.
-- Primary hero CTA text is **"Change Vehicle"** (`prototypes/vehicle-landing/index.html:211`). This is backwards: the visitor hasn't selected anything yet on this page — "Change" implies undoing a prior choice. Compounding this, the header utility bar directly above it reads **"Your Vehicle: Toyota Hilux"** (line 121) on a page whose entire premise is the Ford Ranger. A first-time visitor's first impression is the site telling them it thinks they drive a different vehicle. This is a trust-breaking inconsistency sitting directly above the fold, not a copy nitpick.
+- Primary hero CTA text is **"Change Vehicle"** (`prototypes/vehicle-category-landing/index.html:211`). This is backwards: the visitor hasn't selected anything yet on this page — "Change" implies undoing a prior choice. Compounding this, the header utility bar directly above it reads **"Your Vehicle: Toyota Hilux"** (line 121) on a page whose entire premise is the Ford Ranger. A first-time visitor's first impression is the site telling them it thinks they drive a different vehicle. This is a trust-breaking inconsistency sitting directly above the fold, not a copy nitpick.
 - Hero image is a real Ford Ranger studio cutout — strong, specific, not generic stock. Good.
 - No trust indicators above the fold at all (no review score, no "35+ stores," no brand logos) — the only social proof on the page (Reviews.io 4.8/5) is buried mid-page in the trust banner (line 305).
 - Full mega-menu, utility bar, search and cart all present — appropriate for an SEO/category-style landing page (visitors should be able to keep browsing), but it does mean the hero CTA has to work harder to stand out, which the current "Change Vehicle" label undermines further.
@@ -123,7 +123,7 @@ The Fit Finder (`#fitFinder`, line 219-253) is the page's only form:
 | Field count | 3 real required fields (Year, Body Style, Roof Type) — Make/Model are pre-locked to Ford/Ranger with a single option each, so they're effectively decorative on this page. Within best practice (3-5 fields). |
 | Labels | Fields use `aria-label` only, not visible on-screen labels — the placeholder text ("Year", "Body Style", "Roof Type") lives inside the `<select>` itself and disappears once a value is chosen. A visitor who picks "2022 Onwards" and later glances back at the row has no visible label reminding them that's the Year field, only the FAQ-style options below to infer it from field position. |
 | Button text | "View Results" is functional but generic — see CTA section fix above. |
-| Error handling | N/A — no invalid states possible, button is simply disabled until all 3 fields are set (`prototypes/vehicle-landing/index.html:498-505`). This is a clean, low-friction pattern. |
+| Error handling | N/A — no invalid states possible, button is simply disabled until all 3 fields are set (`prototypes/vehicle-category-landing/index.html:498-505`). This is a clean, low-friction pattern. |
 | Multi-step | Single-step, appropriate given only 3 fields. |
 | Required vs. optional | All 3 are required, correctly with no optional fields to mark. |
 | Field types | Native `<select>` elements throughout — correct choice for constrained option sets like this. |
@@ -137,7 +137,7 @@ The Fit Finder (`#fitFinder`, line 219-253) is the page's only form:
 | Check | Finding |
 |---|---|
 | CTA thumb-reachable | Fit Finder's submit button spans full width at both the 900px and 520px breakpoints (`.ff-row .btn{grid-column:1/-1}`) — good, easy to reach and tap. |
-| Body text ≥16px | Body copy runs 14-15px (`.vlp-hero p`, `.vlp-content p/li` all `font-size:14.5px` or `15px`) — below the 16px minimum guideline. Minor, but worth a pass once real content is finalized. |
+| Body text ≥16px | Body copy runs 14-15px (`.vclp-hero p`, `.vclp-content p/li` all `font-size:14.5px` or `15px`) — below the 16px minimum guideline. Minor, but worth a pass once real content is finalized. |
 | Form usability | Selects are native `<select>` elements, which get the OS's own picker UI on mobile — good, no custom dropdown to fight with. Select font-size is 14px (`.ff-row select`), under the 16px threshold that prevents iOS Safari's auto-zoom-on-focus — worth bumping to 16px so tapping a field doesn't zoom the whole page. |
 | Images resize | Hero image and Fitment Gallery use `object-fit`/responsive containers — no fixed-pixel-width images that would overflow. |
 | No horizontal scroll | Layout uses `.wrap` containers and grid-to-single-column collapses at 900px/520px — nothing in the CSS suggests horizontal overflow risk. |

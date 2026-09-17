@@ -2,7 +2,7 @@
 // Loaded only by prototypes/plp/ and prototypes/vplp/, alongside shared.js/mega-menu.js/
 // admin-panel.js/session-state.js — mirrors those pages' header/footer/session-state exactly
 // (see plp-spec.md Section 0), but everything in this file is new: neither the 5 PDP
-// templates nor the Vehicle Landing Page have a filterable listing grid.
+// templates nor the Vehicle Category Landing Page have a filterable listing grid.
 //
 // Each page defines its own data as `window.PLP_CONFIG` (same convention as the PDP
 // templates' own inline VEHICLE_PRODUCT/FIT_GALLERY_PHOTOS blocks) — this file is the one

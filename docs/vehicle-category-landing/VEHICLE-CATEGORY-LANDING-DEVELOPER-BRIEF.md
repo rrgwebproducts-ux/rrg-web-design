@@ -1,4 +1,4 @@
-# Vehicle Landing Page — Developer Brief
+# Vehicle Category Landing Page — Developer Brief
 
 ## 1. Project context
 
@@ -6,11 +6,11 @@
 
 **What this page is:** a genuinely new page type, not a PDP — one page per **make/model** (e.g. "Toyota Hilux"), not per exact vehicle variant like the 5 PDP templates and not per SKU. Built to capture proven make/model search terms ("Toyota Hilux Roof Racks") and, within that, generation-specific searches ("N70 Roof Racks"). Its Fit Finder widget is meant to hand off to a category/PLP page filtered to the visitor's exact fitment — **that PLP doesn't exist yet anywhere in this prototype set**, so every hand-off from this page stubs out rather than linking somewhere real (Section 6).
 
-**Scope:** this brief covers `prototypes/vehicle-landing/index.html` only. It reuses the global Header/Footer (`HEADER-DEVELOPER-BRIEF.md` / `FOOTER-DEVELOPER-BRIEF.md` — not repeated here) and two PDP components verbatim (the FAQ accordion and the Fitment Gallery widget — both already fully documented in `DEVELOPER-BRIEF.md` Section 4, not repeated here either). Everything in Section 4 below is genuinely new to this page.
+**Scope:** this brief covers `prototypes/vehicle-category-landing/index.html` only. It reuses the global Header/Footer (`HEADER-DEVELOPER-BRIEF.md` / `FOOTER-DEVELOPER-BRIEF.md` — not repeated here) and two PDP components verbatim (the FAQ accordion and the Fitment Gallery widget — both already fully documented in `DEVELOPER-BRIEF.md` Section 4, not repeated here either). Everything in Section 4 below is genuinely new to this page.
 
-**Companion documents:** `spec.md` Section 12 and the project memory log this page's build history in full chronological detail (including a same-day re-theme from an initial Ford Ranger worked example to Toyota Hilux, and a correction where a first-pass bespoke "Recent Fits" carousel was thrown out in favour of reusing the real Fitment Gallery widget) — this brief is the handover summary, not the history. `docs/PAGE-GLOSSARY.md`'s "Vehicle Landing Page" section is the source of truth for this page's component names.
+**Companion documents:** `spec.md` Section 12 and the project memory log this page's build history in full chronological detail (including a same-day re-theme from an initial Ford Ranger worked example to Toyota Hilux, and a correction where a first-pass bespoke "Recent Fits" carousel was thrown out in favour of reusing the real Fitment Gallery widget) — this brief is the handover summary, not the history. `docs/PAGE-GLOSSARY.md`'s "Vehicle Category Landing Page" section is the source of truth for this page's component names.
 
-**Build status:** built as `prototypes/vehicle-landing/index.html`, worked example is Toyota Hilux. Playwright-verified: desktop (1440px) and mobile (390px, zero horizontal overflow), Fit Finder validation gating, FAQ accordion, Fitment Gallery carousel + slideout + detail view, zero console errors (aside from an expected favicon 404). Not yet pushed — gated on Brenton's sign-off, same as the other three briefs.
+**Build status:** built as `prototypes/vehicle-category-landing/index.html`, worked example is Toyota Hilux. Playwright-verified: desktop (1440px) and mobile (390px, zero horizontal overflow), Fit Finder validation gating, FAQ accordion, Fitment Gallery carousel + slideout + detail view, zero console errors (aside from an expected favicon 404). Not yet pushed — gated on Brenton's sign-off, same as the other three briefs.
 
 ---
 
@@ -18,11 +18,11 @@
 
 Same type scale and colour tokens as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings/buttons, Lato for body text, the full `--rrg-*` custom-property table) — not repeated here. No page-specific typography deviations; every heading/label on this page uses the shared scale as-is.
 
-The Fitment Education Content section (Section 3, item 5) uses `.content-block` — a shared h3/p/li sub-heading tier in `shared.css` (21px Barlow Condensed h3, e.g. "Why fitment varies on the Hilux," between body copy and the 40px section-heading scale). This was originally a VLP-only `.vlp-content` rule defined in this page's own `<style>` block; renamed and promoted into `shared.css` 2026-09-16 so it's genuinely reusable by any future PDP content needing the same tier, per the standing rule that heading/body typography lives in `shared.css` unless a page has an explicit, stated reason to deviate (see `DEVELOPER-BRIEF.md` Section 2 for the full rationale). The one exception left deliberately page-specific: `.ff-badge` (the Fit Finder icon badge) stays hardcoded to `37px` rather than following the shared section heading's `40px`, since Brenton's call was to decouple the two rather than have the badge track the heading size.
+The Fitment Education Content section (Section 3, item 5) uses `.content-block` — a shared h3/p/li sub-heading tier in `shared.css` (21px Barlow Condensed h3, e.g. "Why fitment varies on the Hilux," between body copy and the 40px section-heading scale). This was originally a VCLP-only `.vclp-content` rule defined in this page's own `<style>` block; renamed and promoted into `shared.css` 2026-09-16 so it's genuinely reusable by any future PDP content needing the same tier, per the standing rule that heading/body typography lives in `shared.css` unless a page has an explicit, stated reason to deviate (see `DEVELOPER-BRIEF.md` Section 2 for the full rationale). The one exception left deliberately page-specific: `.ff-badge` (the Fit Finder icon badge) stays hardcoded to `37px` rather than following the shared section heading's `40px`, since Brenton's call was to decouple the two rather than have the badge track the heading size.
 
 ---
 
-## 3. Page Layout — Vehicle Landing Page
+## 3. Page Layout — Vehicle Category Landing Page
 
 One page, section order top to bottom:
 
@@ -37,8 +37,8 @@ One page, section order top to bottom:
 9. Global Footer
 
 **Screenshots:**
-- Desktop (1440px), full page: ![VLP — desktop full page](vlp-dev-brief-assets/vlp-fullpage-desktop.png)
-- Mobile (390px), full page: ![VLP — mobile full page](vlp-dev-brief-assets/vlp-fullpage-mobile.png)
+- Desktop (1440px), full page: ![VCLP — desktop full page](vclp-dev-brief-assets/vclp-fullpage-desktop.png)
+- Mobile (390px), full page: ![VCLP — mobile full page](vclp-dev-brief-assets/vclp-fullpage-mobile.png)
 
 ---
 
@@ -61,11 +61,11 @@ One page, section order top to bottom:
 
 **Validation:** "View Results" stays disabled until Year, Body Style and Roof Type all have a value (Make/Model don't count — they're pre-set). Not a real cascade (nothing narrows the options in a later select based on an earlier one) — this is progressive-validation only, appropriate for a single-vehicle page.
 
-**Click action:** both "View Results" and the hero's "Change Vehicle" button are `data-vlp-cta` stubs — they `preventDefault()` and show an alert explaining there's no category/PLP page yet for them to go to (Section 6). **This is the one hand-off every other piece of this page's SEO/content work points toward** — the Generation Table, the Fit Finder's own Year select, and the fitment-education copy all exist to get a visitor to a confident answer here, which currently has nowhere real to go.
+**Click action:** both "View Results" and the hero's "Change Vehicle" button are `data-vclp-cta` stubs — they `preventDefault()` and show an alert explaining there's no category/PLP page yet for them to go to (Section 6). **This is the one hand-off every other piece of this page's SEO/content work points toward** — the Generation Table, the Fit Finder's own Year select, and the fitment-education copy all exist to get a visitor to a confident answer here, which currently has nowhere real to go.
 
 **States:**
-- Empty (default): ![Fit Finder — empty](vlp-dev-brief-assets/vlp-hero-closeup.png)
-- All fields filled, "View Results" enabled: ![Fit Finder — filled](vlp-dev-brief-assets/vlp-fitfinder-filled.png)
+- Empty (default): ![Fit Finder — empty](vclp-dev-brief-assets/vclp-hero-closeup.png)
+- All fields filled, "View Results" enabled: ![Fit Finder — filled](vclp-dev-brief-assets/vclp-fitfinder-filled.png)
 
 ---
 
@@ -84,13 +84,13 @@ One page, section order top to bottom:
 - Model codes and years are a **guide**, not a warranted-accurate parts-fitment reference — the footnote also tells visitors to check their compliance plate or send a roof photo if unsure, and flags that pre-2005 codes may not be stocked for aftermarket fitment at all.
 - **This table should be reviewed by someone with real Toyota model-code references before launch.** It was compiled from general automotive knowledge, not from Toyota's own documentation or this project's existing fitment data — treat it as a strong first draft, not a verified source.
 
-**Screenshot:** ![Generation Table](vlp-dev-brief-assets/vlp-gen-table-closeup.png)
+**Screenshot:** ![Generation Table](vclp-dev-brief-assets/vclp-gen-table-closeup.png)
 
 ---
 
 ### 4.3 Trust/Install Banner
 
-**Name:** VLP Trust Banner
+**Name:** VCLP Trust Banner
 
 **Location:** full-bleed dark band between the fitment-education content and the FAQ.
 
@@ -100,7 +100,7 @@ One page, section order top to bottom:
 
 **Click actions:** "Book An Installation" opens in a new tab (`target="_blank"`, real URL pending); "Store Finder" is a placeholder link, both pending Section 6.
 
-**Screenshot:** ![Trust Banner](vlp-dev-brief-assets/vlp-trust-banner-closeup.png)
+**Screenshot:** ![Trust Banner](vclp-dev-brief-assets/vclp-trust-banner-closeup.png)
 
 ---
 
@@ -116,7 +116,7 @@ One page, section order top to bottom:
 
 **Known asset issue, not introduced by this page:** the MAXTRAX logo renders visibly smaller/blurrier than the other three at any size — `brand-maxtrax.webp` itself is low-resolution (confirmed by opening the raw file). Pre-existing project-wide asset limitation, also present wherever else this logo is used.
 
-**Screenshot:** ![Brands strip](vlp-dev-brief-assets/vlp-brands-closeup.png)
+**Screenshot:** ![Brands strip](vclp-dev-brief-assets/vclp-brands-closeup.png)
 
 ---
 
@@ -141,7 +141,7 @@ One page, section order top to bottom:
 
 **What's still open — deferred deliberately, not an oversight:**
 
-- **Real page copy is genuinely unique per make/model.** This page's entire SEO value depends on that staying true for every future VLP the client builds — a second VLP (Ford Ranger, etc.) needs its own real hero/FAQ/education copy and its own Generation Table, not a find-and-replace of this one's Hilux facts (this project's own history has one near-miss of exactly that, corrected same-day — see `project_pdp_vehicle_landing_page` memory).
+- **Real page copy is genuinely unique per make/model.** This page's entire SEO value depends on that staying true for every future VCLP the client builds — a second VCLP (Ford Ranger, etc.) needs its own real hero/FAQ/education copy and its own Generation Table, not a find-and-replace of this one's Hilux facts (this project's own history has one near-miss of exactly that, corrected same-day — see `project_pdp_vehicle_landing_page` memory).
 - Everything in Section 6 below.
 
 ---

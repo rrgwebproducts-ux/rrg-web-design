@@ -2,7 +2,7 @@
 
 Project: category (listing) pages for Roof Racks Galore — the pages that sit between the header's product taxonomy and an individual PDP. Covers two related but distinct page types (Section 1).
 
-Companion project to `spec.md` (PDP rebuild), `docs/header/header-spec.md`, `docs/footer/footer-spec.md`, and the VCLP work (`docs/vehicle-landing/`) — same repo, same conventions (plain HTML/CSS/JS prototypes, `prototypes/_shared/` shared component library, Playwright verification before calling anything done, no push to git until Brenton's explicit sign-off, a developer-brief handover doc gated on its own separate sign-off, built once this page is stable). This file is the engineering spec/planning log for the PLP/VPLP work specifically. A `PLP-DEVELOPER-BRIEF.md` follows later, once prototype files actually exist — nothing has been built yet as of this writing (2026-09-17); this document is the output of a planning-only session, per [[feedback_discuss_before_actioning]].
+Companion project to `spec.md` (PDP rebuild), `docs/header/header-spec.md`, `docs/footer/footer-spec.md`, and the VCLP work (`docs/vehicle-category-landing/`) — same repo, same conventions (plain HTML/CSS/JS prototypes, `prototypes/_shared/` shared component library, Playwright verification before calling anything done, no push to git until Brenton's explicit sign-off, a developer-brief handover doc gated on its own separate sign-off, built once this page is stable). This file is the engineering spec/planning log for the PLP/VPLP work specifically. A `PLP-DEVELOPER-BRIEF.md` follows later, once prototype files actually exist — nothing has been built yet as of this writing (2026-09-17); this document is the output of a planning-only session, per [[feedback_discuss_before_actioning]].
 
 Source designs: `PLP Figma Designs/` at the project root —
 - `PLP Bike Racks - Vehicle Specific.png` — desktop **grid view**, standard (non-VRS) category, Toyota Hilux set. Its breadcrumb (vehicle-first) is confirmed wrong for this page type — see Section 3.
@@ -30,7 +30,7 @@ Build category pages that (a) work exactly like a normal ecommerce PLP when no v
 | **PLP** | Standard category listing page. |
 | **VRS** (Vehicle Rack Set) | A product that is exact-fitment-locked to a specific vehicle roof type — currently only Roof Racks, backbones, and spines. RRG tracks real fitment data for these categories and *only* these — nothing else (not Bike Racks, Cargo Boxes, Tie-Downs, etc.). |
 | **VPLP** | The PLP variant listing VRS products (e.g. Roof Racks for a set vehicle). Not a separate template from a build standpoint — it's the "exact-fitment-locked category" branch of the same Vehicle-Set PLP state (Section 2). |
-| **VCLP** (Vehicle Category Landing Page) | A different, already-built page type (`prototypes/vehicle-landing/`) — one page per make/model, not per category. **Correction, 2026-09-17:** this project previously mis-called it "VLP." A true VLP is a distinct, not-yet-built page type — don't reuse that abbreviation for this page. See [[project_pdp_vehicle_landing_page]]. |
+| **VCLP** (Vehicle Category Landing Page) | A different, already-built page type (`prototypes/vehicle-category-landing/`) — one page per make/model, not per category. **Correction, 2026-09-17:** this project previously mis-called it "VLP." A true VLP is a distinct, not-yet-built page type — don't reuse that abbreviation for this page. See [[project_pdp_vehicle_landing_page]]. |
 
 ---
 

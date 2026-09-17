@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vehicle Landing Page Developer Brief</title>
+<title>Vehicle Category Landing Page Developer Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -152,9 +152,9 @@
 <body>
 
 <div id="topbar">
-  <div class="title">RRG Vehicle Landing Page — <b>Developer Brief</b></div>
+  <div class="title">RRG Vehicle Category Landing Page — <b>Developer Brief</b></div>
   <div class="meta">
-    <span>Live view of <code style="background:#ffffff22;padding:2px 6px;border-radius:3px;">VEHICLE-LANDING-DEVELOPER-BRIEF.md</code></span>
+    <span>Live view of <code style="background:#ffffff22;padding:2px 6px;border-radius:3px;">VEHICLE-CATEGORY-LANDING-DEVELOPER-BRIEF.md</code></span>
     <button id="reloadBtn" type="button">Reload</button>
   </div>
 </div>
@@ -166,7 +166,7 @@
   </nav>
   <main>
     <div id="status"></div>
-    <article id="content">Loading VEHICLE-LANDING-DEVELOPER-BRIEF.md…</article>
+    <article id="content">Loading VEHICLE-CATEGORY-LANDING-DEVELOPER-BRIEF.md…</article>
   </main>
 </div>
 
@@ -229,9 +229,9 @@
 
   async function load(){
     hideStatus();
-    contentEl.textContent = 'Loading VEHICLE-LANDING-DEVELOPER-BRIEF.md…';
+    contentEl.textContent = 'Loading VEHICLE-CATEGORY-LANDING-DEVELOPER-BRIEF.md…';
     try {
-      const res = await fetch('VEHICLE-LANDING-DEVELOPER-BRIEF.md?t=' + Date.now(), { cache: 'no-store' });
+      const res = await fetch('VEHICLE-CATEGORY-LANDING-DEVELOPER-BRIEF.md?t=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const md = await res.text();
       contentEl.innerHTML = marked.parse(md);
@@ -242,10 +242,10 @@
       const isFileProtocol = location.protocol === 'file:';
       contentEl.innerHTML = '';
       showStatus(
-        '<strong>Could not load VEHICLE-LANDING-DEVELOPER-BRIEF.md.</strong><br>' +
+        '<strong>Could not load VEHICLE-CATEGORY-LANDING-DEVELOPER-BRIEF.md.</strong><br>' +
         (isFileProtocol
-          ? 'This page reads the brief live, which browsers only allow over a local web server, not a double-clicked file. From the project folder, run <code>python -m http.server 8000</code> (or <code>npx serve</code>) then open <code>http://localhost:8000/docs/vehicle-landing/vlp-dev-brief-viewer.html</code>.'
-          : ('Error: ' + err.message + '. Make sure this page and VEHICLE-LANDING-DEVELOPER-BRIEF.md are in the same folder.')),
+          ? 'This page reads the brief live, which browsers only allow over a local web server, not a double-clicked file. From the project folder, run <code>python -m http.server 8000</code> (or <code>npx serve</code>) then open <code>http://localhost:8000/docs/vehicle-category-landing/vclp-dev-brief-viewer.html</code>.'
+          : ('Error: ' + err.message + '. Make sure this page and VEHICLE-CATEGORY-LANDING-DEVELOPER-BRIEF.md are in the same folder.')),
         true
       );
     }

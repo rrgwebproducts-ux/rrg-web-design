@@ -876,7 +876,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    Simple and Grouped-Bundle had separately (and only locally) overridden this exact
    selector with the condensed-uppercase treatment below, so this heading tier silently
    rendered two different ways across templates. Consolidated 2026-09-16 (Brenton's call,
-   audit triggered by the VLP h3 question) onto the Simple/Grouped-Bundle look as the one
+   audit triggered by the VCLP h3 question) onto the Simple/Grouped-Bundle look as the one
    sitewide style, since that's the clearer sub-heading treatment — this is now the only
    place this selector is defined; do not re-declare it in a template's own <style> block. */
 .details-sub h3{font-size:13px;text-transform:uppercase;color:#767676;margin:14px 0 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
@@ -1213,7 +1213,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* Section heading style — shared by every top-level section label (Related Products,
    Showroom Finder's "See It In Person...", the Fitment Gallery panel) so they all read as
    one consistent typographic level, per client request 2026-09-10. Extended 2026-09-15 to
-   cover the Vehicle Landing Page's own top-level section labels (Fit Finder, the fitment
+   cover the Vehicle Category Landing Page's own top-level section labels (Fit Finder, the fitment
    education intro, the Trust Banner heading) — those were built with page-local font-size
    overrides that drifted from this scale; now genuinely the same shared rule everywhere,
    sitewide, not a same-looking copy. */
@@ -1225,7 +1225,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .showroom-heading,
 .ff-head h2,
 .content-block h2,
-.vlp-trust-inner h2{
+.vclp-trust-inner h2{
   font-family:'Barlow Condensed',Arial,sans-serif;
   font-weight:700;
   font-style:italic;
@@ -1235,9 +1235,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 
 /* Prose content block — plain, non-heading-scale sub-sections of body copy (currently
-   used by the Vehicle Landing Page's fitment-education content, e.g. "Why fitment varies
-   on the Hilux"). Renamed from the VLP-only .vlp-content (was also defined only in
-   vehicle-landing/index.html's own <style> block) to this generic name and moved here
+   used by the Vehicle Category Landing Page's fitment-education content, e.g. "Why fitment varies
+   on the Hilux"). Renamed from the VCLP-only .vclp-content (was also defined only in
+   vehicle-category-landing/index.html's own <style> block) to this generic name and moved here
    2026-09-16, per Brenton's standing rule that heading/body typography is shared sitewide
    unless explicitly stated otherwise — any future PDP content needing this same "content
    heading > paragraph > list" sub-tier should reuse this class rather than re-declaring
