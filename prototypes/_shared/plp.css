@@ -18,9 +18,16 @@
 .plp-hero-make-badge img{width:100%;height:100%;object-fit:contain;}
 /* Simple state (Section 4.2): no vehicle photo at all when the category has no fallback
    image configured — not a placeholder graphic, no broken layout, just a narrower text
-   column with no media column reserved. */
+   column with no media column reserved. Also reused for the Vehicle-Set hero's no-image
+   fallback state (plp.js applyPlpHeroImageFlag('none'), 2026-09-18 resolution).
+   2026-09-19 follow-up — Brenton: the grid itself was correctly collapsing to one column,
+   but the paragraph's own max-width (720px, originally tuned as a readable line-length cap)
+   left a big empty gap on the right in a ~1232px-wide content area, reading as "didn't
+   actually collapse." Dropped the cap so the paragraph genuinely uses the freed-up width
+   instead of leaving dead space — this is short marketing copy, not a reading-heavy block,
+   so a longer line length here is an acceptable trade for not looking broken. */
 .plp-hero.no-media{grid-template-columns:1fr;}
-.plp-hero.no-media p{max-width:720px;}
+.plp-hero.no-media p{max-width:none;}
 @media (max-width:900px){
   .plp-hero{grid-template-columns:1fr;gap:18px;padding-top:16px;}
   .plp-hero-media{order:-1;}
