@@ -147,9 +147,9 @@
 
 /* ---- Product grid / list + card (spec Section 7) ---- */
 .plp-results.is-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
-/* 4 per row is the default (2026-09-18, Brenton signed off), 3 kept as a Demo State Panel
-   fallback — desktop only, where the sidebar+main layout is active; below 901px the grid
-   already falls back to auto-fill/breakpoint rules regardless of the toggle. */
+/* 3 per row is the default (2026-09-18, Brenton signed off), 4 kept as a Demo State Panel
+   option (.cols-4) — desktop only, where the sidebar+main layout is active; below 901px the
+   grid already falls back to auto-fill/breakpoint rules regardless of the toggle. */
 @media (min-width:901px){
   .plp-results.is-grid.cols-4{grid-template-columns:repeat(4,1fr);}
 }

@@ -51,7 +51,7 @@ const plpState = {
   activeSubcat: 'all',
   activeFilters: {},     // { facetKey: Set(values) }
   view: 'grid',          // 'grid' | 'list' — reset from PLP_CONFIG.defaultView on init
-  gridCols: 4,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 4 is now the default (2026-09-18, Brenton signed off), 3 kept as the fallback option.
+  gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 3 is the default (2026-09-18, Brenton signed off), 4 kept as the fallback option.
   sort: 'relevance',
   page: 1,               // desktop numbered pagination
   visibleCount: PLP_PAGE_SIZE, // mobile "show more" cumulative count

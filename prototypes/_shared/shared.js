@@ -2497,8 +2497,8 @@ function buildAdminPanel() {
         </div>
         <div class="admin-toggle-label"><span>Grid columns <span class="admin-note">(desktop)</span></span></div>
         <div class="admin-radio-row">
-          <label><input type="radio" name="plpGridCols" value="3"> 3 per row</label>
-          <label><input type="radio" name="plpGridCols" value="4" checked> 4 per row</label>
+          <label><input type="radio" name="plpGridCols" value="3" checked> 3 per row</label>
+          <label><input type="radio" name="plpGridCols" value="4"> 4 per row</label>
         </div>
         <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
       </div>` : ''}
