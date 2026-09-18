@@ -1940,6 +1940,7 @@ function buildFitGallerySlideout() {
   // Delegated on the body container (not bound per-photo/per-button) since both views replace
   // this container's innerHTML wholesale on every render.
   backdrop.querySelector('#fitGallerySlideoutBody').addEventListener('click', e => {
+    if (e.target.closest('[data-fgs-load-more]')) { fitGallerySlideoutLoadMore(); return; }
     const photo = e.target.closest('[data-fgs-open-index]');
     if (photo) { renderFitGallerySlideoutDetail(Number(photo.dataset.fgsOpenIndex)); return; }
     const prev = e.target.closest('.fgs-prev');
@@ -1958,6 +1959,60 @@ function fitGalleryTileCount() {
   const section = document.getElementById('fitGallerySection');
   const realCount = parseInt((section && section.dataset.count) || FIT_GALLERY_PHOTOS.length, 10) || FIT_GALLERY_PHOTOS.length;
   return { realCount, tileCount: Math.min(100, realCount) };
+}
+
+// ---- Fitment gallery grid-view redesign (2026-09-18, PLP review item 5) ------------------
+// Brenton's feedback on the design review: the individual fitment detail view is fine as-is,
+// but the grid view (reached directly, or via "Back to Grid View") was "very busy, harsh on
+// the eyes" — a flat wall of bare <img> tags with no structure. Fix: group tiles into labelled
+// sections (by the fabricated FIT_GALLERY_PHOTOS[].colour — see that array's own comment for
+// why colour, not vehicle, is the fabricated axis) with a caption under each tile, and reveal
+// only FGS_INITIAL_REVEAL tiles up front with a "Load More" button instead of dumping the
+// whole tileCount at once. Shared by both the page-level widget (renderFitGallerySlideoutGrid
+// below) and the PLP per-row widget (plpRenderRowFgGrid in plp.js) so both drawers redesign
+// identically despite being independent instances.
+const FGS_INITIAL_REVEAL = 8;
+const FGS_LOAD_STEP = 8;
+
+function fgsGroupedGridHTML(photos, tileCount, revealedCount) {
+  const revealed = Math.min(revealedCount, tileCount);
+  const groups = [];
+  const groupIndexByColour = {};
+  for (let i = 0; i < revealed; i++) {
+    const photo = photos[i % photos.length];
+    const colour = photo.colour || 'Other';
+    if (!(colour in groupIndexByColour)) {
+      groupIndexByColour[colour] = groups.length;
+      groups.push({ colour, tiles: [] });
+    }
+    groups[groupIndexByColour[colour]].tiles.push({ i, photo });
+  }
+  let html = `<p class="fgs-grid-intro">Showing <strong>${revealed}</strong> of <strong>${tileCount}</strong> in-store fitments</p>`;
+  html += groups.map(g => `
+    <div class="fgs-group">
+      <h3 class="fgs-group-label">${g.colour} <span class="fgs-group-count">(${g.tiles.length})</span></h3>
+      <div class="fgs-group-grid">
+        ${g.tiles.map(t => `
+          <div class="fgs-photo-tile">
+            <img src="${t.photo.thumb}" data-fgs-open-index="${t.i}" role="button" tabindex="0" alt="Fitted to a customer's vehicle — view fitment detail">
+            <span class="fgs-photo-caption">Fit #${t.photo.id}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  if (revealed < tileCount) {
+    html += `<button type="button" class="btn btn-outline fgs-load-more" data-fgs-load-more>Load More (${Math.min(FGS_LOAD_STEP, tileCount - revealed)})</button>`;
+  }
+  return html;
+}
+
+let fitGallerySlideoutRevealed = FGS_INITIAL_REVEAL;
+
+function fitGallerySlideoutLoadMore() {
+  const { tileCount } = fitGalleryTileCount();
+  fitGallerySlideoutRevealed = Math.min(tileCount, fitGallerySlideoutRevealed + FGS_LOAD_STEP);
+  document.getElementById('fitGallerySlideoutBody').innerHTML = fgsGroupedGridHTML(FIT_GALLERY_PHOTOS, tileCount, fitGallerySlideoutRevealed);
 }
 
 function openFitGallerySlideout() {
@@ -1979,16 +2034,13 @@ function openFitGallerySlideoutAt(index) {
 
 function renderFitGallerySlideoutGrid() {
   const { realCount, tileCount } = fitGalleryTileCount();
+  fitGallerySlideoutRevealed = Math.min(FGS_INITIAL_REVEAL, tileCount);
   document.getElementById('fitGallerySlideoutTitle').hidden = false;
   document.getElementById('fitGallerySlideoutTitle').textContent = `In-store Fitments (${realCount})`;
   document.getElementById('fgsBackLink').hidden = true;
   const body = document.getElementById('fitGallerySlideoutBody');
   body.className = 'fit-gallery-slideout-body';
-  let html = '';
-  for (let i = 0; i < tileCount; i++) {
-    html += `<img src="${FIT_GALLERY_PHOTOS[i % FIT_GALLERY_PHOTOS.length].thumb}" data-fgs-open-index="${i}" role="button" tabindex="0" alt="Rhino Rack Pioneer Platform fitted to a customer's Hilux N80 — view fitment detail">`;
-  }
-  body.innerHTML = html;
+  body.innerHTML = fgsGroupedGridHTML(FIT_GALLERY_PHOTOS, tileCount, fitGallerySlideoutRevealed);
 }
 
 // Reuses the page's own real What's Included rows (Platform/Backbone/Tracks) rather than a

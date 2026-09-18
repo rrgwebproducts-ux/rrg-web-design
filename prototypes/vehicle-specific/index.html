@@ -925,23 +925,27 @@ const VEHICLE_PRODUCT = {
 // detail view. `id` is each photo's own real Rackit `product_id` from the scrape (used as the
 // detail view's "Fit #") — a real identifier, not a fabricated one, even though the photo
 // itself gets reused/cycled once the grid goes past these 16 real entries.
+// colour: fabricated demo-only presentation data (2026-09-18, PLP review item 5) — Rackit gives
+// us no real per-photo vehicle/colour field for these 16 scraped photos (every fitment is the
+// same real Hilux N80 + components, see FITMENT_COPY above), so colour groupings in the redesigned
+// grid view are invented for demo purposes only, not a real data field to build against.
 const FIT_GALLERY_PHOTOS = [
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_FhlLK_1.jpg", id: 166874 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_P7ZoC_1.jpg", id: 166832 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_jQonU_1.jpg", id: 166830 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_2750_YaaKX_1.jpg", id: 166829 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_4122_UYR7R_1.jpg", id: 166814 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/17791433691174490956170860620194_cDO9c_1.jpg", id: 166786 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/P/_/P_20260511_142833_afuMl_1.jpg", id: 166139 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_aNE06_1.jpg", id: 165847 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/1777955625720802347718023618055_GHZgB_1.jpg", id: 165841 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_J6mwc_1.jpg", id: 165781 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_9n7yh_1.jpg", id: 165779 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260420_151706_B6naw_1.jpg", id: 165689 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260427_111136_PjcDx_1.jpg", id: 165515 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0621_9m6aU_1.jpg", id: 165492 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0365_ZEGC1_1.jpg", id: 165368 },
-  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/r/a/rackit-fitment-1-9994-1_1.jpg", id: 164886 }
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_FhlLK_1.jpg", id: 166874, colour: "White" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_P7ZoC_1.jpg", id: 166832, colour: "White" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_jQonU_1.jpg", id: 166830, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_2750_YaaKX_1.jpg", id: 166829, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_4122_UYR7R_1.jpg", id: 166814, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/17791433691174490956170860620194_cDO9c_1.jpg", id: 166786, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/P/_/P_20260511_142833_afuMl_1.jpg", id: 166139, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_aNE06_1.jpg", id: 165847, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/1777955625720802347718023618055_GHZgB_1.jpg", id: 165841, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_J6mwc_1.jpg", id: 165781, colour: "Silver" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_9n7yh_1.jpg", id: 165779, colour: "Silver" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260420_151706_B6naw_1.jpg", id: 165689, colour: "Red" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260427_111136_PjcDx_1.jpg", id: 165515, colour: "Red" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0621_9m6aU_1.jpg", id: 165492, colour: "Blue" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0365_ZEGC1_1.jpg", id: 165368, colour: "Blue" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/r/a/rackit-fitment-1-9994-1_1.jpg", id: 164886, colour: "Grey" }
 ];
 
 // Clicking a carousel photo opens that same fitment's detail view directly in the "View All"

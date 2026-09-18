@@ -217,6 +217,27 @@
    rather than inventing a new hover language. Same treatment for grid and list, since both
    share this one .plp-card class. */
 .plp-card:hover{box-shadow:var(--shadow);border-color:var(--rrg-red);transform:translateY(-3px);cursor:pointer;}
+
+/* Nav-depth Level 3 row (2026-09-18 review item 39/40, revised same day) — its own row above
+   #plpResults, not merged into the product grid: the first pass shared a grid row with full
+   product cards and stretched to match their height, leaving the icon cards tall and sparse.
+   Fixed at 5 columns on desktop regardless of how many children a tab has (per Brenton) —
+   Camp Furniture's 5 fills the row exactly, a tab with fewer children (e.g. Tents' 1) just
+   leaves empty trailing cells rather than stretching what's there wider. */
+.plp-level3-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+@media (max-width:900px){
+  .plp-level3-row{grid-template-columns:repeat(3,1fr);}
+}
+@media (max-width:640px){
+  .plp-level3-row{grid-template-columns:repeat(2,1fr);gap:10px;}
+}
+/* Reuses .plp-shopby-icon/.plp-shopby-label (see plp.css above) so the icon is the same size
+   as the Level 2 tabs, per spec's "explicitly not shrunk". */
+.plp-icon-card{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px 12px;cursor:pointer;transition:border-color .15s ease,background .15s ease;}
+.plp-icon-card:hover{border-color:var(--rrg-red);}
+.plp-icon-card.active{border-color:var(--rrg-red);background:#fff5f5;}
+.plp-icon-card .plp-shopby-icon{width:100px;height:50px;}
+.plp-icon-card .plp-shopby-label{color:var(--rrg-black);}
 .plp-fitgallery-inline{grid-column:1/-1;}
 .plp-results.is-grid .plp-fitgallery-inline{margin:4px 0;}
 
@@ -321,6 +342,7 @@
 .plp-rating .stars{font-size:14px;}
 .plp-price{display:flex;flex-direction:column;gap:2px;margin-bottom:4px;}
 .plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--rrg-black);white-space:nowrap;}
+.plp-price-poa{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:#767676;text-transform:uppercase;letter-spacing:.02em;}
 .plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
 .plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;white-space:nowrap;}
 /* On-sale layout (2026-09-18 design review — Graham: the sale-tag graphic overlaying the

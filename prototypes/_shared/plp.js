@@ -19,18 +19,25 @@ const PLP_PAGE_SIZE = 12;
 // a 75kg requirement). Config-driven per plp-spec.md Section 6's "real configurable
 // structure, not a hardcoded one-off list" instruction.
 function plpValueMatches(product, facetKey, facetDef, selectedValue) {
-  const v = product.facets[facetKey];
+  const v = (product.facets || {})[facetKey];
   if (v === undefined) return false;
   if (facetDef.mode === 'atleast') return Number(v) >= Number(selectedValue);
   return String(v) === String(selectedValue);
 }
 
-function plpMatchesShopBy(product, activeSubcat) {
-  return !activeSubcat || activeSubcat === 'all' || (product.subcategories || []).includes(activeSubcat);
+// activeSubsubcat: nav-depth Level 3 (2026-09-18 design review item 39/40 — icon cards inside
+// the results grid, under a Level 2 tab that has `children`). Kept separate from activeSubcat
+// rather than folded into it, since Level 2 tabs must stay persistent/highlighted regardless
+// of which (if any) Level 3 card is selected under them — see plpRenderShopBy(), which only
+// ever reads activeSubcat.
+function plpMatchesShopBy(product, activeSubcat, activeSubsubcat) {
+  if (activeSubcat && activeSubcat !== 'all' && !(product.subcategories || []).includes(activeSubcat)) return false;
+  if (activeSubsubcat && !(product.subcategories || []).includes(activeSubsubcat)) return false;
+  return true;
 }
 
-function plpMatchesFiltersExcept(product, activeFilters, exceptFacetKey, activeSubcat) {
-  if (!plpMatchesShopBy(product, activeSubcat)) return false;
+function plpMatchesFiltersExcept(product, activeFilters, exceptFacetKey, activeSubcat, activeSubsubcat) {
+  if (!plpMatchesShopBy(product, activeSubcat, activeSubsubcat)) return false;
   return Object.keys(activeFilters).every(facetKey => {
     if (facetKey === exceptFacetKey) return true;
     const selected = activeFilters[facetKey];
@@ -49,6 +56,7 @@ function plpFacetDefByKey(key) {
 // ---- State ------------------------------------------------------------
 const plpState = {
   activeSubcat: 'all',
+  activeSubsubcat: null, // nav-depth Level 3 (2026-09-18 review item 39/40) — see plpMatchesShopBy()
   activeFilters: {},     // { facetKey: Set(values) }
   view: 'grid',          // 'grid' | 'list' — reset from PLP_CONFIG.defaultView on init
   gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 3 is the default (2026-09-18, Brenton signed off), 4 kept as the fallback option.
@@ -61,7 +69,7 @@ const plpState = {
 
 function plpFilteredSortedProducts() {
   const cfg = window.PLP_CONFIG;
-  let list = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat));
+  let list = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, plpState.activeSubsubcat));
   const sorters = {
     relevance: (a, b) => (b.relevanceRank || 0) - (a.relevanceRank || 0),
     price_low: (a, b) => a.price - b.price,
@@ -82,12 +90,24 @@ function plpFilteredSortedProducts() {
 // one tab strip with a permanent "all" tab, per the Figma reference.
 function plpSelectSubcat(key) {
   plpState.activeSubcat = key;
+  plpState.activeSubsubcat = null;
   plpState.activeFilters = {};
   plpState.page = 1;
   plpState.visibleCount = PLP_PAGE_SIZE;
   plpRenderShopBy();
   plpRenderFilters();
   plpRenderResults();
+  plpRenderFAQ();
+}
+
+// Level 3 icon-card selection — toggles (click again to clear), leaves the Level 2 tab row
+// untouched (see plpMatchesShopBy()'s comment on why activeSubsubcat is a separate field).
+function plpSelectSubsubcat(key) {
+  plpState.activeSubsubcat = plpState.activeSubsubcat === key ? null : key;
+  plpState.page = 1;
+  plpState.visibleCount = PLP_PAGE_SIZE;
+  plpRenderResults();
+  plpRenderFAQ();
 }
 
 const PLP_SHOWALL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
@@ -108,11 +128,24 @@ function plpRenderShopBy() {
   });
 }
 
+// Level 3 icon card — reuses .plp-shopby-icon/.plp-shopby-label so the icon renders at the
+// same size as the Level 2 tabs (spec: "explicitly not shrunk"), inside a .plp-icon-card
+// wrapper sized like a product card instead of a tab.
+function plpIconCardHTML(child) {
+  const active = plpState.activeSubsubcat === child.key ? ' active' : '';
+  return `
+    <button type="button" class="plp-icon-card${active}" data-subsubcat="${child.key}">
+      <span class="plp-shopby-icon">${child.icon}</span>
+      <span class="plp-shopby-label">${child.label}</span>
+    </button>
+  `;
+}
+
 // ==== Filters sidebar ========================================================
 function plpFilterGroupHTML(facetDef, isPriority) {
   const cfg = window.PLP_CONFIG;
   const options = facetDef.options.map(opt => {
-    const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, facetDef.key, plpState.activeSubcat) && plpValueMatches(p, facetDef.key, facetDef, opt.value)).length;
+    const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, facetDef.key, plpState.activeSubcat, plpState.activeSubsubcat) && plpValueMatches(p, facetDef.key, facetDef, opt.value)).length;
     const checked = plpState.activeFilters[facetDef.key] && plpState.activeFilters[facetDef.key].has(String(opt.value));
     return `
       <label class="plp-filter-option ${count === 0 && !checked ? 'is-zero' : ''}">
@@ -294,7 +327,14 @@ function plpRibbonHTML(product) {
 // plpCardHTML/plpListCardHTML), same condition this prefix keys off. This demo dataset treats
 // the product's own listed price as already being the cheapest option's price (no separate
 // sibling records exist to compute a real minimum from).
+// Price on Application (2026-09-18, Camping scrape) — a chunk of real scraped Camping SKUs
+// have no listed price on the live site (not out of stock, just no price shown in the
+// listing). Rather than fabricate a number, show POA and swap the primary action to a
+// straight "View Details" link (see plpPrimaryActionHTML) since quick-add needs a real price.
 function plpPriceHTML(product) {
+  if (!product.price) {
+    return `<div class="plp-price"><div class="plp-price-col"><span class="plp-price-poa">Price on Application</span></div></div>`;
+  }
   const now = plpFmtMoney(product.price);
   // "From" reuses the same small .plp-price-label style as "Now"/"RRP" (2026-09-19 2nd
   // follow-up) — it used to be plain text prepended inside .plp-price-now, which rendered it
@@ -337,7 +377,12 @@ function plpFmtMoney(n) {
   return '$' + n.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// No-rating gap (2026-09-18, Camping scrape) — the real Camping category listing tiles don't
+// render a star/review widget at all (not zero reviews, just not part of that page's markup),
+// so scraped Camping products carry no rating field. Hide the row rather than fabricate stars,
+// same pattern as plpSpecsHTML's existing "no specs" guard below.
 function plpRatingHTML(product) {
+  if (!product.rating) return '';
   const full = Math.round(product.rating);
   return `
     <div class="plp-rating">
@@ -402,6 +447,9 @@ function plpBrandOverlayHTML(product) {
 // an option first. Independent of cfg.vrs (VRS/Fitment Gallery is a separate concern), so a
 // VRS product can be either state just like a standard one.
 function plpPrimaryActionHTML(product, blockClass) {
+  if (!product.price) {
+    return `<a href="${product.url || '#'}" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Details</a>`;
+  }
   if (product.hasOptions) {
     return `<a href="#" class="btn btn-gold plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Options</a>`;
   }
@@ -424,7 +472,7 @@ function plpCardHTML(product, cfg) {
 
   return `
     <div class="plp-card" data-product-id="${product.id}">
-      <a href="#" class="plp-card-media-link">
+      <a href="${product.url || '#'}" class="plp-card-media-link">
         <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
           ${plpRibbonHTML(product)}
           ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
@@ -432,7 +480,7 @@ function plpCardHTML(product, cfg) {
       </a>
       <div class="plp-card-body">
         ${plpBrandHTML(product)}
-        <h3 class="plp-card-title"><a href="#" class="plp-card-title-link">${product.name}</a></h3>
+        <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${plpPriceHTML(product)}
         ${plpStockLineHTML(product)}
@@ -464,7 +512,7 @@ function plpListCardHTML(product, cfg) {
   return `
     <div class="plp-card" data-product-id="${product.id}">
       <div class="plp-list-col-media">
-        <a href="#" class="plp-card-media-link">
+        <a href="${product.url || '#'}" class="plp-card-media-link">
           <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
             ${plpBrandOverlayHTML(product)}
             ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
@@ -473,7 +521,7 @@ function plpListCardHTML(product, cfg) {
         ${fitGalleryBtn}
       </div>
       <div class="plp-list-col-info">
-        <h3 class="plp-card-title"><a href="#" class="plp-card-title-link">${product.name}</a></h3>
+        <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${usps}
       </div>
@@ -512,6 +560,30 @@ function plpRenderResults() {
   const gridColsClass = plpState.view === 'grid' && plpState.gridCols === 4 ? ' cols-4' : '';
   wrap.className = `plp-results ${plpState.view === 'list' ? 'is-list' : 'is-grid'}${gridColsClass}`;
   const cardsArr = visible.map(p => plpState.view === 'list' ? plpListCardHTML(p, cfg) : plpCardHTML(p, cfg));
+
+  // Nav-depth Level 3 icon cards (2026-09-18 review item 39/40, revised same day after Brenton
+  // saw the first pass): originally merged into the results grid as leading cells, but sharing
+  // a grid row with a full product card stretched the icon cards to match its height, leaving
+  // them tall and sparse. Now a dedicated row of their own — .plp-level3-row, fixed at 5
+  // columns on desktop regardless of how many children a tab has — sitting above the results
+  // grid rather than inside it. Only on the first page (see plpBindCardEvents() for the click
+  // binding, which now targets this row instead of #plpResults).
+  const activeTile = (cfg.shopBy || []).find(t => t.key === plpState.activeSubcat);
+  const showLevel3 = activeTile && activeTile.children && activeTile.children.length && (isMobile || plpState.page === 1);
+  let level3Row = document.getElementById('plpLevel3Row');
+  if (showLevel3) {
+    if (!level3Row) {
+      level3Row = document.createElement('div');
+      level3Row.className = 'plp-level3-row';
+      level3Row.id = 'plpLevel3Row';
+      wrap.parentElement.insertBefore(level3Row, wrap);
+    }
+    level3Row.hidden = false;
+    level3Row.innerHTML = activeTile.children.map(plpIconCardHTML).join('');
+  } else if (level3Row) {
+    level3Row.hidden = true;
+    level3Row.innerHTML = '';
+  }
 
   // Fitment Gallery, once per results page, at position 2 (spec Section 9): 2nd row in list
   // view (index 2), directly after the first full row in grid view (index = plpState.gridCols,
@@ -609,6 +681,9 @@ function plpBindCardEvents() {
       btn.disabled = true;
       setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
     });
+  });
+  document.querySelectorAll('#plpLevel3Row [data-subsubcat]').forEach(btn => {
+    btn.addEventListener('click', () => plpSelectSubsubcat(btn.dataset.subsubcat));
   });
 }
 
@@ -747,6 +822,29 @@ function plpRenderVideos() {
       <span class="plp-video-play">&#9658;</span>
       <span class="plp-video-title">${v.title}</span>
     </a>
+  `).join('');
+}
+
+// ==== Category FAQ, dynamic per Level 2/3 tab (spec Section 15 item 5: "Buyer's Guide/FAQ/
+// Video are dynamic — hide when no content exists for that category") — opt-in via
+// cfg.faqByCategory (keyed by shopBy/children key, plus an 'all' fallback for Show All), so
+// pages without it (plp/vplp, whose FAQ is static hardcoded content) are unaffected. Re-run on
+// every Level 2/3 tab change, not just at init, so the section actually demonstrates the
+// dynamic swap rather than just the empty/non-empty toggle.
+function plpRenderFAQ() {
+  const cfg = window.PLP_CONFIG;
+  const section = document.getElementById('faqSection');
+  const list = document.getElementById('faqList');
+  if (!section || !list || !cfg.faqByCategory) return;
+  const key = plpState.activeSubsubcat || plpState.activeSubcat || 'all';
+  const items = cfg.faqByCategory[key] || cfg.faqByCategory.all || [];
+  section.hidden = !items.length;
+  if (!items.length) return;
+  list.innerHTML = items.map(item => `
+    <details class="faq-item">
+      <summary>${item.q}</summary>
+      <div class="faq-answer"><p>${item.a}</p></div>
+    </details>
   `).join('');
 }
 
@@ -891,6 +989,7 @@ function plpBuildRowFitGalleryDrawer() {
   backdrop.querySelector('.fit-gallery-slideout-close').addEventListener('click', () => backdrop.classList.remove('open'));
   backdrop.querySelector('#rowFgsBackLink').addEventListener('click', () => plpRenderRowFgGrid(plpRowFgProduct));
   backdrop.querySelector('#rowFgsBody').addEventListener('click', e => {
+    if (e.target.closest('[data-fgs-load-more]')) { plpRowFgLoadMore(plpRowFgProduct); return; }
     const photo = e.target.closest('[data-fgs-open-index]');
     if (photo) { plpRenderRowFgDetail(plpRowFgProduct, Number(photo.dataset.fgsOpenIndex)); return; }
     const prev = e.target.closest('.fgs-prev');
@@ -903,6 +1002,13 @@ function plpBuildRowFitGalleryDrawer() {
 
 let plpRowFgProduct = null;
 let plpRowFgIndex = 0;
+// Grid-view redesign (2026-09-18, PLP review item 5) shares fgsGroupedGridHTML/FGS_INITIAL_REVEAL/
+// FGS_LOAD_STEP with the page-level widget — see their definition and rationale in shared.js.
+let plpRowFgRevealed = FGS_INITIAL_REVEAL;
+
+function plpRowFgPhotos(product) {
+  return product.fitmentPhotos && product.fitmentPhotos.length ? product.fitmentPhotos : (typeof FIT_GALLERY_PHOTOS !== 'undefined' ? FIT_GALLERY_PHOTOS : []);
+}
 
 function plpOpenRowFitGallery(product) {
   plpRowFgProduct = product;
@@ -911,22 +1017,26 @@ function plpOpenRowFitGallery(product) {
 }
 
 function plpRenderRowFgGrid(product) {
-  const photos = product.fitmentPhotos && product.fitmentPhotos.length ? product.fitmentPhotos : (typeof FIT_GALLERY_PHOTOS !== 'undefined' ? FIT_GALLERY_PHOTOS : []);
+  const photos = plpRowFgPhotos(product);
+  const tileCount = Math.min(100, product.fitmentCount || photos.length);
+  plpRowFgRevealed = Math.min(FGS_INITIAL_REVEAL, tileCount);
   document.getElementById('rowFgsTitle').hidden = false;
   document.getElementById('rowFgsTitle').textContent = `In-store Fitments (${product.fitmentCount})`;
   document.getElementById('rowFgsBackLink').hidden = true;
   const body = document.getElementById('rowFgsBody');
   body.className = 'fit-gallery-slideout-body';
+  body.innerHTML = fgsGroupedGridHTML(photos, tileCount, plpRowFgRevealed);
+}
+
+function plpRowFgLoadMore(product) {
+  const photos = plpRowFgPhotos(product);
   const tileCount = Math.min(100, product.fitmentCount || photos.length);
-  let html = '';
-  for (let i = 0; i < tileCount; i++) {
-    html += `<img src="${photos[i % photos.length].thumb}" data-fgs-open-index="${i}" role="button" tabindex="0" alt="${product.name} fitted to a customer's vehicle — view fitment detail">`;
-  }
-  body.innerHTML = html;
+  plpRowFgRevealed = Math.min(tileCount, plpRowFgRevealed + FGS_LOAD_STEP);
+  document.getElementById('rowFgsBody').innerHTML = fgsGroupedGridHTML(photos, tileCount, plpRowFgRevealed);
 }
 
 function plpRenderRowFgDetail(product, index) {
-  const photos = product.fitmentPhotos && product.fitmentPhotos.length ? product.fitmentPhotos : (typeof FIT_GALLERY_PHOTOS !== 'undefined' ? FIT_GALLERY_PHOTOS : []);
+  const photos = plpRowFgPhotos(product);
   const tileCount = Math.min(100, product.fitmentCount || photos.length);
   const clamped = Math.max(0, Math.min(tileCount - 1, index));
   plpRowFgIndex = clamped;
@@ -1034,6 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.PLP_CONFIG.vrs) plpBuildRowFitGalleryDrawer();
   plpRenderHero();
   plpRenderResults();
+  plpRenderFAQ();
   window.addEventListener('resize', () => plpRenderResults());
   document.addEventListener('rrg-session-change', plpRenderHero);
   document.addEventListener('rrg-session-change', plpRenderResults);

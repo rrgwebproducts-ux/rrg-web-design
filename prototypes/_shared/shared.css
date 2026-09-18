@@ -1061,10 +1061,21 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-slideout-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
 .fit-gallery-slideout-head h2{font-size:18px;margin:0;}
 .fit-gallery-slideout-close{background:#f2f2f2;border:none;border-radius:50%;width:48px;height:48px;font-size:16px;color:#333;flex:0 0 auto;}
-.fit-gallery-slideout-body{padding:16px 22px 22px;overflow-y:auto;flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;align-content:start;}
-.fit-gallery-slideout-body img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#eee;}
-.fit-gallery-slideout-body img[data-fgs-open-index]{cursor:pointer;transition:opacity .15s ease;}
-.fit-gallery-slideout-body img[data-fgs-open-index]:hover{opacity:.8;}
+.fit-gallery-slideout-body{padding:16px 22px 22px;overflow-y:auto;flex:1 1 auto;}
+/* Grid view redesign (2026-09-18, PLP review item 5): grouped sections with captions and a
+   progressive "Load More" reveal, instead of one flat wall of bare images — see fgsGroupedGridHTML()
+   in shared.js. */
+.fgs-grid-intro{font-size:13px;color:#767676;margin:0 0 16px;}
+.fgs-group{margin-bottom:24px;}
+.fgs-group:last-of-type{margin-bottom:0;}
+.fgs-group-label{display:flex;align-items:baseline;gap:6px;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#767676;margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid var(--rrg-line);}
+.fgs-group-count{font-weight:400;text-transform:none;letter-spacing:0;color:#a3a3a3;}
+.fgs-group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;}
+.fgs-photo-tile{display:flex;flex-direction:column;gap:6px;}
+.fgs-photo-tile img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#eee;cursor:pointer;transition:opacity .15s ease;}
+.fgs-photo-tile img:hover{opacity:.8;}
+.fgs-photo-caption{font-size:11px;color:#999;text-align:center;}
+.fgs-load-more{width:100%;margin-top:4px;}
 
 /* "Back to Grid View" link — swaps into the slide-out head in place of the title (both
    toggled via [hidden]) once a fitment detail is open, see renderFitGallerySlideoutDetail()/
