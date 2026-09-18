@@ -107,19 +107,21 @@
 
 /* ---- Filters (spec Section 6) ---- */
 .plp-filter-priority{margin-bottom:16px;}
+.plp-filter-group{border-bottom:1px solid var(--rrg-line);padding:12px 0;}
 /* Same cart gold as the SHOP BY active tab (#FFCA48, see plp-shopby-tile.active) — the old
    whole-box tint (--rrg-gold-bg/--rrg-gold, a muted tan) covering the entire priority filter
    area read as a warning banner. Gold now only marks each individual group: a border round
-   the group and a filled header strip behind its heading, white everywhere else. */
-/* Overrides the shared .plp-filter-group's own border-bottom/padding (both classes sit on
-   the same element) — that 12px top padding was pushing the gold header down off the box's
+   the group and a filled header strip behind its heading, white everywhere else.
+   Overrides the shared .plp-filter-group's own border-bottom/padding above (both classes sit
+   on the same element) — that 12px top padding was pushing the gold header down off the box's
    top edge, leaving a white gap above it, and its border-bottom would otherwise draw a stray
-   grey line inside the gold-bordered box. */
+   grey line inside the gold-bordered box. Placed after .plp-filter-group in the source: both
+   selectors are equal specificity (one class each), so source order is what decides the tie —
+   this has to come second to actually win. */
 .plp-filter-priority-group{border:1px solid #FFCA48;border-bottom:1px solid #FFCA48;border-radius:var(--radius);margin-bottom:12px;padding:0;overflow:hidden;}
 .plp-filter-priority-group:last-child{margin-bottom:0;}
 .plp-filter-priority-group h4{background:#FFCA48;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;margin:0;padding:8px 12px;color:#000;}
 .plp-filter-priority-group .plp-filter-options{padding:10px 12px;margin-top:0;}
-.plp-filter-group{border-bottom:1px solid var(--rrg-line);padding:12px 0;}
 .plp-filter-group summary{list-style:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;position:relative;padding-right:20px;}
 .plp-filter-group summary::-webkit-details-marker{display:none;}
 .plp-filter-group summary::after{content:'\2212';position:absolute;right:0;top:0;color:#767676;}
