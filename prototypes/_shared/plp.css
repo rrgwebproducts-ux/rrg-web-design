@@ -42,21 +42,30 @@
    (below) nudges the track's content box 1px taller than the track itself, which was enough
    for that implicit auto-y to detect overflow and draw a phantom vertical scrollbar. Pin
    overflow-y:hidden so only the intended horizontal scroll can ever trigger. */
-.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--rrg-line);}
+/* Same cart gold as the active tab fill (#FFCA48) and thicker (3px, was a plain 1px grey
+   line) so the row reads with some colour/weight of its own, not just a hairline divider. */
+.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-bottom:3px solid #FFCA48;}
 /* Figma reference: a line runs under the whole row, and the active tile's border meets it —
    its top/left/right border is gold, its bottom border is the same colour as its own fill
-   (not transparent), so that colour masks the exact 1px of the track's grey line sitting
-   under it (margin-bottom:-1px pulls the tile down onto that line). The result reads as one
+   (not transparent), so that colour masks the exact 3px of the track's gold line sitting
+   under it (margin-bottom:-3px pulls the tile down onto that line, matching the line's own
+   thickness so none of it peeks out above the tile's bottom border). The result reads as one
    continuous strip with a tab popping up out of it, not a row of individual buttons —
    inactive tiles still carry no box/border at all, just icon + label, so they sit flush on
    the line like unselected tabs rather than competing boxes. */
-.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:140px;min-height:110px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-1px;}
+.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:140px;min-height:110px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-3px;}
 .plp-shopby-tile:not(.active):hover{background:var(--rrg-bg);}
 /* Same gold as Add to Cart / the hero CTA buttons (shared.css .btn-gold, #FFCA48) — the old
    --rrg-gold/--rrg-gold-bg pairing (a muted tan) read as a warning colour, not a selection
    state, so the active tile now fills solid with the real cart gold instead. */
 .plp-shopby-tile.active{background:#FFCA48;border-color:#FFCA48 #FFCA48 #FFCA48;}
-.plp-shopby-icon{width:60px;height:60px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
+/* Width nearly spans the tile's inner content area (140px tile - 16px horizontal padding =
+   124px) so the icon reads as the dominant element of the tab, not a small badge above the
+   label — height stays close to its old 60px so this doesn't push the tile past its existing
+   min-height. object-fit:contain still preserves each image's own aspect ratio, so a
+   portrait-shaped icon (e.g. PLP's Tow Bar Mount) won't stretch to fill 124px width the way a
+   landscape one does — that's correct, not a bug: forcing it to fill would distort the art. */
+.plp-shopby-icon{width:124px;height:62px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
 .plp-shopby-icon svg{width:100%;height:100%;}
 .plp-shopby-icon img{width:100%;height:100%;object-fit:contain;}
 /* Matches the hero section's .btn font-size (shared.css) so the tab labels read at the same
@@ -97,11 +106,19 @@
 .plp-main,.plp-sidebar{min-width:0;}
 
 /* ---- Filters (spec Section 6) ---- */
-.plp-filter-priority{background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
-.plp-filter-priority-label{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#8a6d1f;margin-bottom:10px;}
-.plp-filter-priority-group{margin-bottom:14px;}
+.plp-filter-priority{margin-bottom:16px;}
+/* Same cart gold as the SHOP BY active tab (#FFCA48, see plp-shopby-tile.active) — the old
+   whole-box tint (--rrg-gold-bg/--rrg-gold, a muted tan) covering the entire priority filter
+   area read as a warning banner. Gold now only marks each individual group: a border round
+   the group and a filled header strip behind its heading, white everywhere else. */
+/* Overrides the shared .plp-filter-group's own border-bottom/padding (both classes sit on
+   the same element) — that 12px top padding was pushing the gold header down off the box's
+   top edge, leaving a white gap above it, and its border-bottom would otherwise draw a stray
+   grey line inside the gold-bordered box. */
+.plp-filter-priority-group{border:1px solid #FFCA48;border-bottom:1px solid #FFCA48;border-radius:var(--radius);margin-bottom:12px;padding:0;overflow:hidden;}
 .plp-filter-priority-group:last-child{margin-bottom:0;}
-.plp-filter-priority-group h4{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;margin:0 0 8px;color:#000;}
+.plp-filter-priority-group h4{background:#FFCA48;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;margin:0;padding:8px 12px;color:#000;}
+.plp-filter-priority-group .plp-filter-options{padding:10px 12px;margin-top:0;}
 .plp-filter-group{border-bottom:1px solid var(--rrg-line);padding:12px 0;}
 .plp-filter-group summary{list-style:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;position:relative;padding-right:20px;}
 .plp-filter-group summary::-webkit-details-marker{display:none;}
@@ -139,7 +156,7 @@
    not a corner badge), so it lives inside .plp-card-media rather than .plp-card: that keeps
    it scoped to the image's own width in both grid (image spans the full card) and list
    (image is a fixed-width column) layouts. */
-.plp-ribbon{position:absolute;top:0;left:0;right:0;z-index:2;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding:7px 12px;color:#fff;}
+.plp-ribbon{position:absolute;top:0;left:0;right:0;z-index:2;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.03em;padding:8px 12px;color:#fff;}
 .plp-ribbon-bestseller{background:var(--rrg-black);}
 .plp-ribbon-staffpick{background:var(--rrg-red);}
 
@@ -148,14 +165,27 @@
    has a wasPrice (plp.js plpSaleTagHTML mirrors plpPriceHTML's own on-sale check). Sits below
    the full-width ribbon bar when both are present on the same card. */
 .plp-card-media .plp-sale-tag{position:absolute;top:8px;right:8px;width:72px;height:auto;padding:0;z-index:3;pointer-events:none;}
-.plp-card-media:has(.plp-ribbon) .plp-sale-tag{top:36px;}
+.plp-card-media:has(.plp-ribbon) .plp-sale-tag{top:40px;}
 
 /* White, not grey — every real product photo in this catalogue already sits on a white
    background, so a tinted card behind it just reads as a rendering bug. Minimal padding
    (not the old 16px) so the photo itself reads bigger, matching the Figma reference. */
 .plp-card-media{position:relative;background:#fff;flex:0 0 auto;}
-.plp-results.is-grid .plp-card-media{aspect-ratio:1/1;}
+/* Most real product photos in this catalogue are landscape, so the box is landscape (4:3)
+   rather than square — removes the dead letterboxing space above/below a landscape photo and
+   shortens the whole card. */
+.plp-results.is-grid .plp-card-media{aspect-ratio:4/3;}
 .plp-card-media img{width:100%;height:100%;object-fit:contain;padding:6px;display:block;}
+/* Grid only: crop to fill the fixed 4:3 box (object-fit:cover) instead of letterboxing
+   (contain) — guarantees every grid card is the same height regardless of what shape image
+   lands in it, instead of a portrait/odd-shaped photo inflating just that one card and
+   pushing its name/price/etc down. Positioned absolute + inset:0 rather than width/height:100%
+   — a percentage height on the img doesn't reliably resolve against a parent that's only
+   sized via aspect-ratio (no explicit height property), so a non-4:3 photo was silently
+   falling back to its own natural ratio and blowing out the box; absolute positioning
+   resolves against the parent's actual padding box instead, which is reliable. No padding,
+   since cover already fills edge-to-edge by design. */
+.plp-results.is-grid .plp-card-media .plp-card-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;padding:0;}
 /* Placeholder product art (Bike Racks demo dataset — no real bike-carrier photography
    exists in this asset pool yet, unlike the Roof Racks dataset, which reuses real scraped
    Rhino-Rack/Front Runner platform photos already in _shared/. Flagged the same way this
@@ -172,15 +202,27 @@
 /* Clamped to exactly 2 lines, short or long — this is what keeps the rating/price/stock
    lines below starting at the same height card-to-card in a grid row, regardless of how
    long any one product's name is. */
-.plp-card-title{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:14.5px;letter-spacing:0;line-height:1.3;color:#232323;margin:0 0 6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
+.plp-card-title{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:16.5px;letter-spacing:0;line-height:1.3;color:#232323;margin:0 0 6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
 .plp-rating{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#666;margin-bottom:8px;min-height:17px;}
 .plp-rating .stars{font-size:14px;}
 .plp-price{display:flex;flex-direction:column;gap:2px;margin-bottom:4px;}
-.plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;color:var(--rrg-black);}
+.plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--rrg-black);}
 .plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
 .plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;}
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
+
+/* Grid-only: centre the identity/price block on the card instead of left-aligning it — list
+   view keeps its left-aligned text-next-to-thumbnail layout untouched, since centring text
+   there (beside a fixed-width image column) would look wrong, not better. text-align handles
+   the plain-text children (brand text, title, stock line, specs toggle) for free without
+   changing their width (so the title's 2-line clamp still measures against the full card
+   width); the flex rows/columns (rating, price, brand logo) need their own axis-alignment
+   properties since text-align doesn't reach into flex children. */
+.plp-results.is-grid .plp-card-body{text-align:center;}
+.plp-results.is-grid .plp-card-brand-logo{margin-left:auto;margin-right:auto;}
+.plp-results.is-grid .plp-rating{justify-content:center;}
+.plp-results.is-grid .plp-price{align-items:center;}
 
 /* Show Specs — collapsed by default on every card, grid and list (Section 7, Section 14
    item 2, Brenton "lukewarm" flagged assumption). Every spec value lives behind this single
@@ -250,6 +292,6 @@
 
 @media (max-width:640px){
   .plp-hero p{font-size:16px!important;}
-  .plp-card-title{font-size:14.5px!important;}
-  .plp-price-now{font-size:20px;}
+  .plp-card-title{font-size:15px!important;}
+  .plp-price-now{font-size:22px;}
 }

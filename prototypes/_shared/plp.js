@@ -144,7 +144,7 @@ function plpRenderFilters() {
   const chipsWrap = document.getElementById('plpPriorityChips');
   if (priorityWrap) {
     priorityWrap.innerHTML = cfg.facets.priority.length
-      ? `<div class="plp-filter-priority"><span class="plp-filter-priority-label">Priority Filters</span>${cfg.facets.priority.map(f => plpFilterGroupHTML(f, true)).join('')}</div>`
+      ? `<div class="plp-filter-priority">${cfg.facets.priority.map(f => plpFilterGroupHTML(f, true)).join('')}</div>`
       : '';
   }
   if (standardWrap) {
@@ -347,7 +347,7 @@ function plpCardHTML(product, cfg) {
       <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
         ${plpRibbonHTML(product)}
         ${plpSaleTagHTML(product)}
-        ${product.imageSvg ? product.imageSvg : `<img src="${product.image}" alt="${product.name}">`}
+        ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
       </div>
       <div class="plp-card-body">
         ${plpBrandHTML(product)}
