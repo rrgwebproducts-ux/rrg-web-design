@@ -59,13 +59,13 @@
    --rrg-gold/--rrg-gold-bg pairing (a muted tan) read as a warning colour, not a selection
    state, so the active tile now fills solid with the real cart gold instead. */
 .plp-shopby-tile.active{background:#FFCA48;border-color:#FFCA48 #FFCA48 #FFCA48;}
-/* Width nearly spans the tile's inner content area (140px tile - 16px horizontal padding =
-   124px) so the icon reads as the dominant element of the tab, not a small badge above the
-   label — height stays close to its old 60px so this doesn't push the tile past its existing
-   min-height. object-fit:contain still preserves each image's own aspect ratio, so a
-   portrait-shaped icon (e.g. PLP's Tow Bar Mount) won't stretch to fill 124px width the way a
-   landscape one does — that's correct, not a bug: forcing it to fill would distort the art. */
-.plp-shopby-icon{width:124px;height:62px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
+/* 100x50, i.e. the previous 124x62 scaled down ~20% (Brenton: read as a bit too large) —
+   still nearly spans the tile's inner content width so the icon reads as the tab's dominant
+   element, not a small badge above the label. object-fit:contain still preserves each image's
+   own aspect ratio, so a portrait-shaped icon (e.g. PLP's Tow Bar Mount) won't stretch to fill
+   the width the way a landscape one does — that's correct, not a bug: forcing it to fill would
+   distort the art. */
+.plp-shopby-icon{width:100px;height:50px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
 .plp-shopby-icon svg{width:100%;height:100%;}
 .plp-shopby-icon img{width:100%;height:100%;object-fit:contain;}
 /* Matches the hero section's .btn font-size (shared.css) so the tab labels read at the same
@@ -147,8 +147,12 @@
 
 /* ---- Product grid / list + card (spec Section 7) ---- */
 .plp-results.is-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
-.plp-results.is-list .plp-card{flex-direction:row;}
 .plp-results.is-list{display:flex;flex-direction:column;gap:14px;}
+/* List row: image | info | actions at a 1:2:1 ratio — info is the widest column since it
+   carries the product name and USP bullets, the other two are single-purpose (photo, buy
+   decision). Card's own padding replaces the old media-bleeds-to-the-edge grid treatment,
+   since all three columns need consistent breathing room here, not just one. */
+.plp-results.is-list .plp-card{display:grid;grid-template-columns:1fr 2fr 1fr;column-gap:20px;padding:16px;align-items:stretch;}
 
 .plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;}
 .plp-fitgallery-inline{grid-column:1/-1;}
@@ -176,18 +180,18 @@
 /* Most real product photos in this catalogue are landscape, so the box is landscape (4:3)
    rather than square — removes the dead letterboxing space above/below a landscape photo and
    shortens the whole card. */
-.plp-results.is-grid .plp-card-media{aspect-ratio:4/3;}
+.plp-results.is-grid .plp-card-media,.plp-results.is-list .plp-card-media{aspect-ratio:4/3;}
 .plp-card-media img{width:100%;height:100%;object-fit:contain;padding:6px;display:block;}
-/* Grid only: crop to fill the fixed 4:3 box (object-fit:cover) instead of letterboxing
-   (contain) — guarantees every grid card is the same height regardless of what shape image
-   lands in it, instead of a portrait/odd-shaped photo inflating just that one card and
-   pushing its name/price/etc down. Positioned absolute + inset:0 rather than width/height:100%
-   — a percentage height on the img doesn't reliably resolve against a parent that's only
-   sized via aspect-ratio (no explicit height property), so a non-4:3 photo was silently
-   falling back to its own natural ratio and blowing out the box; absolute positioning
-   resolves against the parent's actual padding box instead, which is reliable. No padding,
-   since cover already fills edge-to-edge by design. */
-.plp-results.is-grid .plp-card-media .plp-card-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;padding:0;}
+/* Crop to fill the fixed 4:3 box (object-fit:cover) instead of letterboxing (contain) —
+   guarantees every card is the same height regardless of what shape image lands in it,
+   instead of a portrait/odd-shaped photo inflating just that one card and pushing its
+   name/price/etc down. Positioned absolute + inset:0 rather than width/height:100% — a
+   percentage height on the img doesn't reliably resolve against a parent that's only sized
+   via aspect-ratio (no explicit height property), so a non-4:3 photo was silently falling
+   back to its own natural ratio and blowing out the box; absolute positioning resolves
+   against the parent's actual padding box instead, which is reliable. No padding, since
+   cover already fills edge-to-edge by design. */
+.plp-results.is-grid .plp-card-media .plp-card-photo,.plp-results.is-list .plp-card-media .plp-card-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;padding:0;}
 /* Placeholder product art (Bike Racks demo dataset — no real bike-carrier photography
    exists in this asset pool yet, unlike the Roof Racks dataset, which reuses real scraped
    Rhino-Rack/Front Runner platform photos already in _shared/. Flagged the same way this
@@ -197,7 +201,38 @@
    stand-in, not the card behind it. */
 .plp-card-media.is-placeholder{display:flex;align-items:center;justify-content:center;}
 .plp-card-media.is-placeholder svg{width:52%;height:52%;color:#c2c2c2;}
-.plp-results.is-list .plp-card-media{width:220px;}
+
+/* List row's left column: the photo plus (VRS only) a Fitment Gallery button stacked under
+   it — brand logo sits directly on the photo itself, top-left, at 40% of the photo's width.
+   No background chip: every brand logo asset here is already a transparent PNG/webp, so it
+   just sits straight on the image like a watermark rather than inside a box. */
+.plp-list-col-media{display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;}
+.plp-card-brand-overlay{position:absolute;top:8px;left:8px;z-index:3;width:40%;}
+.plp-card-media:has(.plp-ribbon) .plp-card-brand-overlay{top:40px;}
+.plp-card-brand-overlay .plp-card-brand-logo{width:100%;height:auto;max-width:none;max-height:none;margin-bottom:0;}
+.plp-card-brand-overlay .plp-card-brand-text{margin-bottom:0;font-size:12px;}
+.plp-list-col-media .plp-fitgallery-btn{width:100%;font-size:13px;padding:10px 12px;white-space:nowrap;}
+
+.plp-list-col-info{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.plp-list-col-info .plp-card-title{-webkit-line-clamp:unset;min-height:0;margin:0;}
+.plp-list-usps{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;}
+.plp-list-usps li{font-size:13px;color:#444;line-height:1.4;padding-left:20px;position:relative;}
+.plp-list-usps li::before{content:'✓';position:absolute;left:0;top:0;color:var(--rrg-fits);font-weight:700;}
+
+/* Centred to match the grid card's identity/price block, and stretched to the row's full
+   height (.plp-results.is-list .plp-card's align-items:stretch) so the CTA button's
+   margin-top:auto below has real free space to push into, pinning it to the bottom of the
+   column regardless of how tall the centre column's USP list makes the row. */
+.plp-list-col-actions{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-width:0;}
+/* The sale tag sits here as a plain inline graphic, not the absolute-positioned overlay
+   version .plp-card-media .plp-sale-tag uses elsewhere — it's no longer inside the photo. */
+.plp-list-col-actions .plp-sale-tag{width:64px;height:auto;}
+.plp-list-col-actions .plp-price{align-items:center;}
+/* Same size as the hero section's own CTA buttons (shared.css .plp-hero-cta-row .btn is
+   13px/11px 18px — the base .btn class alone is 16px, but that's not what the hero row
+   actually renders at, so matching the base class wasn't enough). */
+.plp-list-col-actions .btn{font-size:13px;padding:11px 18px;margin-top:auto;}
+
 .plp-card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;min-width:0;}
 .plp-card-brand-logo{max-width:100px;max-height:20px;width:auto;height:auto;object-fit:contain;display:block;margin-bottom:5px;}
 .plp-card-brand-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:#767676;margin-bottom:5px;}
@@ -255,8 +290,7 @@
 
 @media (max-width:640px){
   .plp-results.is-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;}
-  .plp-results.is-list .plp-card{flex-direction:column;}
-  .plp-results.is-list .plp-card-media{width:100%;aspect-ratio:1/1;}
+  .plp-results.is-list .plp-card{grid-template-columns:1fr;row-gap:12px;}
   /* Stack rather than sit side-by-side — each button's label (e.g. "Fitment Gallery (283)")
      stays on one line via white-space:nowrap, so at narrow widths two of them side by side
      have no room to shrink into and were forcing the whole page to scroll horizontally. */

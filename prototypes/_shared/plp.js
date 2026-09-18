@@ -331,6 +331,12 @@ function plpBrandHTML(product) {
   return `<div class="plp-card-brand-text">${product.brand}</div>`;
 }
 
+// List view only: brand logo overlaid on the photo itself (top-left) rather than sitting in
+// the info column below it — a small white chip keeps it legible over any product image.
+function plpBrandOverlayHTML(product) {
+  return `<div class="plp-card-brand-overlay">${plpBrandHTML(product)}</div>`;
+}
+
 function plpCardHTML(product, cfg) {
   const vrsRow = cfg.vrs ? `
     <div class="plp-vrs-actions">
@@ -365,6 +371,48 @@ function plpCardHTML(product, cfg) {
   `;
 }
 
+// List view's own 3-column layout (image | info | actions, 1:2:1) — different enough from
+// the grid card (USPs instead of specs, brand overlaid on the photo instead of sitting below
+// it, Fitment Gallery under the photo instead of paired with View Options) that reusing
+// plpCardHTML with view-conditional bits would be harder to follow than a dedicated function.
+function plpListCardHTML(product, cfg) {
+  const ctaLabel = cfg.vrs ? 'View Options' : 'View Details';
+  const fitGalleryBtn = cfg.vrs ? `
+    <button type="button" class="btn btn-outline plp-fitgallery-btn" data-fitgallery-id="${product.id}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Fitment Gallery (${product.fitmentCount})
+    </button>
+  ` : '';
+  const usps = (product.usps && product.usps.length)
+    ? `<ul class="plp-list-usps">${product.usps.map(u => `<li>${u}</li>`).join('')}</ul>`
+    : '';
+
+  return `
+    <div class="plp-card" data-product-id="${product.id}">
+      <div class="plp-list-col-media">
+        <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
+          ${plpRibbonHTML(product)}
+          ${plpBrandOverlayHTML(product)}
+          ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
+        </div>
+        ${fitGalleryBtn}
+      </div>
+      <div class="plp-list-col-info">
+        <h3 class="plp-card-title">${product.name}</h3>
+        ${plpRatingHTML(product)}
+        ${usps}
+      </div>
+      <div class="plp-list-col-actions">
+        ${plpPriceHTML(product)}
+        ${plpSaleTagHTML(product)}
+        ${plpStockLineHTML(product)}
+        <a href="#" class="btn btn-gold">${ctaLabel}</a>
+        ${plpCompareCheckHTML(product)}
+      </div>
+    </div>
+  `;
+}
+
 // ==== Results (grid/list) + pagination =======================================
 function plpRenderResults() {
   const cfg = window.PLP_CONFIG;
@@ -387,7 +435,7 @@ function plpRenderResults() {
   }
 
   wrap.className = `plp-results ${plpState.view === 'list' ? 'is-list' : 'is-grid'}`;
-  const cardsArr = visible.map(p => plpCardHTML(p, cfg));
+  const cardsArr = visible.map(p => plpState.view === 'list' ? plpListCardHTML(p, cfg) : plpCardHTML(p, cfg));
 
   // Fitment Gallery, once per results page, at position 2 (spec Section 9): 2nd row in list
   // view (index 2), directly after the first full row in grid view (index 3, a 3-column
