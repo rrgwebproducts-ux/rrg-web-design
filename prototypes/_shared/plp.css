@@ -202,7 +202,14 @@
    room here, not just one. */
 .plp-results.is-list .plp-card{display:grid;grid-template-columns:0.9fr 1.8fr 1.3fr;column-gap:20px;padding:16px;align-items:stretch;}
 
-.plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;}
+.plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease;}
+/* Whole-card hover (2026-09-19 follow-up) — now that most cards' primary action is a quick
+   Add to Cart rather than a full-width "View Details" link, the card itself needed its own
+   affordance that the tile as a whole still leads through to the PDP (via the image/title
+   links). Lift + shadow + red border reuses the site's own --shadow token and brand red
+   rather than inventing a new hover language. Same treatment for grid and list, since both
+   share this one .plp-card class. */
+.plp-card:hover{box-shadow:var(--shadow);border-color:var(--rrg-red);transform:translateY(-3px);cursor:pointer;}
 .plp-fitgallery-inline{grid-column:1/-1;}
 .plp-results.is-grid .plp-fitgallery-inline{margin:4px 0;}
 
