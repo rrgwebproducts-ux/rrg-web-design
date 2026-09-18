@@ -147,9 +147,9 @@
 
 /* ---- Product grid / list + card (spec Section 7) ---- */
 .plp-results.is-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
-/* Demo State Panel test toggle (3 vs 4 per row) — desktop only, where the sidebar+main
-   layout is active; below 901px the grid already falls back to auto-fill/breakpoint rules
-   regardless of the toggle, so this only overrides the width the user is actually testing. */
+/* 4 per row is the default (2026-09-18, Brenton signed off), 3 kept as a Demo State Panel
+   fallback — desktop only, where the sidebar+main layout is active; below 901px the grid
+   already falls back to auto-fill/breakpoint rules regardless of the toggle. */
 @media (min-width:901px){
   .plp-results.is-grid.cols-4{grid-template-columns:repeat(4,1fr);}
 }
@@ -294,6 +294,10 @@
 .plp-spec-value{margin-left:auto;font-weight:700;}
 
 .plp-card-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
+/* Non-VRS grid card's plain "View Details" — was inheriting shared.css .btn's PDP-sized
+   default (15px/28px padding, 16px/900 weight), way oversized for a card this narrow. Scoped
+   to a direct child so it doesn't touch the VRS row's own buttons below, already sized here. */
+.plp-card-actions>.btn{padding:10px 12px;font-size:12px;}
 .plp-vrs-actions{display:flex;gap:8px;flex-wrap:wrap;}
 .plp-vrs-actions .btn{flex:1 1 auto;padding:10px 12px;font-size:12px;white-space:nowrap;}
 .plp-fitgallery-btn svg{width:14px;height:14px;}

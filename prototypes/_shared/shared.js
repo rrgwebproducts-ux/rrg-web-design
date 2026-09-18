@@ -2495,10 +2495,10 @@ function buildAdminPanel() {
           <label><input type="radio" name="plpView" value="grid" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? '' : 'checked'}> Grid</label>
           <label><input type="radio" name="plpView" value="list" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? 'checked' : ''}> List</label>
         </div>
-        <div class="admin-toggle-label"><span>Grid columns <span class="admin-note">(test only, desktop)</span></span></div>
+        <div class="admin-toggle-label"><span>Grid columns <span class="admin-note">(desktop)</span></span></div>
         <div class="admin-radio-row">
-          <label><input type="radio" name="plpGridCols" value="3" checked> 3 per row</label>
-          <label><input type="radio" name="plpGridCols" value="4"> 4 per row</label>
+          <label><input type="radio" name="plpGridCols" value="3"> 3 per row</label>
+          <label><input type="radio" name="plpGridCols" value="4" checked> 4 per row</label>
         </div>
         <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
       </div>` : ''}
