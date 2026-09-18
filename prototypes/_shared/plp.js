@@ -421,7 +421,11 @@ function plpStockLineHTML(product) {
   const map = {
     in_stock: { cls: 'in-stock', label: '✓ In Stock' },
     click_collect: { cls: 'in-stock', label: '✓ In Stock — Click &amp; Collect Available' },
-    low_stock: { cls: 'low-stock', label: '⚠ Low Stock' }
+    low_stock: { cls: 'low-stock', label: '⚠ Low Stock' },
+    // out_of_stock (2026-09-18, Camping re-scrape) — real gap: several real Camping SKUs are
+    // genuinely OutOfStock per the live PDP's own schema.org availability, not just missing a
+    // price. See plpPrimaryActionHTML() for the matching disabled primary action.
+    out_of_stock: { cls: 'out-of-stock', label: '✕ Out of Stock' }
   };
   const s = map[product.stock] || map.in_stock;
   return `<div class="plp-stock-line ${s.cls}">${s.label}</div>`;
@@ -447,6 +451,9 @@ function plpBrandOverlayHTML(product) {
 // an option first. Independent of cfg.vrs (VRS/Fitment Gallery is a separate concern), so a
 // VRS product can be either state just like a standard one.
 function plpPrimaryActionHTML(product, blockClass) {
+  if (product.stock === 'out_of_stock') {
+    return `<button type="button" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}" disabled>Out of Stock</button>`;
+  }
   if (!product.price) {
     return `<a href="${product.url || '#'}" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Details</a>`;
   }

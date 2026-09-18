@@ -388,6 +388,8 @@
 .plp-price .plp-sale-tag{width:88px;height:auto;flex:0 0 auto;}
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
+.plp-stock-line.out-of-stock{color:#a3a3a3;}
+.plp-view-options-btn:disabled{opacity:.5;cursor:not-allowed;background:#fff;color:#a3a3a3;border-color:var(--rrg-line);}
 
 /* Grid-only: centre the identity/price block on the card instead of left-aligning it — list
    view keeps its left-aligned text-next-to-thumbnail layout untouched, since centring text
