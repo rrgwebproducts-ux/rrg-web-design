@@ -347,7 +347,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p1', sku: '532002', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule FreeRide 532 Silver Roof Mounted Bike Carrier x1',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg', price: 218.45, wasPrice: 229.95, rating: 4.2, reviews: 15, ribbon: 'bestseller',
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'silver', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'3.5kg' }, { icon:'📦', label:'Max Total Weight', value:'17kg' }, { icon:'↔️', label:'Wheel Base', value:'1245mm' }, { icon:'⭕', label:'Wheel Size', value:"16 - 29\"" } ],
     usps: ['Wheel-support cradle carries 1 bike without touching the frame', 'Aero bar clamp mount fits most factory and aftermarket roof bars', 'Quick-release fittings make daily loading fast and tool-free'],
@@ -356,7 +356,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p2', sku: '532003', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule FreeRide 532 Black Roof Mounted Bike Carrier x1',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-532002-bike-rack-roof-mount_1.jpg', price: 218.45, wasPrice: null, rating: 4.2, reviews: 11, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'black', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'3.5kg' }, { icon:'📦', label:'Max Total Weight', value:'17kg' }, { icon:'↔️', label:'Wheel Base', value:'1245mm' }, { icon:'⭕', label:'Wheel Size', value:"16 - 29\"" } ],
     usps: ['Wheel-support cradle carries 1 bike without touching the frame', 'Aero bar clamp mount fits most factory and aftermarket roof bars', 'Lockable to bike and roof bar for secure unattended parking'],
@@ -365,7 +365,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p3', sku: 'RBC050', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino-Rack Hang-On 2 Bike Tow Ball Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg', price: 349.00, wasPrice: 389.00, rating: 4.6, reviews: 42, ribbon: 'staffpick',
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['tow-ball-mounting', 'frame-hanging'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 100, colour: 'black', brand: 'Rhino-Rack' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'11kg' }, { icon:'📦', label:'Max Total Weight', value:'60kg' }, { icon:'🔩', label:'Tow Ball Rating', value:'≥50kg' } ],
     usps: ['Hang-on arms carry 2 bikes straight off the tow ball, no roof access needed', 'Folds flat against the vehicle when not in use', 'Rated to 60kg total for e-bikes and heavier frames'],
@@ -374,7 +374,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p4', sku: '8002123', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima HoldUp EVO 2 Bike Platform Hitch Rack',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg', price: 699.00, wasPrice: null, rating: 4.8, reviews: 61, ribbon: 'bestseller',
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['hitch-mounting', 'platform-wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 150, colour: 'black', brand: 'Yakima' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'19kg' }, { icon:'📦', label:'Max Total Weight', value:'68kg' }, { icon:'🔧', label:'Hitch Size', value:'50mm' } ],
     usps: ['Platform design cradles bikes by the wheels, not the frame, for scratch-free carrying', 'Tool-free hitch mount with SpeedKnob tightening', 'Tilts down for full rear hatch access without unloading bikes'],
@@ -383,7 +383,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p5', sku: 'FR-RDBC1', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Rear Door Bike Carrier — 3 Bike',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg', price: 259.00, wasPrice: null, rating: 4.0, reviews: 9, ribbon: 'Limited Stock Left',
-    subcategories: ['rear-hatch'], stock: 'low_stock',
+    subcategories: ['rear-mounting', 'rear-door-boot'], stock: 'low_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'custom', barProfile: 'na', loadRating: 75, colour: 'black', brand: 'Front Runner' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'9kg' }, { icon:'📦', label:'Max Total Weight', value:'45kg' } ],
     usps: ['Hangs 3 bikes directly off the rear door, no roof or tow ball required', 'Straps adjust to fit wagons, SUVs and 4WDs', 'Folds compact for storage when not carrying bikes'],
@@ -392,7 +392,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p6', sku: 'VDG-UT2', brand: 'ROLA', brandLogo: '../_shared/brand-rola.webp', name: 'ROLA VDG Ute Tub Bike Carrier — 2 Bike',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/-/R-PBR-01_1_FVS4GK_1.jpg', price: 189.00, wasPrice: null, rating: 4.3, reviews: 18, ribbon: null,
-    subcategories: ['ute-tub'], stock: 'in_stock',
+    subcategories: ['rear-mounting', 'ute-tub'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'wheel-support', vehicleFitType: 'track', barProfile: 'platform', loadRating: 100, colour: 'black', brand: 'ROLA' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'6.4kg' }, { icon:'📦', label:'Max Total Weight', value:'40kg' } ],
     usps: ['Mounts straight into ute tub tie-down points or tracks', 'Platform-style cradle keeps 2 bikes secure over rough roads', 'Low profile design keeps the tub usable for other cargo'],
@@ -401,7 +401,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p7', sku: 'CRZ-EB1', brand: 'CRUZ', brandLogo: '../_shared/brand-cruz.webp', name: 'CRUZ e-Bike Roof Carrier — Heavy Duty',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/C/R/CRUZ-940-015-Bike-Rack---Roof-Mount._1_4.jpg', price: 329.00, wasPrice: 359.00, rating: 4.5, reviews: 7, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'ebike', vehicleFitType: 'track', barProfile: 'heavy', loadRating: 150, colour: 'black', brand: 'CRUZ' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'5.8kg' }, { icon:'📦', label:'Max Total Weight', value:'30kg' } ],
     usps: ['Heavy-duty frame rated to 30kg for e-bikes and cargo bikes', 'Track-mounted for a secure, rattle-free roof fit', 'Wide cradle supports fat tyres and oversized frames'],
@@ -410,7 +410,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p8', sku: '9002665', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule EasyFold XT 2 Tow Bar Platform Rack',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-easyfold-xt-2-bike-hitch-mounted-carrier-903202.jpg', price: 1199.00, wasPrice: null, rating: 4.9, reviews: 33, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['hitch-mounting', 'platform-frame-hold'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 150, colour: 'silver', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'24kg' }, { icon:'📦', label:'Max Total Weight', value:'68kg' } ],
     usps: ['Folds up one-handed for easy access to the boot', 'Platform arms carry 2 bikes up to 68kg combined', 'Tilts away from the vehicle without removing bikes'],
@@ -419,7 +419,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p9', sku: '8002532', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima FrontLoader Roof Wheel-Support Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/y/a/yakima-frontloader-black-roof-mounted-bike-carrier-x-1-8002104.jpg', price: 259.00, wasPrice: null, rating: 4.4, reviews: 26, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'black', brand: 'Yakima' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'4.1kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Wheel-support tray fits almost any frame shape, including full-suspension', 'Aero, round and square bar compatible', 'One-hand operation for fast loading'],
@@ -428,7 +428,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p10', sku: 'RBC090', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino-Rack Hybrid Tow Bar 4-Bike Platform',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg', price: 899.00, wasPrice: 999.00, rating: 4.7, reviews: 51, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['hitch-mounting'], stock: 'in_stock',
     facets: { bikeCount: 4, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 150, colour: 'black', brand: 'Rhino-Rack' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'26kg' }, { icon:'📦', label:'Max Total Weight', value:'80kg' } ],
     usps: ['Carries up to 4 bikes on a single tow ball mounted platform', '80kg total capacity suits e-bikes and family loads', 'Tilts down for rear hatch access without unloading'],
@@ -437,7 +437,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p11', sku: '940-584', brand: 'CRUZ', brandLogo: '../_shared/brand-cruz.webp', name: 'CRUZ Kicker 2 Bike Hitch Mounted Platform Rack',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/c/r/cruz-kicker-2-bike-hitch-mounted-platform-rack-940-584-a51b92f7dd97.jpg', price: 599.00, wasPrice: null, rating: 4.4, reviews: 19, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['hitch-mounting', 'platform-wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 100, colour: 'black', brand: 'CRUZ' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'17kg' }, { icon:'📦', label:'Max Total Weight', value:'60kg' } ],
     usps: ['Platform arms cradle 2 bikes by the wheels for a scratch-free ride', 'Tool-free hitch mount tightens by hand', 'Foldable arms for compact storage'],
@@ -446,7 +446,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p12', sku: '940-584+940-590', brand: 'CRUZ', brandLogo: '../_shared/brand-cruz.webp', name: 'CRUZ Kicker 3 Bike Hitch Mounted Platform Rack Combo',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/c/r/cruz-kicker-3-bike-hitch-mounted-platform-rack-combo-940-584-940-590-e2bcc2aa3417.jpg', price: 799.00, wasPrice: null, rating: 4.5, reviews: 12, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['hitch-mounting', 'platform-wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 100, colour: 'black', brand: 'CRUZ' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'21kg' }, { icon:'📦', label:'Max Total Weight', value:'60kg' } ],
     usps: ['Combo kit extends the Kicker platform to carry 3 bikes', 'Tilts down for rear hatch access without unloading', '60kg total capacity across all 3 positions'],
@@ -455,7 +455,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p13', sku: '8002443', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima HoldUp Black 2 Bike Hitch Mounted Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/y/a/yakima-holdup-black-2-bike-hitch-mounted-carrier-8002443.jpg', price: 799.00, wasPrice: null, rating: 4.7, reviews: 37, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['hitch-mounting', 'platform-wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 150, colour: 'black', brand: 'Yakima' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'18kg' }, { icon:'📦', label:'Max Total Weight', value:'68kg' }, { icon:'🔧', label:'Hitch Size', value:'50mm' } ],
     usps: ['Platform design cradles bikes by the wheels, not the frame', 'SpeedKnob tool-free hitch mount', 'Tilts down for full rear hatch access'],
@@ -464,7 +464,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p14', sku: 'RRAC189', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Pro Fork Mount Bike Carrier — Power Edition',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-fork-mount-bike-carrier-power-edition-rrac189.jpg', price: 136.00, wasPrice: null, rating: 4.2, reviews: 6, ribbon: null,
-    subcategories: ['ute-tub'], stock: 'in_stock',
+    subcategories: ['rear-mounting', 'ute-tub'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'hang-on', vehicleFitType: 'custom', barProfile: 'na', loadRating: 75, colour: 'black', brand: 'Front Runner' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'2.4kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Fork mount holds the bike by the front axle for a rock-solid ride', 'Lightweight at just 2.4kg per carrier', 'Suits most thru-axle and quick-release fork formats'],
@@ -473,7 +473,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p15', sku: 'RRAC214', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Pro Thru Axle Bike Carrier — Power Edition',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/F/r/Front-Runner-RRAC214-Bike-Rack---Roof-Mount._1.jpg', price: 128.00, wasPrice: null, rating: 4.3, reviews: 5, ribbon: null,
-    subcategories: ['ute-tub'], stock: 'in_stock',
+    subcategories: ['rear-mounting', 'ute-tub'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'hang-on', vehicleFitType: 'custom', barProfile: 'na', loadRating: 75, colour: 'black', brand: 'Front Runner' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'2.1kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Thru-axle mount secures the bike without touching the frame or fork', 'Compatible with most modern thru-axle standards', 'Low-profile design minimises roof height and wind noise'],
@@ -482,7 +482,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p16', sku: 'RRAC371', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Bike Mount / Motus Black',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-bike-mount-motus-black-rrac371.jpg', price: 349.00, wasPrice: null, rating: 4.6, reviews: 21, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'black', brand: 'Front Runner' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'5.4kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Wheel-support cradle carries 1 bike without frame contact', 'Clamp mount fits aero-profile roof bars', 'Lockable to bike and bar for secure parking'],
@@ -491,7 +491,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p17', sku: 'VBR3', brand: 'ROLA', brandLogo: '../_shared/brand-rola.webp', name: 'ROLA Vertical Bike Rack — 3 Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/6/f672e9e642cbef771939567e8e6c39d3_N3Y9GB_1.jpg', price: 633.50, wasPrice: 905.00, rating: 4.5, reviews: 16, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['tow-ball-mounting'], stock: 'in_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 150, colour: 'black', brand: 'ROLA' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'19kg' }, { icon:'📦', label:'Max Total Weight', value:'60kg' } ],
     usps: ['Vertical hanging design carries 3 bikes off the tow ball', 'Folds flat against the vehicle when not loaded', '150kg total capacity for heavier frames and e-bikes'],
@@ -500,7 +500,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p18', sku: 'VBR5', brand: 'ROLA', brandLogo: '../_shared/brand-rola.webp', name: 'ROLA Vertical Bike Rack — 5 Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/9/4/944fad617fe3cd096ec8e57f6739b9be_G266QQ_1.jpg', price: 949.00, wasPrice: 1060.00, rating: 4.6, reviews: 9, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['tow-ball-mounting'], stock: 'in_stock',
     facets: { bikeCount: 5, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 150, colour: 'black', brand: 'ROLA' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'26kg' }, { icon:'📦', label:'Max Total Weight', value:'75kg' } ],
     usps: ['Vertical hanging design fits up to 5 bikes on one tow ball mount', 'Extendable arms suit mixed frame sizes', '150kg total rated capacity'],
@@ -509,7 +509,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p19', sku: '944100', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule EasyFold 3 Towball Mounted 2 Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-Easyfold-3-2-Bike-Carrier-944100-1_1.jpg', price: 2199.95, wasPrice: null, rating: 4.8, reviews: 14, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['tow-ball-mounting', 'platform-frame-hold'], stock: 'in_stock',
     facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 150, colour: 'silver', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'25kg' }, { icon:'📦', label:'Max Total Weight', value:'66kg' } ],
     usps: ['One-handed fold for easy boot access without unloading', 'Towball mount suits vehicles without a tow bar receiver', '66kg total capacity across 2 bikes'],
@@ -522,7 +522,7 @@ const BIKE_RACK_PRODUCTS = [
     // product like an assembled/flat-pack pair: "View Options" CTA, "From $X" pricing, no
     // quick Add to Cart. See plpPrimaryActionHTML() in plp.js.
     hasOptions: true,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['tow-ball-mounting', 'platform-frame-hold'], stock: 'in_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 150, colour: 'silver', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'27kg' }, { icon:'📦', label:'Max Total Weight', value:'66kg' } ],
     usps: ['One-handed fold for easy boot access without unloading', 'Extends to carry 3 bikes on a single towball mount', '66kg total capacity, e-bike compatible'],
@@ -531,7 +531,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p21', sku: '598001', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule ProRide 598 Silver Roof Mounted Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598001-bike-rack-roof-mount.jpg', price: 329.00, wasPrice: null, rating: 4.7, reviews: 44, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'frame-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'silver', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'3.9kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Frame-holder arm secures the bike by the down tube without frame contact', 'One-knob tightening for fast, tool-free loading', 'Fits most frame shapes including carbon and full-suspension'],
@@ -540,7 +540,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p22', sku: '598002', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule ProRide 598 Black Roof Mounted Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598002-bike-rack-roof-mount_3.jpg', price: 359.96, wasPrice: null, rating: 4.7, reviews: 31, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'frame-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'black', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'3.9kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Frame-holder arm secures the bike by the down tube without frame contact', 'One-knob tightening for fast, tool-free loading', 'Integrated locks secure the bike and the carrier to the roof bar'],
@@ -549,7 +549,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p23', sku: '61018', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino-Rack Pioneer Thru Axle Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-61018-Platforms--Trays---Accessories._1.jpg', price: 193.55, wasPrice: 219.95, rating: 4.5, reviews: 13, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'fork-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'hang-on', vehicleFitType: 'custom', barProfile: 'platform', loadRating: 75, colour: 'black', brand: 'Rhino-Rack' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'2.8kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Thru-axle mount holds the bike by the front axle, not the frame', 'Platform bar compatible for a secure roof fit', 'Lightweight at 2.8kg per carrier'],
@@ -558,7 +558,7 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p24', sku: '8002139', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima HighRoad Roof Mounted Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/H/i/Highroad_G8R1IP_1.jpg', price: 364.65, wasPrice: 429.00, rating: 4.6, reviews: 24, ribbon: null,
-    subcategories: ['roof-mounted'], stock: 'in_stock',
+    subcategories: ['roof-mounting', 'wheel-hold'], stock: 'in_stock',
     facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'black', brand: 'Yakima' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'4.6kg' }, { icon:'📦', label:'Max Total Weight', value:'20kg' } ],
     usps: ['Wheel-support tray carries the bike without touching the frame', 'Fits aero, round and square roof bars', 'One-hand loading with auto-adjusting wheel straps'],
@@ -567,11 +567,41 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p25', sku: '926002', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule VeloCompact 3 Bike Tow Ball Mounted Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-926002-Bike-Rack---Towball-Platform._1.jpg', price: 1299.00, wasPrice: 1399.95, rating: 4.8, reviews: 27, ribbon: null,
-    subcategories: ['tow-bar'], stock: 'in_stock',
+    subcategories: ['tow-ball-mounting', 'platform-frame-hold'], stock: 'in_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 75, colour: 'black', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'22kg' }, { icon:'📦', label:'Max Total Weight', value:'60kg' } ],
     usps: ['Compact folding design carries 3 bikes on a single tow ball mount', 'Tilts down for rear hatch access without unloading', '60kg total capacity, foldable for easy storage'],
     relevanceRank: 66, newnessRank: 76, salesRank: 56
+  },
+  // Bike Rack Accessories — new Level 2 (2026-09-19), real, scraped live: price/stock verified
+  // on each product's own PDP page (meta[itemprop="price"], link[itemprop="availability"]),
+  // not the category tile, per the Camping build's ~27-products-with-no-price lesson.
+  {
+    id: 'p26', sku: '10941', brand: 'Rocky Mounts', brandLogo: '../_shared/brand-rocky-mounts.png', name: 'Rocky Mounts StreetRod 1 Bike Carrier',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/o/Rocky-Mounts-10941-Bike-Rack---Roof-Mount._1.jpg', price: 70.00, wasPrice: null, rating: 4.4, reviews: 8, ribbon: null,
+    subcategories: ['bike-rack-accessories', 'roof-rack'], stock: 'in_stock',
+    facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'clamp', barProfile: 'aero', loadRating: 75, colour: 'black', brand: 'Rocky Mounts' },
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'3.2kg' } ],
+    usps: ['Roof rack mounted wheel-support carrier accessory', 'Fits most aero, round and square roof bars', 'Quick-release fittings for fast loading'],
+    relevanceRank: 30, newnessRank: 60, salesRank: 20
+  },
+  {
+    id: 'p27', sku: '8002482', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima HoldUp Evo +2 Black Add-On Extension',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg', price: 559.00, wasPrice: null, rating: 4.6, reviews: 4, ribbon: null,
+    subcategories: ['bike-rack-accessories', '50mm-hitch'], stock: 'in_stock',
+    facets: { bikeCount: 2, carrierType: 'hang-on', vehicleFitType: 'hitch', barProfile: 'na', loadRating: 68, colour: 'black', brand: 'Yakima' },
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'9kg' } ],
+    usps: ['50mm hitch add-on extension for the Yakima HoldUp EVO platform', 'Extends an existing 2-bike hitch rack to carry more bikes', 'Tool-free hitch mount, matches the HoldUp EVO fold-down action'],
+    relevanceRank: 25, newnessRank: 58, salesRank: 15
+  },
+  {
+    id: 'p28', sku: '10870', brand: 'Rocky Mounts', brandLogo: '../_shared/brand-rocky-mounts.png', name: 'Rocky Mounts HotRod 1 Bike Carrier',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/h/o/hotrod_CZADGW_1.jpg', price: 70.00, wasPrice: null, rating: 4.3, reviews: 6, ribbon: null,
+    subcategories: ['bike-rack-accessories', 'ute-tub'], stock: 'in_stock',
+    facets: { bikeCount: 1, carrierType: 'wheel-support', vehicleFitType: 'track', barProfile: 'platform', loadRating: 75, colour: 'black', brand: 'Rocky Mounts' },
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'3.4kg' } ],
+    usps: ['Ute tub mounted wheel-support carrier accessory', 'Mounts into ute tub tie-down points or tracks', 'Low profile design keeps the tub usable for other cargo'],
+    relevanceRank: 22, newnessRank: 56, salesRank: 12
   }
 ];
 
@@ -586,11 +616,58 @@ window.PLP_CONFIG = {
   vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
   categoryImage: '../_shared/icons/bike-racks.png',
   shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  // Level 2 + 3, real, scraped live from roofracksgalore.com.au/bike-racks (2026-09-19).
+  // Level 2 (5, not the 4 originally in this file — "Ute Tub Mount" isn't a real Level 2 at
+  // all, and Hitch Mounting / Bike Rack Accessories were missing) came from the
+  // .magento-category-tabs-related-default strip on /bike-racks. Level 3 `children` came from
+  // .magento-category-tabs-main-default on each Level 2 tab's own page — a *different* widget
+  // than the one Camping's children were scraped from; that selector returned empty for every
+  // Level 2 tab at first (this file's own earlier attempt), which is what "Bike Racks has no
+  // real Level 3" looked like until Brenton pointed out the tab row that actually appears after
+  // clicking through on the live site uses -main-default, not -related-default. Checked 3 of
+  // the ~17 Level 3 children (across 3 different Level 2 parents) for a Level 4 by loading their
+  // query-param URL directly — none exists; clicking a Level 3 tab just re-highlights it within
+  // the same row and filters the grid, it doesn't reveal a deeper tier. "Show All" and a
+  // "Hot Deals" promo tile appear in every -main-default row too; both excluded here (Show All
+  // is redundant with clearing the Level 3 selection, Hot Deals isn't a category).
   shopBy: [
-    { key: 'roof-mounted', label: 'Roof Mounted', icon: `<img src="../_shared/shopby-roof-mounted.png" alt="">` },
-    { key: 'tow-bar', label: 'Tow Bar Mount', icon: `<img src="../_shared/shopby-tow-bar.png" alt="">` },
-    { key: 'rear-hatch', label: 'Rear Hatch Mount', icon: `<img src="../_shared/shopby-rear-hatch.png" alt="">` },
-    { key: 'ute-tub', label: 'Ute Tub Mount', icon: `<img src="../_shared/shopby-ute-tub.png" alt="">` }
+    { key: 'roof-mounting', label: 'Roof Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1742.webp" alt="Roof Mounting Icon">`,
+      children: [
+        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">` },
+        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">` },
+        { key: 'fork-hold', label: 'Fork Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32603.webp" alt="Fork Hold Icon">` }
+      ]
+    },
+    { key: 'tow-ball-mounting', label: 'Tow Ball Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1829.webp" alt="Tow Ball Mounting Icon">`,
+      children: [
+        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">` },
+        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">` }
+      ]
+    },
+    { key: 'hitch-mounting', label: 'Hitch Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1830.webp" alt="Hitch Mounting Icon">`,
+      children: [
+        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">` },
+        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">` },
+        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">` },
+        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">` },
+        { key: 'platform-wheel-hold', label: 'Platform Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32618.webp" alt="Platform Wheel Hold Icon">` },
+        { key: 'vertical-hanging', label: 'Vertical Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/33605.webp" alt="Vertical Hanging Icon">` }
+      ]
+    },
+    { key: 'rear-mounting', label: 'Rear Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1831.webp" alt="Rear Mounting Icon">`,
+      children: [
+        { key: 'spare-wheel', label: 'Spare Wheel', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32609.webp" alt="Spare Wheel Icon">` },
+        { key: 'rear-door-boot', label: 'Rear Door/Boot', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32610.webp" alt="Rear Door/Boot Icon">` },
+        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">` }
+      ]
+    },
+    { key: 'bike-rack-accessories', label: 'Bike Rack Accessories', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/126.webp" alt="Bike Rack Accessories Icon">`,
+      children: [
+        { key: 'roof-rack', label: 'Roof Rack', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32589.webp" alt="Roof Rack Icon">` },
+        { key: '50mm-hitch', label: '50mm Hitch', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32615.webp" alt="50mm Hitch Icon">` },
+        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">` }
+      ]
+    }
   ],
   products: BIKE_RACK_PRODUCTS,
   facets: {
@@ -603,7 +680,7 @@ window.PLP_CONFIG = {
       { key: 'barProfile', label: 'Bar Profile', mode: 'eq', options: [ { value:'aero', label:'Aero' }, { value:'heavy', label:'Heavy Duty' }, { value:'platform', label:'Platform/Tray' }, { value:'na', label:'Not Bar-Mounted' } ] },
       { key: 'loadRating', label: 'Product Load Rating', mode: 'atleast', options: [ { value:75, label:'75kg' }, { value:100, label:'100kg' }, { value:150, label:'150kg' } ] },
       { key: 'colour', label: 'Colour', mode: 'eq', options: [ { value:'black', label:'Black' }, { value:'silver', label:'Silver' } ] },
-      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value:'Thule', label:'Thule' }, { value:'Rhino-Rack', label:'Rhino-Rack' }, { value:'Yakima', label:'Yakima' }, { value:'Front Runner', label:'Front Runner' }, { value:'ROLA', label:'ROLA' }, { value:'CRUZ', label:'CRUZ' } ] }
+      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value:'Thule', label:'Thule' }, { value:'Rhino-Rack', label:'Rhino-Rack' }, { value:'Yakima', label:'Yakima' }, { value:'Front Runner', label:'Front Runner' }, { value:'ROLA', label:'ROLA' }, { value:'CRUZ', label:'CRUZ' }, { value:'Rocky Mounts', label:'Rocky Mounts' } ] }
     ]
   },
   videos: [
@@ -627,7 +704,7 @@ window.PLP_CONFIG = {
 // per tile carries its own breadcrumb; this demo keeps the one crumb element in sync
 // in-page instead).
 document.addEventListener('DOMContentLoaded', () => {
-  const crumbLabels = { all: 'Bike Racks', 'roof-mounted': 'Roof Mounting', 'tow-bar': 'Tow Bar Mount', 'rear-hatch': 'Rear Hatch Mount', 'ute-tub': 'Ute Tub Mount' };
+  const crumbLabels = { all: 'Bike Racks', 'roof-mounting': 'Roof Mounting', 'tow-ball-mounting': 'Tow Ball Mounting', 'hitch-mounting': 'Hitch Mounting', 'rear-mounting': 'Rear Mounting', 'bike-rack-accessories': 'Bike Rack Accessories' };
   const observer = new MutationObserver(() => {
     const active = document.querySelector('.plp-shopby-tile.active');
     const key = active ? active.dataset.shopby : 'all';

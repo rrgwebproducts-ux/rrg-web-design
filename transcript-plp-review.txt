@@ -1,0 +1,627 @@
+Meeting Title: Vehicle and standard PLP design review with Scott and Graham
+Date: Sep 18
+Meeting participants: RRG Brenton Cooley
+
+Transcript:
+Me: Welcome. So did you guys get So did you guys get a chance to have a quick look at that those links? 
+Scott Childs: I I had 
+Graham Sowerby: to quit look. Then I just thought, do you know what? If we're gonna have a meeting, I'll let you tell me about it rather than explore. 
+Me: That's alright. Alright. Let me share my screen. I did make a push only a couple of minutes before the meeting, So if you had it already loaded up, just give it a refresh just in case. 
+Graham Sowerby: Yep. 
+Me: That one But my But I have So, obviously, there's there's two main separate designs that I did for the PLP, and that is the vehicle PLP and then just standard PLP pages. So I'm gonna leave it to Mark to decide if he's gonna combine them into, like, a dynamic template that can do both. I did have a quick chat with him, and he said he can do it either way. Like, he can assign specific categories you know, the VLP template versus the PLP, but I'll leave it in his hands to work out whether it's gonna be feasible to have him two separate ones or one dynamic one that's based on I guess, if there's fitment items in it or not. 
+Graham Sowerby: Yep. 
+Me: So for the most part, this is pretty much like for like for the original Figma design with just a couple of adjustments for usability side. But that's kind of what I wanna run through with you guys, see if there's anything immediately that sort of pops up and you guys go, oh, what? That doesn't look right. That that looks off or you know, maybe I've missed a feature altogether. I don't think I have. I've I've I've got a checklist of features that were put into the Figment design should be all here. So if there's anything like that, just pop up, let me know, and I can either show to you or how to use it or note down that we need to add it. Yeah. Okay. So I guess we'll go over the vehicle lending PLP first. So at the moment, if we're if I give that a refresh, So this lists out as a grid view by by default now instead of list view. But, again, both options are built into this so that we can split test it, see what actually works, and then change the default accordingly once it's actually live. Yeah. I guess oh, I mean, it kind of is what it is. I don't know really what we wanna have a look at, but I I guess the section by section is we've got our hero section at the top here. 
+Graham Sowerby: Yeah. 
+Me: That obviously shows the vehicle that's as set in the user session. And then they've got their their change vehicle at the moment doesn't do anything, but that would be your 
+Graham Sowerby: This is 
+Me: Your statement. Fit My Vehicle widget pop up. Yes, Jake. 
+RRG Web Products: Sorry. At first glance for me, like, this is just me. 
+Me: Yep. 
+Graham Sowerby: This 
+RRG Web Products: just the four yellow on the side looks to me, feels very heavy. Like, it's, like, fucking right in your face. 
+Me: There are tabs 
+RRG Web Products: Yeah. So, like, change vehicle yellow, the show all yellow, and then the the filters in yellow there, it's I don't know. Just to me, it doesn't feel it doesn't feel right. 
+Me: It feels like it could be too late. 
+RRG Web Products: I I can't really put a thing on it, but, yeah, I'm just saying 
+Me: Yeah. No. It's a good pickup because 
+RRG Web Products: to me. 
+Me: I kind of felt the same way more so with the tabs. Like, if you if you select any of these tabs, it's like it's very 
+Scott Childs: The yellow will shit out the tabs. 
+Me: Heavy. Sorry? 
+Scott Childs: The yellow looks bad over the tub. 
+Me: It does. 
+RRG Web Products: Yeah. But 
+Me: I'm thinking maybe instead of having it all yellow, we should probably just do a border. Around the top. 
+RRG Web Products: Do we keep it how we got it now, which is just a red order? I think it's a red border. 
+Scott Childs: Yeah. 
+Me: Yeah. The red. 
+RRG Web Products: Yeah. Just the red 
+Me: Yeah. Yeah. We could do it just as like, to swap swap the colors over to red. And then just keep it to the border. 
+RRG Web Products: Yeah. 
+Scott Childs: I would. Such a big block in there. On some of the tab icons, it'll really 
+Graham Sowerby: bury the 
+Scott Childs: image. 
+Me: Yeah. 
+Graham Sowerby: Yep. That's fast. 
+Me: That that's fair. It's a good pickup. You've lost me now. 
+RRG Web Products: Thanks, Virgo. 
+Me: Was I saying? Yeah. 
+RRG Web Products: Mhmm. 
+Me: Yeah. So hero section. Right? So you got your vehicle. That's set. This specific one oh, I'm not on the VLP. Sorry. This is the VLP. The PLP. Pretty much the same design, but so this is obviously right now replicating what it would look like if they filled in a Toyota Hilux 2015 to 2026. Four door u with bare roof. On the the fitment the fit my vehicle. And it would go to this PLP, essentially. 
+Them: So 
+Me: Same thing is on the vehicle landing page. If they clicked on roof racks, this is where that would land. 
+Graham Sowerby: Yep. 
+Me: Just just for clarity on So this is not one of the categories that can be found through the menu. Is what I'm getting at. So we have heading category description. We have our change vehicle. Again, that's gonna be your your fit my vehicle pop up. Your buyer's guide, will take you over to the buyer's guide page. For for the roof racks. Fitting, which would take you over to the fitting page. FAQs, which will anchor down to the bottom where there's FAQs, And video, same thing, will link down to the video section And I guess it's probably important to point out that both these sections would need to be set somewhere. 
+Graham Sowerby: Yep. 
+Me: Now ideally in my mind, we would apply these to a category level. But it's not necessarily gonna work when we're talking about the 5,000 individual roof rack categories. Every different vehicle. Right? So it we there might need to be some thinking tank on how we apply these I think these are gonna be instrumental and they they're very important. But how that works in the back end is probably still something that I 
+Graham Sowerby: Yeah. I think it was 
+Me: Graham probably a disc maybe or 
+Graham Sowerby: yeah. I think we've already got the start of it. For every Mazda vehicle, there's an FAQ section. So 
+Me: Yep. 
+Graham Sowerby: that seems logical. 
+Me: So that one's easy. And then I guess for videos, 
+Graham Sowerby: Yeah. We can do that as well. We just need to add that to Racket in the same manner. We'll put videos in a master vehicle. 
+Me: Okay. 
+Graham Sowerby: Yes. 
+Me: Go. 
+Graham Sowerby: Sounds sensible. 
+Me: So that's 
+Scott Childs: Are we gonna have it so those FAQs and video tabs up? At the top there don't appear if there isn't a video so people don't click 
+Me: Correct. Yeah. They're dynamic. So if there is 
+Scott Childs: Yeah. 
+Me: No videos in this category, 
+Scott Childs: Cool. 
+Me: That that video button wouldn't show. Same as the FAQs. 
+Scott Childs: Yep. 
+Me: The fitting will always be there. The change vehicle will always be there, but the buyer's guide, the FA and the video ones are dynamically shown based on if they're present. 
+Graham Sowerby: Yes. I think in the demo, there, you might have already done it, Brenton, but, obviously, when we don't have an introductory paragraph or or a vehicle, it'd be nice to see what, let's say, 90% of our pages are gonna look like where we haven't assigned a a 
+Me: Yeah. So if I switch over to the 
+Graham Sowerby: vehicle yet, picture, and content. So if you can build that in, 
+Me: To the standard pay o pay, I've got here 
+Graham Sowerby: Yep. 
+Me: So these are site wide session states. 
+Graham Sowerby: Okay. 
+Me: So we've got, like, I logged in. So if you look in the top back header, you can see, I 
+Graham Sowerby: Yeah. I see. 
+Me: Graham to log in. 
+Graham Sowerby: Yep. 
+Me: If they have a vehicle set, you can see it removes the vehicle from the hero section, and also the the header as well. And there's one there for the the store. It's being set as well. Yeah. If you wanted to view it, like, basically no vehicle is 
+Graham Sowerby: Yep. 
+Me: In or signed, This is how it would look. Rather than change your vehicle, it would say set your vehicle Potentially, could look at creating that as being a 
+Graham Sowerby: Yeah. 
+Me: Bigger call to action but I kinda don't 
+Graham Sowerby: Yeah. Over on the right. Mhmm. 
+Me: On the follow-up. 
+Graham Sowerby: Yeah. Understood. There a reason we don't wrap the text all the way to the right? It it it I mean, it looks probably better not to, but is it a bit particularly when the vehicle is there, felt like the margin or the padding was quite big. It might just be that I need to adapt to that, but there's quite a lot of space know, the the the lines wrap probably. 
+Me: Yeah. So the I guess there was some theory behind the level of padding there. Because you don't wanna get those two assets too close to each other that it sort of blurs into one another. You still need to have that separation. 
+Graham Sowerby: Mhmm. Yeah. 
+Me: However, one thing that I probably didn't keep in mind is when there is no image there at all, whether or not this should still act as its own column. 
+Graham Sowerby: Yes. 
+Me: Like, as in it's still acting like there's two columns there. But on the flip side to that, I think if you had this all the way over, you're gonna have like, one line 
+Graham Sowerby: Yes. 
+Me: Or two or one and a half lines. Of text, and I think that that would look even more odd in my opinion. 
+Graham Sowerby: Yeah. I'm wondering whether that set your vehicle, like you're saying, if you turn move that yellow button to the right when there's no vehicle and a bit bigger, maybe that would be good. And if you flip back to the one with the vehicle, I feel like that yellow button again, move it away and put it under the vehicle or something, like, kind of attached change vehicle somewhere around the vehicle. Like, it could sit under the bottom right of the vehicle, maybe. Or hover over it and a a change vehicle thing happens. I I don't know. I'm just wondering whether that'll move a bit more of that yellow over. 
+Me: Yeah. I 
+Graham Sowerby: Well, I guess if the tabs are going back to red, it doesn't it won't be as bad. 
+Me: Yeah. So the tabs will go go red border instead of 
+Graham Sowerby: Yeah. 
+Me: Full yellow fill. And the yellow 
+Graham Sowerby: Yeah. 
+Me: Line the brake line will also be red. So 
+Graham Sowerby: Does the change vehicle sit right aligned where the breadcrumbs are? So it's up in the kinda, like, up on the right out the way. Feels like change vehicle is very it will not be used much at all. I'd be very surprised how active that is because we're obviously gonna bring that alert that if they're on the wrong page, or if they haven't set the vehicle already, there's it's more than what's happening here. It'd be more in your face. Than the wrong vehicle. So I just think that changed vehicle button loft. Possibly. Like, the buyer's guide's really relevant to fit in FAQs v videos, but the change vehicle feels like it should be Yeah. You've already done it. I reckon 95% of people have already That's not as important, but it should still be somewhere. But 
+Me: Yeah. 
+Graham Sowerby: you know, where where your mouse is, sorry, just to be like, yeah, where your mouse is. Kinda, like, in that area, sat in the top right of the Like, is that would it be wrong to put it there? 
+Me: I don't I don't think they'd be wrong 
+Graham Sowerby: Is there any reason not to? 
+Me: I think I'd probably I just probably wanna test it how it would look maybe sitting in line with these buttons, but all the way on the right you know, over the, like, under the vehicle. Versus maybe to the right of the breadcrumbs. 
+Graham Sowerby: Yep. Yeah. 
+Me: There might just be something we have to test visually to see what 
+Graham Sowerby: Yes. 
+Me: Feels right I've got no issue with moving it around. That's no problem. 
+Graham Sowerby: Mhmm. Yeah. Cool. Yeah. I think that'll be that'll be good. Alright. Keep going. 
+Me: Yep. So, obviously, the next section under that is our shop buy tabs. So these are all the functionality wise, this will not query the products. These are individual URLs 
+Graham Sowerby: Yep. 
+Me: So I needed to double check, Scott. That that is possible, isn't it? Because it we can do it two one of two ways, either query or URL. 
+Scott Childs: Category or attribute. Yeah. 
+Me: Correct? Yeah. Yeah. So the idea here is we wanna move away from the query based And the reason I say that is if I'm on roof mounted, bike racks, This really needs to have its own category description its own ranking online. 
+Graham Sowerby: Yep. 
+Me: Separate to tow bar mount, rehatch mount, u tub mount, Like, each one of those really need to have their own ranking and SEO. Right? And and and, like, FAQs, all of that need to be defined to each one of those. Rather than querying it 
+Graham Sowerby: This is 
+Me: And we just end up with one page then. 
+Graham Sowerby: Yep. 
+Me: Yes. So that's sort of the tab section. Obviously, we've gone over the design side. The functionality side. Is there any other questions you have on that one? 
+Scott Childs: Just on the other page where we don't have a vehicle selected, 
+Me: So same page, just unselected. 
+Scott Childs: Yeah. Yeah. 
+Me: Yep. 
+Scott Childs: So if there's no vehicle, should we not just have a a product image there? Like, if 
+Me: Yep. 
+Scott Childs: a picture of the a variation of bike carriers? 
+Me: Yeah. Sorry. I probably didn't clarify that. That is the the design of it or the dev brief. The way that I've written the dev brief is that the pry there's a priority order to the images. That that Hilux image that I'm talking about, the actual vehicle, So it'll either be the vehicle if if the vehicle is set in the user session, If it hasn't, it will have a fallback to the category image. And if it doesn't have a category image, it fall it default doesn't show. 
+Scott Childs: Yep. 
+Me: Does that make does that make sense? So there's three states there, I suppose. Maybe I should add those into the demo state panel so that we can actually visualize that as well. 
+Graham Sowerby: Yes. Could be good. 
+Me: Yeah. Cool. But any 
+Graham Sowerby: If you hear the icons, 
+Me: Yes. 
+Graham Sowerby: I guess the icon size I know Tim has mentioned this a few times, like, over the last four or five years. Just you know, it's very hard to actually see what we're looking at. At that sort of size, but that might be your screen. It might be on you know, on mine, it it looks bigger. 
+Me: True. 
+Graham Sowerby: Are they the same size? 
+Me: If you're looking on mobile, it's probably oh, sorry. On what do you call it? On laptop, it's probably looks more like this. 
+Graham Sowerby: Yeah. Okay. 
+Me: For reference. My again, my desktop screen's pretty big, so it'd probably skews it out a little bit. But 
+Graham Sowerby: Yeah. It's probably probably fine. It's I don't know about you guys. I mean, I'm I'm I'm borderline with it, whether it's just too small, but it's maybe not. 
+Me: So if we have a look at the current one, 
+Graham Sowerby: Not really. Yeah. That's not 
+Me: The the new design is technically larger than the old 
+Graham Sowerby: yeah. Yeah. Okay. No problem. 
+Me: The current one. But not by not by too much. 
+Graham Sowerby: Yeah. No. It's fine then. Yeah. No. It's all good. All good. Nice. Yep. 
+Me: Any other questions on the the tabs or any other cool. So the next section is so you've got your search results. You've got your grid and list 
+Graham Sowerby: Yep. 
+Me: Switch button. And we'll go through the difference between the grid and the the list in a sec. And then, obviously, you sort by. So that's all pretty standard ecommerce. Stuff. 
+Graham Sowerby: Yep. 
+Me: No questions on there or any additions or functions that you would wanna see. 
+Graham Sowerby: Just click the drop down again. Is relevance what it defaults to at the minute? Because I guess that's 
+Me: I believe, yeah, it's sort it's we've got deep 
+Graham Sowerby: search boost. 
+Me: Low to high, high to low. Whereas, 
+Graham Sowerby: Okay. 
+Me: Relevance is essentially default, 
+Graham Sowerby: Yeah. 
+Me: I just don't think using default is probably the best terminology. I would say relevance because this allows us to obviously use our 
+Graham Sowerby: Yep. Search boost. Yes. Yes. 
+Me: Our ranking that we've got. 
+Graham Sowerby: Mhmm. 
+Me: We've got a high to low low to high, high to low, 
+Graham Sowerby: Yep. 
+Me: Newest, best selling, highest rated. So 
+Graham Sowerby: Yes. 
+Me: I I'll have a chat with the the one that here, the highest rated. I just have to double check with Mark that we'd be able to list this based on reviews.ioinfo. Or not, If if we can't, then we'll just drop the the highest rated but everything else should be able to pull from Magento. Quite easily. 
+Graham Sowerby: Yep. Yep. My only comment on that would be put the the price order at the bottom of the list because relevance is good. The newest best selling, highest rated. And then high low high, high low. Because we don't really want people to quickly get to the low high not a good 
+Me: Yeah. 
+Graham Sowerby: not exactly right. We're not trying to give people the cheap options and yeah. 
+Me: No. That's fair. 
+Graham Sowerby: Yeah. All good. 
+Me: Cool. The next section I'll do is the the filters. So, obviously, these are category based. Whatever's in that category, the attributes to their filters will show here. We're gonna have 
+Graham Sowerby: Yep. 
+Me: Based on the category itself, we can assign 
+Graham Sowerby: Yep. 
+Me: Primary filters. Or priority filters. This is what that yellow section here is. I'll probably drop the again, in this header section, the the straight yellow block, and maybe just keep it to a yellow outline. Might help as well sort of take away from that hard hitting 
+Graham Sowerby: Yeah. 
+Me: Pull away. Especially when you've got, like, best seller, staff pick ribbons right next to it. 
+Graham Sowerby: Yeah. 
+Me: So it might be worth having a drop in that yellow background there. But everything else basically works the same way as the current site. In terms of what shows. It's just this new priority filter that can be applied at a category level. So for example, I guess roof like, bike racks is probably a good one because, you know, you can specifically ask it like a question. You know? How many bikes do you need to carry? And this is literally just the attribute of how many bikes 
+Graham Sowerby: Yep. 
+Me: That product has or or is capable of carrying. Right? Then we've got all our standard ones. And the idea there, I don't know if we wanna have this This is probably a question for you guys, Whether we wanna have those collapsed by default or expanded, but I left it as expanded for now anyway. 
+Graham Sowerby: Yeah. I Yeah. I think there's a setting within Magento where we can default open or close. I can't remember. Jake, where we set that, but 
+RRG Web Products: there's an option it. You can do it with Mark's new way in the in the meta description thing. Yeah. Keywords, whatever one that was. 
+Me: Yeah. 
+Scott Childs: Yeah. 
+Graham Sowerby: Yeah. Just expand one again, for instance. There's a there's a couple of observations. One is When we want to explain a bit more about the attribute. The filter, there's a little eye icon. I I don't know if you wanna just jump to the live site and just live I'll show you what I mean. 
+Me: Oh, yep. 
+Graham Sowerby: Yeah. When you hover over that, it tells you. 
+Me: So just that Yeah. We can add a tool tip to it. 
+Graham Sowerby: Yep. Just thought it'd be worth 
+Me: That's not a problem. That's a good pick up because that's a thing I I had missed. So 
+Graham Sowerby: Yep. That's all good. Is there a reset filters button? Just jump back to the we don't have one currently, just so you know, 
+Me: No. No. No. We didn't out of the year either. 
+Graham Sowerby: but I know that Tim's very keen. Didn't have a reset filter button, so if someone has pop that in there. And then I just feel like maybe that count should step in a little bit, like, you know, how the 
+Me: Nine. 
+Graham Sowerby: the tick box steps in it, like, maybe, like, even five pixels. It's not much. But the numbers on the far right look like the part It's just a little bit too close to the edge. Where the collapse is there, 
+Me: Okay. Well, we could match 
+Graham Sowerby: needs to step in, like, 
+Me: We could match the padding that's in the priority filter. 
+Graham Sowerby: yeah. Yes. 
+Me: Section so that the the numbers line up there, but then the 
+Graham Sowerby: Yes. 
+Me: The plus minus stays where it is. 
+Graham Sowerby: Yeah. Perfect. Yep. 
+Me: Yep. 
+Graham Sowerby: Yep. 
+Me: Alright. So a couple of things that I'll do there just for my notes. We'll add in some padding on the filters. We'll add in a clear filters button to clear it all out. We're going to add a tooltip ability to all the filters. Is it all all because I know on the live site there, we've only got it on you know, the odd filter here and there. Would you want that for everything or just again, same similar thing, like, just on the product load rating would have the tool tip next to the heading. 
+Graham Sowerby: We do set it at the the attributes level. If you go in to actually do a vehicle search, so that page you're on is more of a category. But if you do go into into just do a vehicle search in the header. Yeah. In that yeah. The homepage. Don't know if we've actually done a category like this, Jake, or got lots of tooltips as well. But this one, for example, where where has it all gone? Let's see again. It looks like there's a yeah. It's they've disappeared. There was one on bar profile. View, you know, For some reason, they've all disappeared. Maybe it's the vehicle that we've selected. I don't know. There's no prices there. Just drop that again. We'll just we go back to that result. Them first products again have got no price. It just it just sent me a message 
+Me: Yeah. These ones. 
+Graham Sowerby: just sent me a message saying that was all fixed about two hours ago. You pick that up, Scott, with Mark again? Just can can you send that link somebody to Mark and just kinda chase that down? Just put it in the group. I'll send it to Mark Brent. Just say you've been doing a demo. These products have not got prices. Alright. Bit of a distraction there, but 
+Me: Oh, that's alright. 
+Graham Sowerby: yeah, I know that Yeah. A note that we need to look at there is a master spreadsheet Brenton, of tooltips. I'll try and find that now while I'm looking, and it tells you the attribute and the text that should be displayed. 
+Me: Cool. That would be good. And then, obviously, underneath all the filters, we have our videos here as well. So this would be limited to just the the I guess, first two videos There was some theory behind the videos because, obviously, we've got our main bike racks category but then underneath that, we've got roof mounted tow bar, rehatch, u tub. Each one of those are basically subcategories to the bike racks category. Right? So my thought process here is under the filters, we would show videos that are for that specific category we're looking at right now. So depending on what tab you've got opened, And the ones at the bottom would be all the subcategories underneath it or beside it, if that makes sense. So even if I'm on roof mounted, I'd still see videos for the rear hatch mount, for example. But only down the bottom. Potentially, we could do that as, a priority thing. So it would always show the category that you're in now first, and then any side category, like side subcategories or the parent category videos. After that. It could be it could be too much having it twice on the page. I don't know. I'm I'm keen on hearing your insight on that. But I figured it's it's a nice clean spot that we can still utilize whether it's for a merchandising image, or 
+Graham Sowerby: Yeah. Could it be, like, a promotional 
+Me: Videos. 
+Graham Sowerby: within that category? Could it one that we that's, like, a we wanna put eyes on. A a featured product, maybe, from within the category. 
+Me: Could we could definitely do a featured product. Yeah. So a big one would be like merchandising imagery. So for example, if we're doing a big sale 
+Graham Sowerby: Yeah. That's true. Yeah. That's true. Yeah. 
+Me: Where are we? Yeah. We can just have, like, one of these banners or something like that showing underneath the filters. If that makes sense. 
+Graham Sowerby: Yeah. That's true. 
+Me: So 
+Graham Sowerby: I think the videos where they are in that bottom part is my gut 
+Me: Yeah. 
+Graham Sowerby: feel. I was kinda, like, lose kinda yeah, the I know there'd be more products usually, so that'll be a lot there wouldn't be that sort of clash. But 
+Me: Yeah. Yeah. 
+Graham Sowerby: I guess on a lean category, you would see that clash. So 
+Me: No. That's fine. So we'll swap out the videos in that side under the filters. We'll switch that out for a merchandising block, which can show or hide depending on if there's a sale on. And a featured product block. Which would just show how how would we set that? Like, how would you set 
+Graham Sowerby: reason the there there is another option here. We're trying to promote if you're on roof rack that you get a discount off the accessories accessory products. 
+Me: Yep. 
+Graham Sowerby: And on accessories, when you're on, like, awnings category, it could say save up to 20% of these awnings when you buy a bass rack at the same time. It could just be a we could hard code that. Do you know what mean? 
+Me: Well, that's Well, that's that's basically a merchandising image. Right? We could just do it at 
+Graham Sowerby: I mean, there's a lot yes. Yes. 
+Me: As part of the merchandising block, we can always have 
+Graham Sowerby: Yeah. 
+Me: Can always have two merchandising blocks. One that's just dynamic based on if there's a sale or not, 
+Graham Sowerby: Do it cut Mhmm. 
+Me: That just shows or it doesn't show. 
+Graham Sowerby: Yep. 
+Me: And the second one could be a category specific merchandising block. Which 
+Graham Sowerby: Yeah. 
+Me: Would be things like, yeah, if there's if you're looking at accessories, you know, it could say something along the lines of get you can save 10% when purchasing with a roof rack or roof platform 
+Graham Sowerby: Yeah. I feel like we set it up the category level. If you set it at a parent, let's say you set it on all learnings, 
+Me: Yep. 
+Graham Sowerby: every awning subcategory that you're in within that would inherit that graphic. So you just set do you know what mean? You set it at the highest level parent. 
+Me: Yep. 
+Graham Sowerby: So yeah. We maybe do that in the short the in one of the fields. 
+Me: So so then just on that, if in the instance that let's say, you've set it on bike racks being the highest category of the all the bike rack range. 
+Graham Sowerby: And some 
+Me: And then you also set one on the roof mounted, but not on the others. With the the one that's set on the roof mounted override the parents one? 
+Graham Sowerby: Yeah. Or or you just let them, like, maybe they could fade through, or this is a swipe to view different promotions or 
+Me: Like a carousel. Yeah. Okay. Cool. 
+Graham Sowerby: who's the thought? Not sure. 
+Me: Yep. No. That's alright. I'll Hopefully, Granola's picking all this up. 
+Graham Sowerby: Yeah. I'd I'd start 
+Me: Yep. Still recording. 
+Graham Sowerby: I'd start with one, and I'd always make it supersede The the so if you're at a lower level, lower level set one would be the one you see. Otherwise, it falls back to the 
+Me: Yeah. 
+Graham Sowerby: know, the one that the parent 
+Me: Yeah. That makes sense. Cool. Okay. And then I guess the big section the the actual product cards themselves. So what you're seeing by default is the new grid layout. At the moment, you'll have to ignore the icons used on the show specs because it's just using emojis because I don't have all of those individual icons without going and spending half day downloading them all. Manually unless we have all of those sitting in one place, which would be nice, nicely named. 
+RRG Web Products: They should be. They will be in 
+Scott Childs: cPanel somewhere. The one because I've traded 
+RRG Web Products: every single one of them. 
+Me: Yeah. Are they named nicely? Like, cleanly, I should say? Are 
+RRG Web Products: Be honest, probably not. 
+Me: As long as it's not like icon one, icon two, icon three. 
+RRG Web Products: It's very much 
+Scott Childs: that No. That's what 
+RRG Web Products: it is in cPanel, but in my files, it's not. Oh, right. 
+Scott Childs: Okay. Yeah. CPanel, it has to save that way. Yeah. Yeah. In 
+RRG Web Products: cPanel, every icon is 
+Me: Yeah. 
+RRG Web Products: called icon. It's fucking weird. I don't know why. 
+Scott Childs: I'll see 
+RRG Web Products: if I can find the file for you. 
+Me: Okay. That'll be cool. So yeah. The idea here is that you can show and it will extend those down, shows you all those specs, in there. The I guess a couple of the bigger things dynamic things is your bestseller. Ribbon, and your staff pick ribbon which you don't see. There's not a staff oh, hang on. There you go. Your staff pick ribbon. So those are dynamic. We'd need to find a way to flag those in Racket. Now those could also be something that we can use on specific products that we wanna try and move and any discontinued stock, stuff like that. We could can have as many different ribbon names as we 
+Graham Sowerby: Yep. 
+Me: Realistically want. 
+Graham Sowerby: See 
+Me: You could have things like discontinued limited stock left. You could have whatever you wanted really there if there was a big push on it. 
+Graham Sowerby: Yep. 
+Me: You'd you'd put it there. The next dynamic thing is obviously the sale tag. So that is the same sale tag that you'll see on the PDP pages as well. And then, obviously, the brand, logo, name, reviews.io, review if it exists. If it doesn't, that's blank. And that's based on product level, not not company. To clarify. And then our pricing. So you can see here the difference between on sale versus not on sale. Where we still have our recommended retail price striked out. One thing I did have a think of is with the new PD pages, we now we actually say now this with RRP with the strikeout. So I know if we wanna my opinion now that I'm thinking about is that pricing on the cards should look exactly like the pricing here on the PDP. 
+Graham Sowerby: Yeah. Yep. Yeah. I 
+Scott Childs: was 
+Graham Sowerby: thinking the save would probably the most prominent thing missing. 
+Me: Yeah. 
+Graham Sowerby: But, yeah, 
+Me: Yeah. 
+Graham Sowerby: happy with that. 
+Me: Cool. 
+Graham Sowerby: My only other 
+Me: Yep. 
+Graham Sowerby: comment on that was sometimes the spring overlaying a graphic on, like, the image can really be in the wrong place at certain times, and it's very hard to control. I feel like to the left and right of the price, know? So let's say you put the price the crossed out price in in stock. 
+Me: Yeah. 
+Graham Sowerby: If that was if there was a a tag, that would just shift to the left a little bit, and it basically become a two column. 
+Me: Yep. 
+Graham Sowerby: In there, and the spring sail just hits to the right right its second column. 
+Me: So I know initially where is it? I know initially we actually had the design very similar to that. Just quickly bring it up. Like that. Is that sort of what yeah. 
+Graham Sowerby: Yes. Yes. Similar to that. Yes. 
+Me: Yeah. Alright. Cool. Yeah. So we'll put the sale tag next to the pricing as basically, if it's not on sale, it's a single column pricing column. But if it is on sale, then it will be a two column with pricing on the left, and the sale tag on the right. Both will still be center aligned, so it'll all keep nice and 
+Graham Sowerby: Yep. 
+Me: Clean and tidy. And then you've got view details. So I currently with that's the wording we use on our live site. Is just view details. I don't think there's anything wrong with that. I guess my only question to you guys would be should we have that as an add to cart straight away for simple products? 
+Scott Childs: I was gonna say we should have lot of sites I shop on will have either a quick add to cart and a view details or a, you know, explore more sort of thing. So it'll have the the option to just quickly add that to cart. You know what it is. You've already had four pro rides before. You just want another one. You don't need to go through a PDP. 
+Me: Yeah. 
+Scott Childs: Cycle. So I think we should have a quick 
+Graham Sowerby: add to cart 
+Scott Childs: here. But still the option to go to the PDP, whether that's called view details or whatever. But I 
+Graham Sowerby: think we should 
+Scott Childs: have both. One one of the things 
+Graham Sowerby: just on that, Brent, and that I you might know the answer to this. From an analytics point of view, when when they traverse through pages, it gives you a very accurate reflection of where people have been and what they're doing. Whereas if they don't go to the PDP because they put it straight in the cart, you can't see the what you know you lose that interaction. You lose the amount of time you spent on it. I I I don't know. But I don't like skipping But it's it's only from an analytics perspective. But maybe it's still okay. I don't know. You know, how many people viewed the pl p page? And then how many people viewed the PDP is a metric which is quite nice to know, like, which products are they clicking through to. But if you just put them in the cart, it it might still be achievable, Brendan, but at some point, it's just good to see that relationship of where people are going to. But if they put it straight in the cart, can it still trigger a page view on the PDP? Because they haven't even seen it. You know? Or could it do remarketing? If they've put, you know, if they put it in the cart but then don't check out, it gonna remember that they've actually been interested in that product if they haven't been to the PDP? Therefore, remarketing won't work if we don't You you get what I'm saying? Whether it's important to have that 
+Me: Yep. 
+Graham Sowerby: click through to the page even if 
+Scott Childs: they want to quickly 
+Graham Sowerby: add it to the cart actually allowing them to might lose some analytics, which is valuable. But that's just my input. I I I don't know the answer. It's all your 
+Me: I mean, 
+Graham Sowerby: your 
+Scott Childs: cup your 
+Graham Sowerby: bag there. 
+Me: I mean, look, from an analytics well, like a tracking point of view, you you can still track it. You're just gonna track it down two different places. Right? You can go, right, how many people got as far as the PDP and then add it to cart? Versus tracking, okay, how many add to carts were there from PLP pages? Like, you could you should we should be able to still I think from my my personal opinion would be if it's a simple product this whole product card is a link. To the PDP. Other than the add to cart button. And that would be an add to cart 
+Graham Sowerby: Yeah. Kids. 
+Me: If it is a sibling product or it's got variations, then it would be view details. 
+Graham Sowerby: Yeah. If you're on Yeah. If you add cross sell products as well, because I don't know whether Mark could if you click to add to cart from here, say, on the p six platform, and the mini cart slides, then would it still display the cross sell products for individual product? And that's probably a technical question for Mark. Because if it doesn't, 
+Me: Yeah. I'm sure it could be because you'd you'd be just checking it based on the 
+Graham Sowerby: Yeah. Yeah. Yeah. Yeah. I think so. I think so. Yeah. 
+Me: SKU that's added to cart, not Yeah. Cool. 
+Graham Sowerby: Okay. As long as, yeah, as long as we're happy with that. Yep. 
+Me: Yep. So I guess the difference between the the v l VPLP and just the standard PLP is 
+Them: Mhmm. 
+Me: In the grid view, we also have the fitment gallery. Button, which again acts still not happy with this exact drawer layout. For the for the standard like, all of them because it's a lot. Need to try and clean that up a little bit. But we've got that. I also fixed that issue where it was overlapping the menu. 
+Graham Sowerby: That's all good. 
+Me: The make the header. Sorry. But yeah. So that's that's one variation on the the vehicle PLPs. And the other is that we actually add this fitment gallery widget to the second row 
+Graham Sowerby: This is 
+Me: Or the second result in the list view, but the second row on grid view. 
+Graham Sowerby: Yeah. 
+Me: And and that's that's always. So even when you switch over to here well, actually, it should be the second result, but third that actually probably works too. 
+Graham Sowerby: Yes. 
+Me: To be honest. So 
+Graham Sowerby: Is view options is options what does options mean? I guess? 
+Me: What you've got so if I go back here, let's say this is the product that's showing. The idea here is that there's an option between assembled and flat pack. So we could say 
+Graham Sowerby: Yeah. Okay. I see. Yep. 
+Me: View options. We could say view details. But options is kinda giving the message that there are different options available. Especially if there's, like, B stock, for example, available for that product. So even if it is a single item, but it's got b stock, then potentially we should show see options or view 
+Graham Sowerby: Yeah. 
+Me: Or whatever. 
+Graham Sowerby: Yeah. Okay. So is that the the answer for siblings? We don't actually do anything other than, say, view options. Well, how would I know 
+Me: Correct. 
+Graham Sowerby: Okay. So assembled and unassembled. Is not visible here. You'll just say, hey. There's some options. 
+Me: Yeah. Correct. 
+Graham Sowerby: Customer. Come in and come in come in and you'll find out. 
+Me: Yep. If you if you go putting two buttons, big yellow buttons and stuff like that on here to show the two different variations, it's just 
+Them: Yeah. 
+Me: It gets messy. And it's gonna have a lot of heavy draw on your eyes straight away. 
+Graham Sowerby: Yeah. Should we say from? 
+Me: My idea here is that I was just gonna say the idea 
+Graham Sowerby: Oh, sorry. Sorry. You know, you go. 
+Me: In my mind here is that you click on view view options or view details. Maybe we do just keep a view details for everything, but you click on it. And that would just take you to the default first option of the siblings. On the PDP. 
+Graham Sowerby: Yeah. What it says from if it had various 
+Me: Yes. 
+Graham Sowerby: options should this page say from? Eighteenth 
+Me: Yeah. I I would agree with that. 
+Graham Sowerby: Yeah. 
+Me: Yeah. 
+Graham Sowerby: Yeah. 
+Me: So the pricing would say from $18.90 or 8 from whatever the cheapest 
+Scott Childs: Yeah. 
+Me: Sibling item is. 
+Scott Childs: Yeah. 
+Me: It would say, yeah. From that that amount, instead of now. 
+Graham Sowerby: Yeah. Okay. I think that's fine. View options. I I think if it is if there's multiple options, I don't I quite like it saying view options rather than view details. And then if it was a singular, then it could be view details. And that's a good way 
+Me: Well, I guess if it's singular, the idea here was 
+Graham Sowerby: yeah, to to see. 
+Me: That we'd have add to cart. So the whole whole again, the whole product card is linked 
+Graham Sowerby: Yeah. Yep. 
+Me: To the PDP. But then we could have well, let's have a look. What 
+Them: Yeah. 
+Me: What are some good there's me trying to find some paint to match those new Max tracks that are coming out the other day. What was I looking for? 
+Graham Sowerby: I was 
+RRG Web Products: told you were having an interesting Friday night. 
+Me: Yeah. Right? 
+RRG Web Products: Yes. 
+Scott Childs: I thought 
+RRG Web Products: I'll see you at the 
+Scott Childs: drag, mate. 
+Graham Sowerby: From DragMate. 
+Me: Told you not to tell anyone. Yeah. So you can see even banning they do it as an add to cart or you click on the 
+Graham Sowerby: Yeah. Click on the word. 
+Me: You know, the product card and to get to their page. 
+Graham Sowerby: Yeah. Go back. What's the little icon next to one cart? Is that compare? 
+Me: I think that's adding it to that. You can add it to a list. 
+Graham Sowerby: Oh, it's there. Like, wish list. 
+Me: So Bunnings Bunnings do this really well, but it's 
+Graham Sowerby: It's kind of a wish list. 
+Me: It works well for them because it the industry that they're in. But you can add it to, like, a a bathroom list. You can create your own list say, garden list or bathroom list or whatever. Reno you might be renoing a 
+Them: I see. 
+Me: House and doing three different projects, and you could have a list for each project. 
+Scott Childs: You'd probably know how spell that. 
+Graham Sowerby: Like, if you're signed 
+Scott Childs: in and you do that, 
+Me: It's pretty Pretty 
+Scott Childs: if that item goes on sale in eight months time, you're gonna email saying, hey. You fucking bars are now on sale. 
+Me: Yeah. 
+Scott Childs: Yeah. 
+Me: Yeah. 
+Scott Childs: Maybe 
+Graham Sowerby: Maybe a list is a good way. Brenton, to get some of email address. Know, we were thinking of ways how can someone give us an email address without you know it's not looking marketing. And and, like, you're gonna send them a follow-up an email saying you've abandoned the site. Maybe maybe we we pretend that well, we say that to save a list, give us your email address. Alright. I'll I'll do that. 
+Me: My my concern is, like, how many times are people gonna need separate lists for things? 
+Graham Sowerby: Oh, yeah. 
+Me: With with our products? 
+Graham Sowerby: Well, how many times does somebody 
+RRG Web Products: need of 
+Graham Sowerby: list? 
+RRG Web Products: Like, most of the time, it's the it's just the 
+Me: Well, that yeah. Exactly. 
+RRG Web Products: you know, it's the refracs and 
+Graham Sowerby: they go, oh, yeah. That's 
+RRG Web Products: it. Yeah. That's 
+Graham Sowerby: no. That's cool. Okay. So is oh, it's fairly simple, but it's fine. New product. Delivery included. 
+Me: Yeah. I was just looking at that. I actually don't mind that those tags. 
+Graham Sowerby: Fair enough. 
+Me: And I noticed their special order 
+Graham Sowerby: Yeah. 
+Me: Section looks quite nice too. But we'll get to that. Already passed over the PDP, so it's probably not let's not go 
+Graham Sowerby: Okay. 
+Me: Messing with it too 
+Graham Sowerby: Stop changing shit. 
+Me: Yeah. 
+Graham Sowerby: Get 
+RRG Web Products: it done. Me too. 
+Me: Otherwise, Mark will just be like, oh, give me a well, you just do what you need, and 
+RRG Web Products: Yeah. All 
+Graham Sowerby: good. 
+Me: Let me know when you're ready and then then he will work on it. Like, I don't wanna do that. I'll do rather him 
+Graham Sowerby: It was 
+Me: We'll roll out what we've got, Obviously, over time, we're going to track clarity. We're going to track those heat maps and see how people are interacting with it. Seeing what the conversion rate differences are, and then optimize it anyway. Right? So I'd rather just roll out what we've got so far pushed over to him already. 
+Them: Yeah. 
+Me: You can sort that out. And then the little things like that, we can always get added or updated down the line. 
+Graham Sowerby: Yeah. Just go back to that view options on the products. There's a quest there's a question here on 
+Me: Yep. 
+Graham Sowerby: say this was a flat pack or assembled. We've made racket I think we've we've made it optional, but when you create that package, that that, sorry, sibling group, you can give it a name, a description. Therefore, it got a container that container there, wouldn't just read either the fully assembled product, which 
+Me: Yep. 
+Graham Sowerby: probably the title says assembled platform and the other one says unassembled. I guess we're going to use the container detail here. 
+Me: Yeah. This would be what what do we call that? Like, the sibling container? If you will? 
+Graham Sowerby: Yeah. I've not considered that. So 
+Me: The sibling product itself. 
+Graham Sowerby: I've not considered 
+Scott Childs: that 
+Graham Sowerby: on group product oh, I'm sorry, on vehicle rack sets. On a p six platform? It obviously makes sense. Yeah. I just have to see how do we adapt the name of the product. Because it actually dynamically generates. I'll be able to work it out, but I was just thinking I need to do the same logic on a 
+Me: Yeah. 
+Graham Sowerby: vehicle accent. Anyway, don't worry. That's for me to worry about. No. Okay. The would yeah. So we're gonna put the from price there. 
+Me: Yes. Yeah. If it's got if it's got variations or sibling products, it it should be from whatever the cheapest amount is. 
+Them: Yeah. 
+Graham Sowerby: I did yeah. 
+Me: And and we'll still redesign that pricing section. To be the same as this section here. 
+Graham Sowerby: Yeah. How does a how does the gallery Scott, how do we wanna deal with the gallery if it's in this fully assembled p six which, I guess, they have a different JSC code. Right? Do we pick the right one? No. 
+Scott Childs: Yeah. 
+Graham Sowerby: We need to merge them, really, don't we? I think the gallery's got to be based on both. Yeah. I guess so. Just gonna look the 
+Scott Childs: same. Right? 
+Graham Sowerby: Yeah. Yeah. Okay. 
+Me: Go. 
+Graham Sowerby: And we missed anything here. Can we go back to design x design? Sorry. You go, Scott. Just on this exact page 
+Scott Childs: here. So scroll up to the top tabs. What's the plan now? So you click on roof manning. Currently, on our site, if you get to that stage, like, you go attachment style and then where is it on now? So, like, if you come into our site and go roof me up, you don't see tow bar etcetera. You will just see the types of roof mount carriers. 
+Me: Yeah. 
+Graham Sowerby: So what's 
+Scott Childs: the plan here when they 
+Graham Sowerby: come? Because they can yeah. Do we want it Hang on. 
+Me: These would become a priority filter in my mind. I 
+Scott Childs: Not a a top tag. Filter? 
+Me: I I wouldn't do it as a top tab filter. No. I'd have it as a as a priority filter down the side. 
+Them: Yeah. 
+Me: The idea there is that you can get to the top level categories at a quick click. If you're needing to filter the results, so this is kind of my thought process. If you need to filter or query the results, it should be the left hand side. If it's gonadotone 
+Graham Sowerby: Mhmm. What is 
+Scott Childs: this what if the query needs visual aids, though? Like, the wheel hold, frame hold, 
+Me: URL, 
+Scott Childs: fork hold, like that? We shouldn't 
+Me: So I guess 
+Graham Sowerby: should support imagery. Go to In that left. Go 
+Scott Childs: to our 
+Graham Sowerby: website on 
+Scott Childs: our current live. 
+Me: Put it like this. 
+Scott Childs: Yeah. 
+Graham Sowerby: Yeah. I won't quite do it like that, but I'd put a little square like this like, little yeah. 
+Me: Something. 
+Graham Sowerby: Like, icon sized tiles, like, little 
+Me: Yeah. 
+Graham Sowerby: Yeah. Yeah. Yeah. Open 
+Scott Childs: up our live 
+Graham Sowerby: site. I 
+Scott Childs: did this on one page just as a see how it goes. Click on camping and off road. And just click on 
+RRG Web Products: anything in that 
+Scott Childs: camping third column. So okay. That's a good example. So that's got everything in that camping list as a top icon. Now click on camp furniture. It keeps the top filters there, but it also expands out what's inside of camp furniture. Do we wanna do something like that? For instances, on these bike carriers, so if they click on brief me out, it'll then expand out going fork mount, wheel hold, frame hold. 
+Me: Yeah. We could absolutely do that Yeah. We could absolutely do that. Is there are these oh, yeah. They are. They're they're URLs. Right? They're 
+Scott Childs: Yeah. They're they're all categories. It would mean I would have to make more categories for, like, the byte carriers because currently, they're based off the attribute, but 
+Me: Yeah. 
+Scott Childs: I mean, that's fine. I don't mind more work to do. 
+Me: Look. I I don't mind this. That's that's not a problem at all. 
+Scott Childs: Because I don't like the fact that where you've gotta go back 
+Me: Like, Yeah. 
+Scott Childs: a full step in the current page to get 
+Me: I wonder if maybe well, potentially, what we could do is, let's say, back on bike racks for a second here. Obviously, by default, they click on bike racks. It comes to this page here. With the show all selected. And let's say you clicked on roof mounted, Actually, no. Scratch scratch what I was gonna say because then it would clear out the other tabs. It's almost like we need a second level of tabs, but without taking away from the the main ones? That makes sense? Sort of like a level one, level two. So I'm wondering whether 
+Them: But it'd a little 
+Me: Well, that's 
+Graham Sowerby: Could it be pills? Could it be, like, pills underneath? Like, 
+Me: My thought was maybe in so if you selected roof mounted, or in this case selected tents, right, And you've got all your swags and whatever. All your other subcategories to your tent. Category. Maybe we have half size tabs that come down from that line instead of up. So they still visually show as like a subcategory of what you've got selected. 
+Scott Childs: don't think they should be any smaller, though. If they're any smaller, it's gonna be, again, really hard to see what the image is. I think we keep the icon the 
+Graham Sowerby: same size. I'll put the name to the right of it or the left of it. Whichever. So the icon it it feels smaller, but the icon will still be the same size. Put in text. Because there wouldn't be as many options. Right? Mean, how what's the biggest subcategory list we've got, or is it pretty big? It it can 
+Scott Childs: go pretty 
+Graham Sowerby: big. 
+Scott Childs: Can go very big. 
+RRG Web Products: Yeah. Like, Campfire 
+Graham Sowerby: is one of the bigger ones 
+Scott Childs: at the moment. Same as campsite. Campsite's got four. Camp furniture has five. But, you know, like, when we get to, say, platform accessories, ideally, the the we wanna have you know, jerry can holders, shovel holders, gas bottle holders so people can really quickly visually navigate the base to what they want, not scroll down a list of words on the side of a page or click through 40 pages of accessories to find a shovel holder. 
+Graham Sowerby: About just above the cards, Brandon, that we have even if the they're just kinda, like, in there, you can maybe put, like So Devin 
+RRG Web Products: across and then start 
+Graham Sowerby: a new role. And he just it's like 
+Me: Maybe, yeah, having them as act almost like 
+Graham Sowerby: oh, go. So oops. 
+Me: Category cards. In in the actual results. So you can have 
+RRG Web Products: I think 
+Me: Yeah. 
+RRG Web Products: oh, yeah. So I I 
+Graham Sowerby: think by practice 
+RRG Web Products: is probably a really bad example to try and figure this out on because that what we're trying to do here is, like, the main cards and then have the filters. 
+Me: Yep. 
+RRG Web Products: Works on every other category. Other than bike racks. Because if someone's someone wants a roof mount, they're looking at roof mounts. They wanna know that the next biggest question and realistically is one of the main question is, how my mount how's the bike attached to the carrier? That is really the biggest 
+Graham Sowerby: question 
+RRG Web Products: and should and that's why it is a tab. At the moment. Yes. Because, you know, 
+Graham Sowerby: some people are 
+RRG Web Products: really big road racer vibes. They wanna instantly go, yep, fourfold because I know I Yeah. Bother for them. 
+Me: Okay. So here's what I'm thinking. I'll I'll I'll at least put this together this afternoon. Just so whether we're not I guess, diving too deep. But what I'll do is I'll I'll actually create a second PLP page. This time, I'll focus it on the camping one. Just because it's like you say, the most in-depth 
+Scott Childs: I'd I'd 
+Me: Scott, is that right? Yeah. 
+Scott Childs: I'd I'd say so at the moment, it's probably got the most 
+Me: So what I'm what I'm thinking is 
+Scott Childs: sub subcategories. 
+Me: You got your top or your level one category, which would be your in this case, camping and off road would show oh, yeah. 
+Scott Childs: Well, the moment is different anyway. Like, it's home, camping, off road. Camping, and then yeah. 
+Me: Yeah. 
+Scott Childs: Like, that doesn't have the vehicle accessories or the four wheel drive stuff. 
+Me: Okay. So I'll Okay. So I'll base it on the camping page. Right? 
+Them: Correct. 
+Me: Now my idea here is that we'll still have all of these same tabs. But let's say you do click on camp furniture all of these new tabs that have been added in will show up as like, in the the product in the actual search results. So I can visualize it, but it's basically it's gonna show all the subcategories of a subcategory. Would show into the actual product results, and maybe that's five six, seven wide. I don't know yet until we don't want them too big that they're taking away from the 
+Them: So Yes. 
+Me: They'll probably be the same size as these tabs. 
+Graham Sowerby: Yeah. 
+Me: Is sort of what I'm thinking. So you fit those across, maybe there's two rows there, and then when you click on one of those, it takes you into that subcategory. Which means that all of those would then become the main tabs. And instead of the show all, maybe 
+Them: I 
+Me: We have a go back to 
+Them: I'd probably 
+Me: Say, 
+RRG Web Products: I wouldn't 
+Graham Sowerby: on those 
+RRG Web Products: secondary ones, for me, I wouldn't when you click on it, I wouldn't make them now the top ones. I just leave it as it is. It just I 
+Me: Okay. 
+RRG Web Products: It just again, just pre filters, but it stays as it is because then you know, what if they're 
+Graham Sowerby: they wanna go through the 
+RRG Web Products: camp chairs and it's like, yep. Sweet. And then they just go back to the same spot. And go to whatever the other 
+Graham Sowerby: ones are. 
+Me: Yeah. 
+RRG Web Products: They used for the SEO, though. Like, 
+Graham Sowerby: they had the one in would have to be camp chairs. We need a camp chairs page. 
+Me: Yeah. 
+Graham Sowerby: Maybe it would just on every page, you would just have to carry over all of them 
+Me: Yeah. 
+Graham Sowerby: you know, all of that. Pass the grease that deals in the same IS. And it would obviously then show that one as highlighted. Yeah. I think that's the way to do it. I think we would have a new page, but we'd keep all that block always persistent because the sibling categories that that that, you know, the sisters and brothers, know, categories. 
+Me: Yeah. 
+Graham Sowerby: Yeah. And 
+Me: And I think yeah. May maybe, Jake, I think you're you're right. You're probably on the money there. With these tabs here, they should always be applied to your level one. Category. And then all your level two, three, four, five, even if if you if we probably need to clean it up to a point we're not getting that far down. 
+Graham Sowerby: Yeah. 
+Me: But all of those level two onward ones, is a if you are in a level one which is you show all, then sorry. Then you got your level two, which is your roof mounted tow bar mount, rear hatch mount, u tub mount. And then your level threes show. Here. If you click on a level three, if there's a level four, that's when they would show there. Is that sort of what you're thinking, Jake? Instead of 
+Them: Yeah. 
+Me: Changing or messing with these tabs, they the the main subcategory tab stays 
+RRG Web Products: Yeah. 
+Me: Yeah. 
+RRG Web Products: Yeah. That's what I was thinking. Yeah. 
+Me: Yeah. So show show all is basically the level one. So that is your your upper parent category. Level two categories to that I the tabs after the show all Level three is then essentially cards in the product results, same as level four so on. Perfect. Alright. I'm gonna stick with that for now. We'll see how that looks. 
+Them: Yep. 
+Me: Okay. Is there anything else that you guys have feedback on that we haven't covered? 
+Graham Sowerby: I'd probably just jump back to let the one that we finalized with the furthest we got it before you do. Just make sure we haven't forgotten anything on the 
+Me: Which one's that side? 
+Graham Sowerby: designs. Did you have the one we did some work to this was when Beck was doing it probably just as you arrived. There wasn't any other features. It's more what features did we have on there. Maybe we didn't have anything. And and I guess we keep rack scores off this skull, the stuff that Tim was talking about. Just for now. Because that's just gonna add to, like, a a layer of complexity. Yeah. Okay. I guess the store the availability, is there I mean, again, this is probably further down the line. Oh, yeah. Are we gonna be able Graham, 
+RRG Web Products: sorry. 
+Graham Sowerby: Is that what you mean by the 
+RRG Web Products: change 
+Graham Sowerby: vehicle in the 
+RRG Web Products: top right? Yeah. Actually yeah. 
+Graham Sowerby: It's not that. Yep. I was more yeah. I guess, there's a requirement at some point that if we know the store, Tim wants the PLP to say, in stock for delivery, versus in stock at your local store, But we don't have the store stuff at the minute. We we sort of do, don't. We have it on the PDP when you put your postcode in, and you can set the store. But we don't have a persistent remembers your store functionality yet, do we? And maybe we kick that down the road you know, as a phase two. But I think that's why we had in store ready for delivery. Because you'll notice in stock ready for delivery. No. That's fine. Click and collect avail I mean, sorry. They are fine. Yeah. I don't have it on there. Don't don't worry. Don't let me complicate them. It's but there is a requirement at some point that Tim wants to filter on the PLP. That people that just want to shop local is that product in stock or not if they just want to drive to the store? But this is maybe a chat you need with Tim. Brent, and when when he's around. But don't worry about it for now. But just to have it in your mind that Tim's very keen to that in store experience. And viewing products based on shopping store. 
+Me: Yeah. 
+Graham Sowerby: Is quite important. So, anyway, a chat with him is needed. 
+Me: No. That's 
+Graham Sowerby: Okay. No. That's all good, mate. I think it looks good. Nothing on there that I'm worried about. The icons will obviously be updated to what 
+Me: Yeah. Jake, you're gonna have a look 
+Graham Sowerby: the guys have done. 
+Me: To see if you've got all those somewhere. 
+RRG Web Products: Yeah. I'll send you a drive link. 
+Me: Okay. Cool. 
+RRG Web Products: In our in our chat. Most of them will be there 
+Me: Perfect. 
+RRG Web Products: Most of them are actually just in the general general 
+Me: Yep. 
+RRG Web Products: one. And then someone of a 
+Me: Okay. 
+RRG Web Products: like, specific they'll be in their folders. Yes. 
+Me: Cool. 
+Graham Sowerby: In the scheme of Branson, in the scheme of what we present at sibling group, which just looks like one product, there'll have to be two offers. In there. So when when Mark does the data layer of this, within that, it will need a link to both the unassembled and assembled and the off the value amount so the PLP knows there's two products. 
+Me: Yeah. 
+Graham Sowerby: There's more products than what we presented. You get what I mean? We'll obviously have the link, and it just takes them through to one. But we need to within the schema. I think you have two offers within one product. So just kind of bear that in mind that when we do the schema, there'll probably be another requirement to to break that out. I I chat GBT is quite good on I did a bit of work a couple of months back on that. So 
+Me: Yeah. Yeah. 
+Graham Sowerby: see what they advise, mate. 
+Me: Cool. 
+Graham Sowerby: Okay. What was that? Should we? 
+Me: Yeah. I'm I'm happy with that. I got plenty of work layout of that, so that's let's not add to it. 
+Graham Sowerby: Yeah. No. Do wanna do wanna pause your Granola now? She's gonna very 
+Them: Quickly for two seconds just so you all know where I'm up to with. 
