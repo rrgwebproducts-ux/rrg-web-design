@@ -51,6 +51,7 @@ const plpState = {
   activeSubcat: 'all',
   activeFilters: {},     // { facetKey: Set(values) }
   view: 'grid',          // 'grid' | 'list' — reset from PLP_CONFIG.defaultView on init
+  gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css)
   sort: 'relevance',
   page: 1,               // desktop numbered pagination
   visibleCount: PLP_PAGE_SIZE, // mobile "show more" cumulative count
@@ -434,18 +435,19 @@ function plpRenderResults() {
     visible = all.slice(start, start + PLP_PAGE_SIZE);
   }
 
-  wrap.className = `plp-results ${plpState.view === 'list' ? 'is-list' : 'is-grid'}`;
+  const gridColsClass = plpState.view === 'grid' && plpState.gridCols === 4 ? ' cols-4' : '';
+  wrap.className = `plp-results ${plpState.view === 'list' ? 'is-list' : 'is-grid'}${gridColsClass}`;
   const cardsArr = visible.map(p => plpState.view === 'list' ? plpListCardHTML(p, cfg) : plpCardHTML(p, cfg));
 
   // Fitment Gallery, once per results page, at position 2 (spec Section 9): 2nd row in list
-  // view (index 2), directly after the first full row in grid view (index 3, a 3-column
-  // desktop row at the sidebar+main layout's actual auto-fill width — the closest fixed
-  // position to "first full row" without measuring live responsive reflow, same
-  // simplification this prototype set already applies elsewhere to "row"-based rules that
-  // only truly hold at one breakpoint). Only on VRS categories with a vehicle set — never
-  // standard PLPs, never Simple state.
+  // view (index 2), directly after the first full row in grid view (index = plpState.gridCols,
+  // the Demo State Panel's 3/4-per-row test toggle — the closest fixed position to "first
+  // full row" without measuring live responsive reflow, same simplification this prototype
+  // set already applies elsewhere to "row"-based rules that only truly hold at one
+  // breakpoint). Only on VRS categories with a vehicle set — never standard PLPs, never
+  // Simple state.
   if (cfg.vrs && plpVehicleIsSet() && total > 0) {
-    const insertAt = Math.min(plpState.view === 'list' ? 2 : 3, cardsArr.length);
+    const insertAt = Math.min(plpState.view === 'list' ? 2 : plpState.gridCols, cardsArr.length);
     cardsArr.splice(insertAt, 0, plpFitGallerySectionHTML());
   }
 
@@ -557,6 +559,11 @@ function applyPlpViewFlag(mode) {
   const listBtn = document.getElementById('plpViewList');
   if (gridBtn) gridBtn.classList.toggle('active', mode === 'grid');
   if (listBtn) listBtn.classList.toggle('active', mode === 'list');
+  plpRenderResults();
+}
+
+function applyPlpGridColsFlag(cols) {
+  plpState.gridCols = Number(cols) === 4 ? 4 : 3;
   plpRenderResults();
 }
 

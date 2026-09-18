@@ -147,6 +147,12 @@
 
 /* ---- Product grid / list + card (spec Section 7) ---- */
 .plp-results.is-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
+/* Demo State Panel test toggle (3 vs 4 per row) — desktop only, where the sidebar+main
+   layout is active; below 901px the grid already falls back to auto-fill/breakpoint rules
+   regardless of the toggle, so this only overrides the width the user is actually testing. */
+@media (min-width:901px){
+  .plp-results.is-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+}
 .plp-results.is-list{display:flex;flex-direction:column;gap:14px;}
 /* List row: image | info | actions at a 1:2:1 ratio — info is the widest column since it
    carries the product name and USP bullets, the other two are single-purpose (photo, buy

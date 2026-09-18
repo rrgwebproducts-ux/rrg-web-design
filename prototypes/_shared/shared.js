@@ -2495,6 +2495,11 @@ function buildAdminPanel() {
           <label><input type="radio" name="plpView" value="grid" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? '' : 'checked'}> Grid</label>
           <label><input type="radio" name="plpView" value="list" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? 'checked' : ''}> List</label>
         </div>
+        <div class="admin-toggle-label"><span>Grid columns <span class="admin-note">(test only, desktop)</span></span></div>
+        <div class="admin-radio-row">
+          <label><input type="radio" name="plpGridCols" value="3" checked> 3 per row</label>
+          <label><input type="radio" name="plpGridCols" value="4"> 4 per row</label>
+        </div>
         <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
       </div>` : ''}
       <div class="admin-section">
@@ -2556,6 +2561,10 @@ function buildAdminPanel() {
 
   panel.querySelectorAll('input[name="plpView"]').forEach(input => {
     input.addEventListener('change', () => { if (input.checked && typeof applyPlpViewFlag === 'function') applyPlpViewFlag(input.value); });
+  });
+
+  panel.querySelectorAll('input[name="plpGridCols"]').forEach(input => {
+    input.addEventListener('change', () => { if (input.checked && typeof applyPlpGridColsFlag === 'function') applyPlpGridColsFlag(input.value); });
   });
 
   panel.querySelectorAll('[data-admin-input]').forEach(input => {
