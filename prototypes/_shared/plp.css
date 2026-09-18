@@ -26,6 +26,21 @@
   .plp-hero-media{order:-1;}
 }
 
+/* Breadcrumb row + Change Vehicle CTA (2026-09-18 design review — Graham: the button barely
+   gets used once a vehicle is set, so it should sit out of the way up by the breadcrumbs
+   rather than competing with the hero's other CTAs). Wraps shared.css's own .rrg-crumbs
+   (which loses its standalone .wrap class in the markup so it doesn't double up the page
+   gutter padding inside this new row) plus the CTA, right-aligned. */
+.plp-crumbs-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.plp-crumbs-row .rrg-crumbs{padding:14px 0;}
+.plp-crumbs-cta{padding:8px 16px;font-size:12px;white-space:nowrap;}
+/* Red outline, not the sitewide gold (shared.css .btn-gold) — this button isn't a primary
+   purchase CTA like Add to Cart, and reuses the same "border, not fill" treatment as the
+   SHOP BY tabs/priority filters above (2026-09-18 design review). PLP/VPLP-only, so it lives
+   here rather than in shared.css's own .btn family. */
+.btn-outline-red{background:#fff;border:1.5px solid var(--rrg-red);color:var(--rrg-red);}
+.btn-outline-red:hover{background:var(--rrg-red);color:#fff;}
+
 /* VRS, no vehicle set — real unfiltered catalogue stays visible (never gated/empty), plus
    this CTA banner in place of the vehicle-set hero framing (spec Section 2 live-site
    finding). Reuses the Showroom Finder's black-CTA visual language. */
@@ -42,23 +57,23 @@
    (below) nudges the track's content box 1px taller than the track itself, which was enough
    for that implicit auto-y to detect overflow and draw a phantom vertical scrollbar. Pin
    overflow-y:hidden so only the intended horizontal scroll can ever trigger. */
-/* Same cart gold as the active tab fill (#FFCA48) and thicker (3px, was a plain 1px grey
-   line) so the row reads with some colour/weight of its own, not just a hairline divider. */
-.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-bottom:3px solid #FFCA48;}
-/* Figma reference: a line runs under the whole row, and the active tile's border meets it —
-   its top/left/right border is gold, its bottom border is the same colour as its own fill
-   (not transparent), so that colour masks the exact 3px of the track's gold line sitting
-   under it (margin-bottom:-3px pulls the tile down onto that line, matching the line's own
-   thickness so none of it peeks out above the tile's bottom border). The result reads as one
-   continuous strip with a tab popping up out of it, not a row of individual buttons —
-   inactive tiles still carry no box/border at all, just icon + label, so they sit flush on
-   the line like unselected tabs rather than competing boxes. */
+/* Red, not gold (2026-09-18 design review — Scott/Jake: solid gold fill across the tabs,
+   Change Vehicle button and priority filters read as "too heavy"/"in your face" all at once).
+   Thicker (3px, was a plain 1px grey line) so the row reads with some colour/weight of its
+   own, not just a hairline divider. */
+.plp-shopby-track{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;border-bottom:3px solid var(--rrg-red);}
+/* A line runs under the whole row, and the active tile's border meets it. 2026-09-18: swapped
+   from a solid gold fill to a red-outline-only treatment (border instead of fill, per the
+   design review) — the active tile's top/left/right border is red, its own background is
+   white, and its bottom border is white too (not red), so that white "cuts" the exact 3px of
+   the track's red line where the tile sits (margin-bottom:-3px pulls the tile down onto that
+   line). That's the inverse of the old solid-fill trick (which matched its border to its own
+   fill colour instead) but the same effect: the tab reads as popping up out of the line, not
+   as a separate box competing with it. Inactive tiles still carry no box/border at all, just
+   icon + label, so they sit flush on the line like unselected tabs. */
 .plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:140px;min-height:110px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-3px;}
 .plp-shopby-tile:not(.active):hover{background:var(--rrg-bg);}
-/* Same gold as Add to Cart / the hero CTA buttons (shared.css .btn-gold, #FFCA48) — the old
-   --rrg-gold/--rrg-gold-bg pairing (a muted tan) read as a warning colour, not a selection
-   state, so the active tile now fills solid with the real cart gold instead. */
-.plp-shopby-tile.active{background:#FFCA48;border-color:#FFCA48 #FFCA48 #FFCA48;}
+.plp-shopby-tile.active{background:#fff;border-color:var(--rrg-red) var(--rrg-red) #fff;}
 /* 100x50, i.e. the previous 124x62 scaled down ~20% (Brenton: read as a bit too large) —
    still nearly spans the tile's inner content width so the icon reads as the tab's dominant
    element, not a small badge above the label. object-fit:contain still preserves each image's
@@ -106,32 +121,56 @@
 .plp-main,.plp-sidebar{min-width:0;}
 
 /* ---- Filters (spec Section 6) ---- */
+/* Filters heading + Reset/Clear button (2026-09-18 design review — Graham/Tim: no way to
+   clear an active filter selection today). Sits above the priority filters on desktop; the
+   mobile drawer gets its own copy in its head row (plp.js plpBuildFilterDrawer()). */
+.plp-filter-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.plp-filter-head h3{font-size:15px;margin:0;}
+.plp-filter-clear{background:none;border:none;padding:0;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
+.plp-filter-clear-drawer{background:none;border:none;padding:0;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;margin-left:auto;margin-right:14px;}
 .plp-filter-priority{margin-bottom:16px;}
 .plp-filter-group{border-bottom:1px solid var(--rrg-line);padding:12px 0;}
-/* Same cart gold as the SHOP BY active tab (#FFCA48, see plp-shopby-tile.active) — the old
-   whole-box tint (--rrg-gold-bg/--rrg-gold, a muted tan) covering the entire priority filter
-   area read as a warning banner. Gold now only marks each individual group: a border round
-   the group and a filled header strip behind its heading, white everywhere else.
+/* Red outline, not a gold fill (2026-09-18 design review, same call as the SHOP BY tabs
+   above) — the old whole-box gold tint (and later the solid-gold header strip) read as a
+   warning banner, especially next to the Bestseller/Staff Pick ribbons on the cards below.
+   Now just a red border round the group and a red rule under its heading; white everywhere
+   else, no solid fill at all.
    Overrides the shared .plp-filter-group's own border-bottom/padding above (both classes sit
-   on the same element) — that 12px top padding was pushing the gold header down off the box's
+   on the same element) — that 12px top padding was pushing the header down off the box's
    top edge, leaving a white gap above it, and its border-bottom would otherwise draw a stray
-   grey line inside the gold-bordered box. Placed after .plp-filter-group in the source: both
+   grey line inside the red-bordered box. Placed after .plp-filter-group in the source: both
    selectors are equal specificity (one class each), so source order is what decides the tie —
    this has to come second to actually win. */
-.plp-filter-priority-group{border:1px solid #FFCA48;border-bottom:1px solid #FFCA48;border-radius:var(--radius);margin-bottom:12px;padding:0;overflow:hidden;}
+.plp-filter-priority-group{border:1px solid var(--rrg-red);border-radius:var(--radius);margin-bottom:12px;padding:0;overflow:hidden;}
 .plp-filter-priority-group:last-child{margin-bottom:0;}
-.plp-filter-priority-group h4{background:#FFCA48;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;margin:0;padding:8px 12px;color:#000;}
+.plp-filter-priority-group h4{background:#fff;border-bottom:1px solid var(--rrg-red);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:none;letter-spacing:0;margin:0;padding:8px 12px;color:var(--rrg-black);}
 .plp-filter-priority-group .plp-filter-options{padding:10px 12px;margin-top:0;}
-.plp-filter-group summary{list-style:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;position:relative;padding-right:20px;}
+.plp-filter-group summary{list-style:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;position:relative;padding-right:20px;display:flex;align-items:center;gap:6px;}
 .plp-filter-group summary::-webkit-details-marker{display:none;}
 .plp-filter-group summary::after{content:'\2212';position:absolute;right:0;top:0;color:#767676;}
 .plp-filter-group:not([open]) summary::after{content:'+';}
-.plp-filter-options{display:flex;flex-direction:column;gap:2px;margin-top:10px;}
+/* Right padding (2026-09-18 design review — Graham: the option counts on the right sat too
+   close to the sidebar's own edge) to match the priority filter group's own 12px horizontal
+   padding above, so counts line up across both filter types. Left at 0 on the left since
+   that's not what was flagged, and the +/- collapse marker on the summary above stays at
+   right:0 — unaffected, since this padding is scoped to the options list, not the group. */
+.plp-filter-options{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding-right:12px;}
 .plp-filter-option{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13.5px;color:#333;cursor:pointer;}
 .plp-filter-option input{accent-color:var(--rrg-red);width:16px;height:16px;flex:0 0 auto;}
 .plp-filter-option span:nth-child(2){flex:1;}
 .plp-filter-option.is-zero{opacity:.4;}
 .plp-filter-count{color:#999;font-size:12px;}
+
+/* Tooltip (2026-09-18 design review — Graham: filters need an explainer on hover, like the
+   live site's eye icon). Real per-attribute copy is blocked on Graham's tooltip spreadsheet
+   (plp-spec.md Section 15); this is the UI mechanism only, with placeholder text so it's
+   demoable. Pure-CSS hover tooltip, no JS — consistent with this file's other no-JS
+   disclosure patterns (Show Specs, FAQ accordion). */
+.plp-filter-tooltip{position:relative;display:inline-flex;flex:0 0 auto;color:#8a8a8a;cursor:help;}
+.plp-filter-tooltip svg{width:14px;height:14px;}
+.plp-filter-tooltip:hover,.plp-filter-tooltip:focus-visible{color:var(--rrg-red);}
+.plp-filter-tooltip::after{content:attr(data-tooltip);position:absolute;left:0;top:calc(100% + 8px);z-index:5;width:220px;background:var(--rrg-black);color:#fff;font-size:12px;font-weight:400;text-transform:none;letter-spacing:normal;line-height:1.4;padding:8px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .12s;}
+.plp-filter-tooltip:hover::after,.plp-filter-tooltip:focus-visible::after{opacity:1;}
 
 /* Mobile priority chips — quick-access row above "Refine Results" (Section 6) */
 .plp-filter-chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;}
@@ -171,13 +210,20 @@
 .plp-ribbon{position:absolute;top:0;left:0;right:0;z-index:2;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.03em;padding:8px 12px;color:#fff;}
 .plp-ribbon-bestseller{background:var(--rrg-black);}
 .plp-ribbon-staffpick{background:var(--rrg-red);}
+/* Arbitrary custom ribbon text (2026-09-18 design review — Graham wants ribbons that aren't
+   just Bestseller/Staff Pick, e.g. "Discontinued", "Limited Stock Left"). Same dark fill as
+   Bestseller as the generic default; the Racket-side flagging mechanism itself is still a
+   blocked/open item (plp-spec.md Section 15), this just proves the card can render any label. */
+.plp-ribbon-custom{background:var(--rrg-black);}
 
-/* Same seasonal sale-tag graphic as the PDP gallery/price-block (shared.css .gallery-sale-tag
-   / .price-block .sale-tag), same conditional logic: only rendered when the product actually
-   has a wasPrice (plp.js plpSaleTagHTML mirrors plpPriceHTML's own on-sale check). Sits below
-   the full-width ribbon bar when both are present on the same card. */
-.plp-card-media .plp-sale-tag{position:absolute;top:8px;right:8px;width:72px;height:auto;padding:0;z-index:3;pointer-events:none;}
-.plp-card-media:has(.plp-ribbon) .plp-sale-tag{top:40px;}
+/* Card image + title both link through to the PDP (2026-09-18 design review — Brenton: the
+   whole card should link through except the Add to Cart button itself). display:block so the
+   anchor doesn't introduce inline-layout quirks around the media div's own position:relative
+   overlays (ribbon, brand overlay); color/text-decoration reset since both wrap plain content
+   that shouldn't look like a normal text link. */
+.plp-card-media-link{display:block;color:inherit;text-decoration:none;}
+.plp-card-title-link{color:inherit;text-decoration:none;}
+.plp-card-title-link:hover{text-decoration:underline;}
 
 /* White, not grey — every real product photo in this catalogue already sits on a white
    background, so a tinted card behind it just reads as a rendering bug. Minimal padding
@@ -240,10 +286,8 @@
    overflow:hidden + border-radius clips the bled corner to match the card's rounded corner
    for free. */
 .plp-list-col-actions .plp-ribbon{position:static;align-self:stretch;margin:-16px -16px 0 0;}
-/* The sale tag sits here as a plain inline graphic, not the absolute-positioned overlay
-   version .plp-card-media .plp-sale-tag uses elsewhere — it's no longer inside the photo. */
-.plp-list-col-actions .plp-sale-tag{width:64px;height:auto;}
 .plp-list-col-actions .plp-price{align-items:center;}
+.plp-list-col-actions .plp-price-col{align-items:center;}
 /* Same size as the hero section's own CTA buttons (shared.css .plp-hero-cta-row .btn is
    13px/11px 18px — the base .btn class alone is 16px, but that's not what the hero row
    actually renders at, so matching the base class wasn't enough). */
@@ -262,6 +306,19 @@
 .plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--rrg-black);}
 .plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
 .plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;}
+/* On-sale layout (2026-09-18 design review — Graham: the sale-tag graphic overlaying the
+   product photo landed in the wrong place too often to control reliably). Two columns
+   instead: price+RRP+Save badge stacked on the left, the same sale-tag graphic sitting
+   beside it on the right rather than on the image — both centred as a unit. Off-sale stays
+   the single centred column above, untouched. Reuses shared.css's .badge/.badge-save
+   verbatim (per this file's header comment) rather than a new plp- badge, so the Save pill
+   matches the PDP's own price-block exactly. */
+.plp-price.plp-price-on-sale{flex-direction:row;align-items:center;justify-content:center;gap:10px;}
+.plp-price-col{display:flex;flex-direction:column;gap:2px;}
+.plp-results.is-grid .plp-price-col{align-items:center;}
+.plp-price .badge-save{align-self:flex-start;margin-top:2px;}
+.plp-results.is-grid .plp-price .badge-save{align-self:center;}
+.plp-price .plp-sale-tag{width:44px;height:auto;flex:0 0 auto;}
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
 
@@ -294,7 +351,8 @@
 .plp-spec-value{margin-left:auto;font-weight:700;}
 
 .plp-card-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
-/* Non-VRS grid card's plain "View Details" — was inheriting shared.css .btn's PDP-sized
+/* Non-VRS grid card's single primary action ("Add to Cart" or "View Options" — plp.js
+   plpCardHTML, 2026-09-18 design review) — was inheriting shared.css .btn's PDP-sized
    default (15px/28px padding, 16px/900 weight), way oversized for a card this narrow. Scoped
    to a direct child so it doesn't touch the VRS row's own buttons below, already sized here. */
 .plp-card-actions>.btn{padding:10px 12px;font-size:12px;}
@@ -326,9 +384,31 @@
 @media (min-width:901px){.plp-pagination-mobile{display:none;}}
 @media (max-width:900px){.plp-pagination{display:none;}}
 
+/* ---- Merchandising + Featured Product sidebar (2026-09-18 design review) ----
+   Replaces the under-filters sidebar video slot (spec Section 10.1) — Graham: the two videos
+   there felt redundant against the bottom-of-page carousel (still unchanged, see below), and
+   this spot is better used for a promo banner + a featured product. Real category-level
+   inheritance (most-specific-set-wins, per the design review) is a Magento-side concern for
+   the eventual dev brief; this static demo just renders whichever promos/featured product the
+   page's own PLP_CONFIG carries. */
+.plp-merch-sidebar{margin-top:24px;padding-top:20px;border-top:1px solid var(--rrg-line);}
+.plp-merch-carousel{margin-bottom:20px;}
+.plp-merch-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;border-radius:var(--radius);}
+.plp-merch-slide{flex:0 0 100%;scroll-snap-align:start;position:relative;display:block;text-decoration:none;color:#fff;}
+.plp-merch-slide img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:var(--radius);}
+.plp-merch-caption{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);display:flex;flex-direction:column;gap:2px;border-radius:0 0 var(--radius) var(--radius);}
+.plp-merch-caption em{font-style:normal;font-size:11px;text-transform:uppercase;letter-spacing:.03em;opacity:.85;}
+.plp-merch-caption strong{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;line-height:1.25;}
+.plp-merch-dots{display:flex;justify-content:center;gap:6px;margin-top:8px;}
+.plp-merch-dot{width:7px;height:7px;border-radius:50%;background:var(--rrg-line);border:none;padding:0;}
+.plp-merch-dot.active{background:var(--rrg-red);}
+.plp-featured-product-heading{font-size:13px;color:#767676;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
+.plp-featured-card{display:block;text-decoration:none;color:inherit;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;}
+.plp-featured-card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff;padding:8px;display:block;}
+.plp-featured-name{display:block;padding:8px 10px 0;font-family:'Lato',sans-serif;font-weight:700;font-size:13px;color:#232323;line-height:1.3;}
+.plp-featured-price{display:block;padding:2px 10px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--rrg-black);}
+
 /* ---- Category videos (spec Section 10) ---- */
-.plp-video-sidebar{margin-top:24px;padding-top:20px;border-top:1px solid var(--rrg-line);}
-.plp-video-sidebar-heading{font-size:13px;color:#767676;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
 .plp-video-tile{position:relative;display:block;border-radius:6px;overflow:hidden;margin-bottom:10px;text-decoration:none;}
 .plp-video-tile img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
 .plp-video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;}

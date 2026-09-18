@@ -103,8 +103,15 @@
   </div>
 </div>
 
-<div class="rrg-crumbs wrap">
-  <a href="#">Home</a> &gt; <a href="#">Bike Racks</a> &gt; <a href="#">Attachment Style</a> &gt; <span id="plpCrumbLast">Roof Mounting</span>
+<!-- Change Vehicle moved up here from the hero CTA row (2026-09-18 design review — Graham:
+     it's a low-usage action once a vehicle is set, better placed out of the way near the
+     breadcrumbs than competing with the hero's other CTAs). Right-aligned, red outline not
+     gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs">
+    <a href="#">Home</a> &gt; <a href="#">Bike Racks</a> &gt; <a href="#">Attachment Style</a> &gt; <span id="plpCrumbLast">Roof Mounting</span>
+  </div>
+  <a href="#" class="btn btn-outline-red plp-crumbs-cta" data-vclp-cta="change-vehicle" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>
 </div>
 
 <main class="wrap">
@@ -116,13 +123,9 @@
     <div>
       <h1>Bike Racks for your Toyota Hilux</h1>
       <p>Toyota Hilux bike racks come in four fitment styles: roof mounted, tow bar mount, rear hatch mount and ute tub mount, each carrying 1 to 4 bikes depending on the system. Shop vehicle-specific carriers from Rhino-Rack, Thule, Yakima and ROLA, with clamp-mount, custom-point and track-mounted options engineered to fit your Hilux precisely for a secure, quiet ride on every trip.</p>
+      <!-- Change Vehicle moved to the breadcrumb row (2026-09-18 design review) — see
+           .plp-crumbs-cta above, toggled by the same Site Admin Panel "Vehicle Set" switch. -->
       <div class="plp-hero-cta-row">
-        <!-- Decorative only this round (2026-09-17 build-plan decision) — no header vehicle
-             drawer exists yet to open (see plp-spec.md's build-plan discussion); Simple/
-             Vehicle-Set state here is driven entirely by the real, already-wired Site Admin
-             Panel "Vehicle Set" toggle (session-state.js), same as every other session-state
-             signal in this prototype set. -->
-        <a href="#" class="btn btn-gold" data-vclp-cta="change-vehicle" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>
         <a href="#" class="btn btn-primary">Buyers Guide</a>
         <a href="#" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
@@ -130,7 +133,7 @@
       </div>
     </div>
     <div class="plp-hero-media">
-      <img src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="1024" height="1024">
+      <img class="plp-hero-vehicle-img" src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="1024" height="1024">
       <span class="plp-hero-make-badge"><img src="../_shared/brand-toyota-badge.png" alt="Toyota" width="534" height="370"></span>
     </div>
   </section>
@@ -174,22 +177,29 @@
     </div>
     <div class="plp-toolbar-right">
       <label for="plpSort">Sort By</label>
+      <!-- Reordered 2026-09-18 (Graham): relevance/merit-based options first, price sorts
+           pushed to the bottom so people don't land straight on "cheapest first". -->
       <select id="plpSort">
         <option value="relevance">Relevance</option>
-        <option value="price_low">Price: Low to High</option>
-        <option value="price_high">Price: High to Low</option>
         <option value="newest">Newest</option>
         <option value="bestselling">Best Selling</option>
         <option value="rating">Highest Rated</option>
+        <option value="price_low">Price: Low to High</option>
+        <option value="price_high">Price: High to Low</option>
       </select>
     </div>
   </div>
 
   <div class="plp-layout">
     <aside class="plp-sidebar">
+      <!-- Reset/Clear Filters (2026-09-18 design review — Graham/Tim) -->
+      <div class="plp-filter-head">
+        <h3>Filters</h3>
+        <button type="button" class="plp-filter-clear" id="plpFilterClear">Clear Filters</button>
+      </div>
       <div id="plpPriorityFilters"></div>
       <div id="plpStandardFilters"></div>
-      <div class="plp-video-sidebar" id="plpVideoSidebar"></div>
+      <div class="plp-merch-sidebar" id="plpMerchSidebar"></div>
     </aside>
     <div class="plp-main">
       <div class="plp-filter-chips" id="plpPriorityChips"></div>
@@ -372,7 +382,7 @@ const BIKE_RACK_PRODUCTS = [
   },
   {
     id: 'p5', sku: 'FR-RDBC1', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Rear Door Bike Carrier — 3 Bike',
-    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg', price: 259.00, wasPrice: null, rating: 4.0, reviews: 9, ribbon: null,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg', price: 259.00, wasPrice: null, rating: 4.0, reviews: 9, ribbon: 'Limited Stock Left',
     subcategories: ['rear-hatch'], stock: 'low_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'custom', barProfile: 'na', loadRating: 75, colour: 'black', brand: 'Front Runner' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'9kg' }, { icon:'📦', label:'Max Total Weight', value:'45kg' } ],
@@ -508,6 +518,10 @@ const BIKE_RACK_PRODUCTS = [
   {
     id: 'p20', sku: '945100', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule EasyFold 3 Towball Mounted 3 Bike Carrier',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-Easyfold-3-3-Bike-Carrier-945100-1_1.jpg', price: 2299.00, wasPrice: 2399.95, rating: 4.9, reviews: 10, ribbon: 'bestseller',
+    // hasOptions demo product (2026-09-18 design review) — stands in for a sibling-group
+    // product like an assembled/flat-pack pair: "View Options" CTA, "From $X" pricing, no
+    // quick Add to Cart. See plpPrimaryActionHTML() in plp.js.
+    hasOptions: true,
     subcategories: ['tow-bar'], stock: 'in_stock',
     facets: { bikeCount: 3, carrierType: 'hang-on', vehicleFitType: 'towball', barProfile: 'na', loadRating: 150, colour: 'silver', brand: 'Thule' },
     specs: [ { icon:'⚖️', label:'Product Weight', value:'27kg' }, { icon:'📦', label:'Max Total Weight', value:'66kg' } ],
@@ -564,6 +578,13 @@ const BIKE_RACK_PRODUCTS = [
 window.PLP_CONFIG = {
   categoryKey: 'bike-racks',
   vrs: false,
+  // Hero image 3-state fallback (2026-09-18 design review, Demo State Panel preview) —
+  // vehicleImage is the real session-vehicle photo already used in the hero markup;
+  // categoryImage stands in for a real Bike Racks category image (none supplied yet, reusing
+  // the SHOP BY icon as a placeholder, same flagged-stand-in convention as this file's other
+  // demo assets).
+  vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
+  categoryImage: '../_shared/icons/bike-racks.png',
   shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
   shopBy: [
     { key: 'roof-mounted', label: 'Roof Mounted', icon: `<img src="../_shared/shopby-roof-mounted.png" alt="">` },
@@ -589,7 +610,17 @@ window.PLP_CONFIG = {
     { title: 'How to Fit a Roof-Mount Bike Carrier', thumb: '../_shared/video-thumbnail.png', url: '#' },
     { title: 'Tow Bar vs Roof-Mount: Which Is Right for You?', thumb: '../_shared/video-thumbnail.png', url: '#' },
     { title: 'Choosing the Right Bike Rack for Your Vehicle', thumb: '../_shared/video-thumbnail.png', url: '#' }
-  ]
+  ],
+  // Merchandising + Featured Product sidebar (2026-09-18 design review, replaces the old
+  // under-filters video slot) — two promos here to demo the carousel/swipe behaviour: a
+  // dynamic sale banner (would show/hide off real sale state) and a category cross-sell promo
+  // (Graham's "save on accessories when you buy a roof rack" example). Real category-level
+  // inheritance (most-specific-set-wins) is a Magento-side concern for the dev brief.
+  merchPromos: [
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 20% Off Bike Racks', href: '#' },
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Bundle & Save', label: 'Save 10% on Bike Racks when you buy a Roof Platform', href: '#' }
+  ],
+  featuredProduct: BIKE_RACK_PRODUCTS.find(p => p.id === 'p4')
 };
 
 // Breadcrumb's last segment reflects the active SHOP BY tile (real build: a distinct URL

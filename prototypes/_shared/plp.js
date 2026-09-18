@@ -122,17 +122,22 @@ function plpFilterGroupHTML(facetDef, isPriority) {
       </label>
     `;
   }).join('');
+  // Tooltip (2026-09-18 design review) — placeholder copy only, real per-attribute text is
+  // blocked on Graham's tooltip spreadsheet (plp-spec.md Section 15). facetDef.tooltip lets a
+  // page override it; falls back to a generic placeholder so every filter demoes the mechanism.
+  const tooltipCopy = facetDef.tooltip || `Filters the results by ${facetDef.label.toLowerCase()}. (Placeholder copy — real wording pending Graham's attribute glossary.)`;
+  const tooltipIcon = `<span class="plp-filter-tooltip" tabindex="0" data-tooltip="${tooltipCopy.replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></span>`;
   if (isPriority) {
     return `
       <div class="plp-filter-group plp-filter-priority-group" data-facet-group="${facetDef.key}">
-        <h4>${facetDef.label}</h4>
+        <h4>${facetDef.label} ${tooltipIcon}</h4>
         <div class="plp-filter-options">${options}</div>
       </div>
     `;
   }
   return `
     <details class="plp-filter-group" data-facet-group="${facetDef.key}" open>
-      <summary>${facetDef.label}</summary>
+      <summary>${facetDef.label} ${tooltipIcon}</summary>
       <div class="plp-filter-options">${options}</div>
     </details>
   `;
@@ -160,6 +165,17 @@ function plpRenderFilters() {
       chip.addEventListener('click', () => plpOpenFilterDrawer(chip.dataset.chipFacet));
     });
   }
+  // Stop the tooltip icon's own click/keyboard activation from also toggling the parent
+  // <details> open/closed — it sits inside <summary> (standard filter groups only; the
+  // priority groups' <h4> isn't a disclosure widget) so a plain click would otherwise bubble
+  // into the native summary-toggle behaviour.
+  [priorityWrap, standardWrap].forEach(wrap => {
+    if (!wrap) return;
+    wrap.querySelectorAll('.plp-filter-tooltip').forEach(tip => {
+      tip.addEventListener('click', e => e.preventDefault());
+      tip.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') e.preventDefault(); });
+    });
+  });
   [priorityWrap, standardWrap].forEach(wrap => {
     if (!wrap) return;
     wrap.querySelectorAll('[data-facet]').forEach(input => {
@@ -178,6 +194,18 @@ function plpRenderFilters() {
   });
 }
 
+// Reset/Clear Filters (2026-09-18 design review — Graham/Tim: no way to clear an active
+// selection today, on this prototype or the live site). Leaves the active SHOP BY subcategory
+// alone — only clears facet filters, same scope as the mobile drawer's own filter state.
+function plpClearFilters() {
+  plpState.activeFilters = {};
+  plpState.page = 1;
+  plpState.visibleCount = PLP_PAGE_SIZE;
+  plpRenderFilters();
+  plpRenderResults();
+  plpSyncFilterDrawerFromMain();
+}
+
 // ---- Mobile filter drawer (right-edge slide-out, same convention as the Store Slide-out —
 // plp-spec.md Section 6: "no supplied design; build it following the existing right-edge
 // slide-out convention already established elsewhere in this prototype") ----
@@ -190,6 +218,7 @@ function plpBuildFilterDrawer() {
     <div class="store-slideout plp-filter-slideout">
       <div class="store-slideout-head">
         <h2>Refine Results</h2>
+        <button type="button" class="plp-filter-clear-drawer" id="plpFilterClearDrawer">Clear All</button>
         <button type="button" class="store-slideout-close" aria-label="Close">&times;</button>
       </div>
       <div class="store-slideout-body plp-filter-slideout-body" id="plpFilterSlideoutBody"></div>
@@ -202,6 +231,7 @@ function plpBuildFilterDrawer() {
   backdrop.addEventListener('click', e => { if (e.target === backdrop) plpCloseFilterDrawer(); });
   backdrop.querySelector('.store-slideout-close').addEventListener('click', plpCloseFilterDrawer);
   backdrop.querySelector('#plpFilterApply').addEventListener('click', plpCloseFilterDrawer);
+  backdrop.querySelector('#plpFilterClearDrawer').addEventListener('click', plpClearFilters);
 }
 
 function plpSyncFilterDrawerFromMain() {
@@ -252,27 +282,42 @@ function plpRibbonHTML(product) {
   // corner badge).
   if (product.ribbon === 'staffpick') return `<div class="plp-ribbon plp-ribbon-staffpick">★ Staff Pick</div>`;
   if (product.ribbon === 'bestseller') return `<div class="plp-ribbon plp-ribbon-bestseller">Bestseller</div>`;
+  // Arbitrary custom ribbon text (2026-09-18 design review) — any other truthy string on
+  // product.ribbon renders verbatim (e.g. "Discontinued", "Limited Stock Left"). The Racket
+  // flagging mechanism behind this is still a blocked/open item (plp-spec.md Section 15).
+  if (product.ribbon) return `<div class="plp-ribbon plp-ribbon-custom">${product.ribbon}</div>`;
   return '';
 }
 
+// "From $X" prefix for sibling/variant products (2026-09-18 design review) — product.hasOptions
+// marks a product that lands on "View Options" instead of a quick Add to Cart (see
+// plpCardHTML/plpListCardHTML), same condition this prefix keys off. This demo dataset treats
+// the product's own listed price as already being the cheapest option's price (no separate
+// sibling records exist to compute a real minimum from).
 function plpPriceHTML(product) {
   const now = plpFmtMoney(product.price);
-  if (!product.wasPrice) return `<div class="plp-price"><span class="plp-price-now">${now}</span></div>`;
+  const prefix = product.hasOptions ? 'From ' : '';
+  if (!product.wasPrice) {
+    return `<div class="plp-price"><div class="plp-price-col"><span class="plp-price-now">${prefix}${now}</span></div></div>`;
+  }
   const was = plpFmtMoney(product.wasPrice);
+  // Two-column on-sale layout (2026-09-18 design review) — price/RRP/Save badge stacked on
+  // the left, the same seasonal sale-tag graphic as the PDP price-block (shared.css
+  // .price-block .sale-tag) sitting beside it on the right, instead of overlaying the product
+  // photo (Graham: that placement was hard to control and landed wrong too often). Reuses
+  // shared.css's .badge/.badge-save verbatim, per this file's own "reuse a shared.css class
+  // where it happens" convention, so the Save pill matches the PDP's exactly.
+  const savePct = Math.round((1 - product.price / product.wasPrice) * 100);
   return `
-    <div class="plp-price">
-      <span class="plp-price-now">${now}</span>
-      <span class="plp-price-was">${was}</span>
+    <div class="plp-price plp-price-on-sale">
+      <div class="plp-price-col">
+        <span class="plp-price-now">${prefix}${now}</span>
+        <span class="plp-price-was">${was}</span>
+        <span class="badge badge-save">Save ${savePct}%</span>
+      </div>
+      <img class="plp-sale-tag" src="../_shared/sale-tag.png" alt="Sale">
     </div>
   `;
-}
-
-// Same seasonal graphic + same on-sale condition as the PDP gallery/price-block sale tag
-// (shared.css .gallery-sale-tag / .price-block .sale-tag) — only shown when the product
-// actually has a wasPrice, mirroring plpPriceHTML's own check above.
-function plpSaleTagHTML(product) {
-  if (!product.wasPrice) return '';
-  return `<img class="plp-sale-tag" src="../_shared/sale-tag.png" alt="Sale">`;
 }
 
 function plpFmtMoney(n) {
@@ -338,27 +383,41 @@ function plpBrandOverlayHTML(product) {
   return `<div class="plp-card-brand-overlay">${plpBrandHTML(product)}</div>`;
 }
 
+// Primary card action (2026-09-18 design review): simple/single-SKU products get a quick
+// Add to Cart button; products with sibling/variant options (product.hasOptions) get
+// "View Options" through to the PDP instead — no quick add, since the customer needs to pick
+// an option first. Independent of cfg.vrs (VRS/Fitment Gallery is a separate concern), so a
+// VRS product can be either state just like a standard one.
+function plpPrimaryActionHTML(product, blockClass) {
+  if (product.hasOptions) {
+    return `<a href="#" class="btn btn-gold plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Options</a>`;
+  }
+  return `<button type="button" class="btn btn-gold plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}">Add to Cart</button>`;
+}
+
 function plpCardHTML(product, cfg) {
+  const primaryBtn = plpPrimaryActionHTML(product, cfg.vrs ? '' : 'btn-block');
   const vrsRow = cfg.vrs ? `
     <div class="plp-vrs-actions">
       <button type="button" class="btn btn-outline plp-fitgallery-btn" data-fitgallery-id="${product.id}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         Fitment Gallery (${product.fitmentCount})
       </button>
-      <a href="#" class="btn btn-gold plp-view-options-btn">View Options</a>
+      ${primaryBtn}
     </div>
-  ` : `<a href="#" class="btn btn-gold btn-block">View Details</a>`;
+  ` : primaryBtn;
 
   return `
     <div class="plp-card" data-product-id="${product.id}">
-      <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
-        ${plpRibbonHTML(product)}
-        ${plpSaleTagHTML(product)}
-        ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
-      </div>
+      <a href="#" class="plp-card-media-link">
+        <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
+          ${plpRibbonHTML(product)}
+          ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
+        </div>
+      </a>
       <div class="plp-card-body">
         ${plpBrandHTML(product)}
-        <h3 class="plp-card-title">${product.name}</h3>
+        <h3 class="plp-card-title"><a href="#" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${plpPriceHTML(product)}
         ${plpStockLineHTML(product)}
@@ -377,7 +436,6 @@ function plpCardHTML(product, cfg) {
 // it, Fitment Gallery under the photo instead of paired with View Options) that reusing
 // plpCardHTML with view-conditional bits would be harder to follow than a dedicated function.
 function plpListCardHTML(product, cfg) {
-  const ctaLabel = cfg.vrs ? 'View Options' : 'View Details';
   const fitGalleryBtn = cfg.vrs ? `
     <button type="button" class="btn btn-outline plp-fitgallery-btn" data-fitgallery-id="${product.id}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -391,23 +449,24 @@ function plpListCardHTML(product, cfg) {
   return `
     <div class="plp-card" data-product-id="${product.id}">
       <div class="plp-list-col-media">
-        <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
-          ${plpBrandOverlayHTML(product)}
-          ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
-        </div>
+        <a href="#" class="plp-card-media-link">
+          <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
+            ${plpBrandOverlayHTML(product)}
+            ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
+          </div>
+        </a>
         ${fitGalleryBtn}
       </div>
       <div class="plp-list-col-info">
-        <h3 class="plp-card-title">${product.name}</h3>
+        <h3 class="plp-card-title"><a href="#" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${usps}
       </div>
       <div class="plp-list-col-actions">
         ${plpRibbonHTML(product)}
         ${plpPriceHTML(product)}
-        ${plpSaleTagHTML(product)}
         ${plpStockLineHTML(product)}
-        <a href="#" class="btn btn-gold">${ctaLabel}</a>
+        ${plpPrimaryActionHTML(product)}
         ${plpCompareCheckHTML(product)}
       </div>
     </div>
@@ -521,6 +580,18 @@ function plpBindCardEvents() {
       if (product) plpOpenRowFitGallery(product);
     });
   });
+  // Quick Add to Cart (2026-09-18 design review) — simple visual confirmation + bumps the
+  // real header cart-badge count (both the main header and sticky header share that class);
+  // no real cart/line-items model exists anywhere in this prototype set to add to.
+  document.querySelectorAll('#plpResults [data-addtocart-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cart-badge').forEach(el => { el.textContent = String(Number(el.textContent || 0) + 1); });
+      const original = btn.textContent;
+      btn.textContent = 'Added ✓';
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1200);
+    });
+  });
 }
 
 // ==== Sort / view toggle ======================================================
@@ -549,6 +620,8 @@ function plpInitToolbar() {
   if (listBtn) listBtn.addEventListener('click', () => setView('list'));
   const refineBtn = document.getElementById('plpRefineBtn');
   if (refineBtn) refineBtn.addEventListener('click', () => plpOpenFilterDrawer());
+  const clearBtn = document.getElementById('plpFilterClear');
+  if (clearBtn) clearBtn.addEventListener('click', plpClearFilters);
 }
 
 // Demo State Panel hook (buildAdminPanel() in shared.js calls this if defined — see the
@@ -642,34 +715,89 @@ function plpOpenCompareDrawer() {
 }
 
 // ==== Category videos (spec Section 10) ======================================
+// Sidebar video module (old Section 10.1) was replaced by the Merchandising + Featured
+// Product sidebar below (2026-09-18 design review) — the bottom-of-page carousel is
+// unchanged, still aggregating every video across the category and its subcategories, no cap
+// (Section 10.2) — this demo's whole video set stands in for that combined pool.
 function plpRenderVideos() {
   const cfg = window.PLP_CONFIG;
-  const sidebar = document.getElementById('plpVideoSidebar');
   const carousel = document.getElementById('plpVideoCarouselTrack');
-  if (sidebar) {
-    const vids = (cfg.videos || []).slice(0, 2); // sidebar module capped at 2 (Section 10.1)
-    sidebar.innerHTML = vids.length ? `
-      <h4 class="plp-video-sidebar-heading">Watch &amp; Learn</h4>
-      ${vids.map(v => `
-        <a class="plp-video-tile" href="${v.url || '#'}" target="_blank" rel="noopener">
-          <img src="${v.thumb}" alt="${v.title}">
-          <span class="plp-video-play">&#9658;</span>
-          <span class="plp-video-title">${v.title}</span>
+  if (!carousel) return;
+  carousel.innerHTML = (cfg.videos || []).map(v => `
+    <a class="plp-video-tile" href="${v.url || '#'}" target="_blank" rel="noopener">
+      <img src="${v.thumb}" alt="${v.title}">
+      <span class="plp-video-play">&#9658;</span>
+      <span class="plp-video-title">${v.title}</span>
+    </a>
+  `).join('');
+}
+
+// ==== Merchandising + Featured Product sidebar (2026-09-18 design review) ===================
+// Real category-level inheritance (most-specific-set-wins, per the design review) is a
+// Magento-side concern for the eventual dev brief — this static demo just renders whichever
+// promos/featured product the page's own PLP_CONFIG carries.
+function plpRenderMerchSidebar() {
+  const cfg = window.PLP_CONFIG;
+  const wrap = document.getElementById('plpMerchSidebar');
+  if (!wrap) return;
+  const promos = cfg.merchPromos || [];
+  const featured = cfg.featuredProduct;
+  let html = '';
+  if (promos.length) {
+    html += `
+      <div class="plp-merch-carousel" id="plpMerchCarousel">
+        <div class="plp-merch-track">
+          ${promos.map(p => `
+            <a class="plp-merch-slide" href="${p.href || '#'}">
+              <img src="${p.image}" alt="${p.label || ''}">
+              ${(p.eyebrow || p.label) ? `<span class="plp-merch-caption">${p.eyebrow ? `<em>${p.eyebrow}</em>` : ''}${p.label ? `<strong>${p.label}</strong>` : ''}</span>` : ''}
+            </a>
+          `).join('')}
+        </div>
+        ${promos.length > 1 ? `<div class="plp-merch-dots">${promos.map((_, i) => `<button type="button" class="plp-merch-dot ${i === 0 ? 'active' : ''}" data-merch-dot="${i}" aria-label="Promotion ${i + 1}"></button>`).join('')}</div>` : ''}
+      </div>
+    `;
+  }
+  if (featured) {
+    html += `
+      <div class="plp-featured-product">
+        <h4 class="plp-featured-product-heading">Featured Product</h4>
+        <a class="plp-featured-card" href="#">
+          <img src="${featured.image}" alt="${featured.name}">
+          <span class="plp-featured-name">${featured.name}</span>
+          <span class="plp-featured-price">${plpFmtMoney(featured.price)}</span>
         </a>
-      `).join('')}
-    ` : '';
+      </div>
+    `;
   }
-  if (carousel) {
-    // Bottom carousel aggregates every video across the category and its subcategories, no
-    // cap (Section 10.2) — this demo's whole video set stands in for that combined pool.
-    carousel.innerHTML = (cfg.videos || []).map(v => `
-      <a class="plp-video-tile" href="${v.url || '#'}" target="_blank" rel="noopener">
-        <img src="${v.thumb}" alt="${v.title}">
-        <span class="plp-video-play">&#9658;</span>
-        <span class="plp-video-title">${v.title}</span>
-      </a>
-    `).join('');
-  }
+  wrap.innerHTML = html;
+  plpInitMerchCarousel();
+}
+
+// Carousel/swipe between multiple active promos (2026-09-18 resolution) — falls back to a
+// single non-swipeable slide with no dots when only one promo is configured.
+function plpInitMerchCarousel() {
+  const carousel = document.getElementById('plpMerchCarousel');
+  if (!carousel) return;
+  const track = carousel.querySelector('.plp-merch-track');
+  const dots = carousel.querySelectorAll('[data-merch-dot]');
+  if (!track || !dots.length) return;
+  const slides = [...track.querySelectorAll('.plp-merch-slide')];
+  dots.forEach(dot => {
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      const slide = slides[Number(dot.dataset.merchDot)];
+      if (slide) slide.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    });
+  });
+  let scrollTimer;
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const idx = slides.findIndex(el => Math.abs(el.offsetLeft - track.scrollLeft) < el.offsetWidth / 2);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, 80);
+  });
 }
 
 // ==== Fitment Gallery (page-level, VPLP only) — reuses shared.js's PDP widget as-is =======
@@ -835,17 +963,55 @@ function plpRenderHero() {
   // 2's live-site finding) plus this CTA banner — never gated/empty.
   const vrsBanner = document.getElementById('plpVrsNoVehicleBanner');
   if (vrsBanner) vrsBanner.hidden = isSet;
+  // Change Vehicle CTA up by the breadcrumbs (2026-09-18) only makes sense once a vehicle is
+  // actually set — the no-vehicle state has its own, bigger "Set Your Vehicle" CTA in the
+  // Simple hero instead, not a duplicate up here.
+  const crumbsCta = document.querySelector('.plp-crumbs-cta');
+  if (crumbsCta) crumbsCta.hidden = !isSet;
+}
+
+// Hero image 3-state fallback (2026-09-18 design review): session vehicle photo → category
+// image → no image at all, in that priority order. Demo State Panel-only preview (see
+// applyPlpHeroImageFlag's admin-panel radio group in shared.js buildAdminPanel()) — an
+// independent override rather than derived from the Vehicle Set toggle, so a reviewer can see
+// all 3 states without also having to flip session vehicle state. "None" collapses the
+// Vehicle-Set hero to the same full-width .no-media layout the Simple-state hero already uses
+// (2026-09-18 resolution: don't keep the empty second column).
+function applyPlpHeroImageFlag(mode) {
+  plpState.heroImageMode = mode;
+  const cfg = window.PLP_CONFIG;
+  const heroSet = document.getElementById('plpHeroVehicleSet');
+  if (!heroSet) return;
+  const mediaWrap = heroSet.querySelector('.plp-hero-media');
+  const img = mediaWrap ? mediaWrap.querySelector('img.plp-hero-vehicle-img') : null;
+  const badge = heroSet.querySelector('.plp-hero-make-badge');
+  if (mode === 'none') {
+    heroSet.classList.add('no-media');
+    if (mediaWrap) mediaWrap.hidden = true;
+    return;
+  }
+  heroSet.classList.remove('no-media');
+  if (mediaWrap) mediaWrap.hidden = false;
+  if (mode === 'category' && cfg.categoryImage) {
+    if (img) img.src = cfg.categoryImage;
+    if (badge) badge.hidden = true;
+  } else {
+    if (img) img.src = cfg.vehicleImage;
+    if (badge) badge.hidden = false;
+  }
 }
 
 // ==== Init ====================================================================
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
+  plpState.heroImageMode = 'vehicle';
   plpRenderShopBy();
   plpRenderFilters();
   plpBuildFilterDrawer();
   plpInitToolbar();
   plpRenderVideos();
+  plpRenderMerchSidebar();
   plpBuildCompareDrawer();
   if (window.PLP_CONFIG.vrs) plpBuildRowFitGalleryDrawer();
   plpRenderHero();

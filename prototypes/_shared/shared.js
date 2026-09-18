@@ -2500,6 +2500,12 @@ function buildAdminPanel() {
           <label><input type="radio" name="plpGridCols" value="3" checked> 3 per row</label>
           <label><input type="radio" name="plpGridCols" value="4"> 4 per row</label>
         </div>
+        <div class="admin-toggle-label"><span>Hero image <span class="admin-note">(vehicle → category → none priority, 2026-09-18)</span></span></div>
+        <div class="admin-radio-row">
+          <label><input type="radio" name="plpHeroImage" value="vehicle" checked> Vehicle photo</label>
+          <label><input type="radio" name="plpHeroImage" value="category"> Category image</label>
+          <label><input type="radio" name="plpHeroImage" value="none"> None</label>
+        </div>
         <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
       </div>` : ''}
       <div class="admin-section">
@@ -2565,6 +2571,10 @@ function buildAdminPanel() {
 
   panel.querySelectorAll('input[name="plpGridCols"]').forEach(input => {
     input.addEventListener('change', () => { if (input.checked && typeof applyPlpGridColsFlag === 'function') applyPlpGridColsFlag(input.value); });
+  });
+
+  panel.querySelectorAll('input[name="plpHeroImage"]').forEach(input => {
+    input.addEventListener('change', () => { if (input.checked && typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(input.value); });
   });
 
   panel.querySelectorAll('[data-admin-input]').forEach(input => {

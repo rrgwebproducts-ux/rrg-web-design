@@ -106,9 +106,15 @@
 </div>
 
 <!-- Always the vehicle path (spec Section 3) — a VRS category is inherently scoped to an
-     exact vehicle spec, regardless of the SHOP BY subcategory selected. -->
-<div class="rrg-crumbs wrap">
-  <a href="#">Home</a> &gt; <a href="#">Vehicles</a> &gt; <a href="#">Toyota</a> &gt; <a href="#">Hilux</a> &gt; <a href="#">Vehicles 2015-2026</a> &gt; <a href="#">Vehicles 4dr Ute</a> &gt; Bare Roof
+     exact vehicle spec, regardless of the SHOP BY subcategory selected. Change Vehicle moved
+     up here from the hero CTA row (2026-09-18 design review — Graham: low-usage once a
+     vehicle is set, better placed near the breadcrumbs than competing with the hero's other
+     CTAs). Right-aligned, red outline not gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs">
+    <a href="#">Home</a> &gt; <a href="#">Vehicles</a> &gt; <a href="#">Toyota</a> &gt; <a href="#">Hilux</a> &gt; <a href="#">Vehicles 2015-2026</a> &gt; <a href="#">Vehicles 4dr Ute</a> &gt; Bare Roof
+  </div>
+  <a href="#" class="btn btn-outline-red plp-crumbs-cta" data-vclp-cta="change-vehicle" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>
 </div>
 
 <main class="wrap">
@@ -117,8 +123,9 @@
     <div>
       <h1>Roof Racks for Toyota Hilux 2015-2026 4dr Ute with Bare Roof</h1>
       <p>Find the right roof racks for your Toyota Hilux N80 with a bare roof, covering 2015 to 2026 models. Whether you need a simple set of bars for everyday loads, a aerodynamic setup for bikes and kayaks, or a tougher platform or ute tub system for work gear and off-road accessories, this range includes vehicle-specific options from leading brands including Rhino-Rack, Front Runner and MAXTRAX. Choose from clamp-mount, custom point and track-mounted solutions built to suit the way you use your Hilux.</p>
+      <!-- Change Vehicle moved to the breadcrumb row (2026-09-18 design review) — see
+           .plp-crumbs-cta above, toggled by the same Site Admin Panel "Vehicle Set" switch. -->
       <div class="plp-hero-cta-row">
-        <a href="#" class="btn btn-gold" data-vclp-cta="change-vehicle" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>
         <a href="#" class="btn btn-primary">Buyers Guide</a>
         <a href="#" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
@@ -126,7 +133,7 @@
       </div>
     </div>
     <div class="plp-hero-media">
-      <img src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="1024" height="1024">
+      <img class="plp-hero-vehicle-img" src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="1024" height="1024">
       <span class="plp-hero-make-badge"><img src="../_shared/brand-toyota-badge.png" alt="Toyota" width="534" height="370"></span>
     </div>
   </section>
@@ -175,22 +182,29 @@
     </div>
     <div class="plp-toolbar-right">
       <label for="plpSort">Sort By</label>
+      <!-- Reordered 2026-09-18 (Graham): relevance/merit-based options first, price sorts
+           pushed to the bottom so people don't land straight on "cheapest first". -->
       <select id="plpSort">
         <option value="relevance">Relevance</option>
-        <option value="price_low">Price: Low to High</option>
-        <option value="price_high">Price: High to Low</option>
         <option value="newest">Newest</option>
         <option value="bestselling">Best Selling</option>
         <option value="rating">Highest Rated</option>
+        <option value="price_low">Price: Low to High</option>
+        <option value="price_high">Price: High to Low</option>
       </select>
     </div>
   </div>
 
   <div class="plp-layout">
     <aside class="plp-sidebar">
+      <!-- Reset/Clear Filters (2026-09-18 design review — Graham/Tim) -->
+      <div class="plp-filter-head">
+        <h3>Filters</h3>
+        <button type="button" class="plp-filter-clear" id="plpFilterClear">Clear Filters</button>
+      </div>
       <div id="plpPriorityFilters"></div>
       <div id="plpStandardFilters"></div>
-      <div class="plp-video-sidebar" id="plpVideoSidebar"></div>
+      <div class="plp-merch-sidebar" id="plpMerchSidebar"></div>
     </aside>
     <div class="plp-main">
       <div class="plp-filter-chips" id="plpPriorityChips"></div>
@@ -336,6 +350,10 @@ const VPLP_PRODUCTS = [
     name: 'Rhino Rack JC-01773 Pioneer 6 Platform (1500mm x 1240mm) with Backbone for Toyota Hilux N80 4dr Ute with Bare Roof (2015 to 2026) - Roof Track Mount',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62100-Platforms--Trays._1_23.jpg',
     price: 1893.09, wasPrice: 2137.00, rating: 4.9, reviews: 156, ribbon: null, stock: 'click_collect',
+    // hasOptions demo product (2026-09-18 design review) — the exact "assembled vs flat-pack"
+    // example raised in the meeting: "View Options" CTA, "From $X" pricing, no quick Add to
+    // Cart. See plpPrimaryActionHTML() in plp.js.
+    hasOptions: true,
     subcategories: ['platform-trays'], vrs: true, fitmentCount: 283,
     facets: { platformStyle: 'tray', vehicleFitType: 'track', plankDirection: 'north-south', barProfile: 'platform', loadRating: 100, colour: 'black', brand: 'Rhino-Rack' },
     specs: [ { icon:'📐', label:'Platform Size (L x W)', value:'1500 x 1240mm' }, { icon:'➡️', label:'Plank Direction', value:'North-South' }, { icon:'⚖️', label:'Product Weight', value:'22.2kg' }, { icon:'🔢', label:'Number of Platform Planks', value:'4' }, { icon:'🧱', label:'Platform Material', value:'Aluminium' }, { icon:'🛡️', label:'Warranty', value:'5 Years' } ],
@@ -613,6 +631,13 @@ window.PLP_CONFIG = {
   categoryKey: 'roof-racks', vrs: true, defaultView: 'grid',
   vehicleLabel: 'Toyota Hilux N80, 4dr Ute, Bare Roof, 2015–2026',
   fitGalleryCount: 300,
+  // Hero image 3-state fallback (2026-09-18 design review, Demo State Panel preview) —
+  // vehicleImage is the real session-vehicle photo already used in the hero markup;
+  // categoryImage stands in for a real Roof Racks category image (none supplied yet, reusing
+  // the SHOP BY icon as a placeholder, same flagged-stand-in convention as this file's other
+  // demo assets).
+  vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
+  categoryImage: '../_shared/icons/roof-racks.png',
   shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
   shopBy: [
     { key: 'platform-trays', label: 'Platform/Trays', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">` },
@@ -640,7 +665,17 @@ window.PLP_CONFIG = {
     { title: 'Rhino-Rack Pioneer Platform — Fitment Overview', thumb: '../_shared/video-thumbnail.png', url: '#' },
     { title: 'Choosing Between Flat, Tray and Trade Platforms', thumb: '../_shared/video-thumbnail.png', url: '#' },
     { title: 'Hilux N80 Roof Rack Fitting, Step by Step', thumb: '../_shared/video-thumbnail.png', url: '#' }
-  ]
+  ],
+  // Merchandising + Featured Product sidebar (2026-09-18 design review, replaces the old
+  // under-filters video slot) — two promos here to demo the carousel/swipe behaviour: a
+  // dynamic sale banner (would show/hide off real sale state) and a category cross-sell promo
+  // (Graham's "save on accessories when you buy a roof rack" example). Real category-level
+  // inheritance (most-specific-set-wins) is a Magento-side concern for the dev brief.
+  merchPromos: [
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 15% Off Roof Racks', href: '#' },
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Bundle & Save', label: 'Save 10% on Accessories when you buy a Roof Platform', href: '#' }
+  ],
+  featuredProduct: VPLP_PRODUCTS.find(p => p.id === 'v4')
 };
 </script>
 </body>

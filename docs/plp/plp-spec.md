@@ -175,3 +175,52 @@ Carried forward for explicit revisit — not blocking a first build, but should 
 ---
 
 *Written 2026-09-17 from a group-by-group planning session with Brenton — no prototype files exist yet. Next step: Brenton's sign-off on this document (particularly Section 13's proposed architecture and the Section 14 assumptions), then prototype build begins, then `PLP-DEVELOPER-BRIEF.md` once the prototypes are stable.*
+
+---
+
+## 15. Design review backlog — 2026-09-18 (Scott Childs / Graham Sowerby / Jake, RRG Web Products)
+
+Full item-by-item detail of everything raised in this meeting is in memory (`project_pdp_plp_review_meeting_2026-09-18`, 44 items). This section is the actionable backlog derived from it, sorted by how much input is needed from Brenton before/while building. A few meeting items were confirmations of things already built (no-vehicle hero state, dynamic FAQ/video tabs, icon sizing, header-overlap fix, standard-PLP inline fitment gallery placement) and aren't repeated here since there's nothing to action.
+
+### A. Build now — spelled out in the meeting, no real judgment call
+
+**All 12 done 2026-09-18** (plus all 4 resolved-B items below, same pass) — see [[project-pdp-rebuild-status]] and the commit for exact diffs.
+
+1. ✅ Tabs, Change Vehicle button, priority-filter block: solid yellow fill → red border/outline (matches current live site); break-line under the tabs goes red too.
+2. ✅ Sort dropdown: label "Relevance" not "Default"; reorder to Relevance, Newest, Best Selling, Highest Rated, then Price Low→High, Price High→Low at the bottom.
+3. ✅ Filters: same yellow-fill → outline fix as #1.
+4. ✅ Filters: add a Reset/Clear Filters button (doesn't exist today either).
+5. ✅ Filters: fix option-count padding so the right-hand numbers align with the priority-filter section's padding; +/- collapse icon stays put.
+6. ✅ Filters: build the tooltip UI (hover eye icon + tooltip) with placeholder copy — real per-attribute text is a separate blocked item (see C).
+7. ✅ Add the 3-state image fallback (session vehicle → category image → none) to the Demo State Panel so it's actually toggleable/visualizable.
+8. ✅ Card pricing: restyle to match the new PDP pricing treatment, add a "Save X%" callout (reuses shared.css's own `.badge-save`, which is a % not a $ figure — matches the PDP exactly).
+9. ✅ Card pricing: two-column layout on sale items (price left, sale tag right, both centered); single centered column when not on sale.
+10. ✅ Add to Cart vs View Options split: simple/single-SKU products get a quick Add to Cart button on the card (rest of card still links to PDP); sibling/variant products get "View Options" only, whole card links through, no quick add.
+11. ✅ View Options products: link lands on the cheapest sibling; price shows "From $X".
+12. ✅ Ribbon: make the label text configurable/arbitrary in the demo (not hardcoded to just Bestseller/Staff Pick).
+
+### B. Needs a decision from Brenton first
+
+**Resolved 2026-09-18 — built same pass as the A batch above:**
+1. ✅ Hero layout when there's no image → **collapse to full width**, don't keep the empty second column.
+2. ✅ Change Vehicle / Set Your Vehicle CTA → **right-aligned near the breadcrumbs**.
+3. ✅ Merchandising block (replacing the under-filters video slot) → **carousel/swipe** between active promos; falls back to most-specific-wins when only one is set at any level.
+4. ✅ Sibling-group card imagery → **PDP-only** — PLP card shows one representative image, no merge/cycle behavior on the card itself.
+
+**Still open:**
+5. Fitment gallery drawer redesign — Brenton flagged it as unfinished/not happy with it but didn't specify what's wrong; needs his direction on the target.
+6. Nav-depth Level 3 icon-cards (the Camping & Off-Road test variant) — direction is agreed (Level 1 Show All, Level 2 persistent subcategory tabs, Level 3+ icon cards in the results grid, same size as tabs), but needs Brenton's actual Camping & Off-Road subcategory list/data and a call on grid sizing (icons per row, one vs two rows).
+
+### C. Deeper conversation / blocked on someone outside this session — not actionable by building right now
+
+1. Backend content-assignment mechanism for Buyer's Guide/FAQ/Video (per master-vehicle) — Graham/Jake, Magento-side.
+2. Highest Rated sort — feasibility depends on Mark confirming reviews.io data is queryable; drop the option if not.
+3. Filter tooltip copy — needs Graham's master attribute→tooltip-text spreadsheet.
+4. Real icon set — needs Jake's Google Drive link.
+5. Ribbon backend flagging mechanism in Racket — Graham/Jake.
+6. Whether quick-add-to-cart from a PLP card still shows cross-sell products in the mini-cart — technical question for Mark.
+7. Sibling-group card title/description pulling from the sibling "container" product, not a child SKU — Graham's Magento data-model problem to solve, not a prototype change.
+8. Wishlist/save-to-list feature — Brenton himself is unresolved on whether it's needed; treat as a future/separate feature, not this round.
+9. Store/inventory (delivery vs. local-store-stock indicator) — Graham explicitly kicked this to phase 2, needs a direct Tim conversation first (depends on a persistent-store feature that doesn't exist yet).
+10. Schema.org multi-`Offer` markup for sibling-group products — Mark's data-layer task.
+11. Whether VCLP and standard PLP merge into one dynamic Magento template — Mark's technical call.
