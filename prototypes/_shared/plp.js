@@ -307,12 +307,19 @@ function plpPriceHTML(product) {
   // photo (Graham: that placement was hard to control and landed wrong too often). Reuses
   // shared.css's .badge/.badge-save verbatim, per this file's own "reuse a shared.css class
   // where it happens" convention, so the Save pill matches the PDP's exactly.
+  //
+  // "Now"/"RRP" labels (2026-09-19 follow-up) — same wording/strikethrough-on-both-spans
+  // treatment as the PDP price-block (shared.css .price-line-now/.price-line-was/.price-label,
+  // syncPriceLabels()), just at card scale via the plp-prefixed equivalents in plp.css. "Now"
+  // only ever shows on sale, matching the PDP's own behaviour (labelNow.hidden = !onSale) —
+  // an off-sale price stays a plain, unlabelled number. hasOptions reads "Now From $X", not
+  // "From Now $X" — the sale state, not the "starting at" qualifier, is the headline.
   const savePct = Math.round((1 - product.price / product.wasPrice) * 100);
   return `
     <div class="plp-price plp-price-on-sale">
       <div class="plp-price-col">
-        <span class="plp-price-now">${prefix}${now}</span>
-        <span class="plp-price-was">${was}</span>
+        <div class="plp-price-line-now"><span class="plp-price-label">Now</span><span class="plp-price-now">${prefix}${now}</span></div>
+        <div class="plp-price-line-was"><span class="plp-price-label">RRP</span><span class="plp-price-was">${was}</span></div>
         <span class="badge badge-save">Save ${savePct}%</span>
       </div>
       <img class="plp-sale-tag" src="../_shared/sale-tag.png" alt="Sale">
@@ -392,7 +399,9 @@ function plpPrimaryActionHTML(product, blockClass) {
   if (product.hasOptions) {
     return `<a href="#" class="btn btn-gold plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Options</a>`;
   }
-  return `<button type="button" class="btn btn-gold plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}">Add to Cart</button>`;
+  // Cart icon (2026-09-19 follow-up) — same outline glyph as the header cart, sized down via
+  // .plp-btn-icon rather than reusing the header's own sizing rules.
+  return `<button type="button" class="btn btn-gold plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}"><svg class="plp-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>`;
 }
 
 function plpCardHTML(product, cfg) {
@@ -586,10 +595,13 @@ function plpBindCardEvents() {
   document.querySelectorAll('#plpResults [data-addtocart-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.cart-badge').forEach(el => { el.textContent = String(Number(el.textContent || 0) + 1); });
-      const original = btn.textContent;
+      // innerHTML, not textContent — the button now carries a cart-icon <svg> (2026-09-19
+      // follow-up), so a plain textContent capture/restore would silently drop the icon on
+      // revert.
+      const original = btn.innerHTML;
       btn.textContent = 'Added ✓';
       btn.disabled = true;
-      setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1200);
+      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
     });
   });
 }

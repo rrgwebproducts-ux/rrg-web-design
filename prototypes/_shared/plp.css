@@ -193,11 +193,14 @@
   .plp-results.is-grid.cols-4{grid-template-columns:repeat(4,1fr);}
 }
 .plp-results.is-list{display:flex;flex-direction:column;gap:14px;}
-/* List row: image | info | actions at a 1:2:1 ratio — info is the widest column since it
-   carries the product name and USP bullets, the other two are single-purpose (photo, buy
-   decision). Card's own padding replaces the old media-bleeds-to-the-edge grid treatment,
-   since all three columns need consistent breathing room here, not just one. */
-.plp-results.is-list .plp-card{display:grid;grid-template-columns:1fr 2fr 1fr;column-gap:20px;padding:16px;align-items:stretch;}
+/* List row: image | info | actions, widened from a plain 1:2:1 ratio to 0.9:1.8:1.3
+   (2026-09-19 follow-up) — the actions column now carries a two-line Now/RRP price plus a
+   doubled-size sale tag (see .plp-sale-tag below) and was getting visibly compressed at the
+   old 1fr. Info stays the widest column (product name + USP bullets); media gives up a little
+   width since it doesn't need as much. Card's own padding replaces the old
+   media-bleeds-to-the-edge grid treatment, since all three columns need consistent breathing
+   room here, not just one. */
+.plp-results.is-list .plp-card{display:grid;grid-template-columns:0.9fr 1.8fr 1.3fr;column-gap:20px;padding:16px;align-items:stretch;}
 
 .plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;}
 .plp-fitgallery-inline{grid-column:1/-1;}
@@ -312,13 +315,33 @@
    beside it on the right rather than on the image — both centred as a unit. Off-sale stays
    the single centred column above, untouched. Reuses shared.css's .badge/.badge-save
    verbatim (per this file's header comment) rather than a new plp- badge, so the Save pill
-   matches the PDP's own price-block exactly. */
+   matches the PDP's own price-block exactly.
+   Grid overrides back to a vertical stack (2026-09-19 follow-up) — the doubled sale tag
+   below left the price column only ~165px to work with in a 3-per-row grid card, not enough
+   for "Now From $2,299.00" without wrapping mid-word. List view keeps the side-by-side
+   row since its 3rd column was widened specifically to fit this (see .plp-results.is-list
+   .plp-card above). */
 .plp-price.plp-price-on-sale{flex-direction:row;align-items:center;justify-content:center;gap:10px;}
+.plp-results.is-grid .plp-price.plp-price-on-sale{flex-direction:column;gap:6px;}
 .plp-price-col{display:flex;flex-direction:column;gap:2px;}
 .plp-results.is-grid .plp-price-col{align-items:center;}
 .plp-price .badge-save{align-self:flex-start;margin-top:2px;}
 .plp-results.is-grid .plp-price .badge-save{align-self:center;}
-.plp-price .plp-sale-tag{width:44px;height:auto;flex:0 0 auto;}
+/* "Now"/"RRP" labels (2026-09-19 follow-up) — same idea as the PDP price-block's
+   .price-line-now/.price-line-was/.price-label (shared.css), scaled down for a card. "RRP"
+   reuses the exact same font/colour as the struck-through price next to it (not the bold
+   Barlow Condensed the "Now" label gets) so "RRP $319.00" reads as one continuous strike
+   rather than two different-weight pieces — the same reasoning shared.css's own comment
+   documents for the PDP version. */
+.plp-price-line-now{display:flex;align-items:baseline;gap:6px;}
+.plp-price-line-was{display:flex;align-items:center;gap:6px;}
+.plp-results.is-grid .plp-price-line-now,.plp-results.is-grid .plp-price-line-was{justify-content:center;}
+.plp-price-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--rrg-black);}
+.plp-price-line-now .plp-price-label{color:var(--rrg-red);}
+.plp-price-line-was .plp-price-label{font-family:inherit;font-weight:400;font-size:13px;color:#8a8a8a;text-decoration:line-through;}
+/* Doubled from 44px (2026-09-19 follow-up — Brenton: reads too small at the original size),
+   same doubled size in both grid and list view since both share this markup/class. */
+.plp-price .plp-sale-tag{width:88px;height:auto;flex:0 0 auto;}
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
 
@@ -359,6 +382,10 @@
 .plp-vrs-actions{display:flex;gap:8px;flex-wrap:wrap;}
 .plp-vrs-actions .btn{flex:1 1 auto;padding:10px 12px;font-size:12px;white-space:nowrap;}
 .plp-fitgallery-btn svg{width:14px;height:14px;}
+/* Add to Cart's cart icon (2026-09-19 follow-up) — same 14px scale as the Fitment Gallery
+   button's own icon above, flex:0 0 auto so it doesn't get squashed by the button's own
+   flex layout (shared.css .btn{display:inline-flex;gap:8px}). */
+.plp-btn-icon{width:14px;height:14px;flex:0 0 auto;}
 
 .plp-compare-check{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#555;cursor:pointer;}
 .plp-compare-check.is-disabled{opacity:.4;cursor:default;}
