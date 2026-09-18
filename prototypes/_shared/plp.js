@@ -313,15 +313,18 @@ function plpPriceHTML(product) {
   //
   // "Now"/"RRP" labels (2026-09-19 follow-up) — same wording/strikethrough-on-both-spans
   // treatment as the PDP price-block (shared.css .price-line-now/.price-line-was/.price-label,
-  // syncPriceLabels()), just at card scale via the plp-prefixed equivalents in plp.css. "Now"
-  // only ever shows on sale, matching the PDP's own behaviour (labelNow.hidden = !onSale) —
-  // an off-sale price stays a plain, unlabelled number. hasOptions reads "Now From $X", not
-  // "From Now $X" — the sale state, not the "starting at" qualifier, is the headline.
+  // syncPriceLabels()), just at card scale via the plp-prefixed equivalents in plp.css.
+  // "Now" is suppressed for hasOptions products even on sale (2026-09-19 3rd follow-up,
+  // Brenton) — a variant/sibling product on sale still just reads "From $X", not
+  // "Now From $X"; RRP/strikethrough/Save% still show as normal, only the "Now" label drops.
+  // A non-variant product keeps the plain PDP behaviour: "Now" only on sale, plain unlabelled
+  // number off-sale.
   const savePct = Math.round((1 - product.price / product.wasPrice) * 100);
+  const nowLabel = product.hasOptions ? '' : `<span class="plp-price-label">Now</span>`;
   return `
     <div class="plp-price plp-price-on-sale">
       <div class="plp-price-col">
-        <div class="plp-price-line-now"><span class="plp-price-label">Now</span>${fromSpan}<span class="plp-price-now">${now}</span></div>
+        <div class="plp-price-line-now">${nowLabel}${fromSpan}<span class="plp-price-now">${now}</span></div>
         <div class="plp-price-line-was"><span class="plp-price-label">RRP</span><span class="plp-price-was">${was}</span></div>
         <span class="badge badge-save">Save ${savePct}%</span>
       </div>
