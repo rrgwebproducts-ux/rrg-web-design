@@ -296,9 +296,12 @@ function plpRibbonHTML(product) {
 // sibling records exist to compute a real minimum from).
 function plpPriceHTML(product) {
   const now = plpFmtMoney(product.price);
-  const prefix = product.hasOptions ? 'From ' : '';
+  // "From" reuses the same small .plp-price-label style as "Now"/"RRP" (2026-09-19 2nd
+  // follow-up) — it used to be plain text prepended inside .plp-price-now, which rendered it
+  // at the same oversized price font as the digits themselves.
+  const fromSpan = product.hasOptions ? `<span class="plp-price-label">From</span>` : '';
   if (!product.wasPrice) {
-    return `<div class="plp-price"><div class="plp-price-col"><span class="plp-price-now">${prefix}${now}</span></div></div>`;
+    return `<div class="plp-price"><div class="plp-price-col"><div class="plp-price-line-now">${fromSpan}<span class="plp-price-now">${now}</span></div></div></div>`;
   }
   const was = plpFmtMoney(product.wasPrice);
   // Two-column on-sale layout (2026-09-18 design review) — price/RRP/Save badge stacked on
@@ -318,7 +321,7 @@ function plpPriceHTML(product) {
   return `
     <div class="plp-price plp-price-on-sale">
       <div class="plp-price-col">
-        <div class="plp-price-line-now"><span class="plp-price-label">Now</span><span class="plp-price-now">${prefix}${now}</span></div>
+        <div class="plp-price-line-now"><span class="plp-price-label">Now</span>${fromSpan}<span class="plp-price-now">${now}</span></div>
         <div class="plp-price-line-was"><span class="plp-price-label">RRP</span><span class="plp-price-was">${was}</span></div>
         <span class="badge badge-save">Save ${savePct}%</span>
       </div>

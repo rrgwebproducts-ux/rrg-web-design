@@ -312,27 +312,36 @@
 /* On-sale layout (2026-09-18 design review — Graham: the sale-tag graphic overlaying the
    product photo landed in the wrong place too often to control reliably). Two columns
    instead: price+RRP+Save badge stacked on the left, the same sale-tag graphic sitting
-   beside it on the right rather than on the image — both centred as a unit. Off-sale stays
-   the single centred column above, untouched. Reuses shared.css's .badge/.badge-save
+   beside it on the right rather than on the image. Reuses shared.css's .badge/.badge-save
    verbatim (per this file's header comment) rather than a new plp- badge, so the Save pill
    matches the PDP's own price-block exactly.
-   Grid's row gap tightened to 6px (2026-09-19, was 10px) — with the doubled sale tag, the
-   worst case ("Now From $2,299.00", a hasOptions product's price at 4 digits) was only a few
-   px short of the ~166px the price column had left over in a 3-per-row card; white-space:nowrap
-   above plus the tighter gap recovers just enough room to keep it on one line rather than
-   dropping to a vertical stack. */
-.plp-price.plp-price-on-sale{flex-direction:row;align-items:center;justify-content:center;gap:10px;}
+   2026-09-19 follow-up (2nd pass) — space-between instead of center: pushes the sale tag
+   all the way to the price row's right edge instead of sitting snug against the price text,
+   giving the two real separation. gap is still set as a floor so they never touch even in a
+   narrow card; space-between adds whatever extra room is left on top of it. */
+.plp-price.plp-price-on-sale{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;}
 .plp-results.is-grid .plp-price.plp-price-on-sale{gap:6px;}
 .plp-price-col{display:flex;flex-direction:column;gap:2px;}
 .plp-results.is-grid .plp-price-col{align-items:center;}
-.plp-price .badge-save{align-self:flex-start;margin-top:2px;}
-.plp-results.is-grid .plp-price .badge-save{align-self:center;}
+/* Always centred, in both grid and list (2026-09-19 2nd follow-up) — previously left-aligned
+   by default and only re-centred for grid, so in list view the Save badge sat flush left
+   while the Now/RRP lines above it were centred, reading as visibly misaligned. */
+.plp-price .badge-save{align-self:center;margin-top:2px;}
+/* .plp-price itself needs to stretch to the actions column's full width for the
+   space-between above to have anywhere to push the sale tag to — list's actions column is a
+   flex column with align-items:center (shrink-wrap by default), so without this .plp-price
+   would size to its own content and space-between would have no spare room to distribute.
+   Grid doesn't need the equivalent: .plp-price sits in normal block flow there and already
+   spans the card's full content width. */
+.plp-list-col-actions .plp-price{align-self:stretch;}
 /* "Now"/"RRP" labels (2026-09-19 follow-up) — same idea as the PDP price-block's
    .price-line-now/.price-line-was/.price-label (shared.css), scaled down for a card. "RRP"
    reuses the exact same font/colour as the struck-through price next to it (not the bold
    Barlow Condensed the "Now" label gets) so "RRP $319.00" reads as one continuous strike
    rather than two different-weight pieces — the same reasoning shared.css's own comment
-   documents for the PDP version. */
+   documents for the PDP version. "From" (hasOptions products) reuses this same small label
+   style rather than inheriting .plp-price-now's much larger size (2nd follow-up — Brenton:
+   "From" was rendering at the same oversized weight as the price digits themselves). */
 .plp-price-line-now{display:flex;align-items:baseline;gap:6px;}
 .plp-price-line-was{display:flex;align-items:center;gap:6px;}
 .plp-results.is-grid .plp-price-line-now,.plp-results.is-grid .plp-price-line-was{justify-content:center;}
