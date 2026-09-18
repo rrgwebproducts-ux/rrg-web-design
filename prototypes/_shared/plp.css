@@ -306,9 +306,9 @@
 .plp-rating{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#666;margin-bottom:8px;min-height:17px;}
 .plp-rating .stars{font-size:14px;}
 .plp-price{display:flex;flex-direction:column;gap:2px;margin-bottom:4px;}
-.plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--rrg-black);}
+.plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--rrg-black);white-space:nowrap;}
 .plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
-.plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;}
+.plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;white-space:nowrap;}
 /* On-sale layout (2026-09-18 design review — Graham: the sale-tag graphic overlaying the
    product photo landed in the wrong place too often to control reliably). Two columns
    instead: price+RRP+Save badge stacked on the left, the same sale-tag graphic sitting
@@ -316,13 +316,13 @@
    the single centred column above, untouched. Reuses shared.css's .badge/.badge-save
    verbatim (per this file's header comment) rather than a new plp- badge, so the Save pill
    matches the PDP's own price-block exactly.
-   Grid overrides back to a vertical stack (2026-09-19 follow-up) — the doubled sale tag
-   below left the price column only ~165px to work with in a 3-per-row grid card, not enough
-   for "Now From $2,299.00" without wrapping mid-word. List view keeps the side-by-side
-   row since its 3rd column was widened specifically to fit this (see .plp-results.is-list
-   .plp-card above). */
+   Grid's row gap tightened to 6px (2026-09-19, was 10px) — with the doubled sale tag, the
+   worst case ("Now From $2,299.00", a hasOptions product's price at 4 digits) was only a few
+   px short of the ~166px the price column had left over in a 3-per-row card; white-space:nowrap
+   above plus the tighter gap recovers just enough room to keep it on one line rather than
+   dropping to a vertical stack. */
 .plp-price.plp-price-on-sale{flex-direction:row;align-items:center;justify-content:center;gap:10px;}
-.plp-results.is-grid .plp-price.plp-price-on-sale{flex-direction:column;gap:6px;}
+.plp-results.is-grid .plp-price.plp-price-on-sale{gap:6px;}
 .plp-price-col{display:flex;flex-direction:column;gap:2px;}
 .plp-results.is-grid .plp-price-col{align-items:center;}
 .plp-price .badge-save{align-self:flex-start;margin-top:2px;}
