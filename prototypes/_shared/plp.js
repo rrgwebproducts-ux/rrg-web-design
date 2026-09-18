@@ -391,7 +391,6 @@ function plpListCardHTML(product, cfg) {
     <div class="plp-card" data-product-id="${product.id}">
       <div class="plp-list-col-media">
         <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
-          ${plpRibbonHTML(product)}
           ${plpBrandOverlayHTML(product)}
           ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
         </div>
@@ -403,6 +402,7 @@ function plpListCardHTML(product, cfg) {
         ${usps}
       </div>
       <div class="plp-list-col-actions">
+        ${plpRibbonHTML(product)}
         ${plpPriceHTML(product)}
         ${plpSaleTagHTML(product)}
         ${plpStockLineHTML(product)}

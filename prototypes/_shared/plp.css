@@ -224,6 +224,16 @@
    margin-top:auto below has real free space to push into, pinning it to the bottom of the
    column regardless of how tall the centre column's USP list makes the row. */
 .plp-list-col-actions{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-width:0;}
+/* Bestseller/Staff Pick now caps this column instead of the photo — static (not the base
+   .plp-ribbon's absolute positioning, which needs a positioned image behind it) and
+   align-self:stretch so it spans the column's own width rather than shrinking to its text
+   like every other child here. The negative top/right margins cancel exactly the card's own
+   16px padding on those two sides, so it bleeds flush to the card's real top-right edge —
+   "part of the card, not sitting inside it with padding around it" — while the left edge
+   stays put, since that's an internal column boundary, not a card edge. .plp-card's own
+   overflow:hidden + border-radius clips the bled corner to match the card's rounded corner
+   for free. */
+.plp-list-col-actions .plp-ribbon{position:static;align-self:stretch;margin:-16px -16px 0 0;}
 /* The sale tag sits here as a plain inline graphic, not the absolute-positioned overlay
    version .plp-card-media .plp-sale-tag uses elsewhere — it's no longer inside the photo. */
 .plp-list-col-actions .plp-sale-tag{width:64px;height:auto;}
