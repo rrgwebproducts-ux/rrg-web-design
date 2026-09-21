@@ -504,3 +504,31 @@
   .plp-card-title{font-size:15px!important;}
   .plp-price-now{font-size:22px;}
 }
+
+/* ---- Search results page (new template, docs/search-results/search-results-spec.md) ----
+   Slim results bar (Section 2) replaces the hero + breadcrumb entirely for this page type —
+   no vehicle photo, no category H1, no CTA row, just the editable query + result count.
+   Category quick-tabs (Section 3) reuse .plp-shopby-track/.plp-shopby-tile/.plp-shopby-label
+   verbatim (see the SHOP BY block above) so the same active-tab-on-a-line treatment applies
+   without new tab CSS — they just render without an icon span, which the tile's own
+   flex-column layout absorbs fine at a very slightly shorter effective height. */
+.plp-search-heading{padding:20px 0 0;}
+.plp-search-heading p{font-size:16px;color:#444;margin:6px 0 0;}
+.plp-search-bar{padding:18px 0 8px;}
+.plp-search-bar-form{display:flex;gap:10px;max-width:640px;margin-bottom:10px;}
+.plp-search-bar-form input{flex:1;border:1px solid var(--rrg-line);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;}
+.plp-search-bar-count{font-size:13px;color:#666;margin:0;}
+
+/* ---- Zero-results state (Section 5) — no equivalent anywhere else in the PLP family, every
+   category prototype has products by construction. Replaces the grid entirely. ---- */
+.plp-search-empty{text-align:center;padding:40px 20px 10px;}
+.plp-search-empty h2{margin-bottom:8px;}
+.plp-search-empty p{color:#666;font-size:14px;margin-bottom:8px;}
+.plp-search-empty-subheading{margin:32px 0 16px;font-size:18px;color:var(--rrg-red);}
+.plp-search-empty-cats{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;}
+.plp-search-empty-cat{display:flex;flex-direction:column;align-items:center;gap:8px;width:120px;padding:14px 10px;border:1px solid var(--rrg-line);border-radius:var(--radius);text-decoration:none;color:var(--rrg-black);}
+.plp-search-empty-cat:hover{background:var(--rrg-bg);}
+.plp-search-empty-cat img{width:48px;height:48px;object-fit:contain;}
+.plp-search-empty-cat span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;}
+.plp-search-empty-featured{display:flex;gap:16px;overflow-x:auto;padding:4px 4px 14px;text-align:left;}
+.plp-search-empty-featured .plp-card{flex:0 0 220px;}

@@ -19,6 +19,16 @@ const PLP_PAGE_SIZE = 12;
 // a 75kg requirement). Config-driven per plp-spec.md Section 6's "real configurable
 // structure, not a hardcoded one-off list" instruction.
 function plpValueMatches(product, facetKey, facetDef, selectedValue) {
+  // 'range' (search-results Price filter, docs/search-results/search-results-spec.md Section
+  // 4) compares product.price directly rather than a product.facets[] entry — the only facet
+  // mode that reads off the product itself instead of its facets map, since price already
+  // exists as a top-level field everywhere (plpPriceHTML) and duplicating it into facets would
+  // just be a second source of truth to keep in sync.
+  if (facetDef.mode === 'range') {
+    const [min, max] = String(selectedValue).split('-').map(Number);
+    const price = product.price || 0;
+    return price >= min && (Number.isNaN(max) ? true : price <= max);
+  }
   const v = (product.facets || {})[facetKey];
   if (v === undefined) return false;
   if (facetDef.mode === 'atleast') return Number(v) >= Number(selectedValue);
@@ -38,6 +48,13 @@ function plpMatchesShopBy(product, activeSubcat, activeSubsubcat) {
 
 function plpMatchesFiltersExcept(product, activeFilters, exceptFacetKey, activeSubcat, activeSubsubcat) {
   if (!plpMatchesShopBy(product, activeSubcat, activeSubsubcat)) return false;
+  // Search-results page only (cfg.isSearch) — gated here, the single choke point both
+  // plpFilteredSortedProducts() and every filter option's live count (plpFilterGroupHTML) run
+  // through, so a query like "roof rack" narrows the product pool BEFORE facet counts are
+  // computed, not just the final grid. Doing this in plpFilteredSortedProducts alone would have
+  // left the sidebar showing counts against the whole catalogue instead of the search matches.
+  const cfg = window.PLP_CONFIG;
+  if (cfg && cfg.isSearch && !plpSearchQueryMatches(product, plpState.searchQuery)) return false;
   return Object.keys(activeFilters).every(facetKey => {
     if (facetKey === exceptFacetKey) return true;
     const selected = activeFilters[facetKey];
@@ -59,6 +76,7 @@ const plpState = {
   activeSubsubcat: null, // nav-depth Level 3 (2026-09-18 review item 39/40) — see plpMatchesShopBy()
   activeFilters: {},     // { facetKey: Set(values) }
   view: 'grid',          // 'grid' | 'list' — reset from PLP_CONFIG.defaultView on init
+  searchQuery: '',       // search-results page only, from PLP_CONFIG.initialQuery on init
   gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 3 is the default (2026-09-18, Brenton signed off), 4 kept as the fallback option.
   sort: 'relevance',
   page: 1,               // desktop numbered pagination
@@ -224,6 +242,114 @@ function plpIconCardHTML(child) {
       <span class="plp-shopby-icon">${child.icon}</span>
       <span class="plp-shopby-label">${child.label}</span>
     </button>
+  `;
+}
+
+// ==== Search results page (new template, docs/search-results/search-results-spec.md) =========
+// Only loaded/exercised by prototypes/search-results/ (cfg.isSearch) — every other PLP-family
+// page leaves cfg.isSearch undefined, so plpMatchesFiltersExcept's gate above and every
+// function below are no-ops for plp/vplp/plp-camping. Category quick-tabs (spec Section 3) and
+// the inline search box (Section 2) replace SHOP BY + hero for this page type; the quick-tabs
+// are just a second UI surface onto the same `category` standard facet as the sidebar filter
+// (plpSelectSearchCategory), not a parallel selection mechanism, so they can't drift out of
+// sync with each other.
+function plpSearchQueryMatches(product, query) {
+  if (!query) return true;
+  const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return true;
+  const haystack = `${product.name} ${product.brand} ${(product.searchCategory && product.searchCategory.label) || ''} ${(product.searchKeywords || []).join(' ')}`.toLowerCase();
+  return words.every(w => haystack.includes(w));
+}
+
+function plpRenderSearchTabs() {
+  const cfg = window.PLP_CONFIG;
+  const track = document.getElementById('plpSearchTabsTrack');
+  if (!track) return;
+  const queryMatched = cfg.products.filter(p => plpSearchQueryMatches(p, plpState.searchQuery));
+  const activeCategory = plpState.activeFilters.category ? [...plpState.activeFilters.category][0] : null;
+  const categories = cfg.searchCategories || [];
+  const countFor = key => queryMatched.filter(p => !key || (p.searchCategory && p.searchCategory.key === key)).length;
+  const tiles = [{ key: '', label: 'All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...categories];
+  track.innerHTML = tiles.map(t => `
+    <button type="button" class="plp-shopby-tile ${(!activeCategory && !t.key) || activeCategory === t.key ? 'active' : ''}" data-search-cat="${t.key}">
+      ${t.icon ? `<span class="plp-shopby-icon">${t.icon}</span>` : ''}
+      <span class="plp-shopby-label">${t.label} (${countFor(t.key)})</span>
+    </button>
+  `).join('');
+  track.querySelectorAll('[data-search-cat]').forEach(btn => {
+    btn.addEventListener('click', () => plpSelectSearchCategory(btn.dataset.searchCat));
+  });
+}
+
+// Sets/clears the same `category` facet the sidebar's Category filter reads — see the module
+// comment above. Full filter reset would be too aggressive (Brand/Price selections a shopper
+// already made are still meaningful within one category), so only the category facet changes.
+// Level 3/4 icon cards for a search category (spec's nav-depth pattern, same as
+// plp-camping's Level 3 children) — only meaningful once the shopper has narrowed to exactly
+// one category via plpSelectSearchCategory/the sidebar Category filter, mirroring PLP's own
+// rule that Level 3 only shows within one active Level 2 tab. Reuses plpIconCardHTML() and
+// plpState.activeSubsubcat/plpMatchesShopBy() completely unchanged — a search product's
+// `subcategories` array is keyed exactly like a PLP product's, so the existing Level-3
+// filtering logic needs no engine change at all, just this one lookup to find which
+// searchCategories entry (if any) is the single active one.
+function plpActiveSearchCategoryEntry() {
+  const cfg = window.PLP_CONFIG;
+  const activeKey = plpState.activeFilters.category && plpState.activeFilters.category.size === 1 ? [...plpState.activeFilters.category][0] : null;
+  return activeKey ? (cfg.searchCategories || []).find(c => c.key === activeKey) : null;
+}
+
+function plpSelectSearchCategory(key) {
+  if (!key) delete plpState.activeFilters.category;
+  else plpState.activeFilters.category = new Set([key]);
+  plpState.activeSubsubcat = null; // a Level 3 selection from the previous category no longer applies
+  plpState.page = 1;
+  plpState.visibleCount = PLP_PAGE_SIZE;
+  plpRenderSearchTabs();
+  plpRenderFilters();
+  plpRenderResults();
+}
+
+// Inline, resubmittable search box (spec Section 2) — a new query intentionally clears active
+// filters (a Brand/Category selection from the old query's result set may not even exist in
+// the new one) but leaves sort/view alone.
+function plpInitSearchBar() {
+  const form = document.getElementById('plpSearchForm');
+  const input = document.getElementById('plpSearchInput');
+  if (input) input.value = plpState.searchQuery;
+  if (form) form.addEventListener('submit', e => {
+    e.preventDefault();
+    plpState.searchQuery = (input.value || '').trim();
+    plpState.activeFilters = {};
+    plpState.page = 1;
+    plpState.visibleCount = PLP_PAGE_SIZE;
+    plpRenderSearchTabs();
+    plpRenderFilters();
+    plpRenderResults();
+  });
+}
+
+// Zero-results state (spec Section 5) — doesn't exist anywhere else in the PLP family (every
+// category prototype has products by construction); replaces the grid entirely rather than
+// just swapping in a "no products match" line the way an over-filtered category page does.
+function plpZeroResultsHTML() {
+  const cfg = window.PLP_CONFIG;
+  const cats = cfg.popularCategories || [];
+  const featured = cfg.featuredForEmpty || cfg.products.slice(0, 4);
+  return `
+    <div class="plp-search-empty">
+      <h2>No results for &quot;${plpState.searchQuery}&quot;</h2>
+      <p>Check your spelling, try fewer words, or a more general term.</p>
+      ${cats.length ? `
+        <h3 class="plp-search-empty-subheading">Popular Categories</h3>
+        <div class="plp-search-empty-cats">
+          ${cats.map(c => `<a class="plp-search-empty-cat" href="${c.href}">${c.icon ? `<img src="${c.icon}" alt="">` : ''}<span>${c.label}</span></a>`).join('')}
+        </div>
+      ` : ''}
+      ${featured.length ? `
+        <h3 class="plp-search-empty-subheading">You Might Like</h3>
+        <div class="plp-search-empty-featured">${featured.map(p => plpCardHTML(p, cfg)).join('')}</div>
+      ` : ''}
+    </div>
   `;
 }
 
@@ -637,8 +763,31 @@ function plpRenderResults() {
   const mobileCountLabel = document.getElementById('plpResultCountMobile');
   if (!wrap) return;
 
+  // A Level 3 selection only means something within the category it belongs to — if the
+  // Category quick-tab/filter changed since it was set (or the sidebar Category checkbox was
+  // used directly, which doesn't go through plpSelectSearchCategory's own reset), drop it
+  // before filtering rather than silently matching nothing in the new category.
+  if (cfg.isSearch && plpState.activeSubsubcat) {
+    const activeEntry = plpActiveSearchCategoryEntry();
+    if (!activeEntry || !(activeEntry.children || []).some(c => c.key === plpState.activeSubsubcat)) {
+      plpState.activeSubsubcat = null;
+    }
+  }
+
   const all = plpFilteredSortedProducts();
   const total = all.length;
+
+  if (cfg.isSearch && total === 0) {
+    wrap.className = 'plp-results plp-results-empty';
+    wrap.innerHTML = plpZeroResultsHTML();
+    if (countLabel) countLabel.textContent = `0 Results for "${plpState.searchQuery}"`;
+    if (mobileCountLabel) mobileCountLabel.textContent = `0 Results for "${plpState.searchQuery}"`;
+    const emptyLevel3Row = document.getElementById('plpLevel3Row');
+    if (emptyLevel3Row) { emptyLevel3Row.hidden = true; emptyLevel3Row.innerHTML = ''; }
+    plpRenderPagination(0);
+    plpBindCardEvents();
+    return;
+  }
 
   // Desktop: numbered pages. Mobile: cumulative "Show More Results" (spec Section 8).
   const isMobile = window.matchMedia('(max-width:900px)').matches;
@@ -661,7 +810,7 @@ function plpRenderResults() {
   // columns on desktop regardless of how many children a tab has — sitting above the results
   // grid rather than inside it. Only on the first page (see plpBindCardEvents() for the click
   // binding, which now targets this row instead of #plpResults).
-  const activeTile = (cfg.shopBy || []).find(t => t.key === plpState.activeSubcat);
+  const activeTile = cfg.isSearch ? plpActiveSearchCategoryEntry() : (cfg.shopBy || []).find(t => t.key === plpState.activeSubcat);
   const showLevel3 = activeTile && activeTile.children && activeTile.children.length && (isMobile || plpState.page === 1);
   let level3Row = document.getElementById('plpLevel3Row');
   if (showLevel3) {
@@ -692,12 +841,13 @@ function plpRenderResults() {
 
   wrap.innerHTML = cardsArr.join('') || `<div class="plp-no-results">No products match the selected filters.</div>`;
 
+  const searchSuffix = cfg.isSearch ? ` for "${plpState.searchQuery}"` : '';
   if (countLabel) {
     const from = total === 0 ? 0 : (isMobile ? 1 : (plpState.page - 1) * PLP_PAGE_SIZE + 1);
     const to = isMobile ? visible.length : Math.min(plpState.page * PLP_PAGE_SIZE, total);
-    countLabel.textContent = `Showing ${from}-${to} of ${total} Results`;
+    countLabel.textContent = `Showing ${from}-${to} of ${total} Results${searchSuffix}`;
   }
-  if (mobileCountLabel) mobileCountLabel.textContent = `Showing ${visible.length} of ${total} Results`;
+  if (mobileCountLabel) mobileCountLabel.textContent = `Showing ${visible.length} of ${total} Results${searchSuffix}`;
 
   plpRenderPagination(total);
   plpBindCardEvents();
@@ -709,6 +859,11 @@ function plpRenderResults() {
 function plpRenderPagination(total) {
   const desktopWrap = document.getElementById('plpPaginationDesktop');
   const mobileWrap = document.getElementById('plpPaginationMobile');
+  if (total === 0) {
+    if (desktopWrap) desktopWrap.innerHTML = '';
+    if (mobileWrap) mobileWrap.innerHTML = '';
+    return;
+  }
   const pageCount = Math.max(1, Math.ceil(total / PLP_PAGE_SIZE));
   if (desktopWrap) {
     if (pageCount <= 1) { desktopWrap.innerHTML = ''; }
@@ -1233,7 +1388,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
   plpState.heroImageMode = 'vehicle';
+  if (window.PLP_CONFIG.isSearch) plpState.searchQuery = window.PLP_CONFIG.initialQuery || '';
   plpRenderShopBy();
+  if (window.PLP_CONFIG.isSearch) { plpInitSearchBar(); plpRenderSearchTabs(); }
   plpRenderFilters();
   plpBuildFilterDrawer();
   plpInitToolbar();
