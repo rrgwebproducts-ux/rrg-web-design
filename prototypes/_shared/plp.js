@@ -98,6 +98,7 @@ function plpSelectSubcat(key) {
   plpRenderFilters();
   plpRenderResults();
   plpRenderFAQ();
+  plpRenderCategoryContent();
 }
 
 // Level 3 icon-card selection — toggles (click again to clear), leaves the Level 2 tab row
@@ -108,6 +109,91 @@ function plpSelectSubsubcat(key) {
   plpState.visibleCount = PLP_PAGE_SIZE;
   plpRenderResults();
   plpRenderFAQ();
+  plpRenderCategoryContent();
+}
+
+// ==== Category content (heading/description/hero image/breadcrumb), 2026-09-21 =============
+// Each SHOP BY tab is its own real URL in production (see plpRenderShopBy()'s comment) — so
+// switching Level 2/3 tabs needs to change everything a real category page navigation would
+// change, not just re-filter the results grid. Level 2/3 entries in PLP_CONFIG.shopBy/children
+// can each carry heading/description/breadcrumbLabel/heroImage; PLP_CONFIG.categoryRoot holds
+// the same fields for the "Show All" / no-tab-selected state. Falls back up the chain (L3 → L2
+// → categoryRoot) for any field a given tab doesn't override.
+function plpActiveTabChain() {
+  const cfg = window.PLP_CONFIG;
+  const l2 = plpState.activeSubcat && plpState.activeSubcat !== 'all'
+    ? (cfg.shopBy || []).find(t => t.key === plpState.activeSubcat)
+    : null;
+  const l3 = l2 && l2.children ? l2.children.find(c => c.key === plpState.activeSubsubcat) : null;
+  return { l2, l3 };
+}
+
+function plpActiveCategoryImage() {
+  const cfg = window.PLP_CONFIG;
+  const { l2, l3 } = plpActiveTabChain();
+  return (l3 && l3.heroImage) || (l2 && l2.heroImage) || (cfg.categoryRoot && cfg.categoryRoot.heroImage) || cfg.categoryImage || null;
+}
+
+// Breadcrumb trail, fully rebuilt on every tab change (real build: a distinct URL per tile
+// carries its own breadcrumb; this demo rebuilds the one crumb element in-page instead).
+// cfg.breadcrumbRoot holds the page's own fixed leading segments (just "Home" for a standard
+// category page; the full vehicle path for a VRS page like vplp, since a VRS category is
+// always scoped to the vehicle first — see vplp's own PLP_CONFIG comment). categoryRoot and any
+// selected Level 2/3 tab are appended after that as the dynamic, tab-driven segments.
+function plpRenderBreadcrumb() {
+  const cfg = window.PLP_CONFIG;
+  const trail = document.getElementById('plpCrumbTrail');
+  if (!trail) return;
+  const { l2, l3 } = plpActiveTabChain();
+  const segments = [
+    ...(cfg.breadcrumbRoot || [{ label: 'Home' }]),
+    { label: (cfg.categoryRoot && cfg.categoryRoot.breadcrumbLabel) || cfg.categoryKey },
+    ...(l2 ? [{ label: l2.breadcrumbLabel || l2.label }] : []),
+    ...(l3 ? [{ label: l3.breadcrumbLabel || l3.label }] : [])
+  ];
+  trail.innerHTML = segments.map((seg, i) => {
+    const isLast = i === segments.length - 1;
+    const sep = i > 0 ? ' &gt; ' : '';
+    return sep + (isLast ? `<span id="plpCrumbLast">${seg.label}</span>` : `<a href="#">${seg.label}</a>`);
+  }).join('');
+}
+
+// Heading/description swap across both hero states — cfg.vehicleHeadingSuffix is the page's
+// own fixed "for your Toyota Hilux" (or full vehicle-spec, for vplp) phrase appended to the
+// Vehicle-Set state's H1 only; the Simple state's H1 is the bare category heading.
+function plpRenderCategoryContent() {
+  const cfg = window.PLP_CONFIG;
+  if (!cfg.categoryRoot) return;
+  const { l2, l3 } = plpActiveTabChain();
+  const active = l3 || l2 || cfg.categoryRoot;
+  const heading = active.heading || active.label || cfg.categoryRoot.heading;
+  const description = active.description || cfg.categoryRoot.description;
+  const suffix = cfg.vehicleHeadingSuffix ? ` ${cfg.vehicleHeadingSuffix}` : '';
+  const setH1 = document.querySelector('#plpHeroVehicleSet h1');
+  const simpleH1 = document.querySelector('#plpHeroSimple h1');
+  if (setH1) setH1.textContent = heading + suffix;
+  if (simpleH1) simpleH1.textContent = heading;
+  document.querySelectorAll('#plpHeroVehicleSet > div > p, #plpHeroSimple > div > p').forEach(p => { p.textContent = description; });
+  plpRenderBreadcrumb();
+  plpApplyCategoryImage();
+}
+
+// Simple (no-vehicle) hero's image follows the same vehicle → category → none fallback as the
+// Vehicle-Set hero's Demo State Panel preview (see applyPlpHeroImageFlag()) — no vehicle photo
+// applies here (there's no vehicle), so it's just category → none.
+function plpApplyCategoryImage() {
+  const heroSimple = document.getElementById('plpHeroSimple');
+  if (heroSimple) {
+    const img = plpActiveCategoryImage();
+    const mediaWrap = heroSimple.querySelector('.plp-hero-media');
+    const imgEl = mediaWrap ? mediaWrap.querySelector('img') : null;
+    heroSimple.classList.toggle('no-media', !img);
+    if (mediaWrap) mediaWrap.hidden = !img;
+    if (imgEl && img) imgEl.src = img;
+  }
+  // Re-apply the Vehicle-Set hero's own image only if the Demo State Panel is currently
+  // previewing the "category" state — "vehicle" mode is untouched by tab changes.
+  if (plpState.heroImageMode === 'category') applyPlpHeroImageFlag('category');
 }
 
 const PLP_SHOWALL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`;
@@ -1125,10 +1211,16 @@ function applyPlpHeroImageFlag(mode) {
     if (mediaWrap) mediaWrap.hidden = true;
     return;
   }
+  const catImg = mode === 'category' ? plpActiveCategoryImage() : null;
+  if (mode === 'category' && !catImg) {
+    heroSet.classList.add('no-media');
+    if (mediaWrap) mediaWrap.hidden = true;
+    return;
+  }
   heroSet.classList.remove('no-media');
   if (mediaWrap) mediaWrap.hidden = false;
-  if (mode === 'category' && cfg.categoryImage) {
-    if (img) img.src = cfg.categoryImage;
+  if (catImg) {
+    if (img) img.src = catImg;
     if (badge) badge.hidden = true;
   } else {
     if (img) img.src = cfg.vehicleImage;
@@ -1152,7 +1244,9 @@ document.addEventListener('DOMContentLoaded', () => {
   plpRenderHero();
   plpRenderResults();
   plpRenderFAQ();
+  plpRenderCategoryContent();
   window.addEventListener('resize', () => plpRenderResults());
   document.addEventListener('rrg-session-change', plpRenderHero);
+  document.addEventListener('rrg-session-change', plpApplyCategoryImage);
   document.addEventListener('rrg-session-change', plpRenderResults);
 });

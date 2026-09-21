@@ -111,9 +111,7 @@
      vehicle is set, better placed near the breadcrumbs than competing with the hero's other
      CTAs). Right-aligned, red outline not gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
 <div class="plp-crumbs-row wrap">
-  <div class="rrg-crumbs">
-    <a href="#">Home</a> &gt; <a href="#">Vehicles</a> &gt; <a href="#">Toyota</a> &gt; <a href="#">Hilux</a> &gt; <a href="#">Vehicles 2015-2026</a> &gt; <a href="#">Vehicles 4dr Ute</a> &gt; Bare Roof
-  </div>
+  <div class="rrg-crumbs" id="plpCrumbTrail"></div>
   <a href="#" class="btn btn-outline-red plp-crumbs-cta" data-vclp-cta="change-vehicle" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>
 </div>
 
@@ -154,6 +152,9 @@
         <a href="#" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
       </div>
+    </div>
+    <div class="plp-hero-media" hidden>
+      <img class="plp-hero-category-img" src="" alt="">
     </div>
   </section>
   <div class="plp-vrs-banner" id="plpVrsNoVehicleBanner" hidden>
@@ -224,24 +225,7 @@
 
   <section class="faq-section" id="faqSection">
     <h2 class="faq-heading">Frequently Asked Questions</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>Will these roof racks fit my Hilux if it's a different generation to N80?</summary>
-        <div class="faq-answer"><p>No — every product on this page is matched exactly to the Toyota Hilux N80 (2015–2026), 4dr Ute, Bare Roof shown above. A different generation, body style or roof type needs its own exact-fitment kit; set your vehicle again if any of those details are different.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary>What's the difference between a platform and a cross bar set?</summary>
-        <div class="faq-answer"><p>Cross bars are a simple pair of load bars for general use — bike racks, roof boxes, cargo. Platforms add a full tray surface, better suited to loose or bulky gear, awnings and touring setups. Use the Platform Style priority filter to narrow by which you need.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary>My Hilux has a styling bar, not a bare roof — do these still fit?</summary>
-        <div class="faq-answer"><p>No — roof type changes the mounting system entirely. This page is scoped to Bare Roof only; use "Change Vehicle" above and re-select your roof type to see the correct styling-bar-compatible range.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary>Can I get any of these professionally fitted, and does it cost extra?</summary>
-        <div class="faq-answer"><p>Yes — every kit here can be booked for fitting in-store. Fitting charges apply and are confirmed before installation; see the Gold Guarantee tab on the product page for what's covered.</p></div>
-      </details>
-    </div>
+    <div class="faq-list" id="faqList"></div>
   </section>
 
 </main>
@@ -629,6 +613,34 @@ const VPLP_PRODUCTS = [
   }
 ];
 
+// FAQ content, keyed per SHOP BY tab (2026-09-21, matching plp-camping/index.html's own
+// CAMPING_FAQS convention). 'all' reuses the 4 general FAQs this page already carried; no
+// Level 3 keys exist on this page (vplp has no `children` under any shopBy entry).
+const VPLP_FAQS = {
+  all: [
+    { q: "Will these roof racks fit my Hilux if it's a different generation to N80?", a: 'No — every product on this page is matched exactly to the Toyota Hilux N80 (2015–2026), 4dr Ute, Bare Roof shown above. A different generation, body style or roof type needs its own exact-fitment kit; set your vehicle again if any of those details are different.' },
+    { q: "What's the difference between a platform and a cross bar set?", a: 'Cross bars are a simple pair of load bars for general use — bike racks, roof boxes, cargo. Platforms add a full tray surface, better suited to loose or bulky gear, awnings and touring setups. Use the Platform Style priority filter to narrow by which you need.' },
+    { q: 'My Hilux has a styling bar, not a bare roof — do these still fit?', a: 'No — roof type changes the mounting system entirely. This page is scoped to Bare Roof only; use "Change Vehicle" above and re-select your roof type to see the correct styling-bar-compatible range.' },
+    { q: 'Can I get any of these professionally fitted, and does it cost extra?', a: "Yes — every kit here can be booked for fitting in-store. Fitting charges apply and are confirmed before installation; see the Gold Guarantee tab on the product page for what's covered." }
+  ],
+  'platform-trays': [
+    { q: 'What load rating do I need for a platform or tray?', a: 'Standard platforms are typically rated to 100kg, with Heavy Duty Trade builds stepping up to 150kg — check the Product Load Rating filter if you’re carrying trade tools or touring gear.' },
+    { q: 'Does a platform system include the fitting kit for my Hilux?', a: 'Yes — the vehicle-specific track or leg kit for your exact Hilux spec is included with the platform, shown under Package Items on the product page.' }
+  ],
+  'thru-bars': [
+    { q: 'Do thru bars require drilling into the roof?', a: 'No — these mount through the factory roof rails or track points already on your Hilux, so no drilling is required.' }
+  ],
+  'flush-bars': [
+    { q: 'Are flush bars compatible with roof boxes and bike racks?', a: 'Yes — the square bar profile is compatible with most standard roof accessories, including roof boxes, bike carriers and kayak mounts.' }
+  ],
+  'tub-racks': [
+    { q: 'Can a tub rack be fitted alongside a canopy or tub liner?', a: 'Most tub racks mount into existing tie-down points and clear a standard tub liner, but check the individual product’s fitting notes if you’re running a canopy.' }
+  ],
+  'lid-rollers': [
+    { q: 'Do lid rollers work with a hard tub lid or only a soft cover?', a: 'These are designed for a hard tub lid or canopy setup, making it easier to slide long, heavy items in without lifting the full weight.' }
+  ]
+};
+
 window.PLP_CONFIG = {
   categoryKey: 'roof-racks', vrs: true, defaultView: 'grid',
   vehicleLabel: 'Toyota Hilux N80, 4dr Ute, Bare Roof, 2015–2026',
@@ -641,12 +653,44 @@ window.PLP_CONFIG = {
   vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
   categoryImage: '../_shared/icons/roof-racks.png',
   shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  // Tab-driven page content (2026-09-21): heading/description/breadcrumbLabel/heroImage on
+  // each shopBy entry, plus this categoryRoot for the "Show All" state — each SHOP BY tab is
+  // its own real URL in production, so switching tabs needs to change the whole page, not just
+  // the results grid (see plpRenderCategoryContent() in plp.js). heroImage is a real product
+  // photo from within that tab's own range (never the blurry SHOP BY icon). Unlike plp/
+  // plp-camping, this page's heading/breadcrumb combine category + vehicle (a VRS category is
+  // always scoped to the vehicle first — see breadcrumbRoot/vehicleHeadingSuffix below).
+  categoryRoot: {
+    breadcrumbLabel: 'Roof Racks',
+    heading: 'Roof Racks',
+    description: 'Vehicle-specific roof rack systems — platforms, cross bars, tub racks and more — engineered to an exact fitment for your make, model, generation and roof type. Set your vehicle to see the systems built for it, or browse the full range below.',
+    heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62100-Platforms--Trays._1_23.jpg'
+  },
+  // Fixed vehicle-path segments (spec Section 3: a VRS category's breadcrumb is always the
+  // vehicle path, never a category path) — the SHOP BY tab appends after this, as the leaf.
+  breadcrumbRoot: [ { label: 'Home' }, { label: 'Vehicles' }, { label: 'Toyota' }, { label: 'Hilux' }, { label: 'Vehicles 2015-2026' }, { label: 'Vehicles 4dr Ute' }, { label: 'Bare Roof' } ],
+  vehicleHeadingSuffix: 'for Toyota Hilux 2015-2026 4dr Ute with Bare Roof',
   shopBy: [
-    { key: 'platform-trays', label: 'Platform/Trays', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">` },
-    { key: 'thru-bars', label: 'Thru Bars', icon: `<img src="../_shared/shopby-thru-bars.webp" alt="">` },
-    { key: 'flush-bars', label: 'Flush Bars', icon: `<img src="../_shared/shopby-flush-bars.webp" alt="">` },
-    { key: 'tub-racks', label: 'Tub Racks', icon: `<img src="../_shared/shopby-tub-racks.webp" alt="">` },
-    { key: 'lid-rollers', label: 'Lid/Rollers', icon: `<img src="../_shared/shopby-lid-rollers.webp" alt="">` }
+    { key: 'platform-trays', label: 'Platform/Trays', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">`,
+      heading: 'Platform/Tray Roof Racks',
+      description: 'Full aluminium platform and tray systems for tubs, boxes and bulky gear, in flat, tray or heavy-duty trade styles with track, custom-point or clamp mounting to suit your Hilux.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62100-Platforms--Trays._1_23.jpg' },
+    { key: 'thru-bars', label: 'Thru Bars', icon: `<img src="../_shared/shopby-thru-bars.webp" alt="">`,
+      heading: 'Thru Bar Roof Racks',
+      description: 'Aero-profile cross bar sets that mount through factory roof rails or track points, reducing wind noise and drag for bikes, roof boxes and general cargo.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg' },
+    { key: 'flush-bars', label: 'Flush Bars', icon: `<img src="../_shared/shopby-flush-bars.webp" alt="">`,
+      heading: 'Flush Bar Roof Racks',
+      description: 'Low-profile square bar kits that sit close to the roofline, compatible with a wide range of roof rack accessories for a clean, quiet fit.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-KRTH011T_1.jpg' },
+    { key: 'tub-racks', label: 'Tub Racks', icon: `<img src="../_shared/shopby-tub-racks.webp" alt="">`,
+      heading: 'Tub Rack Roof Racks',
+      description: 'Steel tub-mounted racks built for tools, water tanks and recovery gear, rated up to 150kg while keeping the tub usable underneath.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories._1_1.jpg' },
+    { key: 'lid-rollers', label: 'Lid/Rollers', icon: `<img src="../_shared/shopby-lid-rollers.webp" alt="">`,
+      heading: 'Lid/Roller Roof Racks',
+      description: 'Roller kits that make loading long, heavy items into the ute tub easier, suiting tub lids and canopy setups.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62111-Platforms--Trays._1.jpg' }
   ],
   products: VPLP_PRODUCTS,
   facets: {
@@ -677,7 +721,8 @@ window.PLP_CONFIG = {
     { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 15% Off Roof Racks', href: '#' },
     { image: '../_shared/promo-merch-1.png', eyebrow: 'Bundle & Save', label: 'Save 10% on Accessories when you buy a Roof Platform', href: '#' }
   ],
-  featuredProduct: VPLP_PRODUCTS.find(p => p.id === 'v4')
+  featuredProduct: VPLP_PRODUCTS.find(p => p.id === 'v4'),
+  faqByCategory: VPLP_FAQS
 };
 </script>
 </body>

@@ -108,9 +108,7 @@
      breadcrumbs than competing with the hero's other CTAs). Right-aligned, red outline not
      gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
 <div class="plp-crumbs-row wrap">
-  <div class="rrg-crumbs">
-    <a href="#">Home</a> &gt; <a href="#">Bike Racks</a> &gt; <a href="#">Attachment Style</a> &gt; <span id="plpCrumbLast">Roof Mounting</span>
-  </div>
+  <div class="rrg-crumbs" id="plpCrumbTrail"></div>
   <a href="#" class="btn btn-outline-red plp-crumbs-cta" data-vclp-cta="change-vehicle" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>
 </div>
 
@@ -153,6 +151,9 @@
         <a href="#" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
       </div>
+    </div>
+    <div class="plp-hero-media" hidden>
+      <img class="plp-hero-category-img" src="" alt="">
     </div>
   </section>
 
@@ -219,24 +220,7 @@
 
   <section class="faq-section" id="faqSection">
     <h2 class="faq-heading">Frequently Asked Questions</h2>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>How many bikes can I carry, and does it depend on my vehicle?</summary>
-        <div class="faq-answer"><p>It depends on the mounting style, not your vehicle — roof-mounted wheel-support carriers typically carry 1 bike per unit (fit multiple for more), while tow bar platform racks carry 2 to 4 bikes on one unit. Use the "How many bikes" filter to narrow the range quickly.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary>What's the difference between a hang-on and a platform bike rack?</summary>
-        <div class="faq-answer"><p>Hang-on racks support the bike by its frame; platform racks support it by the wheels on a tray. Platform racks are generally easier to load and gentler on the bike's frame, but sit further back off the vehicle.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary>Do I need roof bars already fitted to use a roof-mounted bike rack?</summary>
-        <div class="faq-answer"><p>Most roof-mounted carriers clamp onto an existing roof bar or factory roof rail — check the "Vehicle Fit Type" filter for Clamp Mount vs. Track Mount options, or use Fit My Vehicle to confirm what your roof already has.</p></div>
-      </details>
-      <details class="faq-item">
-        <summary>Can e-bikes go on any bike rack?</summary>
-        <div class="faq-answer"><p>No — e-bikes are heavier, so they need a carrier rated for the extra weight. Filter by "Bike Racks for E-Bikes" under Type of Carrier, or check the Product Load Rating filter.</p></div>
-      </details>
-    </div>
+    <div class="faq-list" id="faqList"></div>
   </section>
 
   <section style="margin:48px 0;">
@@ -605,6 +589,77 @@ const BIKE_RACK_PRODUCTS = [
   }
 ];
 
+// FAQ content, keyed per Level 2/3 tab (2026-09-21, matching plp-camping/index.html's own
+// CAMPING_FAQS convention) — clearly authored, category-appropriate Q&As, consumed by
+// plpRenderFAQ() in plp.js, re-run on every Shop By tab / icon-card change. 'all' reuses the 4
+// general FAQs this page already carried. Some Level 3 keys repeat under more than one Level 2
+// parent (e.g. "Wheel Hold" under both Roof Mounting and Hitch Mounting) — plpRenderFAQ() keys
+// off the flat tab key, so one entry below covers every parent that key appears under.
+const BIKE_RACK_FAQS = {
+  all: [
+    { q: 'How many bikes can I carry, and does it depend on my vehicle?', a: 'It depends on the mounting style, not your vehicle — roof-mounted wheel-support carriers typically carry 1 bike per unit (fit multiple for more), while tow bar platform racks carry 2 to 4 bikes on one unit. Use the "How many bikes" filter to narrow the range quickly.' },
+    { q: "What's the difference between a hang-on and a platform bike rack?", a: "Hang-on racks support the bike by its frame; platform racks support it by the wheels on a tray. Platform racks are generally easier to load and gentler on the bike's frame, but sit further back off the vehicle." },
+    { q: 'Do I need roof bars already fitted to use a roof-mounted bike rack?', a: 'Most roof-mounted carriers clamp onto an existing roof bar or factory roof rail — check the "Vehicle Fit Type" filter for Clamp Mount vs. Track Mount options, or use Fit My Vehicle to confirm what your roof already has.' },
+    { q: 'Can e-bikes go on any bike rack?', a: 'No — e-bikes are heavier, so they need a carrier rated for the extra weight. Filter by "Bike Racks for E-Bikes" under Type of Carrier, or check the Product Load Rating filter.' }
+  ],
+  'roof-mounting': [
+    { q: 'Will a roof-mounted bike rack fit my roof bars?', a: 'Most fit both aero and square roof bars via clamp mount; if your vehicle uses factory roof rails instead, look for a track-mount option in the Vehicle Fit Type filter.' },
+    { q: 'How do I load a bike onto a roof-mounted rack safely?', a: "Lift the bike onto the cradle or fork mount at roof height — a step stool helps on taller vehicles — then tighten the tool-free knob or strap until it's firmly seated before driving." }
+  ],
+  'tow-ball-mounting': [
+    { q: 'Do I need a tow bar to use a tow ball mounted bike rack?', a: 'Just a standard tow ball — no wiring or tow bar receiver needed, which makes this style an option even on vehicles without a full tow package.' },
+    { q: 'How many bikes can a tow ball mounted rack carry?', a: 'Most carry 2 to 3 bikes depending on the model, with some extending further via an add-on arm — check each product’s Max Total Weight spec before loading heavier e-bikes.' }
+  ],
+  'hitch-mounting': [
+    { q: 'What size tow bar receiver do I need for a hitch mounted rack?', a: 'These are built for a standard 50mm receiver — check the Hitch Size spec on the product page if your vehicle has a different opening.' },
+    { q: 'Can I still open my boot or tailgate with a hitch rack loaded?', a: 'Yes — every hitch-mounted rack here tilts down or folds away for full rear access without needing to unload the bikes first.' }
+  ],
+  'rear-mounting': [
+    { q: 'Will a rear-mounted bike rack scratch my paint or rear glass?', a: 'Adjustable straps and padded contact points are designed to sit clear of glass and body panels — always double-check strap placement before driving, especially on wagons and SUVs.' },
+    { q: 'Can a rear-mounted rack be used with a rear window wiper?', a: 'Check the specific product’s fitting guide — some strap layouts are designed to route clear of a rear wiper, others aren’t suited to it.' }
+  ],
+  'bike-rack-accessories': [
+    { q: 'Will an accessory or add-on fit any bike rack, or just a specific model?', a: "Fitment is model-specific — check the product title and description against your existing rack's exact model before ordering." },
+    { q: 'Can I add extra bike capacity to a rack I already own?', a: 'Some platform and hitch-mounted racks support an add-on extension arm — check this range for one matching your existing rack’s brand and model.' }
+  ],
+  'wheel-hold': [
+    { q: 'Does a wheel hold rack touch or mark the bike frame?', a: 'No — the cradle supports the bike entirely by its wheels, so the frame, paint and cabling stay untouched.' }
+  ],
+  'frame-hold': [
+    { q: 'Will a frame hold rack fit an odd-shaped or carbon frame?', a: 'The tool-free clamp knob adjusts to most frame shapes including carbon and full-suspension — check the individual product if your frame has a very unusual tube shape.' }
+  ],
+  'fork-hold': [
+    { q: 'Do I need to remove my front wheel for a fork hold rack?', a: 'Yes — the front wheel comes off and the fork mounts directly to the carrier by the thru-axle or quick-release, which is what makes this style so light and stable.' }
+  ],
+  'platform-frame-hold': [
+    { q: 'Is a platform frame hold rack heavier to lift onto the vehicle than other styles?', a: 'These mount to the tow bar or tow ball rather than being lifted overhead, so there’s no roof-height lifting involved at all.' }
+  ],
+  'frame-hanging': [
+    { q: 'Can frame hanging racks damage the bike frame over a long drive?', a: 'Padded contact arms are designed to spread the load, but a hang-on rack does bear weight through the frame — for carbon frames or long trips, a wheel-support or platform style is gentler.' }
+  ],
+  'platform-wheel-hold': [
+    { q: 'Do platform wheel hold racks work with fat tyres or e-bikes?', a: 'Most trays adjust to fit wider tyres — check the individual product’s Max Total Weight spec if you’re loading a heavier e-bike.' }
+  ],
+  'vertical-hanging': [
+    { q: 'How much space does a vertical hanging rack need behind the vehicle?', a: 'These fold flat against the vehicle when loaded, so they add relatively little to your overall length compared with a flat platform rack.' }
+  ],
+  'spare-wheel': [
+    { q: 'Will a spare wheel mounted rack fit any spare wheel size?', a: 'Mounting brackets are typically adjustable within a size range — check the individual product’s compatible spare wheel diameter before ordering.' }
+  ],
+  'rear-door-boot': [
+    { q: 'Will a rear door mounted rack fit my hatchback or SUV?', a: 'Straps adjust to suit most hatchbacks, wagons and SUVs — check the product’s vehicle compatibility notes if your rear door has an unusual shape or spoiler.' }
+  ],
+  'ute-tub': [
+    { q: 'Does a ute tub mounted rack leave the tub usable for other gear?', a: 'Yes — these mount into existing tie-down points or tracks and keep a low profile so the rest of the tub stays usable underneath.' }
+  ],
+  'roof-rack': [
+    { q: 'Do I need an existing roof rack to use this accessory?', a: 'Yes — these accessories mount to an existing roof rack or bar set rather than standing alone.' }
+  ],
+  '50mm-hitch': [
+    { q: 'Will a 50mm hitch accessory fit any hitch-mounted bike rack?', a: 'Fitment is brand and model specific — check it against your existing rack before ordering.' }
+  ]
+};
+
 window.PLP_CONFIG = {
   categoryKey: 'bike-racks',
   vrs: false,
@@ -616,6 +671,19 @@ window.PLP_CONFIG = {
   vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
   categoryImage: '../_shared/icons/bike-racks.png',
   shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  // Tab-driven page content (2026-09-21): heading/description/breadcrumbLabel/heroImage on
+  // each shopBy/children entry, plus this categoryRoot for the "Show All" state — each SHOP BY
+  // tab is its own real URL in production, so switching tabs needs to change the whole page,
+  // not just the results grid (see plpRenderCategoryContent() in plp.js). heroImage is a real
+  // product photo from within that tab's own range (never the blurry SHOP BY icon).
+  categoryRoot: {
+    breadcrumbLabel: 'Bike Racks',
+    heading: 'Bike Racks',
+    description: 'Roof, tow bar, rear hatch and ute tub bike carriers for every vehicle — carry 1 to 4 bikes securely with clamp-mount, custom-point or track-mounted systems from Rhino-Rack, Thule, Yakima and ROLA. Set your vehicle for fitment-specific recommendations, or browse the full range below.',
+    heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg'
+  },
+  breadcrumbRoot: [ { label: 'Home' } ],
+  vehicleHeadingSuffix: 'for your Toyota Hilux',
   // Level 2 + 3, real, scraped live from roofracksgalore.com.au/bike-racks (2026-09-19).
   // Level 2 (5, not the 4 originally in this file — "Ute Tub Mount" isn't a real Level 2 at
   // all, and Hitch Mounting / Bike Rack Accessories were missing) came from the
@@ -632,40 +700,106 @@ window.PLP_CONFIG = {
   // is redundant with clearing the Level 3 selection, Hot Deals isn't a category).
   shopBy: [
     { key: 'roof-mounting', label: 'Roof Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1742.webp" alt="Roof Mounting Icon">`,
+      heading: 'Roof Mounted Bike Racks',
+      description: 'Clamp, custom-point or track-mount carriers that sit on your existing roof bars — the most common style, carrying 1 bike per unit with the option to fit several side by side.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg',
       children: [
-        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">` },
-        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">` },
-        { key: 'fork-hold', label: 'Fork Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32603.webp" alt="Fork Hold Icon">` }
+        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">`,
+          heading: 'Wheel Hold Bike Racks',
+          description: 'Wheel-support cradles carry the bike by its wheels rather than the frame, keeping paint and cables untouched and making loading and unloading straightforward.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg' },
+        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">`,
+          heading: 'Frame Hold Bike Racks',
+          description: 'Frame-holder arms secure the bike by the down tube with a single tool-free knob, fitting most frame shapes including carbon and full-suspension.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598001-bike-rack-roof-mount.jpg' },
+        { key: 'fork-hold', label: 'Fork Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32603.webp" alt="Fork Hold Icon">`,
+          heading: 'Fork Hold Bike Racks',
+          description: 'Thru-axle and fork-mount carriers hold the bike by the front axle instead of the frame, for a lightweight, rock-solid ride with no frame contact.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-61018-Platforms--Trays---Accessories._1.jpg' }
       ]
     },
     { key: 'tow-ball-mounting', label: 'Tow Ball Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1829.webp" alt="Tow Ball Mounting Icon">`,
+      heading: 'Tow Ball Mounted Bike Racks',
+      description: 'Hang-on and platform carriers that mount straight to your tow ball, no tow bar receiver or roof access needed — ideal for vehicles without factory roof rails.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg',
       children: [
-        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">` },
-        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">` }
+        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">`,
+          heading: 'Platform Frame Hold Bike Racks',
+          description: 'Folding platform carriers cradle each bike by the wheels and tilt down for full boot access without unloading — no frame contact, easy on-off.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-Easyfold-3-2-Bike-Carrier-944100-1_1.jpg' },
+        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">`,
+          heading: 'Frame Hanging Bike Racks',
+          description: 'Hang-on arms carry bikes straight off the tow ball by their frame, folding flat against the vehicle when not loaded.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg' }
       ]
     },
     { key: 'hitch-mounting', label: 'Hitch Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1830.webp" alt="Hitch Mounting Icon">`,
+      heading: 'Hitch Mounted Bike Racks',
+      description: 'Platform and hang-on carriers built for a 50mm tow bar receiver, tool-free to fit and rated up to 80kg total for e-bikes and family loads.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg',
       children: [
-        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">` },
-        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">` },
-        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">` },
-        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">` },
-        { key: 'platform-wheel-hold', label: 'Platform Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32618.webp" alt="Platform Wheel Hold Icon">` },
-        { key: 'vertical-hanging', label: 'Vertical Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/33605.webp" alt="Vertical Hanging Icon">` }
+        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">`,
+          heading: 'Wheel Hold Bike Racks',
+          description: 'Wheel-support platforms cradle each bike by the wheels rather than the frame, for a scratch-free ride straight off the tow bar.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
+        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">`,
+          heading: 'Frame Hold Bike Racks',
+          description: 'Frame-holder arms secure each bike by the down tube on a tow-bar-mounted platform, fitting most frame shapes without frame contact.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
+        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">`,
+          heading: 'Platform Frame Hold Bike Racks',
+          description: 'Folds up one-handed for boot access and carries each bike on its own platform arm, up to 68kg combined across two bikes.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-easyfold-xt-2-bike-hitch-mounted-carrier-903202.jpg' },
+        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">`,
+          heading: 'Frame Hanging Bike Racks',
+          description: 'Hang-on tow-bar carriers hold bikes by the frame and fold away flat against the vehicle when empty.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
+        { key: 'platform-wheel-hold', label: 'Platform Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32618.webp" alt="Platform Wheel Hold Icon">`,
+          heading: 'Platform Wheel Hold Bike Racks',
+          description: 'Platform arms cradle each bike by the wheels for a scratch-free ride, with tool-free hitch mounting and foldable arms for compact storage.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/c/r/cruz-kicker-2-bike-hitch-mounted-platform-rack-940-584-a51b92f7dd97.jpg' },
+        { key: 'vertical-hanging', label: 'Vertical Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/33605.webp" alt="Vertical Hanging Icon">`,
+          heading: 'Vertical Hanging Bike Racks',
+          description: 'Vertical hang carriers stack multiple bikes upright off a single tow bar mount, folding flat against the vehicle when not loaded.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/6/f672e9e642cbef771939567e8e6c39d3_N3Y9GB_1.jpg' }
       ]
     },
     { key: 'rear-mounting', label: 'Rear Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1831.webp" alt="Rear Mounting Icon">`,
+      heading: 'Rear Mounted Bike Racks',
+      description: 'Carriers that hang straight off the rear door, boot or spare wheel — no roof access or tow ball required, with straps that adjust to fit wagons, SUVs and 4WDs.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg',
       children: [
-        { key: 'spare-wheel', label: 'Spare Wheel', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32609.webp" alt="Spare Wheel Icon">` },
-        { key: 'rear-door-boot', label: 'Rear Door/Boot', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32610.webp" alt="Rear Door/Boot Icon">` },
-        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">` }
+        { key: 'spare-wheel', label: 'Spare Wheel', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32609.webp" alt="Spare Wheel Icon">`,
+          heading: 'Spare Wheel Bike Racks',
+          description: 'Mounts straight to a rear-mounted spare wheel, keeping the tow ball and roof free for other gear.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg' },
+        { key: 'rear-door-boot', label: 'Rear Door/Boot', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32610.webp" alt="Rear Door/Boot Icon">`,
+          heading: 'Rear Door / Boot Bike Racks',
+          description: 'Hangs directly off the rear door or boot with adjustable straps, folding compact for storage when not carrying bikes.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg' },
+        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">`,
+          heading: 'Ute Tub Bike Racks',
+          description: 'Mounts straight into ute tub tie-down points or tracks, keeping the tub usable for other cargo underneath.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/-/R-PBR-01_1_FVS4GK_1.jpg' }
       ]
     },
     { key: 'bike-rack-accessories', label: 'Bike Rack Accessories', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/126.webp" alt="Bike Rack Accessories Icon">`,
+      heading: 'Bike Rack Accessories',
+      description: 'Add-on extensions, spare parts and mounting accessories to extend or maintain your existing bike rack — from extra-bike add-ons to replacement fittings.',
+      heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/o/Rocky-Mounts-10941-Bike-Rack---Roof-Mount._1.jpg',
       children: [
-        { key: 'roof-rack', label: 'Roof Rack', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32589.webp" alt="Roof Rack Icon">` },
-        { key: '50mm-hitch', label: '50mm Hitch', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32615.webp" alt="50mm Hitch Icon">` },
-        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">` }
+        { key: 'roof-rack', label: 'Roof Rack', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32589.webp" alt="Roof Rack Icon">`,
+          heading: 'Roof Rack Accessories',
+          description: 'Accessories and add-on carriers built to mount to an existing roof rack setup.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/o/Rocky-Mounts-10941-Bike-Rack---Roof-Mount._1.jpg' },
+        { key: '50mm-hitch', label: '50mm Hitch', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32615.webp" alt="50mm Hitch Icon">`,
+          heading: '50mm Hitch Accessories',
+          description: 'Add-on extensions and fittings for a 50mm tow bar receiver, built to extend an existing hitch-mounted rack to carry more bikes.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
+        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">`,
+          heading: 'Ute Tub Accessories',
+          description: 'Mounting accessories for a ute tub bike carrier setup, fitting into existing tie-down points or tracks.',
+          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/h/o/hotrod_CZADGW_1.jpg' }
       ]
     }
   ],
@@ -697,22 +831,10 @@ window.PLP_CONFIG = {
     { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 20% Off Bike Racks', href: '#' },
     { image: '../_shared/promo-merch-1.png', eyebrow: 'Bundle & Save', label: 'Save 10% on Bike Racks when you buy a Roof Platform', href: '#' }
   ],
-  featuredProduct: BIKE_RACK_PRODUCTS.find(p => p.id === 'p4')
+  featuredProduct: BIKE_RACK_PRODUCTS.find(p => p.id === 'p4'),
+  faqByCategory: BIKE_RACK_FAQS
 };
 
-// Breadcrumb's last segment reflects the active SHOP BY tile (real build: a distinct URL
-// per tile carries its own breadcrumb; this demo keeps the one crumb element in sync
-// in-page instead).
-document.addEventListener('DOMContentLoaded', () => {
-  const crumbLabels = { all: 'Bike Racks', 'roof-mounting': 'Roof Mounting', 'tow-ball-mounting': 'Tow Ball Mounting', 'hitch-mounting': 'Hitch Mounting', 'rear-mounting': 'Rear Mounting', 'bike-rack-accessories': 'Bike Rack Accessories' };
-  const observer = new MutationObserver(() => {
-    const active = document.querySelector('.plp-shopby-tile.active');
-    const key = active ? active.dataset.shopby : 'all';
-    document.getElementById('plpCrumbLast').textContent = crumbLabels[key] || 'Roof Mounting';
-  });
-  const track = document.getElementById('plpShopByTrack');
-  if (track) observer.observe(track, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
-});
 </script>
 </body>
 </html>
