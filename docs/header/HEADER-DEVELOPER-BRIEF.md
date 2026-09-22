@@ -78,10 +78,10 @@ The "off" state isn't a separate designed component — it's the same link, same
 - **Logo** — links home (`index.html` in this prototype; a real Magento URL at integration time). Same logo asset and link behaviour reused as the mobile takeover's own logo (Section 4.6).
 - **"Products"** — opens the mega menu (Section 4.3) on desktop. **Hidden entirely below 900px** (`display:none`) — on mobile, the category list is the takeover's own root screen, not a separate tappable item (see Section 4.6's note on why).
 - **Store Finder / Fit My Vehicle / Catalogue / Services** — plain links, `href="#"`, real URLs pending (Section 6). Stay as flat links on desktop; render again inside the mobile takeover's root screen, below the categories (Section 4.6) — not duplicated in the main header on mobile, since the header itself is reduced to hamburger/logo/cart there.
-- **Search bar** — visual only, no real search wired up. Has a clear button that appears once text is entered.
+- **Search bar** — has a clear button that appears once text is entered, plus a typeahead/focus-state dropdown (Section 4.9) — mostly cosmetic, but its "View All Results" link is real navigation.
 - **Cart icon** — visual only, static `0` badge.
 
-**Click actions:** logo → home. "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it.
+**Click actions:** logo → home. "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
 
 ---
 
@@ -198,7 +198,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Screen 1 — Level 0 (root):**
 - Own mini header: logo (links home), account (Graham/Log In), vehicle (Your Vehicle: .../Select Your Vehicle) — same session-state toggles as the Utility Bar (Section 4.1), a close button.
-- Search bar (visual only, same as desktop's).
+- Search bar (same typeahead/focus-state dropdown as desktop's — Section 4.9).
 - Sale banner (Section 4.5).
 - The 8 categories, Brands styled as a yellow bar (same treatment as desktop).
 - The 4 plain nav links (Store Finder etc.) below the categories, in their own section.
@@ -254,6 +254,33 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 ---
 
+### 4.9 Search Typeahead / Recent & Trending Searches
+
+**Name:** Header Search Typeahead
+
+**Location:** a dropdown panel anchored below the search input — desktop's Main Header search bar (4.2) and the mobile takeover's own search bar (4.6, Level 0). Added 2026-09-22, well after the rest of this brief was written — Section 6 used to flag search as "visual only, no real search wired up"; that's now only partly true (see below).
+
+**Purpose:** demonstrates the interaction a real predictive search box would have, without any real search/relevance logic behind it — added at Brenton's request specifically to make the search box feel alive in reviews, not just a static input with a clear button.
+
+**Contents/behaviour — two states, depending on the input:**
+- **Focused, empty** — a "Recent Searches" section (canned list, not real per-browser history/localStorage — same cosmetic-demo treatment as the rest of this dropdown) with a "Clear" action that hides that section for the rest of the page view only (not persisted; resets on reload), then "Trending Searches" and "Popular Categories," all as pill-style chip rows. Every term/category here was checked against the live site's real product catalogue before being used (2026-09-22 correction, after an internal review caught invented terms — see the note below) — don't add a new one without the same check.
+- **1+ characters typed** — swaps entirely to a "Popular Products" list: 5-6 real catalogue products (name/price/thumbnail), rotating through a few canned batches as more characters are typed so the list visibly "changes." **Doesn't match what's actually typed** — this is deliberately cosmetic, not real search relevance.
+- **"View All Results" link**, at the bottom of the product list — **the one part of this dropdown that is real navigation**, not cosmetic: it links to the search-results page (`SEARCH-RESULTS-DEVELOPER-BRIEF.md`) with the typed query carried through via `?q=`, which that page's engine reads and actually filters against.
+- Recent/Trending chips and Popular Category chips are also real links — the search terms go to the same search-results page (`?q=<term>`), the categories go to their real category page.
+
+**Why the dropdown isn't a child of `.rrg-search`:** that box has `overflow:hidden` (needed to clip the search button's rounded pill corners), which would clip the dropdown too. It's appended to `<body>` instead, `position:fixed`, with its position computed from the search box's own bounding rect in JS.
+
+**Implementation note:** lives entirely in `shared.js` (`initHeaderSearchSuggest()`) — duplicated into `header-standalone.js` for this isolated prototype rather than shared via a new script tag, matching how this prototype already duplicates `initSearchClear()`/`initPersistentBar()` rather than depending on shared.js.
+
+**A note on the demo content itself:** the first pass at Trending Searches named products RRG doesn't actually sell (snorkels, dual battery kits) or mislabeled ones it does (camping fridges — the real category is fridge slides/accessories, not the fridge itself) — caught by the client's team reviewing literally, fixed by crawling the live site's real category nav before choosing terms. Worth remembering for anyone extending this list later.
+
+**Screenshots:**
+- Focus state (Recent/Trending Searches + Popular Categories), desktop: ![Search focus state](header-dev-brief-assets/search-focus-state.png)
+- Typing state (Popular Products + View All Results), desktop: ![Search typeahead](header-dev-brief-assets/search-typeahead.png)
+- Focus state, mobile takeover: ![Search focus state, mobile](header-dev-brief-assets/search-mobile-focus.png)
+
+---
+
 ## 5. Interactions quick reference
 
 Every hover effect and click action from Sections 4.1–4.8, gathered in one place.
@@ -282,6 +309,10 @@ Every hover effect and click action from Sections 4.1–4.8, gathered in one pla
 | Region Selector | See `DEVELOPER-BRIEF.md` 4.1 |
 | Site Admin FAB | Opens/closes the admin panel |
 | Any Site Admin toggle | Immediately applies (no save button) and persists across reloads until changed again |
+| Search box, focused + empty | Shows Recent/Trending Searches + Popular Categories (Section 4.9) |
+| Search box, 1+ characters typed | Shows a rotating Popular Products list (Section 4.9) |
+| Search dropdown's "Clear" (Recent Searches) | Hides that section for this page view only, not persisted |
+| Search dropdown's "View All Results" / any chip | Real navigation to the search-results page (or category page, for a Popular Category chip) — Section 4.9 |
 
 ---
 
@@ -293,7 +324,7 @@ Every hover effect and click action from Sections 4.1–4.8, gathered in one pla
 - **Brands' Vehicle Makes column** (~70 entries) still scrolls even across 2 sub-columns — there's no way to fit that many rows in the drawer's fixed height without either more columns, smaller type, or accepting the scroll. Undecided.
 - **Mobile Level 2's secondary dropdown row** (shows the current grouping's name with a chevron) is decorative only — tapping it does nothing yet. May be intended as a same-level jump between sibling groupings without backing out a full screen; unconfirmed.
 - **Mobile mini header's vehicle text wraps to 2 lines** at common phone widths when a vehicle is set — a content-length issue (the "off" state's shorter text fits on one line), not fixed yet.
-- **Search is visual only** on both desktop and mobile — no real search wired up.
+- **Search is mostly still cosmetic** (Section 4.9) — the product-suggestions dropdown and Recent/Trending Searches don't reflect real relevance/history, only "View All Results" and the chip links are genuine navigation. No real search/autocomplete backend is wired up.
 - **Cart is visual only** — static `0` badge, no real cart logic.
 
 ---
