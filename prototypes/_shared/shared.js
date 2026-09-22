@@ -2372,6 +2372,91 @@ function initMobileNav() {
   });
 }
 
+// Header search typeahead demo (Brenton, 2026-09-22) — purely visual: as soon as 1+
+// characters are typed into the header search box, shows a short list of real catalogue
+// products underneath, to demonstrate the interaction without any real search logic behind
+// it (doesn't match the typed text, doesn't link anywhere, never reaches the search-results
+// page). Batches reuse real scraped name/price/image data already used elsewhere (the
+// search-results and plp-camping product datasets) rather than invented placeholders, and
+// rotate by how many characters have been typed so the list visibly "changes" as you keep
+// typing — a deliberate cosmetic effect, not real relevance matching.
+const HEADER_SEARCH_SUGGEST_BATCHES = [
+  [
+    { name: 'Rhino Rack 62112 Pioneer Platform (1500mm x 1240mm)', price: '$1,750.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62112-Platforms--Trays._1.jpg' },
+    { name: 'Rhino Rack Vortex 2 Bar Cross Bar Set', price: '$389.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg' },
+    { name: 'Front Runner Slimline II Flush Bar Kit', price: '$409.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-KRTH011T_1.jpg' },
+    { name: 'Front Runner Slimsport Roof Rack Kit', price: '$169.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/F/r/Front-Runner-KSTH005T_1.jpg' },
+    { name: 'Thule SmartRack XT Silver 2 Bar Roof Rack', price: '$379.95', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-730402-Roof-Rack---Bars--Legs._1_269.jpg' },
+    { name: 'Thule SquareBar Evo Black 2 Bar Roof Rack', price: '$100.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/6/7/67f3ebae007f4dc440e6d7c9c380b13c0a05a4cdb52799f3c4089349d9f0cac0_7UE16W_1.jpg' },
+  ],
+  [
+    { name: 'Thule FreeRide 532 Silver Roof Mounted Bike Carrier x1', price: '$218.45', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg' },
+    { name: 'Rhino-Rack Hang-On 2 Bike Tow Ball Carrier', price: '$349.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg' },
+    { name: 'Yakima FrontLoader Roof Wheel-Support Carrier', price: '$259.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/y/a/yakima-frontloader-black-roof-mounted-bike-carrier-x-1-8002104.jpg' },
+    { name: 'Front Runner Bike Mount / Motus Black', price: '$349.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-bike-mount-motus-black-rrac371.jpg' },
+    { name: 'ROLA Vertical Bike Rack — 5 Bike Carrier', price: '$949.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/9/4/944fad617fe3cd096ec8e57f6739b9be_G266QQ_1.jpg' },
+    { name: 'Thule ProRide 598 Silver Roof Mounted Bike Carrier', price: '$329.00', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598001-bike-rack-roof-mount.jpg' },
+  ],
+  [
+    { name: 'Yakima RoadShower MD 26L', price: '$411.50', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8004110-Camping._1_1.webp' },
+    { name: 'Darche Ranger Solo + Swag', price: '$299.00', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/d/a/darche-ranger-solo-050801183r.webp' },
+    { name: 'MSA Half Pack Cargo Bag', price: '$239.00', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/M/S/MSA-HP1.4-Roof-Top-Bags._1_1.webp' },
+    { name: 'Darche ECO Bamboo Dinner Set 12Pc', price: '$48.70', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/D/a/Darche-T050802930-Camping._1.webp' },
+    { name: 'Stedi FX3300 LED Torch', price: '$149.00', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/S/t/Stedi-TORCH-FX3300-Lighting._1.webp' },
+    { name: 'EcoXGear EcoExtreme 2 Grey', price: '$109.95', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/e/c/ecoxgear-ecoextreme-2-grey-gdi-ex3w210.webp' },
+  ],
+];
+
+function headerSearchSuggestRowsHTML(query) {
+  const batch = HEADER_SEARCH_SUGGEST_BATCHES[Math.floor(query.length / 2) % HEADER_SEARCH_SUGGEST_BATCHES.length];
+  return `
+    <div class="rrg-search-suggest-label">Popular Products</div>
+    ${batch.map(p => `
+      <div class="rrg-search-suggest-row">
+        <img src="${p.image}" alt="" loading="lazy">
+        <span class="rrg-search-suggest-name">${p.name}</span>
+        <span class="rrg-search-suggest-price">${p.price}</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+// Wires up every header search box on the page (.rrg-search on desktop, .mm-mobile-search in
+// the mobile full-screen takeover) — same visual-only dropdown behaviour on both. The panel is
+// appended to <body> and position:fixed (not a child of .rrg-search) because that box's
+// overflow:hidden would otherwise clip it — see the CSS comment in shared.css. Each search box
+// gets its own panel/state since desktop and mobile are two independent inputs.
+function initHeaderSearchSuggest() {
+  document.querySelectorAll('.rrg-search, .mm-mobile-search').forEach(wrap => {
+    const input = wrap.querySelector('input');
+    if (!input) return;
+    const panel = document.createElement('div');
+    panel.className = 'rrg-search-suggest';
+    panel.hidden = true;
+    document.body.appendChild(panel);
+    const position = () => {
+      const r = wrap.getBoundingClientRect();
+      panel.style.top = `${r.bottom + 4}px`;
+      panel.style.left = `${r.left}px`;
+      panel.style.width = `${r.width}px`;
+    };
+    const hide = () => { panel.hidden = true; };
+    const sync = () => {
+      const query = input.value.trim();
+      if (!query) { hide(); return; }
+      panel.innerHTML = headerSearchSuggestRowsHTML(query);
+      position();
+      panel.hidden = false;
+    };
+    input.addEventListener('input', sync);
+    input.addEventListener('focus', sync);
+    input.addEventListener('blur', () => setTimeout(hide, 150));
+    input.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
+    window.addEventListener('resize', () => { if (!panel.hidden) position(); });
+    window.addEventListener('scroll', () => { if (!panel.hidden) position(); }, true);
+  });
+}
+
 // Search clear (x) button (2026-09-11, matched to client-supplied Figma export) — shown
 // only once the input has a value, clears + refocuses + hides itself on click. Generic
 // over every .rrg-search on the page (there's exactly one per template today, but this
@@ -2408,6 +2493,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initReviewSummary();
   initMobileNav();
   initSearchClear();
+  initHeaderSearchSuggest();
   // Sticky condensed mobile header (2026-09-11) — reuses the same sentinel/.visible
   // mechanism already built for the desktop persistent decision bar: shows
   // .rrg-sticky-header once .rrg-search (the top-of-page search row) scrolls out of

@@ -133,6 +133,18 @@ button{font-family:inherit;cursor:pointer;}
    stretches the button to match the flex line's actual cross-size instead. */
 .rrg-search-btn{background:var(--rrg-red);border:none;color:#fff;padding:0 16px;align-self:stretch;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;}
 .rrg-search-btn svg{width:16px;height:16px;flex:0 0 auto;}
+/* Header search typeahead demo (initHeaderSearchSuggest() in shared.js) — position:fixed with
+   top/left/width set in JS from the search box's own bounding rect, not position:absolute
+   inside .rrg-search, because that box's overflow:hidden (needed to clip the pill's rounded
+   corners around the red search button) would otherwise clip this dropdown too. z-index:300
+   clears the mobile full-screen takeover (200) since the mobile search box lives inside it. */
+.rrg-search-suggest{position:fixed;background:#fff;border:1px solid var(--rrg-line);border-radius:6px;box-shadow:0 10px 28px rgba(0,0,0,.16);z-index:300;overflow:hidden;}
+.rrg-search-suggest-label{padding:8px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:#888;border-bottom:1px solid var(--rrg-line);background:var(--rrg-bg);}
+.rrg-search-suggest-row{display:flex;align-items:center;gap:12px;padding:8px 14px;border-bottom:1px solid var(--rrg-line);}
+.rrg-search-suggest-row:last-child{border-bottom:none;}
+.rrg-search-suggest-row img{width:38px;height:38px;object-fit:contain;flex:0 0 auto;}
+.rrg-search-suggest-name{flex:1;font-size:13px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.rrg-search-suggest-price{font-weight:700;font-size:13px;white-space:nowrap;flex:0 0 auto;}
 .rrg-cart{position:relative;flex:0 0 auto;color:var(--rrg-black);cursor:pointer;}
 .rrg-cart svg{width:24px;height:24px;}
 .cart-badge{position:absolute;top:-6px;right:-8px;background:var(--rrg-red);color:#fff;font-size:10px;font-weight:900;border-radius:999px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}

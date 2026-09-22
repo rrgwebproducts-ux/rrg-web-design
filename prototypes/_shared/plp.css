@@ -530,5 +530,15 @@
 .plp-search-empty-cat:hover{background:var(--rrg-bg);}
 .plp-search-empty-cat img{width:48px;height:48px;object-fit:contain;}
 .plp-search-empty-cat span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;}
-.plp-search-empty-featured{display:flex;gap:16px;overflow-x:auto;padding:4px 4px 14px;text-align:left;}
-.plp-search-empty-featured .plp-card{flex:0 0 220px;}
+/* Carries .plp-results.is-grid itself (see plpZeroResultsHTML() in plp.js) so these cards
+   inherit the real grid-card styling verbatim — aspect-ratio media, cover-cropped photo,
+   centered body/rating/price — rather than a second hand-rolled copy of it. Below 901px this
+   stays is-grid's own auto-fill grid (untouched). At 901px+, overridden to a non-wrapping
+   horizontal-scroll carousel sized to exactly 3 cards per view (Brenton, 2026-09-22 — a
+   same-width grid instead wrapped the 4th "you might like" card onto a second row, which reads
+   as broken, not as a carousel). */
+.plp-search-empty-featured{padding:4px 0 14px;text-align:left;}
+@media (min-width:901px){
+  .plp-search-empty-featured.is-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;}
+  .plp-search-empty-featured.is-grid .plp-card{flex:0 0 calc((100% - 2*18px)/3);}
+}

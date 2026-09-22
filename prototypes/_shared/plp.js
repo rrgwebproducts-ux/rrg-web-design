@@ -234,13 +234,18 @@ function plpRenderShopBy() {
 
 // Level 3 icon card — reuses .plp-shopby-icon/.plp-shopby-label so the icon renders at the
 // same size as the Level 2 tabs (spec: "explicitly not shrunk"), inside a .plp-icon-card
-// wrapper sized like a product card instead of a tab.
-function plpIconCardHTML(child) {
+// wrapper sized like a product card instead of a tab. `count` is only passed on the search
+// page (see call site below) — on plain PLP/plp-camping this is pure category navigation with
+// a fixed catalogue, so a result count doesn't apply there; on search it's filtering a
+// query-matched pool, same as the tabs above it and the sidebar's Category facet, so it gets
+// the same "(N)" treatment for consistency (Brenton, 2026-09-22).
+function plpIconCardHTML(child, count) {
   const active = plpState.activeSubsubcat === child.key ? ' active' : '';
+  const countStr = count === undefined ? '' : ` (${count})`;
   return `
     <button type="button" class="plp-icon-card${active}" data-subsubcat="${child.key}">
       <span class="plp-shopby-icon">${child.icon}</span>
-      <span class="plp-shopby-label">${child.label}</span>
+      <span class="plp-shopby-label">${child.label}${countStr}</span>
     </button>
   `;
 }
@@ -347,7 +352,7 @@ function plpZeroResultsHTML() {
       ` : ''}
       ${featured.length ? `
         <h3 class="plp-search-empty-subheading">You Might Like</h3>
-        <div class="plp-search-empty-featured">${featured.map(p => plpCardHTML(p, cfg)).join('')}</div>
+        <div class="plp-search-empty-featured plp-results is-grid">${featured.map(p => plpCardHTML(p, cfg)).join('')}</div>
       ` : ''}
     </div>
   `;
@@ -821,7 +826,10 @@ function plpRenderResults() {
       wrap.parentElement.insertBefore(level3Row, wrap);
     }
     level3Row.hidden = false;
-    level3Row.innerHTML = activeTile.children.map(plpIconCardHTML).join('');
+    level3Row.innerHTML = activeTile.children.map(child => {
+      const count = cfg.isSearch ? cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, child.key)).length : undefined;
+      return plpIconCardHTML(child, count);
+    }).join('');
   } else if (level3Row) {
     level3Row.hidden = true;
     level3Row.innerHTML = '';
