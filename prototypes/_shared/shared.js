@@ -2417,8 +2417,13 @@ const HEADER_SEARCH_SUGGEST_BATCHES = [
 // analytics behind it. Popular Categories reuses the exact same three real destination pages
 // (vplp/plp/plp-camping) as the zero-results state's popular-category links, so it's one
 // consistent set of "real" category destinations across the whole site rather than two.
+// Every term below was checked against the live site's real category nav (roofracksgalore.com.au,
+// 2026-09-22) after Brenton's team flagged the first pass as inventing products they don't sell
+// (snorkels, dual battery kits — real category is "Battery Management" — and camping fridges
+// themselves, when the real category is "Fridge Slides"/"Fridge Accessories", not the fridge).
+// Don't add a term here without checking it's a real category first.
 const HEADER_SEARCH_RECENT = ['Roof Rack for Hilux', 'Bike Rack', 'Thule Bars'];
-const HEADER_SEARCH_TRENDING = ['Snorkels', 'Awnings', 'Camping Fridges', 'Dual Battery Kits'];
+const HEADER_SEARCH_TRENDING = ['Roof Top Tents', 'Awnings', 'Fridge Slides', 'Recovery Gear'];
 const HEADER_SEARCH_POPULAR_CATEGORIES = [
   { label: 'Roof Racks', href: '../vplp/index.html' },
   { label: 'Bike Racks', href: '../plp/index.html' },

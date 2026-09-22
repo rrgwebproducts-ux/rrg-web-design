@@ -170,8 +170,9 @@ const HEADER_SEARCH_SUGGEST_BATCHES = [
 // Focus-state content (recent/trending searches + popular categories) — see shared.js's copy
 // of this and headerSearchFocusHTML() for full rationale (this file duplicates it rather than
 // sharing, same as the rest of this prototype's search code).
+// See shared.js's copy for why these are checked against the live site's real categories.
 const HEADER_SEARCH_RECENT = ['Roof Rack for Hilux', 'Bike Rack', 'Thule Bars'];
-const HEADER_SEARCH_TRENDING = ['Snorkels', 'Awnings', 'Camping Fridges', 'Dual Battery Kits'];
+const HEADER_SEARCH_TRENDING = ['Roof Top Tents', 'Awnings', 'Fridge Slides', 'Recovery Gear'];
 const HEADER_SEARCH_POPULAR_CATEGORIES = [
   { label: 'Roof Racks', href: '../vplp/index.html' },
   { label: 'Bike Racks', href: '../plp/index.html' },
