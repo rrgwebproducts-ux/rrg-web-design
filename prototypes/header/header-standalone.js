@@ -169,6 +169,10 @@ const HEADER_SEARCH_SUGGEST_BATCHES = [
 
 function headerSearchSuggestRowsHTML(query) {
   const batch = HEADER_SEARCH_SUGGEST_BATCHES[Math.floor(query.length / 2) % HEADER_SEARCH_SUGGEST_BATCHES.length];
+  // Resolved against the current page's own URL — see shared.js's copy of this function for
+  // full rationale (this file duplicates it rather than sharing, same as the rest of this
+  // prototype's search code).
+  const viewAllUrl = new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
   return `
     <div class="rrg-search-suggest-label">Popular Products</div>
     ${batch.map(p => `
@@ -178,6 +182,7 @@ function headerSearchSuggestRowsHTML(query) {
         <span class="rrg-search-suggest-price">${p.price}</span>
       </div>
     `).join('')}
+    <a class="rrg-search-suggest-viewall" href="${viewAllUrl}">View All Results</a>
   `;
 }
 

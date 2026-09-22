@@ -1396,7 +1396,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
   plpState.heroImageMode = 'vehicle';
-  if (window.PLP_CONFIG.isSearch) plpState.searchQuery = window.PLP_CONFIG.initialQuery || '';
+  // ?q= (set by the header search dropdown's "View All Results" link, 2026-09-22) takes
+  // priority over the page's own demo default so a real typed query actually lands here.
+  if (window.PLP_CONFIG.isSearch) {
+    const urlQuery = new URLSearchParams(window.location.search).get('q');
+    plpState.searchQuery = (urlQuery !== null ? urlQuery : window.PLP_CONFIG.initialQuery) || '';
+  }
   plpRenderShopBy();
   if (window.PLP_CONFIG.isSearch) { plpInitSearchBar(); plpRenderSearchTabs(); }
   plpRenderFilters();

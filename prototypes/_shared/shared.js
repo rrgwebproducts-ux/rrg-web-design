@@ -2409,6 +2409,13 @@ const HEADER_SEARCH_SUGGEST_BATCHES = [
 
 function headerSearchSuggestRowsHTML(query) {
   const batch = HEADER_SEARCH_SUGGEST_BATCHES[Math.floor(query.length / 2) % HEADER_SEARCH_SUGGEST_BATCHES.length];
+  // Resolved against the current page's own URL (not a hardcoded "../search-results/..."
+  // string) so this works unchanged from every template regardless of folder depth. Every
+  // template today lives at prototypes/<name>/index.html, one level below prototypes/search-
+  // results/, but this doesn't hardcode that assumption. The query is carried over for real —
+  // search-results/index.html reads it back out (see plp.js's DOMContentLoaded init) — so
+  // "View All Results" is the one part of this dropdown that isn't purely cosmetic.
+  const viewAllUrl = new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
   return `
     <div class="rrg-search-suggest-label">Popular Products</div>
     ${batch.map(p => `
@@ -2418,6 +2425,7 @@ function headerSearchSuggestRowsHTML(query) {
         <span class="rrg-search-suggest-price">${p.price}</span>
       </div>
     `).join('')}
+    <a class="rrg-search-suggest-viewall" href="${viewAllUrl}">View All Results</a>
   `;
 }
 

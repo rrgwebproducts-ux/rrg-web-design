@@ -145,6 +145,8 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-search-suggest-row img{width:38px;height:38px;object-fit:contain;flex:0 0 auto;}
 .rrg-search-suggest-name{flex:1;font-size:13px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .rrg-search-suggest-price{font-weight:700;font-size:13px;white-space:nowrap;flex:0 0 auto;}
+.rrg-search-suggest-viewall{display:block;text-align:center;padding:11px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--rrg-red);text-decoration:none;background:var(--rrg-bg);}
+.rrg-search-suggest-viewall:hover{text-decoration:underline;}
 .rrg-cart{position:relative;flex:0 0 auto;color:var(--rrg-black);cursor:pointer;}
 .rrg-cart svg{width:24px;height:24px;}
 .cart-badge{position:absolute;top:-6px;right:-8px;background:var(--rrg-red);color:#fff;font-size:10px;font-weight:900;border-radius:999px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}
