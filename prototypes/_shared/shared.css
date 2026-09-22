@@ -147,6 +147,17 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-search-suggest-price{font-weight:700;font-size:13px;white-space:nowrap;flex:0 0 auto;}
 .rrg-search-suggest-viewall{display:block;text-align:center;padding:11px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--rrg-red);text-decoration:none;background:var(--rrg-bg);}
 .rrg-search-suggest-viewall:hover{text-decoration:underline;}
+/* Focus-state sections (Recent/Trending Searches, Popular Categories) — shown before any
+   characters are typed, see headerSearchFocusHTML() in shared.js. */
+.rrg-search-suggest-section{padding:10px 14px;border-bottom:1px solid var(--rrg-line);}
+.rrg-search-suggest-section:last-child{border-bottom:none;}
+.rrg-search-suggest-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.rrg-search-suggest-section-head span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:#888;}
+.rrg-search-suggest-clear{background:none;border:none;color:var(--rrg-red);font-size:12px;font-weight:700;cursor:pointer;padding:0;}
+.rrg-search-suggest-clear:hover{text-decoration:underline;}
+.rrg-search-suggest-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.rrg-search-suggest-chip{display:inline-block;padding:6px 12px;border:1px solid var(--rrg-line);border-radius:999px;font-size:12.5px;color:var(--rrg-black);text-decoration:none;background:#fff;}
+.rrg-search-suggest-chip:hover{border-color:var(--rrg-red);color:var(--rrg-red);}
 .rrg-cart{position:relative;flex:0 0 auto;color:var(--rrg-black);cursor:pointer;}
 .rrg-cart svg{width:24px;height:24px;}
 .cart-badge{position:absolute;top:-6px;right:-8px;background:var(--rrg-red);color:#fff;font-size:10px;font-weight:900;border-radius:999px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}

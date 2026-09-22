@@ -2407,15 +2407,65 @@ const HEADER_SEARCH_SUGGEST_BATCHES = [
   ],
 ];
 
+// Focus-state content (Brenton's team, 2026-09-22 follow-up) — shown when the box is focused
+// but still empty, before the product-suggestions dropdown above takes over once 1+ characters
+// are typed. Recent Searches is a fixed canned list (not real localStorage — same cosmetic-demo
+// treatment as the rest of this dropdown), with a Clear action that hides the section for the
+// rest of this page view only (per-search-box `recentCleared` closure flag in
+// initHeaderSearchSuggest(), reset back to false on a fresh page load). Trending Searches and
+// Popular Categories are static either way, since a real trending list would need real
+// analytics behind it. Popular Categories reuses the exact same three real destination pages
+// (vplp/plp/plp-camping) as the zero-results state's popular-category links, so it's one
+// consistent set of "real" category destinations across the whole site rather than two.
+const HEADER_SEARCH_RECENT = ['Roof Rack for Hilux', 'Bike Rack', 'Thule Bars'];
+const HEADER_SEARCH_TRENDING = ['Snorkels', 'Awnings', 'Camping Fridges', 'Dual Battery Kits'];
+const HEADER_SEARCH_POPULAR_CATEGORIES = [
+  { label: 'Roof Racks', href: '../vplp/index.html' },
+  { label: 'Bike Racks', href: '../plp/index.html' },
+  { label: 'Camping Gear', href: '../plp-camping/index.html' },
+];
+
+// Resolved against the current page's own URL (not a hardcoded "../search-results/..." string)
+// so this works unchanged from every template regardless of folder depth. Every template today
+// lives at prototypes/<name>/index.html, one level below prototypes/search-results/, but this
+// doesn't hardcode that assumption.
+function headerSearchResultsUrl(query) {
+  return new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
+}
+
+function headerSearchFocusHTML(recentCleared) {
+  return `
+    ${recentCleared ? '' : `
+      <div class="rrg-search-suggest-section">
+        <div class="rrg-search-suggest-section-head">
+          <span>Recent Searches</span>
+          <button type="button" class="rrg-search-suggest-clear" data-clear-recent>Clear</button>
+        </div>
+        <div class="rrg-search-suggest-chips">
+          ${HEADER_SEARCH_RECENT.map(term => `<a class="rrg-search-suggest-chip" href="${headerSearchResultsUrl(term)}">${term}</a>`).join('')}
+        </div>
+      </div>
+    `}
+    <div class="rrg-search-suggest-section">
+      <div class="rrg-search-suggest-section-head"><span>Trending Searches</span></div>
+      <div class="rrg-search-suggest-chips">
+        ${HEADER_SEARCH_TRENDING.map(term => `<a class="rrg-search-suggest-chip" href="${headerSearchResultsUrl(term)}">${term}</a>`).join('')}
+      </div>
+    </div>
+    <div class="rrg-search-suggest-section">
+      <div class="rrg-search-suggest-section-head"><span>Popular Categories</span></div>
+      <div class="rrg-search-suggest-chips">
+        ${HEADER_SEARCH_POPULAR_CATEGORIES.map(c => `<a class="rrg-search-suggest-chip" href="${new URL(c.href, window.location.href).href}">${c.label}</a>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
 function headerSearchSuggestRowsHTML(query) {
   const batch = HEADER_SEARCH_SUGGEST_BATCHES[Math.floor(query.length / 2) % HEADER_SEARCH_SUGGEST_BATCHES.length];
-  // Resolved against the current page's own URL (not a hardcoded "../search-results/..."
-  // string) so this works unchanged from every template regardless of folder depth. Every
-  // template today lives at prototypes/<name>/index.html, one level below prototypes/search-
-  // results/, but this doesn't hardcode that assumption. The query is carried over for real —
-  // search-results/index.html reads it back out (see plp.js's DOMContentLoaded init) — so
-  // "View All Results" is the one part of this dropdown that isn't purely cosmetic.
-  const viewAllUrl = new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
+  // The query is carried over for real — search-results/index.html reads it back out (see
+  // plp.js's DOMContentLoaded init) — so "View All Results" is the one part of this dropdown
+  // that isn't purely cosmetic.
   return `
     <div class="rrg-search-suggest-label">Popular Products</div>
     ${batch.map(p => `
@@ -2425,7 +2475,7 @@ function headerSearchSuggestRowsHTML(query) {
         <span class="rrg-search-suggest-price">${p.price}</span>
       </div>
     `).join('')}
-    <a class="rrg-search-suggest-viewall" href="${viewAllUrl}">View All Results</a>
+    <a class="rrg-search-suggest-viewall" href="${headerSearchResultsUrl(query)}">View All Results</a>
   `;
 }
 
@@ -2433,7 +2483,8 @@ function headerSearchSuggestRowsHTML(query) {
 // the mobile full-screen takeover) — same visual-only dropdown behaviour on both. The panel is
 // appended to <body> and position:fixed (not a child of .rrg-search) because that box's
 // overflow:hidden would otherwise clip it — see the CSS comment in shared.css. Each search box
-// gets its own panel/state since desktop and mobile are two independent inputs.
+// gets its own panel/state (including its own recentCleared flag) since desktop and mobile are
+// two independent inputs.
 function initHeaderSearchSuggest() {
   document.querySelectorAll('.rrg-search, .mm-mobile-search').forEach(wrap => {
     const input = wrap.querySelector('input');
@@ -2442,6 +2493,7 @@ function initHeaderSearchSuggest() {
     panel.className = 'rrg-search-suggest';
     panel.hidden = true;
     document.body.appendChild(panel);
+    let recentCleared = false;
     const position = () => {
       const r = wrap.getBoundingClientRect();
       panel.style.top = `${r.bottom + 4}px`;
@@ -2451,8 +2503,7 @@ function initHeaderSearchSuggest() {
     const hide = () => { panel.hidden = true; };
     const sync = () => {
       const query = input.value.trim();
-      if (!query) { hide(); return; }
-      panel.innerHTML = headerSearchSuggestRowsHTML(query);
+      panel.innerHTML = query ? headerSearchSuggestRowsHTML(query) : headerSearchFocusHTML(recentCleared);
       position();
       panel.hidden = false;
     };
@@ -2462,6 +2513,15 @@ function initHeaderSearchSuggest() {
     input.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
     window.addEventListener('resize', () => { if (!panel.hidden) position(); });
     window.addEventListener('scroll', () => { if (!panel.hidden) position(); }, true);
+    // Clear (Recent Searches) — mousedown preventDefault keeps focus in the input (so blur's
+    // hide() timer never fires) while click does the actual state change + re-render.
+    panel.addEventListener('mousedown', e => { if (e.target.closest('[data-clear-recent]')) e.preventDefault(); });
+    panel.addEventListener('click', e => {
+      if (!e.target.closest('[data-clear-recent]')) return;
+      e.preventDefault();
+      recentCleared = true;
+      sync();
+    });
   });
 }
 

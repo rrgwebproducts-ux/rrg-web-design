@@ -175,6 +175,7 @@
       </div>
       <div id="plpPriorityFilters"></div>
       <div id="plpStandardFilters"></div>
+      <div class="plp-merch-sidebar" id="plpMerchSidebar"></div>
     </aside>
     <div class="plp-main">
       <div class="plp-filter-chips" id="plpPriorityChips"></div>
@@ -481,7 +482,17 @@ window.PLP_CONFIG = {
     { label: 'Bike Racks', href: '../plp/index.html' },
     { label: 'Camping Gear', href: '../plp-camping/index.html' }
   ],
-  featuredForEmpty: SEARCH_PRODUCTS.filter(p => p.ribbon === 'bestseller' || p.ribbon === 'staffpick')
+  featuredForEmpty: SEARCH_PRODUCTS.filter(p => p.ribbon === 'bestseller' || p.ribbon === 'staffpick'),
+  // Sidebar merchandising (Brenton, 2026-09-22 — brought over from PLP/VPLP/plp-camping,
+  // which all render #plpMerchSidebar via the same plpRenderMerchSidebar()/PLP_CONFIG shape
+  // already; this page just didn't have the markup or config for it yet). A single-category
+  // "real" merch slot wouldn't map onto a mixed-category result set, so this uses a
+  // cross-category promo instead — same reasoning as the Filters sidebar dropping the
+  // per-category priority-filter treatment above.
+  merchPromos: [
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 20% Off Storewide', href: '#' }
+  ],
+  featuredProduct: SEARCH_PRODUCTS.find(p => p.id === 'sr2')
 };
 </script>
 </body>

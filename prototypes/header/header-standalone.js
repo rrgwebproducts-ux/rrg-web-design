@@ -167,12 +167,51 @@ const HEADER_SEARCH_SUGGEST_BATCHES = [
   ],
 ];
 
+// Focus-state content (recent/trending searches + popular categories) — see shared.js's copy
+// of this and headerSearchFocusHTML() for full rationale (this file duplicates it rather than
+// sharing, same as the rest of this prototype's search code).
+const HEADER_SEARCH_RECENT = ['Roof Rack for Hilux', 'Bike Rack', 'Thule Bars'];
+const HEADER_SEARCH_TRENDING = ['Snorkels', 'Awnings', 'Camping Fridges', 'Dual Battery Kits'];
+const HEADER_SEARCH_POPULAR_CATEGORIES = [
+  { label: 'Roof Racks', href: '../vplp/index.html' },
+  { label: 'Bike Racks', href: '../plp/index.html' },
+  { label: 'Camping Gear', href: '../plp-camping/index.html' },
+];
+
+function headerSearchResultsUrl(query) {
+  return new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
+}
+
+function headerSearchFocusHTML(recentCleared) {
+  return `
+    ${recentCleared ? '' : `
+      <div class="rrg-search-suggest-section">
+        <div class="rrg-search-suggest-section-head">
+          <span>Recent Searches</span>
+          <button type="button" class="rrg-search-suggest-clear" data-clear-recent>Clear</button>
+        </div>
+        <div class="rrg-search-suggest-chips">
+          ${HEADER_SEARCH_RECENT.map(term => `<a class="rrg-search-suggest-chip" href="${headerSearchResultsUrl(term)}">${term}</a>`).join('')}
+        </div>
+      </div>
+    `}
+    <div class="rrg-search-suggest-section">
+      <div class="rrg-search-suggest-section-head"><span>Trending Searches</span></div>
+      <div class="rrg-search-suggest-chips">
+        ${HEADER_SEARCH_TRENDING.map(term => `<a class="rrg-search-suggest-chip" href="${headerSearchResultsUrl(term)}">${term}</a>`).join('')}
+      </div>
+    </div>
+    <div class="rrg-search-suggest-section">
+      <div class="rrg-search-suggest-section-head"><span>Popular Categories</span></div>
+      <div class="rrg-search-suggest-chips">
+        ${HEADER_SEARCH_POPULAR_CATEGORIES.map(c => `<a class="rrg-search-suggest-chip" href="${new URL(c.href, window.location.href).href}">${c.label}</a>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
 function headerSearchSuggestRowsHTML(query) {
   const batch = HEADER_SEARCH_SUGGEST_BATCHES[Math.floor(query.length / 2) % HEADER_SEARCH_SUGGEST_BATCHES.length];
-  // Resolved against the current page's own URL — see shared.js's copy of this function for
-  // full rationale (this file duplicates it rather than sharing, same as the rest of this
-  // prototype's search code).
-  const viewAllUrl = new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
   return `
     <div class="rrg-search-suggest-label">Popular Products</div>
     ${batch.map(p => `
@@ -182,7 +221,7 @@ function headerSearchSuggestRowsHTML(query) {
         <span class="rrg-search-suggest-price">${p.price}</span>
       </div>
     `).join('')}
-    <a class="rrg-search-suggest-viewall" href="${viewAllUrl}">View All Results</a>
+    <a class="rrg-search-suggest-viewall" href="${headerSearchResultsUrl(query)}">View All Results</a>
   `;
 }
 
@@ -194,6 +233,7 @@ function initHeaderSearchSuggest() {
     panel.className = 'rrg-search-suggest';
     panel.hidden = true;
     document.body.appendChild(panel);
+    let recentCleared = false;
     const position = () => {
       const r = wrap.getBoundingClientRect();
       panel.style.top = `${r.bottom + 4}px`;
@@ -203,8 +243,7 @@ function initHeaderSearchSuggest() {
     const hide = () => { panel.hidden = true; };
     const sync = () => {
       const query = input.value.trim();
-      if (!query) { hide(); return; }
-      panel.innerHTML = headerSearchSuggestRowsHTML(query);
+      panel.innerHTML = query ? headerSearchSuggestRowsHTML(query) : headerSearchFocusHTML(recentCleared);
       position();
       panel.hidden = false;
     };
@@ -214,6 +253,13 @@ function initHeaderSearchSuggest() {
     input.addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
     window.addEventListener('resize', () => { if (!panel.hidden) position(); });
     window.addEventListener('scroll', () => { if (!panel.hidden) position(); }, true);
+    panel.addEventListener('mousedown', e => { if (e.target.closest('[data-clear-recent]')) e.preventDefault(); });
+    panel.addEventListener('click', e => {
+      if (!e.target.closest('[data-clear-recent]')) return;
+      e.preventDefault();
+      recentCleared = true;
+      sync();
+    });
   });
 }
 
