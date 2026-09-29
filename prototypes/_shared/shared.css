@@ -109,13 +109,20 @@ h1,h2,h3,h4{
 /* Text is top-aligned, not centred against the photo (2026-09-29, spec.md §15 S1) — centring
    made the H1 jump up/down by up to 38px between Shop By tabs as the description length
    changed. Now the H1, description and buttons always start at the same spot. */
-.plp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:start;padding:28px 0;}
-.plp-hero>div:first-child{padding-top:24px;}
+.plp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:start;padding:24px 0 8px;}
 .plp-hero h1{margin-bottom:12px;}
 .plp-hero p{font-size:16px;color:var(--rrg-grey-700);line-height:1.6;max-width:560px;margin-bottom:20px;}
 .plp-hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
 .plp-hero-media{position:relative;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;}
 .plp-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center;}
+/* Desktop: the photo box is a fixed 250px tall rather than 3/2 (~346px) — the 3/2 box made the
+   hero far taller than its text, leaving ~180px of dead space above Shop By (Brenton,
+   2026-09-29). 250px sits just above the tallest heading + description + buttons across every
+   Shop By tab, so the hero keeps one height and the tabs still never move (S1). The Hilux cutout
+   still fits whole — the square source has a wide white margin that the cover crop removes. */
+@media (min-width:901px){
+  .plp-hero-media{aspect-ratio:auto;height:250px;}
+}
 .plp-hero-make-badge{position:absolute;top:16px;right:16px;width:56px;height:56px;background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;padding:9px;}
 .plp-hero-make-badge img{width:100%;height:100%;object-fit:contain;}
 /* Simple state (Section 4.2): no vehicle photo at all when the category has no fallback
@@ -132,7 +139,6 @@ h1,h2,h3,h4{
 .plp-hero.no-media p{max-width:none;}
 @media (max-width:900px){
   .plp-hero{grid-template-columns:1fr;gap:18px;padding-top:16px;}
-  .plp-hero>div:first-child{padding-top:0;}
   .plp-hero-media{order:-1;}
   /* Description is a fixed 3 lines on phones, with Read more (S4) — so switching Shop By tabs
      doesn't move the tabs themselves up and down under your thumb. */
