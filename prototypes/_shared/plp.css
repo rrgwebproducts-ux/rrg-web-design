@@ -506,24 +506,97 @@
 }
 
 /* ---- Search results page (new template, docs/search-results/search-results-spec.md) ----
-   Slim results bar (Section 2) replaces the hero + breadcrumb entirely for this page type —
-   no vehicle photo, no category H1, no CTA row, just the editable query + result count.
+   Heading line (rebuilt 2026-09-29 from the 2026-09-24 meeting) — one thin row under the
+   breadcrumb: 'Search results for "<query>" in Products ▾' + count on the left, up to 3
+   matching-page buttons on the right. Replaces the old "Search Results" heading block and the
+   page's own search box, which between them pushed every product below the fold. On mobile the
+   buttons drop under the heading as a horizontally scrolling row.
    Category quick-tabs (Section 3) reuse .plp-shopby-track/.plp-shopby-tile/.plp-shopby-label
-   verbatim (see the SHOP BY block above) so the same active-tab-on-a-line treatment applies
-   without new tab CSS — they just render without an icon span, which the tile's own
-   flex-column layout absorbs fine at a very slightly shorter effective height. */
-.plp-search-heading{padding:20px 0 0;}
-.plp-search-heading p{font-size:16px;color:#444;margin:6px 0 0;}
-.plp-search-bar{padding:18px 0 8px;}
-.plp-search-bar-form{display:flex;gap:10px;max-width:640px;margin-bottom:10px;}
-.plp-search-bar-form input{flex:1;border:1px solid var(--rrg-line);border-radius:6px;padding:12px 14px;font-size:15px;font-family:inherit;}
-.plp-search-bar-count{font-size:13px;color:#666;margin:0;}
+   verbatim (see the SHOP BY block above). */
+.plp-search-headline{display:flex;align-items:center;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;padding:6px 0 14px;}
+.plp-search-headline-main{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;min-width:0;}
+.plp-search-headline h1{font-size:28px;line-height:1.15;margin:0;overflow-wrap:anywhere;}
+.plp-search-scope{position:relative;display:inline-flex;align-items:baseline;gap:8px;}
+.plp-search-scope-in{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:28px;line-height:1.15;text-transform:uppercase;}
+.plp-search-scope-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:none;border-bottom:2px solid var(--rrg-red);padding:0 0 1px;cursor:pointer;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:28px;line-height:1.15;text-transform:uppercase;color:var(--rrg-red);}
+.plp-search-scope-btn svg{width:20px;height:20px;transition:transform .15s;}
+.plp-search-scope-btn[aria-expanded="true"] svg{transform:rotate(180deg);}
+.plp-search-scope-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:0 10px 28px rgba(0,0,0,.14);z-index:30;padding:4px 0;}
+.plp-search-scope-option{display:flex;justify-content:space-between;gap:12px;width:100%;background:none;border:none;padding:9px 14px;font:inherit;font-size:14px;text-align:left;cursor:pointer;color:var(--rrg-black);}
+.plp-search-scope-option span{color:#888;}
+.plp-search-scope-option:hover{background:var(--rrg-bg);}
+.plp-search-scope-option.active{font-weight:700;background:var(--rrg-bg);}
+.plp-search-headline-count{font-size:14px;color:#666;}
+.plp-search-page-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.plp-search-page-btn{padding:8px 14px;font-size:13px;white-space:nowrap;}
+.plp-toolbar-count{font-size:13px;color:#666;}
+@media (max-width:900px){
+  .plp-search-headline{padding:4px 0 10px;}
+  .plp-search-headline h1,.plp-search-scope-in,.plp-search-scope-btn{font-size:22px;}
+  .plp-search-page-btns{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:2px;}
+}
+
+/* Vehicle strip (2026-09-24 meeting) — plpRenderSearchVehicleStrip(). No-vehicle state is the
+   grey "may be vehicle-specific, set your vehicle" bar (same idea as Supercheap's); .is-set is a
+   quieter green confirmation that vehicle matches are sorted first. */
+.plp-search-vehicle-strip{display:flex;align-items:center;gap:14px;background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:var(--radius);padding:10px 14px;margin-bottom:14px;}
+.plp-search-vehicle-strip p{margin:0;flex:1;font-size:14px;}
+.plp-search-vehicle-icon{flex:0 0 auto;width:36px;height:36px;border-radius:6px;background:var(--rrg-black);color:#fff;display:flex;align-items:center;justify-content:center;}
+.plp-search-vehicle-icon svg{width:22px;height:22px;}
+.plp-search-vehicle-btn{padding:8px 16px;font-size:13px;white-space:nowrap;}
+.plp-search-vehicle-strip.is-set{background:var(--rrg-fits-bg);border-color:transparent;padding:8px 14px;}
+.plp-search-vehicle-strip.is-set .plp-search-vehicle-icon{background:var(--rrg-fits);width:30px;height:30px;}
+.plp-search-vehicle-strip.is-set .plp-search-vehicle-icon svg{width:18px;height:18px;}
+.plp-search-vehicle-link{font-size:13px;font-weight:700;color:var(--rrg-black);white-space:nowrap;}
+@media (max-width:600px){
+  .plp-search-vehicle-strip{flex-wrap:wrap;}
+  .plp-search-vehicle-strip p{flex:1 1 calc(100% - 50px);}
+  .plp-search-vehicle-btn{width:100%;}
+}
+
+/* "Fits your Toyota Hilux" card tag — search page, vehicle set, exact match (plpFitBadgeHTML). */
+.plp-fit-badge{display:inline-block;align-self:center;margin:2px 0 6px;padding:3px 8px;border-radius:6px;background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:12px;font-weight:700;}
+.plp-results.is-list .plp-fit-badge{align-self:flex-start;}
+
+/* Pages / Articles / Brands views of the heading's switcher (plpSearchOtherScopeHTML). */
+.plp-search-other-scope{padding:6px 0 40px;border-top:1px solid var(--rrg-line);}
+.plp-scope-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding-top:20px;}
+.plp-scope-card{display:flex;flex-direction:column;gap:6px;padding:18px;border:1px solid var(--rrg-line);border-radius:var(--radius);text-decoration:none;color:inherit;}
+.plp-scope-card:hover{border-color:var(--rrg-black);}
+.plp-scope-card h3{font-size:21px;line-height:1.15;margin:0;text-transform:none;}
+.plp-scope-card p{margin:0;font-size:14px;color:#555;flex:1;}
+.plp-scope-type{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#888;}
+.plp-scope-more{margin-top:6px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;color:var(--rrg-red);}
+.plp-scope-brands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding-top:20px;}
+.plp-scope-brand{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 14px;border:1px solid var(--rrg-line);border-radius:var(--radius);text-decoration:none;color:inherit;text-align:center;}
+.plp-scope-brand:hover{border-color:var(--rrg-black);}
+.plp-scope-brand-mark{height:48px;display:flex;align-items:center;justify-content:center;}
+.plp-scope-brand-mark img{max-height:48px;max-width:140px;object-fit:contain;}
+.plp-scope-brand-text{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;}
+.plp-scope-brand .plp-scope-more{margin-top:0;font-size:13px;}
+@media (max-width:900px){
+  .plp-scope-cards{grid-template-columns:1fr;gap:12px;padding-top:14px;}
+  .plp-scope-brands{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:14px;}
+}
+
+/* Add to Cart vehicle notice (2026-09-24 meeting) — plpMaybeShowVehicleNotice(). */
+.plp-vehicle-notice-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;}
+.plp-vehicle-notice{position:relative;background:#fff;border-radius:var(--radius);width:100%;max-width:460px;padding:22px 22px 20px;box-shadow:0 16px 40px rgba(0,0,0,.25);}
+.plp-vehicle-notice h2{font-size:22px;margin:0 0 14px;color:var(--rrg-fits);}
+.plp-vehicle-notice-close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:26px;line-height:1;cursor:pointer;color:#666;}
+.plp-vehicle-notice-product{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:13px;line-height:1.35;}
+.plp-vehicle-notice-product img{width:64px;height:64px;object-fit:contain;flex:0 0 auto;border:1px solid var(--rrg-line);border-radius:6px;}
+.plp-vehicle-notice-warning{background:var(--rrg-unknown-bg);color:#5a3a00;border-left:4px solid var(--rrg-unknown);border-radius:6px;padding:12px 14px;font-size:14px;margin-bottom:16px;}
+.plp-vehicle-notice-warning strong{display:block;color:var(--rrg-unknown);margin-bottom:2px;}
+.plp-vehicle-notice-actions{display:flex;gap:10px;}
+.plp-vehicle-notice-actions .btn{flex:1;padding:12px 10px;font-size:14px;white-space:nowrap;}
 
 /* ---- Zero-results state (Section 5) — no equivalent anywhere else in the PLP family, every
    category prototype has products by construction. Replaces the grid entirely. ---- */
 .plp-search-empty{text-align:center;padding:40px 20px 10px;}
 .plp-search-empty h2{margin-bottom:8px;}
 .plp-search-empty p{color:#666;font-size:14px;margin-bottom:8px;}
+.plp-search-empty-other button{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-red);text-decoration:underline;cursor:pointer;}
 .plp-search-empty-subheading{margin:32px 0 16px;font-size:18px;color:var(--rrg-red);}
 .plp-search-empty-cats{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;}
 .plp-search-empty-cat{display:flex;flex-direction:column;align-items:center;gap:8px;width:120px;padding:14px 10px;border:1px solid var(--rrg-line);border-radius:var(--radius);text-decoration:none;color:var(--rrg-black);}

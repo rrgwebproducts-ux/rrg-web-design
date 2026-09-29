@@ -77,6 +77,7 @@ const plpState = {
   activeFilters: {},     // { facetKey: Set(values) }
   view: 'grid',          // 'grid' | 'list' — reset from PLP_CONFIG.defaultView on init
   searchQuery: '',       // search-results page only, from PLP_CONFIG.initialQuery on init
+  searchScope: 'products', // search-results page only: 'products' | 'pages' | 'articles' | 'brands' (the heading's switcher)
   gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 3 is the default (2026-09-18, Brenton signed off), 4 kept as the fallback option.
   sort: 'relevance',
   page: 1,               // desktop numbered pagination
@@ -96,8 +97,17 @@ function plpFilteredSortedProducts() {
     bestselling: (a, b) => (b.salesRank || 0) - (a.salesRank || 0),
     rating: (a, b) => b.rating - a.rating
   };
-  list = list.slice().sort(sorters[plpState.sort] || sorters.relevance);
-  return list;
+  const sorter = sorters[plpState.sort] || sorters.relevance;
+  // Search page, Relevance sort, vehicle set (2026-09-24 meeting): products that fit the session
+  // vehicle first, then non-vehicle-specific products, then products for other vehicles —
+  // relevance order within each tier. Only Relevance: an explicit price/rating sort is the
+  // shopper asking for that order, so it's left alone.
+  const vehicleKey = cfg.isSearch ? plpSearchVehicleKey() : null;
+  if (plpState.sort === 'relevance' && vehicleKey) {
+    const tier = p => (p.fitsVehicle === vehicleKey ? 0 : (!p.fitsVehicle ? 1 : 2));
+    return list.slice().sort((a, b) => (tier(a) - tier(b)) || sorter(a, b));
+  }
+  return list.slice().sort(sorter);
 }
 
 // ==== SHOP BY row ============================================================
@@ -274,7 +284,12 @@ function plpRenderSearchTabs() {
   const activeCategory = plpState.activeFilters.category ? [...plpState.activeFilters.category][0] : null;
   const categories = cfg.searchCategories || [];
   const countFor = key => queryMatched.filter(p => !key || (p.searchCategory && p.searchCategory.key === key)).length;
-  const tiles = [{ key: '', label: 'All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...categories];
+  // Only categories that actually appear in this search's results (spec Section 3) — and no tab
+  // row at all when nothing matched (fixed 2026-09-29; it used to show "Roof Racks (0)" etc.).
+  const presentCategories = categories.filter(c => countFor(c.key) > 0 || activeCategory === c.key);
+  const section = track.closest('.plp-shopby');
+  if (section) section.hidden = !queryMatched.length;
+  const tiles = [{ key: '', label: 'All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...presentCategories];
   track.innerHTML = tiles.map(t => `
     <button type="button" class="plp-shopby-tile ${(!activeCategory && !t.key) || activeCategory === t.key ? 'active' : ''}" data-search-cat="${t.key}">
       ${t.icon ? `<span class="plp-shopby-icon">${t.icon}</span>` : ''}
@@ -314,23 +329,247 @@ function plpSelectSearchCategory(key) {
   plpRenderResults();
 }
 
-// Inline, resubmittable search box (spec Section 2) — a new query intentionally clears active
-// filters (a Brand/Category selection from the old query's result set may not even exist in
-// the new one) but leaves sort/view alone.
-function plpInitSearchBar() {
-  const form = document.getElementById('plpSearchForm');
-  const input = document.getElementById('plpSearchInput');
-  if (input) input.value = plpState.searchQuery;
-  if (form) form.addEventListener('submit', e => {
-    e.preventDefault();
-    plpState.searchQuery = (input.value || '').trim();
-    plpState.activeFilters = {};
-    plpState.page = 1;
-    plpState.visibleCount = PLP_PAGE_SIZE;
-    plpRenderSearchTabs();
-    plpRenderFilters();
-    plpRenderResults();
+// The session vehicle's fitment key, or null when no vehicle is set (the Site Admin Panel's
+// existing "Vehicle Set" toggle — session-state.js) or the page defines no sessionVehicle.
+function plpSearchVehicleKey() {
+  const cfg = window.PLP_CONFIG;
+  return cfg && cfg.sessionVehicle && plpVehicleIsSet() ? cfg.sessionVehicle.key : null;
+}
+
+// ---- Heading line + "in Products ▾" switcher (2026-09-24 meeting, built 2026-09-29) ----------
+// The page's own search box is gone (the header box is the only way to search now — Enter or
+// its search button land here with ?q=), so the query is echoed in the H1 instead, and mirrored
+// back into the header box so it can be edited in place. The switcher (modelled on Supercheap
+// Auto's "'roof' in Products ▾") swaps the whole results area between the product grid and the
+// other things a search can find — Pages, Articles, Brands — all matched from the shared
+// RRG_SEARCH_* data in shared.js, the same data the header dropdown uses. Products is always
+// listed (even at 0, so the zero-results state is still reachable); the others only when they
+// have at least one match. ?type= keeps the chosen view across a reload or shared link.
+const PLP_SEARCH_SCOPES = [
+  { key: 'products', label: 'Products', unit: ['product', 'products'] },
+  { key: 'pages', label: 'Pages', unit: ['page', 'pages'] },
+  { key: 'articles', label: 'Articles', unit: ['article', 'articles'] },
+  { key: 'brands', label: 'Brands', unit: ['brand', 'brands'] }
+];
+
+function plpSearchScopeItems(scopeKey) {
+  const q = plpState.searchQuery;
+  if (!q) return [];
+  if (scopeKey === 'pages') return rrgSearchPagesFor(q, ['page', 'vehicle', 'category']);
+  if (scopeKey === 'articles') return rrgSearchPagesFor(q, ['article']);
+  if (scopeKey === 'brands') return rrgSearchBrandsFor(q);
+  return window.PLP_CONFIG.products.filter(p => plpSearchQueryMatches(p, q));
+}
+
+function plpRenderSearchHeadline() {
+  const title = document.getElementById('plpSearchTitle');
+  const scopeWrap = document.getElementById('plpSearchScope');
+  const countEl = document.getElementById('plpSearchHeadlineCount');
+  const btnWrap = document.getElementById('plpSearchPageBtns');
+  const q = plpState.searchQuery;
+  if (title) title.textContent = q ? `Search results for “${q}”` : 'Search results';
+  const scopes = PLP_SEARCH_SCOPES
+    .map(sc => ({ ...sc, count: plpSearchScopeItems(sc.key).length }))
+    .filter(sc => sc.key === 'products' || sc.count > 0);
+  if (!scopes.some(sc => sc.key === plpState.searchScope)) plpState.searchScope = 'products';
+  const active = scopes.find(sc => sc.key === plpState.searchScope);
+  if (scopeWrap) {
+    scopeWrap.innerHTML = `
+      <span class="plp-search-scope-in">in</span>
+      <button type="button" class="plp-search-scope-btn" aria-haspopup="true" aria-expanded="false">${active.label}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="plp-search-scope-menu" hidden>
+        ${scopes.map(sc => `<button type="button" class="plp-search-scope-option${sc.key === active.key ? ' active' : ''}" data-scope="${sc.key}">${sc.label} <span>(${sc.count})</span></button>`).join('')}
+      </div>
+    `;
+    const btn = scopeWrap.querySelector('.plp-search-scope-btn');
+    const menu = scopeWrap.querySelector('.plp-search-scope-menu');
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      menu.hidden = !menu.hidden;
+      btn.setAttribute('aria-expanded', String(!menu.hidden));
+    });
+    menu.querySelectorAll('[data-scope]').forEach(opt => {
+      opt.addEventListener('click', () => plpSetSearchScope(opt.dataset.scope));
+    });
+  }
+  if (countEl) countEl.textContent = `${active.count} ${active.unit[active.count === 1 ? 0 : 1]}`;
+  // Page buttons — only pages flagged `cta` in RRG_SEARCH_PAGES (never articles or plain info
+  // pages), max 3, in that list's own priority order.
+  if (btnWrap) {
+    const pages = q ? rrgSearchPagesFor(q, ['page', 'vehicle']).filter(pg => pg.cta).slice(0, 3) : [];
+    btnWrap.innerHTML = pages.map(pg => `<a class="btn btn-outline plp-search-page-btn" ${rrgSearchLinkAttrs(pg.href)}>${pg.title}</a>`).join('');
+    btnWrap.hidden = !pages.length;
+  }
+}
+
+function plpSetSearchScope(scopeKey) {
+  plpState.searchScope = scopeKey;
+  const url = new URL(window.location.href);
+  if (scopeKey === 'products') url.searchParams.delete('type'); else url.searchParams.set('type', scopeKey);
+  history.replaceState(null, '', url);
+  plpRenderSearchHeadline();
+  plpRenderSearchScope();
+}
+
+function plpRenderSearchScope() {
+  const productsWrap = document.getElementById('plpSearchProductsScope');
+  const otherWrap = document.getElementById('plpSearchOtherScope');
+  const isProducts = plpState.searchScope === 'products';
+  if (productsWrap) productsWrap.hidden = !isProducts;
+  if (otherWrap) {
+    otherWrap.hidden = isProducts;
+    otherWrap.innerHTML = isProducts ? '' : plpSearchOtherScopeHTML(plpState.searchScope);
+  }
+}
+
+const PLP_SEARCH_PAGE_TYPE_LABELS = { page: 'Page', vehicle: 'Vehicle Page', category: 'Category' };
+
+function plpSearchOtherScopeHTML(scopeKey) {
+  const items = plpSearchScopeItems(scopeKey);
+  if (scopeKey === 'brands') {
+    return `<div class="plp-scope-brands">${items.map(b => `
+      <a class="plp-scope-brand" ${rrgSearchLinkAttrs(rrgBrandUrl(b))}>
+        <span class="plp-scope-brand-mark">${b.logo ? `<img src="../_shared/${b.logo}" alt="${b.name}">` : `<span class="plp-scope-brand-text">${b.name}</span>`}</span>
+        <span class="plp-scope-more">Shop ${b.name}</span>
+      </a>`).join('')}</div>`;
+  }
+  if (scopeKey === 'articles') {
+    return `<div class="plp-scope-cards">${items.map(a => `
+      <a class="plp-scope-card" ${rrgSearchLinkAttrs(a.href)}>
+        <span class="plp-scope-type">Buying Guide &middot; ${a.topic}</span>
+        <h3>${a.title}</h3>
+        <p>${a.desc}</p>
+        <span class="plp-scope-more">Read More</span>
+      </a>`).join('')}</div>`;
+  }
+  return `<div class="plp-scope-cards">${items.map(pg => `
+    <a class="plp-scope-card" ${rrgSearchLinkAttrs(pg.href)}>
+      <span class="plp-scope-type">${PLP_SEARCH_PAGE_TYPE_LABELS[pg.type] || 'Page'}</span>
+      <h3>${pg.title}</h3>
+      <p>${pg.desc || ''}</p>
+      <span class="plp-scope-more">View Page</span>
+    </a>`).join('')}</div>`;
+}
+
+// ---- Vehicle strip above the tabs (2026-09-24 meeting) ---------------------------------------
+// Only when the query's products include at least one vehicle-specific product (a "bike rack"
+// search has nothing to fit, so no strip). "Set Your Vehicle" flips the same Site Admin Panel
+// session toggle as a demo shortcut — the real build opens the vehicle selector. The vehicle-set
+// version only shows under Relevance sort, since that's the only sort the vehicle affects.
+function plpRenderSearchVehicleStrip() {
+  const cfg = window.PLP_CONFIG;
+  const strip = document.getElementById('plpSearchVehicleStrip');
+  if (!strip || !cfg.sessionVehicle) return;
+  const hasVehicleSpecific = plpSearchScopeItems('products').some(p => p.fitsVehicle);
+  const vehicleKey = plpSearchVehicleKey();
+  if (!hasVehicleSpecific || (vehicleKey && plpState.sort !== 'relevance')) {
+    strip.hidden = true;
+    strip.innerHTML = '';
+    return;
+  }
+  const carIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>`;
+  strip.hidden = false;
+  strip.classList.toggle('is-set', !!vehicleKey && plpSearchScopeItems('products').some(p => p.fitsVehicle === vehicleKey));
+  // Vehicle set but nothing in this search fits it (e.g. "ranger" with a Hilux set) — say so,
+  // rather than claiming matches are "shown first" when there are none.
+  const anyFit = vehicleKey && plpSearchScopeItems('products').some(p => p.fitsVehicle === vehicleKey);
+  strip.innerHTML = vehicleKey
+    ? `<span class="plp-search-vehicle-icon">${carIcon}</span>
+       <p>${anyFit
+         ? `Products that fit your <strong>${cfg.sessionVehicle.label}</strong> are shown first.`
+         : `None of these vehicle-specific products fit your <strong>${cfg.sessionVehicle.label}</strong>.`}</p>
+       <a href="#" class="plp-search-vehicle-link" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>`
+    : `<span class="plp-search-vehicle-icon">${carIcon}</span>
+       <p><strong>Some of these products are vehicle-specific.</strong> Set your vehicle to see what fits first.</p>
+       <button type="button" class="btn btn-gold plp-search-vehicle-btn" data-set-vehicle>Set Your Vehicle</button>`;
+  const setBtn = strip.querySelector('[data-set-vehicle]');
+  if (setBtn) setBtn.addEventListener('click', () => { if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true); });
+}
+
+// "Fits your Toyota Hilux" tag on product cards — search page only, vehicle set, exact match.
+function plpFitBadgeHTML(product) {
+  const cfg = window.PLP_CONFIG;
+  if (!cfg || !cfg.isSearch || !product.fitsVehicle) return '';
+  const vehicleKey = plpSearchVehicleKey();
+  if (!vehicleKey || product.fitsVehicle !== vehicleKey) return '';
+  return `<div class="plp-fit-badge">&#10003; Fits your ${cfg.sessionVehicle.label}</div>`;
+}
+
+// ---- Add to Cart vehicle notice (2026-09-24 meeting) -----------------------------------------
+// Quick-adding a vehicle-specific product still adds it (nothing is blocked), but if no vehicle
+// is set — or the set vehicle isn't the one the product is for — a notice pops up asking the
+// shopper to confirm fitment before ordering. The mismatch case wasn't discussed in the meeting
+// but carries the same risk, so it gets the same notice with different wording.
+function plpBuildVehicleNotice() {
+  if (document.getElementById('plpVehicleNotice')) return;
+  const backdrop = document.createElement('div');
+  backdrop.className = 'plp-vehicle-notice-backdrop';
+  backdrop.id = 'plpVehicleNotice';
+  backdrop.hidden = true;
+  backdrop.innerHTML = `
+    <div class="plp-vehicle-notice" role="dialog" aria-modal="true" aria-labelledby="plpVehicleNoticeTitle">
+      <button type="button" class="plp-vehicle-notice-close" aria-label="Close">&times;</button>
+      <h2 id="plpVehicleNoticeTitle">&#10003; Added to cart</h2>
+      <div class="plp-vehicle-notice-product" id="plpVehicleNoticeProduct"></div>
+      <div class="plp-vehicle-notice-warning" id="plpVehicleNoticeWarning"></div>
+      <div class="plp-vehicle-notice-actions">
+        <button type="button" class="btn btn-gold" data-vehicle-notice-set>Set Your Vehicle</button>
+        <button type="button" class="btn btn-outline" data-vehicle-notice-close>Continue Shopping</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(backdrop);
+  const close = () => { backdrop.hidden = true; };
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) close(); });
+  backdrop.querySelector('.plp-vehicle-notice-close').addEventListener('click', close);
+  backdrop.querySelector('[data-vehicle-notice-close]').addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  // Demo shortcut, same as the vehicle strip's button — flips the session toggle on when no
+  // vehicle is set. "Change Vehicle" (mismatch case) just closes: there's only one demo vehicle
+  // to switch to, and the real build opens the vehicle selector for both.
+  backdrop.querySelector('[data-vehicle-notice-set]').addEventListener('click', () => {
+    if (!plpSearchVehicleKey() && window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
+    close();
   });
+}
+
+function plpMaybeShowVehicleNotice(product) {
+  const cfg = window.PLP_CONFIG;
+  if (!product.fitsVehicle || !cfg.sessionVehicle) return;
+  const vehicleKey = plpSearchVehicleKey();
+  if (vehicleKey && vehicleKey === product.fitsVehicle) return;
+  plpBuildVehicleNotice();
+  const backdrop = document.getElementById('plpVehicleNotice');
+  const productFor = (cfg.vehicleLabels || {})[product.fitsVehicle] || 'a specific vehicle';
+  backdrop.querySelector('#plpVehicleNoticeProduct').innerHTML = `
+    <img src="${product.image}" alt="">
+    <span>${product.name}</span>
+  `;
+  backdrop.querySelector('#plpVehicleNoticeWarning').innerHTML = vehicleKey
+    ? `<strong>This product is for a different vehicle.</strong> It's made for the ${productFor}, but your vehicle is set to the ${cfg.sessionVehicle.label}. Please confirm it's the right fit before ordering.`
+    : `<strong>You haven't set a vehicle yet.</strong> This product only fits the ${productFor}. Please confirm it fits your vehicle before ordering.`;
+  backdrop.querySelector('[data-vehicle-notice-set]').textContent = vehicleKey ? 'Change Vehicle' : 'Set Your Vehicle';
+  backdrop.hidden = false;
+}
+
+// Search page init — reads ?type=, mirrors the query into the header search box(es) so it can be
+// edited in place (and shows that box's clear (x) button to match), and closes the switcher menu
+// on any outside click.
+function plpInitSearchPage() {
+  const type = new URLSearchParams(window.location.search).get('type');
+  if (PLP_SEARCH_SCOPES.some(sc => sc.key === type)) plpState.searchScope = type;
+  document.querySelectorAll('.rrg-search input, .mm-mobile-search input').forEach(input => { input.value = plpState.searchQuery; });
+  document.querySelectorAll('.rrg-search .rrg-search-clear').forEach(btn => { btn.hidden = !plpState.searchQuery; });
+  document.addEventListener('click', () => {
+    const menu = document.querySelector('.plp-search-scope-menu');
+    if (menu && !menu.hidden) {
+      menu.hidden = true;
+      const btn = document.querySelector('.plp-search-scope-btn');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  plpRenderSearchHeadline();
+  plpRenderSearchScope();
 }
 
 // Zero-results state (spec Section 5) — doesn't exist anywhere else in the PLP family (every
@@ -340,10 +579,16 @@ function plpZeroResultsHTML() {
   const cfg = window.PLP_CONFIG;
   const cats = cfg.popularCategories || [];
   const featured = cfg.featuredForEmpty || cfg.products.slice(0, 4);
+  // A search with no products can still match pages/articles/brands (e.g. "warranty") — point
+  // at them rather than leaving the shopper at a dead end.
+  const otherScopes = PLP_SEARCH_SCOPES.filter(sc => sc.key !== 'products')
+    .map(sc => ({ ...sc, count: plpSearchScopeItems(sc.key).length }))
+    .filter(sc => sc.count > 0);
   return `
     <div class="plp-search-empty">
-      <h2>No results for &quot;${plpState.searchQuery}&quot;</h2>
+      <h2>No products found for &quot;${rrgEscapeHTML(plpState.searchQuery)}&quot;</h2>
       <p>Check your spelling, try fewer words, or a more general term.</p>
+      ${otherScopes.length ? `<p class="plp-search-empty-other">We did find ${otherScopes.map(sc => `<button type="button" data-scope="${sc.key}">${sc.count} ${sc.unit[sc.count === 1 ? 0 : 1]}</button>`).join(' and ')} matching your search.</p>` : ''}
       ${cats.length ? `
         <h3 class="plp-search-empty-subheading">Popular Categories</h3>
         <div class="plp-search-empty-cats">
@@ -704,6 +949,7 @@ function plpCardHTML(product, cfg) {
       </a>
       <div class="plp-card-body">
         ${plpBrandHTML(product)}
+        ${plpFitBadgeHTML(product)}
         <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${plpPriceHTML(product)}
@@ -745,6 +991,7 @@ function plpListCardHTML(product, cfg) {
         ${fitGalleryBtn}
       </div>
       <div class="plp-list-col-info">
+        ${plpFitBadgeHTML(product)}
         <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${usps}
@@ -785,8 +1032,12 @@ function plpRenderResults() {
   if (cfg.isSearch && total === 0) {
     wrap.className = 'plp-results plp-results-empty';
     wrap.innerHTML = plpZeroResultsHTML();
-    if (countLabel) countLabel.textContent = `0 Results for "${plpState.searchQuery}"`;
-    if (mobileCountLabel) mobileCountLabel.textContent = `0 Results for "${plpState.searchQuery}"`;
+    if (countLabel) countLabel.textContent = '';
+    if (mobileCountLabel) mobileCountLabel.textContent = '';
+    wrap.querySelectorAll('.plp-search-empty-other [data-scope]').forEach(btn => {
+      btn.addEventListener('click', () => { plpSetSearchScope(btn.dataset.scope); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    });
+    plpRenderSearchVehicleStrip();
     const emptyLevel3Row = document.getElementById('plpLevel3Row');
     if (emptyLevel3Row) { emptyLevel3Row.hidden = true; emptyLevel3Row.innerHTML = ''; }
     plpRenderPagination(0);
@@ -849,7 +1100,8 @@ function plpRenderResults() {
 
   wrap.innerHTML = cardsArr.join('') || `<div class="plp-no-results">No products match the selected filters.</div>`;
 
-  const searchSuffix = cfg.isSearch ? ` for "${plpState.searchQuery}"` : '';
+  // No "for <query>" suffix on the search page any more — the heading line already says it.
+  const searchSuffix = '';
   if (countLabel) {
     const from = total === 0 ? 0 : (isMobile ? 1 : (plpState.page - 1) * PLP_PAGE_SIZE + 1);
     const to = isMobile ? visible.length : Math.min(plpState.page * PLP_PAGE_SIZE, total);
@@ -859,6 +1111,7 @@ function plpRenderResults() {
 
   plpRenderPagination(total);
   plpBindCardEvents();
+  if (cfg.isSearch) plpRenderSearchVehicleStrip();
   if (cfg.vrs && plpVehicleIsSet()) {
     plpInitFitGalleryWidget();
   }
@@ -936,6 +1189,8 @@ function plpBindCardEvents() {
       btn.textContent = 'Added ✓';
       btn.disabled = true;
       setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
+      const product = window.PLP_CONFIG.products.find(p => p.id === btn.dataset.addtocartId);
+      if (product) plpMaybeShowVehicleNotice(product);
     });
   });
   document.querySelectorAll('#plpLevel3Row [data-subsubcat]').forEach(btn => {
@@ -1403,7 +1658,7 @@ document.addEventListener('DOMContentLoaded', () => {
     plpState.searchQuery = (urlQuery !== null ? urlQuery : window.PLP_CONFIG.initialQuery) || '';
   }
   plpRenderShopBy();
-  if (window.PLP_CONFIG.isSearch) { plpInitSearchBar(); plpRenderSearchTabs(); }
+  if (window.PLP_CONFIG.isSearch) { plpInitSearchPage(); plpRenderSearchTabs(); }
   plpRenderFilters();
   plpBuildFilterDrawer();
   plpInitToolbar();
@@ -1419,4 +1674,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('rrg-session-change', plpRenderHero);
   document.addEventListener('rrg-session-change', plpApplyCategoryImage);
   document.addEventListener('rrg-session-change', plpRenderResults);
+  // Vehicle-scoped page buttons/Pages results come and go with the session vehicle.
+  if (window.PLP_CONFIG.isSearch) document.addEventListener('rrg-session-change', () => { plpRenderSearchHeadline(); plpRenderSearchScope(); });
 });

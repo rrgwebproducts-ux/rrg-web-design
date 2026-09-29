@@ -13,7 +13,7 @@ const MM_CLOSE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor
 const MM_MOBILE_UTILITY_LINKS = [
   { label: 'Store Finder', href: '#' },
   { label: 'Fit My Vehicle', href: '#' },
-  { label: 'Catalogue', href: '#' },
+  { label: 'Clearance', href: '#' },
   { label: 'Services', href: '#' },
 ];
 // Level-1 category icons (header-spec.md Section 8, build-order item 4) — Brenton supplied a

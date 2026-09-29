@@ -10,7 +10,9 @@
 
 **This page reuses the PLP/VPLP/Camping engine's product grid, cards, sort, pagination, and mobile filter drawer wholesale** — those components are now fully documented in `docs/plp/PLP-DEVELOPER-BRIEF.md` (written 2026-09-22, after this brief flagged it was missing). This brief documents the **search-specific** pieces in full (Section 4) and only summarizes the reused PLP-family pieces with a pointer to that brief, rather than re-documenting card/grid/pagination behaviour it now owns properly.
 
-**Build status:** built as `prototypes/search-results/index.html`, worked example query is "roof rack" (13 results spanning Roof Racks and Bike Racks). Playwright-verified across every round below: desktop (1440px) and mobile (390px, zero horizontal overflow), category quick-tabs + Level 3 icon-card filtering, zero-results state, mobile filter drawer, sidebar merchandising, header search entry points. Zero console errors throughout (aside from the usual harmless favicon 404). Pushed to `main` across several commits from 2026-09-21 through 2026-09-22 (`6504017` initial build, `240c273`/`af18f60`/`6b218d1`/`e450ed1` follow-ups) — see the spec doc and project memory for the exact history if needed.
+**Reworked 2026-09-29** after the 2026-09-24 design meeting: the page's own search box is gone (one heading line with an "in Products ▾" switcher replaces it), matching site pages appear as buttons beside the heading, and results are now vehicle-aware. Sections 3, 4.1, 4.5 and the new 4.7 describe the current build; `search-results-spec.md` Section 9 has the reasoning.
+
+**Build status:** built as `prototypes/search-results/index.html`, worked example query is "roof rack" (16 results spanning Roof Racks and Bike Racks, including 3 Ford Ranger products added 2026-09-29 to demo vehicle-aware ordering). Playwright-verified across every round below: desktop (1440px) and mobile (390px, zero horizontal overflow), category quick-tabs + Level 3 icon-card filtering, zero-results state, mobile filter drawer, sidebar merchandising, header search entry points. Zero console errors throughout (aside from the usual harmless favicon 404). Pushed to `main` across several commits from 2026-09-21 through 2026-09-22 (`6504017` initial build, `240c273`/`af18f60`/`6b218d1`/`e450ed1` follow-ups) — see the spec doc and project memory for the exact history if needed.
 
 ---
 
@@ -26,16 +28,19 @@ The product grid/card, filter sidebar, and sort/pagination controls use the same
 
 One page, section order top to bottom:
 
-1. Global Header (incl. the search box that leads here — Section 6) + vehicle strip
-2. Breadcrumb ("Home > Search Results", static — not a real taxonomy trail, since a search isn't a category) + "Search Results" heading
-3. Results bar — inline editable search box + "Showing X of N results for '\<query\>'" (Section 4.1)
-4. Category quick-tabs (Section 4.2)
-5. Toolbar — grid/list toggle + Sort dropdown (reused from PLP, unchanged)
-6. Two-column layout below the toolbar:
-   - **Sidebar:** Filters (universal facet set, Section 4.3) + Merchandising block (Section 4.4)
-   - **Main:** Level 3 icon-card row when one category is narrowed (Section 4.2) → product grid/list (reused from PLP, unchanged) → pagination (reused, unchanged)
-   - **OR**, if the query matches nothing: the zero-results state entirely replaces the grid/pagination (Section 4.5)
-7. Global Footer
+1. Global Header (incl. the search box that leads here — Enter, the search button, or the dropdown's links) + vehicle strip
+2. Breadcrumb ("Home > Search Results", static — not a real taxonomy trail, since a search isn't a category)
+3. Heading line — `Search results for "<query>" in Products ▾` + count on the left, up to 3 page buttons on the right (Section 4.1)
+4. **Products view** (the switcher's default):
+   1. Vehicle strip — only when the results contain vehicle-specific products (Section 4.7)
+   2. Category quick-tabs (Section 4.2)
+   3. Toolbar — grid/list toggle + "Showing 1–12 of N Results" + Sort dropdown (reused from PLP)
+   4. Two-column layout below the toolbar:
+      - **Sidebar:** Filters (universal facet set, Section 4.3) + Merchandising block (Section 4.4)
+      - **Main:** Level 3 icon-card row when one category is narrowed (Section 4.2) → product grid/list (reused from PLP) → pagination (reused)
+      - **OR**, if the query matches no products: the zero-results state replaces the grid/pagination (Section 4.5)
+5. **OR Pages / Articles / Brands view** — replaces everything in item 4 when chosen in the switcher (Section 4.1)
+6. Global Footer
 
 **Screenshots:**
 - Desktop (1440px), full page, default "roof rack" query: ![Search Results — desktop full page](search-results-dev-brief-assets/fullpage-desktop.png)
@@ -45,19 +50,29 @@ One page, section order top to bottom:
 
 ## 4. Component Library
 
-### 4.1 Results Bar (inline search box)
+### 4.1 Heading Line — query, "in Products ▾" switcher, page buttons
 
-**Name:** Results Bar
+**Name:** Heading Line (replaced the old Results Bar + "Search Results" heading, 2026-09-29)
 
-**Location:** replaces the hero/breadcrumb-CTA-row a PLP would have, directly below the static breadcrumb + heading.
+**Location:** directly below the static breadcrumb — the first thing on the page.
 
-**Purpose:** lets a shopper refine or completely change their search without going back to the header box — genuinely resubmittable in place, not just a link back to the header.
+**Purpose:** say what was searched for and get the shopper to results immediately. The page used to have a generic heading and its own search box stacked above the tabs, which pushed every product below the fold; the header search box already does the searching, so this page no longer has one.
 
-**Contents:** a real `<form>` (`#plpSearchForm`) with a text input (`#plpSearchInput`, pre-filled with the current query) and a Search button, plus a result-count line: `Showing 1–12 of N Results for "<query>"` (or `0 Results for "<query>"` in the zero-results state).
+**Contents, left to right:**
+- `<h1>`: `Search results for "<query>"`.
+- **Switcher** — `in Products ▾` (styled like the heading, in brand red with an underline; modelled on Supercheap Auto's search page). Opens a small menu: **Products (N)**, **Pages (N)**, **Articles (N)**, **Brands (N)**. Products is always listed, even at 0; the others only appear when they have at least one match.
+- Count for the current view, e.g. "16 products".
+- **Page buttons** (right-aligned, max 3, outline buttons) — site pages whose keywords match the query *and* are flagged as button-worthy: Fit My Vehicle, the matching vehicle landing page (VCLP), Find a Store. Help articles and plain info pages (Warranty, Delivery...) never appear as buttons, only inside the Pages/Articles views. Vehicle pages (e.g. "Toyota Hilux Roof Racks") only appear when a vehicle is set in session or the query names that vehicle.
 
-**Behaviour:** submitting the form sets the active query, resets any active filters (a Brand/Category selection from the old query's results may not even exist in the new one — deliberate, not a bug) and re-renders the tabs/filters/grid. No vehicle-context row is repeated here — the header's own vehicle strip already shows that globally, and nothing on this page is vehicle-scoped.
+**Switcher views:** choosing Pages/Articles/Brands hides the whole Products view (strip, tabs, toolbar, filters, grid) and shows a card grid instead — Pages: type label (Page / Vehicle Page / Category) + title + one-line description; Articles: "Buying Guide · \<topic\>" + title + description + Read More (help-centre articles); Brands: logo (or text wordmark) + "Shop \<Brand\>" linking to the brand page. The chosen view is written to `?type=` so it survives a reload or shared link.
 
-**Screenshot:** ![Results Bar](search-results-dev-brief-assets/resultsbar-closeup.png) (top of this same screenshot also shows the breadcrumb/heading above it and the first quick-tab below it)
+**Behaviour:** the query arrives as `?q=` and is also copied back into the header search box on this page, so the shopper can edit it in place. The header box now genuinely submits — Enter or its search button navigate here (previously only the dropdown's "View All Results" link did).
+
+**Data source:** the prototype matches Pages/Articles/Brands against a shared hardcoded list in `shared.js` (`RRG_SEARCH_PAGES`, `RRG_SEARCH_BRANDS`) — every entry is a real page, brand page or help-centre article crawled 2026-09-29. **In Magento these should come from the search index** (Algolia), indexed alongside products, with a "show as button" flag on the handful of pages that should appear as heading buttons.
+
+**Mobile:** the heading wraps; page buttons drop onto their own row underneath as a single horizontally scrolling line.
+
+**Screenshots:** ![Heading line, vehicle set](search-results-dev-brief-assets/headline-closeup.png) ![Switcher open](search-results-dev-brief-assets/switcher-open.png) ![Articles view](search-results-dev-brief-assets/switcher-articles.png)
 
 ---
 
@@ -116,7 +131,7 @@ One page, section order top to bottom:
 **Purpose:** genuinely new — every PLP/VPLP/Camping template has products by construction, so this is the first page type in this project that needs a real empty state.
 
 **Contents, top to bottom:**
-1. `No results for "<query>"` heading + a short hint to check spelling, try fewer words, or a more general term. (Spelling correction / "did you mean" was explicitly scoped out for this round — see the spec doc Section 8 — this is a static hint line only, not a real suggestion engine.)
+1. `No products found for "<query>"` heading + a short hint to check spelling, try fewer words, or a more general term. (Spelling correction / "did you mean" was explicitly scoped out for this round — see the spec doc Section 8 — this is a static hint line only, not a real suggestion engine.) **Added 2026-09-29:** if the query matched no products but did match pages, articles or brands (e.g. "warranty"), a line underneath says "We did find 1 page matching your search", linking straight to that view of the switcher (4.1).
 2. **Popular Categories** — three links to the real Roof Racks/Bike Racks/Camping Gear category pages (not `href="#"` placeholders).
 3. **"You Might Like"** — a small featured-product row reusing the exact same product card component as the main grid. **Built as a genuine horizontal-scroll carousel** (not a wrapping grid) — exactly 3 cards visible on desktop with the 4th+ reachable by scroll; this was a real regression caught and fixed 2026-09-22 (an in-progress edit had briefly turned it into a 3-column grid, which wrapped the 4th card onto a visible second row instead of scrolling).
 
@@ -131,6 +146,30 @@ One page, section order top to bottom:
 **Purpose/contents:** identical to the PLP/VPLP/Camping templates — grid/list toggle, ribbons, sale pricing (Save X%), Add to Cart vs. View Options split, Show Specs expandable row, Compare Products checkboxes/drawer, Sort dropdown (Relevance/Newest/Best Selling/Highest Rated/Price Low→High/Price High→Low), desktop numbered pagination + mobile "Show More," and the mobile filter drawer pattern. **None of this is re-documented here** — see `docs/plp/PLP-DEVELOPER-BRIEF.md` Section 4 (4.6, 4.8, 4.12) for the real component-level detail (Name/Purpose/States/screenshots per widget). This brief only confirms that search-results uses these components completely unchanged.
 
 **Screenshot (mobile filter drawer, showing the same universal facet set as 4.3):** ![Mobile filter drawer](search-results-dev-brief-assets/mobile-drawer.png)
+
+---
+
+### 4.7 Vehicle-Aware Results (strip, ordering, "Fits" tag, Add to Cart notice)
+
+**Name:** Vehicle-aware results (added 2026-09-29)
+
+**Location:** strip between the heading line and the category tabs; "Fits" tag on product cards; the notice is a centred pop-up over the page.
+
+**Purpose:** search results mix vehicle-specific products (rack sets, platforms, fitting kits) with universal ones. A shopper who has told us their vehicle should see what fits first; a shopper who hasn't should be nudged to, and shouldn't quick-add the wrong vehicle's rack set without being warned.
+
+**Source of truth:** the session vehicle — the same one the header's "Your Vehicle: …" shows and the Site Admin Panel's Vehicle Set toggle controls in the prototype. Each product carries which vehicle it fits (`fitsVehicle` in the prototype; empty for universal products).
+
+**States:**
+- **Vehicle set, Sort = Relevance:** results ordered in three tiers — fits the session vehicle → not vehicle-specific → fits a different vehicle — with normal relevance order inside each tier. **Nothing is hidden or filtered out** (the meeting was explicit: matches "take precedence", not "exclusively"). Matching cards show a green "✓ Fits your Toyota Hilux" tag under the brand logo. Slim green strip: "Products that fit your Toyota Hilux are shown first." + Change Vehicle link. If nothing in the results fits (e.g. searching "ranger" with a Hilux set), the strip instead says "None of these vehicle-specific products fit your Toyota Hilux."
+- **Vehicle set, any other sort:** the shopper's chosen sort wins; no tier ordering, no strip (the "Fits" tag still shows).
+- **No vehicle set:** normal relevance order. Grey strip: "**Some of these products are vehicle-specific.** Set your vehicle to see what fits first." + Set Your Vehicle button (opens the vehicle selector in production; in the prototype it just flips the session toggle). Only shown when the results actually contain a vehicle-specific product — a "bike racks" search gets no strip.
+- **Quick Add to Cart on a vehicle-specific product, no vehicle set:** the product **is added** (nothing is blocked), then a pop-up: "✓ Added to cart", the product thumbnail + name, and an amber warning — "You haven't set a vehicle yet. This product only fits the Toyota Hilux N80 4dr Ute (2015 to 2026). Please confirm it fits your vehicle before ordering." — with Set Your Vehicle / Continue Shopping buttons. Closes on the ×, the backdrop, Escape or Continue Shopping.
+- **Same, but a different vehicle is set:** same pop-up, warning reads "This product is for a different vehicle. It's made for the Ford Ranger P703 4dr Ute (2022 onwards), but your vehicle is set to the Toyota Hilux…", button reads Change Vehicle. (Not raised in the meeting — added because it's the same risk.)
+- Products with options (siblings/grouped) keep "View Options" instead of quick add, so they never trigger the pop-up — the PDP handles vehicle confirmation for those.
+
+**For Magento:** the pop-up logic is purely client-side on the add-to-cart response; it needs the product's fitment vehicle and the session vehicle, both of which already exist for the PDP's own fitment checks.
+
+**Screenshots:** ![No-vehicle strip](search-results-dev-brief-assets/vehicle-strip-none.png) ![Add to Cart vehicle notice](search-results-dev-brief-assets/vehicle-notice.png)
 
 ---
 
@@ -154,3 +193,6 @@ One page, section order top to bottom:
 4. **Universal filter set (Brand/Price/Availability/Rating) is this project's own proposed minimum**, not a client-confirmed list (spec doc Section 8, item 4) — flag for review.
 5. **Compare Products / VRS-adjacent card behaviour in a mixed result set** was assumed to need no special-casing (card behaviour is card-level, not page-level) but hasn't been specifically visually verified with a VRS product sitting next to non-VRS products in the same grid (spec doc Section 8, item 3).
 6. **Category quick-tabs vs. sidebar Category filter showing the same categories in two places** was a deliberate design call (one shared selection, two surfaces), but is worth confirming with Brenton/the client that it doesn't read as redundant now that it's actually visible and built (spec doc Section 8, item 2).
+7. **How the category tabs are built from a real search** (which Level 1 tabs a query like "bracket" produces, and whether a Level 1 then expands its Level 2 like the mega menu) — left for Marc to work out with the search engine's category data, per the 2026-09-24 meeting.
+8. **Query intent parsing** (e.g. "Hilux roof racks" → set the vehicle and Roof Racks category automatically instead of keyword-matching) — floated in the meeting as worth doing if the search engine supports it; not prototyped.
+9. **Pages/Articles/Brands need indexing** alongside products (Section 4.1 data source note) — the prototype's hardcoded lists are demo-only.

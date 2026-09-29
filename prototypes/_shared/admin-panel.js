@@ -23,7 +23,7 @@ function buildSiteAdminPanel(currentKey) {
   const templates = [
     { key: 'simple', label: 'Simple', href: '../simple/index.html' },
     { key: 'config-variant', label: 'Config-Variant', href: '../config-variant/index.html' },
-    { key: 'sibling-color', label: 'Sibling-Color', href: '../sibling-color/index.html' },
+    { key: 'sibling-color', label: 'Sibling-Colour', href: '../sibling-color/index.html' },
     { key: 'vehicle-specific', label: 'Vehicle-Specific', href: '../vehicle-specific/index.html' },
     { key: 'grouped-bundle', label: 'Grouped/Bundle', href: '../grouped-bundle/index.html' },
   ];
