@@ -1126,6 +1126,7 @@ What the Demo State controls do on each page type today:
   - All rows start **closed** on every page load, including the group for the page you're on. Only one row can be open at a time.
   - Site Admin has two groups. **Pages:** Product pages, Category & listing, Other, Developer briefs, each showing its link count. **Settings:** Shopper session, Build phase, Site promotions, Prototype tools.
   - A closed settings row shows its current value (e.g. "Logged in · Hilux", "Phase 1", "Sale on"), so nothing that's switched on is hidden.
+- **P13 ✅ Region sticks, and can be set by link (Brenton, 2026-09-29).** `?region=uk` (or `au`/`nz`) on any prototype URL sets the region, and it stays set across pages until changed from the header flag menu. It used to reset to AU on every page load. Reset in Site Admin clears it. PDP brief 4.1 updated.
 
 ### 15.2 Global shell: index, header prototype, footer, `<head>` (G)
 - **G1 ✅ The root `prototypes/index.html` gets the real header, footer and panels.** Its header is a hand copy from 09-10/11. It has:

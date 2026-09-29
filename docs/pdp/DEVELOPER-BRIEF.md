@@ -225,6 +225,8 @@ Every widget named in `PAGE-GLOSSARY.md`, one entry each — Name/Location/Purpo
 
 Same open/close interaction pattern already used elsewhere on the page for the "Products" template-switcher menu: click the button to open a menu, click outside (or pick an option) to close it. No page reload — picking a region calls one JS function, `applyRegion(region)`, which re-renders everything listed in the cascade table below.
 
+**Remembered choice and shareable links (2026-09-29):** the chosen region sticks across pages until it's changed again from this menu. A link can also set it: add `?region=uk` (or `au` / `nz`) to any prototype URL, e.g. `simple/index.html?region=uk`. The prototype keeps it in `localStorage` (`rrgRegion`); Site Admin's "Reset all demo settings" clears it back to AU. In production, the region comes from the store/domain, not this.
+
 *(Note: the dropdown's own open/close mechanics live in header markup, which is otherwise out of scope for this brief — documented here as a narrow, deliberate exception, since it's inseparable from explaining the cascade it triggers.)*
 
 ```html

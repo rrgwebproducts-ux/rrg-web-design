@@ -1818,11 +1818,32 @@ function initRegionSwitcher() {
     a.addEventListener('click', (e) => {
       e.preventDefault();
       applyRegion(a.dataset.region);
+      try { localStorage.setItem(REGION_STORE_KEY, a.dataset.region); } catch (err) {}
       wrap.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     });
   });
-  applyRegion('AU');
+  const region = initialRegion();
+  applyRegion(region);
+  // Some templates draw more prices after this runs (e.g. the Search Results price filter,
+  // plp.js's own DOMContentLoaded) — re-sweep the currency once every setup handler is done.
+  if (region === 'UK') setTimeout(() => applyRegionCurrency(currentRegion), 0);
+}
+
+// Region sticks across pages (2026-09-29, Brenton): a shareable link can set it with
+// ?region=uk (or au/nz), and that — or a pick from the header flag menu — is remembered until
+// the header menu changes it again. Site Admin → Reset clears it (it's an rrg* key).
+const REGION_STORE_KEY = 'rrgRegion';
+function initialRegion() {
+  const valid = r => ['AU', 'NZ', 'UK'].includes(r) ? r : null;
+  const fromUrl = valid((new URLSearchParams(window.location.search).get('region') || '').toUpperCase());
+  if (fromUrl) {
+    try { localStorage.setItem(REGION_STORE_KEY, fromUrl); } catch (err) {}
+    return fromUrl;
+  }
+  let stored = null;
+  try { stored = valid(localStorage.getItem(REGION_STORE_KEY)); } catch (err) {}
+  return stored || 'AU';
 }
 
 // ---- Paid "Fitted" option (demo-preview only, 2026-09-10 client meeting) ----
