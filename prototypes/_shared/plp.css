@@ -536,49 +536,51 @@
   .plp-search-page-btns{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:2px;}
 }
 
-/* Vehicle strip (2026-09-24 meeting) — plpRenderSearchVehicleStrip(). No-vehicle state is the
-   grey "may be vehicle-specific, set your vehicle" bar (same idea as Supercheap's); .is-set is a
-   quieter green confirmation that vehicle matches are sorted first. */
-.plp-search-vehicle-strip{display:flex;align-items:center;gap:14px;background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:var(--radius);padding:10px 14px;margin-bottom:14px;}
-.plp-search-vehicle-strip p{margin:0;flex:1;font-size:14px;}
-.plp-search-vehicle-icon{flex:0 0 auto;width:36px;height:36px;border-radius:6px;background:var(--rrg-black);color:#fff;display:flex;align-items:center;justify-content:center;}
-.plp-search-vehicle-icon svg{width:22px;height:22px;}
-.plp-search-vehicle-btn{padding:8px 16px;font-size:13px;white-space:nowrap;}
-.plp-search-vehicle-strip.is-set{background:var(--rrg-fits-bg);border-color:transparent;padding:8px 14px;}
-.plp-search-vehicle-strip.is-set .plp-search-vehicle-icon{background:var(--rrg-fits);width:30px;height:30px;}
-.plp-search-vehicle-strip.is-set .plp-search-vehicle-icon svg{width:18px;height:18px;}
-.plp-search-vehicle-link{font-size:13px;font-weight:700;color:var(--rrg-black);white-space:nowrap;}
+/* Vehicle strip (2026-09-24 meeting; restyled 2026-09-29) — plpRenderSearchVehicleStrip(). Uses
+   the PDP's own .fitment card styles (shared.css) for border, icon, label and state colours;
+   only layout is added here: one row, action button pinned right. */
+.plp-search-vehicle-strip{align-items:center;margin-bottom:14px;}
+.plp-search-vehicle-text{flex:1;min-width:0;}
+.plp-search-vehicle-strip .actions{margin-top:0;flex:0 0 auto;}
 @media (max-width:600px){
   .plp-search-vehicle-strip{flex-wrap:wrap;}
-  .plp-search-vehicle-strip p{flex:1 1 calc(100% - 50px);}
-  .plp-search-vehicle-btn{width:100%;}
+  .plp-search-vehicle-text{flex:1 1 calc(100% - 40px);}
+  .plp-search-vehicle-strip .actions{width:100%;}
+  .plp-search-vehicle-strip .actions button{width:100%;}
 }
 
-/* "Fits your Toyota Hilux" card tag — search page, vehicle set, exact match (plpFitBadgeHTML). */
-.plp-fit-badge{display:inline-block;align-self:center;margin:2px 0 6px;padding:3px 8px;border-radius:6px;background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:12px;font-weight:700;}
-.plp-results.is-list .plp-fit-badge{align-self:flex-start;}
+/* Fitment status on product cards (2026-09-29) — plpFitStatusHTML(). A compact version of the
+   PDP's .fitment card (shared.css): same 3px coloured left border, car icon, Barlow uppercase
+   label and state colours (--rrg-fits / --rrg-nofit / --rrg-unknown), one short detail line,
+   no action buttons. Left-aligned even inside the centred grid card, like the PDP card. */
+.plp-fitment{display:flex;align-items:center;gap:10px;margin:4px 0 10px;padding:8px 10px;border:1px solid var(--rrg-line);border-left-width:3px;border-radius:var(--radius);background:#fff;text-align:left;}
+.plp-fitment-icon{width:22px;height:22px;flex:0 0 auto;}
+.plp-fitment div{min-width:0;}
+.plp-fitment strong{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;}
+.plp-fitment span{display:block;font-size:12.5px;color:#4a4a4a;line-height:1.3;}
+.plp-fitment.fits{border-left-color:var(--rrg-fits);}
+.plp-fitment.fits strong,.plp-fitment.fits .plp-fitment-icon{color:var(--rrg-fits);}
+.plp-fitment.no_fit{border-left-color:var(--rrg-nofit);}
+.plp-fitment.no_fit strong,.plp-fitment.no_fit .plp-fitment-icon{color:var(--rrg-nofit);}
+.plp-fitment.unknown{border-left-color:var(--rrg-unknown);}
+.plp-fitment.unknown strong,.plp-fitment.unknown .plp-fitment-icon{color:var(--rrg-unknown);}
 
-/* Pages / Articles / Brands views of the heading's switcher (plpSearchOtherScopeHTML). */
-.plp-search-other-scope{padding:6px 0 40px;border-top:1px solid var(--rrg-line);}
-.plp-scope-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding-top:20px;}
-.plp-scope-card{display:flex;flex-direction:column;gap:6px;padding:18px;border:1px solid var(--rrg-line);border-radius:var(--radius);text-decoration:none;color:inherit;}
-.plp-scope-card:hover{border-color:var(--rrg-black);}
-.plp-scope-card h3{font-size:21px;line-height:1.15;margin:0;text-transform:none;}
-.plp-scope-card p{margin:0;font-size:14px;color:#555;flex:1;}
-.plp-scope-type{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#888;}
-.plp-scope-more{margin-top:6px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;color:var(--rrg-red);}
-.plp-scope-brands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;padding-top:20px;}
-.plp-scope-brand{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 12px 14px;border:1px solid var(--rrg-line);border-radius:var(--radius);text-decoration:none;color:inherit;text-align:center;}
-.plp-scope-brand:hover{border-color:var(--rrg-black);}
-.plp-scope-brand-mark{height:48px;display:flex;align-items:center;justify-content:center;}
-.plp-scope-brand-mark img{max-height:48px;max-width:140px;object-fit:contain;}
-.plp-scope-brand-text{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;}
-.plp-scope-brand .plp-scope-more{margin-top:0;font-size:13px;}
-@media (max-width:900px){
-  .plp-scope-cards{grid-template-columns:1fr;gap:12px;padding-top:14px;}
-  .plp-scope-brands{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:14px;}
-}
+/* Pages / Articles / Brands views of the switcher (2026-09-29, second pass) — rendered into the
+   same #plpResults grid as product cards, on the same .plp-card frame (image on top, body,
+   full-width action at the bottom), so switching views keeps the page's shape. Only the
+   card-body content differs: an eyebrow (type / topic), title, one-line description. */
 
+
+.plp-results-scope .plp-card-title{text-align:center;}
+.plp-results-scope .plp-card-actions{margin-top:auto;}
+.plp-scope-type{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#888;margin-bottom:4px;}
+.plp-scope-desc{margin:4px 0 14px;font-size:14px;color:#555;line-height:1.45;}
+/* No listing image at all — the intended fallback for older pages/blogs, not a broken image. */
+.plp-scope-media-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--rrg-bg);}
+.plp-scope-media-fallback img{width:55%;max-width:200px;opacity:.35;}
+.plp-scope-brand-media{display:flex;align-items:center;justify-content:center;padding:24px;}
+.plp-scope-brand-media img{max-width:70%;max-height:60%;object-fit:contain;}
+.plp-scope-brand-text{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:30px;text-transform:uppercase;color:var(--rrg-black);}
 /* Add to Cart vehicle notice (2026-09-24 meeting) — plpMaybeShowVehicleNotice(). */
 .plp-vehicle-notice-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;}
 .plp-vehicle-notice{position:relative;background:#fff;border-radius:var(--radius);width:100%;max-width:460px;padding:22px 22px 20px;box-shadow:0 16px 40px rgba(0,0,0,.25);}

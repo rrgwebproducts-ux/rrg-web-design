@@ -29,7 +29,7 @@ The product grid/card, filter sidebar, and sort/pagination controls use the same
 One page, section order top to bottom:
 
 1. Global Header (incl. the search box that leads here — Enter, the search button, or the dropdown's links) + vehicle strip
-2. Breadcrumb ("Home > Search Results", static — not a real taxonomy trail, since a search isn't a category)
+2. Breadcrumb — "Home > Search results for > \<query\>" (not a real taxonomy trail, since a search isn't a category; the middle crumb isn't a link)
 3. Heading line — `Search results for "<query>" in Products ▾` + count on the left, up to 3 page buttons on the right (Section 4.1)
 4. **Products view** (the switcher's default):
    1. Vehicle strip — only when the results contain vehicle-specific products (Section 4.7)
@@ -64,7 +64,18 @@ One page, section order top to bottom:
 - Count for the current view, e.g. "16 products".
 - **Page buttons** (right-aligned, max 3, outline buttons) — site pages whose keywords match the query *and* are flagged as button-worthy: Fit My Vehicle, the matching vehicle landing page (VCLP), Find a Store. Help articles and plain info pages (Warranty, Delivery...) never appear as buttons, only inside the Pages/Articles views. Vehicle pages (e.g. "Toyota Hilux Roof Racks") only appear when a vehicle is set in session or the query names that vehicle.
 
-**Switcher views:** choosing Pages/Articles/Brands hides the whole Products view (strip, tabs, toolbar, filters, grid) and shows a card grid instead — Pages: type label (Page / Vehicle Page / Category) + title + one-line description; Articles: "Buying Guide · \<topic\>" + title + description + Read More (help-centre articles); Brands: logo (or text wordmark) + "Shop \<Brand\>" linking to the brand page. The chosen view is written to `?type=` so it survives a reload or shared link.
+**Switcher views — same frame, different content** (reworked 2026-09-29 after Brenton found the first version's plain card grid too big a jump from Products): every view keeps the same page skeleton — tab row, toolbar (count + sort), filter sidebar + merchandising, 3-column card grid on the same product-card frame (image top, body, full-width action at the bottom). Only the content changes:
+
+| View | Tab row | Sidebar filters | Sort | Card |
+|---|---|---|---|---|
+| Products | Categories in the results (4.2) | Universal facets (4.3) | Relevance, Newest, Best Selling, Rating, Price | Product card |
+| Pages | Vehicle Pages / Categories / Tools & Services / Help & Policies | Page Type | Relevance, Title A–Z | Image, type, title, one-line description, View Page |
+| Articles | The same product categories as Products, same icons (Roof Racks / Bike Racks / Roof Boxes…) | Topic, Type (Buying Guide / FAQ) | Relevance, Title A–Z | Image, "FAQ · Roof Racks", title, description, Read Article |
+| Brands | The categories each brand sells (a brand can appear under several) | Sells | Relevance, Name A–Z | Logo (or wordmark), name, what it sells, Shop \<Brand\> |
+
+Tabs only show categories/groups that have results. The grid/list toggle and vehicle strip are Products-only. Each view keeps its own tab/filter/sort selection, so switching back to Products restores exactly what was selected there. The chosen view is written to `?type=` so it survives a reload or shared link.
+
+**Listing images:** every page and article card needs its own primary image — **not the site-wide Facebook share image**, which is the same on every page. In the prototype, real article images come from the help centre where they exist; the live static pages have no images at all and 7 of the articles don't either, so those use a relevant real product photo marked as a stand-in. A page with no image at all shows a logo fallback tile (Warranty/Delivery/Returns in the demo) — build that fallback for older pages/blogs, and **add a listing-image field to every CMS page and blog post** going forward.
 
 **Behaviour:** the query arrives as `?q=` and is also copied back into the header search box on this page, so the shopper can edit it in place. The header box now genuinely submits — Enter or its search button navigate here (previously only the dropdown's "View All Results" link did).
 
@@ -149,7 +160,7 @@ One page, section order top to bottom:
 
 ---
 
-### 4.7 Vehicle-Aware Results (strip, ordering, "Fits" tag, Add to Cart notice)
+### 4.7 Vehicle-Aware Results (fitment strip, ordering, card fitment status, Add to Cart notice)
 
 **Name:** Vehicle-aware results (added 2026-09-29)
 
@@ -159,10 +170,13 @@ One page, section order top to bottom:
 
 **Source of truth:** the session vehicle — the same one the header's "Your Vehicle: …" shows and the Site Admin Panel's Vehicle Set toggle controls in the prototype. Each product carries which vehicle it fits (`fitsVehicle` in the prototype; empty for universal products).
 
+**One component, three levels of detail (2026-09-29, Brenton):** the strip and the card status are the **same component as the vehicle-specific PDP's fitment card** (`.fitment` in `shared.css`: white box, 3px coloured left border, car icon, Barlow uppercase label, detail line), in the same three states and colours — green *fits*, red *doesn't fit*, amber *confirm your vehicle*. The PDP card is the full version; the strip is the same card with an action button on the right; the product-card status is the compact version (label + just the vehicle, no actions). The strip literally uses the PDP card's CSS classes, so they can't drift apart — build it as one shared component in Magento.
+
 **States:**
-- **Vehicle set, Sort = Relevance:** results ordered in three tiers — fits the session vehicle → not vehicle-specific → fits a different vehicle — with normal relevance order inside each tier. **Nothing is hidden or filtered out** (the meeting was explicit: matches "take precedence", not "exclusively"). Matching cards show a green "✓ Fits your Toyota Hilux" tag under the brand logo. Slim green strip: "Products that fit your Toyota Hilux are shown first." + Change Vehicle link. If nothing in the results fits (e.g. searching "ranger" with a Hilux set), the strip instead says "None of these vehicle-specific products fit your Toyota Hilux."
-- **Vehicle set, any other sort:** the shopper's chosen sort wins; no tier ordering, no strip (the "Fits" tag still shows).
-- **No vehicle set:** normal relevance order. Grey strip: "**Some of these products are vehicle-specific.** Set your vehicle to see what fits first." + Set Your Vehicle button (opens the vehicle selector in production; in the prototype it just flips the session toggle). Only shown when the results actually contain a vehicle-specific product — a "bike racks" search gets no strip.
+- **Vehicle set, Sort = Relevance:** results ordered in three tiers — fits the session vehicle → not vehicle-specific → fits a different vehicle — with normal relevance order inside each tier. **Nothing is hidden or filtered out** (the meeting was explicit: matches "take precedence", not "exclusively"). Strip (green): "FITS YOUR VEHICLE FIRST — Products that fit your Toyota Hilux N80 are shown first." + Change vehicle. If nothing in the results fits (e.g. searching "ranger" with a Hilux set), the strip goes red: "NOTHING HERE FITS YOUR VEHICLE — None of these vehicle-specific products fit your Toyota Hilux N80."
+- **Vehicle set, any other sort:** the shopper's chosen sort wins; no tier ordering, no strip (card statuses still show).
+- **No vehicle set:** normal relevance order. Strip (amber): "CONFIRM YOUR VEHICLE — Some of these products are vehicle-specific. Set your vehicle to see what fits first." + Select your vehicle (opens the vehicle selector in production; in the prototype it just flips the session toggle). Only shown when the results actually contain a vehicle-specific product — a "bike racks" search gets no strip.
+- **Product-card status**, under the brand logo, vehicle-specific products only: green "FITS YOUR VEHICLE / Toyota Hilux N80", red "DOESN'T FIT YOUR VEHICLE / Built for Ford Ranger P703", or amber "CONFIRM YOUR VEHICLE / Suits Toyota Hilux N80" when no vehicle is set. **This is on every PLP-family page, not just search** — the Vehicle PLP shows it on every card (all its products are Hilux N80 rack sets); the bike-rack and camping PLPs have no vehicle-specific products, so nothing shows there. The Add to Cart notice below works on every PLP-family page too.
 - **Quick Add to Cart on a vehicle-specific product, no vehicle set:** the product **is added** (nothing is blocked), then a pop-up: "✓ Added to cart", the product thumbnail + name, and an amber warning — "You haven't set a vehicle yet. This product only fits the Toyota Hilux N80 4dr Ute (2015 to 2026). Please confirm it fits your vehicle before ordering." — with Set Your Vehicle / Continue Shopping buttons. Closes on the ×, the backdrop, Escape or Continue Shopping.
 - **Same, but a different vehicle is set:** same pop-up, warning reads "This product is for a different vehicle. It's made for the Ford Ranger P703 4dr Ute (2022 onwards), but your vehicle is set to the Toyota Hilux…", button reads Change Vehicle. (Not raised in the meeting — added because it's the same risk.)
 - Products with options (siblings/grouped) keep "View Options" instead of quick add, so they never trigger the pop-up — the PDP handles vehicle confirmation for those.

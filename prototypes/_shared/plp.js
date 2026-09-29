@@ -78,6 +78,9 @@ const plpState = {
   view: 'grid',          // 'grid' | 'list' — reset from PLP_CONFIG.defaultView on init
   searchQuery: '',       // search-results page only, from PLP_CONFIG.initialQuery on init
   searchScope: 'products', // search-results page only: 'products' | 'pages' | 'articles' | 'brands' (the heading's switcher)
+  scopeTab: '',          // search-results page, non-Products views only — see plpScopeDef()
+  scopeFilters: {},      // { facetKey: Set(values) }, non-Products views only
+  scopeSort: 'relevance', // 'relevance' | 'az', non-Products views only
   gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 3 is the default (2026-09-18, Brenton signed off), 4 kept as the fallback option.
   sort: 'relevance',
   page: 1,               // desktop numbered pagination
@@ -102,9 +105,9 @@ function plpFilteredSortedProducts() {
   // vehicle first, then non-vehicle-specific products, then products for other vehicles —
   // relevance order within each tier. Only Relevance: an explicit price/rating sort is the
   // shopper asking for that order, so it's left alone.
-  const vehicleKey = cfg.isSearch ? plpSearchVehicleKey() : null;
+  const vehicleKey = cfg.isSearch ? plpSessionVehicleKey() : null;
   if (plpState.sort === 'relevance' && vehicleKey) {
-    const tier = p => (p.fitsVehicle === vehicleKey ? 0 : (!p.fitsVehicle ? 1 : 2));
+    const tier = p => { const fit = plpProductFit(p); return fit === vehicleKey ? 0 : (!fit ? 1 : 2); };
     return list.slice().sort((a, b) => (tier(a) - tier(b)) || sorter(a, b));
   }
   return list.slice().sort(sorter);
@@ -277,6 +280,7 @@ function plpSearchQueryMatches(product, query) {
 }
 
 function plpRenderSearchTabs() {
+  if (plpState.searchScope !== 'products') { plpRenderScopeTabs(); return; }
   const cfg = window.PLP_CONFIG;
   const track = document.getElementById('plpSearchTabsTrack');
   if (!track) return;
@@ -329,11 +333,38 @@ function plpSelectSearchCategory(key) {
   plpRenderResults();
 }
 
-// The session vehicle's fitment key, or null when no vehicle is set (the Site Admin Panel's
-// existing "Vehicle Set" toggle — session-state.js) or the page defines no sessionVehicle.
-function plpSearchVehicleKey() {
+// ---- Vehicle fitment on product cards (engine-wide, 2026-09-29) --------------------------------
+// Every PLP-family page (PLP, VPLP, Camping, Search) now shares one vehicle model instead of the
+// search page defining its own: PLP_VEHICLES names each fitment the demo data uses, and the
+// session vehicle is whoever the Site Admin Panel's existing "Vehicle Set" toggle stands for —
+// the Toyota Hilux N80 everywhere in this prototype (the header already reads "Your Vehicle:
+// Toyota Hilux"). A product is vehicle-specific when it carries `fitsVehicle`, or when its page
+// sets `PLP_CONFIG.allProductsFitVehicle` (the VPLP — every product on it is a Hilux N80 rack
+// set). Products that aren't vehicle-specific never get a fitment status.
+const PLP_VEHICLES = {
+  'toyota-hilux-n80': { name: 'Toyota Hilux', short: 'Toyota Hilux N80', long: 'Toyota Hilux N80 4dr Ute (2015 to 2026)' },
+  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)' }
+};
+const PLP_SESSION_VEHICLE_KEY = 'toyota-hilux-n80';
+
+// The session vehicle's fitment key, or null when no vehicle is set.
+function plpSessionVehicleKey() {
+  return plpVehicleIsSet() ? PLP_SESSION_VEHICLE_KEY : null;
+}
+
+function plpProductFit(product) {
   const cfg = window.PLP_CONFIG;
-  return cfg && cfg.sessionVehicle && plpVehicleIsSet() ? cfg.sessionVehicle.key : null;
+  return product.fitsVehicle || (cfg && cfg.allProductsFitVehicle) || null;
+}
+
+// 'fits' | 'no_fit' | 'unknown' (no vehicle set) — same three states and names as the PDP's
+// fitment card (getFitmentStatus() in shared.js); null for a non-vehicle-specific product.
+function plpFitStatus(product) {
+  const fit = plpProductFit(product);
+  if (!fit) return null;
+  const vehicleKey = plpSessionVehicleKey();
+  if (!vehicleKey) return 'unknown';
+  return fit === vehicleKey ? 'fits' : 'no_fit';
 }
 
 // ---- Heading line + "in Products ▾" switcher (2026-09-24 meeting, built 2026-09-29) ----------
@@ -368,6 +399,8 @@ function plpRenderSearchHeadline() {
   const btnWrap = document.getElementById('plpSearchPageBtns');
   const q = plpState.searchQuery;
   if (title) title.textContent = q ? `Search results for “${q}”` : 'Search results';
+  const crumbQuery = document.getElementById('plpSearchCrumbQuery');
+  if (crumbQuery) crumbQuery.textContent = q;
   const scopes = PLP_SEARCH_SCOPES
     .map(sc => ({ ...sc, count: plpSearchScopeItems(sc.key).length }))
     .filter(sc => sc.key === 'products' || sc.count > 0);
@@ -404,6 +437,10 @@ function plpRenderSearchHeadline() {
 
 function plpSetSearchScope(scopeKey) {
   plpState.searchScope = scopeKey;
+  // Each view has its own tabs/filters/sort — a selection made in one doesn't carry over.
+  plpState.scopeTab = '';
+  plpState.scopeFilters = {};
+  plpState.scopeSort = 'relevance';
   const url = new URL(window.location.href);
   if (scopeKey === 'products') url.searchParams.delete('type'); else url.searchParams.set('type', scopeKey);
   history.replaceState(null, '', url);
@@ -411,88 +448,350 @@ function plpSetSearchScope(scopeKey) {
   plpRenderSearchScope();
 }
 
-function plpRenderSearchScope() {
-  const productsWrap = document.getElementById('plpSearchProductsScope');
-  const otherWrap = document.getElementById('plpSearchOtherScope');
-  const isProducts = plpState.searchScope === 'products';
-  if (productsWrap) productsWrap.hidden = !isProducts;
-  if (otherWrap) {
-    otherWrap.hidden = isProducts;
-    otherWrap.innerHTML = isProducts ? '' : plpSearchOtherScopeHTML(plpState.searchScope);
-  }
+// ---- Pages / Articles / Brands views — same frame as Products (Brenton, 2026-09-29) ----------
+// The first build swapped the whole Products frame for a plain card grid, which felt like a
+// different page. Now every view keeps the same skeleton — tab row, toolbar (count + sort),
+// filter sidebar + merch, results grid — and only the content changes:
+//   Articles: tabs = the same product categories (same icons as the Products tabs where the
+//             category matches); filters = Topic, Type (Buying Guide / FAQ).
+//   Pages:    tabs = page groups (Vehicle Pages / Categories / Tools & Services / Help &
+//             Policies); filter = Page Type.
+//   Brands:   tabs = the categories each brand sells (a brand can sit under several); filter =
+//             Sells.
+// The existing render entry points (plpRenderSearchTabs/plpRenderFilters/plpRenderResults) hand
+// off to the plpRenderScope* functions below whenever a non-Products view is active, so every
+// caller that already re-renders on resize/session change/filter clicks keeps working. Scope
+// state is separate from the product filter state (plpState.scopeTab/scopeFilters/scopeSort),
+// so switching back to Products restores exactly what was selected there.
+const PLP_SCOPE_CATEGORIES = [
+  { key: 'roof-racks', label: 'Roof Racks', phrases: ['roof racks'], icon: '../_shared/icons/roof-racks.png' },
+  { key: 'bike-racks', label: 'Bike Racks', phrases: ['bike racks'], icon: '../_shared/icons/bike-racks.png' },
+  { key: 'roof-boxes', label: 'Roof Boxes', phrases: ['roof boxes'], icon: '../_shared/icons/roof-boxes-cargo.png' },
+  { key: 'awnings-rtt', label: 'Awnings & Roof Top Tents', phrases: ['awnings', 'roof top tents'], icon: '../_shared/icons/roof-top-type.png' },
+  { key: 'camping', label: 'Camping & Offroad', phrases: ['camping', 'recovery gear', 'fridge slides', 'light bars'], icon: '../_shared/icons/fallback.png' },
+  { key: 'water', label: 'Water & Snow Sports', phrases: ['kayak'], icon: '../_shared/icons/fallback.png' }
+];
+
+const PLP_SCOPE_PAGE_GROUPS = [
+  { key: 'vehicle', label: 'Vehicle Pages', svg: '<path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/><rect x="3" y="11" width="18" height="6" rx="1"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>' },
+  { key: 'category', label: 'Categories', svg: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>' },
+  { key: 'tools', label: 'Tools & Services', svg: '<path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>' },
+  { key: 'help', label: 'Help & Policies', svg: '<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>' }
+];
+
+const PLP_SEARCH_PAGE_TYPE_LABELS = { vehicle: 'Vehicle Page', category: 'Category', tools: 'Tools & Services', help: 'Help & Policies' };
+
+function plpPageGroup(pg) {
+  if (pg.type === 'vehicle' || pg.type === 'category') return pg.type;
+  return pg.cta ? 'tools' : 'help';
 }
 
-const PLP_SEARCH_PAGE_TYPE_LABELS = { page: 'Page', vehicle: 'Vehicle Page', category: 'Category' };
+// Same icon as the Products tab where the category exists there (continuity between views),
+// otherwise the header mega menu's own category line-art.
+function plpScopeCategoryIcon(cat) {
+  const productTab = (window.PLP_CONFIG.searchCategories || []).find(c => c.key === cat.key);
+  return productTab ? productTab.icon : `<img src="${cat.icon}" alt="">`;
+}
 
-function plpSearchOtherScopeHTML(scopeKey) {
-  const items = plpSearchScopeItems(scopeKey);
-  if (scopeKey === 'brands') {
-    return `<div class="plp-scope-brands">${items.map(b => `
-      <a class="plp-scope-brand" ${rrgSearchLinkAttrs(rrgBrandUrl(b))}>
-        <span class="plp-scope-brand-mark">${b.logo ? `<img src="../_shared/${b.logo}" alt="${b.name}">` : `<span class="plp-scope-brand-text">${b.name}</span>`}</span>
-        <span class="plp-scope-more">Shop ${b.name}</span>
-      </a>`).join('')}</div>`;
-  }
+function plpBrandCategoryKeys(brand) {
+  return PLP_SCOPE_CATEGORIES.filter(c => c.phrases.some(ph => brand.kw.includes(ph))).map(c => c.key);
+}
+
+function plpArticleType(a) {
+  return a.title.trim().endsWith('?') ? 'FAQ' : 'Buying Guide';
+}
+
+function plpScopeDef(scopeKey) {
+  const byLabel = (a, b, get) => get(a).localeCompare(get(b));
   if (scopeKey === 'articles') {
-    return `<div class="plp-scope-cards">${items.map(a => `
-      <a class="plp-scope-card" ${rrgSearchLinkAttrs(a.href)}>
-        <span class="plp-scope-type">Buying Guide &middot; ${a.topic}</span>
-        <h3>${a.title}</h3>
-        <p>${a.desc}</p>
-        <span class="plp-scope-more">Read More</span>
-      </a>`).join('')}</div>`;
+    return {
+      noun: ['article', 'articles'],
+      tabs: PLP_SCOPE_CATEGORIES.map(c => ({ key: c.key, label: c.label, icon: plpScopeCategoryIcon(c) })),
+      tabKeys: a => PLP_SCOPE_CATEGORIES.filter(c => c.label === a.topic).map(c => c.key),
+      facets: [
+        { key: 'topic', label: 'Topic', values: a => [a.topic] },
+        { key: 'type', label: 'Type', values: a => [plpArticleType(a)] }
+      ],
+      sorts: [['relevance', 'Relevance'], ['az', 'Title A–Z']],
+      az: (a, b) => byLabel(a, b, x => x.title),
+      card: plpScopePageCardHTML
+    };
   }
-  return `<div class="plp-scope-cards">${items.map(pg => `
-    <a class="plp-scope-card" ${rrgSearchLinkAttrs(pg.href)}>
-      <span class="plp-scope-type">${PLP_SEARCH_PAGE_TYPE_LABELS[pg.type] || 'Page'}</span>
-      <h3>${pg.title}</h3>
-      <p>${pg.desc || ''}</p>
-      <span class="plp-scope-more">View Page</span>
-    </a>`).join('')}</div>`;
+  if (scopeKey === 'brands') {
+    return {
+      noun: ['brand', 'brands'],
+      tabs: PLP_SCOPE_CATEGORIES.map(c => ({ key: c.key, label: c.label, icon: plpScopeCategoryIcon(c) })),
+      tabKeys: plpBrandCategoryKeys,
+      facets: [
+        { key: 'sells', label: 'Sells', values: b => plpBrandCategoryKeys(b).map(k => PLP_SCOPE_CATEGORIES.find(c => c.key === k).label) }
+      ],
+      sorts: [['relevance', 'Relevance'], ['az', 'Name A–Z']],
+      az: (a, b) => byLabel(a, b, x => x.name),
+      card: plpScopeBrandCardHTML
+    };
+  }
+  return {
+    noun: ['page', 'pages'],
+    tabs: PLP_SCOPE_PAGE_GROUPS.map(g => ({ key: g.key, label: g.label, icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${g.svg}</svg>` })),
+    tabKeys: pg => [plpPageGroup(pg)],
+    facets: [
+      { key: 'group', label: 'Page Type', values: pg => [PLP_SEARCH_PAGE_TYPE_LABELS[plpPageGroup(pg)]] }
+    ],
+    sorts: [['relevance', 'Relevance'], ['az', 'Title A–Z']],
+    az: (a, b) => byLabel(a, b, x => x.title),
+    card: plpScopePageCardHTML
+  };
 }
 
-// ---- Vehicle strip above the tabs (2026-09-24 meeting) ---------------------------------------
-// Only when the query's products include at least one vehicle-specific product (a "bike rack"
-// search has nothing to fit, so no strip). "Set Your Vehicle" flips the same Site Admin Panel
-// session toggle as a demo shortcut — the real build opens the vehicle selector. The vehicle-set
-// version only shows under Relevance sort, since that's the only sort the vehicle affects.
+// Items in the active view, narrowed by tab + every facet except `exceptKey` (so each filter
+// option's count reflects the other active selections, same rule as the product filters).
+function plpScopeFilteredItems(def, exceptKey, ignoreTab) {
+  return plpSearchScopeItems(plpState.searchScope).filter(item => {
+    if (!ignoreTab && plpState.scopeTab && !def.tabKeys(item).includes(plpState.scopeTab)) return false;
+    return def.facets.every(f => {
+      if (f.key === exceptKey) return true;
+      const sel = plpState.scopeFilters[f.key];
+      return !sel || !sel.size || f.values(item).some(v => sel.has(v));
+    });
+  });
+}
+
+function plpRenderScopeTabs() {
+  const track = document.getElementById('plpSearchTabsTrack');
+  if (!track) return;
+  const def = plpScopeDef(plpState.searchScope);
+  const all = plpSearchScopeItems(plpState.searchScope);
+  const countFor = key => all.filter(item => !key || def.tabKeys(item).includes(key)).length;
+  const tiles = [{ key: '', label: 'All', icon: window.PLP_CONFIG.shopByAllIcon || PLP_SHOWALL_ICON },
+    ...def.tabs.filter(t => countFor(t.key) > 0)];
+  const section = track.closest('.plp-shopby');
+  if (section) section.hidden = !all.length;
+  track.innerHTML = tiles.map(t => `
+    <button type="button" class="plp-shopby-tile ${plpState.scopeTab === t.key ? 'active' : ''}" data-scope-tab="${t.key}">
+      <span class="plp-shopby-icon">${t.icon}</span>
+      <span class="plp-shopby-label">${t.label} (${countFor(t.key)})</span>
+    </button>
+  `).join('');
+  track.querySelectorAll('[data-scope-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      plpState.scopeTab = btn.dataset.scopeTab;
+      plpRenderScopeTabs();
+      plpRenderScopeFilters();
+      plpRenderScopeResults();
+    });
+  });
+}
+
+function plpRenderScopeFilters() {
+  const def = plpScopeDef(plpState.searchScope);
+  const priorityWrap = document.getElementById('plpPriorityFilters');
+  const standardWrap = document.getElementById('plpStandardFilters');
+  const chipsWrap = document.getElementById('plpPriorityChips');
+  if (priorityWrap) priorityWrap.innerHTML = '';
+  if (chipsWrap) chipsWrap.innerHTML = '';
+  if (!standardWrap) return;
+  const tabScoped = plpSearchScopeItems(plpState.searchScope).filter(item => !plpState.scopeTab || def.tabKeys(item).includes(plpState.scopeTab));
+  standardWrap.innerHTML = def.facets.map(f => {
+    const values = [...new Set(tabScoped.flatMap(f.values))].sort();
+    if (!values.length) return '';
+    const pool = plpScopeFilteredItems(def, f.key);
+    const selected = plpState.scopeFilters[f.key];
+    return `
+      <details class="plp-filter-group" data-facet-group="${f.key}" open>
+        <summary>${f.label}</summary>
+        <div class="plp-filter-options">
+          ${values.map(v => {
+            const count = pool.filter(item => f.values(item).includes(v)).length;
+            const checked = selected && selected.has(v);
+            return `
+              <label class="plp-filter-option ${count === 0 && !checked ? 'is-zero' : ''}">
+                <input type="checkbox" data-scope-facet="${f.key}" value="${v}" ${checked ? 'checked' : ''}>
+                <span>${v}</span>
+                <span class="plp-filter-count">${count}</span>
+              </label>`;
+          }).join('')}
+        </div>
+      </details>`;
+  }).join('');
+  plpBindScopeFacetInputs(standardWrap);
+}
+
+function plpBindScopeFacetInputs(root) {
+  root.querySelectorAll('[data-scope-facet]').forEach(input => {
+    input.addEventListener('change', () => {
+      const key = input.dataset.scopeFacet;
+      if (!plpState.scopeFilters[key]) plpState.scopeFilters[key] = new Set();
+      if (input.checked) plpState.scopeFilters[key].add(input.value); else plpState.scopeFilters[key].delete(input.value);
+      plpRenderScopeFilters();
+      plpRenderScopeResults();
+      plpSyncFilterDrawerFromMain();
+    });
+  });
+}
+
+function plpScopeSortedItems() {
+  const def = plpScopeDef(plpState.searchScope);
+  const items = plpScopeFilteredItems(def, null);
+  return plpState.scopeSort === 'az' ? items.slice().sort(def.az) : items;
+}
+
+function plpRenderScopeResults() {
+  const def = plpScopeDef(plpState.searchScope);
+  const wrap = document.getElementById('plpResults');
+  if (!wrap) return;
+  const items = plpScopeSortedItems();
+  wrap.className = 'plp-results is-grid plp-results-scope';
+  wrap.innerHTML = items.length
+    ? items.map(def.card).join('')
+    : `<div class="plp-no-results">No ${def.noun[1]} match the selected filters.</div>`;
+  const countLabel = document.getElementById('plpResultCount');
+  const mobileCountLabel = document.getElementById('plpResultCountMobile');
+  const text = `Showing ${items.length} ${def.noun[items.length === 1 ? 0 : 1]}`;
+  if (countLabel) countLabel.textContent = text;
+  if (mobileCountLabel) mobileCountLabel.textContent = text;
+  ['plpPaginationDesktop', 'plpPaginationMobile'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
+  const level3Row = document.getElementById('plpLevel3Row');
+  if (level3Row) { level3Row.hidden = true; level3Row.innerHTML = ''; }
+}
+
+// Toolbar/strip bits that belong to Products only — hidden in the other views, and the Sort
+// dropdown's options swapped to that view's own set.
+const PLP_PRODUCT_SORT_OPTIONS = [['relevance', 'Relevance'], ['newest', 'Newest'], ['bestselling', 'Best Selling'], ['rating', 'Highest Rated'], ['price_low', 'Price: Low to High'], ['price_high', 'Price: High to Low']];
+
+function plpApplyScopeChrome() {
+  const isProducts = plpState.searchScope === 'products';
+  const viewToggle = document.querySelector('.plp-view-toggle');
+  if (viewToggle) viewToggle.hidden = !isProducts;
+  const sortSelect = document.getElementById('plpSort');
+  if (sortSelect) {
+    const opts = isProducts ? PLP_PRODUCT_SORT_OPTIONS : plpScopeDef(plpState.searchScope).sorts;
+    sortSelect.innerHTML = opts.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+    sortSelect.value = isProducts ? plpState.sort : plpState.scopeSort;
+  }
+  if (!isProducts) {
+    const strip = document.getElementById('plpSearchVehicleStrip');
+    if (strip) { strip.hidden = true; strip.innerHTML = ''; }
+  }
+}
+
+function plpRenderSearchScope() {
+  plpApplyScopeChrome();
+  plpRenderSearchTabs();
+  plpRenderFilters();
+  plpRenderResults();
+}
+
+// Card for Pages and Articles — same outer .plp-card frame as a product card (image on top,
+// body below, action at the bottom), so the grid reads the same in every view. No image at all
+// → logo fallback tile (the intended look for older pages/blogs without a listing image).
+function plpScopeMediaHTML(image, alt) {
+  return image
+    ? `<img class="plp-card-photo" src="${image}" alt="${alt}">`
+    : `<div class="plp-scope-media-fallback"><img src="../_shared/headerlogo.png" alt=""></div>`;
+}
+
+function plpScopePageCardHTML(item) {
+  const eyebrow = item.type === 'article'
+    ? `${plpArticleType(item)} &middot; ${item.topic}`
+    : PLP_SEARCH_PAGE_TYPE_LABELS[plpPageGroup(item)];
+  const cta = item.type === 'article' ? 'Read Article' : 'View Page';
+  return `
+    <div class="plp-card plp-scope-card">
+      <a ${rrgSearchLinkAttrs(item.href)} class="plp-card-media-link">
+        <div class="plp-card-media">${plpScopeMediaHTML(item.image, item.title)}</div>
+      </a>
+      <div class="plp-card-body">
+        <span class="plp-scope-type">${eyebrow}</span>
+        <h3 class="plp-card-title"><a ${rrgSearchLinkAttrs(item.href)} class="plp-card-title-link">${item.title}</a></h3>
+        <p class="plp-scope-desc">${item.desc || ''}</p>
+        <div class="plp-card-actions"><a ${rrgSearchLinkAttrs(item.href)} class="btn btn-outline btn-block">${cta}</a></div>
+      </div>
+    </div>
+  `;
+}
+
+function plpScopeBrandCardHTML(brand) {
+  const sells = plpBrandCategoryKeys(brand).map(k => PLP_SCOPE_CATEGORIES.find(c => c.key === k).label);
+  return `
+    <div class="plp-card plp-scope-card plp-scope-brand-card">
+      <a ${rrgSearchLinkAttrs(rrgBrandUrl(brand))} class="plp-card-media-link">
+        <div class="plp-card-media plp-scope-brand-media">${brand.logo ? `<img src="../_shared/${brand.logo}" alt="${brand.name}">` : `<span class="plp-scope-brand-text">${brand.name}</span>`}</div>
+      </a>
+      <div class="plp-card-body">
+        <span class="plp-scope-type">Brand</span>
+        <h3 class="plp-card-title"><a ${rrgSearchLinkAttrs(rrgBrandUrl(brand))} class="plp-card-title-link">${brand.name}</a></h3>
+        <p class="plp-scope-desc">${sells.join(' &middot; ')}</p>
+        <div class="plp-card-actions"><a ${rrgSearchLinkAttrs(rrgBrandUrl(brand))} class="btn btn-outline btn-block">Shop ${brand.name}</a></div>
+      </div>
+    </div>
+  `;
+}
+
+// ---- Vehicle strip above the tabs (2026-09-24 meeting; restyled 2026-09-29) -------------------
+// Rendered with the PDP's own fitment card classes (.fitment + fits/no_fit/unknown in
+// shared.css), not a lookalike — Brenton: the PDP card, this strip and the product-card status
+// (plpFitStatusHTML) must be the same component at different levels of detail. This is the
+// widest version: label + detail sentence + one action on the right.
+// Only shown when the query's products include at least one vehicle-specific product (a "bike
+// rack" search has nothing to fit). The vehicle-set version only shows under Relevance sort,
+// since that's the only sort the vehicle affects. "Select your vehicle" flips the Site Admin
+// Panel session toggle as a demo shortcut; the real build opens the vehicle selector.
 function plpRenderSearchVehicleStrip() {
-  const cfg = window.PLP_CONFIG;
   const strip = document.getElementById('plpSearchVehicleStrip');
-  if (!strip || !cfg.sessionVehicle) return;
-  const hasVehicleSpecific = plpSearchScopeItems('products').some(p => p.fitsVehicle);
-  const vehicleKey = plpSearchVehicleKey();
+  if (!strip) return;
+  const products = plpSearchScopeItems('products');
+  const hasVehicleSpecific = products.some(p => plpProductFit(p));
+  const vehicleKey = plpSessionVehicleKey();
   if (!hasVehicleSpecific || (vehicleKey && plpState.sort !== 'relevance')) {
     strip.hidden = true;
     strip.innerHTML = '';
     return;
   }
-  const carIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>`;
-  strip.hidden = false;
-  strip.classList.toggle('is-set', !!vehicleKey && plpSearchScopeItems('products').some(p => p.fitsVehicle === vehicleKey));
   // Vehicle set but nothing in this search fits it (e.g. "ranger" with a Hilux set) — say so,
   // rather than claiming matches are "shown first" when there are none.
-  const anyFit = vehicleKey && plpSearchScopeItems('products').some(p => p.fitsVehicle === vehicleKey);
-  strip.innerHTML = vehicleKey
-    ? `<span class="plp-search-vehicle-icon">${carIcon}</span>
-       <p>${anyFit
-         ? `Products that fit your <strong>${cfg.sessionVehicle.label}</strong> are shown first.`
-         : `None of these vehicle-specific products fit your <strong>${cfg.sessionVehicle.label}</strong>.`}</p>
-       <a href="#" class="plp-search-vehicle-link" title="Toggle via the Site Admin Panel's Vehicle Set switch">Change Vehicle</a>`
-    : `<span class="plp-search-vehicle-icon">${carIcon}</span>
-       <p><strong>Some of these products are vehicle-specific.</strong> Set your vehicle to see what fits first.</p>
-       <button type="button" class="btn btn-gold plp-search-vehicle-btn" data-set-vehicle>Set Your Vehicle</button>`;
+  const anyFit = vehicleKey && products.some(p => plpProductFit(p) === vehicleKey);
+  const state = !vehicleKey ? 'unknown' : (anyFit ? 'fits' : 'no_fit');
+  const vehicle = PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].short;
+  const copy = {
+    fits: { label: 'Fits your vehicle first', detail: `Products that fit your ${vehicle} are shown first.`, action: 'Change vehicle' },
+    no_fit: { label: 'Nothing here fits your vehicle', detail: `None of these vehicle-specific products fit your ${vehicle}.`, action: 'Change vehicle' },
+    unknown: { label: 'Confirm your vehicle', detail: 'Some of these products are vehicle-specific. Set your vehicle to see what fits first.', action: 'Select your vehicle' }
+  }[state];
+  const carIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>`;
+  strip.hidden = false;
+  strip.className = `plp-search-vehicle-strip fitment ${state}`;
+  strip.innerHTML = `
+    <span class="dot">${carIcon}</span>
+    <div class="plp-search-vehicle-text"><strong>${copy.label}</strong>${copy.detail}</div>
+    <div class="actions"><button type="button" ${state === 'unknown' ? 'data-set-vehicle' : 'title="Toggle via the Site Admin Panel\'s Vehicle Set switch"'}>${copy.action}</button></div>
+  `;
   const setBtn = strip.querySelector('[data-set-vehicle]');
   if (setBtn) setBtn.addEventListener('click', () => { if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true); });
 }
 
-// "Fits your Toyota Hilux" tag on product cards — search page only, vehicle set, exact match.
-function plpFitBadgeHTML(product) {
-  const cfg = window.PLP_CONFIG;
-  if (!cfg || !cfg.isSearch || !product.fitsVehicle) return '';
-  const vehicleKey = plpSearchVehicleKey();
-  if (!vehicleKey || product.fitsVehicle !== vehicleKey) return '';
-  return `<div class="plp-fit-badge">&#10003; Fits your ${cfg.sessionVehicle.label}</div>`;
+// Fitment status on product cards (2026-09-29, Brenton) — a simplified version of the vehicle-
+// specific PDP's fitment card (.fitment in shared.css: coloured left border, car icon, Barlow
+// uppercase label, one detail line), replacing the first pass's green "Fits your Toyota Hilux"
+// pill, which wasn't on brand. Same three states/colours as the PDP card; the detail line is
+// cut down to just the vehicle, and there are no action buttons (the card's own CTA is there).
+// Shown on every PLP-family page, for vehicle-specific products only.
+const PLP_FIT_COPY = {
+  fits: { label: 'Fits your vehicle', detail: fit => PLP_VEHICLES[fit].short },
+  no_fit: { label: "Doesn't fit your vehicle", detail: fit => `Built for ${PLP_VEHICLES[fit].short}` },
+  unknown: { label: 'Confirm your vehicle', detail: fit => `Suits ${PLP_VEHICLES[fit].short}` }
+};
+
+function plpFitStatusHTML(product) {
+  const status = plpFitStatus(product);
+  if (!status) return '';
+  const fit = plpProductFit(product);
+  const c = PLP_FIT_COPY[status];
+  return `
+    <div class="plp-fitment ${status}">
+      <svg class="plp-fitment-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+      <div><strong>${c.label}</strong><span>${c.detail(fit)}</span></div>
+    </div>
+  `;
 }
 
 // ---- Add to Cart vehicle notice (2026-09-24 meeting) -----------------------------------------
@@ -528,25 +827,26 @@ function plpBuildVehicleNotice() {
   // vehicle is set. "Change Vehicle" (mismatch case) just closes: there's only one demo vehicle
   // to switch to, and the real build opens the vehicle selector for both.
   backdrop.querySelector('[data-vehicle-notice-set]').addEventListener('click', () => {
-    if (!plpSearchVehicleKey() && window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
+    if (!plpSessionVehicleKey() && window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
     close();
   });
 }
 
 function plpMaybeShowVehicleNotice(product) {
   const cfg = window.PLP_CONFIG;
-  if (!product.fitsVehicle || !cfg.sessionVehicle) return;
-  const vehicleKey = plpSearchVehicleKey();
-  if (vehicleKey && vehicleKey === product.fitsVehicle) return;
+  const fit = plpProductFit(product);
+  if (!fit) return;
+  const vehicleKey = plpSessionVehicleKey();
+  if (vehicleKey && vehicleKey === fit) return;
   plpBuildVehicleNotice();
   const backdrop = document.getElementById('plpVehicleNotice');
-  const productFor = (cfg.vehicleLabels || {})[product.fitsVehicle] || 'a specific vehicle';
+  const productFor = (PLP_VEHICLES[fit] || {}).long || 'a specific vehicle';
   backdrop.querySelector('#plpVehicleNoticeProduct').innerHTML = `
     <img src="${product.image}" alt="">
     <span>${product.name}</span>
   `;
   backdrop.querySelector('#plpVehicleNoticeWarning').innerHTML = vehicleKey
-    ? `<strong>This product is for a different vehicle.</strong> It's made for the ${productFor}, but your vehicle is set to the ${cfg.sessionVehicle.label}. Please confirm it's the right fit before ordering.`
+    ? `<strong>This product is for a different vehicle.</strong> It's made for the ${productFor}, but your vehicle is set to the ${PLP_VEHICLES[vehicleKey].name}. Please confirm it's the right fit before ordering.`
     : `<strong>You haven't set a vehicle yet.</strong> This product only fits the ${productFor}. Please confirm it fits your vehicle before ordering.`;
   backdrop.querySelector('[data-vehicle-notice-set]').textContent = vehicleKey ? 'Change Vehicle' : 'Set Your Vehicle';
   backdrop.hidden = false;
@@ -569,7 +869,7 @@ function plpInitSearchPage() {
     }
   });
   plpRenderSearchHeadline();
-  plpRenderSearchScope();
+  plpApplyScopeChrome(); // the main init renders tabs/filters/results right after this
 }
 
 // Zero-results state (spec Section 5) — doesn't exist anywhere else in the PLP family (every
@@ -640,6 +940,7 @@ function plpFilterGroupHTML(facetDef, isPriority) {
 
 function plpRenderFilters() {
   const cfg = window.PLP_CONFIG;
+  if (cfg.isSearch && plpState.searchScope !== 'products') { plpRenderScopeFilters(); return; }
   const priorityWrap = document.getElementById('plpPriorityFilters');
   const standardWrap = document.getElementById('plpStandardFilters');
   const chipsWrap = document.getElementById('plpPriorityChips');
@@ -693,6 +994,13 @@ function plpRenderFilters() {
 // selection today, on this prototype or the live site). Leaves the active SHOP BY subcategory
 // alone — only clears facet filters, same scope as the mobile drawer's own filter state.
 function plpClearFilters() {
+  if (window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products') {
+    plpState.scopeFilters = {};
+    plpRenderScopeFilters();
+    plpRenderScopeResults();
+    plpSyncFilterDrawerFromMain();
+    return;
+  }
   plpState.activeFilters = {};
   plpState.page = 1;
   plpState.visibleCount = PLP_PAGE_SIZE;
@@ -748,8 +1056,10 @@ function plpSyncFilterDrawerFromMain() {
       plpSyncFilterDrawerFromMain();
     });
   });
+  plpBindScopeFacetInputs(body);
   const applyBtn = document.getElementById('plpFilterApply');
-  if (applyBtn) applyBtn.textContent = `Show ${plpFilteredSortedProducts().length} Results`;
+  const resultCount = window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products' ? plpScopeSortedItems().length : plpFilteredSortedProducts().length;
+  if (applyBtn) applyBtn.textContent = `Show ${resultCount} Results`;
 }
 
 function plpOpenFilterDrawer(scrollToFacetKey) {
@@ -949,7 +1259,7 @@ function plpCardHTML(product, cfg) {
       </a>
       <div class="plp-card-body">
         ${plpBrandHTML(product)}
-        ${plpFitBadgeHTML(product)}
+        ${plpFitStatusHTML(product)}
         <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${plpPriceHTML(product)}
@@ -991,7 +1301,7 @@ function plpListCardHTML(product, cfg) {
         ${fitGalleryBtn}
       </div>
       <div class="plp-list-col-info">
-        ${plpFitBadgeHTML(product)}
+        ${plpFitStatusHTML(product)}
         <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
         ${plpRatingHTML(product)}
         ${usps}
@@ -1010,6 +1320,7 @@ function plpListCardHTML(product, cfg) {
 // ==== Results (grid/list) + pagination =======================================
 function plpRenderResults() {
   const cfg = window.PLP_CONFIG;
+  if (cfg.isSearch && plpState.searchScope !== 'products') { plpRenderScopeResults(); return; }
   const wrap = document.getElementById('plpResults');
   const countLabel = document.getElementById('plpResultCount');
   const mobileCountLabel = document.getElementById('plpResultCountMobile');
@@ -1202,6 +1513,11 @@ function plpBindCardEvents() {
 function plpInitToolbar() {
   const sortSelect = document.getElementById('plpSort');
   if (sortSelect) sortSelect.addEventListener('change', () => {
+    if (window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products') {
+      plpState.scopeSort = sortSelect.value;
+      plpRenderScopeResults();
+      return;
+    }
     plpState.sort = sortSelect.value;
     plpState.page = 1;
     plpRenderResults();

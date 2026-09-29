@@ -105,11 +105,12 @@
   </div>
 </div>
 
-<!-- Breadcrumb row (2026-09-21 follow-up) — static "Home > Search Results", same
-     .plp-crumbs-row/.rrg-crumbs component every other PLP-family page uses above its hero, so
-     this page's top vertical rhythm matches theirs. -->
+<!-- Breadcrumb row — same .plp-crumbs-row/.rrg-crumbs component every other PLP-family page
+     uses above its hero, so this page's top vertical rhythm matches theirs. Reads
+     "Home > Search results for > <query>" (Brenton, 2026-09-29); the query crumb is filled in by
+     plpRenderSearchHeadline() in plp.js. -->
 <div class="plp-crumbs-row wrap">
-  <div class="rrg-crumbs">Home &gt; <span>Search Results</span></div>
+  <div class="rrg-crumbs">Home &gt; Search results for &gt; <span id="plpSearchCrumbQuery">…</span></div>
 </div>
 
 <main class="wrap">
@@ -131,8 +132,8 @@
     <div class="plp-search-page-btns" id="plpSearchPageBtns"></div>
   </section>
 
-  <!-- Products view — everything from here to the matching closing comment is hidden while the
-       switcher above is on Pages/Articles/Brands (#plpSearchOtherScope below takes its place). -->
+  <!-- Results frame — the same tabs / toolbar / sidebar / grid for every view of the switcher
+       above (Products, Pages, Articles, Brands); plp.js swaps what's inside, not the frame. -->
   <div id="plpSearchProductsScope">
 
   <!-- Vehicle strip (2026-09-24 meeting) — plpRenderSearchVehicleStrip() in plp.js. No vehicle
@@ -196,10 +197,7 @@
   </div>
 
   </div>
-  <!-- /Products view -->
-
-  <!-- Pages / Articles / Brands views of the switcher above — plpRenderSearchOtherScope(). -->
-  <section class="plp-search-other-scope" id="plpSearchOtherScope" hidden></section>
+  <!-- /Results frame -->
 
 </main>
 
@@ -478,17 +476,12 @@ const SEARCH_PRODUCTS = [
 window.PLP_CONFIG = {
   isSearch: true,
   initialQuery: 'roof rack',
-  // Vehicle-aware results (2026-09-24 meeting). `product.fitsVehicle` marks a vehicle-specific
-  // product; sessionVehicle is who the Site Admin Panel's existing "Vehicle Set" toggle stands
-  // for (the header already reads "Your Vehicle: Toyota Hilux" when it's on). With a vehicle set,
+  // Vehicle-aware results (2026-09-24 meeting) — `product.fitsVehicle` marks a vehicle-specific
+  // product; the session vehicle and vehicle names live in the shared engine (PLP_VEHICLES in
+  // plp.js), driven by the Site Admin Panel's existing "Vehicle Set" toggle. With a vehicle set,
   // Relevance sorting puts products that fit it first, then non-vehicle-specific products, then
-  // products for other vehicles — nothing is hidden. With no vehicle set, quick-adding a
-  // vehicle-specific product still adds it but pops a "confirm your vehicle" notice.
-  sessionVehicle: { key: 'toyota-hilux-n80', label: 'Toyota Hilux' },
-  vehicleLabels: {
-    'toyota-hilux-n80': 'Toyota Hilux N80 4dr Ute (2015 to 2026)',
-    'ford-ranger-p703': 'Ford Ranger P703 4dr Ute (2022 onwards)'
-  },
+  // other vehicles' products — nothing is hidden.
+
   products: SEARCH_PRODUCTS,
   // Quick-tab icons (2026-09-21 follow-up) — no real icon asset represents a whole top-level
   // category like "Roof Racks"/"Bike Racks" anywhere: the live site's own top nav and mega-menu
