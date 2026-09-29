@@ -1821,7 +1821,11 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
    white, red left border, red car icon + label, red-outline actions), so it reads exactly like
    the PDP decision panel's and the product cards' "Doesn't fit your …" state (Brenton,
    2026-09-29). Only layout lives here: spacing and the dismiss button. */
-.vlp-vehicle-notice{position:relative;margin-top:12px;padding-right:44px;}
+.vlp-vehicle-notice{position:relative;margin-top:12px;padding-right:44px;align-items:center;flex-wrap:wrap;column-gap:12px;row-gap:10px;}
+/* One row on wide screens — text beside the actions, not above them — so the full-width
+   notice stays short; the actions wrap under the text when there isn't room. */
+.vlp-vehicle-notice-text{flex:1 1 200px;min-width:0;}
+.vlp-vehicle-notice .actions{margin-top:0;flex:0 0 auto;}
 .vlp-vehicle-notice-close{position:absolute;top:8px;right:10px;border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:var(--rrg-grey-500);padding:4px;}
 .vlp-vehicle-notice-close:hover{color:var(--rrg-text);}
 
