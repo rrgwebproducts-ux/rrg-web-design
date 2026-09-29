@@ -2,7 +2,7 @@
    `Footer Design/Footer Component - Desktop.png` (bg #211E20, bottom bar #F5F5F5). Added to
    all 5 PDP templates identically (footer-spec.md Section 0 — no per-template variation). */
 
-.rrg-footer{background:#211E20;color:#fff;margin-top:48px;}
+.rrg-footer{background:var(--rrg-charcoal);color:#fff;margin-top:48px;}
 .rrg-footer .wrap{padding-top:56px;padding-bottom:40px;}
 
 .footer-grid{
@@ -16,7 +16,7 @@
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:.04em;
-  font-size:17px;
+  font-size:18px;
   margin:0 0 16px;
   /* shared.css's global `h1,h2,h3,h4{color:var(--rrg-black)}` otherwise wins over inheriting
      .rrg-footer's white text colour, since it sets `color` explicitly on the element itself
@@ -71,7 +71,7 @@ body.region-uk .footer-brand-col .rrg-logo img{height:76px;}
 /* AU/NZ solid style — no real social accounts yet (footer-spec.md Section 4), generic glyphs
    in a solid white circle button. */
 .footer-social-icons a.social-btn-solid{
-  width:34px;height:34px;border-radius:50%;background:#fff;color:#211E20;
+  width:34px;height:34px;border-radius:50%;background:#fff;color:var(--rrg-charcoal);
   display:flex;align-items:center;justify-content:center;flex:0 0 auto;
 }
 .footer-social-icons a.social-btn-solid svg{width:17px;height:17px;}
@@ -88,7 +88,7 @@ body.region-uk .footer-brand-col .rrg-logo img{height:76px;}
 .footer-payment-icons .payment-icon{height:24px;display:flex;align-items:center;}
 .footer-payment-icons .payment-icon img{height:100%;width:auto;max-width:60px;display:block;object-fit:contain;}
 
-.footer-bottom{background:#F5F5F5;color:#3a3a3a;text-align:center;font-size:13px;padding:14px 24px;line-height:1.6;}
+.footer-bottom{background:var(--rrg-bg);color:var(--rrg-grey-700);text-align:center;font-size:13px;padding:14px 24px;line-height:1.6;}
 
 /* UK brand colour (Brenton, 2026-09-14) — matches roofbox.co.uk's real footer, which is one
    continuous blue block (no separate light bottom bar the way AU/NZ's is) — #2E41AE is

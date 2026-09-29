@@ -906,3 +906,349 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
 - Cleanups: `simple.html` "limited — whilst stocks last" line shows only on `low_stock`; Showroom Finder "On Display At N Stores" counts match the demo store data; remove the "Limited Stock Left" custom ribbon (it duplicates Low Stock).
 - Demo: Build Phase × Nearest Store Set toggles drive every stock surface on all 9 pages; the PDP Demo State Panel gains a Phase 2 "Store stock: here / nearby / warehouse" radio.
 - Docs: PDP, PLP and Search developer briefs updated (text only — screenshots held until handover).
+
+## 15. Cross-template consistency pass: audit and plan (Brenton, 2026-09-29)
+
+**Status:** audit done and every 🤔 decision answered (15.12).
+
+**Step 1 (foundation) built on 2026-09-29, awaiting Brenton's review, not committed.**
+- **New tokens in `shared.css :root`:** greys, charcoal, CTA gold, UK green, overlay, shadows, motion and `--space-section`.
+- **About 500 hardcoded values replaced** across 17 files.
+- **Font sizes moved onto the scale:** 12.5px became 14px. The half-pixel sizes rounded to the nearest step, e.g. 13.5/14.5 to 14, 11.5 to 12, 16.5 to 16.
+- **Weights and contrast:** 600/800 weights became 700/900, and `#999` body text moved to the 500 grey for contrast.
+- **Radius and breakpoints:** the typeahead chip and index cards now use the 6px radius. The Related grid and search strip breakpoints moved from 600px to 640px.
+- **Section spacing:** every section uses one 48px rhythm with 16px from heading to content. The listing pages lost their extra 40px bottom padding.
+- **Related Products card title:** set to 14px, so it stays the compact version.
+
+**Scope:** every page in `prototypes/`: root index, header, 5 PDPs, VCLP, PLP, PLP Camping, VPLP and Search.
+- **Measured:** computed styles in a real browser, at 1440px and 390px, on all 12 pages.
+- **Read:** code audits of five slices (PDP drift, listing pages, header/footer/VCLP/index, CSS tokens, admin/demo panels).
+- **Dated:** every conflict via `git blame`.
+
+**Rule:** where two versions of the same element differ, the newest wins. Where the newer one is clearly a regression, the item says so.
+
+**Already consistent (no work):**
+- Header and footer markup are byte-identical across the 10 real templates, with the same script load order.
+- The mega menu, typeahead, region switcher and session text all work on those 10.
+- `.wrap` width and gutters.
+- Every stock surface uses `rrgStockStatus()`.
+- No green-pill fitment lookalikes remain.
+- Breadcrumb separators.
+
+**Tags:** ✅ clear fix (newest-wins or obvious) · 🤔 needs your call (see 15.12) · 🧱 bigger build
+
+### 15.1 Site Admin Panel and Demo State Panel (P)
+**Model:** Site Admin is for **global** controls: templates, briefs, shopper session, launch phase, site promotions and prototype tools. Demo State is **only for what applies to the page you're on**.
+
+What the Demo State controls do on each page type today:
+
+| Control | PDPs | VCLP | PLP, Camping, VPLP | Search |
+|---|---|---|---|---|
+| Video, On sale, Stock (5), Store stock (3), Cart contents, Shipping, C&C, B-Stock, New D/C&C design | ✅ works | ⚠️ inert | ⚠️ inert | ⚠️ inert |
+| Fitment Gallery exists, fitment count | VS only | half-works | — | — |
+| Grid columns, Default view, Hero image, Compare, Ribbons | — | — | shown | shown (no hero) |
+
+- **P1 ✅ Gate Demo State's "Product State" and "Widget Previews" to PDPs only.** Only listing pages are gated today (`shared.js:2990`), so 11 PDP controls do nothing on VCLP, PLP, Camping, VPLP and Search.
+- **P2 ✅ Restore the Site Admin template list, grouped, with the current page highlighted.** This undoes the 2026-09-17 PDP-only trim (4f278dd). Today non-PDP pages are unreachable from the panel and nothing is highlighted on them. Groups:
+  - Product pages: Simple, Config-Variant, Sibling-Colour, Vehicle-Specific, Grouped/Bundle
+  - Category & listing: VCLP, PLP (Bike Racks), PLP (Camping), VPLP
+  - Search Results
+  - Header (standalone)
+  - All templates (index)
+- **P3 ✅ Restore every dev brief:** PDP, PLP/VPLP, Search Results, VCLP, Header and Footer (`docs/*/…-dev-brief-viewer.html`).
+- **P4 🤔 Merge the two vehicle controls** into one Site Admin "Vehicle: None / Toyota Hilux / Ford Ranger". Today:
+  - Demo "Session Vehicle" drives the VS fitment card and resets to "match" on every load.
+  - Site Admin "Vehicle Set" drives the header, the PLP family and search.
+  - They contradict: the header says "Select Your Vehicle" while VS says it fits your Hilux.
+  - The Fit Finder drawer doesn't tick the Site Admin checkbox.
+- **P5 ✅ Mobile access.** Below 900px, Site Admin can't be opened on 10 of 11 pages:
+  - Both FABs are hidden.
+  - The "Nearest Store" link has been taken over by the Demo panel. That link is also the real store UI, so it will clash with the Phase 2 store picker.
+  - Fix: show both FABs on mobile as small icon-only buttons, and give the store link back.
+  - Also hide `.admin-fab` at 900px instead of 640px. Between 641 and 900px it overlaps the sticky mobile Add to Cart bar.
+- **P6 ✅ Show dependencies instead of silently doing nothing.** Disable the control and show a short hint when:
+  - Store stock needs Phase 2 and a store set.
+  - Compare and Ribbons need Phase 2.
+  - Hero image needs a vehicle set.
+  - Out of Stock / Discontinued forces Shipping and C&C off. Untick those boxes too.
+- **P7 🤔 Remove controls for decisions already locked:**
+  - Grid columns: 3 was signed off on 2026-09-18.
+  - Default view: duplicates the page's own Grid/List toggle, and the two don't sync.
+  - New D/C&C design: a "preview" since 2026-09-12. Lock it in or drop it.
+- **P8 ✅ Sibling-Colour stock radio.** It starts on "In Stock", while the page follows each colour's own stock. Add an "As per colour" default.
+- **P9 ✅ VCLP Demo panel shows only the Fitment Gallery controls.** Also hide the "Show Demo State Panel" toggle on the Header page, which has no Demo panel.
+- **P10 ✅ Save Demo panel choices per template** (`rrgDemo:<template>`). Today they reset on every reload, while Site Admin choices persist. Add "Reset all demo settings" to Site Admin.
+- **P11 ✅ Plain-English labels:**
+  - Drop the dated and developer notes: "(vehicle → category → none priority, 2026-09-18)", "(preview, AU only)", "Mode 1 — third variant card", "(demo preview only)".
+  - Rename "Product Notes" to "Important vehicle fit notes".
+  - Add a one-line explainer to Build Phase.
+  - Group Demo State under topic headings: Price & media, Stock, Delivery, In-store, Cart.
+
+### 15.2 Global shell: index, header prototype, footer, `<head>` (G)
+- **G1 ✅ The root `prototypes/index.html` gets the real header, footer and panels.** Its header is a hand copy from 09-10/11. It has:
+  - no mega menu, typeahead, region switcher, session state, Fit Finder or sale banner
+  - no footer
+  - no Site Admin
+  - a dead hamburger, because the `.mobile-open` CSS no longer exists
+
+  Fix: paste in the current header, takeover and footer blocks, load the standard scripts plus shared.js (already safe on non-PDP pages), delete the inline script, and fix the `_shared/` paths.
+- **G2 ✅ Update the index page copy:**
+  - The Search card still mentions "a slim search bar" (removed 09-29).
+  - "four PDP reference products" should be five.
+  - Add a Header (standalone) card.
+  - Card buttons come in 2 sizes with an 8px radius. Normalise them.
+- **G3 ✅ Retire `header/header-standalone.js`.** It is about 450 lines duplicated from shared.js and kept in sync by hand. Load shared.js on `header/index.html` instead, as the file's own comment said to once the header was integrated.
+- **G4 ✅ Load the Kalam font** (used by the UK footer's "#TakeMoreDoMore") on VCLP, PLP, Camping, VPLP and Search. Only the 5 PDPs load it today.
+- **G5 ✅ One rule for spacing before the footer:**
+  - Search has about 88px (40 + 48).
+  - Everything else has 48px.
+  - VCLP has a 48px white strip between its grey brands band and the footer.
+- **G6 ✅ `<title>` format:** "Product/Page name — Roof Racks Galore" everywhere. The PLP family already uses it. The PDPs use internal labels like "Fitment Confidence Command Center".
+- **G7 ✅ Mobile takeover logo:** `href="index.html"` points at the current template. Point it at the template index.
+- **G8 🤔 `<head>` extras:**
+  - Add a favicon and `lang="en-AU"` on all pages?
+  - SEO meta (description, canonical, OG) is on VCLP only. Add it to all templates, or leave VCLP as the example?
+
+### 15.3 Design tokens and CSS foundation (T)
+- **T1 ✅ Add the missing tokens and replace their hardcoded copies:**
+  - CTA gold `#FFCA48` and its hover
+  - UK green `#26B226` and its hover
+  - charcoal `#211E20`
+  - overlay rgba
+  - red tint
+  - star colour
+- **T2 ✅ Cut 27 greys down to 6 tokens:** text, 700, 600, 500, 400, and line/line-strong/bg.
+  - `#767676` is hardcoded 30 times.
+  - `--rrg-display` is used 0 times but hardcoded 3 times.
+  - `#999` body text (`.variant-help`, `.swatch-note`) fails contrast. Move it to 500.
+- **T3 ✅ Radius:**
+  - Replace the 55 literal `6px` with `var(--radius)`.
+  - Fix the two drifts since the 09-16 normalisation: the search typeahead chip is a 999px pill, and the index bundle items are 8px.
+- **T4 ✅ Shadows and transitions:**
+  - 5 shadow tokens (card, pop, modal, drawer, bar) instead of 20 one-offs.
+  - 3 transition tokens.
+- **T5 ✅ Font weights 600 and 800 aren't loaded, so the browser silently renders 700/900.** Set them explicitly to 700/900.
+- **T6 🤔 Font-size scale.** The 09-16 pass removed 12.5px, but 14 new uses have crept back (all 09-17 to 09-29: cards, tooltips, filters). 15px ×5 and 19px ×1 are also back.
+  - Proposed scale: 11/12/13/14/16/18/20/22/26/28/32/40.
+  - Needs one call: does 12.5px become 12 or 14?
+- **T7 ✅ Breakpoints:** the PDP Related grid goes two-up at 600px, but the PLP grid does so at 640px. Standardise on 520/640/900.
+- **T8 ✅ Letter-spacing scale:** headings .02em, buttons and chips .03em, eyebrows .04em.
+
+### 15.4 Buttons (B)
+- **B1 🧱 One button system.** The `.btn` base is fine, but about 20 local size overrides and 30 inline `style="padding…"` attributes sit on top of it.
+  - Sizes: `.btn` (16px), `.btn-md` (about 14px) and `.btn-sm` (12 or 14px, see T6).
+  - Colours: primary red, CTA gold (merges `.btn-gold` and `[data-cta-label].btn-primary`), outline and outline-red.
+- **B2 ✅ Class naming:** the PDP Add to Cart is `.btn-primary` recoloured gold, while card Add to Cart is `.btn-gold`. Give both the CTA-gold class.
+- **B3 ✅ `.btn-outline` has no hover** (`.btn-outline-red` does). `.fitment .actions button` is a third outline style; fold it in.
+- **B4 🤔 UK region:** the PDP Add to Cart turns green, but card and Related Products Add to Cart stay gold, on the same page. Should card CTAs follow the region?
+- **B5 ✅ Measured size drift on buttons doing the same job:**
+  - Card Add to Cart: 12.5px on PDP Related cards, 12px on PLP cards.
+  - Outline buttons: heights of 37, 39, 43 and 55px.
+  - "Select Store" on the PDPs: inline 12px.
+
+### 15.5 Headings and type (H)
+- **H1 ✅ Add a shared page H1 rule:** 32px / 1.1, plus a mobile step. Measured today:
+  - PDP: 32px / 1.1.
+  - PLP family and VCLP: 32px / 1.45 (browser default; no rule).
+  - Search: 28px desktop, 22px mobile (32 elsewhere).
+  - Index: 34px. Header: 26px.
+- **H2 ✅ Section H2s are 40px italic, except:**
+  - "Fitment Gallery" (VS/VCLP/VPLP): upright, line-height 40, margin 0.
+  - VCLP "Fit Finder": upright.
+  - VCLP "Shop The Best Brands": red.
+  - "Shop By": 22px red.
+  - Search empty-state "You Might Like": 18px red, where equivalent sections use `.related-heading`.
+- **H3 ✅ Small grey eyebrow labels come in 4 versions:** "Consists Of" 13px, "What's Included" 12px, "Build Option" 13px and "Featured Product" 13px, plus the typeahead section heads and admin h5s. They also use different font stacks. Make one `.eyebrow` (11px/700/.04em).
+- **H4 ✅ Drawer titles:** 18px on most, 26px on Fit Finder, 22px on the vehicle notice. Pick one.
+
+### 15.6 Shared components (C)
+- **C1 🧱 Drawers.**
+  - Three pasted copies (ex-demo, store, fitment gallery) become one `.drawer` base with a width variable.
+  - Every drawer gets Escape-to-close and `role="dialog"`. Only the two 09-29 overlays have these today.
+  - Widths are 380, 420 and 600px. The compare table is cramped at 380.
+- **C2 ✅ Close buttons:** there are 5 styles. Use the 48px grey circle everywhere; the vehicle notice has a bare 26px ×.
+- **C3 ✅ Tooltips:**
+  - The filter tooltip and fitment tooltip came from the same commit and have already drifted: 8 vs 6px offset, z-index 5 vs 6, fixed width, no hover bridge. Make one `.rrg-tooltip`.
+  - Move the PDP `title=""` hovers (Rack Fit Guarantee, copy icon) onto it, or drop them.
+  - Also move or drop the stale "Toggle via Site Admin…" titles on the Change Vehicle buttons.
+- **C4 ✅ Chips:** `.stock-chip`, `.eo-tag` and `.v-badge` are identical triplets. Make one `.chip`.
+- **C5 🤔 "Save" badge colour:** red on the PDP price, green on the variant cards (Config, VS). Pick one.
+- **C6 ✅ Mobile quick-filter chips are still gold.** The desktop priority filters became a red outline at the 09-18 review; match the chips to that.
+- **C7 ✅ Carousel dots and arrows:** Fitment Gallery uses black pills, the PLP merch banner uses red circles, and the arrows are 32px vs 30px. Make one style.
+- **C8 ✅ Fitment status on cards:** `.plp-fitment` rebuilds `.fitment`. Make it a compact `.fitment` variant.
+- **C9 ✅ Fitment Gallery is built 3 ways.** It's hand-written on VS and VCLP and generated on VPLP, with different badge SVGs, alt text and lazy-loading. Make one `fitGallerySectionHTML()` in shared.js with one section margin (currently inline on VS only).
+- **C10 🤔 Card sizing:** the PLP card title is 16.5px vs 15px on the PDP Related card, price 26 vs 24, RRP 15 vs 14. The Related card was meant to be "a simpler version" of the PLP card. Match exactly, or keep it deliberately smaller?
+- **C11 ✅ "Was"/RRP grey:** `#434343` on the PDP, `#6b6b6b` on cards, `#8a8a8a` on variant cards, plus inline sticky-bar styles. Use one token.
+- **C12 ✅ Sidebar Featured Product is its own mini card.** It has no RRP, no sale colour and no Save corner, and its image is `contain` where every other card uses `cover`. Rebuild it from the shared price markup.
+- **C13 ✅ Text-link buttons:** 6 variants. Make one `.link-btn`.
+- **C14 ✅ Form controls:**
+  - The compare checkbox is browser blue next to red filter checkboxes. Add `accent-color`.
+  - The Sort select and the Fit Finder selects use different chevrons and padding. Both are under 16px, so iOS zooms in on tap.
+  - The grid/list view toggle has 0 radius and no font set.
+- **C15 🤔 Store chip "Order In — 1-2 Days"** (Store Slide-out) predates the stock model, which says "within 2 business days" and "Special Order 5–7". Align the wording?
+
+### 15.7 PDP template drift (D)
+- **D1 ✅ Move the per-template `<style>` blocks into shared.css:** `.hero`, `.decision-panel`, `.reviews-strip`, `.price-block`, `.cta-col`, `.variant-option*` (byte-for-byte duplicated on Config and VS) and `.details-sub ul`. Settle the two spacing splits at 16px:
+  - reviews line: 14px on 3 templates, 16px on 2
+  - price block: 14px on 2 templates, 16px on 3
+- **D2 ✅ Tab lists:** the Gold Guarantee and Shipping Info bullet lists have browser-default spacing on Config, Sibling and VS (they're missing `.details-sub ul`).
+- **D3 ✅ Gallery thumbnails:** on Simple, Grouped and VS, clicking a thumbnail swaps the image but the active border stays on thumb 1. Use one shared click handler; Config and Sibling already do it right.
+- **D4 ✅ Sticky mobile bar:**
+  - The price is 12px on Config/Sibling and 13px on Simple/Grouped.
+  - VS shows no price at all, but the glossary defines the bar as name + price + CTA.
+  - Everything is inline styles. Use the existing `.sticky-cta-mobile .price-now/.price-was` classes.
+- **D5 ✅ Remove VS's sticky Decision Panel** (`top:56px`). It's a leftover from 09-10, and both columns stick at different offsets.
+- **D6 ✅ VS "Get It Installed" text on first load** ("See 283 real fitments") matches none of the spec'd copy thresholds. Run `applyFitGalleryFlag` on init.
+- **D7 🤔 The Low Stock `.scarcity` box is on Simple only** and duplicates the stock line there. Recommend removing it.
+- **D8 ✅ One `renderPriceSurfaces()`.** Each template updates price differently, and on every template the Demo "On sale" toggle leaves the sticky and persistent bar prices stale.
+- **D9 ✅ Tidy-ups:**
+  - SKU copy markup: use `data-copy-source` everywhere.
+  - Drop the hardcoded `on-sale` class.
+  - Select the stock line by class, not `#stockLine`.
+  - Scope `.fitment{margin}` on VS.
+  - Fitting-instructions links: `target="_blank" rel="noopener"` and the same wrapper on every template.
+  - Turn the inline margins on the Related section, `#showroom` and `.dc-widget` into classes.
+- **D10 🤔 Copy:**
+  - Grouped says "$397 Off RRP" where the others say "Save N%".
+  - On Sibling and VS the last breadcrumb item doesn't match the H1.
+  - The Related card title format varies (with or without SKU).
+
+### 15.8 Listing-page drift (L)
+- **L1 ✅ Real bug: UK prices revert to `$` after any filter, sort, page change or resize.** `plpFmtMoney` hardcodes `$`. Use `fmtAud`.
+- **L2 ✅ Related Products on PLP and Camping still use the old black-outline Add to Cart.** Switch to the PDP's gold card markup from 09-29.
+- **L3 🤔 Related Products appears on PLP and Camping but not on VPLP.** Add it to VPLP, or remove it from both?
+- **L4 ✅ Discontinued on cards** (latent; no demo product is discontinued): it has no style, so it would show green, and Add to Cart stays live. Treat it like Out of Stock.
+- **L5 ✅ Search breadcrumb "Home" isn't a link.**
+- **L6 ✅ Toolbar:**
+  - The result-count style is defined 3 times.
+  - The count sits in a different position on Search; Search's 09-29 order is the newer one.
+  - The sort option list is duplicated 5 times.
+- **L7 ✅ Copy:**
+  - "Clear Filters" on desktop vs "Clear All" in the drawer.
+  - "(N Reviews)" on cards vs "(N reviews)" on the PDP.
+  - "Load More (N)" vs "Show More Results".
+  - Search's Pages/Articles/Brands filters have no tooltip icon.
+- **L8 🤔 Vehicle breadcrumb path:** agree one pattern. Today:
+  - VPLP: Home › Vehicles › Toyota › Hilux › 2015-2026 › 4dr Ute › Bare Roof › Roof Racks
+  - VS PDP: Home › Toyota Hilux N80 › …
+  - VCLP root: "Select vehicle"
+- **L9 🤔 Sale styling:** the PDP main price uses the sale-tag image plus a Save pill, while all cards now use the Save corner band. Keep them different on purpose?
+
+### 15.9 VCLP (V)
+- **V1 🤔 Change Vehicle button.** Measured, there are 3 different ones:
+  - VCLP: full-size gold, in the hero (53px).
+  - PLP family: small red outline in the breadcrumb row (35px, chosen at the 09-18 review).
+  - Search: plain white sentence-case button (48px).
+
+  Standardise on the PLP version? On VCLP it also opens the drawer even though the same Fit Finder sits one scroll below.
+- **V2 ✅ Fit Finder "View Results" still shows an `alert()` saying "no PLP exists yet"**, but VPLP exists now. Make it set the session vehicle and go to VPLP. Also use VCLP's car-and-rack icon in the site-wide drawer; the drawer's generic car icon looks like an accidental swap.
+- **V3 ✅ Hero:** `.vclp-hero*` and `.plp-hero*` are copies whose spacing has drifted (32/28 vs 28, 14 vs 12, 22 vs 20). Move one hero class into shared.css.
+- **V4 ✅ The page has 3 `<main>` elements, which is invalid.** Use one `<main>` plus full-bleed sections.
+- **V5 ✅ Brands band:**
+  - Add the Thule, Cruz, Rola and Rocky Mounts logos. They're now in `_shared/`, though a comment says they're missing.
+  - Delete the unused `.brands-dots`.
+  - Fix the red heading (H2) and the gap before the footer (G5).
+- **V6 ✅ The trust banner's "Book An Installation" is `href="#"` with `target="_blank"`.**
+- **V7 🤔 FAQ:** VCLP has the only 2-column FAQ. Keep it as a landing-page variant, or match the other pages?
+
+### 15.10 Dead code and stale comments (Z)
+- **Z1 ✅ Delete:**
+  - the old v1 card price CSS (`plp.css:360-390`, about 15 rules)
+  - `.plp-refine-btn-standalone`
+  - the legacy `.rrg-topbar` and `.rrg-header`
+  - `.guarantee-usps` and `-learn-more`
+  - `.nav-strip` and `a.tag`
+  - the `.install-tag` mobile override
+  - the `.plp-card-media img` contain rule
+  - `BIKE_ICON` in `plp/index.html`
+- **Z2 ✅ Fix stale comments:**
+  - plp.css header: says "loaded only by plp and vplp"
+  - shared.css "37px" heading notes (now 40px)
+  - mega-menu.css `.rrg-nav z-index:56`
+  - the VS "pilot only" map note
+  - Camping's "no vehicle concept" note
+  - admin-panel.js notes about Mark's PDP focus
+  - the header-standalone mobile-nav note
+- **Z3 ✅ Dev briefs (text only; screenshots stay held):**
+  - Line 130 of the PDP brief still describes the removed Fitment Gallery placement toggle.
+  - The section-order lines leave out the USP row.
+  - Update every brief for whatever this pass changes.
+
+### 15.10a Spacing and layout stability (S): added after Brenton's Bike Racks tab report, 2026-09-29
+**How it was checked:** every interactive state on every page, at 1440 and 390px, with the vehicle set on and off. That covers the Shop By tabs, Level-3 icon cards, search scopes and queries, grid/list, variant cards and swatches. For each state we recorded where the anchored elements sit (breadcrumbs, H1, hero, CTAs, Shop By, toolbar, decision panel).
+- **Stable:** all 5 PDPs through every variant and swatch change, VCLP, and search (roof rack / ranger / bike racks / warranty / zero results, every tab, scope and view).
+
+Items:
+- **S1 ✅ The category heading jumps when you switch Shop By tabs.**
+  - **Cause:** `.plp-hero{align-items:center}` (`plp.css:10`) vertically centres the text against the vehicle photo, so a shorter description moves the H1 down.
+  - **How far it moves (desktop):**
+
+    | Page | H1 movement |
+    |---|---|
+    | Bike Racks | 38px (Show All 246 → Roof 258 → Tow Ball 271 → the Roof Rack icon card 284) |
+    | Camping | 13px |
+    | VPLP | 13px |
+
+  - **Fix:** top-align the hero text, so the H1, description and buttons always start at the same spot and only the space below them changes. Apply the same to the VCLP hero once it shares the class (V3).
+- **S2 ✅ Shop By tile icons and labels don't line up (Bike Racks).**
+  - Tiles centre their content, so a two-line label ("Tow Ball Mounting", "Bike Rack Accessories") pushes its icon 10px higher than one-line tiles.
+  - Label baselines differ as well (98 vs 107px).
+  - **Fix:** pin the icon to the top, give the label a fixed two-line area, and align it to the bottom.
+- **S3 ✅ Mobile: the whole page jumps 52px between Show All and any other tab.**
+  - The breadcrumb row grows ("Home › Bike Racks" → "Home › Bike Racks › Roof Mounting") and pushes the Change Vehicle button onto a second line.
+  - **Fix:** give the breadcrumb row a fixed mobile layout (button always on its own line, or the trail truncates), so its height never changes.
+- **S4 ✅ (agreed 2026-09-29: 3-line clamp + "Read more") Mobile: Shop By and the toolbar move by up to 128px as you tap through tabs.**
+  - The description length differs per tab, and the hero sits above the tabs on mobile, so the next tab isn't under your thumb any more.
+  - **Recommend:** clamp the hero description to 3 lines on mobile, with a "Read more" toggle.
+- **S5 ✅ One section-spacing rhythm.** Section margins today:
+
+  | Section | Margin |
+  |---|---|
+  | Showroom / Tabs / FAQ | 40px |
+  | Related Products / video carousel | 48px |
+  | Trust row | 32px |
+  | USP row | 28px margin + 20px padding |
+  | Shop By | 24px |
+
+  The listing pages also stack `.plp-layout` padding (40) onto the next section's margin (48), which leaves about 140px of white between the pagination and "Bike Rack Videos".
+  - **Fix:** a spacing scale in tokens (T-step): `--space-section` 48px between all major sections; heading → content 16px (the Showroom Finder is 20px); one rule for the gap before the footer (G5).
+  - Shop By stays compact (24px) because it's navigation, not a content section.
+- **S6 ✅ Regression check after every build step:** re-run the state-cycling measure. Anchored elements must not move between tabs or states, and matching sections must have equal gaps on every page.
+
+### 15.11 Suggested order
+1. **Foundation:** T1–T5, T7 and T8, the T6 decision, and the S5 spacing scale. Everything after this uses the tokens.
+2. **Components:** B1–B3, H1–H4, C1–C4, C7–C9 and C11–C14. Most of the visible drift disappears here.
+3. **Template drift:** D1–D9, L1, L2, L4–L7, V2–V6 and S1–S4.
+4. **Global shell:** G1–G7.
+5. **Panels:** P1–P11. These come last so they reflect the final component set.
+6. **Cleanup:** Z1–Z3, then re-measure all 12 pages in Playwright at 1440 and 390 and diff against this audit's baseline.
+
+### 15.12 Decisions needed before starting
+P4 vehicle control merge · P7 which locked controls to remove · G8 `<head>` extras · T6 what 12.5px becomes · B4 UK card CTA colour · C5 Save badge colour · C10 card sizing · C15 store chip wording · D7 `.scarcity` box · D10 copy · L3 Related Products on VPLP · L8 vehicle breadcrumb · L9 sale styling · V1 Change Vehicle button · V7 VCLP FAQ.
+
+**Answers (Brenton, 2026-09-29):**
+- **P4:** Yes. Merge into one Site Admin "Vehicle: None / Toyota Hilux / Ford Ranger" control.
+- **P7:** Remove every control for an already-decided feature: Grid columns (3 is locked), Default view (the page has its own toggle), and the New D/C&C design preview.
+  - **Delivery/Click & Collect: v1 (the current default, toggle off) stays.** Remove the toggle and delete the v2 widget code (Z1).
+- **G8:** Yes. Add a favicon, `lang="en-AU"`, and SEO meta (description, canonical, OG) on every template.
+- **T6:** 12.5px becomes **14px**.
+- **B4:** Yes. Card and Related Products Add to Cart follow the region (green in the UK).
+- **C5:** The Save badge is **red** everywhere, so the variant-card `.v-badge` changes from green to red.
+- **C10:** The Related Products card **stays smaller**. It's a compact version of the PLP card, so fix the comment and don't touch its sizes.
+- **C15:** Yes. Align the store chip wording with the stock model.
+- **D7:** Keep the `.scarcity` box as part of the Low Stock state, not a Simple-only extra.
+  - It shows on **all 5 PDPs** whenever the product is Low Stock, driven by the Demo State stock radio.
+  - Low Stock is a positive urgency cue ("get in before it runs out"), not a warning, so style it that way.
+- **D10:**
+  - "Save N%" everywhere; Grouped drops "$397 Off RRP".
+  - The last breadcrumb item matches the product name (H1) exactly.
+  - Related Products card titles show the **product name only**, with no SKU.
+- **L3:** Yes. Add Related Products to VPLP.
+- **L8:** One vehicle breadcrumb family, built down from VCLP. This is provisional and may change after team review.
+  - VCLP: `Home › Vehicles › Toyota › Hilux`
+  - VPLP: `Home › Vehicles › Toyota › Hilux › Roof Racks`. Year, body style and roof type drop out of the trail; the heading carries them.
+  - VS PDP: `Home › Vehicles › Toyota › Hilux › Platforms & Trays › <product name>`
+- **L9:** Same styling on the PDP main price and the cards, with the PDP also keeping the sale-tag image.
+  - Confirmed: the PDP main price uses the **same red Save treatment as the cards**, plus the sale-tag image.
+- **V1:** Standardise every "Change Vehicle" button on the PLP's red outline button (`.btn-outline-red`, compact size): VCLP, the PLP family and Search.
+- **V7:** The VCLP FAQ matches the other pages (single column, `.faq-heading` above).

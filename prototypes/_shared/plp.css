@@ -9,7 +9,7 @@
 /* ---- Hero (Simple / Vehicle-Set states, spec Section 4) ---- */
 .plp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:28px 0;}
 .plp-hero h1{margin-bottom:12px;}
-.plp-hero p{font-size:16px;color:#444;line-height:1.6;max-width:560px;margin-bottom:20px;}
+.plp-hero p{font-size:16px;color:var(--rrg-grey-700);line-height:1.6;max-width:560px;margin-bottom:20px;}
 .plp-hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
 .plp-hero-cta-row .btn{padding:11px 18px;font-size:13px;}
 .plp-hero-media{position:relative;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;}
@@ -52,7 +52,7 @@
    this CTA banner in place of the vehicle-set hero framing (spec Section 2 live-site
    finding). Reuses the Showroom Finder's black-CTA visual language. */
 .plp-vrs-banner{background:var(--rrg-black);color:#fff;border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-.plp-vrs-banner p{margin:0;color:#ddd;font-size:14px;max-width:560px;}
+.plp-vrs-banner p{margin:0;color:var(--rrg-line);font-size:14px;max-width:560px;}
 .plp-vrs-banner h3{color:#fff;margin:0 0 4px;}
 
 /* ---- SHOP BY row (spec Section 5) ---- */
@@ -97,21 +97,21 @@
 /* ---- Toolbar (result count / view toggle / sort, spec Sections 7-8) ---- */
 .plp-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rrg-line);margin-bottom:20px;}
 .plp-toolbar-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-#plpResultCount{font-size:13px;color:#666;}
-.plp-view-toggle{display:flex;border:1px solid var(--rrg-line);border-radius:6px;overflow:hidden;}
-.plp-view-toggle button{background:#fff;border:none;padding:8px 12px;display:flex;align-items:center;color:#666;}
+#plpResultCount{font-size:13px;color:var(--rrg-grey-600);}
+.plp-view-toggle{display:flex;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;}
+.plp-view-toggle button{background:#fff;border:none;padding:8px 12px;display:flex;align-items:center;color:var(--rrg-grey-600);}
 .plp-view-toggle button.active{background:var(--rrg-black);color:#fff;}
 .plp-view-toggle svg{width:16px;height:16px;}
 .plp-toolbar-right{display:flex;align-items:center;gap:10px;}
-.plp-toolbar-right label{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:.03em;font-weight:700;}
-#plpSort{border:1px solid var(--rrg-line);border-radius:6px;padding:9px 12px;font-size:13.5px;font-family:inherit;background:#fff;}
+.plp-toolbar-right label{font-size:12px;color:var(--rrg-grey-600);text-transform:uppercase;letter-spacing:.03em;font-weight:700;}
+#plpSort{border:1px solid var(--rrg-line);border-radius:var(--radius);padding:9px 12px;font-size:14px;font-family:inherit;background:#fff;}
 .plp-refine-btn-mobile{display:none;}
 @media (max-width:900px){
   .plp-refine-btn-mobile{display:inline-flex;}
 }
 
 /* ---- Layout: sidebar + main ---- */
-.plp-layout{display:grid;grid-template-columns:270px 1fr;gap:32px;align-items:start;padding-bottom:40px;}
+.plp-layout{display:grid;grid-template-columns:270px 1fr;gap:32px;align-items:start;}
 @media (max-width:900px){
   .plp-layout{grid-template-columns:1fr;}
 }
@@ -132,9 +132,9 @@
    clear an active filter selection today). Sits above the priority filters on desktop; the
    mobile drawer gets its own copy in its head row (plp.js plpBuildFilterDrawer()). */
 .plp-filter-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.plp-filter-head h3{font-size:15px;margin:0;}
-.plp-filter-clear{background:none;border:none;padding:0;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
-.plp-filter-clear-drawer{background:none;border:none;padding:0;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;margin-left:auto;margin-right:14px;}
+.plp-filter-head h3{font-size:16px;margin:0;}
+.plp-filter-clear{background:none;border:none;padding:0;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
+.plp-filter-clear-drawer{background:none;border:none;padding:0;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:underline;margin-left:auto;margin-right:14px;}
 .plp-filter-priority{margin-bottom:16px;}
 .plp-filter-group{border-bottom:1px solid var(--rrg-line);padding:12px 0;}
 /* Red outline, not a gold fill (2026-09-18 design review, same call as the SHOP BY tabs
@@ -154,7 +154,7 @@
 .plp-filter-priority-group .plp-filter-options{padding:10px 12px;margin-top:0;}
 .plp-filter-group summary{list-style:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.02em;position:relative;padding-right:20px;display:flex;align-items:center;gap:6px;}
 .plp-filter-group summary::-webkit-details-marker{display:none;}
-.plp-filter-group summary::after{content:'\2212';position:absolute;right:0;top:0;color:#767676;}
+.plp-filter-group summary::after{content:'\2212';position:absolute;right:0;top:0;color:var(--rrg-grey-500);}
 .plp-filter-group:not([open]) summary::after{content:'+';}
 /* Right padding (2026-09-18 design review — Graham: the option counts on the right sat too
    close to the sidebar's own edge) to match the priority filter group's own 12px horizontal
@@ -163,30 +163,30 @@
    right:0 — unaffected, since this padding is scoped to the options list, not the group. */
 .plp-filter-options{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding-right:12px;}
 /* Phase 2, no store set — "Set your store to see local stock" at the top of Availability (spec.md §14.1). */
-.plp-filter-store-prompt{margin:10px 12px 0 0;font-size:13px;color:#555;}
+.plp-filter-store-prompt{margin:10px 12px 0 0;font-size:13px;color:var(--rrg-grey-600);}
 .plp-filter-store-prompt a{color:inherit;font-weight:700;text-decoration:underline;}
-.plp-filter-option{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13.5px;color:#333;cursor:pointer;}
+.plp-filter-option{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:14px;color:var(--rrg-grey-700);cursor:pointer;}
 .plp-filter-option input{accent-color:var(--rrg-red);width:16px;height:16px;flex:0 0 auto;}
 .plp-filter-option span:nth-child(2){flex:1;}
 .plp-filter-option.is-zero{opacity:.4;}
-.plp-filter-count{color:#999;font-size:12px;}
+.plp-filter-count{color:var(--rrg-grey-400);font-size:12px;}
 
 /* Tooltip (2026-09-18 design review — Graham: filters need an explainer on hover, like the
    live site's eye icon). Real per-attribute copy is blocked on Graham's tooltip spreadsheet
    (plp-spec.md Section 15); this is the UI mechanism only, with placeholder text so it's
    demoable. Pure-CSS hover tooltip, no JS — consistent with this file's other no-JS
    disclosure patterns (Show Specs, FAQ accordion). */
-.plp-filter-tooltip{position:relative;display:inline-flex;flex:0 0 auto;color:#8a8a8a;cursor:help;}
+.plp-filter-tooltip{position:relative;display:inline-flex;flex:0 0 auto;color:var(--rrg-grey-500);cursor:help;}
 .plp-filter-tooltip svg{width:14px;height:14px;}
 .plp-filter-tooltip:hover,.plp-filter-tooltip:focus-visible{color:var(--rrg-red);}
 /* Same look as the product-card fitment tooltip (.plp-fitment-tip, 2026-09-29): footer charcoal,
    white body text at 12.5px — easier to read than the original black/12px version. */
-.plp-filter-tooltip::after{content:attr(data-tooltip);position:absolute;left:0;top:calc(100% + 8px);z-index:5;width:220px;background:#211E20;color:#fff;font-family:'Lato',Arial,Helvetica,sans-serif;font-size:12.5px;font-weight:400;font-style:normal;text-transform:none;letter-spacing:normal;line-height:1.4;text-align:left;padding:8px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .12s;}
+.plp-filter-tooltip::after{content:attr(data-tooltip);position:absolute;left:0;top:calc(100% + 8px);z-index:5;width:220px;background:var(--rrg-charcoal);color:#fff;font-family:'Lato',Arial,Helvetica,sans-serif;font-size:14px;font-weight:400;font-style:normal;text-transform:none;letter-spacing:normal;line-height:1.4;text-align:left;padding:8px 10px;border-radius:var(--radius);opacity:0;pointer-events:none;transition:opacity var(--t-fast);}
 .plp-filter-tooltip:hover::after,.plp-filter-tooltip:focus-visible::after{opacity:1;}
 
 /* Mobile priority chips — quick-access row above "Refine Results" (Section 6) */
 .plp-filter-chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;}
-.plp-filter-chip{flex:0 0 auto;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:var(--radius);padding:8px 14px;font-size:12.5px;font-weight:700;color:#5c4d1f;white-space:nowrap;}
+.plp-filter-chip{flex:0 0 auto;background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-radius:var(--radius);padding:8px 14px;font-size:14px;font-weight:700;color:var(--rrg-gold-text);white-space:nowrap;}
 @media (min-width:901px){
   .plp-filter-chips,.plp-refine-btn-standalone{display:none;}
 }
@@ -214,7 +214,7 @@
    room here, not just one. */
 .plp-results.is-list .plp-card{display:grid;grid-template-columns:0.9fr 1.8fr 1.3fr;column-gap:20px;padding:16px;align-items:stretch;}
 
-.plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease;}
+.plp-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;transition:box-shadow var(--t-fast) ease, border-color var(--t-fast) ease, transform var(--t-fast) ease;}
 /* Whole-card hover (2026-09-19 follow-up) — now that most cards' primary action is a quick
    Add to Cart rather than a full-width "View Details" link, the card itself needed its own
    affordance that the tile as a whole still leads through to the PDP (via the image/title
@@ -238,9 +238,9 @@
 }
 /* Reuses .plp-shopby-icon/.plp-shopby-label (see plp.css above) so the icon is the same size
    as the Level 2 tabs, per spec's "explicitly not shrunk". */
-.plp-icon-card{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px 12px;cursor:pointer;transition:border-color .15s ease,background .15s ease;}
+.plp-icon-card{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px 12px;cursor:pointer;transition:border-color var(--t-fast) ease,background var(--t-fast) ease;}
 .plp-icon-card:hover{border-color:var(--rrg-red);}
-.plp-icon-card.active{border-color:var(--rrg-red);background:#fff5f5;}
+.plp-icon-card.active{border-color:var(--rrg-red);background:var(--rrg-red-bg);}
 .plp-icon-card .plp-shopby-icon{width:100px;height:50px;}
 .plp-icon-card .plp-shopby-label{color:var(--rrg-black);}
 .plp-fitgallery-inline{grid-column:1/-1;}
@@ -295,7 +295,7 @@
    ground as every real photo elsewhere in the grid — only the icon itself reads as a
    stand-in, not the card behind it. */
 .plp-card-media.is-placeholder{display:flex;align-items:center;justify-content:center;}
-.plp-card-media.is-placeholder svg{width:52%;height:52%;color:#c2c2c2;}
+.plp-card-media.is-placeholder svg{width:52%;height:52%;color:var(--rrg-line-strong);}
 
 /* List row's left column: the photo plus (VRS only) a Fitment Gallery button stacked under
    it. The brand logo sits in the info column above the name, same as the grid card (2026-09-29). */
@@ -307,7 +307,7 @@
 .plp-list-col-info .plp-card-brand-logo,.plp-list-col-info .plp-card-brand-text{margin-bottom:4px;}
 .plp-list-col-info .plp-fitment{margin:0;}
 .plp-list-usps{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;}
-.plp-list-usps li{font-size:13px;color:#444;line-height:1.4;padding-left:20px;position:relative;}
+.plp-list-usps li{font-size:13px;color:var(--rrg-grey-700);line-height:1.4;padding-left:20px;position:relative;}
 .plp-list-usps li::before{content:'✓';position:absolute;left:0;top:0;color:var(--rrg-fits);font-weight:700;}
 
 /* Centred to match the grid card's identity/price block, and stretched to the row's full
@@ -335,18 +335,18 @@
 .plp-card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;min-width:0;}
 /* Bottom margin 5px → 9px (2026-09-29, Brenton — logo sat a bit tight against the name). */
 .plp-card-brand-logo{max-width:100px;max-height:20px;width:auto;height:auto;object-fit:contain;display:block;margin-bottom:9px;}
-.plp-card-brand-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:#767676;margin-bottom:9px;}
+.plp-card-brand-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:var(--rrg-grey-500);margin-bottom:9px;}
 /* Clamped to exactly 2 lines, short or long — this is what keeps the rating/price/stock
    lines below starting at the same height card-to-card in a grid row, regardless of how
    long any one product's name is. */
-.plp-card-title{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:16.5px;letter-spacing:0;line-height:1.3;color:#232323;margin:0 0 6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
-.plp-rating{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#666;margin-bottom:8px;min-height:17px;}
+.plp-card-title{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:16px;letter-spacing:0;line-height:1.3;color:var(--rrg-text);margin:0 0 6px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
+.plp-rating{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--rrg-grey-600);margin-bottom:8px;min-height:17px;}
 .plp-rating .stars{font-size:14px;}
 .plp-price{display:flex;flex-direction:column;gap:2px;margin-bottom:4px;}
 .plp-price-now{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;color:var(--rrg-black);white-space:nowrap;}
-.plp-price-poa{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:#767676;text-transform:uppercase;letter-spacing:.02em;}
+.plp-price-poa{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--rrg-grey-500);text-transform:uppercase;letter-spacing:.02em;}
 .plp-price:has(.plp-price-was) .plp-price-now{color:var(--rrg-red);}
-.plp-price-was{font-size:13px;color:#8a8a8a;text-decoration:line-through;white-space:nowrap;}
+.plp-price-was{font-size:13px;color:var(--rrg-grey-500);text-decoration:line-through;white-space:nowrap;}
 /* On-sale layout (2026-09-18 design review — Graham: the sale-tag graphic overlaying the
    product photo landed in the wrong place too often to control reliably). Two columns
    instead: price+RRP+Save badge in the left column, the same sale-tag graphic in the right
@@ -384,11 +384,11 @@
 .plp-results.is-grid .plp-price-line-now,.plp-results.is-grid .plp-price-line-was{justify-content:center;}
 .plp-price-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--rrg-black);}
 .plp-price-line-now .plp-price-label{color:var(--rrg-red);}
-.plp-price-line-was .plp-price-label{font-family:inherit;font-weight:400;font-size:13px;color:#8a8a8a;text-decoration:line-through;}
+.plp-price-line-was .plp-price-label{font-family:inherit;font-weight:400;font-size:13px;color:var(--rrg-grey-500);text-decoration:line-through;}
 /* Doubled from 44px (2026-09-19 follow-up — Brenton: reads too small at the original size),
    same doubled size in both grid and list view since both share this markup/class. */
 .plp-price .plp-sale-tag{width:88px;height:auto;flex:0 0 auto;}
-.plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
+.plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
 .plp-stock-line.out-of-stock{color:var(--rrg-stock-out);}
 .plp-stock-line.special-order{color:var(--rrg-unknown);}
@@ -406,11 +406,11 @@
 .plp-price-v2-now{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap;}
 .plp-price-v2-now .plp-price-label{color:var(--rrg-black);}
 .plp-price-on-sale-v2 .plp-price-v2-now .plp-price-label{color:var(--rrg-red);}
-.plp-price-v2-was{font-size:15px;color:#6b6b6b;text-decoration:line-through;white-space:nowrap;}
+.plp-price-v2-was{font-size:16px;color:var(--rrg-grey-600);text-decoration:line-through;white-space:nowrap;}
 .plp-price-v2-was .plp-price-was{font-size:inherit;color:inherit;}
 .plp-card:has(.plp-price-v2) .plp-rating{margin-bottom:10px;}
 .plp-card:has(.plp-price-v2) .plp-stock-line{margin-bottom:10px;}
-.plp-view-options-btn:disabled{opacity:.5;cursor:not-allowed;background:#fff;color:#a3a3a3;border-color:var(--rrg-line);}
+.plp-view-options-btn:disabled{opacity:.5;cursor:not-allowed;background:#fff;color:var(--rrg-grey-400);border-color:var(--rrg-line);}
 
 /* Grid-only: centre the identity/price block on the card instead of left-aligning it — list
    view keeps its left-aligned text-next-to-thumbnail layout untouched, since centring text
@@ -429,15 +429,15 @@
    toggle — no separate always-visible strip duplicating the same data. Native <details>,
    no-JS, same accordion convention as the FAQ section. */
 .plp-specs{margin-bottom:10px;}
-.plp-specs-toggle{list-style:none;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
+.plp-specs-toggle{list-style:none;cursor:pointer;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:underline;}
 .plp-specs-toggle::-webkit-details-marker{display:none;}
 .plp-specs-toggle-hide{display:none;}
 .plp-specs[open] .plp-specs-toggle-show{display:none;}
 .plp-specs[open] .plp-specs-toggle-hide{display:inline;}
-.plp-specs-panel{margin-top:8px;display:flex;flex-direction:column;gap:6px;background:#faf9f7;border-radius:6px;padding:10px 12px;}
-.plp-spec-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#333;}
+.plp-specs-panel{margin-top:8px;display:flex;flex-direction:column;gap:6px;background:var(--rrg-bg-warm);border-radius:var(--radius);padding:10px 12px;}
+.plp-spec-row{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--rrg-grey-700);}
 .plp-spec-icon{flex:0 0 auto;}
-.plp-spec-label{color:#767676;}
+.plp-spec-label{color:var(--rrg-grey-500);}
 .plp-spec-value{margin-left:auto;font-weight:700;}
 
 .plp-card-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
@@ -454,11 +454,11 @@
    flex layout (shared.css .btn{display:inline-flex;gap:8px}). */
 .plp-btn-icon{width:14px;height:14px;flex:0 0 auto;}
 
-.plp-compare-check{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#555;cursor:pointer;}
+.plp-compare-check{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--rrg-grey-600);cursor:pointer;}
 .plp-compare-check.is-disabled{opacity:.4;cursor:default;}
 .plp-compare-check input{width:15px;height:15px;}
 
-.plp-no-results{grid-column:1/-1;padding:60px 20px;text-align:center;color:#767676;font-size:15px;}
+.plp-no-results{grid-column:1/-1;padding:60px 20px;text-align:center;color:var(--rrg-grey-500);font-size:16px;}
 
 @media (max-width:640px){
   .plp-results.is-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;}
@@ -471,7 +471,7 @@
 
 /* ---- Pagination (spec Section 8) ---- */
 .plp-pagination{display:flex;justify-content:center;gap:6px;margin-top:28px;}
-.plp-page-btn{min-width:36px;height:36px;border:1px solid var(--rrg-line);border-radius:6px;background:#fff;font-weight:700;font-size:13px;color:#333;}
+.plp-page-btn{min-width:36px;height:36px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;font-weight:700;font-size:13px;color:var(--rrg-grey-700);}
 .plp-page-btn.active{background:var(--rrg-red);border-color:var(--rrg-red);color:#fff;}
 .plp-page-btn:disabled{opacity:.35;}
 .plp-pagination-mobile{margin-top:20px;}
@@ -492,37 +492,37 @@
 .plp-merch-slide img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:var(--radius);}
 .plp-merch-caption{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);display:flex;flex-direction:column;gap:2px;border-radius:0 0 var(--radius) var(--radius);}
 .plp-merch-caption em{font-style:normal;font-size:11px;text-transform:uppercase;letter-spacing:.03em;opacity:.85;}
-.plp-merch-caption strong{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;line-height:1.25;}
+.plp-merch-caption strong{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;line-height:1.25;}
 .plp-merch-dots{display:flex;justify-content:center;gap:6px;margin-top:8px;}
 .plp-merch-dot{width:7px;height:7px;border-radius:50%;background:var(--rrg-line);border:none;padding:0;}
 .plp-merch-dot.active{background:var(--rrg-red);}
-.plp-featured-product-heading{font-size:13px;color:#767676;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
+.plp-featured-product-heading{font-size:13px;color:var(--rrg-grey-500);text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
 .plp-featured-card{display:block;text-decoration:none;color:inherit;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;}
 .plp-featured-card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff;padding:8px;display:block;}
-.plp-featured-name{display:block;padding:8px 10px 0;font-family:'Lato',sans-serif;font-weight:700;font-size:13px;color:#232323;line-height:1.3;}
+.plp-featured-name{display:block;padding:8px 10px 0;font-family:'Lato',sans-serif;font-weight:700;font-size:13px;color:var(--rrg-text);line-height:1.3;}
 .plp-featured-price{display:block;padding:2px 10px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--rrg-black);}
 
 /* ---- Category videos (spec Section 10) ---- */
-.plp-video-tile{position:relative;display:block;border-radius:6px;overflow:hidden;margin-bottom:10px;text-decoration:none;}
+.plp-video-tile{position:relative;display:block;border-radius:var(--radius);overflow:hidden;margin-bottom:10px;text-decoration:none;}
 .plp-video-tile img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
 .plp-video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;}
 .plp-video-title{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);color:#fff;font-size:12px;font-weight:700;}
-.plp-video-carousel-section{margin:48px 0;}
+.plp-video-carousel-section{margin:var(--space-section) 0;}
 .plp-video-carousel-track{display:flex;gap:16px;overflow-x:auto;padding-bottom:6px;}
 .plp-video-carousel-track .plp-video-tile{flex:0 0 260px;margin-bottom:0;}
 
 /* ---- Compare Products (spec Section 12) ---- */
-.plp-compare-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:50;background:var(--rrg-black);color:#fff;border-radius:var(--radius);padding:12px 12px 12px 20px;display:flex;align-items:center;gap:14px;font-size:13.5px;box-shadow:0 10px 26px rgba(0,0,0,.3);}
-.plp-compare-bar .btn{padding:9px 18px;font-size:12.5px;}
+.plp-compare-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:50;background:var(--rrg-black);color:#fff;border-radius:var(--radius);padding:12px 12px 12px 20px;display:flex;align-items:center;gap:14px;font-size:14px;box-shadow:var(--shadow-pop);}
+.plp-compare-bar .btn{padding:9px 18px;font-size:14px;}
 .plp-compare-heads{display:grid;grid-template-columns:110px 1fr 1fr;gap:12px;align-items:end;margin-bottom:14px;}
 .plp-compare-head{text-align:center;}
-.plp-compare-head img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#f7f7f7;border-radius:6px;margin-bottom:8px;}
+.plp-compare-head img{width:100%;aspect-ratio:1/1;object-fit:contain;background:var(--rrg-bg);border-radius:var(--radius);margin-bottom:8px;}
 .plp-compare-head h4{font-size:13px;margin:0 0 4px;}
 .plp-compare-table th{width:110px;}
 
 @media (max-width:640px){
   .plp-hero p{font-size:16px!important;}
-  .plp-card-title{font-size:15px!important;}
+  .plp-card-title{font-size:14px!important;}
   .plp-price-now{font-size:22px;}
 }
 
@@ -540,17 +540,17 @@
 .plp-search-scope{position:relative;display:inline-flex;align-items:baseline;gap:8px;}
 .plp-search-scope-in{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:28px;line-height:1.15;text-transform:uppercase;}
 .plp-search-scope-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:none;border-bottom:2px solid var(--rrg-red);padding:0 0 1px;cursor:pointer;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:28px;line-height:1.15;text-transform:uppercase;color:var(--rrg-red);}
-.plp-search-scope-btn svg{width:20px;height:20px;transition:transform .15s;}
+.plp-search-scope-btn svg{width:20px;height:20px;transition:transform var(--t-fast);}
 .plp-search-scope-btn[aria-expanded="true"] svg{transform:rotate(180deg);}
-.plp-search-scope-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:0 10px 28px rgba(0,0,0,.14);z-index:30;padding:4px 0;}
+.plp-search-scope-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow-pop);z-index:30;padding:4px 0;}
 .plp-search-scope-option{display:flex;justify-content:space-between;gap:12px;width:100%;background:none;border:none;padding:9px 14px;font:inherit;font-size:14px;text-align:left;cursor:pointer;color:var(--rrg-black);}
-.plp-search-scope-option span{color:#888;}
+.plp-search-scope-option span{color:var(--rrg-grey-500);}
 .plp-search-scope-option:hover{background:var(--rrg-bg);}
 .plp-search-scope-option.active{font-weight:700;background:var(--rrg-bg);}
-.plp-search-headline-count{font-size:14px;color:#666;}
+.plp-search-headline-count{font-size:14px;color:var(--rrg-grey-600);}
 .plp-search-page-btns{display:flex;gap:8px;flex-wrap:wrap;}
 .plp-search-page-btn{padding:8px 14px;font-size:13px;white-space:nowrap;}
-.plp-toolbar-count{font-size:13px;color:#666;}
+.plp-toolbar-count{font-size:13px;color:var(--rrg-grey-600);}
 @media (max-width:900px){
   .plp-search-headline{padding:4px 0 10px;}
   .plp-search-headline h1,.plp-search-scope-in,.plp-search-scope-btn{font-size:22px;}
@@ -563,7 +563,7 @@
 .plp-search-vehicle-strip{align-items:center;margin-bottom:14px;}
 .plp-search-vehicle-text{flex:1;min-width:0;}
 .plp-search-vehicle-strip .actions{margin-top:0;flex:0 0 auto;}
-@media (max-width:600px){
+@media (max-width:640px){
   .plp-search-vehicle-strip{flex-wrap:wrap;}
   .plp-search-vehicle-text{flex:1 1 calc(100% - 40px);}
   .plp-search-vehicle-strip .actions{width:100%;}
@@ -590,7 +590,7 @@
 .plp-fitment{position:relative;cursor:help;}
 .plp-fitment:focus{outline:none;}
 .plp-fitment:focus-visible{box-shadow:0 0 0 2px var(--rrg-black);}
-.plp-fitment .plp-fitment-tip{position:absolute;left:-1px;right:-1px;top:calc(100% + 6px);z-index:6;background:#211E20;color:#fff;font-size:12.5px;font-weight:400;line-height:1.4;text-align:left;padding:8px 10px;border-radius:6px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s;}
+.plp-fitment .plp-fitment-tip{position:absolute;left:-1px;right:-1px;top:calc(100% + 6px);z-index:6;background:var(--rrg-charcoal);color:#fff;font-size:14px;font-weight:400;line-height:1.4;text-align:left;padding:8px 10px;border-radius:var(--radius);opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--t-fast);}
 /* Footer charcoal (#211E20, .rrg-footer) rather than pure black — Brenton, 2026-09-29. The
    ::before bridges the 6px gap so moving the mouse down onto the tooltip (to click its link)
    doesn't drop the hover. :focus-within keeps it open on mobile while its link is tapped. */
@@ -602,7 +602,7 @@
 .plp-results.is-grid .plp-fitment{justify-content:center;}
 /* Two-up mobile cards are ~130px wide inside — drop the icon and shrink slightly so the label
    stays on one or two lines instead of three. */
-@media (max-width:600px){
+@media (max-width:640px){
   .plp-fitment{padding:5px 8px;}
   .plp-fitment-icon{display:none;}
   .plp-fitment strong{font-size:13px;}
@@ -616,8 +616,8 @@
 
 .plp-results-scope .plp-card-title{text-align:center;}
 .plp-results-scope .plp-card-actions{margin-top:auto;}
-.plp-scope-type{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#888;margin-bottom:4px;}
-.plp-scope-desc{margin:4px 0 14px;font-size:14px;color:#555;line-height:1.45;}
+.plp-scope-type{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--rrg-grey-500);margin-bottom:4px;}
+.plp-scope-desc{margin:4px 0 14px;font-size:14px;color:var(--rrg-grey-600);line-height:1.45;}
 /* No listing image at all — the intended fallback for older pages/blogs, not a broken image. */
 .plp-scope-media-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--rrg-bg);}
 .plp-scope-media-fallback img{width:55%;max-width:200px;opacity:.35;}
@@ -625,13 +625,13 @@
 .plp-scope-brand-media img{max-width:70%;max-height:60%;object-fit:contain;}
 .plp-scope-brand-text{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:30px;text-transform:uppercase;color:var(--rrg-black);}
 /* Add to Cart vehicle notice (2026-09-24 meeting) — plpMaybeShowVehicleNotice(). */
-.plp-vehicle-notice-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;}
-.plp-vehicle-notice{position:relative;background:#fff;border-radius:var(--radius);width:100%;max-width:460px;padding:22px 22px 20px;box-shadow:0 16px 40px rgba(0,0,0,.25);}
+.plp-vehicle-notice-backdrop{position:fixed;inset:0;background:var(--overlay);z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;}
+.plp-vehicle-notice{position:relative;background:#fff;border-radius:var(--radius);width:100%;max-width:460px;padding:22px 22px 20px;box-shadow:var(--shadow-modal);}
 .plp-vehicle-notice h2{font-size:22px;margin:0 0 14px;color:var(--rrg-fits);}
-.plp-vehicle-notice-close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:26px;line-height:1;cursor:pointer;color:#666;}
+.plp-vehicle-notice-close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:26px;line-height:1;cursor:pointer;color:var(--rrg-grey-600);}
 .plp-vehicle-notice-product{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:13px;line-height:1.35;}
-.plp-vehicle-notice-product img{width:64px;height:64px;object-fit:contain;flex:0 0 auto;border:1px solid var(--rrg-line);border-radius:6px;}
-.plp-vehicle-notice-warning{background:var(--rrg-unknown-bg);color:#5a3a00;border-left:4px solid var(--rrg-unknown);border-radius:6px;padding:12px 14px;font-size:14px;margin-bottom:16px;}
+.plp-vehicle-notice-product img{width:64px;height:64px;object-fit:contain;flex:0 0 auto;border:1px solid var(--rrg-line);border-radius:var(--radius);}
+.plp-vehicle-notice-warning{background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);border-left:4px solid var(--rrg-unknown);border-radius:var(--radius);padding:12px 14px;font-size:14px;margin-bottom:16px;}
 .plp-vehicle-notice-warning strong{display:block;color:var(--rrg-unknown);margin-bottom:2px;}
 .plp-vehicle-notice-actions{display:flex;gap:10px;}
 .plp-vehicle-notice-actions .btn{flex:1;padding:12px 10px;font-size:14px;white-space:nowrap;}
@@ -640,7 +640,7 @@
    category prototype has products by construction. Replaces the grid entirely. ---- */
 .plp-search-empty{text-align:center;padding:40px 20px 10px;}
 .plp-search-empty h2{margin-bottom:8px;}
-.plp-search-empty p{color:#666;font-size:14px;margin-bottom:8px;}
+.plp-search-empty p{color:var(--rrg-grey-600);font-size:14px;margin-bottom:8px;}
 .plp-search-empty-other button{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-red);text-decoration:underline;cursor:pointer;}
 .plp-search-empty-subheading{margin:32px 0 16px;font-size:18px;color:var(--rrg-red);}
 .plp-search-empty-cats{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;}
