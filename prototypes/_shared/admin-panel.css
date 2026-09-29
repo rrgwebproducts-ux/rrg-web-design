@@ -15,8 +15,7 @@
 .site-admin-panel.open{display:flex;}
 .site-admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:var(--rrg-grey-700);color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .site-admin-close{background:none;border:none;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:0 4px;}
-.site-admin-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:16px;}
-.site-admin-section h5{margin:0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-400);}
+.site-admin-body{padding:6px 16px 12px;display:flex;flex-direction:column;}
 .site-admin-links{display:flex;flex-direction:column;gap:2px;}
 .site-admin-links a{padding:8px 9px;border-radius:var(--radius);font-size:14px;font-weight:700;color:var(--rrg-black);text-decoration:none;}
 .site-admin-links a:hover{background:var(--rrg-bg);color:var(--rrg-red);}
@@ -32,9 +31,25 @@
 
 /* 2026-09-29 rebuild (spec.md §15 P2–P11): template groups, vehicle select, phase note, reset. */
 .site-admin-sub{font-weight:400;text-transform:none;opacity:.7;font-family:'Lato',Arial,sans-serif;font-size:13px;}
-.site-admin-group{margin:10px 0 2px;padding-left:9px;font-size:12px;font-weight:700;color:var(--rrg-grey-600);}
 .site-admin-select{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;padding:4px 2px;}
 .site-admin-select select{font:inherit;font-weight:400;padding:4px 6px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;}
 .site-admin-note{margin:6px 2px 0;font-size:12px;line-height:1.4;color:var(--rrg-grey-600);}
 .site-admin-reset{margin-top:6px;width:100%;padding:9px;border:1px solid var(--rrg-line-strong);border-radius:var(--radius);background:#fff;font:inherit;font-size:13px;font-weight:700;color:var(--rrg-red);cursor:pointer;}
 .site-admin-reset:hover{background:var(--rrg-red-bg);}
+
+/* Accordion rows (2026-09-29) — both prototype panels. Every row starts closed; one open at a
+   time (wireAccordion in admin-panel.js). Settings rows show their current value on the right. */
+.site-admin-heading{margin:12px 0 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-400);}
+.site-admin-heading:first-child{margin-top:8px;}
+.rrg-acc{border-bottom:1px solid var(--rrg-line);}
+.rrg-acc:last-child{border-bottom:none;}
+.rrg-acc > summary{display:flex;align-items:center;gap:8px;padding:11px 2px;cursor:pointer;list-style:none;font-size:14px;font-weight:700;color:var(--rrg-black);}
+.rrg-acc > summary::-webkit-details-marker{display:none;}
+.rrg-acc > summary::after{content:'';flex:0 0 auto;width:7px;height:7px;margin:0 3px 3px 0;border-right:2px solid var(--rrg-grey-500);border-bottom:2px solid var(--rrg-grey-500);transform:rotate(45deg);transition:transform var(--t-fast) ease;}
+.rrg-acc[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px;}
+.rrg-acc > summary:hover{color:var(--rrg-red);}
+.rrg-acc > summary:focus-visible{outline:2px solid var(--rrg-red);outline-offset:2px;border-radius:var(--radius);}
+.rrg-acc-title{flex:1 1 auto;min-width:0;}
+.rrg-acc-value{flex:0 0 auto;font-size:12px;font-weight:400;color:var(--rrg-grey-600);}
+.site-admin-count{margin-left:4px;font-size:12px;font-weight:400;color:var(--rrg-grey-500);}
+.rrg-acc-body{padding:0 0 12px;}

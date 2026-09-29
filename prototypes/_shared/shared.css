@@ -363,7 +363,10 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-search-suggest-viewall:hover{text-decoration:underline;}
 /* Focus-state sections (Recent/Trending Searches, Popular Categories) — shown before any
    characters are typed, see headerSearchFocusHTML() in shared.js. */
-.rrg-search-suggest-section{padding:10px 14px;border-bottom:1px solid var(--rrg-line);}
+/* Same heading type and 18px inset as the typing state's column titles (2026-09-29), so the
+   panel doesn't change look on the first keystroke. */
+.rrg-search-suggest-section{padding:10px 18px 14px;border-bottom:1px solid var(--rrg-line);}
+.rrg-search-suggest .rrg-search-suggest-section-head span{font-size:16px;text-transform:none;letter-spacing:0;color:var(--rrg-black);}
 .rrg-search-suggest-section:last-child{border-bottom:none;}
 .rrg-search-suggest-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 
@@ -1060,10 +1063,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:var(--rrg-black);color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .admin-panel-head button{background:none;border:none;color:#fff;font-size:18px;line-height:1;padding:2px;opacity:.7;}
 .admin-panel-head button:hover{opacity:1;}
-.admin-panel-body{padding:16px;overflow-y:auto;}
-.admin-section{margin-bottom:18px;}
-.admin-section:last-child{margin-bottom:0;}
-.admin-section h5{font-size:12px;color:var(--rrg-grey-500);text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+.admin-panel-body{padding:6px 16px 10px;overflow-y:auto;}
 
 .admin-toggle-label{padding:9px 0 0;font-size:13px;color:var(--rrg-text);}
 .admin-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:13px;color:var(--rrg-text);border-bottom:1px solid var(--rrg-bg);cursor:pointer;}
@@ -1210,7 +1210,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fitted-upsell-checkbox input{margin-top:2px;flex:0 0 auto;}
 .fitted-upsell-checkbox .fitted-sub{display:block;color:var(--rrg-gold-text);font-size:12px;margin-top:2px;}
 
-.admin-section h5 .admin-note{text-transform:none;font-weight:400;color:var(--rrg-grey-400);letter-spacing:0;}
+.admin-section summary .admin-note{display:block;font-size:12px;text-transform:none;font-weight:400;color:var(--rrg-grey-400);letter-spacing:0;}
 .admin-section p.admin-note{margin:6px 0 0;font-size:12px;line-height:1.4;color:var(--rrg-grey-600);}
 .admin-radio-row{display:flex;flex-direction:column;gap:6px;margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--rrg-line-soft);}
 .admin-radio-row label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--rrg-grey-700);cursor:pointer;}

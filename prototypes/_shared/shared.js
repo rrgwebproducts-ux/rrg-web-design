@@ -2701,14 +2701,14 @@ function initHeaderSearchSuggest() {
     panel.hidden = true;
     document.body.appendChild(panel);
     let recentCleared = false;
-    // Typing state is wider than the box itself (two columns need the room), capped to the
+    // Wider than the box itself (the typing state's two columns need the room), capped to the
     // viewport. The desktop box sits at the right of the header, so the extra width grows
     // leftwards — right edge stays aligned with the box's right edge. The empty focus state
-    // stays box-width.
+    // uses the same size (2026-09-29, Brenton — it was box-width, so the panel jumped size on
+    // the first keystroke).
     const position = () => {
       const r = wrap.getBoundingClientRect();
-      const typing = !!input.value.trim();
-      const width = typing ? Math.min(Math.max(r.width, 760), window.innerWidth - 32) : r.width;
+      const width = Math.min(Math.max(r.width, 760), window.innerWidth - 32);
       const left = Math.max(16, Math.min(r.left, r.right - width));
       panel.style.top = `${r.bottom + 4}px`;
       panel.style.left = `${left}px`;
@@ -2948,7 +2948,8 @@ function buildAdminPanel() {
   const hint = (id, text) => `<p class="admin-hint" data-admin-hint="${id}" hidden>${text}</p>`;
   const toggle = (flag, label, checked) => `<label class="admin-toggle"><span>${label}</span><input type="checkbox" data-admin-flag="${flag}" ${checked ? 'checked' : ''}></label>`;
   const radios = (name, opts, sel) => `<div class="admin-radio-row">${opts.map(([v, l]) => `<label><input type="radio" name="${name}" value="${v}" ${v === sel ? 'checked' : ''}> ${l}</label>`).join('')}</div>`;
-  const section = (title, body) => `<div class="admin-section"><h5>${title}</h5>${body}</div>`;
+  // Each section is a closed accordion row (wireAccordion, admin-panel.js) — one open at a time.
+  const section = (title, body) => `<details class="rrg-acc admin-section"><summary><span class="rrg-acc-title">${title}</span></summary><div class="rrg-acc-body">${body}</div></details>`;
 
   let html = '';
   if (isPdp) {
@@ -3031,6 +3032,7 @@ function buildAdminPanel() {
   `;
   document.body.appendChild(panel);
   document.body.appendChild(fab);
+  wireAccordion(panel);
 
   // Click-outside-to-close (2026-09-11) — clicks inside the panel never bubble out.
   fab.addEventListener('click', (e) => { e.stopPropagation(); panel.classList.add('open'); });

@@ -3,6 +3,15 @@
 // the build phase, site promotions, and prototype tools. Anything that only applies to the page
 // you're on lives in the Demo State Panel instead (buildAdminPanel() in shared.js).
 //
+// Accordion behaviour shared by both prototype panels (2026-09-29): every .rrg-acc row starts
+// closed, and opening one closes the others in the same panel.
+function wireAccordion(root) {
+  const rows = root.querySelectorAll('details.rrg-acc');
+  rows.forEach(row => row.addEventListener('toggle', () => {
+    if (row.open) rows.forEach(other => { if (other !== row) other.open = false; });
+  }));
+}
+
 // `currentKey` is the page's folder name ('simple', 'plp', …) — marks that template "current".
 // The root template index passes its parent folder name ('prototypes'), mapped to 'index'.
 function buildSiteAdminPanel(currentKey) {
@@ -50,6 +59,14 @@ function buildSiteAdminPanel(currentKey) {
   const templateHref = t => t.href || `${RRG_PROTO}${t.key}/index.html`;
   const hasDemoPanel = !!document.querySelector('.admin-fab');
 
+  // Accordion rows (2026-09-29): every section starts closed on every page load and only one is
+  // open at a time (wireAccordion above), so the panel stays short. A settings row shows
+  // its current value in the closed row (data-acc-summary, filled by syncSummaries below).
+  const acc = (title, body, summaryKey) => `<details class="rrg-acc">
+      <summary><span class="rrg-acc-title">${title}</span>${summaryKey ? `<span class="rrg-acc-value" data-acc-summary="${summaryKey}"></span>` : ''}</summary>
+      <div class="rrg-acc-body">${body}</div>
+    </details>`;
+
   const panel = document.createElement('div');
   panel.className = 'site-admin-panel';
   panel.innerHTML = `
@@ -58,22 +75,17 @@ function buildSiteAdminPanel(currentKey) {
       <button type="button" class="site-admin-close" aria-label="Close">&times;</button>
     </div>
     <div class="site-admin-body">
-      <div class="site-admin-section">
-        <h5>Templates</h5>
-        ${templateGroups.map(g => `
-          <div class="site-admin-group">${g.title}</div>
-          <div class="site-admin-links">
-            ${g.items.map(t => `<a href="${templateHref(t)}" class="${t.key === key ? 'current' : ''}">${t.label}</a>`).join('')}
-          </div>`).join('')}
-      </div>
-      <div class="site-admin-section">
-        <h5>Developer Briefs</h5>
+      <div class="site-admin-heading">Pages</div>
+      ${templateGroups.map(g => acc(`${g.title} <span class="site-admin-count">${g.items.length}</span>`, `
+        <div class="site-admin-links">
+          ${g.items.map(t => `<a href="${templateHref(t)}" class="${t.key === key ? 'current' : ''}">${t.label}</a>`).join('')}
+        </div>`)).join('')}
+      ${acc(`Developer briefs <span class="site-admin-count">${briefs.length}</span>`, `
         <div class="site-admin-links">
           ${briefs.map(b => `<a href="${RRG_PROTO}../${b.href}" target="_blank" rel="noopener">${b.label}</a>`).join('')}
-        </div>
-      </div>
-      <div class="site-admin-section">
-        <h5>Shopper Session</h5>
+        </div>`)}
+      <div class="site-admin-heading">Settings</div>
+      ${acc('Shopper session', `
         <label class="site-admin-toggle">
           <span>Logged in</span>
           <input type="checkbox" data-admin-flag="loggedIn">
@@ -89,36 +101,30 @@ function buildSiteAdminPanel(currentKey) {
         <label class="site-admin-toggle">
           <span>Nearest store set</span>
           <input type="checkbox" data-admin-flag="storeSet">
-        </label>
-      </div>
-      <div class="site-admin-section">
-        <h5>Build Phase</h5>
+        </label>`, 'session')}
+      ${acc('Build phase', `
         <div class="site-admin-radios">
           <label><input type="radio" name="rrgBuildPhase" value="1"> Phase 1 — launch build</label>
           <label><input type="radio" name="rrgBuildPhase" value="2"> Phase 2 — future features</label>
         </div>
-        <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>
-      </div>
-      <div class="site-admin-section">
-        <h5>Site Promotions</h5>
+        <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>`, 'phase')}
+      ${acc('Site promotions', `
         <label class="site-admin-toggle">
           <span>Clearance sale banner</span>
           <input type="checkbox" data-admin-flag="saleBannerOn">
-        </label>
-      </div>
-      <div class="site-admin-section">
-        <h5>Prototype Tools</h5>
+        </label>`, 'promos')}
+      ${acc('Prototype tools', `
         ${hasDemoPanel ? `<label class="site-admin-toggle">
           <span>Show Demo State panel</span>
           <input type="checkbox" data-admin-flag="showDemoPanel">
         </label>` : ''}
-        <button type="button" class="site-admin-reset" data-admin-reset>Reset all demo settings</button>
-      </div>
+        <button type="button" class="site-admin-reset" data-admin-reset>Reset all demo settings</button>`)}
     </div>
   `;
 
   document.body.appendChild(panel);
   document.body.appendChild(fab);
+  wireAccordion(panel);
 
   fab.addEventListener('click', (e) => { e.stopPropagation(); panel.classList.add('open'); });
   panel.querySelector('.site-admin-close').addEventListener('click', () => panel.classList.remove('open'));
@@ -170,6 +176,26 @@ function buildSiteAdminPanel(currentKey) {
       applyDemoPanelVisibility(demoPanelToggle.checked);
     });
   }
+
+  // Closed-row values for the settings rows, kept in step with every change.
+  const syncSummaries = () => {
+    const setSummary = (k, text) => { const el = panel.querySelector(`[data-acc-summary="${k}"]`); if (el) el.textContent = text; };
+    const v = vehicleSelect.value;
+    setSummary('session', [
+      panel.querySelector('[data-admin-flag="loggedIn"]').checked ? 'Logged in' : 'Guest',
+      v === 'none' ? 'No vehicle' : vehicleSelect.selectedOptions[0].text.replace(/^\S+ /, ''),
+    ].join(' · '));
+    const phase = panel.querySelector('input[name="rrgBuildPhase"]:checked');
+    setSummary('phase', phase ? 'Phase ' + phase.value : '');
+    setSummary('promos', saleBannerToggle.checked ? 'Sale on' : 'None');
+  };
+  syncSummaries();
+  panel.addEventListener('change', syncSummaries);
+  document.addEventListener('rrg-session-change', () => {
+    ['loggedIn', 'storeSet'].forEach(f => { panel.querySelector(`[data-admin-flag="${f}"]`).checked = rrgSessionGet(f); });
+    vehicleSelect.value = rrgVehicleGet();
+    syncSummaries();
+  });
 
   // Reset (P10): clears every saved prototype setting — session, phase, promotions and each
   // template's Demo State choices — back to the defaults, then reloads.

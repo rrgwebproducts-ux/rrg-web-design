@@ -1122,6 +1122,10 @@ What the Demo State controls do on each page type today:
   - Rename "Product Notes" to "Important vehicle fit notes".
   - Add a one-line explainer to Build Phase.
   - Group Demo State under topic headings: Price & media, Stock, Delivery, In-store, Cart.
+- **P12 ✅ Accordion sections in both panels (Brenton, 2026-09-29).** The panels had grown too long, so every section in Site Admin and Demo State is now a collapsible row.
+  - All rows start **closed** on every page load, including the group for the page you're on. Only one row can be open at a time.
+  - Site Admin has two groups. **Pages:** Product pages, Category & listing, Other, Developer briefs, each showing its link count. **Settings:** Shopper session, Build phase, Site promotions, Prototype tools.
+  - A closed settings row shows its current value (e.g. "Logged in · Hilux", "Phase 1", "Sale on"), so nothing that's switched on is hidden.
 
 ### 15.2 Global shell: index, header prototype, footer, `<head>` (G)
 - **G1 ✅ The root `prototypes/index.html` gets the real header, footer and panels.** Its header is a hand copy from 09-10/11. It has:
