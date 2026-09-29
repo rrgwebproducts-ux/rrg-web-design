@@ -393,10 +393,9 @@
 .plp-stock-line.out-of-stock{color:#a3a3a3;}
 
 /* ---- Card design (2026-09-29 — trialled on search, now every PLP-family page) --------------
+   (.plp-save-corner itself lives in shared.css — the PDP Related Products cards use it too.)
    Corner "SAVE X%" band on the image replaces the Save pill; sale tag graphic removed; price +
    RRP on one line; even spacing between rating / price / stock. */
-.plp-save-corner{position:absolute;top:0;left:0;width:96px;height:96px;overflow:hidden;z-index:3;pointer-events:none;}
-.plp-save-corner span{position:absolute;top:20px;left:-32px;width:140px;transform:rotate(-45deg);background:var(--rrg-red);color:#fff;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.03em;text-transform:uppercase;padding:4px 0;box-shadow:0 2px 4px rgba(0,0,0,.18);}
 /* Phase 2 stopgap: drop below the full-width Best Seller / Staff Pick bar. */
 .plp-card-media:has(.plp-ribbon) .plp-save-corner{top:34px;}
 /* List view's brand chip also lives top-left on the image — move it to the top-right when the

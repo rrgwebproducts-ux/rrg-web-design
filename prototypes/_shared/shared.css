@@ -1368,12 +1368,34 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .ff-head h2{font-style:normal;}
 .italic-lead{font-style:italic;}
 .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;}
-.product-card{border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;background:#fff;display:flex;flex-direction:column;}
-.product-card img{aspect-ratio:1/1;object-fit:contain;background:#f7f7f7;padding:12px;}
-.product-card .body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;}
-.product-card h3{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:13.5px;margin:0 0 6px;flex:1;letter-spacing:0;color:#232323;}
-.product-card .price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:8px;}
-.product-card .btn{padding:9px 12px;font-size:12px;}
+/* PDP Related Products / discontinued-alternates card (restyled 2026-09-29, Brenton) — a
+   simpler version of the PLP-family product card (.plp-card in plp.css): same frame, hover,
+   4:3 photo, centred Lato name clamped to 2 lines, Barlow price, gold Add to Cart with cart icon,
+   and the same "SAVE X%" corner ribbon when on sale. Deliberately no brand logo, reviews, stock
+   line or fitment status. On sale, the price reads like the main card:
+   <div class="price price-on-sale"><span class="now">$X</span><span class="rrp">RRP $Y</span></div>
+   plus <div class="plp-save-corner"><span>Save N%</span></div> as the card's first child. */
+.product-card{position:relative;min-width:0;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .15s ease, border-color .15s ease, transform .15s ease;}
+.product-card:hover{box-shadow:var(--shadow);border-color:var(--rrg-red);transform:translateY(-3px);}
+.product-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#fff;padding:0;}
+.product-card .body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;text-align:center;}
+.product-card h3{font-family:'Lato',sans-serif;text-transform:none;font-weight:700;font-size:15px;line-height:1.3;letter-spacing:0;color:#232323;margin:0 0 10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:calc(1.3em * 2);}
+.product-card .price{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;color:var(--rrg-black);margin:0 0 12px;}
+.product-card .price.price-on-sale .now{color:var(--rrg-red);}
+.product-card .price .rrp{font-family:'Lato',sans-serif;font-weight:400;font-size:14px;color:#6b6b6b;text-decoration:line-through;white-space:nowrap;}
+.product-card .btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;font-size:12.5px;}
+.product-card .btn svg{width:14px;height:14px;flex:0 0 auto;}
+/* Two across on phones, same as the PLP-family grid (was one full-width card per row). */
+@media (max-width:600px){
+  .related-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .product-card .body{padding:10px 10px 12px;}
+  .product-card .price{font-size:20px;}
+}
+
+/* "SAVE X%" diagonal corner ribbon on a product image — shared by the PLP-family card
+   (plpSaveCornerHTML() in plp.js) and the PDP related cards above (2026-09-29). */
+.plp-save-corner{position:absolute;top:0;left:0;width:96px;height:96px;overflow:hidden;z-index:3;pointer-events:none;}
+.plp-save-corner span{position:absolute;top:20px;left:-32px;width:140px;transform:rotate(-45deg);background:var(--rrg-red);color:#fff;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.03em;text-transform:uppercase;padding:4px 0;box-shadow:0 2px 4px rgba(0,0,0,.18);}
 
 /* Reviews tab (2026-09-11, then replaced with a real embed same day) — a real REVIEWS.io
    Polaris widget now renders here (see the inline <script> in each template's Reviews tab
@@ -1446,7 +1468,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .usp-item p{font-size:16px!important;}
   .vehicle-fit-notes{font-size:16px!important;}
   .dc-option,.dc-store{font-size:16px!important;}
-  .product-card h3{font-size:14.5px!important;}
+  .product-card h3{font-size:15px!important;}
   /* Inputs specifically need >=16px on iOS Safari, or focusing one auto-zooms the whole
      page in — a real, well-known mobile bug, not just a readability nicety here. */
   .dc-input{font-size:16px!important;}

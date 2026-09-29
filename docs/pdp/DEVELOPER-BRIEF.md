@@ -1325,11 +1325,13 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 
 **Purpose:** cross-sell to keep the shopper browsing if this specific product isn't quite right.
 
-**Typography:** heading uses the shared section-heading style (Section 2); card title/price use standard label/price scale.
+**Card design (updated 2026-09-29):** a simpler version of the PLP-family product card (`PLP-DEVELOPER-BRIEF.md` 4.6), so cards look the same everywhere on the site: same border/hover lift, 4:3 photo, centred Lato product name clamped to 2 lines, centred Barlow price, gold Add to Cart with the cart icon. On sale, the price reads "$X" in red with the struck-through "RRP $Y" beside it, and the same "SAVE X%" diagonal corner ribbon sits on the image's top-left. Deliberately **no** brand logo, reviews, stock line or fitment status — it's the lightweight version. Two cards per row on phones, same as the PLP grid. (None of the demo related products are currently on sale, so the Save ribbon isn't visible in the prototype; the CSS/markup pattern is in shared.css above `.plp-save-corner`.)
+
+**Typography:** heading uses the shared section-heading style (Section 2); card name and price follow the card design above.
 
 **Region differences:** price currency follows the page-wide region symbol swap (4.1); nothing else.
 
-**Links:** **cards do not link to a product page in this prototype** — they're informational only, each with a decorative `.btn-outline` "Add to Cart" button that isn't wired to a real cart (this prototype has no cart, and no real per-product PDP exists to link to). **Intended production behaviour:** clicking anywhere on a card except the Add to Cart button should navigate to that product's own PDP; Add to Cart stays a real add-to-cart action and must not also trigger navigation. This same rule applies to 4.18 Discontinued's "alternatives" section, which reuses this exact card component.
+**Links:** **cards do not link to a product page in this prototype** — they're informational only, each with a decorative gold "Add to Cart" button that isn't wired to a real cart (this prototype has no cart, and no real per-product PDP exists to link to). **Intended production behaviour:** clicking anywhere on a card except the Add to Cart button should navigate to that product's own PDP; Add to Cart stays a real add-to-cart action and must not also trigger navigation. This same rule applies to 4.18 Discontinued's "alternatives" section, which reuses this exact card component.
 
 **States:**
 - Location (full page, red arrow): ![Related Products — location](dev-brief-assets/related-products-location.png)
