@@ -88,7 +88,7 @@ The "off" state isn't a separate designed component — it's the same link, same
 - **Search bar** — has a clear button that appears once text is entered, plus a typeahead/focus-state dropdown (Section 4.9) — mostly cosmetic, but its "View All Results" link is real navigation.
 - **Cart icon** — visual only, static `0` badge.
 
-**Click actions:** logo → home (the Home Page template in the prototype). "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
+**Click actions:** logo → home (the Home Page template in the prototype). "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). "Fit My Vehicle" → the Fit My Vehicle page (`prototypes/fit-my-vehicle/`, since 2026-09-30; it used to open the Fit My Vehicle drawer, which the utility-bar vehicle link still does). "Store Finder" → the Store Finder page. Other plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
 
 ---
 

@@ -2098,3 +2098,144 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
   .sf-tabs::-webkit-scrollbar{display:none;}
   .sf-tab{flex:0 0 auto;}
 }
+
+/* ===== Fit My Vehicle + Installation (docs/fit-my-vehicle/, docs/installation/, 2026-09-30) =====
+   Contained heroes and content blocks shared by both guide pages. Only layout lives here —
+   headings and body copy use the shared type rules above. */
+
+/* Contained page hero — copy on the left, a widget or photo on the right. */
+.page-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;padding:28px 0 8px;}
+.page-hero h1{margin-bottom:12px;}
+.page-hero-intro p{margin:0 0 14px;font-size:16px;line-height:1.6;color:var(--rrg-grey-700);}
+.page-hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;}
+.page-hero-media{border-radius:var(--radius);overflow:hidden;aspect-ratio:4 / 3;background:var(--rrg-bg);}
+.page-hero-media img{width:100%;height:100%;object-fit:cover;}
+.page-hero .fit-finder-widget{margin:0;background:var(--rrg-black);}
+.page-hero .fit-finder-widget .ff-head p{flex-basis:100%;}
+.page-hero .fit-finder-widget .ff-row{grid-template-columns:1fr 1fr;}
+.page-hero .fit-finder-widget .ff-row .btn{grid-column:1 / -1;}
+.page-hero + .home-vehicle-bar{margin-top:24px;}
+
+/* Section with copy beside a photo. */
+.split-media{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;}
+.split-media .content-block{margin:0;}
+.split-media img{width:100%;border-radius:var(--radius);aspect-ratio:4 / 3;object-fit:cover;}
+
+/* Roof type cards (RRG's own line-art diagrams). */
+.roof-types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.roof-type{border:1px solid var(--rrg-line);border-radius:var(--radius);padding:18px 20px 20px;background:#fff;}
+.roof-type img{display:block;width:100%;max-width:300px;margin:0 auto 12px;}
+.roof-type h3{margin:0 0 6px;font-size:22px;}
+.roof-type p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+
+/* Static vs dynamic load rating. */
+.load-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 16px;}
+.load-panel{border-radius:var(--radius);padding:22px 24px;color:#fff;background:var(--rrg-charcoal);}
+.load-panel--dynamic{background:var(--rrg-red);}
+.load-panel h3{color:#fff;margin:0 0 8px;font-size:24px;}
+.load-panel p{margin:0;font-size:15px;line-height:1.6;}
+.load-panel-tag{display:inline-block;margin-bottom:10px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;opacity:.8;}
+
+/* Image cards (parts, setups by use, what we fit). */
+.info-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.info-card{display:flex;flex-direction:column;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;background:#fff;}
+.info-card img{width:100%;aspect-ratio:16 / 10;object-fit:cover;}
+/* Line-art diagrams (the shop-by roof graphics) sit whole on a light panel rather than cropped. */
+.info-card img.is-diagram{object-fit:contain;padding:22px 28px;background:var(--rrg-bg);}
+.info-card-body{display:flex;flex-direction:column;gap:8px;padding:18px 20px 20px;flex:1;}
+.info-card h3{margin:0;font-size:22px;}
+.info-card p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+.info-card-link{margin-top:auto;padding-top:6px;font-weight:700;font-size:14px;color:var(--rrg-red);}
+
+/* Callout — a single point worth pulling out of the body copy. */
+.callout{border-left:4px solid var(--rrg-red);background:var(--rrg-bg-warm);border-radius:var(--radius);padding:18px 22px;margin:20px 0 0;font-size:15px;line-height:1.6;color:var(--rrg-grey-700);}
+.callout strong{color:var(--rrg-text);}
+
+/* Numbered steps (Find your fit → Book → Fit & test). */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:step;margin:0 0 20px;padding:0;list-style:none;}
+.steps li{position:relative;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:20px 20px 20px 70px;background:#fff;}
+.steps li::before{counter-increment:step;content:counter(step);position:absolute;left:20px;top:18px;width:36px;height:36px;border-radius:50%;background:var(--rrg-red);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.steps h3{margin:0 0 4px;font-size:20px;}
+.steps p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+.section-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+
+/* Fitting price list — grouped cards, no internal codes. */
+.price-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start;}
+.price-group{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;padding:18px 20px 8px;}
+.price-group h3{margin:0 0 4px;font-size:22px;}
+.price-group-note{margin:0 0 8px;font-size:13px;color:var(--rrg-grey-600);}
+.price-table{width:100%;border-collapse:collapse;font-size:14px;}
+.price-table td{padding:9px 0;border-top:1px solid var(--rrg-line-soft);vertical-align:top;color:var(--rrg-grey-700);}
+.price-table td:last-child{text-align:right;font-weight:900;color:var(--rrg-text);white-space:nowrap;padding-left:12px;}
+.price-common{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:var(--radius);background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
+
+/* Fitting cost estimator — choices on the left, a running total that stays in view on the right. */
+.estimator{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start;}
+.est-step{border:1px solid var(--rrg-line);border-radius:var(--radius);padding:18px 20px;margin:0 0 14px;background:#fff;}
+.est-step legend{padding:0 6px;margin-left:-6px;font-weight:900;font-size:15px;color:var(--rrg-text);}
+.est-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:6px;}
+.est-option{position:relative;display:flex;gap:10px;align-items:flex-start;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:12px 14px;cursor:pointer;font-size:14px;line-height:1.4;}
+.est-option:has(input:checked){border-color:var(--rrg-black);box-shadow:inset 0 0 0 1px var(--rrg-black);}
+.est-option input{margin-top:2px;accent-color:var(--rrg-black);}
+.est-option strong{display:block;color:var(--rrg-text);}
+.est-option span{color:var(--rrg-grey-600);font-size:13px;}
+.est-inline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:14px;}
+.est-inline select{padding:8px 32px 8px 10px;border:1px solid var(--rrg-grey-700);border-radius:var(--radius);font:inherit;}
+.est-summary{position:sticky;top:calc(var(--sticky-offset,0px) + 16px);border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);padding:20px;transition:top var(--t-slide) ease;}
+.est-summary h3{margin:0 0 10px;font-size:22px;}
+.est-lines{list-style:none;margin:0 0 12px;padding:0;font-size:14px;}
+.est-lines li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--rrg-line-soft);color:var(--rrg-grey-700);}
+.est-lines li span:last-child{font-weight:700;color:var(--rrg-text);white-space:nowrap;}
+.est-total{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0 4px;border-top:2px solid var(--rrg-text);font-weight:900;}
+.est-total strong{font-family:'Barlow Condensed',Arial,sans-serif;font-size:34px;color:var(--rrg-text);}
+.est-note{margin:6px 0 14px;font-size:12px;line-height:1.5;color:var(--rrg-grey-600);}
+.est-empty{margin:0 0 12px;font-size:14px;color:var(--rrg-grey-600);}
+
+/* Fitting request form. */
+.booking{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start;}
+.booking-form{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;padding:22px 24px;}
+.booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;}
+.booking-field{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:var(--rrg-text);}
+.booking-field--full{grid-column:1 / -1;}
+.booking-field input,.booking-field select,.booking-field textarea{font:inherit;font-weight:400;font-size:15px;padding:11px 12px;border:1px solid var(--rrg-grey-700);border-radius:var(--radius);background:#fff;color:var(--rrg-text);width:100%;}
+.booking-field textarea{min-height:96px;resize:vertical;}
+.booking-field small{font-weight:400;font-size:12px;color:var(--rrg-grey-600);}
+.booking-field.is-invalid input,.booking-field.is-invalid select{border-color:var(--rrg-red);}
+.booking-error{font-weight:400;font-size:12px;color:var(--rrg-red);}
+.booking-store-note{font-weight:400;font-size:13px;color:var(--rrg-grey-700);}
+.booking-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;}
+.booking-actions p{margin:0;font-size:12px;color:var(--rrg-grey-600);flex:1 1 220px;}
+.booking-aside{border-radius:var(--radius);background:var(--rrg-bg);padding:20px;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+.booking-aside h3{margin:0 0 8px;font-size:20px;}
+.booking-aside ul{margin:0;padding-left:18px;}
+.booking-sent{border:1px solid var(--rrg-fits);background:var(--rrg-fits-bg);border-radius:var(--radius);padding:22px 24px;font-size:15px;line-height:1.6;color:var(--rrg-text);}
+.booking-sent h3{margin:0 0 6px;color:var(--rrg-fits);}
+
+.est-sticky-total{display:none;}
+@media (max-width:1100px){
+  .estimator{grid-template-columns:1fr;}
+  .est-summary{position:static;}
+  .est-sticky-total{position:sticky;bottom:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 -2px;padding:12px 16px;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow-bar-up);font-size:14px;}
+  .est-sticky-total strong{font-family:'Barlow Condensed',Arial,sans-serif;font-size:24px;margin-left:6px;}
+  .est-sticky-total a{font-weight:700;color:var(--rrg-text);}
+}
+@media (max-width:900px){
+  .page-hero,.split-media,.booking{grid-template-columns:1fr;gap:24px;}
+  .page-hero-media{aspect-ratio:16 / 9;}
+  .roof-types,.info-cards{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .load-panels,.price-groups,.steps{grid-template-columns:1fr;}
+}
+@media (max-width:520px){
+  .roof-types,.info-cards,.booking-grid{grid-template-columns:1fr;}
+  .page-hero .fit-finder-widget .ff-row{grid-template-columns:1fr 1fr;}
+  .booking-form{padding:18px 16px;}
+}
+
+.info-cards + .section-intro{margin-top:16px;}
+.page-hero-media--install img{object-position:8% center;}
+.price-list-heading{font-size:28px;margin:36px 0 16px;}
+.booking-aside-call{margin:14px 0 0;}
+.booking-sent-meta{margin:10px 0 0;font-size:13px;color:var(--rrg-grey-700);}
+/* Four-across category tiles (Installation "What we fit"). */
+.cat-tile-grid--four{grid-template-columns:repeat(4,minmax(0,1fr));}
+@media (max-width:900px){ .cat-tile-grid--four{grid-template-columns:repeat(2,minmax(0,1fr));} }

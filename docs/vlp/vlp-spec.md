@@ -58,7 +58,7 @@ How the vehicle pages relate: **VCLP** (make/model, indexed) → **VLP** (exact 
 
 | Trigger | Behaviour |
 |---|---|
-| **Fit My Vehicle drawer "Set My Vehicle"** when opened from the header (utility-bar vehicle link and the "Fit My Vehicle" nav link) | Sets the session vehicle **and navigates to the VLP** for that vehicle. |
+| **Fit My Vehicle drawer "Set My Vehicle"** when opened from the header (the utility-bar vehicle link) | Sets the session vehicle **and navigates to the VLP** for that vehicle. Since 2026-09-30 the "Fit My Vehicle" nav link goes to the Fit My Vehicle page instead (`docs/fit-my-vehicle/`), whose own Fit Finder also lands here. |
 | Fit My Vehicle drawer opened from in-context triggers (PLP card tooltips, Set/Change Vehicle on the PLP family, search vehicle strip, Add to Cart notice) | Unchanged: sets the vehicle in place, no navigation. |
 | **VCLP Fit Finder "View Results"** | Goes to the **VPLP**, not the VLP. The VCLP is already category-scoped, so the shopper wants that category's results for their exact vehicle. Replaces the current stub. |
 | VLP "Change Vehicle" (breadcrumb row) | Opens the Fit My Vehicle drawer as a header trigger, so submitting it lands on the new vehicle's VLP. |

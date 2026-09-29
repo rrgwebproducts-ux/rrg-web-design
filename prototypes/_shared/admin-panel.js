@@ -31,6 +31,8 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'home', label: 'Home Page' },
       { key: 'store', label: 'Store Page — North Lakes' },
       { key: 'store-finder', label: 'Store Finder' },
+      { key: 'fit-my-vehicle', label: 'Fit My Vehicle' },
+      { key: 'installation', label: 'Installation & Booking' },
     ] },
     { title: 'Product pages', items: [
       { key: 'simple', label: 'Simple' },

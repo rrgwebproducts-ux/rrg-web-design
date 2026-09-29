@@ -400,6 +400,12 @@ function renderStore() {
       </div>`;
   }).join('');
 
+  // Every booking link on this page opens the Installation page's form with this store picked.
+  document.querySelectorAll('a').forEach(link => {
+    const t = link.textContent.trim().toLowerCase();
+    if (t === 'book a fitting' || t === 'book an installation') link.href = `${RRG_INSTALL_HREF()}?store=${encodeURIComponent(s.name)}#book`;
+  });
+
   // Structured data (spec Section 6) — this store as a LocalBusiness, plus breadcrumbs + FAQ.
   const origin = 'https://www.roofracksgalore.com.au';
   document.getElementById('storeLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [

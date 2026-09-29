@@ -118,7 +118,7 @@ Added 2026-09-29 (`docs/vlp/vlp-spec.md`). Where the header's **Fit My Vehicle d
 | **Store Finder tile** | Compact black Store Finder block in the top tile grid, drawn over the shared Showroom Finder map (`#showroomMap`, centred on the nearest store). Spans every column left over in its row, so it widens to fill a removed vehicle-specific tile (2 → 3 → 4 columns). — `.store-finder-tile`, `vlpSizeStoreFinder()` |
 | **Product carousel** | The PLP family's grid card (`plpCardHTML()`) in a scroll-snap row with arrows — "Popular Racks for your …". The track also carries `.plp-results.is-grid`, so cards are identical to the listing. — `.product-carousel`, `initProductCarousels()` |
 | **Vehicle notice** | Notice under the breadcrumbs when the page vehicle isn't the saved vehicle — it *is* the Fitment Status card in its no-fit state (`.fitment.no_fit`, same as the PDP and the product cards): "This page isn't for your Toyota Hilux", with Make this my vehicle / View my Hilux / dismiss. Never overwrites the saved vehicle; with none saved, the page vehicle is set silently. — `.vlp-vehicle-notice` |
-| **Fit My Vehicle drawer routing** | The site-wide drawer (now a real Make → Model → Year/Body/Roof cascade over Hilux + Ranger) opens in **navigate** mode from header triggers (Fit My Vehicle nav link, utility-bar vehicle link, the VLP's Change Vehicle) and lands on the VLP on submit; from anywhere else it sets the vehicle in place. — `openFitFinderDrawer(mode)` |
+| **Fit My Vehicle drawer routing** | The site-wide drawer (now a real Make → Model → Year/Body/Roof cascade over Hilux + Ranger) opens in **navigate** mode from header triggers (utility-bar vehicle link, the VLP's Change Vehicle — the "Fit My Vehicle" nav link goes to the Fit My Vehicle page since 2026-09-30) and lands on the VLP on submit; from anywhere else it sets the vehicle in place. — `openFitFinderDrawer(mode)` |
 
 ---
 
@@ -162,6 +162,22 @@ Added 2026-09-30 (`docs/store-finder/store-finder-spec.md`). The all-stores page
 
 ---
 
+## Fit My Vehicle (`prototypes/fit-my-vehicle/`) and Installation (`prototypes/installation/`)
+
+Added 2026-09-30 (`docs/fit-my-vehicle/fit-my-vehicle-spec.md`, `docs/installation/installation-spec.md`). The header's "Fit My Vehicle" link now goes to the Fit My Vehicle page (the utility-bar vehicle link still opens the drawer). Every "Book a Fitting" / "Book An Installation" link on the site goes to the Installation page's form.
+
+| Name | Description |
+|---|---|
+| **Page hero** | Contained two-column hero: copy + CTAs on the left, a widget (the inline Fit Finder) or photo on the right. — `.page-hero` |
+| **Roof type cards** | The six roof types with RRG's own line-art diagrams. — `.roof-types` |
+| **Load panels** | Static (parked) vs dynamic (driving) load rating side by side. — `.load-panels` |
+| **Info cards / Callout / Steps** | Image cards with a shop link; a pulled-out point with a red left border; numbered 3-step process. — `.info-cards`, `.callout`, `.steps` |
+| **Price list** | The fitting prices in grouped cards with "Most common" tags, no internal codes. — `.price-groups` |
+| **Fitting cost estimator** | Four steps (what, vehicle extras, add-ons, bought elsewhere) priced from the same data as the price list, a sticky itemised total, and Book This Fitting (copies the estimate into the form). Sticky total bar on phones. — `.estimator` |
+| **Fitting request form** | Store (prefilled from `?store=` or the saved store), contact details, vehicle (prefilled), what needs fitting, preferred date/time (no Sundays or Saturday afternoons); sent to the store's inbox. — `.booking` |
+
+---
+
 ## Shared building blocks (2026-09-29 consistency pass)
 
 Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shared rule each. Use these names rather than the old per-page ones.
@@ -185,4 +201,4 @@ Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shar
 
 ---
 
-*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added), updated 2026-09-29 (Store Page section added), updated 2026-09-30 (Store Finder section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
+*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added), updated 2026-09-29 (Store Page section added), updated 2026-09-30 (Store Finder section added), updated 2026-09-30 (Fit My Vehicle and Installation section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*

@@ -1118,6 +1118,30 @@ function rrgAuStore(name) {
   return null;
 }
 const RRG_STORE_FINDER_HREF = () => `${RRG_PROTO}store-finder/index.html`;
+const RRG_FMV_HREF = () => `${RRG_PROTO}fit-my-vehicle/index.html`;
+const RRG_INSTALL_HREF = () => `${RRG_PROTO}installation/index.html`;
+
+// Each store's own inbox — the live store pages all follow <name without spaces>@ (northlakes@,
+// eastbrisbane@, smeatongrange@…). Fitting requests go here (docs/installation/installation-spec.md).
+const rrgStoreEmail = name => `${name.toLowerCase().replace(/[^a-z]/g, '')}@roofracksgalore.com.au`;
+
+// Installation links (docs/installation/installation-spec.md Section 5) — every "Book An
+// Installation" / "Book a Fitting" button goes to the booking form on the Installation page,
+// "See Fitting Costs" to its price list, and the PDP's "See Fitting Options" (which pointed at
+// the live /roof-rack-installation-and-fitting-costs URL) to the page itself. Matched by text
+// (like the Store Finder and Fit My Vehicle links) so no template needs a markup change; links
+// that already point somewhere real are left alone.
+function rrgLinkInstallation(root = document) {
+  root.querySelectorAll('a').forEach(a => {
+    const href = a.getAttribute('href');
+    const text = a.textContent.trim().toLowerCase();
+    if (href === '/roof-rack-installation-and-fitting-costs') { a.href = RRG_INSTALL_HREF(); a.removeAttribute('target'); return; }
+    if (href !== '#') return;
+    if (text === 'book an installation' || text === 'book a fitting') a.href = RRG_INSTALL_HREF() + '#book';
+    else if (text === 'see fitting costs') a.href = RRG_INSTALL_HREF() + '#costs';
+  });
+}
+document.addEventListener('DOMContentLoaded', () => rrgLinkInstallation());
 
 // ---- Store hours + open now (store page and Store Finder) ----
 // Structured hours per day, worked out in the store's own time zone so a Sydney store reads
@@ -1430,13 +1454,19 @@ function initFitFinderTriggers() {
   }
   document.addEventListener('click', e => {
     // The "Fit My Vehicle" nav link (desktop nav and the mobile menu, which mega-menu.js builds
-    // later) is matched by its text, so it needs no per-page markup change.
+    // later) is matched by its text, so it needs no per-page markup change. It goes to the Fit My
+    // Vehicle page (docs/fit-my-vehicle/fit-my-vehicle-spec.md, Brenton 2026-09-30) — it used to
+    // open this drawer. The utility-bar vehicle link and in-page triggers still open the drawer.
     const navLink = e.target.closest('a');
-    const isFitMyVehicle = navLink && !navLink.hasAttribute('data-open-fit-finder') && navLink.textContent.trim() === 'Fit My Vehicle';
+    if (navLink && !navLink.hasAttribute('data-open-fit-finder') && navLink.textContent.trim() === 'Fit My Vehicle') {
+      e.preventDefault();
+      location.href = RRG_FMV_HREF();
+      return;
+    }
     const trigger = e.target.closest('[data-open-fit-finder]');
-    if (!trigger && !isFitMyVehicle) return;
+    if (!trigger) return;
     e.preventDefault();
-    openFitFinderDrawer(isFitMyVehicle ? 'navigate' : trigger.getAttribute('data-open-fit-finder'));
+    openFitFinderDrawer(trigger.getAttribute('data-open-fit-finder'));
   });
 }
 
