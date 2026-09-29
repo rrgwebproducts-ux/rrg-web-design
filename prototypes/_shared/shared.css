@@ -265,6 +265,24 @@ button{font-family:inherit;cursor:pointer;}
    still needs its own z-index above .mega-menu-backdrop (mega-menu.css, z-index:80) so the
    whole header stays undimmed while the backdrop dims the rest of the page. */
 .rrg-header-shell{position:relative;z-index:85;}
+/* Sticky desktop header (Brenton, 2026-09-29, site-wide). Scrolling down, the red utility bar
+   scrolls away and the white main header stays pinned (the shell sticks at minus the utility
+   bar's height); scrolling back up slides the red bar back in above it (.show-utility).
+   initStickyHeader() in shared.js measures --utility-h / --main-header-h and publishes
+   --sticky-offset (how much of the viewport top the header currently covers) for everything
+   else pinned to the top: the Vehicle-Specific persistent bar, the PDP gallery column and
+   anchor jumps. Mobile keeps its own condensed .rrg-sticky-header instead (below). */
+@media (min-width:901px){
+  html{scroll-padding-top:calc(var(--main-header-h,0px) + 16px);}
+  .rrg-header-shell{position:sticky;top:calc(-1 * var(--utility-h,0px));transition:top var(--t-slide) ease;}
+  .rrg-header-shell.show-utility{top:0;}
+  .rrg-header-shell.is-stuck .rrg-main-header{box-shadow:var(--shadow-bar);}
+  /* UK: the logo bleeds ~18px up into the utility bar, so keep a 20px band of it (text hidden)
+     while stuck — same idea as the mobile sticky header's UK border-top band. */
+  body.region-uk .rrg-header-shell{top:calc(20px - var(--utility-h,0px));}
+  body.region-uk .rrg-header-shell.show-utility{top:0;}
+  body.region-uk .rrg-header-shell.is-stuck:not(.show-utility) .rrg-utility-inner{visibility:hidden;}
+}
 .rrg-utility-bar{background:var(--rrg-red);color:#fff;font-size:14px;}
 .rrg-utility-inner{display:flex;align-items:center;justify-content:space-between;padding:9px 24px;gap:20px;flex-wrap:wrap;}
 .rrg-utility-left,.rrg-utility-right{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
@@ -887,7 +905,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    grid row to stick into — a no-op if the gallery column happens to be the taller side,
    so it's safe to apply unconditionally. */
 @media (min-width:901px){
-  .hero > .gallery-col{position:sticky;top:20px;}
+  .hero > .gallery-col{position:sticky;top:calc(var(--sticky-offset,0px) + 20px);transition:top var(--t-slide) ease;}
 }
 
 /* gallery */
@@ -1460,7 +1478,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 
 /* Persistent decision bar — appears once the primary decision panel scrolls out of view */
-.persistent-bar{position:fixed;top:0;left:0;right:0;background:#fff;border-bottom:1px solid var(--rrg-line);box-shadow:var(--shadow-bar);z-index:35;transform:translateY(-120%);transition:transform var(--t-slide) ease;}
+.persistent-bar{position:fixed;top:var(--sticky-offset,0px);left:0;right:0;background:#fff;border-bottom:1px solid var(--rrg-line);box-shadow:var(--shadow-bar);z-index:35;transform:translateY(-120%);transition:transform var(--t-slide) ease,top var(--t-slide) ease;}
 .persistent-bar .persistent-inner{display:flex;align-items:center;gap:20px;padding:10px 24px;}
 .persistent-bar.visible{transform:translateY(0);}
 /* Fitment box now shares the row with .persistent-product instead of taking the whole

@@ -2792,6 +2792,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // view. Generic across all pages since every template has both elements identically.
   initPersistentBar('.rrg-search', '.rrg-sticky-header');
   initStickyCta();
+  initStickyHeader();
 });
 
 // Product-card carousel (.product-carousel, VLP Popular Racks — docs/vlp/vlp-spec.md Section 8):
@@ -2816,6 +2817,50 @@ function initProductCarousels() {
     new MutationObserver(update).observe(track, { childList: true });
     update();
   });
+}
+
+// Sticky desktop header (Brenton, 2026-09-29) — see the .rrg-header-shell comment in shared.css.
+// Scrolling down hides the red utility bar and keeps the main header pinned; scrolling up
+// brings the red bar back. Publishes --sticky-offset (px of viewport top the header covers
+// right now) so other top-pinned elements sit below it. Desktop only.
+function initStickyHeader() {
+  const shell = document.querySelector('.rrg-header-shell');
+  const util = shell && shell.querySelector('.rrg-utility-bar');
+  const main = shell && shell.querySelector('.rrg-main-header');
+  if (!shell || !util || !main) return;
+  const root = document.documentElement.style;
+  const desktop = window.matchMedia('(min-width:901px)');
+  let lastY = window.scrollY;
+  let ticking = false;
+  const measure = () => {
+    root.setProperty('--utility-h', util.offsetHeight + 'px');
+    root.setProperty('--main-header-h', main.offsetHeight + 'px');
+  };
+  const publishOffset = () => {
+    root.setProperty('--sticky-offset', desktop.matches ? Math.max(0, Math.round(shell.getBoundingClientRect().bottom)) + 'px' : '0px');
+  };
+  const update = () => {
+    ticking = false;
+    const y = window.scrollY;
+    if (!desktop.matches) {
+      shell.classList.remove('show-utility', 'is-stuck');
+    } else {
+      const pastUtility = y > util.offsetHeight;
+      shell.classList.toggle('is-stuck', pastUtility);
+      // A few px of hysteresis so trackpad jitter doesn't flicker the red bar.
+      if (!pastUtility || y > lastY + 4) shell.classList.remove('show-utility');
+      else if (y < lastY - 4) shell.classList.add('show-utility');
+    }
+    if (Math.abs(y - lastY) > 4 || !desktop.matches) lastY = y;
+    publishOffset();
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  // The red bar's slide is a CSS transition on `top`, so re-publish the offset once it settles.
+  shell.addEventListener('transitionend', publishOffset);
+  new ResizeObserver(() => { measure(); publishOffset(); }).observe(shell);
+  desktop.addEventListener('change', update);
+  measure();
+  update();
 }
 
 // Sticky mobile Add-to-Cart bar (2026-09-11, backlog item 26) — shows whenever the real
