@@ -30,6 +30,7 @@ function buildSiteAdminPanel(currentKey) {
     { title: 'Home', items: [
       { key: 'home', label: 'Home Page' },
       { key: 'store', label: 'Store Page — North Lakes' },
+      { key: 'store-finder', label: 'Store Finder' },
     ] },
     { title: 'Product pages', items: [
       { key: 'simple', label: 'Simple' },

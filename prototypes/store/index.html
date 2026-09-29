@@ -111,7 +111,7 @@
   </div>
 </div>
 
-<!-- Breadcrumbs (spec 3.2). Store Finder and the state go to the store locator (not built yet). -->
+<!-- Breadcrumbs (spec 3.2). Store Finder, and the state opens the Store Finder on that state. -->
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs" id="storeCrumbs"></div>
 </div>
@@ -297,40 +297,17 @@
 // Store records (STORES, STORE_PRODUCTS) live in stores-data.js.
 const STORE_SLUG = STORES[new URLSearchParams(location.search).get('store')] ? new URLSearchParams(location.search).get('store') : 'north-lakes';
 const STORE = STORES[STORE_SLUG];
-const DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
-
-// "17:00" → "5:00pm"
-const fmtTime = t => { const [h, m] = t.split(':').map(Number); return `${h % 12 || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`; };
+const DAYS = RRG_DAYS;
+const fmtTime = rrgFmtTime;
 const addressLine = s => `${s.address.street}, ${s.address.suburb} ${s.state} ${s.address.postcode}`;
 
-// ==== Open now (spec 3.3) ===========================================================
-// Worked out in the store's own time zone, so a Sydney store reads right from Perth.
-// ?now=sat-10:00 fakes the day/time for review (prototype only).
-function storeNow(s) {
-  const fake = new URLSearchParams(location.search).get('now');
-  if (fake && /^[a-z]{3}-\d\d:\d\d$/.test(fake)) { const [day, time] = fake.split('-'); return { day, mins: toMins(time) }; }
-  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-AU', { timeZone: s.timeZone, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).map(p => [p.type, p.value]));
-  return { day: parts.weekday.toLowerCase().slice(0, 3), mins: Number(parts.hour) * 60 + Number(parts.minute) };
-}
-const toMins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
-function storeOpenStatus(s) {
-  const now = storeNow(s);
-  const i = DAYS.findIndex(([k]) => k === now.day);
-  const today = s.hours[now.day];
-  if (today && now.mins >= toMins(today[0]) && now.mins < toMins(today[1])) return { open: true, text: `Closes ${fmtTime(today[1])}` };
-  if (today && now.mins < toMins(today[0])) return { open: false, text: `Opens ${fmtTime(today[0])} today` };
-  for (let n = 1; n <= 7; n++) {
-    const [key, label] = DAYS[(i + n) % 7];
-    if (s.hours[key]) return { open: false, text: `Opens ${n === 1 ? 'tomorrow' : label.slice(0, 3)} ${fmtTime(s.hours[key][0])}` };
-  }
-  return { open: false, text: '' };
-}
+// ==== Open now (spec 3.3) — rrgStoreOpenStatus() / rrgStoreNow() in shared.js ============
 function renderOpenStatus() {
-  const st = storeOpenStatus(STORE);
+  const st = rrgStoreOpenStatus(STORE.hours, STORE.timeZone);
   const el = document.getElementById('storeOpen');
   el.classList.toggle('is-open', st.open);
   el.innerHTML = `${st.open ? 'Open now' : 'Closed'} <span>· ${st.text}</span>`;
-  const today = storeNow(STORE).day;
+  const today = rrgStoreNow(STORE.timeZone).day;
   document.querySelectorAll('#storeHours tr').forEach(tr => tr.classList.toggle('is-today', tr.dataset.day === today));
 }
 
@@ -348,15 +325,9 @@ function hoursSentence(s) {
 }
 
 // ==== Nearby stores (spec 3.9) ======================================================
-function kmBetween(a, b) {
-  const R = 6371, rad = x => x * Math.PI / 180;
-  const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
 const NEARBY = RRG_STORE_NETWORK.flatMap(g => g.stores)
   .filter(st => st.name !== STORE.name && typeof st.lat === 'number')
-  .map(st => ({ ...st, km: Math.round(kmBetween(STORE, st)) }))
+  .map(st => ({ ...st, km: Math.round(rrgKmBetween(STORE, st)) }))
   .sort((a, b) => a.km - b.km).slice(0, 4);
 
 // ==== Render ========================================================================
@@ -364,7 +335,7 @@ function renderStore() {
   const s = STORE;
   document.title = s.title;
   document.querySelector('meta[name=description]').content = s.metaDescription;
-  const trail = [{ label: 'Home', href: '../home/index.html' }, { label: 'Store Finder', href: '#' }, { label: s.stateName, href: '#' }, { label: s.name }];
+  const trail = [{ label: 'Home', href: '../home/index.html' }, { label: 'Store Finder', href: RRG_STORE_FINDER_HREF() }, { label: s.stateName, href: `${RRG_STORE_FINDER_HREF()}?state=${s.state}` }, { label: s.name }];
   document.getElementById('storeCrumbs').innerHTML = trail.map((seg, i) => (i ? ' &gt; ' : '') + (seg.href ? `<a href="${seg.href}">${seg.label}</a>` : `<span>${seg.label}</span>`)).join('');
 
   // Gallery — the PDP's; the thumbnail click handler is shared.js's.
@@ -416,7 +387,9 @@ function renderStore() {
 
   document.getElementById('storeNearbyHeading').textContent = `Other Stores Near ${s.name}`;
   document.getElementById('storeNearby').innerHTML = NEARBY.map(n => {
-    const page = rrgStorePageHref(n.name);
+    // Unbuilt stores' placeholder is North Lakes' page — never link a card back to this page.
+    const href = rrgStorePageHref(n.name);
+    const page = href && !href.endsWith(`?store=${STORE_SLUG}`) ? href : null;
     return `
       <div class="store-nearby-card${page ? ' has-page' : ''}">
         <strong>${page ? `<a class="store-page-link" href="${page}">${n.name}</a>` : n.name}</strong>

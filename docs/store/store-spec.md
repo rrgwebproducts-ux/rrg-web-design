@@ -127,7 +127,7 @@ Six per store, all using that store's own facts: its hours, address, services, s
 
 ## 8. Open items
 
-- **Store locator page** (`/locations`): the breadcrumb's "Store Finder" needs a real destination. It's a separate template.
+- ~~**Store locator page**~~ — built 2026-09-30 as the Store Finder (`docs/store-finder/store-finder-spec.md`); the breadcrumbs link to it.
 - **Email field:** confirm which Magento field holds it.
 - **Services per store:** all three offer everything. If some stores don't (for example no roof top tent fitting), `services` becomes a per-store list.
 - **Showroom data:** `onDisplay` needs a real source. The PDP's `ON_DISPLAY_STORES` is still demo data too.

@@ -150,6 +150,18 @@ Added 2026-09-29 (`docs/store/store-spec.md`). Each store's own landing page (`/
 
 ---
 
+## Store Finder (`prototypes/store-finder/`)
+
+Added 2026-09-30 (`docs/store-finder/store-finder-spec.md`). The all-stores page, replacing `/locations`. Linked from the header's "Store Finder" and "Find A Store", the footer, store page breadcrumbs and the Store slide-out.
+
+| Name | Description |
+|---|---|
+| **Store search** | Postcode box + Find Stores + Use My Location, with a status line. In the prototype a postcode resolves to its state's anchor store (QLD → North Lakes, NSW → Moorebank, …); Use My Location gives real distances. `?postcode=` searches on load. — `.sf-search` |
+| **State tabs** | All stores / QLD / NSW / … with counts; hidden during a search. `?state=QLD` opens on a state. — `.sf-tab` |
+| **Store card** | Name (links to the store page — unbuilt stores use North Lakes as a placeholder), distance, open status, address, today's hours, phone, View Store, Directions, Make this my store. Clicking a card shows it on the map; clicking a pin highlights its card. — `.sf-card` |
+
+---
+
 ## Shared building blocks (2026-09-29 consistency pass)
 
 Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shared rule each. Use these names rather than the old per-page ones.
@@ -173,4 +185,4 @@ Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shar
 
 ---
 
-*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added), updated 2026-09-29 (Store Page section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
+*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added), updated 2026-09-29 (Store Page section added), updated 2026-09-30 (Store Finder section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*

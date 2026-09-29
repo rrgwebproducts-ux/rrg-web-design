@@ -1106,9 +1106,53 @@ const RRG_STORE_PAGES = {
   'Moorebank': 'moorebank', 'Castle Hill': 'castle-hill', 'Silverwater': 'silverwater', 'Smeaton Grange': 'smeaton-grange',
   'Miranda': 'miranda', 'Warriewood': 'warriewood', 'Matraville': 'matraville'
 };
+// Stores the prototype hasn't built link to North Lakes' page as a placeholder (Brenton,
+// 2026-09-30 — building every live store page would be overkill). Only AU stores have pages;
+// the NZ/UK single stores return null.
 function rrgStorePageHref(name) {
-  const slug = RRG_STORE_PAGES[name];
+  const slug = RRG_STORE_PAGES[name] || (rrgAuStore(name) ? 'north-lakes' : null);
   return slug ? `${RRG_PROTO}store/index.html?store=${slug}` : null;
+}
+function rrgAuStore(name) {
+  for (const g of RRG_STORE_NETWORK) { const st = g.stores.find(x => x.name === name); if (st) return { ...st, state: g.state }; }
+  return null;
+}
+const RRG_STORE_FINDER_HREF = () => `${RRG_PROTO}store-finder/index.html`;
+
+// ---- Store hours + open now (store page and Store Finder) ----
+// Structured hours per day, worked out in the store's own time zone so a Sydney store reads
+// right from Perth. Stores without their own record use the standard hours shown on the live
+// store pages and locator (Mon–Fri 8:30–5, Sat 8:30–12:30, Sun closed) — to confirm per store
+// in production. ?now=sat-10:00 fakes the day/time for review (prototype only).
+const RRG_STANDARD_HOURS = { mon: ['08:30', '17:00'], tue: ['08:30', '17:00'], wed: ['08:30', '17:00'], thu: ['08:30', '17:00'], fri: ['08:30', '17:00'], sat: ['08:30', '12:30'], sun: null };
+const RRG_DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
+const RRG_STATE_TZ = { 'Queensland': 'Australia/Brisbane', 'New South Wales': 'Australia/Sydney', 'Australian Capital Territory': 'Australia/Sydney', 'Victoria': 'Australia/Melbourne', 'Tasmania': 'Australia/Hobart', 'South Australia': 'Australia/Adelaide', 'Western Australia': 'Australia/Perth', 'Northern Territory': 'Australia/Darwin' };
+const RRG_STATE_ABBR = { 'Queensland': 'QLD', 'New South Wales': 'NSW', 'Australian Capital Territory': 'ACT', 'Victoria': 'VIC', 'Tasmania': 'TAS', 'South Australia': 'SA', 'Western Australia': 'WA', 'Northern Territory': 'NT' };
+const rrgFmtTime = t => { const [h, m] = t.split(':').map(Number); return `${h % 12 || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`; };
+const rrgToMins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+function rrgStoreNow(timeZone) {
+  const fake = new URLSearchParams(location.search).get('now');
+  if (fake && /^[a-z]{3}-\d\d:\d\d$/.test(fake)) { const [day, time] = fake.split('-'); return { day, mins: rrgToMins(time) }; }
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-AU', { timeZone, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).map(p => [p.type, p.value]));
+  return { day: parts.weekday.toLowerCase().slice(0, 3), mins: Number(parts.hour) * 60 + Number(parts.minute) };
+}
+// { open, text } — "Closes 5:00pm" / "Opens 8:30am today" / "Opens tomorrow 8:30am" / "Opens Mon 8:30am".
+function rrgStoreOpenStatus(hours, timeZone) {
+  const now = rrgStoreNow(timeZone);
+  const i = RRG_DAYS.findIndex(([k]) => k === now.day);
+  const today = hours[now.day];
+  if (today && now.mins >= rrgToMins(today[0]) && now.mins < rrgToMins(today[1])) return { open: true, text: `Closes ${rrgFmtTime(today[1])}` };
+  if (today && now.mins < rrgToMins(today[0])) return { open: false, text: `Opens ${rrgFmtTime(today[0])} today` };
+  for (let n = 1; n <= 7; n++) {
+    const [key, label] = RRG_DAYS[(i + n) % 7];
+    if (hours[key]) return { open: false, text: `Opens ${n === 1 ? 'tomorrow' : label.slice(0, 3)} ${rrgFmtTime(hours[key][0])}` };
+  }
+  return { open: false, text: '' };
+}
+function rrgKmBetween(a, b) {
+  const R = 6371, rad = x => x * Math.PI / 180;
+  const h = Math.sin(rad(b.lat - a.lat) / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(rad(b.lng - a.lng) / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
 }
 // Turns the store name in every store row (.dc-store — Click & Collect, Showroom Finder, the
 // Store slide-out) into a link to that store's page. Showroom rows read "Moorebank, NSW", so
@@ -1452,7 +1496,7 @@ function renderStoreSlideoutBody(nearState) {
     if (nearGroup && group.state === nearGroup.state) return;
     html += groupHTML(group.state, group.stores, !nearGroup);
   });
-  body.innerHTML = html;
+  body.innerHTML = html + `<a class="store-slideout-finder-link" href="${RRG_STORE_FINDER_HREF()}">Open the Store Finder map ›</a>`;
   rrgLinkStoreNames(body);
 }
 
@@ -1531,8 +1575,10 @@ function renderShowroomMapPins(region) {
     const latLngs = [];
     RRG_STORE_NETWORK.forEach(group => group.stores.forEach(s => {
       const onDisplay = ON_DISPLAY_STORES.has(s.name);
-      L.marker([s.lat, s.lng], { icon: rrgPinIcon(onDisplay), rrgOnDisplay: onDisplay })
-        .bindPopup(`<strong>${s.name}</strong><br>${s.street}, ${s.city}<br>${onDisplay ? 'On Display' : 'In-store stock varies'}`)
+      // rrgStoreName + the 'rrg-store-pin' event let the Store Finder match pins to its list.
+      L.marker([s.lat, s.lng], { icon: rrgPinIcon(onDisplay), rrgOnDisplay: onDisplay, rrgStoreName: s.name })
+        .bindPopup(`<strong>${s.name}</strong><br>${s.street}, ${s.city}<br>${onDisplay ? 'On Display' : 'In-store stock varies'}<br><a href="${rrgStorePageHref(s.name)}">View store ›</a>`)
+        .on('click', () => document.dispatchEvent(new CustomEvent('rrg-store-pin', { detail: s.name })))
         .addTo(clusterGroup);
       latLngs.push([s.lat, s.lng]);
     }));
@@ -1784,7 +1830,7 @@ function applyStoreSessionDisplay() {
   const on = rrgSessionGet('storeSet');
   if (label) label.hidden = !on;
   link.textContent = on ? link.dataset.currentStoreName : 'Find A Store';
-  const storeHref = on && rrgStorePageHref(link.dataset.currentStoreName);
+  const storeHref = on ? rrgStorePageHref(link.dataset.currentStoreName) : RRG_STORE_FINDER_HREF();
   link.setAttribute('href', storeHref || '#');
   // VLP Store Finder tile's "Your Nearest Store" line mirrors the header's.
   document.querySelectorAll('[data-sft-nearest]').forEach(a => {
@@ -1879,7 +1925,21 @@ function applyRegion(region) {
   // Footer text/asset swaps (footer-spec.md Section 3) — run last for the same reason as the
   // two calls above: acts on final DOM state, not something about to be overwritten.
   applyRegionFooter(region);
+  document.dispatchEvent(new CustomEvent('rrg-region-change', { detail: region }));
 }
+
+// Store Finder links (docs/store-finder/store-finder-spec.md Section 4) — the header nav's
+// "Store Finder" (desktop and the mobile menu mega-menu.js builds), the footer's "Click here to
+// find your closest store", and any [data-store-finder-link]. Matched by text like the "Fit My
+// Vehicle" nav link, so no template needs its own markup change. Delegated, so the mobile
+// menu's later-built links work too.
+document.addEventListener('click', e => {
+  const a = e.target.closest('a');
+  if (!a || a.getAttribute('href') !== '#' || a.hasAttribute('data-store-slideout')) return;
+  if (!(a.hasAttribute('data-store-finder-link') || a.textContent.trim() === 'Store Finder' || a.closest('.footer-store-finder'))) return;
+  e.preventDefault();
+  location.href = RRG_STORE_FINDER_HREF();
+});
 
 // fmtAud()/fmtMoney() (this file + the per-template inline scripts) already pick up the
 // right symbol on their NEXT call via regionCurrencySymbol() — this sweep instead fixes
