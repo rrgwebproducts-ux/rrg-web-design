@@ -27,6 +27,9 @@ function buildSiteAdminPanel(currentKey) {
   // Every template, grouped the way the template index groups them (P2 — reverses the
   // 2026-09-17 PDP-only trim).
   const templateGroups = [
+    { title: 'Home', items: [
+      { key: 'home', label: 'Home Page' },
+    ] },
     { title: 'Product pages', items: [
       { key: 'simple', label: 'Simple' },
       { key: 'config-variant', label: 'Config-Variant' },

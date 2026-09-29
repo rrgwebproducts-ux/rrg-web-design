@@ -82,13 +82,13 @@ The "off" state isn't a separate designed component — it's the same link, same
 
 **Contents, left to right:**
 - **Hamburger** (mobile only, ≤900px) — opens the mobile takeover (Section 4.6), not a slide-down drawer.
-- **Logo** — should link home in Magento. In the prototype the main-header (and sticky-header) logo is a plain image, not a link. Same logo asset reused as the mobile takeover's own logo, which *is* a link (to the template index in the prototype — Section 4.6).
+- **Logo** — links home. In the prototype the main-header, sticky-header and mobile-takeover logos all link to the Home Page template (`prototypes/home/`, since 2026-09-29; `docs/home/home-spec.md`). The template index is still reachable from Site Admin → "All templates".
 - **"Products"** — opens the mega menu (Section 4.3) on desktop. **Hidden entirely below 900px** (`display:none`) — on mobile, the category list is the takeover's own root screen, not a separate tappable item (see Section 4.6's note on why).
 - **Store Finder / Fit My Vehicle / Clearance / Services** — plain links, `href="#"`, real URLs pending (Section 6). Stay as flat links on desktop; render again inside the mobile takeover's root screen, below the categories (Section 4.6) — not duplicated in the main header on mobile, since the header itself is reduced to hamburger/logo/cart there.
 - **Search bar** — has a clear button that appears once text is entered, plus a typeahead/focus-state dropdown (Section 4.9) — mostly cosmetic, but its "View All Results" link is real navigation.
 - **Cart icon** — visual only, static `0` badge.
 
-**Click actions:** logo → home (in Magento; not linked in the prototype). "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
+**Click actions:** logo → home (the Home Page template in the prototype). "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
 
 ---
 
@@ -204,7 +204,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 **"Products" isn't its own tab here — this is deliberate.** On desktop, "Products" is a button that opens the category list. On mobile, the category list simply **is** the takeover's root screen — there's no separate "Products" row to tap through first. Internally this root screen is called **Level 0** (not "Level 1," to avoid confusion with desktop's Level 1, which sits *behind* a Products trigger that mobile doesn't have) — content-wise, mobile Level 0/1/2 correspond to desktop Level 1/2/3.
 
 **Screen 1 — Level 0 (root):**
-- Own mini header: logo (links to the template index, `prototypes/index.html`, from every template — it used to point at the current template; the home page in Magento), account (Graham/Log In), vehicle (Your Vehicle: .../Select Your Vehicle — opens the Fit Finder drawer, Section 4.10) — same session state as the Utility Bar (Section 4.1), a close button.
+- Own mini header: logo (links to the Home Page template, `prototypes/home/`, from every template since 2026-09-29 — it used to point at the template index; the home page in Magento), account (Graham/Log In), vehicle (Your Vehicle: .../Select Your Vehicle — opens the Fit Finder drawer, Section 4.10) — same session state as the Utility Bar (Section 4.1), a close button.
 - Search bar (same typeahead/focus-state dropdown as desktop's — Section 4.9).
 - Sale banner (Section 4.5).
 - The 8 categories, Brands styled as a yellow bar (same treatment as desktop).

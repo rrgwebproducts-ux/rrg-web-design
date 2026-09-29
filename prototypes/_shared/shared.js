@@ -1168,10 +1168,27 @@ function buildFitFinderDrawer() {
     </div>
   `;
   document.body.appendChild(backdrop);
-  const make = backdrop.querySelector('[data-ff-make]');
-  const model = backdrop.querySelector('[data-ff-model]');
-  const required = [...backdrop.querySelectorAll('[data-ff-required]')];
-  const submit = backdrop.querySelector('[data-ff-submit]');
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
+  backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
+  // Opened from the header (Fit My Vehicle nav link, utility-bar vehicle link, a VLP's own
+  // Change Vehicle) → set the vehicle and land on its VLP (docs/vlp/vlp-spec.md Section 3).
+  // Opened anywhere else (PLP cards, Set/Change Vehicle on the PLP family, search strip, Add to
+  // Cart notice) → set it in place and stay on the page.
+  initFitFinderCascade(backdrop, key => {
+    if (window.rrgSetVehicle) window.rrgSetVehicle(key);
+    closeFitFinderDrawer();
+    if (backdrop.dataset.mode === 'navigate') window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+  });
+}
+
+// The Make → Model → Year/Body/Roof cascade itself, shared by the drawer above and the home
+// page's inline hero Fit Finder ([data-fit-finder-inline], docs/home/home-spec.md 5.2) so the
+// two can never drift. `root` holds the [data-ff-*] fields; onSubmit gets the vehicle key.
+function initFitFinderCascade(root, onSubmit) {
+  const make = root.querySelector('[data-ff-make]');
+  const model = root.querySelector('[data-ff-model]');
+  const required = [...root.querySelectorAll('[data-ff-required]')];
+  const submit = root.querySelector('[data-ff-submit]');
   const reset = (sel, placeholder) => { sel.innerHTML = `<option value="" selected disabled>${placeholder}</option>`; sel.disabled = true; };
   const sync = () => { submit.disabled = !model.value || required.some(s => !s.value); };
   make.addEventListener('change', () => {
@@ -1187,17 +1204,66 @@ function buildFitFinderDrawer() {
     sync();
   });
   required.forEach(s => s.addEventListener('change', sync));
-  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
-  backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
-  // Opened from the header (Fit My Vehicle nav link, utility-bar vehicle link, a VLP's own
-  // Change Vehicle) → set the vehicle and land on its VLP (docs/vlp/vlp-spec.md Section 3).
-  // Opened anywhere else (PLP cards, Set/Change Vehicle on the PLP family, search strip, Add to
-  // Cart notice) → set it in place and stay on the page.
-  submit.addEventListener('click', () => {
-    const key = model.value;
-    if (window.rrgSetVehicle) window.rrgSetVehicle(key);
-    closeFitFinderDrawer();
-    if (backdrop.dataset.mode === 'navigate') window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+  submit.addEventListener('click', () => onSubmit(model.value));
+}
+
+// Home page hero Fit Finder (docs/home/home-spec.md Section 3) — always lands on the VLP, the
+// same as the header's Fit My Vehicle drawer.
+function initInlineFitFinders() {
+  document.querySelectorAll('[data-fit-finder-inline]').forEach(root => {
+    root.querySelector('[data-ff-make]').innerHTML = ffOptions(FIT_FINDER_MAKES, 'Make');
+    initFitFinderCascade(root, key => {
+      if (window.rrgSetVehicle) window.rrgSetVehicle(key);
+      window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+    });
+  });
+}
+
+// Home page hero slider (docs/home/home-spec.md 5.2). Dots, prev/next, swipe; autoplays every 6s,
+// pausing while the pointer or focus is inside the hero, and never under prefers-reduced-motion.
+// Inactive slides are aria-hidden with their links taken out of the tab order.
+function initHomeHero() {
+  document.querySelectorAll('.home-hero').forEach(hero => {
+    const slides = [...hero.querySelectorAll('.home-hero-slide')];
+    const dotsEl = hero.querySelector('.home-hero-dots');
+    if (slides.length < 2) return;
+    let current = 0;
+    let timer = null;
+    dotsEl.innerHTML = slides.map((s, i) => `<button type="button" aria-label="Show slide ${i + 1}: ${s.dataset.title}"></button>`).join('');
+    const dots = [...dotsEl.children];
+    const show = i => {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => {
+        const on = n === current;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
+        s.querySelectorAll('a').forEach(a => { if (on) a.removeAttribute('tabindex'); else a.setAttribute('tabindex', '-1'); });
+        // Lazy slides start loading the first time they come round.
+        if (on) s.querySelectorAll('img[loading="lazy"]').forEach(img => img.removeAttribute('loading'));
+      });
+      dots.forEach((d, n) => d.setAttribute('aria-current', n === current ? 'true' : 'false'));
+    };
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stop = () => { clearInterval(timer); timer = null; };
+    const start = () => { if (!reduced && !timer) timer = setInterval(() => show(current + 1), 6000); };
+    dots.forEach((d, n) => d.addEventListener('click', () => show(n)));
+    hero.querySelector('.home-hero-nav.prev')?.addEventListener('click', () => show(current - 1));
+    hero.querySelector('.home-hero-nav.next')?.addEventListener('click', () => show(current + 1));
+    const stage = hero.querySelector('.home-hero-stage');
+    let touchX = null;
+    stage.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      touchX = null;
+    });
+    hero.addEventListener('mouseenter', stop);
+    hero.addEventListener('mouseleave', start);
+    hero.addEventListener('focusin', stop);
+    hero.addEventListener('focusout', e => { if (!hero.contains(e.relatedTarget)) start(); });
+    show(0);
+    start();
   });
 }
 
@@ -2794,6 +2860,8 @@ document.addEventListener('DOMContentLoaded', () => {
   buildExdemoSlideout();
   buildStoreSlideout();
   initFitFinderTriggers();
+  initInlineFitFinders();
+  initHomeHero();
   buildFitGallerySlideout();
   initCopyButtons();
   initFitGalleryCarousel();

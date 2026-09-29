@@ -309,6 +309,9 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-main-inner{display:flex;align-items:center;gap:32px;padding:0 24px;flex-wrap:wrap;}
 .rrg-main-inner .rrg-logo{flex:0 0 auto;}
 .rrg-logo img{height:34px;width:auto;display:block;}
+/* Header logos are links to the home page (2026-09-29) — block, so the link keeps the old div's
+   box (the UK logo's absolute positioning relies on it). */
+a.rrg-logo{display:block;}
 .rrg-nav{display:flex;align-items:center;gap:22px;font-size:14px;font-weight:700;flex:0 0 auto;}
 .rrg-nav a{color:var(--rrg-black);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
 .rrg-nav a:hover{color:var(--rrg-red);}
@@ -1856,3 +1859,105 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
   .sft-postcode input{font-size:16px;}
   .product-carousel-track.plp-results.is-grid{grid-auto-columns:72%;}
 }
+
+/* ===== Home page (docs/home/home-spec.md, 2026-09-29) =====
+   Only layout lives here — every heading/body style is the shared one above. */
+
+/* Visually hidden but read by screen readers and search engines — the home page H1, which the
+   hero artwork already says visually (spec Section 7). */
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+
+/* Hero (spec 5.2) — full-bleed slider (Brenton, 2026-09-29: full width is fine here, the art is
+   marketing's, not catalogue photography). Each slide is the live site's two layers: a
+   background that covers the width, and transparent artwork anchored right, kept clear of the
+   Fit Finder panel, which sits over the left inside .wrap and stays put while slides change. */
+.home-hero{position:relative;background:var(--rrg-charcoal);}
+.home-hero-stage{position:relative;height:460px;overflow:hidden;}
+.home-hero-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s linear .6s;}
+.home-hero-slide.is-active{opacity:1;visibility:visible;transition:opacity .6s ease,visibility 0s;}
+.home-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+/* Art starts where the Fit Finder column ends (the .wrap gutter + 420px panel + 48px), so the
+   two never overlap at any desktop width. */
+.home-hero-art{position:absolute;top:0;bottom:0;right:0;left:calc(max(0px,(100% - var(--maxw)) / 2) + 24px + 420px + 48px);display:block;}
+.home-hero-art img{width:100%;height:100%;object-fit:contain;object-position:right center;}
+/* Slide link — deliberately the quiet white-outline button: the Fit Finder's gold View Results
+   is the one primary action above the fold (spec Section 4). */
+.home-hero-link{position:absolute;right:calc(max(0px,(100% - var(--maxw)) / 2) + 24px);bottom:44px;z-index:1;}
+.home-hero-finder-wrap{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;z-index:2;}
+.home-hero-finder{width:420px;margin:0;pointer-events:auto;}
+.home-hero-finder .ff-head{margin-bottom:16px;}
+.home-hero-finder .ff-head p{flex-basis:100%;}
+/* Two fields per row at every width — the shared ≤520px one-column rule would make the phone
+   Fit Finder a full screen of stacked dropdowns. */
+.home-hero-finder .ff-row{grid-template-columns:1fr 1fr;}
+.home-hero-finder .ff-row .btn{grid-column:1 / -1;}
+.home-hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:26px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--t-fast);}
+.home-hero-nav:hover{background:rgba(0,0,0,.75);}
+.home-hero-nav.prev{left:12px;}
+.home-hero-nav.next{right:12px;}
+.home-hero-dots{position:absolute;left:0;right:0;bottom:16px;z-index:3;display:flex;justify-content:center;gap:8px;pointer-events:none;}
+.home-hero-dots button{pointer-events:auto;width:10px;height:10px;padding:0;border-radius:50%;border:1.5px solid #fff;background:rgba(0,0,0,.35);cursor:pointer;}
+.home-hero-dots button[aria-current="true"]{background:#fff;width:26px;border-radius:5px;}
+/* Tablet/mobile: the banner becomes a fixed-ratio strip showing just the artwork, and the Fit
+   Finder drops below it as a full-width dark block — no fields over artwork on a small screen. */
+@media (max-width:1100px){
+  .home-hero-stage{height:auto;aspect-ratio:1400 / 820;max-height:420px;width:100%;}
+  .home-hero-art{left:0;}
+  .home-hero-art img{object-position:center;}
+  .home-hero-link{bottom:40px;right:16px;}
+  .home-hero-finder-wrap{position:static;display:block;pointer-events:auto;padding:0;max-width:none;}
+  .home-hero-finder{width:auto;border-radius:0;background:var(--rrg-black);padding:22px 24px 26px;}
+}
+@media (max-width:900px){
+  .home-hero-nav{display:none;}
+}
+@media (max-width:640px){
+  .home-hero-link{display:none;}
+  .home-hero-finder{padding:20px 16px 22px;}
+}
+
+/* Your vehicle bar (spec 5.4) — shown only while a session vehicle is set. */
+.home-vehicle-bar{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap;border:1px solid var(--rrg-line);border-left:4px solid var(--rrg-red);border-radius:var(--radius);padding:12px 20px;margin:0 0 var(--space-section);background:#fff;}
+.home-vehicle-bar img{height:64px;width:auto;flex:0 0 auto;}
+.home-vehicle-bar-text{flex:1 1 260px;min-width:0;}
+.home-vehicle-bar-text strong{display:block;font-size:16px;color:var(--rrg-black);}
+.home-vehicle-bar-text span{font-size:14px;color:var(--rrg-grey-700);}
+.home-vehicle-bar-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.home-vehicle-bar-actions a:not(.btn){font-size:14px;font-weight:700;color:var(--rrg-text);text-decoration:underline;}
+@media (max-width:520px){
+  .home-vehicle-bar{padding:12px 14px;}
+  .home-vehicle-bar img{display:none;}
+}
+
+/* Shop by Category (spec 5.5) — the VLP's compact tile, 5 across. */
+.cat-tile-grid--home{grid-template-columns:repeat(5,minmax(0,1fr));}
+@media (max-width:900px){ .cat-tile-grid--home{grid-template-columns:repeat(3,minmax(0,1fr));} }
+@media (max-width:520px){ .cat-tile-grid--home{grid-template-columns:repeat(2,minmax(0,1fr));} }
+
+/* Current Offers (spec 5.6) — a promo's slide art (background + artwork) as a link tile. */
+.home-offer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.home-offer-tile{position:relative;display:block;aspect-ratio:1400 / 820;border-radius:var(--radius);overflow:hidden;background:var(--rrg-charcoal);transition:box-shadow var(--t-fast) ease,transform var(--t-fast) ease;}
+.home-offer-tile:hover{box-shadow:var(--shadow-pop);transform:translateY(-2px);}
+.home-offer-tile img{position:absolute;inset:0;width:100%;height:100%;}
+.home-offer-tile img:first-child{object-fit:cover;}
+.home-offer-tile img+img{object-fit:contain;}
+@media (max-width:900px){ .home-offer-grid{grid-template-columns:1fr;gap:12px;} }
+
+/* Help row (spec 5.8) — the VLP's Store Finder tile beside two light cards (Key Finder, Let Us
+   Help), merging the live page's Key Finder / fitting costs / "Let Us Help" leftovers. */
+.home-help-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:var(--space-section) 0;}
+.home-help-grid .store-finder-tile{--sft-span:1;}
+.home-help-card{display:flex;flex-direction:column;gap:14px;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px;background:#fff;}
+.home-help-card .sft-head{margin-bottom:0;}
+.home-help-card .sft-head h2{color:var(--rrg-black);font-style:normal;font-size:32px;}
+.home-help-card p{margin:0;font-size:14px;color:var(--rrg-grey-700);}
+.home-help-card .sft-postcode{border:1px solid var(--rrg-grey-700);}
+.home-help-card .btn{align-self:flex-start;margin-top:auto;}
+.home-key-form{display:flex;gap:10px;flex-wrap:wrap;}
+.home-key-form .btn{margin-top:0;}
+.home-key-brands{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.home-key-brands img{height:18px;width:auto;filter:grayscale(1);opacity:.75;}
+.home-help-contact{display:flex;flex-direction:column;gap:8px;font-size:14px;}
+.home-help-contact a{font-weight:700;color:var(--rrg-text);}
+.home-help-contact svg{width:16px;height:16px;color:var(--rrg-red);vertical-align:-3px;margin-right:6px;}
+@media (max-width:900px){ .home-help-grid{grid-template-columns:1fr;} }

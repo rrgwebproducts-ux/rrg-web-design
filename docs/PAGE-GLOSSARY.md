@@ -122,6 +122,20 @@ Added 2026-09-29 (`docs/vlp/vlp-spec.md`). Where the header's **Fit My Vehicle d
 
 ---
 
+## Home Page (`prototypes/home/`)
+
+Added 2026-09-29 (`docs/home/home-spec.md`). The new www.roofracksgalore.com.au home page. There's no design for it, so it's the live home page's content rebuilt from the shared components. Reuses the Trust row, Category tile (compact), Product carousel, Store Finder tile, Trust banner and Shop The Best Brands; the pieces below are new.
+
+| Name | Description |
+|---|---|
+| **Hero slider** | Full-width promo slider. Each slide is the live site's two layers: a background plus transparent artwork anchored right. A quiet white-outline slide link; dots, arrows, swipe; 6s autoplay, paused on hover/focus and off under reduced motion. Images: `_shared/home-hero/`. — `.home-hero`, `initHomeHero()` |
+| **Hero Fit Finder** | The Fit My Vehicle drawer's cascade drawn inline over the left of the hero (below it at ≤1100px). View Results lands on the VLP. Same code as the drawer. — `[data-fit-finder-inline]`, `initFitFinderCascade()` |
+| **Your vehicle bar** | Shown only while a session vehicle is saved: "Shopping for your Toyota Hilux?" + Shop for my Hilux (→ VLP) + Change vehicle. — `.home-vehicle-bar` |
+| **Offer tile** | A promo's slide art (background + artwork) as a link tile, under "Current Offers". — `.home-offer-tile` |
+| **Help row** | Store Finder tile + Key Finder + Let Us Help, under the trust banner. Replaces the live page's Key Finder / fitting costs / "Let Us Help" leftovers. — `.home-help-grid`, `.home-help-card` |
+
+---
+
 ## Shared building blocks (2026-09-29 consistency pass)
 
 Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shared rule each. Use these names rather than the old per-page ones.
@@ -145,4 +159,4 @@ Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shar
 
 ---
 
-*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
+*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
