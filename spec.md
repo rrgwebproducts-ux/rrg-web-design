@@ -986,6 +986,22 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
   - **V6:** fixed Book An Installation link.
   - **V7:** single-column FAQ; intro copy kept under the heading.
 - **C9:** one Fitment Gallery builder (`fitGalleryPanelHTML`/`mountFitGallery`/`renderFitGalleryTrack`) for VS, VCLP and VPLP. Photos are set to 4:3 (the CSS asked for 16:9, but pages were showing 4:3).
+- Committed 0a97f7e.
+
+**Step 4 (global shell) built on 2026-09-29, awaiting Brenton's review, not committed.**
+- **Paths:** shared JS paths resolve from `RRG_PROTO` (nav-data.js, derived from the script's own URL) instead of hardcoded `../`, so the shared scripts work from the root index as well as template folders.
+- **G1:** the root index uses the real header, mobile takeover, footer and the standard scripts; the hand-copied header and inline script are gone.
+- **G2:** index copy is updated (five PDPs, header-led search). A Header card is added, and every "Open Template" is `.btn-sm`.
+- **G3:** `header/header-standalone.js` is deleted, and the header prototype loads shared.js.
+- **G4:** the Kalam font loads on every page with the footer.
+- **G5:** a 48px gap above the footer everywhere (VCLP's grey band is flush).
+- **G6:** titles use the "Name — Roof Racks Galore" format.
+- **G7:** the mobile-takeover logo links to the template index.
+- **G8:**
+  - Every page has `lang="en-AU"` and the real live favicon (`_shared/favicon.ico`).
+  - All PDPs, PLP and Camping get a description, canonical and OG/Twitter meta, built from each page's own real product URL, image and description, and from verified live category URLs (`/bike-racks`, `/camping-offroad/camping`).
+  - VPLP has no canonical yet (no live vehicle-category URL exists).
+  - The header prototype and index are `noindex`.
 
 **Scope:** every page in `prototypes/`: root index, header, 5 PDPs, VCLP, PLP, PLP Camping, VPLP and Search.
 - **Measured:** computed styles in a real browser, at 1440px and 390px, on all 12 pages.

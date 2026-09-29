@@ -24,13 +24,13 @@ const MM_MOBILE_UTILITY_LINKS = [
 // "Roof Top Type.png" is the real filename for the Awnings & Roof Top Tents icon (a tent
 // shape, not a roof-bars variant like the others) — kept its own key since the source
 // filename doesn't match the category label the way the others do.
-const MM_ICON_FALLBACK = '../_shared/icons/fallback.png';
+const MM_ICON_FALLBACK = RRG_PROTO + '_shared/icons/fallback.png';
 const MM_CATEGORY_ICONS = {
-  'Roof Racks': '../_shared/icons/roof-racks.png',
-  'Bike Racks': '../_shared/icons/bike-racks.png',
-  'Platforms & Trays': '../_shared/icons/platforms-trays.png',
-  'Roof Boxes & Cargo': '../_shared/icons/roof-boxes-cargo.png',
-  'Awnings & Roof Top Tents': '../_shared/icons/roof-top-type.png',
+  'Roof Racks': RRG_PROTO + '_shared/icons/roof-racks.png',
+  'Bike Racks': RRG_PROTO + '_shared/icons/bike-racks.png',
+  'Platforms & Trays': RRG_PROTO + '_shared/icons/platforms-trays.png',
+  'Roof Boxes & Cargo': RRG_PROTO + '_shared/icons/roof-boxes-cargo.png',
+  'Awnings & Roof Top Tents': RRG_PROTO + '_shared/icons/roof-top-type.png',
 };
 function mmCategoryIconSrc(label) {
   return MM_CATEGORY_ICONS[label] || MM_ICON_FALLBACK;
@@ -61,8 +61,8 @@ function mmPromoTileHTML(promoTile) {
 // Panel's checkbox needs to call rrgSetSaleBannerOn (on user interaction, well after both
 // scripts have run).
 const MM_SALE_BANNER_KEY = 'rrgSaleBannerOn';
-const MM_SALE_BANNER_SRC = '../_shared/sale-banner.png';
-const MM_SALE_BANNER_FALLBACK_SRC = '../_shared/sale-banner-fallback.png';
+const MM_SALE_BANNER_SRC = RRG_PROTO + '_shared/sale-banner.png';
+const MM_SALE_BANNER_FALLBACK_SRC = RRG_PROTO + '_shared/sale-banner-fallback.png';
 // `src` is set by mmApplySaleBannerVisibility() right after this markup is inserted (both
 // desktop and mobile) — kept out of this string so there's one place deciding which image.
 const MM_BANNER_HTML = '<a class="mega-menu-banner" href="#"><img alt="Sale"></a>';
@@ -310,7 +310,7 @@ function initMegaMenu() {
   const drawer = menu.querySelector('.mega-menu-drawer-inner');
   // .mega-menu-mobile now lives inside .mm-mobile-takeover (index.html), not nested in
   // .mega-menu — it's the mobile full-screen takeover's content area, opened by the
-  // hamburger (header-standalone.js initMobileNav()), not by this "Products" toggle.
+  // hamburger (shared.js initMobileNav()), not by this "Products" toggle.
   const mobile = document.querySelector('.mega-menu-mobile');
   if (!toggle || !drawer || !mobile) return;
 

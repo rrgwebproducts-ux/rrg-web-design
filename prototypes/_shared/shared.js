@@ -831,7 +831,7 @@ function syncPaymentBadges(block) {
     if (!entry) return;
     const img = el.querySelector('.pb-logo');
     const text = el.querySelector('.pb-text');
-    if (img) { img.src = `../_shared/payment-logos/${entry.src}`; img.alt = entry.alt; img.style.height = entry.height || ''; }
+    if (img) { img.src = `${RRG_PROTO}_shared/payment-logos/${entry.src}`; img.alt = entry.alt; img.style.height = entry.height || ''; }
     if (text) text.textContent = entry.text(price);
   });
 }
@@ -1756,7 +1756,7 @@ function renderFooterSocial(region) {
   const set = REGION_FOOTER_SOCIAL[region] || REGION_FOOTER_SOCIAL.default;
   document.querySelectorAll('[data-footer-social-icons]').forEach(container => {
     container.innerHTML = set.map(item => {
-      const inner = item.img ? `<img src="../_shared/social-icons/${item.img}" alt="">` : item.svg;
+      const inner = item.img ? `<img src="${RRG_PROTO}_shared/social-icons/${item.img}" alt="">` : item.svg;
       const external = item.href.startsWith('http');
       return `<a href="${item.href}" aria-label="${item.label}" class="social-btn-${item.kind}"${external ? ' target="_blank" rel="noopener"' : ''}>${inner}</a>`;
     }).join('');
@@ -1803,7 +1803,7 @@ function renderFooterPayments(region) {
     const order = ['paypal', 'visa', 'mastercard', ...REGION_FOOTER_BNPL[region], 'apple-pay', 'google-pay'];
     container.innerHTML = order.map(key => {
       const [src, alt] = FOOTER_PAYMENT_ICON[key];
-      return `<span class="payment-icon"><img src="../_shared/payment-logos/${src}" alt="${alt}"></span>`;
+      return `<span class="payment-icon"><img src="${RRG_PROTO}_shared/payment-logos/${src}" alt="${alt}"></span>`;
     }).join('');
   });
 }
@@ -2025,13 +2025,13 @@ function applyRegionCurrency(region) {
 // `--rrg-red-dark` custom properties in shared.css, plus a direct override for the Add to
 // Cart button (which isn't on the `--rrg-red` token to begin with — it's RRG's separate
 // locked-in gold default, see shared.css).
-const RRG_LOGO = { src: '../_shared/headerlogo.png', alt: 'Roof Racks Galore' };
+const RRG_LOGO = { src: RRG_PROTO + '_shared/headerlogo.png', alt: 'Roof Racks Galore' };
 // White-on-transparent recolour of RRG_LOGO (footer-spec.md Section 3) — the header's logo is
 // black text built for its white background; the footer's background is dark, so it needs
 // its own variant. UK reuses the same self-contained badge everywhere (it already carries its
 // own background box, so it works on both the light header and the dark footer unchanged).
-const RRG_LOGO_WHITE = { src: '../_shared/headerlogo-white.png', alt: 'Roof Racks Galore' };
-const UK_LOGO = { src: '../_shared/brand-roofbox-uk-logo.svg', alt: 'The Roof Box Company' };
+const RRG_LOGO_WHITE = { src: RRG_PROTO + '_shared/headerlogo-white.png', alt: 'Roof Racks Galore' };
+const UK_LOGO = { src: RRG_PROTO + '_shared/brand-roofbox-uk-logo.svg', alt: 'The Roof Box Company' };
 
 function applyRegionBrand(region) {
   document.body.classList.toggle('region-uk', region === 'UK');
@@ -2661,7 +2661,6 @@ function initMobileNav() {
 // own prototype templates. In production all of this comes out of the search index (Algolia),
 // not hardcoded lists — this is only enough real data to demo the behaviour. Don't add an entry
 // without checking it exists on the live site first (see the Trending note further down).
-// header/header-standalone.js duplicates this block — that prototype doesn't load shared.js.
 const RRG_LIVE_URL = 'https://www.roofracksgalore.com.au';
 const RRG_HELP_URL = 'https://roofracksgalore.crisp.help/en/article/';
 const RRG_SEARCH_STOPWORDS = ['for', 'the', 'a', 'an', 'and', 'my', 'to', 'of', 'in', 'on', 'with'];
@@ -2740,16 +2739,16 @@ const RRG_SEARCH_BRANDS = [
 // is set in session or the query itself names that vehicle — a "Toyota Hilux" page is noise
 // for a shopper with no vehicle who typed "roof racks".
 const RRG_SEARCH_PAGES = [
-  { type: 'page', title: 'Fit My Vehicle', image: '../_shared/vehicle-ford-ranger.png', imageStandIn: true, desc: 'Tell us your vehicle and see only the roof racks, platforms and accessories that fit it.', href: RRG_LIVE_URL + '/fit-my-vehicle', kw: 'fit my vehicle fitment finder roof racks platforms crossbars bars car ute 4wd', cta: true },
-  { type: 'vehicle', title: 'Toyota Hilux Roof Racks', image: '../_shared/vehicle-toyota-hilux.webp', desc: 'Every roof rack, platform and crossbar that fits the Hilux N70, N80 and N90.', href: '../vehicle-category-landing/index.html', kw: 'toyota hilux roof racks platforms crossbars bars n70 n80 n90', vehicle: 'toyota hilux', cta: true },
-  { type: 'category', title: 'Roof Racks for Toyota Hilux N80', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_20.jpg', imageStandIn: true, desc: 'Roof racks for the 2015–2026 Hilux 4dr Ute with bare roof.', href: '../vplp/index.html', kw: 'roof racks platforms crossbars bars toyota hilux n80', vehicle: 'toyota hilux' },
-  { type: 'category', title: 'Bike Racks', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg', imageStandIn: true, desc: 'Roof-mounted, tow ball and rear-mounted bike carriers.', href: '../plp/index.html', kw: 'bike racks bike carriers roof mounted tow ball bicycle' },
-  { type: 'category', title: 'Camping Gear', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/d/a/darche-ranger-solo-050801183r.webp', imageStandIn: true, desc: 'Tents, swags, camp furniture and camp site essentials.', href: '../plp-camping/index.html', kw: 'camping gear tents swags camp furniture' },
-  { type: 'page', title: 'Find a Store', image: '../_shared/installer.png', imageStandIn: true, desc: '35 stores nationwide, with opening hours, directions and fitting bays.', href: RRG_LIVE_URL + '/locations', kw: 'find a store stores locations near me opening hours showroom fitting', cta: true },
+  { type: 'page', title: 'Fit My Vehicle', image: RRG_PROTO + '_shared/vehicle-ford-ranger.png', imageStandIn: true, desc: 'Tell us your vehicle and see only the roof racks, platforms and accessories that fit it.', href: RRG_LIVE_URL + '/fit-my-vehicle', kw: 'fit my vehicle fitment finder roof racks platforms crossbars bars car ute 4wd', cta: true },
+  { type: 'vehicle', title: 'Toyota Hilux Roof Racks', image: RRG_PROTO + '_shared/vehicle-toyota-hilux.webp', desc: 'Every roof rack, platform and crossbar that fits the Hilux N70, N80 and N90.', href: RRG_PROTO + 'vehicle-category-landing/index.html', kw: 'toyota hilux roof racks platforms crossbars bars n70 n80 n90', vehicle: 'toyota hilux', cta: true },
+  { type: 'category', title: 'Roof Racks for Toyota Hilux N80', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_20.jpg', imageStandIn: true, desc: 'Roof racks for the 2015–2026 Hilux 4dr Ute with bare roof.', href: RRG_PROTO + 'vplp/index.html', kw: 'roof racks platforms crossbars bars toyota hilux n80', vehicle: 'toyota hilux' },
+  { type: 'category', title: 'Bike Racks', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg', imageStandIn: true, desc: 'Roof-mounted, tow ball and rear-mounted bike carriers.', href: RRG_PROTO + 'plp/index.html', kw: 'bike racks bike carriers roof mounted tow ball bicycle' },
+  { type: 'category', title: 'Camping Gear', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/d/a/darche-ranger-solo-050801183r.webp', imageStandIn: true, desc: 'Tents, swags, camp furniture and camp site essentials.', href: RRG_PROTO + 'plp-camping/index.html', kw: 'camping gear tents swags camp furniture' },
+  { type: 'page', title: 'Find a Store', image: RRG_PROTO + '_shared/installer.png', imageStandIn: true, desc: '35 stores nationwide, with opening hours, directions and fitting bays.', href: RRG_LIVE_URL + '/locations', kw: 'find a store stores locations near me opening hours showroom fitting', cta: true },
   { type: 'page', title: 'Warranty', desc: 'How warranty claims work for the products we sell.', href: RRG_LIVE_URL + '/warranty', kw: 'warranty claims guarantee' },
   { type: 'page', title: 'Shipping & Delivery', desc: 'Delivery options, timeframes and costs.', href: RRG_LIVE_URL + '/delivery', kw: 'shipping delivery freight postage' },
   { type: 'page', title: 'Refund & Exchange', desc: 'Our returns, refunds and exchange policy.', href: RRG_LIVE_URL + '/returns', kw: 'refund returns exchange' },
-  { type: 'article', topic: 'Roof Racks', title: 'Do you offer an installation service?', image: '../_shared/installer.png', imageStandIn: true, desc: 'All of our stores offer professional installation for roof racks and vehicle accessories.', href: RRG_HELP_URL + 'do-you-offer-an-installation-service-uru7hc/', kw: 'installation install fitting service roof racks' },
+  { type: 'article', topic: 'Roof Racks', title: 'Do you offer an installation service?', image: RRG_PROTO + '_shared/installer.png', imageStandIn: true, desc: 'All of our stores offer professional installation for roof racks and vehicle accessories.', href: RRG_HELP_URL + 'do-you-offer-an-installation-service-uru7hc/', kw: 'installation install fitting service roof racks' },
   { type: 'article', topic: 'Roof Racks', title: 'How do I identify my roof type?', image: 'https://storage.crisp.chat/users/helpdesk/website/-/e/4/7/d/e47d0aafa1237000/screenshot-2025-09-11-093153_5ywdec.png', desc: 'Bare roof, raised rail, flush rail or factory track — how to tell which one your vehicle has.', href: RRG_HELP_URL + 'how-do-i-identify-my-roof-type-1rl6ww/', kw: 'identify roof type bare roof raised rail flush rail track roof racks' },
   { type: 'article', topic: 'Roof Racks', title: 'What is the difference between a through bar and a flush bar?', image: 'https://storage.crisp.chat/users/helpdesk/website/-/e/4/7/d/e47d0aafa1237000/screenshot-2025-09-16-075229_1k2p7ic.png', desc: 'Through bars overhang past the legs; flush bars finish at the feet. Which one suits you.', href: RRG_HELP_URL + 'what-is-the-difference-between-a-through-bar-and-a-flush-bar-1bbikox/', kw: 'through bar thru bar flush bar crossbars roof racks' },
   { type: 'article', topic: 'Roof Racks', title: 'How far apart do I need to space my roof racks?', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg', imageStandIn: true, desc: 'Recommended bar spacing for rails, tracks and fixed points.', href: RRG_HELP_URL + 'how-far-apart-do-i-need-to-space-my-roof-racks-m3ntnl/', kw: 'space spacing roof racks crossbars bars apart' },
@@ -2856,15 +2855,15 @@ function rrgSearchLinkAttrs(href) {
 const HEADER_SEARCH_RECENT = ['Roof Rack for Hilux', 'Bike Rack', 'Thule Bars'];
 const HEADER_SEARCH_TRENDING = ['U-Bolts', 'Roof Boxes', 'Light Bars', 'Rhino Rack Tie Downs'];
 const HEADER_SEARCH_POPULAR_CATEGORIES = [
-  { label: 'Roof Racks', href: '../vplp/index.html' },
-  { label: 'Bike Racks', href: '../plp/index.html' },
-  { label: 'Camping Gear', href: '../plp-camping/index.html' },
+  { label: 'Roof Racks', href: RRG_PROTO + 'vplp/index.html' },
+  { label: 'Bike Racks', href: RRG_PROTO + 'plp/index.html' },
+  { label: 'Camping Gear', href: RRG_PROTO + 'plp-camping/index.html' },
 ];
 
 // Resolved against the current page's own URL (not a hardcoded "../search-results/..." string)
 // so this works unchanged from every template regardless of folder depth.
 function headerSearchResultsUrl(query) {
-  return new URL(`../search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
+  return new URL(`${RRG_PROTO}search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
 }
 
 function headerSearchFocusHTML(recentCleared) {

@@ -3,13 +3,13 @@
 // items and the mobile takeover's mini header (mega-menu.css/.js), same way the sale-banner
 // toggle already works: localStorage-backed, applied via a shared function every consumer
 // calls, re-applied on every toggle change via window.rrgSetSession(). Loaded before
-// mega-menu.js/header-standalone.js in every page's <head> so rrgApplySessionState() exists
+// mega-menu.js/shared.js in every page's <head> so rrgApplySessionState() exists
 // by the time either calls it.
 //
 // "Nearest store set?" isn't handled here — it interacts with the region switcher's own
-// per-region store name (header-standalone.js's applyRegionNearestStore()), so it's handled
+// per-region store name (shared.js's applyRegionNearestStore()), so it's handled
 // there instead, listening for the 'rrg-session-change' event this file dispatches on every
-// change (including for loggedIn/vehicleSet, so header-standalone.js doesn't need to know
+// change (including for loggedIn/vehicleSet, so shared.js doesn't need to know
 // which field changed — it just re-applies its own store display each time).
 const RRG_SESSION_FIELDS = {
   loggedIn: { key: 'rrgSessionLoggedIn', default: true, on: 'Graham', off: 'Log In' },

@@ -1,3 +1,9 @@
+// Prototype root URL (…/prototypes/), resolved from this script's own location (2026-09-29, spec.md
+// §15 G1). Every shared asset/page path in the shared JS is built from it (RRG_PROTO + '_shared/…',
+// RRG_PROTO + 'plp/index.html'), so the same scripts work from a template folder and from the
+// root template index one level up. nav-data.js is the first shared script every page loads.
+const RRG_PROTO = new URL('../', document.currentScript.src).href;
+
 // Header & Mega Menu — real navigation content, crawled live from roofracksgalore.com.au
 // via Playwright (2026-09-13) and restructured to the Figma cascade (header-spec.md
 // Section 3.6): Level 1 = category, Level 2 = "Shop " + each real column heading (+ a
@@ -20,7 +26,7 @@ const HEADER_NAV = [
     // columns on purpose, to prove both the independent-assignment behaviour and the
     // no-fallback behaviour (every other category/column below has no promoTile at all,
     // so their Level 2/3 promo bar shouldn't render). See mmPromoTileHTML() in mega-menu.js.
-    promoTile: { image: '../_shared/promo-merch-1.png', eyebrow: 'New Product Release', label: 'Rhino Rack Roof Top Tent', href: '#' },
+    promoTile: { image: RRG_PROTO + '_shared/promo-merch-1.png', eyebrow: 'New Product Release', label: 'Rhino Rack Roof Top Tent', href: '#' },
     columns: [
       { heading: 'Roof Racks', links: ['Cruz Roof Racks', 'Rhino Rack Roof Racks', 'Thule Roof Racks', 'Yakima Roof Racks', 'Yakima StreamLine', 'Prorack Roof Racks', 'Front Runner Roof Racks', 'Wedgetail Roof Racks', 'TreeFrog Roof Racks', 'Van Racks', 'Canopy Roof Racks', 'Ute Racks', 'DropRacks Roof Racks', 'Turtle Roof Racks'].map(mkLink) },
       { heading: 'Roof Bars', links: ['Thule Roof Bars', 'Prorack Bars', 'Rhino Rack Cross Bars', 'Rhino Rack Stealthbars', 'Yakima Roof Bars', 'Yakima StreamLine Bars', 'Thule Leg Packs', 'Yakima Leg Packs', 'Rhino Rack Leg Packs', 'Cruz Leg Packs', 'Tracklander Legs'].map(mkLink) },
@@ -31,7 +37,7 @@ const HEADER_NAV = [
         // Column-level promoTile, deliberately different copy from the category's above —
         // proves Level 3's tile is independently configurable, not just inherited from
         // Level 2's.
-        promoTile: { image: '../_shared/promo-merch-1.png', eyebrow: 'Now In Stock', label: 'Rhino Rack Low Profile Roof Top Tent', href: '#' },
+        promoTile: { image: RRG_PROTO + '_shared/promo-merch-1.png', eyebrow: 'Now In Stock', label: 'Rhino Rack Low Profile Roof Top Tent', href: '#' },
         links: ['Bike Roof Racks', 'Kayak Roof Racks', 'Snowboard Roof Racks', 'SUP Roof Racks', 'Ski Roof Racks', 'Surfboard Roof Racks', 'Roof Baskets & Bags', 'Roof Top Tents', 'Awnings', 'Fishing Rod Holders', 'Wind Fairings', 'Trade and Work Solutions', 'Other Accessories', 'Tie Downs', 'Cargo Nets', 'Spare Parts', 'Keys and Locks'].map(mkLink),
       },
     ],
@@ -87,7 +93,7 @@ const HEADER_NAV = [
     // Left over from an earlier pre-real-asset pass with image:null (rendering "Image
     // pending" instead of a photo) — fixed 2026-09-13, reusing the one real merch photo
     // available (a roof top tent fits this category thematically better than most others).
-    promoTile: { eyebrow: 'New Product Release', label: 'Rhino Racks Low Profile Roof Top Tent', image: '../_shared/promo-merch-1.png', href: '#' },
+    promoTile: { eyebrow: 'New Product Release', label: 'Rhino Racks Low Profile Roof Top Tent', image: RRG_PROTO + '_shared/promo-merch-1.png', href: '#' },
   },
   {
     label: 'Camping & Offroad',

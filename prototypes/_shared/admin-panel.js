@@ -21,11 +21,11 @@ function buildSiteAdminPanel(currentKey) {
   // reachable directly, just no longer advertised in this panel) to stop it reading as
   // in-scope work alongside the PDP templates.
   const templates = [
-    { key: 'simple', label: 'Simple', href: '../simple/index.html' },
-    { key: 'config-variant', label: 'Config-Variant', href: '../config-variant/index.html' },
-    { key: 'sibling-color', label: 'Sibling-Colour', href: '../sibling-color/index.html' },
-    { key: 'vehicle-specific', label: 'Vehicle-Specific', href: '../vehicle-specific/index.html' },
-    { key: 'grouped-bundle', label: 'Grouped/Bundle', href: '../grouped-bundle/index.html' },
+    { key: 'simple', label: 'Simple', href: RRG_PROTO + 'simple/index.html' },
+    { key: 'config-variant', label: 'Config-Variant', href: RRG_PROTO + 'config-variant/index.html' },
+    { key: 'sibling-color', label: 'Sibling-Colour', href: RRG_PROTO + 'sibling-color/index.html' },
+    { key: 'vehicle-specific', label: 'Vehicle-Specific', href: RRG_PROTO + 'vehicle-specific/index.html' },
+    { key: 'grouped-bundle', label: 'Grouped/Bundle', href: RRG_PROTO + 'grouped-bundle/index.html' },
   ];
 
   const panel = document.createElement('div');
@@ -47,7 +47,7 @@ function buildSiteAdminPanel(currentKey) {
         <div class="site-admin-links">
           <!-- PDP only (2026-09-17, per Brenton) — Header/Footer/VCLP dev briefs pulled out of
                this panel so Mark isn't shown background work alongside his current PDP focus. -->
-          <a href="../../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
+          <a href="${RRG_PROTO}../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
         </div>
       </div>
       <div class="site-admin-section">

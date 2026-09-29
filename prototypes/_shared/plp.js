@@ -494,12 +494,12 @@ function plpSetSearchScope(scopeKey) {
 // state is separate from the product filter state (plpState.scopeTab/scopeFilters/scopeSort),
 // so switching back to Products restores exactly what was selected there.
 const PLP_SCOPE_CATEGORIES = [
-  { key: 'roof-racks', label: 'Roof Racks', phrases: ['roof racks'], icon: '../_shared/icons/roof-racks.png' },
-  { key: 'bike-racks', label: 'Bike Racks', phrases: ['bike racks'], icon: '../_shared/icons/bike-racks.png' },
-  { key: 'roof-boxes', label: 'Roof Boxes', phrases: ['roof boxes'], icon: '../_shared/icons/roof-boxes-cargo.png' },
-  { key: 'awnings-rtt', label: 'Awnings & Roof Top Tents', phrases: ['awnings', 'roof top tents'], icon: '../_shared/icons/roof-top-type.png' },
-  { key: 'camping', label: 'Camping & Offroad', phrases: ['camping', 'recovery gear', 'fridge slides', 'light bars'], icon: '../_shared/icons/fallback.png' },
-  { key: 'water', label: 'Water & Snow Sports', phrases: ['kayak'], icon: '../_shared/icons/fallback.png' }
+  { key: 'roof-racks', label: 'Roof Racks', phrases: ['roof racks'], icon: RRG_PROTO + '_shared/icons/roof-racks.png' },
+  { key: 'bike-racks', label: 'Bike Racks', phrases: ['bike racks'], icon: RRG_PROTO + '_shared/icons/bike-racks.png' },
+  { key: 'roof-boxes', label: 'Roof Boxes', phrases: ['roof boxes'], icon: RRG_PROTO + '_shared/icons/roof-boxes-cargo.png' },
+  { key: 'awnings-rtt', label: 'Awnings & Roof Top Tents', phrases: ['awnings', 'roof top tents'], icon: RRG_PROTO + '_shared/icons/roof-top-type.png' },
+  { key: 'camping', label: 'Camping & Offroad', phrases: ['camping', 'recovery gear', 'fridge slides', 'light bars'], icon: RRG_PROTO + '_shared/icons/fallback.png' },
+  { key: 'water', label: 'Water & Snow Sports', phrases: ['kayak'], icon: RRG_PROTO + '_shared/icons/fallback.png' }
 ];
 
 const PLP_SCOPE_PAGE_GROUPS = [
@@ -724,7 +724,7 @@ function plpRenderSearchScope() {
 function plpScopeMediaHTML(image, alt) {
   return image
     ? `<img class="plp-card-photo" src="${image}" alt="${alt}">`
-    : `<div class="plp-scope-media-fallback"><img src="../_shared/headerlogo.png" alt=""></div>`;
+    : `<div class="plp-scope-media-fallback"><img src="${RRG_PROTO}_shared/headerlogo.png" alt=""></div>`;
 }
 
 function plpScopePageCardHTML(item) {
@@ -752,7 +752,7 @@ function plpScopeBrandCardHTML(brand) {
   return `
     <div class="plp-card plp-scope-card plp-scope-brand-card">
       <a ${rrgSearchLinkAttrs(rrgBrandUrl(brand))} class="plp-card-media-link">
-        <div class="plp-card-media plp-scope-brand-media">${brand.logo ? `<img src="../_shared/${brand.logo}" alt="${brand.name}">` : `<span class="plp-scope-brand-text">${brand.name}</span>`}</div>
+        <div class="plp-card-media plp-scope-brand-media">${brand.logo ? `<img src="${RRG_PROTO}_shared/${brand.logo}" alt="${brand.name}">` : `<span class="plp-scope-brand-text">${brand.name}</span>`}</div>
       </a>
       <div class="plp-card-body">
         <span class="plp-scope-type">Brand</span>
