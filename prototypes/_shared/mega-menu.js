@@ -14,7 +14,8 @@ const MM_MOBILE_UTILITY_LINKS = [
   { label: 'Store Finder', href: '#' },
   { label: 'Fit My Vehicle', href: '#' },
   { label: 'Clearance', href: '#' },
-  { label: 'Services', href: '#' },
+  // "Services" renamed "Fitting" and linked to the Installation page (Brenton, 2026-09-30).
+  { label: 'Fitting', href: RRG_PROTO + 'installation/index.html' },
 ];
 // Level-1 category icons (header-spec.md Section 8, build-order item 4) — Brenton supplied a
 // real set 2026-09-13, but not one per category yet: only 5 of the 7 icon-bearing categories
