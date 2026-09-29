@@ -6,7 +6,11 @@
 
 .site-admin-fab{position:fixed;left:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:var(--rrg-grey-700);color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
 .site-admin-fab svg{width:18px;height:18px;}
-@media (max-width:900px){.site-admin-fab{display:none;}}
+@media (max-width:900px){
+  .site-admin-fab{padding:12px;bottom:84px;left:12px;}
+  .site-admin-fab .fab-label{display:none;}
+  .site-admin-panel{bottom:140px;left:12px;max-height:calc(100vh - 160px);}
+}
 
 .site-admin-panel{position:fixed;left:20px;bottom:78px;z-index:61;width:300px;max-height:70vh;overflow-y:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-modal);display:none;flex-direction:column;}
 .site-admin-panel.open{display:flex;}
@@ -15,7 +19,7 @@
 .site-admin-body{padding:14px 16px 18px;display:flex;flex-direction:column;gap:16px;}
 .site-admin-section h5{margin:0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-400);}
 .site-admin-links{display:flex;flex-direction:column;gap:2px;}
-.site-admin-links a{padding:8px 9px;border-radius:7px;font-size:14px;font-weight:700;color:var(--rrg-black);text-decoration:none;}
+.site-admin-links a{padding:8px 9px;border-radius:var(--radius);font-size:14px;font-weight:700;color:var(--rrg-black);text-decoration:none;}
 .site-admin-links a:hover{background:var(--rrg-bg);color:var(--rrg-red);}
 .site-admin-links a.current{color:var(--rrg-red);background:var(--rrg-red-bg);}
 .site-admin-links a.disabled{color:var(--rrg-grey-400);pointer-events:none;}
@@ -26,3 +30,12 @@
 .site-admin-toggle input:checked{background:var(--rrg-fits);}
 .site-admin-toggle input::before{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform var(--t-fast);}
 .site-admin-toggle input:checked::before{transform:translateX(16px);}
+
+/* 2026-09-29 rebuild (spec.md §15 P2–P11): template groups, vehicle select, phase note, reset. */
+.site-admin-sub{font-weight:400;text-transform:none;opacity:.7;font-family:'Lato',Arial,sans-serif;font-size:13px;}
+.site-admin-group{margin:10px 0 2px;padding-left:9px;font-size:12px;font-weight:700;color:var(--rrg-grey-600);}
+.site-admin-select{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;padding:4px 2px;}
+.site-admin-select select{font:inherit;font-weight:400;padding:4px 6px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;}
+.site-admin-note{margin:6px 2px 0;font-size:12px;line-height:1.4;color:var(--rrg-grey-600);}
+.site-admin-reset{margin-top:6px;width:100%;padding:9px;border:1px solid var(--rrg-line-strong);border-radius:var(--radius);background:#fff;font:inherit;font-size:13px;font-weight:700;color:var(--rrg-red);cursor:pointer;}
+.site-admin-reset:hover{background:var(--rrg-red-bg);}

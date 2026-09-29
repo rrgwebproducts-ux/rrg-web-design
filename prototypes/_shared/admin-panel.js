@@ -1,90 +1,117 @@
-// Site Admin Panel — new, separate from the PDP templates' existing Demo State Panel
-// (buildAdminPanel() in shared.js). Houses the Template Switcher and Dev Brief links moved
-// out of the main nav (header-spec.md Section 5/6), plus a toggle that shows/hides the
-// Demo State Panel's own FAB wherever it exists (inert on this header-only prototype,
-// ready for when both panels coexist on a PDP template post-integration).
+// Site Admin Panel — GLOBAL prototype state only (rebuilt 2026-09-29, spec.md §15 P2–P11):
+// every template and developer brief, the shopper session (logged in / vehicle / nearest store),
+// the build phase, site promotions, and prototype tools. Anything that only applies to the page
+// you're on lives in the Demo State Panel instead (buildAdminPanel() in shared.js).
 //
-// `currentKey` identifies which nav item to mark "current" in the Template Switcher list —
-// pass 'header' from the isolated header prototype, or the template's own key ('simple',
-// 'config-variant', etc.) once integrated.
+// `currentKey` is the page's folder name ('simple', 'plp', …) — marks that template "current".
+// The root template index passes its parent folder name ('prototypes'), mapped to 'index'.
 function buildSiteAdminPanel(currentKey) {
   const DEMO_PANEL_PREF_KEY = 'rrgShowDemoStatePanel';
+  const key = currentKey === 'prototypes' || !currentKey ? 'index' : currentKey;
 
   const fab = document.createElement('button');
   fab.type = 'button';
   fab.className = 'site-admin-fab';
   fab.setAttribute('aria-label', 'Open site admin panel');
-  fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg> Site Admin';
+  fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span class="fab-label">Site Admin</span>';
 
-  // PDP prototypes only (2026-09-17, per Brenton) — Mark's dev focus is the PDP templates
-  // right now, so the standalone header build's own entry was removed here (it's still
-  // reachable directly, just no longer advertised in this panel) to stop it reading as
-  // in-scope work alongside the PDP templates.
-  const templates = [
-    { key: 'simple', label: 'Simple', href: RRG_PROTO + 'simple/index.html' },
-    { key: 'config-variant', label: 'Config-Variant', href: RRG_PROTO + 'config-variant/index.html' },
-    { key: 'sibling-color', label: 'Sibling-Colour', href: RRG_PROTO + 'sibling-color/index.html' },
-    { key: 'vehicle-specific', label: 'Vehicle-Specific', href: RRG_PROTO + 'vehicle-specific/index.html' },
-    { key: 'grouped-bundle', label: 'Grouped/Bundle', href: RRG_PROTO + 'grouped-bundle/index.html' },
+  // Every template, grouped the way the template index groups them (P2 — reverses the
+  // 2026-09-17 PDP-only trim).
+  const templateGroups = [
+    { title: 'Product pages', items: [
+      { key: 'simple', label: 'Simple' },
+      { key: 'config-variant', label: 'Config-Variant' },
+      { key: 'sibling-color', label: 'Sibling-Colour' },
+      { key: 'vehicle-specific', label: 'Vehicle-Specific' },
+      { key: 'grouped-bundle', label: 'Grouped/Bundle' },
+    ] },
+    { title: 'Category &amp; listing', items: [
+      { key: 'vehicle-category-landing', label: 'Vehicle Landing (VCLP)' },
+      { key: 'plp', label: 'PLP — Bike Racks' },
+      { key: 'plp-camping', label: 'PLP — Camping' },
+      { key: 'vplp', label: 'VPLP — Roof Racks' },
+    ] },
+    { title: 'Other', items: [
+      { key: 'search-results', label: 'Search Results' },
+      { key: 'header', label: 'Header (standalone)' },
+      { key: 'index', label: 'All templates', href: RRG_PROTO + 'index.html' },
+    ] },
   ];
+  // Every developer brief (P3).
+  const briefs = [
+    { label: 'Product Pages (PDP)', href: 'docs/pdp/dev-brief-viewer.html' },
+    { label: 'PLP / VPLP', href: 'docs/plp/plp-dev-brief-viewer.html' },
+    { label: 'Search Results', href: 'docs/search-results/search-results-dev-brief-viewer.html' },
+    { label: 'Vehicle Landing (VCLP)', href: 'docs/vehicle-category-landing/vclp-dev-brief-viewer.html' },
+    { label: 'Header', href: 'docs/header/header-dev-brief-viewer.html' },
+    { label: 'Footer', href: 'docs/footer/footer-dev-brief-viewer.html' },
+  ];
+  const templateHref = t => t.href || `${RRG_PROTO}${t.key}/index.html`;
+  const hasDemoPanel = !!document.querySelector('.admin-fab');
 
   const panel = document.createElement('div');
   panel.className = 'site-admin-panel';
   panel.innerHTML = `
     <div class="site-admin-panel-head">
-      <span>Site Admin</span>
+      <span>Site Admin <span class="site-admin-sub">— all pages</span></span>
       <button type="button" class="site-admin-close" aria-label="Close">&times;</button>
     </div>
     <div class="site-admin-body">
       <div class="site-admin-section">
-        <h5>Prototype Templates</h5>
-        <div class="site-admin-links">
-          ${templates.map(t => `<a href="${t.href}" class="${t.key === currentKey ? 'current' : ''}">${t.label}</a>`).join('')}
-        </div>
+        <h5>Templates</h5>
+        ${templateGroups.map(g => `
+          <div class="site-admin-group">${g.title}</div>
+          <div class="site-admin-links">
+            ${g.items.map(t => `<a href="${templateHref(t)}" class="${t.key === key ? 'current' : ''}">${t.label}</a>`).join('')}
+          </div>`).join('')}
       </div>
       <div class="site-admin-section">
         <h5>Developer Briefs</h5>
         <div class="site-admin-links">
-          <!-- PDP only (2026-09-17, per Brenton) — Header/Footer/VCLP dev briefs pulled out of
-               this panel so Mark isn't shown background work alongside his current PDP focus. -->
-          <a href="${RRG_PROTO}../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener">PDP Developer Brief</a>
+          ${briefs.map(b => `<a href="${RRG_PROTO}../${b.href}" target="_blank" rel="noopener">${b.label}</a>`).join('')}
         </div>
       </div>
       <div class="site-admin-section">
-        <h5>Header Promotions</h5>
+        <h5>Shopper Session</h5>
         <label class="site-admin-toggle">
-          <span>Clearance Sale Banner</span>
-          <input type="checkbox" data-admin-flag="saleBannerOn">
-        </label>
-      </div>
-      <div class="site-admin-section">
-        <h5>Session State</h5>
-        <label class="site-admin-toggle">
-          <span>Logged In</span>
+          <span>Logged in</span>
           <input type="checkbox" data-admin-flag="loggedIn">
         </label>
-        <label class="site-admin-toggle">
-          <span>Vehicle Set</span>
-          <input type="checkbox" data-admin-flag="vehicleSet">
+        <label class="site-admin-select">
+          <span>Vehicle</span>
+          <select data-admin-vehicle>
+            <option value="none">None</option>
+            <option value="hilux">Toyota Hilux</option>
+            <option value="ranger">Ford Ranger</option>
+          </select>
         </label>
         <label class="site-admin-toggle">
-          <span>Nearest Store Set</span>
+          <span>Nearest store set</span>
           <input type="checkbox" data-admin-flag="storeSet">
         </label>
       </div>
       <div class="site-admin-section">
         <h5>Build Phase</h5>
         <div class="site-admin-radios">
-          <label><input type="radio" name="rrgBuildPhase" value="1"> Phase 1 (launch)</label>
-          <label><input type="radio" name="rrgBuildPhase" value="2"> Phase 2 (future features)</label>
+          <label><input type="radio" name="rrgBuildPhase" value="1"> Phase 1 — launch build</label>
+          <label><input type="radio" name="rrgBuildPhase" value="2"> Phase 2 — future features</label>
         </div>
+        <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>
       </div>
       <div class="site-admin-section">
-        <h5>Demo State Panel</h5>
+        <h5>Site Promotions</h5>
         <label class="site-admin-toggle">
-          <span>Show Demo State Panel</span>
-          <input type="checkbox" data-admin-flag="showDemoPanel">
+          <span>Clearance sale banner</span>
+          <input type="checkbox" data-admin-flag="saleBannerOn">
         </label>
+      </div>
+      <div class="site-admin-section">
+        <h5>Prototype Tools</h5>
+        ${hasDemoPanel ? `<label class="site-admin-toggle">
+          <span>Show Demo State panel</span>
+          <input type="checkbox" data-admin-flag="showDemoPanel">
+        </label>` : ''}
+        <button type="button" class="site-admin-reset" data-admin-reset>Reset all demo settings</button>
       </div>
     </div>
   `;
@@ -97,25 +124,8 @@ function buildSiteAdminPanel(currentKey) {
   panel.addEventListener('click', (e) => e.stopPropagation());
   document.addEventListener('click', () => panel.classList.remove('open'));
 
-  // Mobile trigger — the FAB is hidden below 900px (same crowded-viewport reasoning as the
-  // Demo State Panel's own FAB in shared.js). The utility bar's "Your Nearest Store" link
-  // doubles as a mobile trigger (data-admin-trigger), but only for whichever panel actually
-  // needs one: on a real PDP template, shared.js's buildAdminPanel() already binds that same
-  // link to open the Demo State Panel, so binding it here too would open both panels on one
-  // tap. This page (the isolated header prototype) has no Demo State Panel to conflict with,
-  // so it's the only place this trigger ends up controlling Site Admin instead.
-  const adminTrigger = document.querySelector('[data-admin-trigger]');
-  if (adminTrigger && !document.querySelector('.admin-fab')) {
-    adminTrigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      panel.classList.add('open');
-    });
-  }
-
-  // Sale banner state itself lives in mega-menu.js (rrgSetSaleBannerOn/localStorage) since
-  // that's what actually renders it, on both the desktop drawer and mobile drill-down — this
-  // panel just reflects and toggles it, same separation as the Demo Panel toggle below.
+  // Sale banner state lives in mega-menu.js (rrgSetSaleBannerOn/localStorage) since that's what
+  // renders it — this panel just reflects and toggles it.
   const SALE_BANNER_KEY = 'rrgSaleBannerOn';
   const saleBannerToggle = panel.querySelector('[data-admin-flag="saleBannerOn"]');
   const storedSale = localStorage.getItem(SALE_BANNER_KEY);
@@ -124,20 +134,17 @@ function buildSiteAdminPanel(currentKey) {
     if (window.rrgSetSaleBannerOn) window.rrgSetSaleBannerOn(saleBannerToggle.checked);
   });
 
-  // Session state (logged in / vehicle set / nearest store set) lives in session-state.js
-  // (rrgSessionGet/rrgSetSession/localStorage) — same separation as the sale banner toggle
-  // above, this panel just reflects and toggles it.
-  ['loggedIn', 'vehicleSet', 'storeSet'].forEach(field => {
+  // Session state lives in session-state.js — this panel reflects and sets it.
+  ['loggedIn', 'storeSet'].forEach(field => {
     const toggle = panel.querySelector(`[data-admin-flag="${field}"]`);
-    if (!toggle) return;
     toggle.checked = rrgSessionGet(field);
-    toggle.addEventListener('change', () => {
-      if (window.rrgSetSession) window.rrgSetSession(field, toggle.checked);
-    });
+    toggle.addEventListener('change', () => { if (window.rrgSetSession) window.rrgSetSession(field, toggle.checked); });
   });
+  const vehicleSelect = panel.querySelector('[data-admin-vehicle]');
+  vehicleSelect.value = rrgVehicleGet();
+  vehicleSelect.addEventListener('change', () => { if (window.rrgSetVehicle) window.rrgSetVehicle(vehicleSelect.value); });
 
-  // Build phase (session-state.js rrgPhaseGet/rrgSetPhase) — Phase 1 = launch build, Phase 2
-  // shows features agreed as later additions (e.g. Best Seller / Staff Pick ribbons, Compare).
+  // Build phase (session-state.js rrgPhaseGet/rrgSetPhase).
   panel.querySelectorAll('input[name="rrgBuildPhase"]').forEach(radio => {
     radio.checked = Number(radio.value) === (typeof rrgPhaseGet === 'function' ? rrgPhaseGet() : 1);
     radio.addEventListener('change', () => {
@@ -145,19 +152,29 @@ function buildSiteAdminPanel(currentKey) {
     });
   });
 
+  // Show/hide the Demo State Panel's button (only offered on pages that have one).
   const demoPanelToggle = panel.querySelector('[data-admin-flag="showDemoPanel"]');
-  const applyDemoPanelVisibility = (show) => {
-    const demoFab = document.querySelector('.admin-fab');
-    if (demoFab) demoFab.hidden = !show;
-    const demoPanel = document.querySelector('.admin-panel');
-    if (demoPanel && !show) demoPanel.classList.remove('open');
-  };
-  const storedPref = localStorage.getItem(DEMO_PANEL_PREF_KEY);
-  const initialShow = storedPref === null ? true : storedPref === 'true';
-  demoPanelToggle.checked = initialShow;
-  applyDemoPanelVisibility(initialShow);
-  demoPanelToggle.addEventListener('change', () => {
-    localStorage.setItem(DEMO_PANEL_PREF_KEY, demoPanelToggle.checked);
+  if (demoPanelToggle) {
+    const applyDemoPanelVisibility = (show) => {
+      const demoFab = document.querySelector('.admin-fab');
+      if (demoFab) demoFab.hidden = !show;
+      const demoPanel = document.querySelector('.admin-panel');
+      if (demoPanel && !show) demoPanel.classList.remove('open');
+    };
+    const storedPref = localStorage.getItem(DEMO_PANEL_PREF_KEY);
+    demoPanelToggle.checked = storedPref === null ? true : storedPref === 'true';
     applyDemoPanelVisibility(demoPanelToggle.checked);
+    demoPanelToggle.addEventListener('change', () => {
+      localStorage.setItem(DEMO_PANEL_PREF_KEY, demoPanelToggle.checked);
+      applyDemoPanelVisibility(demoPanelToggle.checked);
+    });
+  }
+
+  // Reset (P10): clears every saved prototype setting — session, phase, promotions and each
+  // template's Demo State choices — back to the defaults, then reloads.
+  panel.querySelector('[data-admin-reset]').addEventListener('click', () => {
+    if (!window.confirm('Reset every demo setting on every template back to its default?')) return;
+    Object.keys(localStorage).filter(k => /^rrg/.test(k)).forEach(k => localStorage.removeItem(k));
+    window.location.reload();
   });
 }

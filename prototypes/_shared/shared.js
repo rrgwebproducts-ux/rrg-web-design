@@ -150,17 +150,21 @@ function initVehicleIdCopy() {
   });
 }
 
-function initFitmentDemo(defaultKey = 'match') {
-  const buttons = document.querySelectorAll('[data-demo-vehicle]');
-  function set(key) {
-    const vehicle = DEMO_VEHICLES[key];
-    const state = getFitmentStatus(PRODUCT_FITMENT, vehicle);
-    applyFitmentState(state, vehicle);
-    buttons.forEach(b => b.classList.toggle('active', b.dataset.demoVehicle === key));
-  }
-  buttons.forEach(b => b.addEventListener('click', () => set(b.dataset.demoVehicle)));
-  set(defaultKey);
+// The fitment card follows the session vehicle (Site Admin "Vehicle", session-state.js) —
+// was the Demo State Panel's own "Session Vehicle" buttons, which contradicted the header
+// (spec.md §15 P4). Re-applied on every session change.
+function applySessionFitment() {
+  if (typeof PRODUCT_FITMENT === 'undefined' || !document.querySelector('[data-fitment-slot]')) return;
+  const session = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
+  const vehicle = session ? DEMO_VEHICLES[session.demoKey] : null;
+  applyFitmentState(getFitmentStatus(PRODUCT_FITMENT, vehicle), vehicle);
 }
+document.addEventListener('rrg-session-change', () => {
+  applySessionFitment();
+  // applyFitmentState() resets Add to Cart — re-apply an Out of Stock/Discontinued block on top.
+  const stock = adminState.stockStatus && STOCK_STATUS[adminState.stockStatus];
+  if (stock && stock.blocksCta) applyStockStatus(adminState.stockStatus);
+});
 
 // Delivery / Click & Collect widget — tab switching (reusable across templates)
 function initDeliveryCollectTabs(root = document) {
@@ -1048,10 +1052,8 @@ function applyStockStatus(status) {
       btn.classList.add('btn-outline');
     });
   } else {
-    const activeVehicleBtn = document.querySelector('[data-demo-vehicle].active');
-    if (activeVehicleBtn) {
-      const vehicle = DEMO_VEHICLES[activeVehicleBtn.dataset.demoVehicle];
-      applyFitmentState(getFitmentStatus(PRODUCT_FITMENT, vehicle), vehicle);
+    if (document.querySelector('[data-fitment-slot]') && typeof PRODUCT_FITMENT !== 'undefined') {
+      applySessionFitment();
     } else {
       document.querySelectorAll('[data-cta-label]').forEach(btn => {
         btn.disabled = false;
@@ -3076,20 +3078,16 @@ document.addEventListener('keydown', e => {
 });
 
 function buildAdminPanel() {
-  // PLP/VPLP (docs/plp/plp-spec.md) — gated behind a [data-plp-page] marker so the 5 PDP
-  // templates and Vehicle Category Landing Page (none of which carry that marker) render exactly as
-  // before. The Simple/Vehicle-Set hero state itself isn't controlled here — it reuses the
-  // Site Admin Panel's existing, already-wired "Vehicle Set" session toggle (see
-  // plp.js:plpVehicleIsSet()), per the 2026-09-17 build-plan decision not to add a new
-  // vehicle-selection UI this round. This section only covers the two things that ARE new
-  // demo-only previews for these two templates: the default Grid/List view, and the
-  // Compare Products feature gate (spec Section 12 — off by default until the client signs
-  // off on it).
+  // Demo State Panel — PAGE-SPECIFIC previews only (2026-09-29 rebuild, spec.md §15 P1–P11).
+  // Global state (templates, briefs, session vehicle/login/store, build phase, promotions) lives
+  // in the Site Admin Panel (admin-panel.js). Each section below is only built on the page type
+  // it works on — the old panel showed 11 PDP-only controls, inert, on VCLP/PLP/Search.
+  const isPdp = !!document.querySelector('.decision-panel');
   const isPlpPage = !!document.querySelector('[data-plp-page]');
   const isSearchPage = !!(window.PLP_CONFIG && window.PLP_CONFIG.isSearch);
-  const needsVehicleDemo = !!document.querySelector('[data-fitment-slot]');
   const hasVariantPicker = !!document.querySelector('.variant-picker');
-  const hasFitGallery = !!document.getElementById('fitGallerySection');
+  const hasSwatches = !!document.querySelector('.swatch-grid');
+  const hasFitGallery = !!document.getElementById('fitGallerySection') && !isPlpPage;
   const hasVehicleFitNotes = !!document.getElementById('vehicleFitNotes');
   const hasShowroom = !!document.getElementById('showroom');
   const initialVideo = detectInitialVideoState();
@@ -3122,136 +3120,123 @@ function buildAdminPanel() {
     }
   }
 
+  // Nothing page-specific to preview (template index, standalone header) → no panel at all.
+  if (!isPdp && !isPlpPage && !hasFitGallery) return;
+
+  const templateKey = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || 'index';
+  const STORE_KEY = 'rrgDemo:' + templateKey;
+  const hint = (id, text) => `<p class="admin-hint" data-admin-hint="${id}" hidden>${text}</p>`;
+  const toggle = (flag, label, checked) => `<label class="admin-toggle"><span>${label}</span><input type="checkbox" data-admin-flag="${flag}" ${checked ? 'checked' : ''}></label>`;
+  const radios = (name, opts, sel) => `<div class="admin-radio-row">${opts.map(([v, l]) => `<label><input type="radio" name="${name}" value="${v}" ${v === sel ? 'checked' : ''}> ${l}</label>`).join('')}</div>`;
+  const section = (title, body) => `<div class="admin-section"><h5>${title}</h5>${body}</div>`;
+
+  let html = '';
+  if (isPdp) {
+    html += section('Price &amp; media',
+      toggle('video', 'Product has a video', initialVideo) +
+      toggle('sale', 'Product is on sale', initialSale));
+    const stockOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['out_of_stock', 'Out of Stock'], ['special_order', 'Special Order'], ['discontinued', 'Discontinued']];
+    if (hasSwatches) stockOpts.unshift(['per_colour', 'As per colour (real data)']);
+    html += section('Stock',
+      '<div class="admin-toggle-label">Stock level</div>' + radios('stockStatus', stockOpts, hasSwatches ? 'per_colour' : 'in_stock') +
+      '<div class="admin-toggle-label">Stock at your store</div>' + radios('storeStock', [['here', 'At your store'], ['nearby', 'At a nearby store only'], ['warehouse', 'Online warehouse only']], 'here') +
+      hint('storeStock', 'Needs Build Phase 2 and a nearest store — both in Site Admin.') +
+      toggle('exdemo', 'B-Stock / Ex-Demo available', false));
+    html += section('Delivery',
+      toggle('shipping', 'Delivery available', initialShipping) +
+      toggle('collect', 'Click &amp; Collect available', initialCollect) +
+      hint('delivery', 'Off while the product is Out of Stock or Discontinued.'));
+    if (hasShowroom) html += section('In-store', toggle('showroom', 'On display in-store (Showroom Finder)', true));
+    html += section('Cart', '<div class="admin-toggle-label">Cart already contains</div>' +
+      radios('cartConflict', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
+  }
+  if (hasFitGallery) {
+    const count = document.getElementById('fitGallerySection').dataset.count || 0;
+    html += section('Fitment Gallery',
+      toggle('fitGallery', 'Has customer fitment photos', initialFitGallery) +
+      `<label class="admin-toggle"><span>Number of fitments</span><input type="number" min="0" data-admin-input="fitGalleryCount" value="${count}" class="admin-number"></label>` +
+      (hasVehicleFitNotes ? toggle('vehicleFitNotes', 'Important vehicle fit notes', false) : ''));
+  }
+  if (hasVariantPicker) {
+    html += section('Get It Fitted <span class="admin-note">(proposal — pending store-ops sign-off)</span>',
+      radios('fittedMode', [['off', 'Off'], ['card', 'As a third variant card'], ['checkbox', 'As a checkbox above Add to Cart']], 'off'));
+  }
+  if (isPlpPage && !isSearchPage) {
+    html += section('Hero image',
+      radios('plpHeroImage', [['vehicle', 'Vehicle photo'], ['category', 'Category image'], ['none', 'No image']], 'vehicle') +
+      hint('heroImage', 'Needs a vehicle — set one in Site Admin.'));
+  }
+  if (isPlpPage) {
+    html += section('Phase 2 previews',
+      toggle('plpCompare', 'Compare Products', false) +
+      toggle('plpRibbons', 'Product ribbons (Bestseller, Staff Pick)', false) +
+      hint('phase2', 'Switch Site Admin to Build Phase 2 to see these.'));
+  }
+  if (isSearchPage) {
+    html += section('Search shortcuts <span class="admin-note">(or search from the header)</span>', `<div class="admin-radio-row admin-links">
+      <a href="${headerSearchResultsUrl('roof rack')}">"roof rack" — two categories, vehicle-aware</a>
+      <a href="${headerSearchResultsUrl('ranger')}">"ranger" — another vehicle's products</a>
+      <a href="${headerSearchResultsUrl('bike racks')}">"bike racks" — nothing vehicle-specific</a>
+      <a href="${headerSearchResultsUrl('warranty')}">"warranty" — pages, no products</a>
+      <a href="${headerSearchResultsUrl('snorkel')}">"snorkel" — no results</a></div>`);
+  }
+
   const fab = document.createElement('button');
   fab.type = 'button';
   fab.className = 'admin-fab';
   fab.setAttribute('aria-label', 'Open demo state panel');
-  fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Demo State';
+  fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="fab-label">Demo State</span>';
 
   const panel = document.createElement('div');
   panel.className = 'admin-panel';
   panel.innerHTML = `
     <div class="admin-panel-head">
-      <span>Demo State Panel</span>
+      <span>Demo State <span class="admin-panel-sub">— this page</span></span>
       <button type="button" class="admin-close" aria-label="Close">&times;</button>
     </div>
-    <div class="admin-panel-body">
-      ${needsVehicleDemo ? `
-      <div class="admin-section">
-        <h5>Session Vehicle</h5>
-        <div class="admin-vehicle-row">
-          <button type="button" data-demo-vehicle="none">No vehicle set</button>
-          <button type="button" data-demo-vehicle="match">Hilux N80 (matches)</button>
-          <button type="button" data-demo-vehicle="mismatch">Ford Ranger (doesn't match)</button>
-        </div>
-      </div>` : ''}
-      <div class="admin-section">
-        <h5>Product State</h5>
-        <label class="admin-toggle"><span>Product has video</span><input type="checkbox" data-admin-flag="video" ${initialVideo ? 'checked' : ''}></label>
-        <label class="admin-toggle"><span>Product is on sale</span><input type="checkbox" data-admin-flag="sale" ${initialSale ? 'checked' : ''}></label>
-        <div class="admin-toggle-label"><span>Stock status</span></div>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="stockStatus" value="in_stock" checked> In Stock</label>
-          <label><input type="radio" name="stockStatus" value="low_stock"> Low Stock</label>
-          <label><input type="radio" name="stockStatus" value="out_of_stock"> Out of Stock</label>
-          <label><input type="radio" name="stockStatus" value="special_order"> Special Order</label>
-          <label><input type="radio" name="stockStatus" value="discontinued"> Discontinued</label>
-        </div>
-        <div class="admin-toggle-label"><span>Store stock <span class="admin-note">(Phase 2 + store set only — Site Admin)</span></span></div>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="storeStock" value="here" checked> At your store</label>
-          <label><input type="radio" name="storeStock" value="nearby"> Nearby store only</label>
-          <label><input type="radio" name="storeStock" value="warehouse"> Online warehouse only</label>
-        </div>
-        <div class="admin-toggle-label"><span>Cart contents <span class="admin-note">(compatibility check)</span></span></div>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="cartConflict" value="none" checked> Empty</label>
-          <label><input type="radio" name="cartConflict" value="compatible"> Compatible item in cart</label>
-          <label><input type="radio" name="cartConflict" value="incompatible"> Incompatible item in cart</label>
-        </div>
-        <label class="admin-toggle"><span>Shipping available</span><input type="checkbox" data-admin-flag="shipping" ${initialShipping ? 'checked' : ''}></label>
-        <label class="admin-toggle"><span>Click &amp; Collect available</span><input type="checkbox" data-admin-flag="collect" ${initialCollect ? 'checked' : ''}></label>
-        <label class="admin-toggle"><span>B-Stock / Ex-Demo available</span><input type="checkbox" data-admin-flag="exdemo"></label>
-        ${hasShowroom ? `<label class="admin-toggle"><span>On display in-store (Showroom Finder)</span><input type="checkbox" data-admin-flag="showroom" checked></label>` : ''}
-        ${hasFitGallery ? `<label class="admin-toggle"><span>Fitment Gallery exists for this product</span><input type="checkbox" data-admin-flag="fitGallery" ${initialFitGallery ? 'checked' : ''}></label>
-        <label class="admin-toggle"><span>Fitment count <span class="admin-note">(preview CTA thresholds)</span></span><input type="number" min="0" data-admin-input="fitGalleryCount" value="${document.getElementById('fitGallerySection') ? (document.getElementById('fitGallerySection').dataset.count || 0) : 0}" style="width:64px"></label>` : ''}
-        ${hasVehicleFitNotes ? `<label class="admin-toggle"><span>Product Notes</span><input type="checkbox" data-admin-flag="vehicleFitNotes"></label>` : ''}
-      </div>
-      ${hasVariantPicker ? `
-      <div class="admin-section">
-        <h5>Paid "Fitted" Option <span class="admin-note">(demo preview only)</span></h5>
-        <label class="admin-toggle"><span>Show paid Fitted option</span><input type="checkbox" data-admin-flag="fittedOption"></label>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="fittedMode" value="card" checked> Mode 1 — third variant card</label>
-          <label><input type="radio" name="fittedMode" value="checkbox"> Mode 2 — upsell checkbox</label>
-        </div>
-      </div>` : ''}
-      ${isPlpPage ? `
-      <div class="admin-section">
-        <h5>PLP Preview</h5>
-        <div class="admin-toggle-label"><span>Default view</span></div>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="plpView" value="grid" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? '' : 'checked'}> Grid</label>
-          <label><input type="radio" name="plpView" value="list" ${(window.PLP_CONFIG && window.PLP_CONFIG.defaultView) === 'list' ? 'checked' : ''}> List</label>
-        </div>
-        <div class="admin-toggle-label"><span>Grid columns <span class="admin-note">(desktop)</span></span></div>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="plpGridCols" value="3" checked> 3 per row</label>
-          <label><input type="radio" name="plpGridCols" value="4"> 4 per row</label>
-        </div>
-        ${isSearchPage ? '' : `<div class="admin-toggle-label"><span>Hero image <span class="admin-note">(vehicle → category → none priority, 2026-09-18)</span></span></div>
-        <div class="admin-radio-row">
-          <label><input type="radio" name="plpHeroImage" value="vehicle" checked> Vehicle photo</label>
-          <label><input type="radio" name="plpHeroImage" value="category"> Category image</label>
-          <label><input type="radio" name="plpHeroImage" value="none"> None</label>
-        </div>`}
-        <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
-        <label class="admin-toggle"><span>Product ribbons <span class="admin-note">(Bestseller / Staff Pick / custom — Phase 2 only, off by default)</span></span><input type="checkbox" data-admin-flag="plpRibbons"></label>
-      </div>` : ''}
-      ${isSearchPage ? `
-      <div class="admin-section">
-        <h5>Search Preview <span class="admin-note">(shortcuts — or just search from the header)</span></h5>
-        <div class="admin-radio-row">
-          <label><a href="${headerSearchResultsUrl('roof rack')}">"roof rack" — 2 categories, vehicle-aware</a></label>
-          <label><a href="${headerSearchResultsUrl('ranger')}">"ranger" — other-vehicle products</a></label>
-          <label><a href="${headerSearchResultsUrl('bike racks')}">"bike racks" — no vehicle-specific products</a></label>
-          <label><a href="${headerSearchResultsUrl('warranty')}">"warranty" — no products, but pages</a></label>
-          <label><a href="${headerSearchResultsUrl('snorkel')}">"snorkel" — zero results</a></label>
-        </div>
-        <p class="admin-note" style="margin:6px 0 0;">Vehicle-aware results follow the Site Admin Panel's Vehicle Set toggle.</p>
-      </div>` : ''}
-      <div class="admin-section">
-        <h5>Widget Previews</h5>
-        <label class="admin-toggle"><span>New Delivery/Click &amp; Collect design <span class="admin-note">(preview, AU only)</span></span><input type="checkbox" data-admin-flag="dcWidgetV2"></label>
-      </div>
-    </div>
+    <div class="admin-panel-body">${html}</div>
   `;
-
   document.body.appendChild(panel);
   document.body.appendChild(fab);
 
-  // Click-outside-to-close (2026-09-11, Brenton's ask — the panel is sizable on mobile,
-  // so relying on the small X button alone was awkward) — same stopPropagation-on-the-
-  // panel-itself pattern already used for the nav drawer and template switcher, so clicks
-  // on toggles/buttons inside the panel never bubble out and trigger a close.
+  // Click-outside-to-close (2026-09-11) — clicks inside the panel never bubble out.
   fab.addEventListener('click', (e) => { e.stopPropagation(); panel.classList.add('open'); });
   panel.querySelector('.admin-close').addEventListener('click', () => panel.classList.remove('open'));
   panel.addEventListener('click', (e) => e.stopPropagation());
   document.addEventListener('click', () => panel.classList.remove('open'));
 
-  // The FAB is hidden on mobile (see .admin-fab in shared.css) since it was crowding an
-  // already tight viewport — the "North Lakes" nearest-store link in the utility bar
-  // doubles as the mobile trigger instead (data-admin-trigger, added to that anchor in
-  // every template's header). Still wired up on desktop too since there's no harm in it
-  // working there as well, just redundant with the visible FAB.
-  const adminTrigger = document.querySelector('[data-admin-trigger]');
-  if (adminTrigger) {
-    adminTrigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      panel.classList.add('open');
+  // Dependencies (P6): a control that can't apply right now is disabled with a short hint,
+  // instead of silently doing nothing. Re-checked on every change and every session change.
+  const setDisabled = (selector, disabled, hintId) => {
+    panel.querySelectorAll(selector).forEach(i => { i.disabled = disabled; const l = i.closest('label'); if (l) l.classList.toggle('is-disabled', disabled); });
+    const h = panel.querySelector(`[data-admin-hint="${hintId}"]`);
+    if (h) h.hidden = !disabled;
+  };
+  const syncDependencies = () => {
+    const phase2 = typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2;
+    setDisabled('input[name="storeStock"]', !(phase2 && rrgSessionGet('storeSet')), 'storeStock');
+    setDisabled('[data-admin-flag="plpCompare"], [data-admin-flag="plpRibbons"]', !phase2, 'phase2');
+    setDisabled('input[name="plpHeroImage"]', !rrgSessionGet('vehicleSet'), 'heroImage');
+    const stock = STOCK_STATUS[adminState.stockStatus];
+    const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);
+    panel.querySelectorAll('[data-admin-flag="shipping"], [data-admin-flag="collect"]').forEach(i => {
+      if (blocked && !i.disabled) { i.dataset.prev = i.checked; i.checked = false; }
+      if (!blocked && i.disabled) i.checked = i.dataset.prev !== 'false';
     });
-  }
+    setDisabled('[data-admin-flag="shipping"], [data-admin-flag="collect"]', blocked, 'delivery');
+  };
+
+  // Persistence (P10): this page's choices are saved per template and restored on reload, the
+  // same way Site Admin's global state already persists. Site Admin → Reset clears them.
+  const save = () => {
+    const state = {};
+    panel.querySelectorAll('input').forEach(i => {
+      if (i.type === 'radio') { if (i.checked) state['r:' + i.name] = i.value; }
+      else if (i.type === 'checkbox') state['c:' + i.dataset.adminFlag] = i.disabled && i.dataset.prev !== undefined ? i.dataset.prev === 'true' : i.checked;
+      else state['n:' + i.dataset.adminInput] = i.value;
+    });
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  };
 
   panel.querySelectorAll('[data-admin-flag]').forEach(input => {
     input.addEventListener('change', () => {
@@ -3268,46 +3253,39 @@ function buildAdminPanel() {
           break;
         case 'exdemo': applyExdemoFlag(on); break;
         case 'showroom': applyShowroomFlag(on); break;
-        case 'fittedOption': setFittedOptionFlag(on); break;
         case 'fitGallery': applyFitGalleryFlag(on); break;
         case 'vehicleFitNotes': applyVehicleFitNotesFlag(on); break;
-        case 'dcWidgetV2': applyDcWidgetV2Flag(on); break;
         case 'plpCompare': if (typeof applyPlpCompareFlag === 'function') applyPlpCompareFlag(on); break;
         case 'plpRibbons': if (typeof applyPlpRibbonsFlag === 'function') applyPlpRibbonsFlag(on); break;
       }
     });
   });
-
-  panel.querySelectorAll('input[name="plpView"]').forEach(input => {
-    input.addEventListener('change', () => { if (input.checked && typeof applyPlpViewFlag === 'function') applyPlpViewFlag(input.value); });
-  });
-
-  panel.querySelectorAll('input[name="plpGridCols"]').forEach(input => {
-    input.addEventListener('change', () => { if (input.checked && typeof applyPlpGridColsFlag === 'function') applyPlpGridColsFlag(input.value); });
-  });
-
   panel.querySelectorAll('input[name="plpHeroImage"]').forEach(input => {
     input.addEventListener('change', () => { if (input.checked && typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(input.value); });
   });
-
   panel.querySelectorAll('[data-admin-input]').forEach(input => {
     input.addEventListener('input', () => {
       if (input.dataset.adminInput === 'fitGalleryCount') {
-        const section = document.getElementById('fitGallerySection');
-        if (section) section.dataset.count = input.value;
+        const sectionEl = document.getElementById('fitGallerySection');
+        if (sectionEl) sectionEl.dataset.count = input.value;
         applyFitGalleryFlag(adminState.fitGallery);
       }
     });
   });
-
   panel.querySelectorAll('input[name="stockStatus"]').forEach(input => {
     input.addEventListener('change', () => {
       if (!input.checked) return;
+      if (input.value === 'per_colour') {
+        // Sibling-Colour (P8): hand the stock line back to each colour's own real stock data.
+        adminState.stockOverride = false;
+        if (typeof renderAll === 'function') renderAll();
+        rrgRefreshStockSurfaces();
+        return;
+      }
       adminState.stockOverride = true;
       applyStockStatus(input.value);
     });
   });
-
   panel.querySelectorAll('input[name="storeStock"]').forEach(input => {
     input.addEventListener('change', () => {
       if (!input.checked) return;
@@ -3315,35 +3293,55 @@ function buildAdminPanel() {
       rrgRefreshStockSurfaces();
     });
   });
-
   panel.querySelectorAll('input[name="cartConflict"]').forEach(input => {
+    input.addEventListener('change', () => { if (input.checked) applyCartConflict(input.value); });
+  });
+  panel.querySelectorAll('input[name="fittedMode"]').forEach(input => {
     input.addEventListener('change', () => {
       if (!input.checked) return;
-      applyCartConflict(input.value);
+      if (input.value === 'off') { setFittedOptionFlag(false); return; }
+      setFittedOptionMode(input.value);
+      setFittedOptionFlag(true);
     });
   });
+  // Dependencies + save after every control change (the listeners above run first).
+  panel.addEventListener('change', () => { syncDependencies(); save(); });
+  panel.addEventListener('input', save);
+  document.addEventListener('rrg-session-change', syncDependencies);
 
-  panel.querySelectorAll('input[name="fittedMode"]').forEach(input => {
-    input.addEventListener('change', () => { if (input.checked) setFittedOptionMode(input.value); });
-  });
+  if (isPdp) {
+    reapplySaleFlag();
+    reapplyFittedOption();
+  }
+  applySessionFitment();
 
-  if (needsVehicleDemo) initFitmentDemo('match');
-  reapplySaleFlag();
-  reapplyFittedOption();
+  // Restore this page's saved choices — replayed through the same change events a click fires.
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) {}
+  if (saved) {
+    panel.querySelectorAll('input').forEach(i => {
+      if (i.type === 'radio') {
+        const v = saved['r:' + i.name];
+        if (v === i.value && !i.checked) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); }
+      } else if (i.type === 'checkbox') {
+        const v = saved['c:' + i.dataset.adminFlag];
+        if (typeof v === 'boolean' && v !== i.checked) { i.checked = v; i.dispatchEvent(new Event('change', { bubbles: true })); }
+      } else {
+        const v = saved['n:' + i.dataset.adminInput];
+        if (v !== undefined && v !== i.value) { i.value = v; i.dispatchEvent(new Event('input', { bubbles: true })); }
+      }
+    });
+  }
+  syncDependencies();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   rrgWrapStaticStorePills();
   buildAdminPanel();
-  // Header integration (2026-09-13) — mega menu ("Products"), the Site Admin Panel (Template
-  // Switcher + Dev Brief links, moved out of the old .rrg-nav dropdown), and session-state
-  // (logged in / vehicle set / nearest store set), all built in isolation in
-  // prototypes/header/ first per header-spec.md, now live on every PDP template. Run after
-  // buildAdminPanel() above so its .admin-fab already exists by the time buildSiteAdminPanel()
-  // decides whether it also needs to bind the shared mobile data-admin-trigger link (see
-  // admin-panel.js). currentTemplateKey mirrors the old initTemplateSwitcher()'s folder-name
-  // lookup so Site Admin Panel can mark the current template — 2 path segments up from the
-  // page itself (prototypes/<key>/).
+  // Mega menu, Site Admin Panel (global state) and session state on every page. Site Admin is
+  // built after the Demo State Panel so it knows whether this page has one (it only offers the
+  // "Show Demo State panel" toggle where it does). currentTemplateKey is the page's folder name
+  // (prototypes/<key>/), used to mark the current template in Site Admin.
   const currentTemplateKey = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0];
   initMegaMenu();
   buildSiteAdminPanel(currentTemplateKey);

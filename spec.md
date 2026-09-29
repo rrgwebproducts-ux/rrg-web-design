@@ -1002,6 +1002,33 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
   - All PDPs, PLP and Camping get a description, canonical and OG/Twitter meta, built from each page's own real product URL, image and description, and from verified live category URLs (`/bike-racks`, `/camping-offroad/camping`).
   - VPLP has no canonical yet (no live vehicle-category URL exists).
   - The header prototype and index are `noindex`.
+- Committed 5997dbf.
+
+**Step 5 (panels) built on 2026-09-29, awaiting Brenton's review, not committed.**
+- **Site Admin** (global, every page):
+  - Templates: all 12, grouped (product pages / category & listing / other), current page highlighted.
+  - All 6 dev briefs.
+  - Shopper Session: Logged in, Vehicle (None / Toyota Hilux / Ford Ranger), Nearest store set.
+  - Build Phase, with a one-line explainer.
+  - Site Promotions.
+  - Prototype Tools: Show Demo State panel (only where one exists), plus a new "Reset all demo settings".
+- **P4, one vehicle** (`rrgVehicle()` in session-state.js). It drives:
+  - the header text
+  - the VS fitment card (the Demo "Session Vehicle" buttons are gone)
+  - PLP/Camping hero heading, photo and make badge
+  - card fitment and search
+- **Demo State** (only what works on the page you're on):
+  - PDPs: Price & media · Stock (Sibling adds "As per colour", the default) · Delivery · In-store · Cart.
+  - VS: adds Fitment Gallery (with fit notes).
+  - Config and VS: add Get It Fitted (Off / variant card / checkbox).
+  - VCLP: Fitment Gallery only.
+  - PLP, Camping, VPLP: Hero image · Phase 2 previews.
+  - Search: Phase 2 previews · Search shortcuts.
+  - Index and header: no panel.
+- **P7:** removed Default view, Grid columns and the New Delivery/C&C design toggle. v1 stays; the v2 code is deleted in step 6.
+- **P6 (dependencies):** store stock, Phase 2 previews and hero image are disabled with a hint when they can't apply. Out of Stock / Discontinued untick and disable Delivery and C&C, and they're restored afterwards.
+- **P10:** Demo choices persist per template (`rrgDemo:<template>`).
+- **P5 (mobile):** both panels open from small icon-only buttons above the sticky Add to Cart bar. The "Nearest Store" link is no longer hijacked.
 
 **Scope:** every page in `prototypes/`: root index, header, 5 PDPs, VCLP, PLP, PLP Camping, VPLP and Search.
 - **Measured:** computed styles in a real browser, at 1440px and 390px, on all 12 pages.

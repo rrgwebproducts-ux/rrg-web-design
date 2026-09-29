@@ -13,29 +13,67 @@
 // which field changed — it just re-applies its own store display each time).
 const RRG_SESSION_FIELDS = {
   loggedIn: { key: 'rrgSessionLoggedIn', default: true, on: 'Graham', off: 'Log In' },
-  vehicleSet: { key: 'rrgSessionVehicleSet', default: true, on: 'Your Vehicle: Toyota Hilux', off: 'Select Your Vehicle' },
+  vehicleSet: { off: 'Select Your Vehicle' },
   storeSet: { key: 'rrgSessionStoreSet', default: true },
 };
 
+// Session vehicle — one control for the whole prototype (2026-09-29, spec.md §15 P4): Site Admin's
+// "Vehicle" None / Toyota Hilux / Ford Ranger. Replaces the old Site Admin "Vehicle Set" on/off
+// switch AND the Demo State Panel's separate Vehicle-Specific "Session Vehicle" buttons, which
+// contradicted each other (header "Select Your Vehicle" while the fitment card said it fits your
+// Hilux). Everything reads this: header text, the VS fitment card (demoKey → DEMO_VEHICLES in
+// shared.js), PLP-family card fitment + hero (plpKey → PLP_VEHICLES in plp.js), search results.
+const RRG_VEHICLES = {
+  hilux: { label: 'Toyota Hilux', demoKey: 'match', plpKey: 'toyota-hilux-n80', image: 'vehicle-toyota-hilux.webp', badge: 'brand-toyota-badge.png' },
+  ranger: { label: 'Ford Ranger', demoKey: 'mismatch', plpKey: 'ford-ranger-p703', image: 'vehicle-ford-ranger.png', badge: null }
+};
+const RRG_VEHICLE_KEY = 'rrgSessionVehicle';
+
+// 'none' | 'hilux' | 'ranger'. Default Toyota Hilux; carries over the old on/off key once.
+function rrgVehicleGet() {
+  const v = localStorage.getItem(RRG_VEHICLE_KEY);
+  if (v === 'none' || RRG_VEHICLES[v]) return v;
+  return localStorage.getItem('rrgSessionVehicleSet') === 'false' ? 'none' : 'hilux';
+}
+// The session vehicle's record, or null when none is set.
+function rrgVehicle() {
+  return RRG_VEHICLES[rrgVehicleGet()] || null;
+}
+
 function rrgSessionGet(field) {
+  if (field === 'vehicleSet') return rrgVehicleGet() !== 'none';
   const cfg = RRG_SESSION_FIELDS[field];
   const v = localStorage.getItem(cfg.key);
   return v === null ? cfg.default : v === 'true';
 }
 
 function rrgApplySessionState() {
-  ['loggedIn', 'vehicleSet'].forEach(field => {
-    const cfg = RRG_SESSION_FIELDS[field];
-    const on = rrgSessionGet(field);
-    document.querySelectorAll(`[data-session="${field}"]`).forEach(el => {
-      el.textContent = on ? cfg.on : cfg.off;
-    });
+  const loggedIn = rrgSessionGet('loggedIn');
+  document.querySelectorAll('[data-session="loggedIn"]').forEach(el => {
+    el.textContent = loggedIn ? RRG_SESSION_FIELDS.loggedIn.on : RRG_SESSION_FIELDS.loggedIn.off;
+  });
+  const vehicle = rrgVehicle();
+  document.querySelectorAll('[data-session="vehicleSet"]').forEach(el => {
+    el.textContent = vehicle ? `Your Vehicle: ${vehicle.label}` : RRG_SESSION_FIELDS.vehicleSet.off;
   });
   document.dispatchEvent(new CustomEvent('rrg-session-change'));
 }
 
+window.rrgSetVehicle = (key) => {
+  localStorage.setItem(RRG_VEHICLE_KEY, RRG_VEHICLES[key] ? key : 'none');
+  document.querySelectorAll('select[data-admin-vehicle]').forEach(sel => { sel.value = rrgVehicleGet(); });
+  rrgApplySessionState();
+};
+
+// vehicleSet on/off still works for callers that only know "set a vehicle" (the Fit Finder drawer
+// and VCLP's Fit Finder — both demo-select the Toyota Hilux) — keeps the current vehicle if one is set.
 window.rrgSetSession = (field, on) => {
+  if (field === 'vehicleSet') {
+    window.rrgSetVehicle(on ? (rrgVehicleGet() !== 'none' ? rrgVehicleGet() : 'hilux') : 'none');
+    return;
+  }
   localStorage.setItem(RRG_SESSION_FIELDS[field].key, on);
+  document.querySelectorAll(`[data-admin-flag="${field}"]`).forEach(t => { t.checked = !!on; });
   rrgApplySessionState();
 };
 

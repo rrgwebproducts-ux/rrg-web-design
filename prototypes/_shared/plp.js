@@ -203,7 +203,8 @@ function plpRenderCategoryContent() {
   const active = l3 || l2 || cfg.categoryRoot;
   const heading = active.heading || active.label || cfg.categoryRoot.heading;
   const description = active.description || cfg.categoryRoot.description;
-  const suffix = cfg.vehicleHeadingSuffix ? ` ${cfg.vehicleHeadingSuffix}` : '';
+  const sessionVehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
+  const suffix = cfg.vehicleHeadingSuffix ? ` ${cfg.vehicleHeadingSuffix.replace('{vehicle}', sessionVehicle ? sessionVehicle.label : 'vehicle')}` : '';
   const setH1 = document.querySelector('#plpHeroVehicleSet h1');
   const simpleH1 = document.querySelector('#plpHeroSimple h1');
   if (setH1) setH1.textContent = heading + suffix;
@@ -375,11 +376,14 @@ const PLP_VEHICLES = {
   'toyota-hilux-n80': { name: 'Toyota Hilux', short: 'Toyota Hilux N80', long: 'Toyota Hilux N80 4dr Ute (2015 to 2026)', spec: '4dr Ute, Bare Roof, 2015 to 2026' },
   'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Bare Roof, 2022 onwards' }
 };
+// The session vehicle comes from Site Admin's "Vehicle" (rrgVehicle(), session-state.js — spec.md
+// §15 P4); this is only the fallback for copy that needs a vehicle name before one is set.
 const PLP_SESSION_VEHICLE_KEY = 'toyota-hilux-n80';
 
 // The session vehicle's fitment key, or null when no vehicle is set.
 function plpSessionVehicleKey() {
-  return plpVehicleIsSet() ? PLP_SESSION_VEHICLE_KEY : null;
+  const v = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
+  return v ? v.plpKey : null;
 }
 
 function plpProductFit(product) {
@@ -788,7 +792,7 @@ function plpRenderSearchVehicleStrip() {
   // rather than claiming matches are "shown first" when there are none.
   const anyFit = vehicleKey && products.some(p => plpProductFit(p) === vehicleKey);
   const state = !vehicleKey ? 'unknown' : (anyFit ? 'fits' : 'no_fit');
-  const vehicle = PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].short;
+  const vehicle = PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].short;
   const copy = {
     fits: { label: 'Fits your vehicle first', detail: `Products that fit your ${vehicle} are shown first.`, action: 'Change vehicle' },
     no_fit: { label: 'Nothing here fits your vehicle', detail: `None of these vehicle-specific products fit your ${vehicle}.`, action: 'Change vehicle' },
@@ -824,8 +828,8 @@ const PLP_FIT_COPY = {
     tip: fit => `Confirmed for your ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}).`
   },
   no_fit: {
-    label: () => `Doesn't fit your ${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].name}`,
-    tip: fit => `This product is built for the ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}) — not your ${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].short} (${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].spec}). <a href="#" data-open-fit-finder>Change your vehicle</a>`
+    label: () => `Doesn't fit your ${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].name}`,
+    tip: fit => `This product is built for the ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}) — not your ${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].short} (${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].spec}). <a href="#" data-open-fit-finder>Change your vehicle</a>`
   },
   unknown: {
     label: fit => `Suits ${PLP_VEHICLES[fit].name} only`,
@@ -2077,8 +2081,15 @@ function applyPlpHeroImageFlag(mode) {
     if (img) img.src = catImg;
     if (badge) badge.hidden = true;
   } else {
-    if (img) img.src = cfg.vehicleImage;
-    if (badge) badge.hidden = false;
+    // PLP/Camping ({vehicle} in the heading) show the session vehicle's own photo + make badge;
+    // the VPLP is one vehicle's listing, so it keeps its own photo.
+    const v = /\{vehicle\}/.test(cfg.vehicleHeadingSuffix || '') && typeof rrgVehicle === 'function' ? rrgVehicle() : null;
+    if (img) { img.src = v ? RRG_PROTO + '_shared/' + v.image : cfg.vehicleImage; img.alt = v ? v.label : img.alt; }
+    if (badge) {
+      badge.hidden = v ? !v.badge : false;
+      const badgeImg = badge.querySelector('img');
+      if (badgeImg && v && v.badge) badgeImg.src = RRG_PROTO + '_shared/' + v.badge;
+    }
   }
 }
 
@@ -2109,6 +2120,7 @@ document.addEventListener('DOMContentLoaded', () => {
   plpRenderCategoryContent();
   window.addEventListener('resize', () => plpRenderResults());
   document.addEventListener('rrg-session-change', plpRenderHero);
+  document.addEventListener('rrg-session-change', () => { plpRenderCategoryContent(); if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(plpState.heroImageMode || 'vehicle'); });
   document.addEventListener('rrg-session-change', plpApplyCategoryImage);
   document.addEventListener('rrg-session-change', plpRenderResults);
   // Vehicle-scoped page buttons/Pages results come and go with the session vehicle.
