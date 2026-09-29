@@ -29,6 +29,7 @@ function buildSiteAdminPanel(currentKey) {
   const templateGroups = [
     { title: 'Home', items: [
       { key: 'home', label: 'Home Page' },
+      { key: 'store', label: 'Store Page — North Lakes' },
     ] },
     { title: 'Product pages', items: [
       { key: 'simple', label: 'Simple' },

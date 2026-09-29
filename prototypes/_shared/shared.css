@@ -1974,3 +1974,60 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .home-help-contact a{font-weight:700;color:var(--rrg-text);}
 .home-help-contact svg{width:16px;height:16px;color:var(--rrg-red);vertical-align:-3px;margin-right:6px;}
 @media (max-width:900px){ .home-help-grid{grid-template-columns:1fr;} }
+
+/* ===== Store page (docs/store/store-spec.md, 2026-09-29) =====
+   Same shape as the PDP hero — the store's photos in the PDP gallery on the left, a
+   .decision-panel of store details on the right. Only layout lives here. */
+
+/* Store name wherever a store row names it (Click & Collect, Showroom, Store slide-out) —
+   links to that store's page (rrgLinkStoreNames(), shared.js). */
+.store-page-link{color:inherit;text-decoration:none;}
+.store-page-link:hover{color:var(--rrg-red);text-decoration:underline;}
+
+.store-panel h1{margin-bottom:2px;}
+.store-panel-area{margin:0 0 14px;font-size:15px;color:var(--rrg-grey-600);}
+/* Open status — worked out in the store's own time zone (storeOpenStatus()). */
+.store-open{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;font-size:14px;font-weight:700;margin-bottom:18px;background:var(--rrg-line-soft);color:var(--rrg-grey-700);}
+.store-open::before{content:'';width:8px;height:8px;border-radius:50%;background:currentColor;}
+.store-open.is-open{background:var(--rrg-fits-bg);color:var(--rrg-fits);}
+.store-open span{font-weight:400;color:var(--rrg-grey-700);}
+.store-contact{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px;}
+.store-contact li{display:flex;gap:10px;align-items:flex-start;}
+.store-contact svg{flex:0 0 18px;width:18px;height:18px;margin-top:2px;color:var(--rrg-red);}
+.store-contact a{color:var(--rrg-text);font-weight:700;}
+.store-hours{width:100%;border-collapse:collapse;margin:0 0 20px;font-size:14px;}
+.store-hours caption{text-align:left;font-weight:700;font-size:14px;padding-bottom:6px;color:var(--rrg-text);}
+.store-hours th,.store-hours td{padding:6px 10px;border-top:1px solid var(--rrg-line-soft);text-align:left;font-weight:400;}
+.store-hours td{text-align:right;color:var(--rrg-grey-700);}
+.store-hours tr.is-today th,.store-hours tr.is-today td{font-weight:700;color:var(--rrg-text);background:var(--rrg-bg);}
+.store-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.store-actions .btn-cta{grid-column:1 / -1;}
+.store-mine{margin:14px 0 0;font-size:14px;text-align:center;}
+.store-mine button{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-text);text-decoration:underline;cursor:pointer;}
+.store-mine .is-mine{font-weight:700;color:var(--rrg-fits);}
+
+/* Local copy beside the store map (spec 3.6). */
+.store-local{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start;}
+.store-local .content-block{margin:0;}
+.store-map{position:relative;height:100%;min-height:380px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--rrg-line);}
+.store-map .showroom-map{position:absolute;inset:0;margin:0;height:auto;border-radius:0;}
+.store-areas{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;}
+.store-areas li{padding:6px 12px;border-radius:999px;background:var(--rrg-bg);border:1px solid var(--rrg-line);font-size:13px;font-weight:700;color:var(--rrg-grey-700);}
+
+/* Nearby stores (spec 3.9). */
+.store-nearby{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+.store-nearby-card{display:flex;flex-direction:column;gap:4px;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:16px 18px;background:#fff;font-size:14px;color:var(--rrg-grey-700);}
+.store-nearby-card strong{font-size:16px;color:var(--rrg-text);}
+.store-nearby-km{font-size:13px;color:var(--rrg-grey-600);}
+.store-nearby-card a{font-weight:700;color:var(--rrg-text);}
+.store-nearby-card .store-page-cta{margin-top:auto;padding-top:8px;color:var(--rrg-red);}
+
+@media (max-width:900px){
+  .store-local{grid-template-columns:1fr;gap:20px;}
+  .store-map{min-height:280px;}
+  .store-nearby{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+}
+@media (max-width:520px){
+  .store-nearby{grid-template-columns:1fr;}
+  .store-actions .btn{padding:13px 8px;font-size:14px;white-space:nowrap;}
+}

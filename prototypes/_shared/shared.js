@@ -1034,13 +1034,13 @@ function applyExdemoFlag(on) {
 // per-template pin list.
 const RRG_STORE_NETWORK = [
   { state: "New South Wales", stores: [
-    { name: "Moorebank", street: "12 Centenary Ave", city: "Moorebank", postcode: "2170", phone: "(02) 9053 8621", mapLink: "https://maps.app.goo.gl/371QHZWa4pDU4qzA7", lat: -33.95, lng: 150.93 },
+    { name: "Moorebank", street: "12 Centenary Ave", city: "Moorebank", postcode: "2170", phone: "(02) 9053 8621", mapLink: "https://maps.app.goo.gl/371QHZWa4pDU4qzA7", lat: -33.9400, lng: 150.9344 },
     { name: "Smeaton Grange", street: "3/18 Exchange Parade", city: "Smeaton Grange", postcode: "2567", phone: "(02) 8215 7092", mapLink: "https://maps.app.goo.gl/Khp5w9LoxReciEho7", lat: -34.02, lng: 150.75 },
     { name: "Matraville", street: "35 Raymond Avenue", city: "Matraville", postcode: "2036", phone: "(02) 9159 6777", mapLink: "https://maps.app.goo.gl/U7Cfof4Wkkk77KqM8", lat: -33.965, lng: 151.225 },
     { name: "Warriewood", street: "3 Vuko Place", city: "Warriewood", postcode: "2102", phone: "(02) 8007 6177", mapLink: "https://maps.app.goo.gl/paxnS1CPK26xbeC59", lat: -33.688, lng: 151.298 },
     { name: "Silverwater", street: "1/104 Wetherill St N", city: "Silverwater", postcode: "2128", phone: "(02) 8007 6155", mapLink: "https://maps.app.goo.gl/NCofTPDD28BDfZRv5", lat: -33.84, lng: 151.05 },
     { name: "Miranda", street: "132 Wyralla Rd", city: "Miranda", postcode: "2228", phone: "(02) 9526 2777", mapLink: "https://goo.gl/maps/f3wCEmtgtHEGBPcn8", lat: -34.031, lng: 151.103 },
-    { name: "Castle Hill", street: "3/8 Anella Avenue", city: "Castle Hill", postcode: "2154", phone: "(02) 9899 3256", mapLink: "https://goo.gl/maps/QebgyjaDAjpKVDw96", lat: -33.73, lng: 150.98 }
+    { name: "Castle Hill", street: "3/8 Anella Avenue", city: "Castle Hill", postcode: "2154", phone: "(02) 9899 3256", mapLink: "https://goo.gl/maps/QebgyjaDAjpKVDw96", lat: -33.7252, lng: 150.9775 }
   ]},
   { state: "Victoria", stores: [
     { name: "Hoppers Crossing", street: "352 Old Geelong Road", city: "Hoppers Crossing", postcode: "3029", phone: "(03) 9015 8615", mapLink: "https://maps.app.goo.gl/HPHsUyA4yfpUVp8V6", lat: -37.877, lng: 144.694 },
@@ -1068,7 +1068,7 @@ const RRG_STORE_NETWORK = [
     { name: "Sunshine Coast", street: "1/224 Nicklin Way", city: "Warana", postcode: "4575", phone: "(07) 5408 5040", mapLink: "https://goo.gl/maps/twjqFgLGGMXotKtcA", lat: -26.760, lng: 153.117 },
     { name: "Gold Coast", street: "3/10 Kamholtz Court", city: "Molendinar", postcode: "4214", phone: "(07) 5619 5800", mapLink: "https://g.page/roof-racks-galore-gold-coast?share", lat: -28.002, lng: 153.379 },
     { name: "Springwood", street: "3/11 Judds Court", city: "Slacks Creek", postcode: "4127", phone: "(07) 3103 8422", mapLink: "https://goo.gl/maps/GShsfi9yfoK2", lat: -27.664, lng: 153.150 },
-    { name: "North Lakes", street: "1/74 Flinders Parade", city: "North Lakes", postcode: "4509", phone: "(07) 3103 8414", mapLink: "https://goo.gl/maps/VaQxwqVsnXw", lat: -27.226, lng: 153.019 },
+    { name: "North Lakes", street: "1/74 Flinders Parade", city: "North Lakes", postcode: "4509", phone: "(07) 3103 8414", mapLink: "https://maps.app.goo.gl/gCEyKzgxP1jaJkyr6", lat: -27.2192, lng: 152.9964 },
     { name: "Burleigh Heads", street: "1/11 Hutchinson Street", city: "Burleigh Heads", postcode: "4220", phone: "(07) 5619 5822", mapLink: "https://maps.app.goo.gl/m9cdKVoTojrfBC82A", lat: -28.093, lng: 153.450 },
     { name: "Rocklea", street: "Unit 2/1620 Ipswich Road", city: "Rocklea", postcode: "4106", phone: "(07) 3277 5722", mapLink: "https://goo.gl/maps/HxDPHYUJnYm", lat: -27.539, lng: 153.007 }
   ]},
@@ -1097,6 +1097,45 @@ const ON_DISPLAY_STORES = new Set(["Moorebank", "Castle Hill", "Silverwater", "H
 // Spread across a few different states so most postcode checks surface some real-looking
 // variety rather than every store always reading "In Stock."
 const ORDER_IN_STORES = new Set(["Epping", "Malaga", "Hallam", "Matraville", "Smeaton Grange"]);
+
+// Store pages (docs/store/store-spec.md Section 4) — every store has its own landing page in
+// production (/roof-racks-<store>-superstore); the prototype builds three of them on one
+// template (prototypes/store/?store=). Anywhere a store is named links to its page.
+const RRG_STORE_PAGES = { 'North Lakes': 'north-lakes', 'Moorebank': 'moorebank', 'Castle Hill': 'castle-hill' };
+function rrgStorePageHref(name) {
+  const slug = RRG_STORE_PAGES[name];
+  return slug ? `${RRG_PROTO}store/index.html?store=${slug}` : null;
+}
+// Turns the store name in every store row (.dc-store — Click & Collect, Showroom Finder, the
+// Store slide-out) into a link to that store's page. Showroom rows read "Moorebank, NSW", so
+// the name is matched up to the comma. Safe to re-run after a re-render.
+function rrgLinkStoreNames(root = document) {
+  root.querySelectorAll('.dc-store strong').forEach(strong => {
+    if (strong.querySelector('a')) return;
+    const text = strong.textContent.trim();
+    const href = rrgStorePageHref(text.split(',')[0].trim());
+    if (!href) return;
+    strong.innerHTML = `<a class="store-page-link" href="${href}">${text}</a>`;
+  });
+}
+document.addEventListener('DOMContentLoaded', () => rrgLinkStoreNames());
+
+// "Make this my store" (store page) — the visitor's saved store, which "Your Nearest Store" in the
+// header and the store-aware stock lines read. Before this, the AU store name was fixed in
+// each page's header markup (still the default when nothing is saved).
+const RRG_STORE_NAME_KEY = 'rrgSessionStoreName';
+function rrgSavedStoreName() {
+  try { return localStorage.getItem(RRG_STORE_NAME_KEY); } catch (e) { return null; }
+}
+window.rrgSetStore = name => {
+  try { localStorage.setItem(RRG_STORE_NAME_KEY, name); } catch (e) {}
+  const link = document.querySelector('[data-region-nearest-store]');
+  if (link) {
+    link.dataset.auStore = name;
+    if (currentRegion === 'AU') link.dataset.currentStoreName = name;
+  }
+  window.rrgSetSession('storeSet', true);
+};
 
 function rrgStoreCount() {
   return RRG_STORE_NETWORK.reduce((n, group) => n + group.stores.length, 0);
@@ -1410,6 +1449,7 @@ function renderStoreSlideoutBody(nearState) {
     html += groupHTML(group.state, group.stores, !nearGroup);
   });
   body.innerHTML = html;
+  rrgLinkStoreNames(body);
 }
 
 function openStoreSlideout() {
@@ -1723,7 +1763,7 @@ function applyRegionShowroomHeading(region, heading) {
 function applyRegionNearestStore(region) {
   const link = document.querySelector('[data-region-nearest-store]');
   if (!link) return;
-  if (!link.dataset.auStore) link.dataset.auStore = link.textContent;
+  if (!link.dataset.auStore) link.dataset.auStore = rrgSavedStoreName() || link.textContent;
   link.dataset.currentStoreName = region === 'AU' ? link.dataset.auStore : REGION_SINGLE_STORES[region].name;
   applyStoreSessionDisplay();
 }
@@ -1740,6 +1780,8 @@ function applyStoreSessionDisplay() {
   const on = rrgSessionGet('storeSet');
   if (label) label.hidden = !on;
   link.textContent = on ? link.dataset.currentStoreName : 'Find A Store';
+  const storeHref = on && rrgStorePageHref(link.dataset.currentStoreName);
+  link.setAttribute('href', storeHref || '#');
   // VLP Store Finder tile's "Your Nearest Store" line mirrors the header's.
   document.querySelectorAll('[data-sft-nearest]').forEach(a => {
     a.textContent = link.textContent;
@@ -3021,7 +3063,8 @@ function buildAdminPanel() {
   // Global state (templates, briefs, session vehicle/login/store, build phase, promotions) lives
   // in the Site Admin Panel (admin-panel.js). Each section below is only built on the page type
   // it works on — the old panel showed 11 PDP-only controls, inert, on VCLP/PLP/Search.
-  const isPdp = !!document.querySelector('.decision-panel');
+  // The store page borrows the PDP's .decision-panel layout but has no product states to preview.
+  const isPdp = !!document.querySelector('.decision-panel') && !document.querySelector('[data-store-page]');
   const isPlpPage = !!document.querySelector('[data-plp-page]');
   const isSearchPage = !!(window.PLP_CONFIG && window.PLP_CONFIG.isSearch);
   const hasVariantPicker = !!document.querySelector('.variant-picker');

@@ -136,6 +136,20 @@ Added 2026-09-29 (`docs/home/home-spec.md`). The new www.roofracksgalore.com.au 
 
 ---
 
+## Store Page (`prototypes/store/`)
+
+Added 2026-09-29 (`docs/store/store-spec.md`). Each store's own landing page (`/roof-racks-<store>-superstore`). One template rendered from the store's record (`STORES`, shaped like the Magento store record), with three real stores via `?store=north-lakes|moorebank|castle-hill`. Reuses the PDP hero (gallery + decision panel), Trust row, Product carousel, Trust banner, FAQ section and Shop The Best Brands; the pieces below are new.
+
+| Name | Description |
+|---|---|
+| **Store panel** | The PDP decision panel holding the store's details: H1, area, **Open status** (open now / closed + next opening, in the store's own time zone; `?now=sat-10:00` fakes it for review), address, phone, email, the week's hours with today highlighted, Get Directions (the gold action), Call the Store, Book a Fitting, and **Make this my store**. — `.store-panel`, `.store-open`, `.store-hours` |
+| **Make this my store** | Saves the visitor's store (`rrgSessionStoreName`), which "Your Nearest Store" in the header and the store-aware stock lines then use on every page. Reads "✓ {Store} is your store" once set. — `rrgSetStore()` |
+| **Store links** | Every store name in a store row (Click & Collect, Showroom Finder, the Store slide-out) and the header's "Your Nearest Store" link to that store's page. — `rrgLinkStoreNames()`, `rrgStorePageHref()`, `.store-page-link` |
+| **Local copy + map** | The store's own local copy (Magento `seo_text`) with **Areas we serve** chips, beside the shared store map centred on the store. — `.store-local`, `.store-areas`, `.store-map` |
+| **Nearby stores** | The 4 closest other stores by distance, each linked to its page (or directions where there's no page yet). — `.store-nearby` |
+
+---
+
 ## Shared building blocks (2026-09-29 consistency pass)
 
 Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shared rule each. Use these names rather than the old per-page ones.
@@ -159,4 +173,4 @@ Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shar
 
 ---
 
-*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
+*Generated 2026-09-10, updated 2026-09-11 (Reviews tab, FAQ section, Showroom Finder map rework, Region Selector, UK Brand Skin), updated 2026-09-12 (Discontinued state, Compatibility/Cart-Conflict banner added; Special Order, Ex-Demo/B-Stock, Gold Guarantee, Payment-Plan Badges, and the Region Selector cascade corrected to match current behaviour — see `DEVELOPER-BRIEF.md` Section 7 for the fuller writeup of every widget), updated 2026-09-15 (Vehicle Category Landing Page section added; same day, re-themed Ford Ranger references to Toyota Hilux and added the Generation Table entry), updated 2026-09-29 for the cross-template consistency pass (Site Admin Panel, Low Stock box and Shared building blocks added; Demo State Panel, Sticky Mobile Bar, Price Block/Sale Tag, Fitment Gallery, Breadcrumbs, Delivery/Click & Collect, store pills and the VCLP section corrected to match current behaviour), updated 2026-09-29 (VLP section added), updated 2026-09-29 (Home Page section added), updated 2026-09-29 (Store Page section added). If a new section or widget gets added, add it here too so this stays the source of truth for naming.*
