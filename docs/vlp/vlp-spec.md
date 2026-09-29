@@ -77,7 +77,7 @@ How the vehicle pages relate: **VCLP** (make/model, indexed) → **VLP** (exact 
 | Same as the page vehicle | Nothing. |
 | **Different** | Don't overwrite. Show a small notice under the breadcrumbs: "You're viewing the **Ford Ranger P703**. Your saved vehicle is the **Toyota Hilux N80**. [Make this my vehicle] [View my Hilux]". "Make this my vehicle" sets the session. "View my Hilux" goes to the session vehicle's VLP. The notice can be dismissed. |
 
-The notice reuses the existing informational-banner styling (`.plp-vehicle-notice` family or the amber info tier), with no new colour. Its buttons are secondary (`.btn-outline-red`/`.btn-outline`), never gold.
+The notice **is** the Fitment Status card in its no-fit state (`.fitment.no_fit` — white, red left border, red car icon and label), so it reads exactly like the PDP's and the product cards' "Doesn't fit your …" (Brenton, 2026-09-29; the first build used an amber banner). Its buttons are the fitment card's red-outline ones, never gold.
 
 ---
 
