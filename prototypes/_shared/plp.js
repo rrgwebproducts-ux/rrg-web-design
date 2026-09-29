@@ -2100,6 +2100,10 @@ document.addEventListener('DOMContentLoaded', () => {
   plpBuildCompareDrawer();
   if (window.PLP_CONFIG.vrs) plpBuildRowFitGalleryDrawer();
   plpRenderHero();
+  // The session vehicle's photo + badge on first render too, not only on a later session change —
+  // shared.js dispatches the page-load rrg-session-change before this listener exists, so the
+  // hero kept the markup's hardcoded Hilux for a Ford Ranger session (2026-09-29).
+  applyPlpHeroImageFlag(plpState.heroImageMode);
   plpRenderResults();
   plpRenderFAQ();
   plpRenderCategoryContent();

@@ -25,7 +25,7 @@ const RRG_SESSION_FIELDS = {
 // shared.js), PLP-family card fitment + hero (plpKey → PLP_VEHICLES in plp.js), search results.
 const RRG_VEHICLES = {
   hilux: { label: 'Toyota Hilux', demoKey: 'match', plpKey: 'toyota-hilux-n80', image: 'vehicle-toyota-hilux.webp', badge: 'brand-toyota-badge.png' },
-  ranger: { label: 'Ford Ranger', demoKey: 'mismatch', plpKey: 'ford-ranger-p703', image: 'vehicle-ford-ranger.png', badge: null }
+  ranger: { label: 'Ford Ranger', demoKey: 'mismatch', plpKey: 'ford-ranger-p703', image: 'vehicle-ford-ranger.png', badge: 'brand-ford-badge.png' }
 };
 const RRG_VEHICLE_KEY = 'rrgSessionVehicle';
 
