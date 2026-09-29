@@ -12,7 +12,7 @@ Planning session: 2026-09-29. Decisions in Section 9 were answered by Brenton th
 
 Every store already has a page on the live site, but **nothing on the site links to them**. They're only reached as the website link on each store's Google Business Profile. They're built from a template the team **can't stand** (Brenton: "don't try to replicate it at all"). The new page is designed from scratch in the rebuilt site's style and linked from everywhere a store is named.
 
-**In scope:** `prototypes/store/` (one template, three real stores via `?store=`), the per-store data model, "Make this my store", links into the page from the rest of the site, and housekeeping (index card, Site Admin list, glossary).
+**In scope:** `prototypes/store/` (one template, eleven real stores via `?store=`), the per-store data model, "Make this my store", links into the page from the rest of the site, and housekeeping (index card, Site Admin list, glossary).
 
 **Out of scope:** the all-stores locator page (`/locations`), real per-store stock or display data, and the developer brief (written once the page is stable).
 
@@ -50,7 +50,14 @@ The prototype's `STORES` object (inline in `prototypes/store/index.html`) follow
 | Area | North Brisbane | South West Sydney | North West Sydney (live's H2 says "North Sydney"; the store's own copy says north-west) |
 | Photos | 5 | 8 | 3 |
 
-All three stores' hours, phone, email, address, local copy and photos come from their live pages (crawled 2026-09-29). Photos are in `_shared/stores/`. Two NSW stores mean the Nearby Stores section links between two real pages. The page is chosen by `?store=north-lakes|moorebank|castle-hill` (prototype only), default North Lakes, which is the prototype's default nearest store.
+All three stores' hours, phone, email, address, local copy and photos come from their live pages (crawled 2026-09-29). Photos are in `_shared/stores/`. The page is chosen by `?store=<slug>` (prototype only), default North Lakes, which is the prototype's default nearest store.
+
+**Eight more stores (Brenton, 2026-09-30: every nearby card should link to its store's page).** Every store in the three examples' "Other stores near …" lists that has a live page was built the same way from its live page: Kedron, East Brisbane, Rocklea, Silverwater, Smeaton Grange, Miranda, Warriewood and Matraville. That's eleven stores in all. The records moved to `prototypes/store/stores-data.js`.
+
+- **Sunshine Coast** has no live store page (the live sitemap lists 30 store pages; Sunshine Coast, Gold Coast, Canberra and Hoppers Crossing are among those without one). Its card on North Lakes stays unlinked and offers Get Directions instead.
+- The eight new stores' own nearby lists sometimes include a store we haven't built (Springwood appears for the Brisbane stores). Those cards are unlinked in the prototype; in production every store with a page links.
+- **Whole card clickable:** a card for a store with a page is one link (the store name's link stretches over the card); the phone number stays a separate tap-to-call link.
+- **Live data problems found while crawling:** East Brisbane's meta description says "Gold Coast southside" (corrected in the prototype); Kedron's local copy is one paragraph with no suburb list, so its "Areas we serve" is hidden; two live gallery entries are 300×400 placeholders (Kedron's `kedron-7.jpg`, East Brisbane's `eastbrisbane-inside-3jpg` with a missing dot) and were left out.
 
 ---
 

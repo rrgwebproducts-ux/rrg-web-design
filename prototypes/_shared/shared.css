@@ -2021,6 +2021,13 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .store-nearby-km{font-size:13px;color:var(--rrg-grey-600);}
 .store-nearby-card a{font-weight:700;color:var(--rrg-text);}
 .store-nearby-card .store-page-cta{margin-top:auto;padding-top:8px;color:var(--rrg-red);}
+/* A card for a store with a page is one big link (Brenton, 2026-09-30): the store-name link's
+   ::after stretches over the whole card; the phone number sits above it so it still dials. */
+.store-nearby-card.has-page{position:relative;transition:box-shadow var(--t-fast) ease,border-color var(--t-fast) ease;}
+.store-nearby-card.has-page:hover{border-color:var(--rrg-line-strong);box-shadow:var(--shadow);}
+.store-nearby-card.has-page:hover strong a{color:var(--rrg-red);}
+.store-nearby-card.has-page strong a::after{content:'';position:absolute;inset:0;border-radius:inherit;}
+.store-nearby-card.has-page .store-nearby-phone{position:relative;z-index:1;}
 
 @media (max-width:900px){
   .store-local{grid-template-columns:1fr;gap:20px;}

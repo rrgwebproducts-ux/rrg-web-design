@@ -1035,11 +1035,11 @@ function applyExdemoFlag(on) {
 const RRG_STORE_NETWORK = [
   { state: "New South Wales", stores: [
     { name: "Moorebank", street: "12 Centenary Ave", city: "Moorebank", postcode: "2170", phone: "(02) 9053 8621", mapLink: "https://maps.app.goo.gl/371QHZWa4pDU4qzA7", lat: -33.9400, lng: 150.9344 },
-    { name: "Smeaton Grange", street: "3/18 Exchange Parade", city: "Smeaton Grange", postcode: "2567", phone: "(02) 8215 7092", mapLink: "https://maps.app.goo.gl/Khp5w9LoxReciEho7", lat: -34.02, lng: 150.75 },
-    { name: "Matraville", street: "35 Raymond Avenue", city: "Matraville", postcode: "2036", phone: "(02) 9159 6777", mapLink: "https://maps.app.goo.gl/U7Cfof4Wkkk77KqM8", lat: -33.965, lng: 151.225 },
-    { name: "Warriewood", street: "3 Vuko Place", city: "Warriewood", postcode: "2102", phone: "(02) 8007 6177", mapLink: "https://maps.app.goo.gl/paxnS1CPK26xbeC59", lat: -33.688, lng: 151.298 },
-    { name: "Silverwater", street: "1/104 Wetherill St N", city: "Silverwater", postcode: "2128", phone: "(02) 8007 6155", mapLink: "https://maps.app.goo.gl/NCofTPDD28BDfZRv5", lat: -33.84, lng: 151.05 },
-    { name: "Miranda", street: "132 Wyralla Rd", city: "Miranda", postcode: "2228", phone: "(02) 9526 2777", mapLink: "https://goo.gl/maps/f3wCEmtgtHEGBPcn8", lat: -34.031, lng: 151.103 },
+    { name: "Smeaton Grange", street: "3/18 Exchange Parade", city: "Smeaton Grange", postcode: "2567", phone: "(02) 8215 7092", mapLink: "https://maps.app.goo.gl/Khp5w9LoxReciEho7", lat: -34.039, lng: 150.7454 },
+    { name: "Matraville", street: "35 Raymond Avenue", city: "Matraville", postcode: "2036", phone: "(02) 9159 6777", mapLink: "https://maps.app.goo.gl/U7Cfof4Wkkk77KqM8", lat: -33.9612, lng: 151.2203 },
+    { name: "Warriewood", street: "3 Vuko Place", city: "Warriewood", postcode: "2102", phone: "(02) 8007 6177", mapLink: "https://maps.app.goo.gl/paxnS1CPK26xbeC59", lat: -33.6929, lng: 151.2998 },
+    { name: "Silverwater", street: "1/104 Wetherill St N", city: "Silverwater", postcode: "2128", phone: "(02) 8007 6155", mapLink: "https://maps.app.goo.gl/NCofTPDD28BDfZRv5", lat: -33.8374, lng: 151.0445 },
+    { name: "Miranda", street: "132 Wyralla Rd", city: "Miranda", postcode: "2228", phone: "(02) 9526 2777", mapLink: "https://goo.gl/maps/f3wCEmtgtHEGBPcn8", lat: -34.0391, lng: 151.0892 },
     { name: "Castle Hill", street: "3/8 Anella Avenue", city: "Castle Hill", postcode: "2154", phone: "(02) 9899 3256", mapLink: "https://goo.gl/maps/QebgyjaDAjpKVDw96", lat: -33.7252, lng: 150.9775 }
   ]},
   { state: "Victoria", stores: [
@@ -1063,14 +1063,14 @@ const RRG_STORE_NETWORK = [
     { name: "Hobart", street: "134-136 Main Rd", city: "Moonah", postcode: "7009", phone: "(03) 6273 7555", mapLink: "https://goo.gl/maps/Cyi2N7UE4qvE5ZFb6", lat: -42.833, lng: 147.302 }
   ]},
   { state: "Queensland", stores: [
-    { name: "Kedron", street: "Unit 1/14 Boothby Street", city: "Kedron", postcode: "4031", phone: "(07) 3350 3711", mapLink: "https://goo.gl/maps/FGRrDi9CrZS2", lat: -27.408, lng: 153.038 },
-    { name: "East Brisbane", street: "46 Caswell St", city: "East Brisbane", postcode: "4169", phone: "(07) 3256 3630", mapLink: "https://goo.gl/maps/JAqUCMi5rYmZhZ1T7", lat: -27.480, lng: 153.045 },
+    { name: "Kedron", street: "Unit 1/14 Boothby Street", city: "Kedron", postcode: "4031", phone: "(07) 3350 3711", mapLink: "https://goo.gl/maps/FGRrDi9CrZS2", lat: -27.3972, lng: 153.0294 },
+    { name: "East Brisbane", street: "46 Caswell St", city: "East Brisbane", postcode: "4169", phone: "(07) 3256 3630", mapLink: "https://goo.gl/maps/JAqUCMi5rYmZhZ1T7", lat: -27.4888, lng: 153.0476 },
     { name: "Sunshine Coast", street: "1/224 Nicklin Way", city: "Warana", postcode: "4575", phone: "(07) 5408 5040", mapLink: "https://goo.gl/maps/twjqFgLGGMXotKtcA", lat: -26.760, lng: 153.117 },
     { name: "Gold Coast", street: "3/10 Kamholtz Court", city: "Molendinar", postcode: "4214", phone: "(07) 5619 5800", mapLink: "https://g.page/roof-racks-galore-gold-coast?share", lat: -28.002, lng: 153.379 },
     { name: "Springwood", street: "3/11 Judds Court", city: "Slacks Creek", postcode: "4127", phone: "(07) 3103 8422", mapLink: "https://goo.gl/maps/GShsfi9yfoK2", lat: -27.664, lng: 153.150 },
     { name: "North Lakes", street: "1/74 Flinders Parade", city: "North Lakes", postcode: "4509", phone: "(07) 3103 8414", mapLink: "https://maps.app.goo.gl/gCEyKzgxP1jaJkyr6", lat: -27.2192, lng: 152.9964 },
     { name: "Burleigh Heads", street: "1/11 Hutchinson Street", city: "Burleigh Heads", postcode: "4220", phone: "(07) 5619 5822", mapLink: "https://maps.app.goo.gl/m9cdKVoTojrfBC82A", lat: -28.093, lng: 153.450 },
-    { name: "Rocklea", street: "Unit 2/1620 Ipswich Road", city: "Rocklea", postcode: "4106", phone: "(07) 3277 5722", mapLink: "https://goo.gl/maps/HxDPHYUJnYm", lat: -27.539, lng: 153.007 }
+    { name: "Rocklea", street: "Unit 2/1620 Ipswich Road", city: "Rocklea", postcode: "4106", phone: "(07) 3277 5722", mapLink: "https://goo.gl/maps/HxDPHYUJnYm", lat: -27.5576, lng: 153.0049 }
   ]},
   { state: "Australian Capital Territory", stores: [
     { name: "Canberra", street: "107 Wollongong Street", city: "Fyshwick", postcode: "2609", phone: "(02) 6176 1909", mapLink: "https://goo.gl/maps/6EP4rtQWnJu9hrRBA", lat: -35.339, lng: 149.166 }
@@ -1099,9 +1099,13 @@ const ON_DISPLAY_STORES = new Set(["Moorebank", "Castle Hill", "Silverwater", "H
 const ORDER_IN_STORES = new Set(["Epping", "Malaga", "Hallam", "Matraville", "Smeaton Grange"]);
 
 // Store pages (docs/store/store-spec.md Section 4) — every store has its own landing page in
-// production (/roof-racks-<store>-superstore); the prototype builds three of them on one
+// production (/roof-racks-<store>-superstore); the prototype builds eleven of them on one
 // template (prototypes/store/?store=). Anywhere a store is named links to its page.
-const RRG_STORE_PAGES = { 'North Lakes': 'north-lakes', 'Moorebank': 'moorebank', 'Castle Hill': 'castle-hill' };
+const RRG_STORE_PAGES = {
+  'North Lakes': 'north-lakes', 'Kedron': 'kedron', 'East Brisbane': 'east-brisbane', 'Rocklea': 'rocklea',
+  'Moorebank': 'moorebank', 'Castle Hill': 'castle-hill', 'Silverwater': 'silverwater', 'Smeaton Grange': 'smeaton-grange',
+  'Miranda': 'miranda', 'Warriewood': 'warriewood', 'Matraville': 'matraville'
+};
 function rrgStorePageHref(name) {
   const slug = RRG_STORE_PAGES[name];
   return slug ? `${RRG_PROTO}store/index.html?store=${slug}` : null;

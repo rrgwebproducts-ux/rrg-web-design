@@ -138,7 +138,7 @@ Added 2026-09-29 (`docs/home/home-spec.md`). The new www.roofracksgalore.com.au 
 
 ## Store Page (`prototypes/store/`)
 
-Added 2026-09-29 (`docs/store/store-spec.md`). Each store's own landing page (`/roof-racks-<store>-superstore`). One template rendered from the store's record (`STORES`, shaped like the Magento store record), with three real stores via `?store=north-lakes|moorebank|castle-hill`. Reuses the PDP hero (gallery + decision panel), Trust row, Product carousel, Trust banner, FAQ section and Shop The Best Brands; the pieces below are new.
+Added 2026-09-29 (`docs/store/store-spec.md`). Each store's own landing page (`/roof-racks-<store>-superstore`). One template rendered from the store's record (`STORES`, shaped like the Magento store record), with eleven real stores via `?store=<slug>` (`prototypes/store/stores-data.js`). Reuses the PDP hero (gallery + decision panel), Trust row, Product carousel, Trust banner, FAQ section and Shop The Best Brands; the pieces below are new.
 
 | Name | Description |
 |---|---|
@@ -146,7 +146,7 @@ Added 2026-09-29 (`docs/store/store-spec.md`). Each store's own landing page (`/
 | **Make this my store** | Saves the visitor's store (`rrgSessionStoreName`), which "Your Nearest Store" in the header and the store-aware stock lines then use on every page. Reads "✓ {Store} is your store" once set. — `rrgSetStore()` |
 | **Store links** | Every store name in a store row (Click & Collect, Showroom Finder, the Store slide-out) and the header's "Your Nearest Store" link to that store's page. — `rrgLinkStoreNames()`, `rrgStorePageHref()`, `.store-page-link` |
 | **Local copy + map** | The store's own local copy (Magento `seo_text`) with **Areas we serve** chips, beside the shared store map centred on the store. — `.store-local`, `.store-areas`, `.store-map` |
-| **Nearby stores** | The 4 closest other stores by distance, each linked to its page (or directions where there's no page yet). — `.store-nearby` |
+| **Nearby stores** | The 4 closest other stores by distance. A card for a store with a page is one big link (the phone number still dials); a store with no page offers Get Directions instead. — `.store-nearby` |
 
 ---
 

@@ -23,7 +23,7 @@
 <!-- ===== Store Page (docs/store/store-spec.md, 2026-09-29) =====
      One template for every store's own landing page (/roof-racks-<store>-superstore), rendered
      from that store's record (STORES, inline script) — three real stores via
-     ?store=north-lakes|moorebank|castle-hill. Designed from scratch, nothing like the live
+     ?store=<slug> (eleven stores, stores-data.js). Designed from scratch, nothing like the live
      template (Brenton). Same shape as the PDP: the store's photos in the PDP gallery beside a
      decision panel of store details. No page-local CSS. -->
 </head>
@@ -166,7 +166,7 @@
     <div class="content-block">
       <h2 id="storeLocalHeading"></h2>
       <div id="storeLocalCopy"></div>
-      <h3>Areas we serve</h3>
+      <h3 id="storeAreasHeading">Areas we serve</h3>
       <ul class="store-areas" id="storeAreas"></ul>
     </div>
     <div class="store-map">
@@ -292,141 +292,9 @@
 <script src="../_shared/admin-panel.js"></script>
 <script src="../_shared/shared.js"></script>
 <script src="../_shared/plp.js"></script>
+<script src="stores-data.js"></script>
 <script>
-// ==== Store records (docs/store/store-spec.md Section 1) ============================
-// One record per store, shaped like the Magento store record the live page is built from,
-// with the fields the new page needs: structured hours instead of an HTML string, lat/lng
-// instead of a pasted iframe, alt text per image, and per-store FAQs, areas served and
-// showroom products. Contact details, hours, local copy and photos are each store's live
-// page (crawled 2026-09-29); lat/lng are from its Google listing. FAQs are drafts for the
-// store teams to check; onDisplay is demo data (real live products, invented showroom).
-const IMG = path => `https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/215x190/pub/media/catalog/product/${path}`;
-const LOGOS = { 'Thule': '../_shared/brand-thule.webp', 'Yakima': '../_shared/brand-yakima.webp', 'Cruz': '../_shared/brand-cruz.webp', 'Rhino-Rack': '../_shared/brand-rhino-rack.webp' };
-const P = (id, brand, name, image, price, wasPrice) => ({ id, brand, brandLogo: LOGOS[brand], name, image: IMG(image), price, wasPrice, stock: 'in_stock' });
-const PRODUCTS = {
-  approachM: P('d1', 'Thule', 'Thule Approach M Dark Slate - 901014', 'A/p/Apporach_M_Slate_HBM6HN_1.webp', 2349.00, 4999.95),
-  foothill: P('d2', 'Thule', 'Thule Tepui Foothill Roof Top Tent - 901250', 't/h/thule-tepui-foothill-roof-top-tent-901250_1.webp', 1999.00, 3999.95),
-  rhinoRtt: P('d3', 'Rhino-Rack', 'Rhino Rack Low Profile Roof Top Tent - 61052', 'r/h/rhino-rack-low-profile-roof-top-tent-61052.webp', 4300.00),
-  dome1300: P('d4', 'Rhino-Rack', 'Rhino Rack Dome 1300 Awning - 32141', '3/2/32141_1LHC5X_1.webp', 299.00, 427.00),
-  darcheSolar: P('d5', 'Darche', 'Darche Solar Roof Top Tent - T050801577', 'd/a/darche-solar-roof-top-tent-t050801577-ba391a209d95.webp', 4999.00, 5999.00),
-  cruz430: P('d6', 'Cruz', 'Cruz Easy Gloss Black 430 litre Roof Box - 940-349U', 'c/r/cruz-easy-gloss-black-430-litre-roof-box-940-349u-1b1957dc9c9b.webp', 499.00, 699.00),
-  touringL: P('d7', 'Thule', 'Thule Touring L Matte Black 420 litre Roof Box - 634804', 't/h/thule-touring-l-matte-black-420-litre-roof-box-634804.webp', 899.00, 1099.95),
-  easyTrip: P('d8', 'Yakima', 'Yakima EasyTrip Textured Black 550 litre Roof Box - 9812111', 'Y/a/Yakima-9812111-Roof-Boxes._1_1.webp', 1099.00, 1299.00),
-  pulse2: P('d9', 'Thule', 'Thule Pulse 2 Roof Box M - 610200', 't/h/thule-pulse-2-roof-box-m-610200_1.webp', 899.95, 999.95),
-  stageTwo: P('d10', 'Yakima', 'Yakima StageTwo +2 Add-On Anthracite Black - 8002727', 'y/a/yakima-stagetwo-2-add-on-anthracite-black-8002727.webp', 499.00, 749.00),
-  euroway: P('d11', 'Thule', 'Thule EuroWay G2 3 Bike Tow Ball Mounted Carrier - 922020', 't/h/thule-euroway-g2-3-bike-tow-ball-mounted-carrier-922020.webp', 799.00, 1199.95),
-  hangOn: P('d12', 'Thule', 'Thule HangOn Towball Mounted 4 Bike Carrier - 970805', 't/h/thule-hangon-towball-mounted-4-bike-carrier-970805.webp', 432.35, 469.95),
-  twinbuzz: P('d13', 'Buzzrack', 'Buzzrack Twinbuzz H Modular Hitch Mounted Platform Rack - BR-TWINBUZZ-H', 'b/u/buzzrack-twinbuzz-h-modular-hitch-mounted-platform-rack-br-twinbuzz-h.webp', 899.00, 1300.00),
-  arcos: P('d14', 'Thule', 'Thule Arcos Hitch Platform AU - 906301', 'T/h/Thule-906301-Rear-Cargo-Boxes._1.webp', 850.00)
-};
-const STANDARD_HOURS = { mon: ['08:30', '17:00'], tue: ['08:30', '17:00'], wed: ['08:30', '17:00'], thu: ['08:30', '17:00'], fri: ['08:30', '17:00'], sat: ['08:30', '12:30'], sun: null };
-
-const STORES = {
-  'north-lakes': {
-    name: 'North Lakes', state: 'QLD', stateName: 'Queensland', timeZone: 'Australia/Brisbane',
-    url: '/roof-racks-north-lakes-superstore',
-    title: 'Roof Racks Galore North Lakes | North Brisbane Roof Racks & Touring Superstore',
-    metaDescription: 'Visit Roof Racks Galore North Lakes for roof racks, bike racks, roof boxes, platforms, camping and touring accessories. Conveniently located in North Brisbane with expert advice, professional fitting and products from leading brands including Rhino-Rack, Thule and Yakima.',
-    area: 'North Brisbane',
-    address: { street: '1/74 Flinders Parade', suburb: 'North Lakes', postcode: '4509' },
-    phone: '(07) 3103 8414', email: 'northlakes@roofracksgalore.com.au',
-    lat: -27.2192, lng: 152.9964, mapUrl: 'https://maps.app.goo.gl/gCEyKzgxP1jaJkyr6',
-    hours: STANDARD_HOURS, clickAndCollect: true,
-    gallery: { id: 3, ext: 'jpg' },
-    images: [
-      { src: 'northlakes-outside.webp', alt: 'Roof Racks Galore North Lakes store front on Flinders Parade' },
-      { src: 'northlakes-inside-1.webp', alt: 'North Lakes showroom with bike racks and Rhino-Rack displays' },
-      { src: 'northlakes-inside-2.webp', alt: 'North Lakes service counter and showroom' },
-      { src: 'northlakes-inside-3.webp', alt: 'North Lakes showroom aisle with roof rack and bike rack displays' },
-      { src: 'northlakes-inside-4.webp', alt: 'Roof top tents and platforms on display downstairs at North Lakes' }
-    ],
-    seoText: [
-      'Roof Racks Galore North Lakes provides premium roof racks, cargo systems, and vehicle accessories for work, touring, and outdoor adventure across Brisbane’s northern suburbs. Whether you’re a tradie needing a reliable carrying setup, a family preparing for a holiday road trip, or an outdoor enthusiast loading up bikes, camping gear, or water sports equipment, we’ve got the right solution for your vehicle.',
-      'Our experienced team offers trusted advice and professional installation, helping customers carry more and travel with confidence. We proudly serve North Lakes, Mango Hill, Kallangur, Redcliffe, Deception Bay, Narangba, Burpengary, Caboolture, and surrounding north Brisbane regions with industry-leading brands and expert service.',
-      'From weekends exploring Bribie Island and Moreton Bay, to camping trips through the Sunshine Coast hinterland or adventures further north to K’gari, we’ll make sure your setup is secure, dependable, and ready for wherever the road leads.'
-    ],
-    areasServed: ['North Lakes', 'Mango Hill', 'Kallangur', 'Redcliffe', 'Deception Bay', 'Narangba', 'Burpengary', 'Caboolture'],
-    onDisplay: ['approachM', 'foothill', 'rhinoRtt', 'dome1300', 'cruz430', 'touringL', 'hangOn'],
-    faqs: [
-      { q: 'Can the North Lakes team set my vehicle up for Bribie Island, Moreton Bay or K’gari?', a: 'Yes. Bring your vehicle in and tell the team what you’re carrying and where you’re headed. They’ll recommend a setup to suit it, from roof racks and platforms to awnings and roof top tents, and can fit it for you in store.' },
-      { q: 'Can I get a roof rack fitted at North Lakes?', a: 'Yes. The North Lakes team installs roof racks, bike racks, awnings, roof boxes and touring accessories. Book an installation online or call the store on (07) 3103 8414 to arrange a time.' },
-      { q: 'I’m in Redcliffe or Caboolture — is North Lakes my closest store?', a: 'For most of Brisbane’s north, yes. North Lakes serves Mango Hill, Kallangur, Redcliffe, Deception Bay, Narangba, Burpengary, Caboolture and the surrounding suburbs.' },
-      { q: 'Can I see roof top tents and awnings in person at North Lakes?', a: 'Yes. The North Lakes showroom has roof top tents, awnings, roof boxes and bike racks on display, so you can see how they open, pack down and mount before you buy. Call ahead if you’re coming in for a particular model.' },
-      { hours: true },
-      { nearest: true }
-    ]
-  },
-  'moorebank': {
-    name: 'Moorebank', state: 'NSW', stateName: 'New South Wales', timeZone: 'Australia/Sydney',
-    url: '/roof-racks-moorebank-superstore',
-    title: 'Roof Racks Galore Moorebank | Sydney South West Racks & Touring Superstore',
-    metaDescription: 'Visit Roof Racks Galore Moorebank for roof racks, bike racks, roof boxes, platforms, camping and touring accessories. Conveniently located in South West Sydney with expert advice, professional fitting and products from leading brands including Rhino-Rack, Thule and Yakima.',
-    area: 'South West Sydney',
-    address: { street: '12 Centenary Ave', suburb: 'Moorebank', postcode: '2170' },
-    phone: '(02) 9053 8621', email: 'moorebank@roofracksgalore.com.au',
-    lat: -33.9400, lng: 150.9344, mapUrl: 'https://maps.app.goo.gl/371QHZWa4pDU4qzA7',
-    hours: STANDARD_HOURS, clickAndCollect: true,
-    gallery: { id: 43, ext: 'webp' },
-    images: [
-      { src: 'moorebank-outside.webp', alt: 'Roof Racks Galore Moorebank store front on Centenary Avenue' },
-      { src: 'moorebank-inside1.webp', alt: 'Moorebank showroom wall with roof boxes and Kaon accessories' },
-      { src: 'moorebank-inside2.webp', alt: 'Yakima display and bike trays in the Moorebank showroom' },
-      { src: 'moorebank-inside3.webp', alt: 'Yakima wall and service counter at Moorebank' },
-      { src: 'moorebank-inside4.webp', alt: 'Lighting and roof rack accessory displays at Moorebank' },
-      { src: 'moorebank-inside5.webp', alt: 'Bike racks and a Yakima display at Moorebank' },
-      { src: 'moorebank-inside6.webp', alt: 'Roof boxes on display at Moorebank' },
-      { src: 'moorebank-inside7.webp', alt: 'Yakima roof rack wall at Moorebank' }
-    ],
-    seoText: [
-      'Roof Racks Galore Moorebank provides premium roof racks, cargo systems, and vehicle accessories for work, touring, and everyday adventure across Sydney’s south-west. Whether you’re a tradie needing a reliable carrying setup, a family preparing for a road trip, or an outdoor enthusiast loading up bikes, camping gear, kayaks, or touring equipment, we’ve got the right solution for your vehicle.',
-      'Our experienced team offers trusted advice and professional installation, helping customers carry more and travel with confidence. We proudly serve Moorebank, Liverpool, Casula, Wattle Grove, Chipping Norton, Prestons, Holsworthy, and surrounding south-west Sydney suburbs with industry-leading brands and expert service.',
-      'From weekends exploring the Blue Mountains and NSW coastline, to camping trips through the South Coast or adventures further inland, we’ll make sure your setup is secure, dependable, and ready for wherever the road leads.'
-    ],
-    areasServed: ['Moorebank', 'Liverpool', 'Casula', 'Wattle Grove', 'Chipping Norton', 'Prestons', 'Holsworthy'],
-    onDisplay: ['easyTrip', 'touringL', 'pulse2', 'stageTwo', 'euroway', 'twinbuzz', 'arcos'],
-    faqs: [
-      { q: 'Can the Moorebank team set my vehicle up for a South Coast or Blue Mountains trip?', a: 'Yes. Bring your vehicle in and tell the team what you’re carrying — bikes, kayaks, camping gear — and where you’re headed. They’ll recommend a setup to suit it and can fit it for you in store.' },
-      { q: 'Can I get a roof rack fitted at Moorebank?', a: 'Yes. The Moorebank team installs roof racks, bike racks, awnings, roof boxes and touring accessories. Book an installation online or call the store on (02) 9053 8621 to arrange a time.' },
-      { q: 'I’m in Liverpool or Prestons — is Moorebank my closest store?', a: 'For most of south-west Sydney, yes. Moorebank serves Liverpool, Casula, Wattle Grove, Chipping Norton, Prestons, Holsworthy and the surrounding suburbs.' },
-      { q: 'Can I see bike racks and roof boxes in person at Moorebank?', a: 'Yes. The Moorebank showroom has roof boxes and bike racks — tow ball, hitch and tray-mounted — on display, so you can compare sizes and see how they mount before you buy. Call ahead if you’re coming in for a particular model.' },
-      { hours: true },
-      { nearest: true }
-    ]
-  },
-  'castle-hill': {
-    name: 'Castle Hill', state: 'NSW', stateName: 'New South Wales', timeZone: 'Australia/Sydney',
-    url: '/roof-racks-castle-hill-superstore',
-    title: 'Roof Racks Galore Castle Hill | Sydney Roof Racks & Touring Superstore',
-    metaDescription: 'Visit Roof Racks Galore Castle Hill for roof racks, bike racks, roof boxes, platforms, camping and touring accessories. Conveniently located in Sydney\'s northside with expert advice, professional fitting and products from leading brands including Rhino-Rack, Thule and Yakima.',
-    area: 'North West Sydney',
-    address: { street: '3/8 Anella Avenue', suburb: 'Castle Hill', postcode: '2154' },
-    phone: '(02) 9899 3256', email: 'castlehill@roofracksgalore.com.au',
-    lat: -33.7252, lng: 150.9775, mapUrl: 'https://goo.gl/maps/QebgyjaDAjpKVDw96',
-    hours: STANDARD_HOURS, clickAndCollect: true,
-    gallery: { id: 18, ext: 'jpg' },
-    images: [
-      { src: 'castlehill-front.webp', alt: 'Roof Racks Galore Castle Hill store front on Anella Avenue' },
-      { src: 'castlehill-inside-1.webp', alt: 'Castle Hill showroom with roof top tents, awnings and roof boxes on display' },
-      { src: 'castlehill-inside-2.webp', alt: 'Castle Hill showroom aisle with bike racks and accessories' }
-    ],
-    seoText: [
-      'Roof Racks Galore Castle Hill provides premium roof racks, cargo systems, and vehicle accessories for work, travel, and outdoor adventure across Sydney’s north-west. Whether you’re a tradie needing extra carrying capacity, a family preparing for a holiday road trip, or an outdoor enthusiast loading up bikes, kayaks, or camping gear, we’ve got the right setup for your vehicle.',
-      'Our experienced team offers trusted advice and professional installation, helping customers travel with confidence and convenience. We proudly serve Castle Hill, Baulkham Hills, Kellyville, Bella Vista, Dural, Glenhaven, Rouse Hill, Parramatta, and surrounding suburbs with industry-leading brands and expert service.',
-      'From weekends exploring the Blue Mountains and Hawkesbury region, to coastal escapes along the NSW coastline or camping trips further afield, we’ll help make sure your setup is secure, reliable, and ready for the journey ahead.'
-    ],
-    areasServed: ['Castle Hill', 'Baulkham Hills', 'Kellyville', 'Bella Vista', 'Dural', 'Glenhaven', 'Rouse Hill', 'Parramatta'],
-    onDisplay: ['foothill', 'darcheSolar', 'dome1300', 'cruz430', 'easyTrip', 'hangOn'],
-    faqs: [
-      { q: 'Can the Castle Hill team set my vehicle up for the Blue Mountains or the Hawkesbury?', a: 'Yes. Bring your vehicle in and tell the team what you’re carrying and where you’re headed. They’ll recommend a setup to suit it, from roof racks and bike carriers to awnings and roof top tents, and can fit it for you in store.' },
-      { q: 'Can I get a roof rack fitted at Castle Hill?', a: 'Yes. The Castle Hill team installs roof racks, bike racks, awnings, roof boxes and touring accessories. Book an installation online or call the store on (02) 9899 3256 to arrange a time.' },
-      { q: 'I’m in Kellyville or Parramatta — is Castle Hill my closest store?', a: 'For most of Sydney’s north-west, yes. Castle Hill serves Baulkham Hills, Kellyville, Bella Vista, Dural, Glenhaven, Rouse Hill, Parramatta and the surrounding suburbs.' },
-      { q: 'Can I see roof top tents in person at Castle Hill?', a: 'Yes. The Castle Hill showroom has roof top tents and awnings on display alongside roof boxes and bike racks, so you can see how they open and pack down before you buy. Call ahead if you’re coming in for a particular model.' },
-      { hours: true },
-      { nearest: true }
-    ]
-  }
-};
-
+// Store records (STORES, STORE_PRODUCTS) live in stores-data.js.
 const STORE_SLUG = STORES[new URLSearchParams(location.search).get('store')] ? new URLSearchParams(location.search).get('store') : 'north-lakes';
 const STORE = STORES[STORE_SLUG];
 const DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
@@ -525,11 +393,13 @@ function renderStore() {
   ].filter(Boolean).map(x => `<div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg><h4>${x.h}</h4><p>${x.p}</p></div>`).join('');
 
   document.getElementById('storeDisplayHeading').textContent = `On Display at ${s.name}`;
-  document.getElementById('storeDisplayTrack').innerHTML = s.onDisplay.map(k => plpCardHTML(PRODUCTS[k], { vrs: false })).join('');
+  document.getElementById('storeDisplayTrack').innerHTML = s.onDisplay.map(k => plpCardHTML(STORE_PRODUCTS[k], { vrs: false })).join('');
 
   document.getElementById('storeLocalHeading').textContent = `${s.area} Roof Racks & Touring Accessories`;
   document.getElementById('storeLocalCopy').innerHTML = s.seoText.map(t => `<p>${t}</p>`).join('');
   document.getElementById('storeAreas').innerHTML = s.areasServed.map(a => `<li>${a}</li>`).join('');
+  // No suburb list in the store's copy (Kedron) → no "Areas we serve".
+  document.getElementById('storeAreas').hidden = document.getElementById('storeAreasHeading').hidden = !s.areasServed.length;
 
   const nearest = NEARBY[0];
   const faqs = s.faqs.map(f => {
@@ -548,12 +418,12 @@ function renderStore() {
   document.getElementById('storeNearby').innerHTML = NEARBY.map(n => {
     const page = rrgStorePageHref(n.name);
     return `
-      <div class="store-nearby-card">
+      <div class="store-nearby-card${page ? ' has-page' : ''}">
         <strong>${page ? `<a class="store-page-link" href="${page}">${n.name}</a>` : n.name}</strong>
         <span class="store-nearby-km">About ${n.km}km away</span>
         <span>${n.street}, ${n.city} ${n.postcode}</span>
-        <a href="tel:${n.phone.replace(/[^0-9]/g, '')}">${n.phone}</a>
-        ${page ? `<a class="store-page-cta" href="${page}">View store ›</a>` : `<a class="store-page-cta" href="${n.mapLink}" target="_blank" rel="noopener noreferrer">Get directions ›</a>`}
+        <a class="store-nearby-phone" href="tel:${n.phone.replace(/[^0-9]/g, '')}">${n.phone}</a>
+        ${page ? `<span class="store-page-cta" aria-hidden="true">View store ›</span>` : `<a class="store-page-cta" href="${n.mapLink}" target="_blank" rel="noopener noreferrer">Get directions ›</a>`}
       </div>`;
   }).join('');
 
@@ -562,7 +432,7 @@ function renderStore() {
   document.getElementById('storeLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
     { '@type': 'AutoPartsStore', '@id': origin + s.url, name: `Roof Racks Galore ${s.name}`, url: origin + s.url,
       // Live Magento image paths (store.images); the prototype's copies are resized .webp.
-      image: s.images.map(im => `${origin}/pub/media/wysiwyg/gallery/locations/${s.gallery.id}/${im.src.replace(/\.webp$/, '.' + s.gallery.ext)}`),
+      image: s.images.map(im => `${origin}/pub/media/wysiwyg/gallery/locations/${im.live}`),
       telephone: s.phone, email: s.email,
       address: { '@type': 'PostalAddress', streetAddress: s.address.street, addressLocality: s.address.suburb, addressRegion: s.state, postalCode: s.address.postcode, addressCountry: 'AU' },
       geo: { '@type': 'GeoCoordinates', latitude: s.lat, longitude: s.lng },
