@@ -19,11 +19,12 @@ The live page has strong copy (roof types, load ratings, bars vs platforms, setu
 | # | Section | Build | Notes |
 |---|---|---|---|
 | 1.1 | Breadcrumbs | Home › Fit My Vehicle | |
-| 1.2 | **Hero (contained)** | New `.page-hero` | H1 "Find the Right Roof Rack for Your Vehicle" + the live intro on the left; the **Fit Finder** on the right (the header drawer's Make → Model → Year/Body/Roof cascade, `initInlineFitFinders()`). View Results sets the vehicle and lands on its VLP. |
+| 1.2 | **Hero (contained)** | New `.page-hero` | H1 "Find the Right Roof Rack for Your Vehicle" + the live intro on the left, the live touring photo on the right (16:9, max 360px tall). |
+| 1.2a | **Fit Finder bar** | `.fit-finder-widget` (as on the VCLP) | Full width under the hero, all fields in one row: the header drawer's Make → Model → Year/Body/Roof cascade (`initInlineFitFinders()`). View Results sets the vehicle and lands on its VLP. Moved out of the hero on 2026-09-30 (Brenton: it didn't sit right squeezed into the hero, and didn't match the other pages). |
 | 1.3 | Your vehicle bar | The home page's `.home-vehicle-bar` | Only while a vehicle is saved: "Shopping for your Toyota Hilux?" → its VLP / Change vehicle. |
 | 1.4 | Trust row | `.trust-row` | Over 200,000 Racks Fitted · 35+ Fitment Centres (→ Store Finder) · Expert Fitting In-Store · Rack Fit Guarantee. |
-| 1.5 | Why trust our fit advice | New `.split-media` | Live copy beside the live fitter photo. |
-| 1.6 | **What roof type does your vehicle have?** | New `.roof-types` | 6 cards with RRG's own line-art diagrams from the live page (`_shared/fit-guide/roof-*.webp`). |
+| 1.5 | Why trust our fit advice | New `.split-media` | Live copy beside the live fitter photo, landscape and capped at 320px so the copy has no big gaps above and below (2026-09-30). |
+| 1.6 | **What roof type does your vehicle have?** | New `.roof-types` | 6 compact cards, the diagram beside the copy, with RRG's own line-art diagrams from the live page (`_shared/fit-guide/roof-*.webp`) at their true proportions (the first pass stretched them vertically; fixed 2026-09-30). |
 | 1.7 | **How much weight can your roof rack carry?** | New `.load-panels` + `.callout` | Static (parked) and dynamic (driving) side by side; "The lower number wins" pulled out as a callout. |
 | 1.8 | Bars, legs, platforms & trays | New `.info-cards` | Legs / Bars / Platforms & Trays, each with the shop-by line art and a shop link. |
 | 1.9 | Choosing the right setup | `.info-cards` + `.callout` | Weekend Adventurer / Tradie / Family with photos and shop links; the live "one mistake we see all the time" as a callout. |

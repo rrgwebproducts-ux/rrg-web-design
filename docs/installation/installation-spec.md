@@ -21,9 +21,9 @@ The live page is a photo with old logos baked in, a pipe-separated list of what'
 | # | Section | Build | Notes |
 |---|---|---|---|
 | 1.1 | Breadcrumbs | Home › Roof Rack Installation | |
-| 1.2 | **Hero (contained)** | `.page-hero` | H1 "Roof Rack Installation & Fitting", the live "why fit professionally" copy, **Book a Fitting** (gold → `#book`) + See Fitting Costs (→ `#costs`). The live photo, cropped to remove its baked-in old logos. |
+| 1.2 | **Hero (contained)** | `.page-hero` | H1 "Roof Rack Installation & Fitting", the live "why fit professionally" copy, **Book a Fitting** (gold → `#book`) + See Fitting Costs (→ `#costs`). The live photo, cropped to remove its baked-in old logos; 16:9, max 360px tall (was taller, 2026-09-30). The photo choice is still open. |
 | 1.3 | Trust row | `.trust-row` | Covered by Our Warranty · Rack Fit Guarantee · Over 200,000 Racks Fitted (30+ years) · 35+ Fitting Centres. |
-| 1.4 | What we fit | `.cat-tile` in a new 4-column grid | The live list as tiles: Roof Racks & Platforms, Bike Racks, Kayak & SUP Carriers, Roof Boxes, Awnings & Roof Top Tents, Roller Shutters, Van Fit-Outs & Ladder Racks, Accessories. |
+| 1.4 | What we fit | The VLP's tile grid (`.cat-tile-grid--main`) | **Roof Racks & Platforms** as the large feature tile in its own column (with "See Roof Rack Fitting Costs"), and the rest in two rows beside it: Bike Racks, Kayak & SUP Carriers, Roof Boxes, Awnings & Roof Top Tents, Roller Shutters, Van Fit-Outs & Ladder Racks, Accessories. The spare space is a dark **"Something else? We fit most things → Book a fitting"** tile (`.cat-tile--ask`), the way the VLP's Store Finder tile fills its grid (Brenton, 2026-09-30: the first pass's 4-across tiles were too big). |
 | 1.5 | How it works | `.steps` + `.callout` | Choose → Book → Fitted & Tested. "How long does it take?" callout: 30 minutes to 8 hours (live). |
 | 1.6 | **Fitting costs** (`#costs`) | New `.estimator` + `.price-groups` | Section 4. |
 | 1.7 | **Book a Fitting** (`#book`) | New `.booking` | Section 5. |

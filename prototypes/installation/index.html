@@ -135,7 +135,7 @@
   <!-- 3.3 — what we fit (the live page's list, as category tiles). -->
   <section class="cat-tile-section">
     <h2 class="related-heading">What We Fit</h2>
-    <div class="cat-tile-grid cat-tile-grid--four" id="installFitGrid"></div>
+    <div class="cat-tile-grid cat-tile-grid--main" id="installFitGrid"></div>
   </section>
 
   <!-- 3.4 — how it works. -->
@@ -274,22 +274,37 @@
 <script type="application/ld+json" id="installLd">{}</script>
 <script>
 // ==== What we fit (spec 3.3) ========================================================
-// The live page's list, as category tiles (Figma tile images, _shared/category-tiles/).
+// The VLP's tile grid (Brenton, 2026-09-30): Roof Racks & Platforms as the large feature tile in
+// its own column, the rest in two rows beside it. Seven categories leave one space in those two
+// rows, filled by a "something else?" booking tile — the same idea as the VLP's Store Finder
+// tile. Figma tile images, _shared/category-tiles/.
 const INSTALL_FITS = [
-  { slug: 'roof-racks', label: 'Roof Racks & Platforms' },
   { slug: 'bike-racks', label: 'Bike Racks', href: '../plp/index.html' },
-  { slug: 'water-sports', label: 'Kayak & SUP Carriers' },
+  { slug: 'water-sports', label: 'Kayak & SUP Carriers', cta: 'Shop Kayak & SUP' },
   { slug: 'roof-boxes', label: 'Roof Boxes' },
-  { slug: 'roof-top-tents', label: 'Awnings & Roof Top Tents' },
+  { slug: 'roof-top-tents', label: 'Awnings & Roof Top Tents', cta: 'Shop Awnings & RTTs' },
   { slug: 'roller-shutters', label: 'Roller Shutters' },
-  { slug: 'trade-work', label: 'Van Fit-Outs & Ladder Racks' },
+  { slug: 'trade-work', label: 'Van Fit-Outs & Ladder Racks', cta: 'Shop Trade & Work' },
   { slug: 'other-accessories', label: 'Accessories' }
 ];
-document.getElementById('installFitGrid').innerHTML = INSTALL_FITS.map(c => `
-  <a class="cat-tile cat-tile--compact" href="${c.href || '#'}">
+document.getElementById('installFitGrid').innerHTML = `
+  <div class="cat-tile cat-tile--feature">
+    <a class="cat-tile-media" href="#"><img src="../_shared/category-tiles/roof-racks.webp" alt="" loading="lazy"><span class="cat-tile-title">Roof Racks &amp; Platforms</span></a>
+    <div class="cat-tile-body">
+      <p>Our most common fit, from a 2 bar removable rack ($120) to a full platform with no drilling ($280). Every rack is torqued to spec and load-tested before you drive away.</p>
+      <a class="btn btn-outline btn-block" href="#costs">See Roof Rack Fitting Costs</a>
+    </div>
+  </div>
+  ${INSTALL_FITS.map(c => `
+  <a class="cat-tile cat-tile--standard" href="${c.href || '#'}">
     <span class="cat-tile-media"><img src="../_shared/category-tiles/${c.slug}.webp" alt="" loading="lazy"><span class="cat-tile-title">${c.label}</span></span>
-    <span class="cat-tile-cta">Shop ${c.label}<span aria-hidden="true"> ›</span></span>
-  </a>`).join('');
+    <span class="cat-tile-cta">${c.cta || `Shop ${c.label}`}<span aria-hidden="true"> ›</span></span>
+  </a>`).join('')}
+  <a class="cat-tile cat-tile--ask" href="#book">
+    <strong>Something else?</strong>
+    <span>We fit most things. Tell us what you've got and your store will quote it.</span>
+    <span class="cat-tile-ask-cta">Book a fitting ›</span>
+  </a>`;
 
 // ==== Fitting prices (spec Section 4) ===============================================
 // The live price table, verbatim prices, regrouped for customers. The internal fit-charge SKU

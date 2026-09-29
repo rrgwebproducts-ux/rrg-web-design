@@ -2108,24 +2108,26 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .page-hero h1{margin-bottom:12px;}
 .page-hero-intro p{margin:0 0 14px;font-size:16px;line-height:1.6;color:var(--rrg-grey-700);}
 .page-hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;}
-.page-hero-media{border-radius:var(--radius);overflow:hidden;aspect-ratio:4 / 3;background:var(--rrg-bg);}
+/* 16:9 capped at 360px — the first 4:3 pass was too tall (Brenton, 2026-09-30). */
+.page-hero-media{border-radius:var(--radius);overflow:hidden;aspect-ratio:16 / 9;max-height:360px;background:var(--rrg-bg);}
 .page-hero-media img{width:100%;height:100%;object-fit:cover;}
-.page-hero .fit-finder-widget{margin:0;background:var(--rrg-black);}
-.page-hero .fit-finder-widget .ff-head p{flex-basis:100%;}
-.page-hero .fit-finder-widget .ff-row{grid-template-columns:1fr 1fr;}
-.page-hero .fit-finder-widget .ff-row .btn{grid-column:1 / -1;}
-.page-hero + .home-vehicle-bar{margin-top:24px;}
+.page-hero + .fit-finder-widget{margin-top:28px;}
 
 /* Section with copy beside a photo. */
-.split-media{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center;}
+.split-media{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px;align-items:center;}
 .split-media .content-block{margin:0;}
-.split-media img{width:100%;border-radius:var(--radius);aspect-ratio:4 / 3;object-fit:cover;}
+/* Landscape and capped, so a short block of copy doesn't leave big gaps above and below it. */
+.split-media img{width:100%;height:auto;border-radius:var(--radius);aspect-ratio:3 / 2;max-height:320px;object-fit:cover;}
 
 /* Roof type cards (RRG's own line-art diagrams). */
 .roof-types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
-.roof-type{border:1px solid var(--rrg-line);border-radius:var(--radius);padding:18px 20px 20px;background:#fff;}
-.roof-type img{display:block;width:100%;max-width:300px;margin:0 auto 12px;}
-.roof-type h3{margin:0 0 6px;font-size:22px;}
+/* Compact: the diagram beside the copy. height:auto keeps the diagram's own proportions — the
+   first pass stretched them vertically (the width/height attributes fixed the height while CSS
+   changed the width). */
+.roof-type{display:grid;grid-template-columns:140px minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:16px;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:14px 16px;background:#fff;}
+.roof-type img{grid-row:1 / 3;align-self:center;display:block;width:100%;height:auto;}
+.roof-type h3{grid-column:2;margin:0 0 4px;font-size:20px;}
+.roof-type p{grid-column:2;}
 .roof-type p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
 
 /* Static vs dynamic load rating. */
@@ -2227,7 +2229,7 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 }
 @media (max-width:520px){
   .roof-types,.info-cards,.booking-grid{grid-template-columns:1fr;}
-  .page-hero .fit-finder-widget .ff-row{grid-template-columns:1fr 1fr;}
+  .roof-type{grid-template-columns:110px minmax(0,1fr);}
   .booking-form{padding:18px 16px;}
 }
 
@@ -2237,5 +2239,9 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .booking-aside-call{margin:14px 0 0;}
 .booking-sent-meta{margin:10px 0 0;font-size:13px;color:var(--rrg-grey-700);}
 /* Four-across category tiles (Installation "What we fit"). */
-.cat-tile-grid--four{grid-template-columns:repeat(4,minmax(0,1fr));}
-@media (max-width:900px){ .cat-tile-grid--four{grid-template-columns:repeat(2,minmax(0,1fr));} }
+/* "Something else?" tile — fills the spare space beside the feature tile (Installation's What We
+   Fit), the way the VLP's Store Finder tile does. */
+.cat-tile--ask{justify-content:center;gap:8px;padding:20px;background:var(--rrg-charcoal);border-color:var(--rrg-charcoal);color:var(--rrg-on-dark-muted);font-size:14px;line-height:1.5;}
+.cat-tile--ask strong{font-family:'Barlow Condensed',Arial,sans-serif;font-size:24px;text-transform:uppercase;color:#fff;line-height:1.1;}
+.cat-tile-ask-cta{margin-top:4px;font-weight:700;color:var(--rrg-cta);}
+a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
