@@ -1188,6 +1188,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fitted-upsell-checkbox .fitted-sub{display:block;color:var(--rrg-gold-text);font-size:12px;margin-top:2px;}
 
 .admin-section h5 .admin-note{text-transform:none;font-weight:400;color:var(--rrg-grey-400);letter-spacing:0;}
+.admin-section p.admin-note{margin:6px 0 0;font-size:12px;line-height:1.4;color:var(--rrg-grey-600);}
 .admin-radio-row{display:flex;flex-direction:column;gap:6px;margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--rrg-line-soft);}
 .admin-radio-row label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--rrg-grey-700);cursor:pointer;}
 
@@ -1690,4 +1691,140 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
   .exdemo-slideout-head p{font-size:13px!important;}
   .exdemo-option .eo-note{font-size:13px!important;}
+}
+
+/* ==== Trust banner + brand strip — VCLP and VLP (moved from the VCLP page 2026-09-29) ==== */
+/* Trust/install banner — full-bleed, adapts the existing .install-cta-panel "no-video"
+   component (photo bg + dark overlay + USP list + CTA) to a full-width band with two
+   CTAs instead of one, and a reviews badge instead of the fitment-count link used on
+   PDP templates. */
+.vclp-trust-banner{position:relative;background:var(--rrg-charcoal);color:#fff;padding:48px 0;margin-bottom:var(--space-section);overflow:hidden;}
+.vclp-trust-banner img.install-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;}
+.vclp-trust-inner{position:relative;max-width:760px;text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.vclp-trust-inner h2{margin:0;color:#fff;line-height:1.15;}
+.vclp-reviews-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:#eee;}
+.vclp-trust-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+
+.brands-section{background:var(--rrg-bg);padding:36px 0;margin-bottom:0;}
+.brands-section h2{text-align:center;margin-bottom:24px;}
+/* The grey brands band is the last thing in <main> — the footer sits flush against it. */
+main:has(> .brands-section:last-child) + .rrg-footer{margin-top:0;}
+.brands-track{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;}
+/* Bounding-box sizing, not a fixed height — MAXTRAX/Front Runner's source canvas has much
+   more built-in clear-space than Rhino Rack/Yakima's, so a fixed height renders MAXTRAX
+   visibly smaller (see feedback_pdp_design_review.md's brand-logo gotcha). */
+.brands-track img{max-width:150px;max-height:32px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.75;}
+
+/* ==== VLP — Vehicle Landing Page components (docs/vlp/vlp-spec.md, 2026-09-29) ============
+   Generic names on purpose: the category tiles and product carousel are reusable on any page. */
+
+/* Short line under a section heading. */
+.section-intro{font-size:15px;color:var(--rrg-grey-600);line-height:1.6;margin:-8px 0 20px;max-width:900px;}
+
+/* Category tiles (spec Section 7). Photo with the category name overlaid on a dark top scrim;
+   the whole tile is one link. The label strip underneath is quiet text, not a gold button —
+   the Figma's 25 gold "Shop X" buttons were the yellow overload flagged in the 2026-09-18
+   review. Only the feature tile carries a filled CTA. */
+.cat-tile-section{margin:var(--space-section) 0;}
+.cat-tile-band{background:var(--rrg-bg);padding:40px 0;margin:var(--space-section) 0;}
+.cat-tile-grid{display:grid;gap:20px;}
+.cat-tile-grid--main,.cat-tile-grid--compact{grid-template-columns:repeat(6,minmax(0,1fr));}
+.cat-tile{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;color:var(--rrg-text);text-decoration:none;transition:box-shadow var(--t-fast) ease,transform var(--t-fast) ease,border-color var(--t-fast) ease;}
+a.cat-tile:hover,.cat-tile--feature:hover{box-shadow:var(--shadow);border-color:var(--rrg-line-strong);transform:translateY(-2px);}
+.cat-tile-media{position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:var(--rrg-charcoal);}
+.cat-tile-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform var(--t-slide) ease;}
+.cat-tile:hover .cat-tile-media img{transform:scale(1.04);}
+.cat-tile-media::after{content:'';position:absolute;inset:0 0 auto;height:60%;background:linear-gradient(to bottom,rgba(0,0,0,.72),rgba(0,0,0,0));pointer-events:none;}
+.cat-tile-title{position:absolute;z-index:1;top:12px;left:10px;right:10px;text-align:center;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;font-size:26px;line-height:1.05;text-shadow:0 1px 3px rgba(0,0,0,.4);}
+.cat-tile-cta{display:flex;align-items:center;justify-content:center;gap:2px;padding:12px 10px;font-weight:700;font-size:14px;text-align:center;border-top:1px solid var(--rrg-line-soft);margin-top:auto;}
+a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
+.cat-tile--compact .cat-tile-title{font-size:22px;}
+/* Standard tiles share rows with the two-row feature tile, so a row can be taller than a square
+   photo + label — the photo grows to fill it rather than leaving a gap above the label. */
+.cat-tile--standard .cat-tile-media{aspect-ratio:auto;flex:1 1 auto;min-height:170px;}
+/* Feature tile — columns 1–2, two rows tall, with copy and the one gold CTA. */
+.cat-tile--feature{grid-column:1 / span 2;grid-row:span 2;}
+.cat-tile--feature .cat-tile-media{aspect-ratio:auto;height:220px;flex:0 0 auto;}
+.cat-tile--feature .cat-tile-title{font-size:40px;top:18px;}
+.cat-tile-body{display:flex;flex-direction:column;gap:12px;padding:18px 20px 20px;flex:1;}
+.cat-tile-body p{margin:0;font-size:15px;line-height:1.6;color:var(--rrg-grey-700);}
+.cat-tile-body .btn{margin-top:auto;}
+
+/* Store Finder tile (spec 5.6) — the Showroom Finder's map (#showroomMap) drawn behind a
+   compact black block. Sits last in the main grid and spans every column left over in its
+   row (--sft-span, set by vlpSizeStoreFinder()), so it fills the space a removed
+   vehicle-specific tile leaves behind — same idea as the PDP's Get It Installed panel
+   widening when there's no video. */
+.store-finder-tile{--sft-span:2;grid-column:span var(--sft-span);position:relative;min-height:258px;border-radius:var(--radius);overflow:hidden;background:var(--rrg-black);color:#fff;display:flex;flex-direction:column;justify-content:space-between;}
+.store-finder-tile .showroom-map{position:absolute;inset:0;margin:0;height:auto;border-radius:0;z-index:0;}
+.store-finder-tile .leaflet-tile-pane{filter:grayscale(1) invert(1) brightness(.85) contrast(.95);}
+/* Leaflet's zoom control moves bottom-right, clear of the content block (as in the Figma). */
+.store-finder-tile .leaflet-top.leaflet-left{top:auto;left:auto;bottom:8px;right:8px;}
+.store-finder-tile .leaflet-control-attribution{font-size:9px;background:rgba(0,0,0,.5);color:#bbb;}
+.store-finder-tile .leaflet-control-attribution a{color:#ddd;}
+.sft-content{position:relative;z-index:1;padding:20px 22px 28px;background:linear-gradient(to bottom,rgba(0,0,0,.92) 55%,rgba(0,0,0,0));pointer-events:none;}
+.sft-content>*{pointer-events:auto;}
+.sft-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.sft-badge{flex:0 0 44px;width:44px;height:44px;border-radius:var(--radius);background:var(--rrg-cta);color:var(--rrg-black);display:flex;align-items:center;justify-content:center;}
+.sft-badge svg{width:26px;height:26px;}
+.sft-head h2{margin:0;color:#fff;font-size:40px;font-style:italic;line-height:1;}
+.sft-sub{margin:2px 0 0;font-size:14px;color:var(--rrg-on-dark-muted);}
+.sft-form{display:flex;gap:10px;flex-wrap:wrap;}
+.sft-postcode{flex:1 1 170px;display:flex;align-items:center;background:#fff;border-radius:var(--radius);overflow:hidden;}
+.sft-postcode input{flex:1;min-width:0;border:0;padding:10px 12px;font:inherit;font-size:14px;color:var(--rrg-text);outline:none;}
+.sft-postcode button{border:0;background:none;padding:0 12px;font-size:20px;color:var(--rrg-grey-500);cursor:pointer;}
+.sft-form .btn{flex:0 0 auto;}
+.sft-nearest{position:relative;z-index:1;margin:0;padding:10px 22px;font-size:14px;display:flex;align-items:center;gap:6px;pointer-events:none;align-self:flex-start;background:rgba(0,0,0,.65);border-top-right-radius:var(--radius);}
+.sft-nearest svg{width:16px;height:16px;color:var(--rrg-cta);flex:0 0 16px;}
+.sft-nearest a{color:#fff;pointer-events:auto;}
+
+/* Product-card carousel (spec Section 8) — the track also carries .plp-results.is-grid, so the
+   cards are the PLP family's grid card exactly (plp.css); this only turns the grid into one
+   scroll-snapping row. */
+.product-carousel-section{margin:var(--space-section) 0;}
+.product-carousel-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.product-carousel-viewall{font-weight:700;font-size:14px;color:var(--rrg-red);white-space:nowrap;}
+.product-carousel{position:relative;}
+.product-carousel-track.plp-results.is-grid{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - 4 * 18px) / 5);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:4px 2px 8px;}
+.product-carousel-track::-webkit-scrollbar{display:none;}
+.product-carousel-track>.plp-card{scroll-snap-align:start;}
+.product-carousel-track>.plp-card:hover{transform:none;}
+.product-carousel-nav{position:absolute;top:40%;transform:translateY(-50%);z-index:2;width:36px;height:36px;border-radius:50%;background:#fff;border:1px solid var(--rrg-line);box-shadow:0 2px 6px rgba(0,0,0,.15);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--rrg-text);}
+.product-carousel-nav.prev{left:-14px;}
+.product-carousel-nav.next{right:-14px;}
+.product-carousel-nav:disabled{opacity:0;pointer-events:none;}
+
+/* Page vehicle ≠ saved vehicle notice (spec Section 4) — the fitment "unknown" amber tier,
+   secondary buttons only. */
+.vlp-vehicle-notice{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin-top:12px;padding:12px 44px 12px 16px;background:var(--rrg-unknown-bg);border-left:4px solid var(--rrg-unknown);border-radius:var(--radius);color:var(--rrg-unknown-text);}
+.vlp-vehicle-notice p{margin:0;font-size:14px;}
+.vlp-vehicle-notice-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.vlp-vehicle-notice-close{position:absolute;top:6px;right:8px;border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:inherit;padding:4px;}
+
+@media (max-width:1100px){
+  .cat-tile-title{font-size:22px;}
+  .cat-tile--compact .cat-tile-title{font-size:19px;}
+  .product-carousel-track.plp-results.is-grid{grid-auto-columns:calc((100% - 3 * 18px) / 4);}
+}
+@media (max-width:900px){
+  .cat-tile-grid{gap:12px;}
+  .cat-tile-grid--main{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .cat-tile--feature{grid-column:1 / -1;grid-row:auto;}
+  .cat-tile--standard .cat-tile-media{aspect-ratio:1/1;flex:0 0 auto;min-height:0;}
+  .cat-tile-grid--compact{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .store-finder-tile{grid-column:1 / -1;}
+  .cat-tile-band{padding:28px 0;}
+  .product-carousel-track.plp-results.is-grid{grid-auto-columns:calc((100% - 18px) / 2.2);}
+  .product-carousel-nav{display:none;}
+}
+@media (max-width:640px){
+  .cat-tile-title{font-size:20px;top:8px;}
+  .cat-tile--compact .cat-tile-title{font-size:16px;left:4px;right:4px;}
+  .cat-tile--feature .cat-tile-title{font-size:32px;}
+  .cat-tile-cta{font-size:13px;padding:10px 6px;}
+  .cat-tile--compact .cat-tile-cta{font-size:12px;}
+  .cat-tile--compact .cat-tile-cta span{display:none;}
+  .sft-head h2{font-size:32px;}
+  .sft-postcode input{font-size:16px;}
+  .product-carousel-track.plp-results.is-grid{grid-auto-columns:72%;}
 }

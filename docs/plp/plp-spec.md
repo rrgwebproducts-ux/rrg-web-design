@@ -30,7 +30,7 @@ Build category pages that (a) work exactly like a normal ecommerce PLP when no v
 | **PLP** | Standard category listing page. |
 | **VRS** (Vehicle Rack Set) | A product that is exact-fitment-locked to a specific vehicle roof type — currently only Roof Racks, backbones, and spines. RRG tracks real fitment data for these categories and *only* these — nothing else (not Bike Racks, Cargo Boxes, Tie-Downs, etc.). |
 | **VPLP** | The PLP variant listing VRS products (e.g. Roof Racks for a set vehicle). Not a separate template from a build standpoint — it's the "exact-fitment-locked category" branch of the same Vehicle-Set PLP state (Section 2). |
-| **VCLP** (Vehicle Category Landing Page) | A different, already-built page type (`prototypes/vehicle-category-landing/`) — one page per make/model, not per category. **Correction, 2026-09-17:** this project previously mis-called it "VLP." A true VLP is a distinct, not-yet-built page type — don't reuse that abbreviation for this page. See [[project_pdp_vehicle_landing_page]]. |
+| **VCLP** (Vehicle Category Landing Page) | A different, already-built page type (`prototypes/vehicle-category-landing/`) — one page per make/model, not per category. **Correction, 2026-09-17:** this project previously mis-called it "VLP." A true VLP (Vehicle Landing Page — one per exact vehicle, where the Fit My Vehicle drawer lands) is a distinct page type, built 2026-09-29 (`prototypes/vlp/`, `docs/vlp/vlp-spec.md`) — don't reuse that abbreviation for this page. See [[project_pdp_vehicle_landing_page]]. |
 
 ---
 

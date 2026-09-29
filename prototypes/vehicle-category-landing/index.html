@@ -70,16 +70,6 @@
   /* .content-block (h2/h3/p/li typography + margin) now lives in shared.css — see the
      comment there (2026-09-16) for why this moved out of a page-local rule. */
 
-  /* Trust/install banner — full-bleed, adapts the existing .install-cta-panel "no-video"
-     component (photo bg + dark overlay + USP list + CTA) to a full-width band with two
-     CTAs instead of one, and a reviews badge instead of the fitment-count link used on
-     PDP templates. */
-  .vclp-trust-banner{position:relative;background:var(--rrg-charcoal);color:#fff;padding:48px 0;margin-bottom:var(--space-section);overflow:hidden;}
-  .vclp-trust-banner img.install-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;}
-  .vclp-trust-inner{position:relative;max-width:760px;text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px;}
-  .vclp-trust-inner h2{margin:0;color:#fff;line-height:1.15;}
-  .vclp-reviews-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:#eee;}
-  .vclp-trust-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
 
 
   /* Model/Generation table — added 2026-09-15 per Brenton: the Hilux has been on sale in
@@ -101,16 +91,8 @@
   .vclp-gen-table .gen-codes{color:var(--rrg-grey-600);font-size:14px;}
   .vclp-gen-table-note{font-size:14px;color:var(--rrg-grey-500);line-height:1.6;margin-top:10px;}
 
-  .brands-section{background:var(--rrg-bg);padding:36px 0;margin-bottom:0;}
-  .brands-section h2{text-align:center;margin-bottom:24px;}
-  /* The grey brands band is the last thing in <main> — the footer sits flush against it. */
-  main:has(> .brands-section:last-child) + .rrg-footer{margin-top:0;}
+  /* Brand strip + trust banner moved to shared.css (2026-09-29) — now shared with the VLP. */
   .faq-intro p{font-size:14px;color:var(--rrg-grey-600);line-height:1.7;max-width:760px;}
-  .brands-track{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;}
-  /* Bounding-box sizing, not a fixed height — MAXTRAX/Front Runner's source canvas has much
-     more built-in clear-space than Rhino Rack/Yakima's, so a fixed height renders MAXTRAX
-     visibly smaller (see feedback_pdp_design_review.md's brand-logo gotcha). */
-  .brands-track img{max-width:150px;max-height:32px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.75;}
 </style>
 </head>
 <body>

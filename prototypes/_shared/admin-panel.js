@@ -26,7 +26,8 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'grouped-bundle', label: 'Grouped/Bundle' },
     ] },
     { title: 'Category &amp; listing', items: [
-      { key: 'vehicle-category-landing', label: 'Vehicle Landing (VCLP)' },
+      { key: 'vehicle-category-landing', label: 'Vehicle Category Landing (VCLP)' },
+      { key: 'vlp', label: 'Vehicle Landing (VLP)' },
       { key: 'plp', label: 'PLP — Bike Racks' },
       { key: 'plp-camping', label: 'PLP — Camping' },
       { key: 'vplp', label: 'VPLP — Roof Racks' },
@@ -42,7 +43,7 @@ function buildSiteAdminPanel(currentKey) {
     { label: 'Product Pages (PDP)', href: 'docs/pdp/dev-brief-viewer.html' },
     { label: 'PLP / VPLP', href: 'docs/plp/plp-dev-brief-viewer.html' },
     { label: 'Search Results', href: 'docs/search-results/search-results-dev-brief-viewer.html' },
-    { label: 'Vehicle Landing (VCLP)', href: 'docs/vehicle-category-landing/vclp-dev-brief-viewer.html' },
+    { label: 'Vehicle Category Landing (VCLP)', href: 'docs/vehicle-category-landing/vclp-dev-brief-viewer.html' },
     { label: 'Header', href: 'docs/header/header-dev-brief-viewer.html' },
     { label: 'Footer', href: 'docs/footer/footer-dev-brief-viewer.html' },
   ];

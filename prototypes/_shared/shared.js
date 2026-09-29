@@ -1134,9 +1134,9 @@ function rrgStorePillsHTML(name) {
 // Cart notice — work too); the header's vehicle link and the PLP-family pages' Set/Change
 // Vehicle buttons are wired up to it here as well. Same backdrop/drawer convention as the Store
 // slide-out (.store-slideout*), its own instance.
-// Demo: Make/Model are fixed to Toyota Hilux, like the landing page's own widget — the only
-// vehicle this prototype's session knows (session-state.js). "Set My Vehicle" sets that session
-// vehicle and closes; production has full make/model cascades and real results routing.
+// Demo: Make → Model → Year/Body/Roof cascade over the two vehicles this prototype's session
+// knows, Toyota Hilux and Ford Ranger (FIT_FINDER_VEHICLES below, 2026-09-29 for the VLP).
+// "Set My Vehicle" sets that session vehicle; from a header trigger it then lands on the VLP.
 function buildFitFinderDrawer() {
   if (document.getElementById('fitFinderDrawerBackdrop')) return;
   const backdrop = document.createElement('div');
@@ -1156,27 +1156,11 @@ function buildFitFinderDrawer() {
             <p>Select your vehicle to see what fits it across the whole site.</p>
           </div>
           <div class="ff-row">
-            <select aria-label="Make"><option value="toyota">Toyota</option></select>
-            <select aria-label="Model"><option value="hilux">Hilux</option></select>
-            <select aria-label="Year range" data-ff-required>
-              <option value="" selected disabled>Year</option>
-              <option value="2024+">2024 Onwards (N90)</option>
-              <option value="2015-2023">2015–2023 (N80)</option>
-              <option value="2005-2015">2005–2015 (N70)</option>
-              <option value="pre-2005">Pre-2005</option>
-            </select>
-            <select aria-label="Body style" data-ff-required>
-              <option value="" selected disabled>Body Style</option>
-              <option value="double-cab">Double Cab (4dr Ute)</option>
-              <option value="xtra-cab">Xtra Cab</option>
-              <option value="single-cab">Single Cab</option>
-            </select>
-            <select aria-label="Roof type" data-ff-required>
-              <option value="" selected disabled>Roof Type</option>
-              <option value="bare">No Rails — Bare Roof</option>
-              <option value="styling-bar">Styling Bars Only (Non Load-Rated)</option>
-              <option value="aftermarket-rails">Aftermarket Rails Fitted</option>
-            </select>
+            <select aria-label="Make" data-ff-make>${ffOptions(FIT_FINDER_MAKES, 'Make')}</select>
+            <select aria-label="Model" data-ff-model disabled><option value="" selected disabled>Model</option></select>
+            <select aria-label="Year range" data-ff-required data-ff-field="years" disabled><option value="" selected disabled>Year</option></select>
+            <select aria-label="Body style" data-ff-required data-ff-field="bodies" disabled><option value="" selected disabled>Body Style</option></select>
+            <select aria-label="Roof type" data-ff-required data-ff-field="roofs" disabled><option value="" selected disabled>Roof Type</option></select>
             <button type="button" class="btn btn-cta" data-ff-submit disabled>Set My Vehicle</button>
           </div>
         </section>
@@ -1184,23 +1168,64 @@ function buildFitFinderDrawer() {
     </div>
   `;
   document.body.appendChild(backdrop);
+  const make = backdrop.querySelector('[data-ff-make]');
+  const model = backdrop.querySelector('[data-ff-model]');
   const required = [...backdrop.querySelectorAll('[data-ff-required]')];
   const submit = backdrop.querySelector('[data-ff-submit]');
-  const sync = () => { submit.disabled = required.some(s => !s.value); };
+  const reset = (sel, placeholder) => { sel.innerHTML = `<option value="" selected disabled>${placeholder}</option>`; sel.disabled = true; };
+  const sync = () => { submit.disabled = !model.value || required.some(s => !s.value); };
+  make.addEventListener('change', () => {
+    const models = Object.entries(FIT_FINDER_VEHICLES).filter(([, v]) => v.make === make.value).map(([key, v]) => [key, v.model]);
+    model.innerHTML = ffOptions(models, 'Model');
+    model.disabled = false;
+    required.forEach(s => reset(s, FF_PLACEHOLDERS[s.dataset.ffField]));
+    sync();
+  });
+  model.addEventListener('change', () => {
+    const v = FIT_FINDER_VEHICLES[model.value];
+    required.forEach(s => { s.innerHTML = ffOptions(v[s.dataset.ffField], FF_PLACEHOLDERS[s.dataset.ffField]); s.disabled = false; });
+    sync();
+  });
   required.forEach(s => s.addEventListener('change', sync));
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
   backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
+  // Opened from the header (Fit My Vehicle nav link, utility-bar vehicle link, a VLP's own
+  // Change Vehicle) → set the vehicle and land on its VLP (docs/vlp/vlp-spec.md Section 3).
+  // Opened anywhere else (PLP cards, Set/Change Vehicle on the PLP family, search strip, Add to
+  // Cart notice) → set it in place and stay on the page.
   submit.addEventListener('click', () => {
-    // The demo Fit Finder only offers the Toyota Hilux, so it sets exactly that — rrgSetSession('vehicleSet')
-    // would keep a Ford Ranger already chosen in Site Admin.
-    if (window.rrgSetVehicle) window.rrgSetVehicle('hilux');
+    const key = model.value;
+    if (window.rrgSetVehicle) window.rrgSetVehicle(key);
     closeFitFinderDrawer();
+    if (backdrop.dataset.mode === 'navigate') window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
   });
 }
 
-function openFitFinderDrawer() {
+// The two vehicles this prototype's session knows (RRG_VEHICLES, session-state.js), as a real
+// Make → Model → Year/Body/Roof cascade. Production has every make/model and maps the full
+// selection to one exact vehicle; the demo maps any Hilux or Ranger selection to that record.
+const FIT_FINDER_VEHICLES = {
+  hilux: { make: 'toyota', model: 'Hilux',
+    years: [['2024+', '2024 Onwards (N90)'], ['2015-2023', '2015–2023 (N80)'], ['2005-2015', '2005–2015 (N70)'], ['pre-2005', 'Pre-2005']],
+    bodies: [['double-cab', 'Double Cab (4dr Ute)'], ['xtra-cab', 'Xtra Cab'], ['single-cab', 'Single Cab']],
+    roofs: [['bare', 'No Rails — Bare Roof'], ['styling-bar', 'Styling Bars Only (Non Load-Rated)'], ['aftermarket-rails', 'Aftermarket Rails Fitted']] },
+  ranger: { make: 'ford', model: 'Ranger',
+    years: [['2022+', '2022 Onwards (P703)'], ['2015-2022', '2015–2022 (PX2/PX3)'], ['2011-2015', '2011–2015 (PX1)']],
+    bodies: [['double-cab', 'Double Cab (4dr Ute)'], ['super-cab', 'Super Cab'], ['single-cab', 'Single Cab']],
+    roofs: [['raised-rails', 'Raised Roof Rails'], ['bare', 'No Rails — Bare Roof']] }
+};
+const FIT_FINDER_MAKES = [['ford', 'Ford'], ['toyota', 'Toyota']];
+const FF_PLACEHOLDERS = { years: 'Year', bodies: 'Body Style', roofs: 'Roof Type' };
+function ffOptions(pairs, placeholder) {
+  return `<option value="" selected disabled>${placeholder}</option>` + pairs.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+}
+
+// mode 'navigate' = header trigger (lands on the VLP on submit); anything else stays in place.
+function openFitFinderDrawer(mode) {
   buildFitFinderDrawer();
-  document.getElementById('fitFinderDrawerBackdrop').classList.add('open');
+  const backdrop = document.getElementById('fitFinderDrawerBackdrop');
+  backdrop.dataset.mode = mode === 'navigate' ? 'navigate' : '';
+  backdrop.classList.add('open');
 }
 
 function closeFitFinderDrawer() {
@@ -1209,22 +1234,26 @@ function closeFitFinderDrawer() {
 }
 
 function initFitFinderTriggers() {
-  // Header vehicle link (desktop utility bar + mobile takeover) and the PLP-family pages' own
-  // Set/Change Vehicle buttons. On the Vehicle Category Landing Page, Change Vehicle (breadcrumb
-  // row) opens this same drawer — changing make/model — while its on-page Fit Finder narrows the
-  // Hilux down and hands off to the VPLP.
+  // Header vehicle link (desktop utility bar + mobile takeover) → navigate mode (lands on the VLP),
+  // and the PLP-family pages' own Set/Change Vehicle buttons → in place. On the Vehicle Category
+  // Landing Page, Change Vehicle (breadcrumb row) opens this same drawer in place — changing
+  // make/model — while its on-page Fit Finder narrows the Hilux down and hands off to the VPLP.
   document.querySelectorAll('[data-session="vehicleSet"]').forEach(el => {
     const link = el.closest('a');
-    if (link) link.setAttribute('data-open-fit-finder', '');
+    if (link) link.setAttribute('data-open-fit-finder', 'navigate');
   });
   if (document.querySelector('[data-plp-page]')) {
     document.querySelectorAll('[data-vclp-cta="set-vehicle"], [data-vclp-cta="change-vehicle"]').forEach(el => el.setAttribute('data-open-fit-finder', ''));
   }
   document.addEventListener('click', e => {
+    // The "Fit My Vehicle" nav link (desktop nav and the mobile menu, which mega-menu.js builds
+    // later) is matched by its text, so it needs no per-page markup change.
+    const navLink = e.target.closest('a');
+    const isFitMyVehicle = navLink && !navLink.hasAttribute('data-open-fit-finder') && navLink.textContent.trim() === 'Fit My Vehicle';
     const trigger = e.target.closest('[data-open-fit-finder]');
-    if (!trigger) return;
+    if (!trigger && !isFitMyVehicle) return;
     e.preventDefault();
-    openFitFinderDrawer();
+    openFitFinderDrawer(isFitMyVehicle ? 'navigate' : trigger.getAttribute('data-open-fit-finder'));
   });
 }
 
@@ -1613,6 +1642,12 @@ function applyStoreSessionDisplay() {
   const on = rrgSessionGet('storeSet');
   if (label) label.hidden = !on;
   link.textContent = on ? link.dataset.currentStoreName : 'Find A Store';
+  // VLP Store Finder tile's "Your Nearest Store" line mirrors the header's.
+  document.querySelectorAll('[data-sft-nearest]').forEach(a => {
+    a.textContent = link.textContent;
+    const line = a.closest('.sft-nearest');
+    if (line) line.hidden = !on;
+  });
 }
 document.addEventListener('rrg-session-change', applyStoreSessionDisplay);
 
@@ -1652,6 +1687,11 @@ function applyRegion(region) {
     if (viewAllRow) viewAllRow.hidden = region !== 'AU';
   });
   renderShowroomMapPins(region);
+  // VLP Store Finder tile subline — same AU-cached / single-store swap as the heading above.
+  document.querySelectorAll('[data-region-store-count]').forEach(el => {
+    if (!el.dataset.auCopy) el.dataset.auCopy = el.textContent;
+    el.textContent = region === 'AU' ? el.dataset.auCopy : `Our ${REGION_SINGLE_STORES[region].name} Store`;
+  });
 
   // Trust row founded/network claims
   const copy = REGION_TRUST_COPY[region];
@@ -2734,6 +2774,7 @@ document.addEventListener('DOMContentLoaded', () => {
   buildFitGallerySlideout();
   initCopyButtons();
   initFitGalleryCarousel();
+  initProductCarousels();
   initRegionSwitcher();
   layoutShortDesc();
   window.addEventListener('resize', () => {
@@ -2752,6 +2793,30 @@ document.addEventListener('DOMContentLoaded', () => {
   initPersistentBar('.rrg-search', '.rrg-sticky-header');
   initStickyCta();
 });
+
+// Product-card carousel (.product-carousel, VLP Popular Racks — docs/vlp/vlp-spec.md Section 8):
+// arrows scroll one view at a time and hide at either end. The track itself is a native
+// scroll-snap row, so touch swipe needs nothing here.
+function initProductCarousels() {
+  document.querySelectorAll('.product-carousel').forEach(carousel => {
+    const track = carousel.querySelector('.product-carousel-track');
+    const prev = carousel.querySelector('.product-carousel-nav.prev');
+    const next = carousel.querySelector('.product-carousel-nav.next');
+    if (!track) return;
+    const update = () => {
+      // 8px slack: scroll-snap can settle a few px off either end.
+      const max = track.scrollWidth - track.clientWidth - 8;
+      if (prev) prev.disabled = track.scrollLeft <= 8;
+      if (next) next.disabled = track.scrollLeft >= max;
+    };
+    prev?.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
+    next?.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior: 'smooth' }));
+    track.addEventListener('scroll', () => { clearTimeout(track._pcTimer); track._pcTimer = setTimeout(update, 60); });
+    new ResizeObserver(update).observe(track);
+    new MutationObserver(update).observe(track, { childList: true });
+    update();
+  });
+}
 
 // Sticky mobile Add-to-Cart bar (2026-09-11, backlog item 26) — shows whenever the real
 // Add to Cart button isn't currently on-screen, which covers both "starts below the fold
@@ -2797,6 +2862,7 @@ function buildAdminPanel() {
   const hasFitGallery = !!document.getElementById('fitGallerySection') && !isPlpPage;
   const hasVehicleFitNotes = !!document.getElementById('vehicleFitNotes');
   const hasShowroom = !!document.getElementById('showroom');
+  const isVlp = !!document.querySelector('[data-vlp-page]') && !!window.VLP_STATE;
   const initialVideo = detectInitialVideoState();
   const initialSale = detectInitialSaleState();
   const initialShipping = detectInitialShippingState();
@@ -2828,7 +2894,7 @@ function buildAdminPanel() {
   }
 
   // Nothing page-specific to preview (template index, standalone header) → no panel at all.
-  if (!isPdp && !isPlpPage && !hasFitGallery) return;
+  if (!isPdp && !isPlpPage && !hasFitGallery && !isVlp) return;
 
   const templateKey = location.pathname.split('/').filter(Boolean).slice(-2, -1)[0] || 'index';
   const STORE_KEY = 'rrgDemo:' + templateKey;
@@ -2856,6 +2922,19 @@ function buildAdminPanel() {
     if (hasShowroom) html += section('In-store', toggle('showroom', 'On display in-store (Showroom Finder)', true));
     html += section('Cart', '<div class="admin-toggle-label">Cart already contains</div>' +
       radios('cartConflict', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
+  }
+  if (isVlp) {
+    // VLP (docs/vlp/vlp-spec.md Sections 2 + 7.1). Neither control is saved (data-admin-nosave):
+    // the page vehicle comes from the URL, and the category list starts from that vehicle's own
+    // data, so a saved choice from the other vehicle would be wrong here.
+    const vs = window.VLP_STATE;
+    const nosave = html => html.replace(/<input /g, '<input data-admin-nosave ');
+    html += section('Page vehicle <span class="admin-note">(the landing URL — session vehicle is in Site Admin)</span>',
+      nosave(radios('vlpPageVehicle', [['hilux', 'Toyota Hilux N80'], ['ranger', 'Ford Ranger P703']], vs.pageKey)));
+    const cats = (typeof VLP_CATEGORIES !== 'undefined' ? VLP_CATEGORIES : []).filter(c => c.vehicleSpecific);
+    html += section('Vehicle-specific categories with results',
+      nosave(cats.map(c => toggle('vlpCat:' + c.slug, c.label, vs.vsAvailable.has(c.slug))).join('')) +
+      '<p class="admin-note">Untick one to remove its tile. The Store Finder widens to fill the gap; a section with nothing left hides.</p>');
   }
   if (hasFitGallery) {
     const count = document.getElementById('fitGallerySection').dataset.count || 0;
@@ -2937,7 +3016,7 @@ function buildAdminPanel() {
   // same way Site Admin's global state already persists. Site Admin → Reset clears them.
   const save = () => {
     const state = {};
-    panel.querySelectorAll('input').forEach(i => {
+    panel.querySelectorAll('input:not([data-admin-nosave])').forEach(i => {
       if (i.type === 'radio') { if (i.checked) state['r:' + i.name] = i.value; }
       else if (i.type === 'checkbox') state['c:' + i.dataset.adminFlag] = i.disabled && i.dataset.prev !== undefined ? i.dataset.prev === 'true' : i.checked;
       else state['n:' + i.dataset.adminInput] = i.value;
@@ -2964,8 +3043,13 @@ function buildAdminPanel() {
         case 'vehicleFitNotes': applyVehicleFitNotesFlag(on); break;
         case 'plpCompare': if (typeof applyPlpCompareFlag === 'function') applyPlpCompareFlag(on); break;
         case 'plpRibbons': if (typeof applyPlpRibbonsFlag === 'function') applyPlpRibbonsFlag(on); break;
+        default:
+          if (input.dataset.adminFlag.startsWith('vlpCat:') && window.vlpSetCategoryAvailable) window.vlpSetCategoryAvailable(input.dataset.adminFlag.slice(7), on);
       }
     });
+  });
+  panel.querySelectorAll('input[name="vlpPageVehicle"]').forEach(input => {
+    input.addEventListener('change', () => { if (input.checked && window.vlpSetPageVehicle) window.vlpSetPageVehicle(input.value); });
   });
   panel.querySelectorAll('input[name="plpHeroImage"]').forEach(input => {
     input.addEventListener('change', () => { if (input.checked && typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(input.value); });
@@ -3026,7 +3110,7 @@ function buildAdminPanel() {
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) {}
   if (saved) {
-    panel.querySelectorAll('input').forEach(i => {
+    panel.querySelectorAll('input:not([data-admin-nosave])').forEach(i => {
       if (i.type === 'radio') {
         const v = saved['r:' + i.name];
         if (v === i.value && !i.checked) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); }

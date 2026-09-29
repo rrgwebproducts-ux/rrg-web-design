@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Roof Racks &amp; Accessories for your Vehicle — Roof Racks Galore</title>
+<meta name="description" content="Roof racks and accessories that fit your exact vehicle — make, model, year, body and roof type.">
+<!-- Not indexed (docs/vlp/vlp-spec.md Section 9, Brenton 2026-09-29). The VCLP owns the vehicle
+     search terms people actually type ("Hilux N80 roof racks"); nobody searches an exact
+     year/body/roof combination, and indexing every combination would only make thin
+     near-duplicates of the VCLP. "follow" so link equity still reaches the VPLPs/PDPs. No
+     canonical, OG or structured data other than the BreadcrumbList below. -->
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<!-- Leaflet — the Store Finder tile's map is the same Showroom Finder map (#showroomMap,
+     applyShowroomMapFlag() in shared.js), just drawn behind the tile's content. -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
+<!-- ===== VLP — Vehicle Landing Page (docs/vlp/vlp-spec.md, 2026-09-29) =====
+     Where the header's Fit My Vehicle drawer lands: one page per exact vehicle (make/model/
+     year/body/roof), showing every category that fits it. Not the VCLP (one per make/model,
+     indexed) — see the spec's Section 1.
+
+     Every section is rendered from the page vehicle's record (VLP_VEHICLES, inline script at
+     the bottom) so the same page demos both worked examples — Toyota Hilux (real fitment
+     photos) and Ford Ranger (the Figma's own example). No page-local CSS: the category tiles,
+     Store Finder tile, product carousel and vehicle notice live in shared.css (reusable); the
+     cards are the PLP family's (plp.css). -->
+</head>
+<body>
+
+<div class="rrg-header-shell">
+<div class="rrg-utility-bar">
+  <div class="wrap rrg-utility-inner">
+    <div class="rrg-utility-left">
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg> <span class="u-item-label" data-session-store-label>Your Nearest Store:</span> <a href="#" data-region-nearest-store>North Lakes</a></span>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg> <a href="#" data-session="vehicleSet">Your Vehicle: Toyota Hilux</a></span>
+    </div>
+    <div class="rrg-utility-right">
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"/></svg> Call Us</span>
+      <div class="region-switcher u-item">
+        <button type="button" class="region-switcher-toggle" aria-haspopup="true" aria-expanded="false"><span class="flag-emoji" data-region-flag>🇦🇺</span> <span data-region-label>Australia</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="region-switcher-menu">
+          <span class="tsm-label">Region</span>
+          <a href="#" data-region="AU" class="current"><span class="flag-emoji">🇦🇺</span> Australia</a>
+          <a href="#" data-region="NZ"><span class="flag-emoji">🇳🇿</span> New Zealand</a>
+          <a href="#" data-region="UK"><span class="flag-emoji">🇬🇧</span> United Kingdom</a>
+        </div>
+      </div>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg> <a href="#" data-session="loggedIn">Graham</a></span>
+    </div>
+  </div>
+</div>
+<header class="rrg-main-header">
+  <div class="wrap rrg-main-inner">
+    <button type="button" class="mobile-nav-toggle" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="rrg-logo"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></div>
+    <nav class="rrg-nav">
+      <div class="mega-menu">
+        <button type="button" class="mega-menu-toggle" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Products</button>
+        <div class="mega-menu-drawer">
+          <div class="wrap mega-menu-drawer-inner">
+            <div class="mega-menu-l1"></div>
+            <div class="mega-menu-l2"></div>
+            <div class="mega-menu-l3"></div>
+          </div>
+        </div>
+      </div>
+      <span class="sep">|</span>
+      <a href="#">Store Finder</a>
+      <a href="#">Fit My Vehicle</a>
+      <a href="#">Clearance</a>
+      <a href="#">Services</a>
+    </nav>
+    <div class="rrg-search">
+      <input type="text" placeholder="Search Roof Racks or Accessories">
+      <button type="button" class="rrg-search-clear" aria-label="Clear search" hidden>&times;</button>
+      <button class="rrg-search-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <div class="rrg-cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+      <span class="cart-badge">0</span>
+    </div>
+  </div>
+</header>
+</div>
+<div class="rrg-sticky-header">
+  <button type="button" class="mobile-nav-toggle" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <div class="rrg-logo"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></div>
+  <div class="rrg-cart">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <span class="cart-badge">0</span>
+  </div>
+</div>
+
+<div class="mm-mobile-takeover">
+  <div class="mm-mobile-panel">
+    <div class="mm-mobile-topbar">
+      <a class="mm-mobile-logo" href="../index.html" aria-label="Roof Racks Galore — home"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></a>
+      <div class="mm-mobile-utility">
+        <a href="#" class="mm-mobile-utility-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg><span data-session="loggedIn">Graham</span></a>
+        <a href="#" class="mm-mobile-utility-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg><span data-session="vehicleSet">Your Vehicle: Toyota Hilux</span></a>
+      </div>
+      <button type="button" class="mm-mobile-close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="mm-mobile-search">
+      <input type="text" placeholder="Search Roof Racks or Accessories">
+      <button type="button" class="mm-mobile-search-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <div class="mega-menu-mobile"></div>
+  </div>
+</div>
+
+
+<!-- Breadcrumb row — the vehicle trail (spec Section 6), one level below the VCLP's
+     Home › Vehicles › Make › Model: year › body › roof. Change Vehicle is the breadcrumb-row
+     button every vehicle page uses (2026-09-18 review), not the Figma's gold hero button. It
+     opens the Fit My Vehicle drawer in "navigate" mode, so submitting lands on the new
+     vehicle's VLP (spec Section 3). -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="vlpCrumbs"></div>
+  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-open-fit-finder="navigate">Change Vehicle</a>
+</div>
+<script type="application/ld+json" id="vlpCrumbsLd">{}</script>
+
+<main data-vlp-page>
+<div class="wrap">
+  <!-- Page vehicle ≠ session vehicle (spec Section 4) — shown only when the shopper already
+       has a different vehicle saved; never overwrites it. -->
+  <div class="vlp-vehicle-notice" id="vlpVehicleNotice" role="status" hidden></div>
+
+  <section class="plp-hero" id="vlpHero">
+    <div>
+      <h1 id="vlpH1"></h1>
+      <p id="vlpIntro"></p>
+    </div>
+    <div class="plp-hero-media">
+      <img id="vlpHeroImg" src="" alt="" width="1024" height="683" fetchpriority="high">
+      <span class="plp-hero-make-badge" id="vlpHeroBadge"><img src="" alt="" width="600" height="225"></span>
+    </div>
+  </section>
+
+  <!-- Section 5.5 — feature tile + standard tiles + Store Finder. Tiles are rendered by
+       vlpRenderTiles(); the Store Finder is static (its map is the shared #showroomMap, which
+       shared.js initialises on DOMContentLoaded) and the renderer inserts the tiles before it
+       and sets its column span (spec Section 7.1). -->
+  <section class="cat-tile-section" id="vlpSectionMain">
+    <h2 class="related-heading" data-vlp-heading="main"></h2>
+    <p class="section-intro">Find accessories made to suit your vehicle, from roof racks, lighting, roller shutters, underbody protection, drawers and storage to side steps, water tanks and recovery gear.</p>
+    <div class="cat-tile-grid cat-tile-grid--main" id="vlpGridMain">
+      <div class="store-finder-tile" id="vlpStoreFinder">
+        <div class="showroom-map" id="showroomMap" aria-label="Map of Roof Racks Galore stores"></div>
+        <div class="sft-content">
+          <div class="sft-head">
+            <span class="sft-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg></span>
+            <div>
+              <h2><span class="italic-lead">Store</span> Finder</h2>
+              <p class="sft-sub" data-region-store-count>35+ Locations Nationwide</p>
+            </div>
+          </div>
+          <div class="sft-form">
+            <label class="sft-postcode">
+              <input type="text" inputmode="numeric" placeholder="Enter your postcode" aria-label="Postcode">
+              <button type="button" aria-label="Find stores near this postcode" data-store-slideout>›</button>
+            </label>
+            <button type="button" class="btn btn-cta btn-sm" data-store-slideout>Use My Location</button>
+          </div>
+        </div>
+        <p class="sft-nearest"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg> Your Nearest Store: <a href="#" data-store-slideout data-sft-nearest>North Lakes</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Section 5.7 — universal categories, always shown. -->
+<section class="cat-tile-band" id="vlpSectionAdventure">
+  <div class="wrap">
+    <h2 class="related-heading" data-vlp-heading="adventure"></h2>
+    <p class="section-intro" data-vlp-intro="adventure"></p>
+    <div class="cat-tile-grid cat-tile-grid--compact" id="vlpGridAdventure"></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- Section 5.8 — all vehicle-specific; the whole section hides when none have results. -->
+  <section class="cat-tile-section" id="vlpSectionVehicle">
+    <h2 class="related-heading" data-vlp-heading="vehicle"></h2>
+    <p class="section-intro" data-vlp-intro="vehicle"></p>
+    <div class="cat-tile-grid cat-tile-grid--compact" id="vlpGridVehicle"></div>
+  </section>
+
+  <!-- Section 5.9 — the Fitment Gallery widget, unchanged (replaces the Figma's red "Recent
+       Fits" banner). Removed for a page vehicle with no fitment photos yet (the Ranger). -->
+  <section class="fit-gallery-section" id="fitGallerySection" data-count="16" data-fit-gallery></section>
+</div>
+
+<section class="vclp-trust-banner">
+  <img class="install-photo" src="../_shared/installer.png" alt="" width="740" height="420" loading="lazy">
+  <div class="wrap">
+    <div class="vclp-trust-inner">
+      <h2>Friendly + Trusted Nationwide Experts in Roof Rack Supply and Installation</h2>
+      <div class="vclp-reviews-badge"><span class="stars">★★★★★</span> Reviews.io — 4.8 / 5</div>
+      <div class="vclp-trust-ctas">
+        <a href="#" class="btn btn-primary">Book An Installation</a>
+        <a href="#" class="btn btn-outline" data-store-slideout>Store Finder</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- Section 5.11 — the PLP family's grid card (plpCardHTML(), plp.js) in a scroll-snap
+       carousel. The track carries .plp-results.is-grid so the cards pick up exactly the
+       listing's grid styling. -->
+  <section class="product-carousel-section" id="vlpPopular">
+    <div class="product-carousel-head">
+      <h2 class="related-heading" data-vlp-heading="popular"></h2>
+      <a href="#" class="product-carousel-viewall" id="vlpPopularViewAll">View all Roof Racks ›</a>
+    </div>
+    <div class="product-carousel">
+      <button type="button" class="product-carousel-nav prev" aria-label="Previous products">‹</button>
+      <div class="plp-results is-grid product-carousel-track" id="vlpPopularTrack"></div>
+      <button type="button" class="product-carousel-nav next" aria-label="Next products">›</button>
+    </div>
+  </section>
+
+  <!-- Section 5.12 — not in the Figma; gives the per-master-vehicle FAQ (2026-09-18 review
+       item 6) somewhere to show. -->
+  <section class="faq-section">
+    <h2 class="faq-heading">Frequently Asked Questions</h2>
+    <div class="faq-list" id="vlpFaqList"></div>
+  </section>
+</div>
+
+<section class="brands-section">
+  <div class="wrap">
+    <h2 class="related-heading">Shop The Best Brands</h2>
+    <div class="brands-track">
+      <img src="../_shared/brand-rhino-rack.webp" alt="Rhino Rack" width="145" height="23" loading="lazy">
+      <img src="../_shared/brand-yakima.webp" alt="Yakima" width="148" height="23" loading="lazy">
+      <img src="../_shared/brand-thule.webp" alt="Thule" width="148" height="38" loading="lazy">
+      <img src="../_shared/brand-front-runner.webp" alt="Front Runner" width="148" height="39" loading="lazy">
+      <img src="../_shared/brand-cruz.webp" alt="Cruz" width="148" height="68" loading="lazy">
+      <img src="../_shared/brand-maxtrax.webp" alt="MAXTRAX" width="148" height="39" loading="lazy">
+      <img src="../_shared/brand-rola.webp" alt="ROLA" width="148" height="36" loading="lazy">
+      <img src="../_shared/brand-rocky-mounts.png" alt="Rocky Mounts" width="282" height="49" loading="lazy">
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="rrg-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Opening Hours</a></li>
+          <li><a href="#">Wholesale Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Feedback</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Checkout Error Form</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="#">Terms and Conditions</a></li>
+          <li><a href="#">Warranty</a></li>
+          <li><a href="#">Payment and Pricing</a></li>
+          <li><a href="#">Shipping &amp; Delivery</a></li>
+          <li><a href="#">Refund &amp; Exchange</a></li>
+          <li><a href="#">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+      <div class="footer-info-block">
+        <div class="footer-col">
+          <h4>Store Finder</h4>
+          <div class="footer-store-finder">
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" fill="#FFCA48"/></svg>
+            <p><a href="#">Click here</a> <span data-footer-store-copy>to find your closest store from our <strong>35 nationwide locations</strong>.</span></p>
+          </div>
+        </div>
+        <div class="footer-col footer-enquiries">
+          <h4>Online Orders and Enquiries</h4>
+          <p>Our team is here to support you. Phone and chat is open Monday to Friday, 8:30am to 5pm AEST (closed Public Hols).</p>
+          <div class="footer-contact-row">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="9" fill="#fff"/><rect x="8" y="7.5" width="2" height="6" rx="1" fill="#211E20"/><rect x="8" y="4.5" width="2" height="2" rx="1" fill="#211E20"/></svg>
+            <a href="mailto:help@roofracksgalore.com.au" data-footer-email>help@roofracksgalore.com.au</a>
+          </div>
+          <div class="footer-contact-row" data-trust="phone">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2.6 1.2 5.4 1c.5 0 1 .3 1.1.8l.8 2.9c.1.4 0 .9-.3 1.2L5.6 7.3a11 11 0 0 0 4.1 4.1l1.4-1.4c.3-.3.8-.4 1.2-.3l2.9.8c.5.1.8.6.8 1.1l-.2 2.8c0 .6-.5 1-1.1 1C7.3 15.4 1.6 9.7 1.6 2.3c0-.6.4-1 1-1.1Z" fill="#fff"/></svg>
+            <span>Call Us <a href="tel:1300071264">1300 071 264</a></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-col footer-brand-col">
+        <div class="footer-logo rrg-logo"><img src="../_shared/headerlogo-white.png" alt="Roof Racks Galore"></div>
+        <div class="footer-tagline" data-footer-tagline hidden>#TakeMoreDoMore</div>
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="footer-social-icons" data-footer-social-icons></div>
+        </div>
+        <div class="footer-payment">
+          <h4>Payment Options</h4>
+          <div class="footer-payment-icons" data-footer-payment-icons></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-footer-copyright>© 2026 Roof Racks Galore</span>
+  </div>
+</footer>
+
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/plp.js"></script>
+<script>
+// ==== Categories (docs/vlp/vlp-spec.md Sections 5 + 7) ============================
+// Every tile on the page, in order. vehicleSpecific tiles only show when the page vehicle has
+// products in that category (Section 7.1); the rest always show. Roof Racks is vehicle-specific
+// in principle but every vehicle has one, so it's never dynamic (Brenton, 2026-09-29).
+// Images are the Figma file's originals (_shared/category-tiles/). In production every tile
+// links to that category's PLP (or VPLP for a vehicle-specific category), which opens in its
+// Vehicle-Set state since the session vehicle is set; here only the three categories that
+// have a prototype page link anywhere.
+const VLP_CATEGORIES = [
+  { slug: 'roof-racks', label: 'Roof Racks', section: 'main', feature: true, cta: 'Shop Crossbars & Platforms' },
+  { slug: 'bike-racks', label: 'Bike Racks', section: 'main', href: '../plp/index.html' },
+  { slug: 'roof-boxes', label: 'Roof Boxes', section: 'main' },
+  { slug: 'awnings', label: 'Awnings', section: 'main' },
+  { slug: 'roof-top-tents', label: 'Roof Top Tents', section: 'main' },
+  { slug: 'roof-rack-accessories', label: 'Roof Rack Accessories', section: 'main', cta: 'Shop Accessories' },
+  { slug: 'vehicle-specific-accessories', label: 'Vehicle Specific Accessories', section: 'main', vehicleSpecific: true, cta: 'Shop Accessories' },
+  { slug: 'baskets', label: 'Baskets', section: 'adventure' },
+  { slug: 'luggage-bags', label: 'Luggage Bags', section: 'adventure' },
+  { slug: 'trade-work', label: 'Trade & Work Solutions', section: 'adventure', cta: 'Shop Trade & Work' },
+  { slug: 'lighting', label: 'Lighting', section: 'adventure' },
+  { slug: 'tie-downs', label: 'Tie Downs', section: 'adventure' },
+  { slug: 'recovery-gear', label: 'Recovery Gear', section: 'adventure', cta: 'Shop Recovery' },
+  { slug: 'fishing', label: 'Fishing', section: 'adventure' },
+  { slug: 'water-sports', label: 'Water Sports', section: 'adventure' },
+  { slug: 'snow-sports', label: 'Snow Sports', section: 'adventure' },
+  { slug: 'camping', label: 'Camping', section: 'adventure', href: '../plp-camping/index.html' },
+  { slug: 'fridge-slides', label: 'Fridge Slides', section: 'adventure' },
+  { slug: 'other-accessories', label: 'Other Accessories', section: 'adventure', cta: 'Shop 4x4' },
+  { slug: 'towing-mirrors', label: 'Towing Mirrors', section: 'vehicle', vehicleSpecific: true },
+  { slug: 'roller-shutters', label: 'Roller Shutters', section: 'vehicle', vehicleSpecific: true },
+  { slug: 'underbody-protection', label: 'Underbody Protection', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Underbody' },
+  { slug: 'rear-drawers', label: 'Rear Drawers', section: 'vehicle', vehicleSpecific: true },
+  { slug: 'internal-storage', label: 'Internal Storage', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Storage' },
+  { slug: 'more-accessories', label: 'More Accessories', section: 'vehicle', vehicleSpecific: true, cta: 'Shop 4x4' }
+];
+const VLP_ALL_VEHICLE_SPECIFIC = VLP_CATEGORIES.filter(c => c.vehicleSpecific).map(c => c.slug);
+
+// ==== Page vehicles (spec Section 2) ================================================
+// The page vehicle is what the URL is for (?vehicle=, prototype-only — production URLs are
+// backend-owned); the session vehicle is whatever Site Admin / the shopper has saved. They
+// can differ (spec Section 4). vsCategories = the vehicle-specific categories with at least
+// one fitting product — backend data in production, demo data here: the Hilux has all of
+// them; the Ranger has no Vehicle Specific Accessories, Rear Drawers or Internal Storage, so
+// its Store Finder widens and its bottom section shows 3 tiles (Section 7.1 visible just by
+// switching vehicles). The Demo State Panel's checklist overrides this list.
+// FAQ copy is placeholder pending the real per-master-vehicle FAQ content (2026-09-18 review
+// item 6) — Hilux facts reuse the VCLP's own, the Ranger's are kept general.
+const VLP_VEHICLES = {
+  hilux: {
+    rrgKey: 'hilux', plpKey: 'toyota-hilux-n80',
+    make: 'Toyota', model: 'Hilux', code: 'N80', years: '2015–2026', body: '4dr Ute', roof: 'Bare Roof', roofPhrase: 'a bare roof',
+    image: '../_shared/vehicle-toyota-hilux.webp', badge: '../_shared/brand-toyota-badge.png',
+    vclpHref: '../vehicle-category-landing/index.html', roofRacksHref: '../vplp/index.html',
+    intro: 'The Toyota Hilux is Australia’s best-selling ute, and almost every N80 leaves the factory with a bare roof — so what fits comes down to a track or fixed-point mount, not the roof rails most buyers expect. Everything on this page is filtered to fit a 2015–2026 Hilux 4dr Ute with a bare roof.',
+    vsCategories: VLP_ALL_VEHICLE_SPECIFIC,
+    fitCount: 16,
+    faqs: [
+      { q: 'How does a roof rack mount to my Hilux’s bare roof?', a: 'An N80 Double Cab has no factory rails, so racks mount either to a track system fixed to the roof or to the factory fixed points. Every rack on this page is matched to that bare-roof fitment.' },
+      { q: 'My Hilux has a black bar on the roof — is that a roof rail?', a: 'No — the black sports bar fitted to Rogue and Rugged X grades is a styling piece, not a load-rated roof rail. Mounting a rack directly to it isn’t safe; those grades take the same bare-roof fitment.' },
+      { q: 'Will these fit a Single Cab or Xtra Cab Hilux?', a: 'No — this page is for the 4dr Ute (Double Cab). Use Change Vehicle to see what fits your body style.' },
+      { q: 'Do you offer professional installation for the Toyota Hilux?', a: 'Yes — we fit roof racks and accessories nationwide at our 35+ stores. Book an installation or use the Store Finder to find your nearest fitting centre.' }
+    ],
+    popular: [
+      { id: 'h1', sku: 'GP01M1TZZ', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-01773 Pioneer 6 Platform (1500mm x 1240mm) with Backbone for Toyota Hilux N80 4dr Ute with Bare Roof (2015 to 2026) - Roof Track Mount', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62100-Platforms--Trays._1_23.jpg', price: 1893.09, wasPrice: 2137.00, rating: 4.9, reviews: 156, hasOptions: true, stock: 'in_stock' },
+      { id: 'h2', sku: 'RH62112', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack 62112 Pioneer Platform (1500mm x 1240mm) for Toyota Hilux N80 - Heavy Duty Trade', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62112-Platforms--Trays._1.jpg', price: 1750.00, wasPrice: 1950.00, rating: 4.8, reviews: 29, stock: 'in_stock' },
+      { id: 'h3', sku: 'RH-VTX2', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Vortex 2 Bar Cross Bar Set for Toyota Hilux N80 - Roof Track Mount', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg', price: 389.00, rating: 4.5, reviews: 210, stock: 'in_stock' },
+      { id: 'h4', sku: 'JC-02306', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-02306 Pioneer 6 Tradie Platform (1500mm x 1240mm) with Backbone for Toyota Hilux N80 - Roof Track Mount', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/3/1/316e2e55ca0f10686125f82d22019b38d1c807597e620f58d1b4d35364caf139_1_18.jpg', price: 1780.00, rating: 4.7, reviews: 18, stock: 'in_stock' },
+      { id: 'h5', sku: '730402', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule SmartRack XT Silver 2 Bar Roof Rack for Toyota Hilux N80', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-730402-Roof-Rack---Bars--Legs._1_269.jpg', price: 379.95, rating: 4.5, reviews: 23, stock: 'in_stock' },
+      { id: 'h6', sku: 'KSTH006T', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Slimsport Roof Rack Kit for Toyota Hilux N80 - Clamp Mount', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/F/r/Front-Runner-KSTH005T_1.jpg', price: 169.00, rating: 4.4, reviews: 21, stock: 'in_stock' }
+    ]
+  },
+  ranger: {
+    rrgKey: 'ranger', plpKey: 'ford-ranger-p703',
+    make: 'Ford', model: 'Ranger', code: 'P703', years: '2022 onwards', body: '4dr Ute', roof: 'Raised Roof Rail', roofPhrase: 'raised roof rails',
+    image: '../_shared/vehicle-ford-ranger.png', badge: '../_shared/brand-ford-badge.png',
+    vclpHref: '#', roofRacksHref: '#',
+    intro: 'The Ford Ranger is one of the most popular vehicles we see at Roof Racks Galore. Its raised roof rails open up more mounting options than a bare roof, from rail-mount bars to full platforms. Everything on this page is filtered to fit a 2022-onwards Ranger 4dr Ute with raised roof rails.',
+    vsCategories: ['towing-mirrors', 'roller-shutters', 'underbody-protection'],
+    fitCount: 0,
+    faqs: [
+      { q: 'Can a roof rack mount to my Ranger’s raised roof rails?', a: 'Yes — raised rails sit clear of the roof, so rail-mount legs clamp around them without drilling. The rails don’t increase your roof load limit; check it in your owner’s manual.' },
+      { q: 'What if my Ranger has no roof rails?', a: 'That’s a different fitment (bare roof). Use Change Vehicle and pick your roof type to see racks for a bare-roof Ranger.' },
+      { q: 'Will these fit a Super Cab or Single Cab Ranger?', a: 'No — this page is for the 4dr Ute (Double Cab). Use Change Vehicle to see what fits your body style.' },
+      { q: 'Do you offer professional installation for the Ford Ranger?', a: 'Yes — we fit roof racks and accessories nationwide at our 35+ stores. Book an installation or use the Store Finder to find your nearest fitting centre.' }
+    ],
+    // The six products in the Figma's own Popular Racks row — names, prices and product
+    // photos (_shared/vlp-products/) taken from the Figma file. No ratings in the source, so
+    // the cards show none rather than invented ones.
+    popular: [
+      { id: 'r1', sku: 'JC-01605', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-01605 Pioneer 6 Platform (1500mm x 1240mm) with Backbone', image: '../_shared/vlp-products/jc-01605.webp', price: 1582.40, wasPrice: 1978.00, stock: 'in_stock' },
+      { id: 'r2', sku: 'JC-04570', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-04570 Sportz RX Black 2 Bar Roof Rack', image: '../_shared/vlp-products/jc-04570.webp', price: 427.21, wasPrice: 533.00, stock: 'in_stock' },
+      { id: 'r3', sku: 'JC-01598', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-01598 Pioneer 6 Platform (1300mm x 1240mm) with RX100 Legs', image: '../_shared/vlp-products/jc-01598.webp', price: 1230.41, wasPrice: 1538.00, stock: 'in_stock' },
+      { id: 'r4', sku: 'LNL-A', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima LockNLoad Platform A (1240 x 1530 mm) with RuggedLine spine attachment', image: '../_shared/vlp-products/yakima-locknload-a.webp', price: 1236.50, wasPrice: 1620.00, stock: 'in_stock' },
+      { id: 'r5', sku: 'JC-02252', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-02252 Pioneer 6 Tradie (1300mm x 1240mm) with RX100 Legs', image: '../_shared/vlp-products/jc-02252.webp', price: 1315.21, wasPrice: 1568.00, stock: 'in_stock' },
+      { id: 'r6', sku: 'JC-05287', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-05287 Sportz RX Black 2 Bar Roof Rack', image: '../_shared/vlp-products/jc-05287.webp', price: 443.21, wasPrice: 533.00, stock: 'in_stock' }
+    ]
+  }
+};
+
+// Fitment Gallery photos for the page vehicle — the Hilux's are the same 16 real fitment-centre
+// photos as the VCLP/Vehicle-Specific (see the note there); the Ranger has none yet.
+const VLP_HILUX_FIT_PHOTOS = [
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_FhlLK_1.jpg", id: 166874, colour: "White" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_P7ZoC_1.jpg", id: 166832, colour: "White" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_jQonU_1.jpg", id: 166830, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_2750_YaaKX_1.jpg", id: 166829, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_4122_UYR7R_1.jpg", id: 166814, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/17791433691174490956170860620194_cDO9c_1.jpg", id: 166786, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/P/_/P_20260511_142833_afuMl_1.jpg", id: 166139, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_aNE06_1.jpg", id: 165847, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/1777955625720802347718023618055_GHZgB_1.jpg", id: 165841, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_J6mwc_1.jpg", id: 165781, colour: "Silver" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_9n7yh_1.jpg", id: 165779, colour: "Silver" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260420_151706_B6naw_1.jpg", id: 165689, colour: "Red" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260427_111136_PjcDx_1.jpg", id: 165515, colour: "Red" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0621_9m6aU_1.jpg", id: 165492, colour: "Blue" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0365_ZEGC1_1.jpg", id: 165368, colour: "Blue" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/r/a/rackit-fitment-1-9994-1_1.jpg", id: 164886, colour: "Grey" }
+];
+
+const VLP_PAGE_KEY = VLP_VEHICLES[new URLSearchParams(location.search).get('vehicle')] ? new URLSearchParams(location.search).get('vehicle') : 'hilux';
+const VLP_VEHICLE = VLP_VEHICLES[VLP_PAGE_KEY];
+// Read by shared.js's Fitment Gallery builders and slide-out.
+const FIT_GALLERY_PHOTOS = VLP_PAGE_KEY === 'hilux' ? VLP_HILUX_FIT_PHOTOS : [];
+// Live page state — the Demo State Panel's checklist edits vsAvailable (buildAdminPanel() in shared.js).
+window.VLP_STATE = { pageKey: VLP_PAGE_KEY, vsAvailable: new Set(VLP_VEHICLE.vsCategories) };
+
+const vlpName = v => `${v.make} ${v.model}`;
+const vlpNameCode = v => `${v.make} ${v.model} (${v.code})`;
+const vlpSpec = v => `${v.make} ${v.model} ${v.years} ${v.body} with ${v.roof}`;
+
+// ==== Breadcrumbs + hero ============================================================
+function vlpRenderHeader() {
+  const v = VLP_VEHICLE;
+  document.title = `Roof Racks & Accessories for ${vlpSpec(v)} — Roof Racks Galore`;
+  const trail = [
+    { label: 'Home', href: '#' }, { label: 'Vehicles', href: '#' }, { label: v.make, href: '#' },
+    { label: v.model, href: v.vclpHref }, { label: v.years, href: v.vclpHref }, { label: v.body, href: v.vclpHref },
+    { label: v.roof }
+  ];
+  document.getElementById('vlpCrumbs').innerHTML = trail.map((seg, i) =>
+    (i ? ' &gt; ' : '') + (seg.href ? `<a href="${seg.href}">${seg.label}</a>` : `<span>${seg.label}</span>`)).join('');
+  document.getElementById('vlpCrumbsLd').textContent = JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: trail.map((seg, i) => ({ '@type': 'ListItem', position: i + 1, name: seg.label, ...(seg.href ? { item: seg.href } : {}) }))
+  });
+  document.getElementById('vlpH1').textContent = `Roof Racks & Accessories for ${vlpSpec(v)}`;
+  document.getElementById('vlpIntro').textContent = v.intro;
+  const img = document.getElementById('vlpHeroImg');
+  img.src = v.image; img.alt = vlpName(v);
+  const badge = document.getElementById('vlpHeroBadge');
+  badge.querySelector('img').src = v.badge; badge.querySelector('img').alt = v.make;
+  const headings = {
+    main: `${vlpNameCode(v)} Specific Roof Racks & Accessories`,
+    adventure: `Adventure Carriers & Accessories for the ${vlpNameCode(v)}`,
+    vehicle: `Vehicle Specific Accessories for the ${vlpNameCode(v)}`,
+    popular: `Popular Racks for your ${vlpSpec(v)}`
+  };
+  document.querySelectorAll('[data-vlp-heading]').forEach(h => { h.textContent = headings[h.dataset.vlpHeading]; });
+  const intros = {
+    adventure: `Explore activity-ready carriers and accessories for your ${vlpName(v)}. From fishing, snow sports and water sports to camping, off-road touring and 4x4 adventures.`,
+    vehicle: `Shop online for ${vlpName(v)} specific accessories at Roof Racks Galore.`
+  };
+  document.querySelectorAll('[data-vlp-intro]').forEach(p => { p.textContent = intros[p.dataset.vlpIntro]; });
+  document.getElementById('vlpPopularViewAll').href = v.roofRacksHref;
+}
+
+// ==== Category tiles (spec Section 7) ================================================
+function vlpTileHref(cat) {
+  if (cat.slug === 'roof-racks') return VLP_VEHICLE.roofRacksHref;
+  return cat.href || '#';
+}
+function vlpTileHTML(cat, size) {
+  const href = vlpTileHref(cat);
+  const img = `<img src="../_shared/category-tiles/${cat.slug}.webp" alt="" loading="lazy">`;
+  const cta = cat.cta || `Shop ${cat.label}`;
+  if (cat.feature) {
+    const v = VLP_VEHICLE;
+    return `
+      <div class="cat-tile cat-tile--feature" data-cat="${cat.slug}">
+        <a class="cat-tile-media" href="${href}">${img}<span class="cat-tile-title">${cat.label}</span></a>
+        <div class="cat-tile-body">
+          <p>Shop ${vlpName(v)} specific roof racks such as crossbars, platforms and mounting systems. Carry rooftop tents, bike carriers, kayaks and touring gear on your next trip.</p>
+          <p>With 200,000+ roof rack installs across our stores, you can shop with confidence knowing we’ll find exactly what fits your ${v.model} with ${v.roofPhrase}.</p>
+          <a class="btn btn-cta btn-block" href="${href}">${cta}</a>
+        </div>
+      </div>`;
+  }
+  return `
+    <a class="cat-tile cat-tile--${size}" href="${href}" data-cat="${cat.slug}">
+      <span class="cat-tile-media">${img}<span class="cat-tile-title">${cat.label}</span></span>
+      <span class="cat-tile-cta">${cta}<span aria-hidden="true"> ›</span></span>
+    </a>`;
+}
+const vlpCatVisible = cat => !cat.vehicleSpecific || window.VLP_STATE.vsAvailable.has(cat.slug);
+
+function vlpRenderTiles() {
+  const grids = { main: 'vlpGridMain', adventure: 'vlpGridAdventure', vehicle: 'vlpGridVehicle' };
+  const sections = { main: 'vlpSectionMain', adventure: 'vlpSectionAdventure', vehicle: 'vlpSectionVehicle' };
+  Object.keys(grids).forEach(key => {
+    const grid = document.getElementById(grids[key]);
+    const cats = VLP_CATEGORIES.filter(c => c.section === key && vlpCatVisible(c));
+    grid.querySelectorAll('.cat-tile').forEach(t => t.remove());
+    const storeFinder = grid.querySelector('.store-finder-tile');
+    const html = cats.map(c => vlpTileHTML(c, key === 'main' ? 'standard' : 'compact')).join('');
+    if (storeFinder) storeFinder.insertAdjacentHTML('beforebegin', html); else grid.innerHTML = html;
+    // A section with no tiles left is hidden, heading and all (spec Section 7.1).
+    document.getElementById(sections[key]).hidden = cats.length === 0;
+    if (storeFinder) vlpSizeStoreFinder(storeFinder, cats.filter(c => !c.feature).length);
+  });
+}
+
+// Store Finder span (spec Section 7.1): the main grid is 6 columns — the feature tile takes
+// columns 1–2 over two rows, everything else flows through columns 3–6. The Store Finder
+// sits last and takes every column left over in its row (2 with all 6 standard tiles, 3 with
+// one removed, 4 with two); it never goes below 2, so a single leftover column pushes it onto
+// its own full-width row. Desktop only — the mobile grid is 2 columns and it's always full width.
+function vlpSizeStoreFinder(el, standardCount) {
+  const leftover = (4 - (standardCount % 4)) % 4;
+  el.style.setProperty('--sft-span', leftover >= 2 ? leftover : 4);
+  el.dataset.span = leftover >= 2 ? leftover : 4;
+}
+
+// ==== Popular Racks carousel (spec Section 8) =======================================
+// Every card fits the page vehicle; plpFitStatusHTML() compares that against the session
+// vehicle, so a shopper with a different saved vehicle honestly sees "doesn't fit your …".
+function vlpRenderPopular() {
+  const track = document.getElementById('vlpPopularTrack');
+  const products = VLP_VEHICLE.popular.map(p => ({ ...p, fitsVehicle: VLP_VEHICLE.plpKey }));
+  track.innerHTML = products.map(p => plpCardHTML(p, { vrs: false })).join('');
+  track.querySelectorAll('[data-addtocart-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cart-badge').forEach(el => { el.textContent = String(Number(el.textContent || 0) + 1); });
+      const original = btn.innerHTML;
+      btn.textContent = 'Added ✓';
+      btn.disabled = true;
+      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
+    });
+  });
+}
+
+// ==== FAQ ===========================================================================
+function vlpRenderFaq() {
+  document.getElementById('vlpFaqList').innerHTML = VLP_VEHICLE.faqs.map((f, i) => `
+    <details class="faq-item"${i === 0 ? ' open' : ''}>
+      <summary>${f.q}</summary>
+      <div class="faq-answer"><p>${f.a}</p></div>
+    </details>`).join('');
+}
+
+// ==== Page vehicle vs session vehicle (spec Section 4) ==============================
+// On arrival with no saved vehicle, this page's vehicle becomes the session vehicle silently.
+// With a different one saved, it's never overwritten — the notice offers the switch instead.
+function vlpRenderVehicleNotice() {
+  const notice = document.getElementById('vlpVehicleNotice');
+  const sessionKey = rrgVehicleGet();
+  const differs = sessionKey !== 'none' && sessionKey !== VLP_VEHICLE.rrgKey && !notice.dataset.dismissed;
+  notice.hidden = !differs;
+  if (!differs) return;
+  const saved = VLP_VEHICLES[sessionKey];
+  const savedName = saved ? vlpNameCode(saved) : rrgVehicle().label;
+  notice.innerHTML = `
+    <p>You’re viewing the <strong>${vlpNameCode(VLP_VEHICLE)}</strong>. Your saved vehicle is the <strong>${savedName}</strong>.</p>
+    <div class="vlp-vehicle-notice-actions">
+      <button type="button" class="btn btn-outline-red btn-sm" data-vlp-notice="adopt">Make this my vehicle</button>
+      ${saved ? `<a class="btn btn-outline btn-sm" href="?vehicle=${sessionKey}">View my ${saved.model}</a>` : ''}
+    </div>
+    <button type="button" class="vlp-vehicle-notice-close" aria-label="Dismiss" data-vlp-notice="dismiss">&times;</button>`;
+}
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-vlp-notice]');
+  if (!btn) return;
+  const notice = document.getElementById('vlpVehicleNotice');
+  if (btn.dataset.vlpNotice === 'adopt') window.rrgSetVehicle(VLP_VEHICLE.rrgKey);
+  if (btn.dataset.vlpNotice === 'dismiss') { notice.dataset.dismissed = 'true'; notice.hidden = true; }
+});
+
+// ==== Demo State Panel hooks (buildAdminPanel() in shared.js) =======================
+window.vlpSetPageVehicle = key => { if (key !== VLP_PAGE_KEY) location.search = '?vehicle=' + key; };
+window.vlpSetCategoryAvailable = (slug, on) => {
+  if (on) window.VLP_STATE.vsAvailable.add(slug); else window.VLP_STATE.vsAvailable.delete(slug);
+  vlpRenderTiles();
+};
+
+// ==== Init ==========================================================================
+if (rrgVehicleGet() === 'none') window.rrgSetVehicle(VLP_VEHICLE.rrgKey);
+if (!FIT_GALLERY_PHOTOS.length) document.getElementById('fitGallerySection').remove();
+else document.getElementById('fitGallerySection').dataset.count = VLP_VEHICLE.fitCount;
+vlpRenderHeader();
+vlpRenderTiles();
+vlpRenderPopular();
+vlpRenderFaq();
+vlpRenderVehicleNotice();
+if (FIT_GALLERY_PHOTOS.length) {
+  mountFitGallery();
+  renderFitGalleryTrack(`Roof rack fitted to a customer's ${vlpName(VLP_VEHICLE)}`);
+}
+document.addEventListener('rrg-session-change', () => { vlpRenderVehicleNotice(); vlpRenderPopular(); });
+// Store Finder tile: the shared Showroom map fits all 35 stores, which at tile size reads as a
+// near-empty dark continent. Once it exists (shared.js creates it on DOMContentLoaded), centre it
+// on the shopper's nearest store at street level, like the Figma. AU only — NZ/UK already zoom
+// to their one store.
+const vlpMapWait = setInterval(() => {
+  if (typeof showroomLeafletMap === 'undefined' || !showroomLeafletMap) return;
+  clearInterval(vlpMapWait);
+  const nearest = RRG_STORE_NETWORK.flatMap(g => g.stores).find(st => st.name === 'North Lakes');
+  if (nearest && currentRegion === 'AU') showroomLeafletMap.setView([nearest.lat, nearest.lng], 11);
+}, 200);
+setTimeout(() => clearInterval(vlpMapWait), 10000);
+</script>
+</body>
+</html>

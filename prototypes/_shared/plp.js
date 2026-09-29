@@ -189,7 +189,7 @@ function plpRenderBreadcrumb() {
   trail.innerHTML = segments.map((seg, i) => {
     const isLast = i === segments.length - 1;
     const sep = i > 0 ? ' &gt; ' : '';
-    return sep + (isLast ? `<span id="plpCrumbLast">${seg.label}</span>` : `<a href="#">${seg.label}</a>`);
+    return sep + (isLast ? `<span id="plpCrumbLast">${seg.label}</span>` : `<a href="${seg.href || '#'}">${seg.label}</a>`);
   }).join('');
 }
 
@@ -375,7 +375,8 @@ function plpSelectSearchCategory(key) {
 // set). Products that aren't vehicle-specific never get a fitment status.
 const PLP_VEHICLES = {
   'toyota-hilux-n80': { name: 'Toyota Hilux', short: 'Toyota Hilux N80', long: 'Toyota Hilux N80 4dr Ute (2015 to 2026)', spec: '4dr Ute, Bare Roof, 2015 to 2026' },
-  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Bare Roof, 2022 onwards' }
+  // Raised Roof Rail (2026-09-29) — matches the VLP's Ford Ranger worked example (the Figma's own).
+  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Raised Roof Rail, 2022 onwards' }
 };
 // The session vehicle comes from Site Admin's "Vehicle" (rrgVehicle(), session-state.js — spec.md
 // §15 P4); this is only the fallback for copy that needs a vehicle name before one is set.

@@ -1386,6 +1386,7 @@ P4 vehicle control merge · P7 which locked controls to remove · G8 `<head>` ex
 - **L8:** One vehicle breadcrumb family, built down from VCLP. This is provisional and may change after team review.
   - VCLP: `Home › Vehicles › Toyota › Hilux`
   - VPLP: `Home › Vehicles › Toyota › Hilux › Roof Racks`. Year, body style and roof type drop out of the trail; the heading carries them.
+  - **Superseded 2026-09-29 by the VLP** (`docs/vlp/vlp-spec.md` Section 6, Brenton): the VLP adds `… › Hilux › 2015–2026 › 4dr Ute › Bare Roof`, and the VPLP is now its child — `… › Bare Roof › Roof Racks`, the roof crumb linking to the VLP. VS PDP unchanged (open item in the VLP spec).
   - VS PDP: `Home › Vehicles › Toyota › Hilux › Platforms & Trays › <product name>`
 - **L9:** Same styling on the PDP main price and the cards, with the PDP also keeping the sale-tag image.
   - Confirmed: the PDP main price uses the **same red Save treatment as the cards**, plus the sale-tag image.

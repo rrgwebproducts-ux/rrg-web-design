@@ -699,9 +699,12 @@ window.PLP_CONFIG = {
   },
   // Fixed vehicle-path segments (spec Section 3: a VRS category's breadcrumb is always the
   // vehicle path, never a category path) — the SHOP BY tab appends after this, as the leaf.
-  // One vehicle trail family (spec.md §15 L8, provisional): VCLP Home › Vehicles › Toyota › Hilux,
-  // this page adds the category; year/body/roof live in the H1, not the trail.
-  breadcrumbRoot: [ { label: 'Home' }, { label: 'Vehicles' }, { label: 'Toyota' }, { label: 'Hilux' } ],
+  // One vehicle trail family (spec.md §15 L8): VCLP Home › Vehicles › Toyota › Hilux, the VLP adds
+  // year › body › roof, and this page is a child of the VLP (docs/vlp/vlp-spec.md Section 6,
+  // Brenton 2026-09-29) — the roof crumb links back to it.
+  breadcrumbRoot: [ { label: 'Home' }, { label: 'Vehicles' }, { label: 'Toyota' }, { label: 'Hilux', href: '../vehicle-category-landing/index.html' },
+    { label: '2015–2026', href: '../vehicle-category-landing/index.html' }, { label: '4dr Ute', href: '../vehicle-category-landing/index.html' },
+    { label: 'Bare Roof', href: '../vlp/index.html?vehicle=hilux' } ],
   vehicleHeadingSuffix: 'for Toyota Hilux 2015-2026 4dr Ute with Bare Roof',
   shopBy: [
     { key: 'platform-trays', label: 'Platform/Trays', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">`,
