@@ -19,6 +19,9 @@
   --rrg-unknown-bg:#FFF4E5;
   --rrg-nofit:#A6192E;
   --rrg-nofit-bg:#FDEAEC;
+  /* Out of Stock text (2026-09-29, spec.md §14.1) — grey, not red; #767676 is the lightest
+     grey that still passes 4.5:1 contrast on white (the old card grey #a3a3a3 did not). */
+  --rrg-stock-out:#767676;
   --rrg-display:#1A56DB;
   --rrg-display-bg:#EAF1FD;
   /* 6px, matching the Figma spec (2026-09-16, Brenton) — was 12px. Cascades to every
@@ -500,9 +503,15 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .stock-status-line{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;margin-top:4px;}
 .stock-status-line.in-stock{color:var(--rrg-fits);}
 .stock-status-line.low-stock{color:var(--rrg-unknown);}
-.stock-status-line.not-in-stock{color:var(--rrg-nofit);}
+/* Out of Stock is grey, never red (Brenton, 2026-09-29 — red reads too harsh), same grey
+   as the PLP card stock line. Wording for every state: rrgStockStatus() in session-state.js. */
+.stock-status-line.out-of-stock{color:var(--rrg-stock-out);}
 .stock-status-line.special-order{color:var(--rrg-unknown);}
-.stock-status-line.discontinued{color:var(--rrg-nofit);}
+.stock-status-line.discontinued{color:var(--rrg-stock-out);}
+/* Second line under the stock status — dispatch / collect timing, "Contact our team",
+   Phase 2 "Set your store" (spec.md §14.1). */
+.stock-subline{font-size:13px;font-weight:400;color:#555;margin-top:2px;line-height:1.4;}
+.stock-subline-link{color:inherit;font-weight:700;text-decoration:underline;}
 
 /* Discontinued state (backlog item 23) keeps the last real selling price on screen
    ("the price it was sold at") rather than hiding it — struck through, same visual
@@ -841,7 +850,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 
 /* Out-of-stock banner, inserted above the Add to Cart column by the demo admin panel */
-.stock-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-nofit);background:var(--rrg-nofit-bg);border:1px solid var(--rrg-nofit);border-radius:6px;padding:10px 12px;margin-bottom:10px;}
+.stock-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#555;background:#f3f3f3;border:1px solid #c9c9c9;border-radius:6px;padding:10px 12px;margin-bottom:10px;}
 
 /* Shown in place of the Delivery/Click & Collect widget when the demo admin panel has
    both availability toggles switched off */
@@ -1020,6 +1029,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .stock-chip.in{background:var(--rrg-fits-bg);}
 .stock-chip.order{background:var(--rrg-unknown-bg);}
 .stock-chip.none{background:var(--rrg-nofit-bg);}
+.stock-chip.out{background:#eeeeee;color:#666;}
+/* Closest / Remote are about distance, not stock — neutral so they don't read as "In Stock". */
+.stock-chip.closest{background:#eeeeee;}
 
 /* Delivery / Click & Collect widget v2 — Demo State Panel preview (backlog items 18/19,
    2026-09-12, dcV2*() in shared.js). Explicit postcode "Check" instead of live-as-you-type:

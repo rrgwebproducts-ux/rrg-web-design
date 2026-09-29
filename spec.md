@@ -838,7 +838,7 @@ Verified with Playwright across **all 5 templates** (not just Config-Variant): D
 Captured 2026-09-29 while planning the search-results rework from that meeting. The search-results page changes, header search typeahead rework and AU spelling pass were built in that session (see `docs/search-results/search-results-spec.md`); everything below was **deliberately deferred to a future chat** by Brenton. Status key: ⬜ not started · 🤔 decision needed first.
 
 1. ✅ **Done 2026-09-29, on every PLP-family page: sale-tag graphic removed, Save X% → top-left corner ribbon (grid + list), price + RRP on one line, even spacing.** Original notes: **Product card pricing tidy-up (all PLP-family pages).** RRP too small and too far from the sale price — bring them closer. "Save X%" badge too big — agreed direction is a triangle corner ribbon on the card image instead (fits now that Best Seller/Staff Pick ribbons are being hidden for phase one). Drop the In Stock message ~20px so the gap to the price matches the star-rating-to-price gap ("framed" look). Remove the low-price-guarantee tag from product cards entirely. Graham: "time is precious — don't start redesigning ribbons", so keep it to these tweaks.
-2. ✅ **Done 2026-09-29 as a Site Admin "Build Phase" toggle instead (Phase 1 default) — Phase 1 hides ribbons + Compare on every PLP-family page; ribbon + Save-corner coexistence in Phase 2 still needs a real design.** Original notes: **Best Seller / Staff Pick ribbons on/off Demo State toggle** — on every page that shows them (PLP, VPLP, plp-camping, search-results, anywhere else), default **off** as the "phase one" state so Mark builds exactly what launches (compare products is already off by default). Tim wants ribbons done properly later, after a conversation with Scott.
+2. ✅ **Done 2026-09-29 as a Site Admin "Build Phase" toggle instead (Phase 1 default) — Phase 1 hides ribbons + Compare on every PLP-family page; ribbon + Save-corner coexistence in Phase 2 still needs a real design. Follow-up 2026-09-29 (Brenton, after testing Phase 2 stock): ribbons, including custom sale-name ones, are off by default in Phase 2 too, behind a Demo State Panel "Product ribbons" toggle.** Original notes: **Best Seller / Staff Pick ribbons on/off Demo State toggle** — on every page that shows them (PLP, VPLP, plp-camping, search-results, anywhere else), default **off** as the "phase one" state so Mark builds exactly what launches (compare products is already off by default). Tim wants ribbons done properly later, after a conversation with Scott.
 3. 🤔 **PLP tab click-to-deselect / hide "Show All" until a sub-category is selected.** Discussed and liked (saves space, especially mobile; clicking a selected tab again = go up one level URL-wise, "Show All" only appears once you're inside a sub-category, like a back button). **But the agreed outcome was: launch with Show All as-is, A/B test this in the new year.** Don't build unless asked.
 4. ⬜ **Clearance as its own Level 1 in the mega menu** (Brenton wants it; held off so as not to disturb the existing structure). The header utility link is already renamed Catalogue → Clearance (dynamic, shows when there's clearance stock). Services link probably wants a drop-down like BCF/JB Hi-Fi — undecided.
 5. ⬜ **Members Club newsletter sign-up pop-up** (Klaviyo-driven in production — code in the header): shows once, 2–3s after first landing in a session; email sign-up then an optional "link your vehicle" step that sets the session vehicle and can send them to the VCLP; dismissible by clicking outside; after dismissal collapses to a small tab bottom-right next to the chat icon. Stage one is just getting the club live; giveaway/supplier mechanics come later (Ken).
@@ -856,3 +856,53 @@ Not started — plan together before building (per the usual "discuss before act
 - **Phase 2, no store set:** a really clean, short prompt to set your store to see local availability — possibly inside the Availability filter on the left, plus wherever else stock shows. Phase 1 doesn't need this.
 - **Availability filter tooltip** (added 2026-09-29): currently the Phase 1 wording — "Filter your results by availability. In Stock means it's ready to ship from our online warehouse — your local store may need a few days to get it in." (`PLP_FILTER_TOOLTIPS.availability` in plp.js). Phase 2 needs its own version explaining store stock vs. online stock (and pairs naturally with the "set your store" prompt in that filter).
 - Existing pieces to reconcile: Site Admin "Nearest Store Set" session toggle + "Build Phase" toggle (use both to demo Phase 1/2); PDP stock states (In Stock / Low Stock / Not in Stock — contact our team / Special Order / Discontinued), Delivery/Click & Collect v2 widget, store availability pills (`.stock-chip`) and Store Slide-out; PLP card stock line (in_stock / click_collect / low_stock / out_of_stock) and the search page's Availability facet. Expect some of these to have drifted apart — fold into the consistency thinking ([[project-pdp-consistency-pass]] in memory).
+
+### 14.1 Agreed plan (Brenton, 2026-09-29) — ✅ built 2026-09-29
+
+**Build notes:** the shared model is `rrgStockStatus()` / `rrgAvailabilityOptions()` in `session-state.js`. PDP: `renderStockLine()` / `rrgRefreshStockSurfaces()` in `shared.js`. Cards and filter: `plpStockLineHTML()` / `plpInitAvailabilityFacet()` in `plp.js`. Checked in Playwright for every Phase × store set × stock state on the PDP, and every Phase × store set on all 4 listing pages. Details not spelled out in the plan:
+- Out of Stock grey is `#767676` (`--rrg-stock-out`). The old card grey `#a3a3a3` failed contrast. The out-of-stock banner is grey too.
+- Availability filter goes **last** in each page's standard filters (Search keeps its old slot).
+- Showroom Finder count now reads from the demo on-display store set (12 stores) on every template.
+- "Closest" / "Remote" chips are neutral grey, so they don't read as In Stock.
+- The Demo State Panel's "Store stock" radio defaults to "At your store". Card store stock is derived from the product id unless the product sets `storeStock`.
+- The v1 widget summary line was changed to "Click & Collect from 35 stores —", because the old "In stock and on display in 35 stores" claimed every store had it.
+- Developer briefs updated (text only): PDP 4.37 (new) + 4.17/4.23/§2 colours/§5 JSON-LD; PLP 4.5/4.6/§6; Search 4.x filter contents.
+
+**Decisions:** "In Stock Online" wording direction approved · online orders dispatch **next business day** · stock reaches any store in **up to 2 business days** (often immediate, because many stores hold it) · Out of Stock is **grey**, never red (too harsh) · "nearby store" = **distance, within 25km** · Availability filter goes on **every page that lists products** (PLP, VPLP, Camping, Search).
+
+**One status model, site-wide.** Replaces the three drifted systems (PDP `STOCK_STATUS`, card `plpStockLineHTML`, search `facets.availability`).
+- `stock` (online, product-level): `in_stock` · `low_stock` · `out_of_stock` · `special_order` · `discontinued`. PDP `not_in_stock` → `out_of_stock`; sibling-color `limited` → `low_stock`; card `click_collect` is dropped (Click & Collect is a way of fulfilling the order, not a stock status). The Availability facet reads `stock` directly, so there's no second copy of the stock data.
+- `storeStock` (Phase 2 only, relative to the session's nearest store): `here` · `nearby` (+ store name, km; ≤25km) · `warehouse` (no store stock, online warehouse has it).
+- One shared function `rrgStockStatus(product, {phase, storeSet, store})` → `{label, subline, tone, icon}` used by the PDP line, cards, filter, widget and JSON-LD.
+
+**Phase 1 (and Phase 2 with no store set)**
+
+| `stock` | Card line | PDP line | PDP sub-line | Tone |
+|---|---|---|---|---|
+| `in_stock` | ✓ In Stock Online | ✓ In Stock Online | Dispatched next business day · Click & Collect ready in-store within 2 business days | green |
+| `low_stock` | ⚠ Low Stock Online | ⚠ Low Stock Online — order soon | same as above | amber |
+| `out_of_stock` | ✕ Out of Stock | ✕ Out of Stock | Contact our team (link) | **grey** |
+| `special_order` | ⏱ Special Order | ⏱ Special Order | Ordered in for you — ready in 5–7 business days | amber |
+| `discontinued` | (not listed) | line hidden, existing banner + alternates | — | grey |
+
+Phase 2 with no store set: same as above, plus a small **"Set your store"** link beside the PDP stock line and at the top of the Availability filter ("Set your store to see local stock"). Not on cards (no room).
+
+**Phase 2, store set (e.g. North Lakes)**: applies to `in_stock` / `low_stock`; the other states stay as in Phase 1. A low-stock product gets ⚠ + amber and "Low Stock" instead of "In Stock".
+
+| `storeStock` | Card line | PDP line | PDP sub-line |
+|---|---|---|---|
+| `here` | ✓ In Stock at North Lakes | ✓ In Stock at North Lakes | Click & Collect today · delivery dispatched next business day |
+| `nearby` | ✓ In Stock at Kedron (18km) | ✓ In Stock at Kedron (18km) | Collect today from Kedron, or from North Lakes within 2 business days |
+| `warehouse` | ✓ In Stock Online | ✓ In Stock Online | Collect at North Lakes within 2 business days · delivery dispatched next business day |
+
+**Availability filter (all product-listing pages)**
+- Phase 1 / no store: checkboxes **In Stock Online** (includes Low Stock) · **Special Order** · **Out of Stock**. Fixes today's exact-match bug where "In Stock" hid Click & Collect cards.
+- Phase 2, store set: **In Stock at North Lakes** · **In Stock Nearby (within 25km)** · **In Stock Online** · Special Order · Out of Stock. The first three are nested: Nearby includes your store, and Online includes everything in stock.
+- Tooltip Phase 1: "In Stock Online means it's ready to dispatch from our warehouse the next business day. Many stores hold it too — if yours doesn't, we can have it there within 2 business days." Phase 2: "See what's on the shelf at North Lakes, at stores within 25km, or in our online warehouse (collect at North Lakes within 2 business days)."
+
+**Wire the rest to the same status**
+- Delivery / Click & Collect widget (v1 + v2): "Available Today" only when `here`/`nearby`; otherwise "Ready within 2 business days"; Special Order → "Ready in 5–7 business days"; Out of Stock → both options unavailable. Store pills follow the product's state.
+- JSON-LD `availability`: InStock / LimitedAvailability / OutOfStock / BackOrder / Discontinued.
+- Cleanups: `simple.html` "limited — whilst stocks last" line shows only on `low_stock`; Showroom Finder "On Display At N Stores" counts match the demo store data; remove the "Limited Stock Left" custom ribbon (it duplicates Low Stock).
+- Demo: Build Phase × Nearest Store Set toggles drive every stock surface on all 9 pages; the PDP Demo State Panel gains a Phase 2 "Store stock: here / nearby / warehouse" radio.
+- Docs: PDP, PLP and Search developer briefs updated (text only — screenshots held until handover).

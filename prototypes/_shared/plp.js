@@ -24,6 +24,9 @@ function plpValueMatches(product, facetKey, facetDef, selectedValue) {
   // mode that reads off the product itself instead of its facets map, since price already
   // exists as a top-level field everywhere (plpPriceHTML) and duplicating it into facets would
   // just be a second source of truth to keep in sync.
+  // 'stock' — the Availability filter (spec.md §14.1), reads product.stock + the Phase 2
+  // store stock directly rather than a facets[] copy, same reasoning as 'range' below.
+  if (facetDef.mode === 'stock') return rrgAvailabilityMatches(product.stock, plpStoreStock(product), selectedValue);
   if (facetDef.mode === 'range') {
     const [min, max] = String(selectedValue).split('-').map(Number);
     const price = product.price || 0;
@@ -86,6 +89,7 @@ const plpState = {
   page: 1,               // desktop numbered pagination
   visibleCount: PLP_PAGE_SIZE, // mobile "show more" cumulative count
   compareEnabled: false, // Demo State Panel toggle, off by default (spec Section 12)
+  ribbonsEnabled: false, // Demo State Panel toggle, off by default even in Phase 2 (Brenton, 2026-09-29)
   compareSelected: []    // up to 2 product ids
 };
 
@@ -921,15 +925,14 @@ function plpZeroResultsHTML() {
 // ==== Filters sidebar ========================================================
 // Filter tooltip copy (2026-09-29, Brenton) — written from the shopper's side, replacing the
 // "(placeholder copy)" text that had been waiting on Graham's attribute glossary. Still worth
-// a pass by the team for product accuracy. Availability is the Phase 1 (online stock) wording;
-// the Phase 2 store-vs-online version belongs to the stock-status rework (spec.md §14).
+// a pass by the team for product accuracy. Availability isn't here — its copy changes with
+// Build Phase / store set, see rrgAvailabilityTooltip() (session-state.js, spec.md §14.1).
 const PLP_FILTER_TOOLTIPS = {
   brand: 'Show only the brands you prefer. Tick as many as you like.',
   colour: 'Narrow your results to the colour or finish you\'re after.',
   priceRange: 'Filter your results by price to see what fits your budget.',
   rating: 'Show only products other customers have rated highly.',
   category: 'Narrow your search to one or more product categories.',
-  availability: 'Filter your results by availability. In Stock means it\'s ready to ship from our online warehouse — your local store may need a few days to get it in.',
   bikeCount: 'Choose how many bikes you need to carry. We\'ll show carriers that hold at least that many.',
   carrierType: 'Choose where the carrier mounts on your vehicle — on the roof, the tow bar, the rear hatch or a ute tub.',
   vehicleFitType: 'How the product attaches to your vehicle, such as roof rails, roof tracks or fixed mounting points. Set your vehicle to see only what fits.',
@@ -962,6 +965,11 @@ function plpFilterGroupHTML(facetDef, isPriority) {
   // Tooltip copy — PLP_FILTER_TOOLTIPS below (keyed by facet key, shared by every PLP-family
   // page); facetDef.tooltip lets a page override it for one filter.
   const tooltipCopy = facetDef.tooltip || PLP_FILTER_TOOLTIPS[facetDef.key] || `Narrow your results by ${facetDef.label.toLowerCase()}.`;
+  // Phase 2, no store set (spec.md §14.1): short prompt at the top of the Availability filter.
+  const ctx = facetDef.key === 'availability' ? rrgStoreContext() : null;
+  const storePrompt = ctx && ctx.phase === 2 && !ctx.storeSet
+    ? `<p class="plp-filter-store-prompt"><a href="#" data-set-store>Set your store</a> to see local stock</p>`
+    : '';
   const tooltipIcon = `<span class="plp-filter-tooltip" tabindex="0" data-tooltip="${tooltipCopy.replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></span>`;
   if (isPriority) {
     return `
@@ -974,7 +982,7 @@ function plpFilterGroupHTML(facetDef, isPriority) {
   return `
     <details class="plp-filter-group" data-facet-group="${facetDef.key}" open>
       <summary>${facetDef.label} ${tooltipIcon}</summary>
-      <div class="plp-filter-options">${options}</div>
+      ${storePrompt}<div class="plp-filter-options">${options}</div>
     </details>
   `;
 }
@@ -1048,6 +1056,34 @@ function plpClearFilters() {
   plpRenderFilters();
   plpRenderResults();
   plpSyncFilterDrawerFromMain();
+}
+
+// Availability filter (spec.md §14.1) — on every product-listing page, added here rather
+// than in each page's config so the options/tooltip can follow Build Phase + Nearest Store
+// Set live. Replaces a page's own 'availability' facet in place if it has one (search page),
+// otherwise goes last. Registered before the other 'rrg-session-change' listeners so a
+// store-only selection ("In Stock at North Lakes") is dropped before results re-render once
+// the store is unset.
+function plpInitAvailabilityFacet() {
+  const standard = window.PLP_CONFIG.facets.standard;
+  const def = {
+    key: 'availability', label: 'Availability', mode: 'stock',
+    get options() { return rrgAvailabilityOptions(); },
+    get tooltip() { return rrgAvailabilityTooltip(); }
+  };
+  const i = standard.findIndex(f => f.key === 'availability');
+  if (i >= 0) standard.splice(i, 1, def); else standard.push(def);
+  document.addEventListener('rrg-session-change', () => {
+    const active = plpState.activeFilters.availability;
+    if (active) {
+      const valid = new Set(rrgAvailabilityOptions().map(o => String(o.value)));
+      [...active].forEach(v => { if (!valid.has(v)) active.delete(v); });
+    }
+    if (!(window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products')) {
+      plpRenderFilters();
+      plpSyncFilterDrawerFromMain();
+    }
+  });
 }
 
 // ---- Mobile filter drawer (right-edge slide-out, same convention as the Store Slide-out —
@@ -1149,7 +1185,11 @@ function plpSaveCornerHTML(product) {
 }
 
 function plpRibbonHTML(product) {
-  if (plpBuildPhase() === 1) return ''; // Phase 2 feature
+  // Phase 2 feature, and off by default even then (Brenton, 2026-09-29 — ribbons still need
+  // designing properly, so Phase 2 previews the store-aware stock without them). Demo State
+  // Panel "Product ribbons" turns them on. Covers every ribbon: Bestseller, Staff Pick and
+  // custom text (e.g. "Spring Sale").
+  if (plpBuildPhase() === 1 || !plpState.ribbonsEnabled) return '';
   // Bestseller vs Staff Pick — mutually exclusive, Staff Pick wins if a product somehow
   // carries both (plp-spec.md Section 7, Section 14 item 1 — flagged assumption). Full-width
   // bar across the top of the card's media, matching the Figma reference exactly (not a
@@ -1226,6 +1266,11 @@ function plpSpecsHTML(product) {
   `;
 }
 
+function applyPlpRibbonsFlag(on) {
+  plpState.ribbonsEnabled = on;
+  plpRenderResults();
+}
+
 function plpCompareCheckHTML(product) {
   if (!plpState.compareEnabled) return '';
   if (plpBuildPhase() === 1) return ''; // Phase 2 feature
@@ -1239,18 +1284,25 @@ function plpCompareCheckHTML(product) {
   `;
 }
 
+// Phase 2 store stock for a card (here | nearby | warehouse, relative to the session's
+// nearest store). Real build: per-store inventory feed. Demo: a product can set
+// product.storeStock explicitly; otherwise one is picked from its id so a Phase 2 grid shows
+// a realistic mix without hand-editing every product.
+function plpStoreStock(product) {
+  if (product.storeStock) return product.storeStock;
+  const n = String(product.id || product.name || '').split('').reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+  return ['here', 'nearby', 'warehouse'][n % 3];
+}
+
+// Card stock line — wording from the shared rrgStockStatus() (session-state.js, spec.md
+// §14.1), so cards, the PDP and the Availability filter always agree. Phase 1: "In Stock
+// Online"; Phase 2 with a store set names the store that has it. out_of_stock (2026-09-18,
+// Camping re-scrape) is a real gap — several real Camping SKUs are genuinely OutOfStock per
+// the live PDP's own schema.org availability; see plpPrimaryActionHTML() for the matching
+// disabled primary action.
 function plpStockLineHTML(product) {
-  const map = {
-    in_stock: { cls: 'in-stock', label: '✓ In Stock' },
-    click_collect: { cls: 'in-stock', label: '✓ In Stock — Click &amp; Collect Available' },
-    low_stock: { cls: 'low-stock', label: '⚠ Low Stock' },
-    // out_of_stock (2026-09-18, Camping re-scrape) — real gap: several real Camping SKUs are
-    // genuinely OutOfStock per the live PDP's own schema.org availability, not just missing a
-    // price. See plpPrimaryActionHTML() for the matching disabled primary action.
-    out_of_stock: { cls: 'out-of-stock', label: '✕ Out of Stock' }
-  };
-  const s = map[product.stock] || map.in_stock;
-  return `<div class="plp-stock-line ${s.cls}">${s.label}</div>`;
+  const s = rrgStockStatus(product.stock, plpStoreStock(product));
+  return `<div class="plp-stock-line ${s.tone}">${s.label}</div>`;
 }
 
 // Real brand-logo assets where one already exists in _shared/ (reused verbatim from the PDP
@@ -1261,19 +1313,13 @@ function plpBrandHTML(product) {
   return `<div class="plp-card-brand-text">${product.brand}</div>`;
 }
 
-// List view only: brand logo overlaid on the photo itself (top-left) rather than sitting in
-// the info column below it — a small white chip keeps it legible over any product image.
-function plpBrandOverlayHTML(product) {
-  return `<div class="plp-card-brand-overlay">${plpBrandHTML(product)}</div>`;
-}
-
 // Primary card action (2026-09-18 design review): simple/single-SKU products get a quick
 // Add to Cart button; products with sibling/variant options (product.hasOptions) get
 // "View Options" through to the PDP instead — no quick add, since the customer needs to pick
 // an option first. Independent of cfg.vrs (VRS/Fitment Gallery is a separate concern), so a
 // VRS product can be either state just like a standard one.
 function plpPrimaryActionHTML(product, blockClass) {
-  if (product.stock === 'out_of_stock') {
+  if (rrgStockKey(product.stock) === 'out_of_stock') {
     return `<button type="button" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}" disabled>Out of Stock</button>`;
   }
   if (!product.price) {
@@ -1326,9 +1372,12 @@ function plpCardHTML(product, cfg) {
 }
 
 // List view's own 3-column layout (image | info | actions, 1:2:1) — different enough from
-// the grid card (USPs instead of specs, brand overlaid on the photo instead of sitting below
-// it, Fitment Gallery under the photo instead of paired with View Options) that reusing
-// plpCardHTML with view-conditional bits would be harder to follow than a dedicated function.
+// the grid card (USPs instead of specs, Fitment Gallery under the photo instead of paired with
+// View Options) that reusing plpCardHTML with view-conditional bits would be harder to follow
+// than a dedicated function. The info column follows the grid card's order — brand, name,
+// fitment, rating (2026-09-29, Brenton; brand used to overlay the photo, fitment sat above the
+// name). The Save band is a direct child of the card here, so it sits in the card's own corner
+// rather than the inset photo's.
 function plpListCardHTML(product, cfg) {
   const fitGalleryBtn = cfg.vrs ? `
     <button type="button" class="btn btn-outline plp-fitgallery-btn" data-fitgallery-id="${product.id}">
@@ -1342,19 +1391,19 @@ function plpListCardHTML(product, cfg) {
 
   return `
     <div class="plp-card" data-product-id="${product.id}">
+      ${plpSaveCornerHTML(product)}
       <div class="plp-list-col-media">
         <a href="${product.url || '#'}" class="plp-card-media-link">
           <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
-            ${plpBrandOverlayHTML(product)}
-            ${plpSaveCornerHTML(product)}
             ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
           </div>
         </a>
         ${fitGalleryBtn}
       </div>
       <div class="plp-list-col-info">
-        ${plpFitStatusHTML(product)}
+        ${plpBrandHTML(product)}
         <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
+        ${plpFitStatusHTML(product)}
         ${plpRatingHTML(product)}
         ${usps}
       </div>
@@ -2027,6 +2076,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   plpRenderShopBy();
   if (window.PLP_CONFIG.isSearch) { plpInitSearchPage(); plpRenderSearchTabs(); }
+  plpInitAvailabilityFacet();
   plpRenderFilters();
   plpBuildFilterDrawer();
   plpInitToolbar();

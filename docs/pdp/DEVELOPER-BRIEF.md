@@ -48,7 +48,8 @@ A quick reference for the page's real type scale and colour tokens, pulled from 
 | `--rrg-gold` / `--rrg-gold-bg` | `#BEA98A` / `#FFF9E8` | Muted accent — Fitment Gallery badge, "Fitted" upsell option, not the Add to Cart button |
 | `--rrg-fits` / `--rrg-fits-bg` | `#1E7A34` / `#EAF7EE` | "Fits your vehicle" / In Stock green |
 | `--rrg-unknown` / `--rrg-unknown-bg` | `#B36B00` / `#FFF4E5` | "Confirm your vehicle" / Low Stock / Special Order amber |
-| `--rrg-nofit` / `--rrg-nofit-bg` | `#A6192E` / `#FDEAEC` | "Doesn't fit" / Not in Stock / Discontinued red |
+| `--rrg-nofit` / `--rrg-nofit-bg` | `#A6192E` / `#FDEAEC` | "Doesn't fit" red (fitment only — not used for stock) |
+| `--rrg-stock-out` | `#767676` | Out of Stock / Discontinued stock text — **grey, never red** (Brenton, 2026-09-29: red reads too harsh). Lightest grey that still passes 4.5:1 on white. See 4.37 |
 | `--rrg-display` / `--rrg-display-bg` | `#1A56DB` / `#EAF1FD` | On Display pill blue |
 | `--rrg-line` | `#D8D8D8` | Card/panel borders |
 | `--rrg-bg` | `#F5F5F5` | Neutral section backgrounds |
@@ -774,7 +775,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.17 Special Order banner
 
-**Location:** above Add to Cart in the Decision Panel — all 5 templates, one of 5 mutually-exclusive Stock Status states (In Stock / Low Stock / Not in Stock / Special Order / Discontinued).
+**Location:** above Add to Cart in the Decision Panel — all 5 templates, one of 5 mutually-exclusive Stock Status states (In Stock / Low Stock / Out of Stock / Special Order / Discontinued — wording for all of them in 4.37).
 
 **Purpose:** tells the shopper this item needs to be specially ordered in, with an honest lead-time estimate — informational, never blocks the purchase.
 
@@ -784,7 +785,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Links:** none.
 
-**States:** ![Special Order banner](dev-brief-assets/special-order-banner.png) — stock-status line reads "⏱ Special Order — Ships in 5-7 Days," Add to Cart stays enabled.
+**States:** ![Special Order banner](dev-brief-assets/special-order-banner.png) — stock-status line reads "⏱ Special Order" with the second line "Ordered in for you — ready in 5–7 business days" (4.37), Add to Cart stays enabled. *(Screenshot predates the 2026-09-29 wording — recapture at handover.)*
 
 ---
 
@@ -824,7 +825,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.20 Ex-Demo / B-Stock CTA + slide-in
 
-**Location:** inline text appended to the stock-status line itself ("In Stock — Ex-Demo/Factory Seconds from $X," the price portion a clickable link) — all 5 templates. Clicking it opens a right-edge slide-in drawer (same mechanic as the Store Slide-out, 4.24).
+**Location:** inline text appended to the stock-status line itself ("In Stock Online — Ex-Demo/Factory Seconds from $X," the price portion a clickable link) — all 5 templates. Clicking it opens a right-edge slide-in drawer (same mechanic as the Store Slide-out, 4.24).
 
 **Purpose:** surfaces discounted ex-demo/returned/factory-second stock as an inline upsell-down option, without a separate competing button.
 
@@ -876,6 +877,8 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 **Region differences (4.1 cascade):** default active tab is **Click & Collect** for AU, **Delivery** for NZ/UK (both single-store regions); the "View all stores" link and postcode-driven results are **AU-only** (hidden for NZ/UK, since the real 35-store list has no NZ/UK data). NZ/UK's summary line reads "On display at the ___ Store" only when that single store's own on-display flag is set, otherwise "In stock at the ___ Store" — it's a real per-store check, not an unconditional claim (see 4.25, On Display pill).
 
 **Links:** "View all stores" opens the Store Slide-out (4.24) — real interaction, not a placeholder.
+
+**Stock (2026-09-29, 4.37):** follows the product's stock status. Out of Stock / Discontinued → both tabs unavailable, with a note saying why. Store pills follow the stock state too (Special Order → "Special Order — 5-7 Days" on every store; Out of Stock → grey "Out of Stock"). The v2 design's Click & Collect option shows "Available Today" only when a store near the shopper has it (Phase 2); otherwise "Ready within 2 business days" (or "Ready in 5–7 business days" for Special Order). The summary line reads "Click & Collect from 35 stores —" (was "In stock and on display in 35 stores", which claimed every store held it). "Closest"/"Remote" chips are neutral grey, not the green In Stock colour.
 
 **States:**
 - Location (full page, red arrow): ![Delivery/Click & Collect — location](dev-brief-assets/dc-widget-location.png)
@@ -1381,6 +1384,47 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 
 ---
 
+### 4.37 Stock Status — site-wide (Phase 1 / Phase 2)
+
+**Added 2026-09-29 (`spec.md` §14.1, agreed with Brenton).** One status model for every surface that shows stock: the PDP stock line (all 5 templates), the PLP-family product cards (PLP/VPLP/Camping/Search — see the PLP and Search Results briefs), the Availability filter, the Delivery/Click & Collect widget (4.23), store pills (4.24) and JSON-LD. Build it as **one shared function**. The prototype's is `rrgStockStatus()` in `session-state.js`. Nothing should hard-code its own stock wording.
+
+**Data:**
+- `stock` (online, per product): `in_stock` · `low_stock` · `out_of_stock` · `special_order` · `discontinued`. "Click & Collect" is **not** a stock status — it's a way of getting the order.
+- `storeStock` (**Phase 2 only**, relative to the shopper's nearest store): `here` (their store has it) · `nearby` (a store within **25km** has it — name + distance shown) · `warehouse` (no nearby store, online warehouse has it). Needs a real per-store inventory feed.
+- Phase = the launch build (Phase 1) vs. the store-aware later build (Phase 2). "Store set" = the shopper has a nearest store in their session (header "Your Nearest Store").
+
+**Timings (Brenton, 2026-09-29):** online orders dispatch **next business day**. Stock reaches any store **within 2 business days**, and often straight away because many stores already hold it. Special Order: 5–7 business days.
+
+**Phase 1 — and Phase 2 when no store is set**
+
+| `stock` | Card line | PDP line | PDP second line | Colour |
+|---|---|---|---|---|
+| `in_stock` | ✓ In Stock Online | ✓ In Stock Online | Dispatched next business day · Click & Collect ready in-store within 2 business days | green `--rrg-fits` |
+| `low_stock` | ⚠ Low Stock Online | ⚠ Low Stock Online — order soon | same | amber `--rrg-unknown` |
+| `out_of_stock` | ✕ Out of Stock | ✕ Out of Stock | "Contact our team" link + "for availability" | **grey** `--rrg-stock-out` |
+| `special_order` | ⏱ Special Order | ⏱ Special Order | Ordered in for you — ready in 5–7 business days | amber |
+| `discontinued` | — | line hidden (banner + alternates, 4.18) | — | grey |
+
+Phase 2 with no store set adds **"Set your store to see local stock"** after the PDP second line and at the top of the Availability filter. It opens the store picker (the prototype just sets the store). It's not shown on cards, because there's no room.
+
+**Phase 2 — store set (e.g. North Lakes).** Applies to `in_stock` and `low_stock`; the other states stay as above. Low stock swaps ✓/"In Stock" for ⚠/"Low Stock" (amber, PDP adds "— order soon").
+
+| `storeStock` | Card + PDP line | PDP second line |
+|---|---|---|
+| `here` | ✓ In Stock at North Lakes | Click & Collect today · delivery dispatched next business day |
+| `nearby` | ✓ In Stock at Kedron (18km) | Collect today from Kedron, or from North Lakes within 2 business days |
+| `warehouse` | ✓ In Stock Online | Collect at North Lakes within 2 business days · delivery dispatched next business day |
+
+**Availability filter:** on every product-listing page; details in the PLP brief.
+
+**PDP behaviour per state:** Out of Stock disables Add to Cart ("Out Of Stock") and shows a grey "✕ Currently out of stock" banner. Delivery and Click & Collect are both unavailable. Special Order keeps Add to Cart plus its banner (4.17). Low Stock also shows the Simple template's "This item is limited — whilst stocks last" box, which is hidden in every other state. Sibling-Color's per-colour stock uses the same wording; the orange swatch dot = low stock in that colour.
+
+**JSON-LD `offers.availability`** follows the status: InStock / LimitedAvailability / OutOfStock / BackOrder (Special Order) / Discontinued. Every template used to hard-code InStock.
+
+**Screenshots:** held until final handover, like the rest of this brief. To see every state in the prototype, use Site Admin → **Build Phase** + **Nearest Store Set**, and the Demo State Panel → **Stock status** + **Store stock** (the Phase 2 here/nearby/warehouse preview).
+
+---
+
 ## 5. SEO & Structured Data
 
 **Location:** the page `<head>` and inline `<script type="application/ld+json">` blocks — not a visible widget, so it doesn't follow the Name/Location/Purpose/screenshot template used elsewhere in this document. Applies to all 5 templates.
@@ -1394,4 +1438,5 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 5. **Alt text.** A handful of images ship with empty `alt=""` in the prototype — the payment-plan badge logos (`.pb-logo`) and the Persistent Bar thumbnail (`.persistent-thumb`). Give these real, descriptive alt text in the Magento build.
 6. **`Product` schema's `priceCurrency` — region-specific, flag to whoever builds the Region Selector (4.1).** Every prototype template hardcodes `"priceCurrency": "AUD"` inline in its own `Product`/`Offer` JSON-LD block. The Region Selector's `applyRegionCurrency()` function (`shared.js`) only swaps the visible `$`/`£` symbol in on-page text — it doesn't touch these `<script>` blocks, so a UK/NZ page would still assert AUD pricing to search engines and AI shopping agents. In the real build, `priceCurrency` needs to follow the actual region/currency the page is served in.
 7. **`AggregateRating`/`Review` schema — not blocked on missing data.** No `aggregateRating` or `Review` schema exists yet in the `Product` block on any template, but the real data to populate it already exists: the Decision Panel star-rating badge (4.9) already calls `api.reviews.io/timeline/data` live per SKU and gets back `average_rating`/`review_count`. Once a SKU has real reviews, that same response can drive `aggregateRating` — this is a straightforward addition once building in Magento, not something waiting on new data the way the FAQ content behind the `FAQPage` schema is (4.32).
+8. **`Offer.availability` must follow the real stock status** (4.37) — mapping InStock / LimitedAvailability / OutOfStock / BackOrder / Discontinued. The prototype now does this live; before 2026-09-29 every template hard-coded InStock.
 

@@ -198,7 +198,7 @@
         <span class="swatch-current" id="swatchCurrent"></span>
       </div>
       <div class="swatch-grid" id="swatchGrid"></div>
-      <div class="swatch-note">Orange dot = limited stock</div>
+      <div class="swatch-note">Orange dot = low stock in that colour</div>
 
       <div class="price-block">
         <div class="price-line price-line-now">
@@ -211,7 +211,7 @@
           <span class="badge badge-save" id="saveBadge"></span>
         </div>
         <img class="sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
-        <div class="stock-status-line in-stock" id="stockLine">✓ In Stock</div>
+        <div class="stock-status-line in-stock" id="stockLine">✓ In Stock Online</div>
       </div>
 
       <div class="cta-col" data-conflict-item="a roof rack platform" data-conflict-reason="this board's mounting brackets aren't compatible with that platform">
@@ -265,7 +265,7 @@
               <button class="btn btn-outline" style="padding:8px 14px;font-size:12px;">Select Store</button>
             </div>
           </div>
-          <div class="dc-viewall-row"><span class="dc-viewall-line">In stock and on display in 35 stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
+          <div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from 35 stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
         </div>
       </div>
     </div>
@@ -282,7 +282,7 @@
     <h2 class="showroom-heading">Showroom Finder</h2>
     <div class="showroom-widget split-view">
       <div id="showroomDefaultView">
-        <h3>See It In Person — On Display At 24 Stores Nationwide</h3>
+        <h3>See It In Person — On Display At 12 Stores Nationwide</h3>
         <p>See the full colour range in person before you pick, and check the cleat depth and board thickness for yourself.</p>
         <div class="dc-row">
           <input type="text" class="dc-input" placeholder="Enter your postcode" id="showroomPostcode">
@@ -431,7 +431,7 @@
                   <button class="btn btn-outline" style="padding:8px 14px;font-size:12px;">Select Store</button>
                 </div>
               </div>
-              <div class="dc-viewall-row"><span class="dc-viewall-line">In stock and on display in 35 stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
+              <div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from 35 stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
             </div>
           </div>
           <p><strong>Shipping &amp; Delivery Information.</strong> At Roof Racks Galore, we are proud to be Australia's only nationwide roof rack specialists, with over 30 stores across all major Australian cities. Thanks to our extensive network of Distribution Centres located in key states — Queensland, Western Australia, Victoria, New South Wales, South Australia, and the Australian Capital Territory — we offer the fastest and most reliable delivery service in the industry.</p>
@@ -833,14 +833,11 @@ function renderStock(color) {
   // status — otherwise every colour swap would clobber that override with this
   // colour's real data (same class of bug as the price/sale-flag interaction).
   if (typeof adminState !== 'undefined' && adminState.stockOverride) return;
+  // Per-colour stock key ('limited' is the old name for low_stock — rrgStockKey() maps it);
+  // wording comes from the shared status (spec.md §14.1) via renderStockLine().
   const el = document.getElementById('stockLine');
-  if (color.stock_status === 'limited') {
-    el.textContent = '⚠ Limited stock in this colour — order soon';
-    el.className = 'stock-status-line low-stock';
-  } else {
-    el.textContent = '✓ In Stock';
-    el.className = 'stock-status-line in-stock';
-  }
+  el.dataset.stockKey = rrgStockKey(color.stock_status);
+  if (typeof renderStockLine === 'function' && typeof adminState !== 'undefined' && adminState.stockStatus) renderStockLine(el);
 }
 
 function renderSpecs(color) {

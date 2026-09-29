@@ -229,7 +229,7 @@ function initDcPostcode(root = document) {
         } else {
           line.firstChild.textContent = val
             ? `Showing stores within 100km of ${val} — `
-            : `In stock and on display in ${rrgStoreCount()} stores — `;
+            : `Click & Collect from ${rrgStoreCount()} stores — `;
         }
       }
       const regionOk = currentRegion === 'AU';
@@ -327,7 +327,7 @@ function dcV2PromptHTML(tabType) {
 
 function dcV2OptionsHTML(tabType, postcode, lookup, widgetId) {
   const changeLink = `<div class="dc-results-head"><h3>${tabType === 'delivery' ? `Delivery Options to ${postcode}` : `Click &amp; Collect Options for ${postcode}`}</h3><a href="#" class="dc-change-link" data-dc-change>Change</a></div>`;
-  const viewAll = `<div class="dc-viewall-row"><span class="dc-viewall-line">In stock and on display in ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>`;
+  const viewAll = `<div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>`;
   if (tabType === 'delivery') {
     const collectStore = lookup.stores[0];
     return `
@@ -346,7 +346,7 @@ function dcV2OptionsHTML(tabType, postcode, lookup, widgetId) {
         ${collectStore ? `
         <label class="dc-select-option" data-dc-switch-collect>
           <input type="radio" name="dcMethod-${widgetId}" value="collect">
-          <div class="dc-select-body"><strong>Click &amp; Collect</strong><br><span class="muted">Available Today</span></div>
+          <div class="dc-select-body"><strong>Click &amp; Collect</strong><br><span class="muted" data-collect-eta>${rrgStockStatus(adminState.stockStatus, adminState.storeStock).collectEta}</span></div>
           <div class="dc-price">FREE</div>
         </label>` : ''}
       </div>
@@ -357,7 +357,7 @@ function dcV2OptionsHTML(tabType, postcode, lookup, widgetId) {
     <label class="dc-select-option">
       <input type="radio" name="dcStore-${widgetId}" value="${s.name}" ${i === 0 ? 'checked' : ''}>
       <div class="dc-select-body">
-        <strong>${s.name}</strong> ${i === 0 ? '<span class="stock-chip in">Closest</span>' : ''}${rrgStorePillsHTML(s.name)}
+        <strong>${s.name}</strong> ${i === 0 ? '<span class="stock-chip closest">Closest</span>' : ''}<span data-store-pills="${s.name}">${rrgStorePillsHTML(s.name)}</span>
         <br><span class="muted">${s.distanceKm} km away · ${s.street}, ${s.city}, ${s.postcode}</span>
       </div>
       <div class="dc-price">FREE</div>
@@ -373,19 +373,19 @@ function dcV2NoStoresHTML(postcode) {
       <button type="button" class="btn btn-outline" data-dc-change>Try Another Postcode</button>
       <button type="button" class="btn btn-primary" data-dc-switch-delivery>Switch To Delivery</button>
     </div>
-    <div class="dc-viewall-row"><span class="dc-viewall-line">In stock and on display in ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
+    <div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
   `;
 }
 
 function dcV2RemoteHTML(postcode) {
   return `
-    <div class="dc-results-head"><h3>Delivery Options to ${postcode}</h3><span class="stock-chip in">Remote</span></div>
+    <div class="dc-results-head"><h3>Delivery Options to ${postcode}</h3><span class="stock-chip closest">Remote</span></div>
     <p class="dc-v2-copy">Sorry, we can't give you an instant price. Leave your email and we'll send a custom delivery quote within 1 business day or speak to us via <a href="#">Live Chat</a> during business hours.</p>
     <div class="dc-quote-form">
       <input type="email" class="dc-input" placeholder="your@email.com" data-dc-quote-email>
       <button type="button" class="btn btn-primary" data-dc-request-quote>Request Quote</button>
     </div>
-    <div class="dc-viewall-row"><span class="dc-viewall-line">In stock and on display in ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
+    <div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
   `;
 }
 
@@ -881,32 +881,61 @@ function setSaleFlag(on) {
 // toggle layered on top. ctaLabel drives the generic [data-cta-label] disabled-button
 // text in applyStockStatus() below, so every blocksCta state can have its own wording
 // without a special-cased branch.
+// Wording now comes from rrgStockStatus() (session-state.js, spec.md §14.1) so the PDP,
+// cards and filters can't drift apart again; this table only holds PDP-specific behaviour
+// (what blocks Add to Cart, which banner shows). not_in_stock was renamed out_of_stock to
+// match the cards (2026-09-29) — rrgStockKey() still maps the old key.
 const STOCK_STATUS = {
-  in_stock: { text: '✓ In Stock', cls: 'in-stock', blocksCta: false, specialOrder: false },
-  low_stock: { text: '⚠ Low Stock — order soon', cls: 'low-stock', blocksCta: false, specialOrder: false },
-  not_in_stock: { text: '✕ Not in Stock — Contact our team', cls: 'not-in-stock', blocksCta: true, specialOrder: false, ctaLabel: 'Out Of Stock' },
-  special_order: { text: '⏱ Special Order — Ships in 5-7 Days', cls: 'special-order', blocksCta: false, specialOrder: true },
-  discontinued: { text: '⛔ Discontinued — No Longer Available', cls: 'discontinued', blocksCta: true, specialOrder: false, discontinued: true, ctaLabel: 'Discontinued' }
+  in_stock: { blocksCta: false, specialOrder: false },
+  low_stock: { blocksCta: false, specialOrder: false },
+  out_of_stock: { blocksCta: true, specialOrder: false, ctaLabel: 'Out Of Stock' },
+  special_order: { blocksCta: false, specialOrder: true },
+  discontinued: { blocksCta: true, specialOrder: false, discontinued: true, ctaLabel: 'Discontinued' }
 };
+
+// Phase 2 demo: where the product is in stock relative to the session's nearest store —
+// Demo State Panel "Store stock" radio. Real build: per-store inventory feed.
+function pdpStockKeyFor(line) {
+  // sibling-color sets a per-colour data-stock-key on its line; the Demo State Panel's
+  // stock radio overrides it once touched.
+  return (!adminState.stockOverride && line && line.dataset.stockKey) || adminState.stockStatus || 'in_stock';
+}
 
 // Renders a .stock-status-line's base text/class from the current stock state, then
 // appends the B-Stock/Ex-Demo suffix inline when that admin flag is on — e.g.
-// "In Stock — Ex-Demo/Factory Seconds from $1,495" (UK: "In Stock — Graded from £1,495" —
+// "In Stock Online — Ex-Demo/Factory Seconds from $1,495" (UK: "… — Graded from £1,495" —
 // see exdemoCopy() below) with the price as a clickable link into the ex-demo slide-in
 // drawer. Replaces the old standalone .exdemo-cta button (Graham Sowerby meeting,
 // 2026-09-10: this needed to read as part of the stock line, not its own button-weight
 // element). Re-run by applyRegion() too, so this text/wording flips live if the region
-// switches while the drawer's trigger is already visible.
+// switches while the drawer's trigger is already visible. The second line (.stock-subline —
+// dispatch/collect timing, "Contact our team", "Set your store") sits directly below it.
 function renderStockLine(line) {
-  const cfg = STOCK_STATUS[adminState.stockStatus] || STOCK_STATUS.in_stock;
+  const key = rrgStockKey(pdpStockKeyFor(line));
+  const cfg = STOCK_STATUS[key] || STOCK_STATUS.in_stock;
+  const status = rrgStockStatus(key, adminState.storeStock);
+  let sub = line.nextElementSibling && line.nextElementSibling.classList.contains('stock-subline') ? line.nextElementSibling : null;
+  if (!sub) {
+    sub = document.createElement('div');
+    sub.className = 'stock-subline';
+    line.after(sub);
+  }
   // Discontinued (2026-09-12, spec.md §12 item 35): the .discontinued-banner already
   // states the product is discontinued, so this line is hidden entirely instead of
   // duplicating that message — every other state clears `hidden` so it doesn't stay
   // stuck hidden after toggling back off Discontinued.
+  sub.hidden = !!cfg.discontinued || !(status.subline || status.contact || status.setStore);
+  if (!sub.hidden) {
+    const parts = [];
+    if (status.subline) parts.push(status.subline);
+    if (status.contact) parts.push('<a href="#" class="stock-subline-link">Contact our team</a> for availability');
+    if (status.setStore) parts.push('<a href="#" class="stock-subline-link" data-set-store>Set your store</a> to see local stock');
+    sub.innerHTML = parts.join(' · ');
+  }
   line.hidden = !!cfg.discontinued;
   if (cfg.discontinued) return;
-  line.className = 'stock-status-line ' + cfg.cls;
-  line.textContent = cfg.text;
+  line.className = 'stock-status-line ' + status.tone;
+  line.textContent = status.pdpLabel;
   if (!adminState.exdemo) return;
   const block = line.closest('.price-block');
   const basePrice = block ? currentPagePrice(block) : 0;
@@ -925,9 +954,10 @@ function renderStockLine(line) {
 }
 
 function applyStockStatus(status) {
+  status = rrgStockKey(status);
   adminState.stockStatus = status;
   const cfg = STOCK_STATUS[status] || STOCK_STATUS.in_stock;
-  document.querySelectorAll('.stock-status-line').forEach(renderStockLine);
+  rrgRefreshStockSurfaces();
   document.querySelectorAll('.price-block').forEach(block => {
     block.classList.toggle('discontinued', !!cfg.discontinued);
   });
@@ -989,6 +1019,47 @@ function applyStockStatus(status) {
   // col.hidden just changed above (discontinued toggling hides/shows .cta-col) — re-sync
   // the compatibility banner, which must never show alongside a hidden CTA.
   applyCartConflict(adminState.cartConflict);
+  // Out of Stock / Discontinued turn Delivery + Click & Collect off (spec.md §14.1) —
+  // re-run with the Demo State Panel's own toggles so switching back restores them.
+  applyAvailabilityFlags(adminState.shipping, adminState.collect);
+}
+
+// Everything on the PDP that shows stock, re-rendered from the one status (spec.md §14.1):
+// the stock line + sub-line, store pills (Click & Collect widget, Store Slide-out),
+// Click & Collect timing in the v2 widget, the simple template's "whilst stocks last" line,
+// and JSON-LD availability. Runs on every stock change and on every 'rrg-session-change'
+// (Build Phase / Nearest Store Set toggles), so Phase 1/2 flips live.
+function rrgRefreshStockSurfaces() {
+  // PDP only — listing pages carry their own per-product stock (plp.js) and JSON-LD.
+  if (!adminState.stockStatus || !document.querySelector('.stock-status-line')) return;
+  document.querySelectorAll('.stock-status-line').forEach(renderStockLine);
+  const status = rrgStockStatus(adminState.stockStatus, adminState.storeStock);
+  document.querySelectorAll('[data-store-pills]').forEach(el => { el.innerHTML = rrgStorePillsHTML(el.dataset.storePills); });
+  document.querySelectorAll('[data-collect-eta]').forEach(el => { el.textContent = status.collectEta; });
+  document.querySelectorAll('.scarcity').forEach(el => { el.hidden = status.key !== 'low_stock'; });
+  document.querySelectorAll('script[type="application/ld+json"]').forEach(el => {
+    el.textContent = el.textContent.replace(/("availability"\s*:\s*"https:\/\/schema\.org\/)\w+"/g, `$1${status.schema}"`);
+  });
+}
+document.addEventListener('rrg-session-change', rrgRefreshStockSurfaces);
+
+// Static Click & Collect store rows in each template's markup carry hand-typed pills —
+// swap them for a [data-store-pills] slot so they follow the product's stock state like
+// the JS-rendered rows do. Only rows with a real store address (not the Showroom Finder's
+// "On Display" list, which is about display, not stock).
+function rrgWrapStaticStorePills() {
+  document.querySelectorAll('.dc-store > div > strong:first-child').forEach(strong => {
+    if (strong.closest('#showroom')) return;
+    const chips = [];
+    let n = strong.nextElementSibling;
+    while (n && n.classList.contains('stock-chip')) { chips.push(n); n = n.nextElementSibling; }
+    if (!chips.length) return;
+    chips.forEach(c => c.remove());
+    const slot = document.createElement('span');
+    slot.dataset.storePills = strong.textContent.trim();
+    slot.innerHTML = rrgStorePillsHTML(slot.dataset.storePills);
+    strong.after(slot);
+  });
 }
 
 // Compatibility feature (backlog item 24, 2026-09-11 backlog) — simulates cart contents
@@ -1023,6 +1094,10 @@ function applyCartConflict(state) {
 function applyAvailabilityFlags(shipping, collect) {
   adminState.shipping = shipping;
   adminState.collect = collect;
+  // Out of Stock / Discontinued (spec.md §14.1): neither option is available, whatever the
+  // panel toggles say — the note explains why instead of the generic "both unavailable".
+  const stockBlocked = ['out_of_stock', 'discontinued'].includes(rrgStockKey(adminState.stockStatus));
+  if (stockBlocked) { shipping = false; collect = false; }
   document.querySelectorAll('.dc-widget').forEach(widget => {
     const deliveryTab = widget.querySelector('[data-dc-tab="delivery"]');
     const collectTab = widget.querySelector('[data-dc-tab="collect"]');
@@ -1037,9 +1112,13 @@ function applyAvailabilityFlags(shipping, collect) {
       if (!note) {
         note = document.createElement('div');
         note.className = 'dc-unavailable-note';
-        note.textContent = 'Delivery and Click & Collect are both currently unavailable for this item.';
         widget.parentNode.insertBefore(note, widget.nextSibling);
       }
+      note.textContent = stockBlocked
+        ? (rrgStockKey(adminState.stockStatus) === 'discontinued'
+          ? "This product has been discontinued, so Delivery and Click & Collect aren't available."
+          : "This item is currently out of stock, so Delivery and Click & Collect aren't available right now.")
+        : 'Delivery and Click & Collect are both currently unavailable for this item.';
       note.hidden = false;
       return;
     }
@@ -1252,23 +1331,35 @@ const RRG_STORE_NETWORK = [
 // Which stores show the "On Display" pill (this specific product is set up in-showroom
 // there) — demo/placeholder, same two stores the Showroom Finder widget's copy already
 // named before this rework, kept for continuity across the page.
-const ON_DISPLAY_STORES = new Set(["Moorebank", "Castle Hill"]);
+// Widened 2026-09-29 (stock-status rework, spec.md §14.1) from just Moorebank + Castle Hill —
+// the Showroom Finder heading's store count is now read off this set instead of hand-typed
+// per template (it claimed 12–26 stores while only 2 were marked).
+const ON_DISPLAY_STORES = new Set(["Moorebank", "Castle Hill", "Silverwater", "Hoppers Crossing", "Moorabbin", "Preston", "Pooraka", "Kedron", "North Lakes", "Gold Coast", "Osborne Park", "Canberra"]);
 
 // Which stores show "Need to Order In" instead of "In Stock" — demo/placeholder, needs a
 // real per-store inventory feed before production (same caveat as ON_DISPLAY_STORES above).
 // Spread across a few different states so most postcode checks surface some real-looking
 // variety rather than every store always reading "In Stock."
-const ORDER_IN_STORES = new Set(["Epping", "Malaga", "Hallam", "Matraville"]);
+const ORDER_IN_STORES = new Set(["Epping", "Malaga", "Hallam", "Matraville", "Smeaton Grange"]);
 
 function rrgStoreCount() {
   return RRG_STORE_NETWORK.reduce((n, group) => n + group.stores.length, 0);
 }
 
+// Follows the product's stock state (spec.md §14.1): Out of Stock / Special Order apply to
+// every store. In Phase 2 with a store set, the session store and the demo nearby store
+// follow the Demo State Panel's "Store stock" radio so the pills agree with the stock line.
 function rrgStorePillsHTML(name) {
-  const statusPill = ORDER_IN_STORES.has(name)
-    ? `<span class="stock-chip order">Order In — 1-2 Days</span>`
-    : `<span class="stock-chip in">In Stock</span>`;
+  const key = typeof adminState !== 'undefined' ? rrgStockKey(adminState.stockStatus) : 'in_stock';
   const displayPill = ON_DISPLAY_STORES.has(name) ? `<span class="stock-chip display">On Display</span>` : '';
+  if (key === 'out_of_stock' || key === 'discontinued') return `<span class="stock-chip out">Out of Stock</span>` + displayPill;
+  if (key === 'special_order') return `<span class="stock-chip order">Special Order — 5-7 Days</span>` + displayPill;
+  const inPill = `<span class="stock-chip in">In Stock</span>`;
+  const orderPill = `<span class="stock-chip order">Order In — 1-2 Days</span>`;
+  const ctx = rrgStoreContext();
+  if (ctx.storeAware && name === ctx.store) return (adminState.storeStock === 'here' ? inPill : orderPill) + displayPill;
+  if (ctx.storeAware && ctx.nearby && name === ctx.nearby.name) return (['here', 'nearby'].includes(adminState.storeStock) ? inPill : orderPill) + displayPill;
+  const statusPill = ORDER_IN_STORES.has(name) ? orderPill : inPill;
   return statusPill + displayPill;
 }
 
@@ -1416,7 +1507,7 @@ function renderStoreSlideoutBody(nearState) {
   const storeRowHTML = s => `
     <div class="dc-store">
       <div>
-        <strong>${s.name}</strong>${rrgStorePillsHTML(s.name)}<br>
+        <strong>${s.name}</strong><span data-store-pills="${s.name}">${rrgStorePillsHTML(s.name)}</span><br>
         <span class="muted">${s.street}, ${s.city} ${s.postcode}</span><br>
         <a class="store-phone" href="tel:${s.phone.replace(/[^0-9+]/g, '')}">${s.phone}</a>
         <a class="store-map-link" href="${s.mapLink}" target="_blank" rel="noopener noreferrer">View on map</a>
@@ -1729,7 +1820,7 @@ let currentRegion = 'AU';
 // to AU restores the real per-page count instead of a hardcoded generic string.
 function applyRegionShowroomHeading(region, heading) {
   if (!heading) return;
-  if (!heading.dataset.auHeading) heading.dataset.auHeading = heading.textContent;
+  if (!heading.dataset.auHeading) heading.dataset.auHeading = `See It In Person — On Display At ${ON_DISPLAY_STORES.size} Stores Nationwide`;
   heading.textContent = region === 'AU'
     ? heading.dataset.auHeading
     : `See It In Person — On Display At the ${REGION_SINGLE_STORES[region].name} Store`;
@@ -2908,7 +2999,7 @@ function buildAdminPanel() {
   const initialShipping = detectInitialShippingState();
   const initialCollect = detectInitialCollectState();
   const initialFitGallery = detectInitialFitGalleryState();
-  Object.assign(adminState, { video: initialVideo, sale: initialSale, stockStatus: 'in_stock', stockOverride: false, shipping: initialShipping, collect: initialCollect, exdemo: false, fittedOption: false, fittedMode: 'card', showroom: true, fitGallery: initialFitGallery, vehicleFitNotes: false, cartConflict: 'none' });
+  Object.assign(adminState, { video: initialVideo, sale: initialSale, stockStatus: 'in_stock', storeStock: 'here', stockOverride: false, shipping: initialShipping, collect: initialCollect, exdemo: false, fittedOption: false, fittedMode: 'card', showroom: true, fitGallery: initialFitGallery, vehicleFitNotes: false, cartConflict: 'none' });
   // Interactive map is the locked default for the Showroom Finder widget, all 5
   // templates — no longer a Demo State Panel preview toggle. Layout (split-view,
   // revealing #showroomMap) still applies immediately so there's no shift once the map
@@ -2964,9 +3055,15 @@ function buildAdminPanel() {
         <div class="admin-radio-row">
           <label><input type="radio" name="stockStatus" value="in_stock" checked> In Stock</label>
           <label><input type="radio" name="stockStatus" value="low_stock"> Low Stock</label>
-          <label><input type="radio" name="stockStatus" value="not_in_stock"> Not in Stock — contact our team</label>
+          <label><input type="radio" name="stockStatus" value="out_of_stock"> Out of Stock</label>
           <label><input type="radio" name="stockStatus" value="special_order"> Special Order</label>
           <label><input type="radio" name="stockStatus" value="discontinued"> Discontinued</label>
+        </div>
+        <div class="admin-toggle-label"><span>Store stock <span class="admin-note">(Phase 2 + store set only — Site Admin)</span></span></div>
+        <div class="admin-radio-row">
+          <label><input type="radio" name="storeStock" value="here" checked> At your store</label>
+          <label><input type="radio" name="storeStock" value="nearby"> Nearby store only</label>
+          <label><input type="radio" name="storeStock" value="warehouse"> Online warehouse only</label>
         </div>
         <div class="admin-toggle-label"><span>Cart contents <span class="admin-note">(compatibility check)</span></span></div>
         <div class="admin-radio-row">
@@ -3011,6 +3108,7 @@ function buildAdminPanel() {
           <label><input type="radio" name="plpHeroImage" value="none"> None</label>
         </div>`}
         <label class="admin-toggle"><span>Compare Products <span class="admin-note">(off by default)</span></span><input type="checkbox" data-admin-flag="plpCompare"></label>
+        <label class="admin-toggle"><span>Product ribbons <span class="admin-note">(Bestseller / Staff Pick / custom — Phase 2 only, off by default)</span></span><input type="checkbox" data-admin-flag="plpRibbons"></label>
       </div>` : ''}
       ${isSearchPage ? `
       <div class="admin-section">
@@ -3077,6 +3175,7 @@ function buildAdminPanel() {
         case 'vehicleFitNotes': applyVehicleFitNotesFlag(on); break;
         case 'dcWidgetV2': applyDcWidgetV2Flag(on); break;
         case 'plpCompare': if (typeof applyPlpCompareFlag === 'function') applyPlpCompareFlag(on); break;
+        case 'plpRibbons': if (typeof applyPlpRibbonsFlag === 'function') applyPlpRibbonsFlag(on); break;
       }
     });
   });
@@ -3111,6 +3210,14 @@ function buildAdminPanel() {
     });
   });
 
+  panel.querySelectorAll('input[name="storeStock"]').forEach(input => {
+    input.addEventListener('change', () => {
+      if (!input.checked) return;
+      adminState.storeStock = input.value;
+      rrgRefreshStockSurfaces();
+    });
+  });
+
   panel.querySelectorAll('input[name="cartConflict"]').forEach(input => {
     input.addEventListener('change', () => {
       if (!input.checked) return;
@@ -3128,6 +3235,7 @@ function buildAdminPanel() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  rrgWrapStaticStorePills();
   buildAdminPanel();
   // Header integration (2026-09-13) — mega menu ("Products"), the Site Admin Panel (Template
   // Switcher + Dev Brief links, moved out of the old .rrg-nav dropdown), and session-state

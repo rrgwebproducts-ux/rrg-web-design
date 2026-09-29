@@ -162,6 +162,9 @@
    that's not what was flagged, and the +/- collapse marker on the summary above stays at
    right:0 — unaffected, since this padding is scoped to the options list, not the group. */
 .plp-filter-options{display:flex;flex-direction:column;gap:2px;margin-top:10px;padding-right:12px;}
+/* Phase 2, no store set — "Set your store to see local stock" at the top of Availability (spec.md §14.1). */
+.plp-filter-store-prompt{margin:10px 12px 0 0;font-size:13px;color:#555;}
+.plp-filter-store-prompt a{color:inherit;font-weight:700;text-decoration:underline;}
 .plp-filter-option{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13.5px;color:#333;cursor:pointer;}
 .plp-filter-option input{accent-color:var(--rrg-red);width:16px;height:16px;flex:0 0 auto;}
 .plp-filter-option span:nth-child(2){flex:1;}
@@ -295,18 +298,14 @@
 .plp-card-media.is-placeholder svg{width:52%;height:52%;color:#c2c2c2;}
 
 /* List row's left column: the photo plus (VRS only) a Fitment Gallery button stacked under
-   it — brand logo sits directly on the photo itself, top-left, at 40% of the photo's width.
-   No background chip: every brand logo asset here is already a transparent PNG/webp, so it
-   just sits straight on the image like a watermark rather than inside a box. */
+   it. The brand logo sits in the info column above the name, same as the grid card (2026-09-29). */
 .plp-list-col-media{display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;}
-.plp-card-brand-overlay{position:absolute;top:8px;left:8px;z-index:3;width:40%;}
-.plp-card-media:has(.plp-ribbon) .plp-card-brand-overlay{top:40px;}
-.plp-card-brand-overlay .plp-card-brand-logo{width:100%;height:auto;max-width:none;max-height:none;margin-bottom:0;}
-.plp-card-brand-overlay .plp-card-brand-text{margin-bottom:0;font-size:12px;}
 .plp-list-col-media .plp-fitgallery-btn{width:100%;font-size:13px;padding:10px 12px;white-space:nowrap;}
 
 .plp-list-col-info{display:flex;flex-direction:column;gap:6px;min-width:0;}
 .plp-list-col-info .plp-card-title{-webkit-line-clamp:unset;min-height:0;margin:0;}
+.plp-list-col-info .plp-card-brand-logo,.plp-list-col-info .plp-card-brand-text{margin-bottom:4px;}
+.plp-list-col-info .plp-fitment{margin:0;}
 .plp-list-usps{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;}
 .plp-list-usps li{font-size:13px;color:#444;line-height:1.4;padding-left:20px;position:relative;}
 .plp-list-usps li::before{content:'✓';position:absolute;left:0;top:0;color:var(--rrg-fits);font-weight:700;}
@@ -334,8 +333,9 @@
 .plp-list-col-actions .btn{font-size:13px;padding:11px 18px;margin-top:auto;}
 
 .plp-card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;min-width:0;}
-.plp-card-brand-logo{max-width:100px;max-height:20px;width:auto;height:auto;object-fit:contain;display:block;margin-bottom:5px;}
-.plp-card-brand-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:#767676;margin-bottom:5px;}
+/* Bottom margin 5px → 9px (2026-09-29, Brenton — logo sat a bit tight against the name). */
+.plp-card-brand-logo{max-width:100px;max-height:20px;width:auto;height:auto;object-fit:contain;display:block;margin-bottom:9px;}
+.plp-card-brand-text{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:#767676;margin-bottom:9px;}
 /* Clamped to exactly 2 lines, short or long — this is what keeps the rating/price/stock
    lines below starting at the same height card-to-card in a grid row, regardless of how
    long any one product's name is. */
@@ -390,7 +390,8 @@
 .plp-price .plp-sale-tag{width:88px;height:auto;flex:0 0 auto;}
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
-.plp-stock-line.out-of-stock{color:#a3a3a3;}
+.plp-stock-line.out-of-stock{color:var(--rrg-stock-out);}
+.plp-stock-line.special-order{color:var(--rrg-unknown);}
 
 /* ---- Card design (2026-09-29 — trialled on search, now every PLP-family page) --------------
    (.plp-save-corner itself lives in shared.css — the PDP Related Products cards use it too.)
@@ -398,9 +399,7 @@
    RRP on one line; even spacing between rating / price / stock. */
 /* Phase 2 stopgap: drop below the full-width Best Seller / Staff Pick bar. */
 .plp-card-media:has(.plp-ribbon) .plp-save-corner{top:34px;}
-/* List view's brand chip also lives top-left on the image — move it to the top-right when the
-   corner band is there. */
-.plp-card-media:has(.plp-save-corner) .plp-card-brand-overlay{left:auto;right:8px;}
+/* List view: the Save band sits in the card's own corner, not the inset photo's (2026-09-29). */
 .plp-price.plp-price-v2{display:block;margin:0 0 10px;}
 .plp-price-v2-row{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:0;}
 .plp-results.is-grid .plp-price-v2-row,.plp-list-col-actions .plp-price-v2-row{justify-content:center;}
