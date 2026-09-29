@@ -176,7 +176,9 @@
 .plp-filter-tooltip{position:relative;display:inline-flex;flex:0 0 auto;color:#8a8a8a;cursor:help;}
 .plp-filter-tooltip svg{width:14px;height:14px;}
 .plp-filter-tooltip:hover,.plp-filter-tooltip:focus-visible{color:var(--rrg-red);}
-.plp-filter-tooltip::after{content:attr(data-tooltip);position:absolute;left:0;top:calc(100% + 8px);z-index:5;width:220px;background:var(--rrg-black);color:#fff;font-size:12px;font-weight:400;text-transform:none;letter-spacing:normal;line-height:1.4;padding:8px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .12s;}
+/* Same look as the product-card fitment tooltip (.plp-fitment-tip, 2026-09-29): footer charcoal,
+   white body text at 12.5px — easier to read than the original black/12px version. */
+.plp-filter-tooltip::after{content:attr(data-tooltip);position:absolute;left:0;top:calc(100% + 8px);z-index:5;width:220px;background:#211E20;color:#fff;font-family:'Lato',Arial,Helvetica,sans-serif;font-size:12.5px;font-weight:400;font-style:normal;text-transform:none;letter-spacing:normal;line-height:1.4;text-align:left;padding:8px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .12s;}
 .plp-filter-tooltip:hover::after,.plp-filter-tooltip:focus-visible::after{opacity:1;}
 
 /* Mobile priority chips — quick-access row above "Refine Results" (Section 6) */
@@ -578,13 +580,25 @@
 .plp-fitment-icon{width:18px;height:18px;flex:0 0 auto;}
 .plp-fitment div{min-width:0;}
 .plp-fitment strong{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;}
-.plp-fitment span{display:block;font-size:12.5px;color:#4a4a4a;line-height:1.3;}
 .plp-fitment.fits{border-left-color:var(--rrg-fits);}
 .plp-fitment.fits strong,.plp-fitment.fits .plp-fitment-icon{color:var(--rrg-fits);}
 .plp-fitment.no_fit{border-left-color:var(--rrg-nofit);}
 .plp-fitment.no_fit strong,.plp-fitment.no_fit .plp-fitment-icon{color:var(--rrg-nofit);}
 .plp-fitment.unknown{border-left-color:var(--rrg-unknown);}
 .plp-fitment.unknown strong,.plp-fitment.unknown .plp-fitment-icon{color:var(--rrg-unknown);}
+/* Full-vehicle tooltip — shows on hover, keyboard focus, or tap (tap focuses the element via its
+   tabindex). Drops down over the card under the label, at the label's width (the card clips
+   overflow, so it can't hang outside it). Same black style as the filter tooltips. */
+.plp-fitment{position:relative;cursor:help;}
+.plp-fitment:focus{outline:none;}
+.plp-fitment:focus-visible{box-shadow:0 0 0 2px var(--rrg-black);}
+.plp-fitment .plp-fitment-tip{position:absolute;left:-1px;right:-1px;top:calc(100% + 6px);z-index:6;background:#211E20;color:#fff;font-size:12.5px;font-weight:400;line-height:1.4;text-align:left;padding:8px 10px;border-radius:6px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s;}
+/* Footer charcoal (#211E20, .rrg-footer) rather than pure black — Brenton, 2026-09-29. The
+   ::before bridges the 6px gap so moving the mouse down onto the tooltip (to click its link)
+   doesn't drop the hover. :focus-within keeps it open on mobile while its link is tapped. */
+.plp-fitment-tip::before{content:'';position:absolute;left:0;right:0;top:-8px;height:8px;}
+.plp-fitment-tip a{color:#fff;font-weight:700;text-decoration:underline;}
+.plp-fitment:hover .plp-fitment-tip,.plp-fitment:focus-within .plp-fitment-tip{opacity:1;visibility:visible;pointer-events:auto;}
 /* Grid cards are centre-aligned throughout, so the status label is too (list view stays left,
    like the rest of that layout). */
 .plp-results.is-grid .plp-fitment{justify-content:center;}

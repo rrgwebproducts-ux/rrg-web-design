@@ -83,7 +83,7 @@ function renderFitmentHTML(state, vehicle, mode) {
   }
   const detail = typeof c.detail === 'function' ? c.detail(vehicle) : c.detail;
   const actions = c.actions.length
-    ? `<div class="actions">${c.actions.map(a => `<button type="button">${a}</button>`).join("")}</div>`
+    ? `<div class="actions">${c.actions.map(a => `<button type="button"${/vehicle/i.test(a) ? ' data-open-fit-finder' : ''}>${a}</button>`).join("")}</div>`
     : "";
   return `
     <span class="dot">${icon}</span>
@@ -1279,6 +1279,106 @@ function rrgStorePillsHTML(name) {
 // buildExdemoSlideout() above (both are right-edge slide-ins, independent of each other).
 // Multiple triggers on one page (Click & Collect's link and, where present, the Showroom
 // Finder's) all open the same drawer.
+// Fit Finder drawer (Brenton, 2026-09-29) — a site-wide, right-edge slide-out version of the
+// Vehicle Category Landing Page's Fit Finder widget (same .fit-finder-widget look, fields
+// stacked for the drawer's width), so "set your vehicle" can be answered from wherever it's
+// asked instead of sending the shopper elsewhere. Any element with [data-open-fit-finder] opens
+// it (delegated, so links rendered later — product-card tooltips, the search strip, the Add to
+// Cart notice — work too); the header's vehicle link and the PLP-family pages' Set/Change
+// Vehicle buttons are wired up to it here as well. Same backdrop/drawer convention as the Store
+// slide-out (.store-slideout*), its own instance.
+// Demo: Make/Model are fixed to Toyota Hilux, like the landing page's own widget — the only
+// vehicle this prototype's session knows (session-state.js). "View Results" sets that session
+// vehicle and closes; production has full make/model cascades and real results routing.
+function buildFitFinderDrawer() {
+  if (document.getElementById('fitFinderDrawerBackdrop')) return;
+  const backdrop = document.createElement('div');
+  backdrop.className = 'store-slideout-backdrop fit-finder-drawer-backdrop';
+  backdrop.id = 'fitFinderDrawerBackdrop';
+  backdrop.innerHTML = `
+    <div class="store-slideout fit-finder-drawer" role="dialog" aria-modal="true" aria-labelledby="fitFinderDrawerTitle">
+      <div class="store-slideout-head">
+        <h2 id="fitFinderDrawerTitle">Set Your Vehicle</h2>
+        <button type="button" class="store-slideout-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="store-slideout-body">
+        <section class="fit-finder-widget">
+          <div class="ff-head">
+            <span class="ff-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></span>
+            <h2><span class="italic-lead">Fit</span> Finder</h2>
+            <p>Select your vehicle to see what fits it across the whole site.</p>
+          </div>
+          <div class="ff-row">
+            <select aria-label="Make"><option value="toyota">Toyota</option></select>
+            <select aria-label="Model"><option value="hilux">Hilux</option></select>
+            <select aria-label="Year range" data-ff-required>
+              <option value="" selected disabled>Year</option>
+              <option value="2024+">2024 Onwards (N90)</option>
+              <option value="2015-2023">2015–2023 (N80)</option>
+              <option value="2005-2015">2005–2015 (N70)</option>
+              <option value="pre-2005">Pre-2005</option>
+            </select>
+            <select aria-label="Body style" data-ff-required>
+              <option value="" selected disabled>Body Style</option>
+              <option value="double-cab">Double Cab (4dr Ute)</option>
+              <option value="xtra-cab">Xtra Cab</option>
+              <option value="single-cab">Single Cab</option>
+            </select>
+            <select aria-label="Roof type" data-ff-required>
+              <option value="" selected disabled>Roof Type</option>
+              <option value="bare">No Rails — Bare Roof</option>
+              <option value="styling-bar">Styling Bars Only (Non Load-Rated)</option>
+              <option value="aftermarket-rails">Aftermarket Rails Fitted</option>
+            </select>
+            <button type="button" class="btn btn-gold" data-ff-submit disabled>Set My Vehicle</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(backdrop);
+  const required = [...backdrop.querySelectorAll('[data-ff-required]')];
+  const submit = backdrop.querySelector('[data-ff-submit]');
+  const sync = () => { submit.disabled = required.some(s => !s.value); };
+  required.forEach(s => s.addEventListener('change', sync));
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
+  backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFitFinderDrawer(); });
+  submit.addEventListener('click', () => {
+    if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
+    closeFitFinderDrawer();
+  });
+}
+
+function openFitFinderDrawer() {
+  buildFitFinderDrawer();
+  document.getElementById('fitFinderDrawerBackdrop').classList.add('open');
+}
+
+function closeFitFinderDrawer() {
+  const backdrop = document.getElementById('fitFinderDrawerBackdrop');
+  if (backdrop) backdrop.classList.remove('open');
+}
+
+function initFitFinderTriggers() {
+  // Header vehicle link (desktop utility bar + mobile takeover) and the PLP-family pages' own
+  // Set/Change Vehicle buttons. The Vehicle Category Landing Page keeps its own behaviour — its
+  // Fit Finder is already on the page.
+  document.querySelectorAll('[data-session="vehicleSet"]').forEach(el => {
+    const link = el.closest('a');
+    if (link) link.setAttribute('data-open-fit-finder', '');
+  });
+  if (document.querySelector('[data-plp-page]')) {
+    document.querySelectorAll('[data-vclp-cta="set-vehicle"], [data-vclp-cta="change-vehicle"]').forEach(el => el.setAttribute('data-open-fit-finder', ''));
+  }
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-open-fit-finder]');
+    if (!trigger) return;
+    e.preventDefault();
+    openFitFinderDrawer();
+  });
+}
+
 function buildStoreSlideout() {
   const triggers = document.querySelectorAll('[data-store-slideout]');
   if (!triggers.length || document.getElementById('storeSlideoutBackdrop')) return;
@@ -2744,6 +2844,7 @@ function initSearchClear() {
 document.addEventListener('DOMContentLoaded', () => {
   buildExdemoSlideout();
   buildStoreSlideout();
+  initFitFinderTriggers();
   buildFitGallerySlideout();
   initCopyButtons();
   initFitGalleryCarousel();

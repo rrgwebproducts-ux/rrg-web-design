@@ -108,39 +108,8 @@
     .vclp-hero-media{order:-1;}
   }
 
-  /* Fit Finder — dark widget, same "own trust-building block" convention as
-     .showroom-widget, styled locally here since this is the first template that needs it.
-     If a future PLP/category template reuses it, promote this block into shared.css. */
-  .fit-finder-widget{background:rgba(0,0,0,.7);color:#fff;border-radius:var(--radius);padding:26px 28px;margin-bottom:36px;}
-  /* Restructured 2026-09-16 per Brenton: badge/heading/paragraph are now flex siblings in
-     one row (was heading+paragraph stacked in their own inner div) so the paragraph can sit
-     beside "Fit Finder" on desktop instead of below it. flex-wrap + the paragraph's
-     flex-basis:100% on narrow screens (below) puts it back on its own full-width line under
-     the badge+heading on mobile, matching the original stacked layout there. */
-  .ff-head{display:flex;align-items:center;flex-wrap:wrap;gap:14px 20px;margin-bottom:20px;}
-  /* Badge height matches the "Fit Finder" heading's own font-size (37px, the shared
-     section-heading scale) — corrected 2026-09-16 per Brenton, who felt the first pass
-     (54px, the heading's full line-height box including its leading) looked too big; this
-     matches the heading text itself, not the whitespace around it. */
-  .ff-badge{flex:0 0 auto;width:37px;height:37px;border-radius:6px;background:var(--rrg-gold);display:flex;align-items:center;justify-content:center;}
-  .ff-badge svg{width:19px;height:19px;color:#fff;}
-  .ff-head h2{margin:0;color:#fff;flex:0 0 auto;}
-  .ff-head p{margin:0;font-size:14px;color:#ccc;max-width:520px;flex:1 1 280px;}
-  @media (max-width:900px){
-    .ff-head p{flex-basis:100%;}
-  }
-  .ff-row{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px;align-items:stretch;}
-  .ff-row select{width:100%;background:#fff;border:1px solid #3a3a3a;border-radius:6px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--rrg-black);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;}
-  .ff-row select:disabled{background-color:#eee;color:#999;cursor:not-allowed;}
-  .ff-row .btn{white-space:nowrap;}
-  .ff-row .btn:disabled{opacity:.5;cursor:not-allowed;}
-  @media (max-width:900px){
-    .ff-row{grid-template-columns:1fr 1fr;}
-    .ff-row .btn{grid-column:1/-1;}
-  }
-  @media (max-width:520px){
-    .ff-row{grid-template-columns:1fr;}
-  }
+  /* Fit Finder styles moved to shared.css (2026-09-29) — now shared with the site-wide Fit
+     Finder drawer (buildFitFinderDrawer() in shared.js). */
 
   /* Fitment Gallery — 2026-09-15: switched from a bespoke "Recent Fits" carousel to the
      exact same widget as Vehicle-Specific's Fitment Gallery (`.fit-gallery-section` /
@@ -351,7 +320,7 @@
     <div>
       <h1>Toyota Hilux Roof Racks</h1>
       <p>The Toyota Hilux has been Australia's best-selling ute for years running, but almost every Hilux leaves the factory with a bare roof — no rails at all. What fits yours depends on which generation you're driving (N70, N80, N90 or an earlier model — see the <a href="#genTable">generation table below</a>), whether you've got a Single, Xtra or Double Cab, and — the detail most buyers miss — whether your Hilux has genuine roof rails, a non-load-rated styling bar, or nothing fitted at all. Rather than guess, select your vehicle below and we'll show you exactly what fits.</p>
-      <a href="#fitFinder" class="btn btn-gold" data-vclp-cta="change-vehicle">Change Vehicle</a>
+      <a href="#" class="btn btn-gold" data-open-fit-finder>Change Vehicle</a>
     </div>
     <div class="vclp-hero-media">
       <img src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="1024" height="1024" fetchpriority="high">

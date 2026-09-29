@@ -290,6 +290,22 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 ---
 
+### 4.10 Fit Finder Drawer (site-wide)
+
+**Name:** Fit Finder Drawer (added 2026-09-29)
+
+**Location:** a right-edge slide-out, available on every page (same backdrop/drawer convention as the Store slide-out).
+
+**Purpose:** answer "set your vehicle" wherever it's asked, without sending the shopper to another page. It's the drawer version of the Vehicle Category Landing Page's Fit Finder widget — same dark block, badge and "Fit Finder" heading, with the fields stacked one per row for the drawer's width.
+
+**Contents:** Make, Model, Year, Body Style, Roof Type, then a full-width "Set My Vehicle" button (disabled until every field is chosen). In the prototype Make/Model are fixed to Toyota Hilux, the only vehicle the demo session knows; production needs full make/model cascades.
+
+**Opens from:** the header's "Your Vehicle / Select Your Vehicle" link (desktop and mobile takeover); the PLP, VPLP and Camping pages' Set Your Vehicle / Change Vehicle buttons; the vehicle-specific PDP fitment card's "Select your vehicle" / "Change vehicle" buttons; the search page's fitment strip button; the product-card fitment tooltip's "Set your vehicle" / "Change your vehicle" link; the Add to Cart vehicle notice. the Vehicle Category Landing Page's hero Change Vehicle button (its own on-page Fit Finder widget stays as it is). Anything carrying `data-open-fit-finder` opens it, so new triggers need no extra code. The isolated header prototype carries a duplicate copy (`header-standalone.js`) so its vehicle link works too.
+
+**Behaviour:** "Set My Vehicle" sets the session vehicle and closes the drawer — every fitment status on the page updates immediately. Closes on ×, backdrop click or Escape.
+
+---
+
 ## 5. Interactions quick reference
 
 Every hover effect and click action from Sections 4.1–4.8, gathered in one place.

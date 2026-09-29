@@ -342,8 +342,8 @@ function plpSelectSearchCategory(key) {
 // sets `PLP_CONFIG.allProductsFitVehicle` (the VPLP — every product on it is a Hilux N80 rack
 // set). Products that aren't vehicle-specific never get a fitment status.
 const PLP_VEHICLES = {
-  'toyota-hilux-n80': { name: 'Toyota Hilux', short: 'Toyota Hilux N80', long: 'Toyota Hilux N80 4dr Ute (2015 to 2026)' },
-  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)' }
+  'toyota-hilux-n80': { name: 'Toyota Hilux', short: 'Toyota Hilux N80', long: 'Toyota Hilux N80 4dr Ute (2015 to 2026)', spec: '4dr Ute, Bare Roof, 2015 to 2026' },
+  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Bare Roof, 2022 onwards' }
 };
 const PLP_SESSION_VEHICLE_KEY = 'toyota-hilux-n80';
 
@@ -763,10 +763,8 @@ function plpRenderSearchVehicleStrip() {
   strip.innerHTML = `
     <span class="dot">${carIcon}</span>
     <div class="plp-search-vehicle-text"><strong>${copy.label}</strong>${copy.detail}</div>
-    <div class="actions"><button type="button" ${state === 'unknown' ? 'data-set-vehicle' : 'title="Toggle via the Site Admin Panel\'s Vehicle Set switch"'}>${copy.action}</button></div>
+    <div class="actions"><button type="button" data-open-fit-finder>${copy.action}</button></div>
   `;
-  const setBtn = strip.querySelector('[data-set-vehicle]');
-  if (setBtn) setBtn.addEventListener('click', () => { if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true); });
 }
 
 // Fitment status on product cards (2026-09-29, Brenton) — grid cards place it between the product
@@ -780,10 +778,22 @@ function plpRenderSearchVehicleStrip() {
 // One line only (Brenton, 2026-09-29 — the two-line version made the card too tall): the label
 // names the make/model itself instead of a separate grey detail line. fits / no_fit name the
 // shopper's own vehicle; unknown (no vehicle set) names the vehicle the product is for.
+// Hover/focus/tap tooltip (Brenton's team, 2026-09-29) carries the full vehicle breakdown the
+// one-line label leaves out — model, generation, body style, roof type, years — mainly for the
+// no-vehicle "Suits Toyota Hilux only" case, where the label alone doesn't say which Hilux.
 const PLP_FIT_COPY = {
-  fits: { label: fit => `Fits your ${PLP_VEHICLES[fit].name}` },
-  no_fit: { label: () => `Doesn't fit your ${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].name}` },
-  unknown: { label: fit => `Suits ${PLP_VEHICLES[fit].name} only` }
+  fits: {
+    label: fit => `Fits your ${PLP_VEHICLES[fit].name}`,
+    tip: fit => `Confirmed for your ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}).`
+  },
+  no_fit: {
+    label: () => `Doesn't fit your ${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].name}`,
+    tip: fit => `This product is built for the ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}) — not your ${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].short} (${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].spec}). <a href="#" data-open-fit-finder>Change your vehicle</a>`
+  },
+  unknown: {
+    label: fit => `Suits ${PLP_VEHICLES[fit].name} only`,
+    tip: fit => `This product is specific to the ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}). <a href="#" data-open-fit-finder>Set your vehicle</a> to confirm it fits.`
+  }
 };
 
 function plpFitStatusHTML(product) {
@@ -792,9 +802,10 @@ function plpFitStatusHTML(product) {
   const fit = plpProductFit(product);
   const c = PLP_FIT_COPY[status];
   return `
-    <div class="plp-fitment ${status}">
+    <div class="plp-fitment ${status}" tabindex="0" aria-describedby="plpFitTip-${product.id}">
       <svg class="plp-fitment-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
       <strong>${c.label(fit)}</strong>
+      <span class="plp-fitment-tip" role="tooltip" id="plpFitTip-${product.id}">${c.tip(fit)}</span>
     </div>
   `;
 }
@@ -828,12 +839,11 @@ function plpBuildVehicleNotice() {
   backdrop.querySelector('.plp-vehicle-notice-close').addEventListener('click', close);
   backdrop.querySelector('[data-vehicle-notice-close]').addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-  // Demo shortcut, same as the vehicle strip's button — flips the session toggle on when no
-  // vehicle is set. "Change Vehicle" (mismatch case) just closes: there's only one demo vehicle
-  // to switch to, and the real build opens the vehicle selector for both.
+  // Set / Change Vehicle opens the site-wide Fit Finder drawer (shared.js) — closes this notice
+  // first so the two don't stack.
   backdrop.querySelector('[data-vehicle-notice-set]').addEventListener('click', () => {
-    if (!plpSessionVehicleKey() && window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
     close();
+    if (typeof openFitFinderDrawer === 'function') openFitFinderDrawer();
   });
 }
 
@@ -909,6 +919,33 @@ function plpZeroResultsHTML() {
 }
 
 // ==== Filters sidebar ========================================================
+// Filter tooltip copy (2026-09-29, Brenton) — written from the shopper's side, replacing the
+// "(placeholder copy)" text that had been waiting on Graham's attribute glossary. Still worth
+// a pass by the team for product accuracy. Availability is the Phase 1 (online stock) wording;
+// the Phase 2 store-vs-online version belongs to the stock-status rework (spec.md §14).
+const PLP_FILTER_TOOLTIPS = {
+  brand: 'Show only the brands you prefer. Tick as many as you like.',
+  colour: 'Narrow your results to the colour or finish you\'re after.',
+  priceRange: 'Filter your results by price to see what fits your budget.',
+  rating: 'Show only products other customers have rated highly.',
+  category: 'Narrow your search to one or more product categories.',
+  availability: 'Filter your results by availability. In Stock means it\'s ready to ship from our online warehouse — your local store may need a few days to get it in.',
+  bikeCount: 'Choose how many bikes you need to carry. We\'ll show carriers that hold at least that many.',
+  carrierType: 'Choose where the carrier mounts on your vehicle — on the roof, the tow bar, the rear hatch or a ute tub.',
+  vehicleFitType: 'How the product attaches to your vehicle, such as roof rails, roof tracks or fixed mounting points. Set your vehicle to see only what fits.',
+  barProfile: 'The shape of the roof bar — aero (wing-shaped), square or round. Many accessories are made to suit a particular bar profile.',
+  loadRating: 'The most weight the product is rated to carry. Always stay within your vehicle\'s own roof load limit as well.',
+  crossBarQty: 'How many cross bars come in the kit. Most setups use a pair; a single bar is usually for adding to an existing set.',
+  platformStyle: 'Flat platforms suit general touring, trays have raised edges to help keep gear contained, and trade styles are built for ladders and long stock.',
+  plankDirection: 'Which way the platform\'s slats run — across the vehicle (east–west) or front to back (north–south). It changes how long items and accessories mount.',
+  mountType: 'Where the product mounts on your roof rack — the side only, or the side or rear.',
+  type: 'The kind of product — a full extension, a mounting bracket or an add-on accessory.',
+  sleepingCapacity: 'How many people it sleeps.',
+  tentType: 'Hard shell roof top tents are quick to set up and pack away; soft shell tents are usually lighter and roomier.',
+  freeStanding: 'Whether it stands up on its own, without being attached to your vehicle.',
+  tentOpening: 'How the tent opens and sets up.'
+};
+
 function plpFilterGroupHTML(facetDef, isPriority) {
   const cfg = window.PLP_CONFIG;
   const options = facetDef.options.map(opt => {
@@ -922,10 +959,9 @@ function plpFilterGroupHTML(facetDef, isPriority) {
       </label>
     `;
   }).join('');
-  // Tooltip (2026-09-18 design review) — placeholder copy only, real per-attribute text is
-  // blocked on Graham's tooltip spreadsheet (plp-spec.md Section 15). facetDef.tooltip lets a
-  // page override it; falls back to a generic placeholder so every filter demoes the mechanism.
-  const tooltipCopy = facetDef.tooltip || `Filters the results by ${facetDef.label.toLowerCase()}. (Placeholder copy — real wording pending Graham's attribute glossary.)`;
+  // Tooltip copy — PLP_FILTER_TOOLTIPS below (keyed by facet key, shared by every PLP-family
+  // page); facetDef.tooltip lets a page override it for one filter.
+  const tooltipCopy = facetDef.tooltip || PLP_FILTER_TOOLTIPS[facetDef.key] || `Narrow your results by ${facetDef.label.toLowerCase()}.`;
   const tooltipIcon = `<span class="plp-filter-tooltip" tabindex="0" data-tooltip="${tooltipCopy.replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></span>`;
   if (isPriority) {
     return `
