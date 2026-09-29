@@ -553,7 +553,7 @@ function buildFitFinderDrawer() {
               <option value="styling-bar">Styling Bars Only (Non Load-Rated)</option>
               <option value="aftermarket-rails">Aftermarket Rails Fitted</option>
             </select>
-            <button type="button" class="btn btn-gold" data-ff-submit disabled>Set My Vehicle</button>
+            <button type="button" class="btn btn-cta" data-ff-submit disabled>Set My Vehicle</button>
           </div>
         </section>
       </div>

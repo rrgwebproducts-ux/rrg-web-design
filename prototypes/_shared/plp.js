@@ -767,7 +767,7 @@ function plpRenderSearchVehicleStrip() {
   strip.innerHTML = `
     <span class="dot">${carIcon}</span>
     <div class="plp-search-vehicle-text"><strong>${copy.label}</strong>${copy.detail}</div>
-    <div class="actions"><button type="button" data-open-fit-finder>${copy.action}</button></div>
+    <div class="actions"><button type="button" class="btn btn-outline-red btn-sm" data-open-fit-finder>${copy.action}</button></div>
   `;
 }
 
@@ -806,8 +806,8 @@ function plpFitStatusHTML(product) {
   const fit = plpProductFit(product);
   const c = PLP_FIT_COPY[status];
   return `
-    <div class="plp-fitment ${status}" tabindex="0" aria-describedby="plpFitTip-${product.id}">
-      <svg class="plp-fitment-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+    <div class="fitment fitment-compact plp-fitment ${status}" tabindex="0" aria-describedby="plpFitTip-${product.id}">
+      <svg class="dot plp-fitment-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
       <strong>${c.label(fit)}</strong>
       <span class="plp-fitment-tip" role="tooltip" id="plpFitTip-${product.id}">${c.tip(fit)}</span>
     </div>
@@ -832,7 +832,7 @@ function plpBuildVehicleNotice() {
       <div class="plp-vehicle-notice-product" id="plpVehicleNoticeProduct"></div>
       <div class="plp-vehicle-notice-warning" id="plpVehicleNoticeWarning"></div>
       <div class="plp-vehicle-notice-actions">
-        <button type="button" class="btn btn-gold" data-vehicle-notice-set>Set Your Vehicle</button>
+        <button type="button" class="btn btn-cta" data-vehicle-notice-set>Set Your Vehicle</button>
         <button type="button" class="btn btn-outline" data-vehicle-notice-close>Continue Shopping</button>
       </div>
     </div>
@@ -1095,7 +1095,7 @@ function plpBuildFilterDrawer() {
   backdrop.className = 'store-slideout-backdrop plp-filter-slideout-backdrop';
   backdrop.id = 'plpFilterSlideoutBackdrop';
   backdrop.innerHTML = `
-    <div class="store-slideout plp-filter-slideout">
+    <div class="store-slideout plp-filter-slideout" role="dialog" aria-modal="true">
       <div class="store-slideout-head">
         <h2>Refine Results</h2>
         <button type="button" class="plp-filter-clear-drawer" id="plpFilterClearDrawer">Clear All</button>
@@ -1326,11 +1326,11 @@ function plpPrimaryActionHTML(product, blockClass) {
     return `<a href="${product.url || '#'}" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Details</a>`;
   }
   if (product.hasOptions) {
-    return `<a href="#" class="btn btn-gold plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Options</a>`;
+    return `<a href="#" class="btn btn-cta plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Options</a>`;
   }
   // Cart icon (2026-09-19 follow-up) — same outline glyph as the header cart, sized down via
   // .plp-btn-icon rather than reusing the header's own sizing rules.
-  return `<button type="button" class="btn btn-gold plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}"><svg class="plp-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>`;
+  return `<button type="button" class="btn btn-cta plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}"><svg class="plp-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>`;
 }
 
 function plpCardHTML(product, cfg) {
@@ -1676,7 +1676,7 @@ function plpBuildCompareDrawer() {
   backdrop.className = 'store-slideout-backdrop plp-compare-slideout-backdrop';
   backdrop.id = 'plpCompareSlideoutBackdrop';
   backdrop.innerHTML = `
-    <div class="store-slideout plp-compare-slideout">
+    <div class="store-slideout plp-compare-slideout" role="dialog" aria-modal="true">
       <div class="store-slideout-head">
         <h2>Compare Products</h2>
         <button type="button" class="store-slideout-close" aria-label="Close">&times;</button>
@@ -1807,9 +1807,9 @@ function plpRenderMerchSidebar() {
       <div class="plp-featured-product">
         <h4 class="plp-featured-product-heading">Featured Product</h4>
         <a class="plp-featured-card" href="#">
-          <img src="${featured.image}" alt="${featured.name}">
+          <div class="plp-featured-media">${plpSaveCornerHTML(featured)}<img src="${featured.image}" alt="${featured.name}"></div>
           <span class="plp-featured-name">${featured.name}</span>
-          <span class="plp-featured-price">${plpFmtMoney(featured.price)}</span>
+          <div class="plp-featured-price">${plpPriceHTML(featured)}</div>
         </a>
       </div>
     `;
@@ -1900,7 +1900,7 @@ function plpBuildRowFitGalleryDrawer() {
   backdrop.className = 'fit-gallery-slideout-backdrop';
   backdrop.id = 'rowFitGallerySlideoutBackdrop';
   backdrop.innerHTML = `
-    <div class="fit-gallery-slideout">
+    <div class="fit-gallery-slideout" role="dialog" aria-modal="true">
       <div class="fit-gallery-slideout-head">
         <h2 id="rowFgsTitle">In-store Fitments</h2>
         <button type="button" class="fgs-back-link" id="rowFgsBackLink" hidden>

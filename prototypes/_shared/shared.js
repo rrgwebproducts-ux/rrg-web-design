@@ -83,7 +83,7 @@ function renderFitmentHTML(state, vehicle, mode) {
   }
   const detail = typeof c.detail === 'function' ? c.detail(vehicle) : c.detail;
   const actions = c.actions.length
-    ? `<div class="actions">${c.actions.map(a => `<button type="button"${/vehicle/i.test(a) ? ' data-open-fit-finder' : ''}>${a}</button>`).join("")}</div>`
+    ? `<div class="actions">${c.actions.map(a => `<button type="button" class="btn btn-outline-red btn-sm"${/vehicle/i.test(a) ? ' data-open-fit-finder' : ''}>${a}</button>`).join("")}</div>`
     : "";
   return `
     <span class="dot">${icon}</span>
@@ -120,7 +120,7 @@ function applyFitmentState(state, vehicle) {
   document.querySelectorAll('[data-cta-label]').forEach(btn => {
     btn.textContent = 'Add To Cart';
     btn.classList.remove('btn-outline');
-    btn.classList.add('btn-primary');
+    btn.classList.add('btn-cta');
   });
   initVehicleIdCopy();
 }
@@ -999,7 +999,7 @@ function applyStockStatus(status) {
     document.querySelectorAll('[data-cta-label]').forEach(btn => {
       btn.disabled = true;
       btn.textContent = cfg.ctaLabel || 'Out Of Stock';
-      btn.classList.remove('btn-primary');
+      btn.classList.remove('btn-cta');
       btn.classList.add('btn-outline');
     });
   } else {
@@ -1011,7 +1011,7 @@ function applyStockStatus(status) {
       document.querySelectorAll('[data-cta-label]').forEach(btn => {
         btn.disabled = false;
         btn.textContent = 'Add To Cart';
-        btn.classList.add('btn-primary');
+        btn.classList.add('btn-cta');
         btn.classList.remove('btn-outline');
       });
     }
@@ -1216,7 +1216,7 @@ function buildExdemoSlideout() {
   backdrop.className = 'exdemo-slideout-backdrop';
   backdrop.id = 'exdemoSlideoutBackdrop';
   backdrop.innerHTML = `
-    <div class="exdemo-slideout">
+    <div class="exdemo-slideout" role="dialog" aria-modal="true">
       <div class="exdemo-slideout-head">
         <div><h2 id="exdemoSlideoutTitle">Ex-Demo &amp; Factory Seconds</h2><p id="exdemoSlideoutSub"></p></div>
         <button type="button" class="exdemo-slideout-close" aria-label="Close">&times;</button>
@@ -1355,7 +1355,7 @@ function rrgStorePillsHTML(name) {
   if (key === 'out_of_stock' || key === 'discontinued') return `<span class="stock-chip out">Out of Stock</span>` + displayPill;
   if (key === 'special_order') return `<span class="stock-chip order">Special Order — 5-7 Days</span>` + displayPill;
   const inPill = `<span class="stock-chip in">In Stock</span>`;
-  const orderPill = `<span class="stock-chip order">Order In — 1-2 Days</span>`;
+  const orderPill = `<span class="stock-chip order">Ready Within 2 Business Days</span>`;
   const ctx = rrgStoreContext();
   if (ctx.storeAware && name === ctx.store) return (adminState.storeStock === 'here' ? inPill : orderPill) + displayPill;
   if (ctx.storeAware && ctx.nearby && name === ctx.nearby.name) return (['here', 'nearby'].includes(adminState.storeStock) ? inPill : orderPill) + displayPill;
@@ -1421,7 +1421,7 @@ function buildFitFinderDrawer() {
               <option value="styling-bar">Styling Bars Only (Non Load-Rated)</option>
               <option value="aftermarket-rails">Aftermarket Rails Fitted</option>
             </select>
-            <button type="button" class="btn btn-gold" data-ff-submit disabled>Set My Vehicle</button>
+            <button type="button" class="btn btn-cta" data-ff-submit disabled>Set My Vehicle</button>
           </div>
         </section>
       </div>
@@ -1434,7 +1434,6 @@ function buildFitFinderDrawer() {
   required.forEach(s => s.addEventListener('change', sync));
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
   backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFitFinderDrawer(); });
   submit.addEventListener('click', () => {
     if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
     closeFitFinderDrawer();
@@ -1477,7 +1476,7 @@ function buildStoreSlideout() {
   backdrop.className = 'store-slideout-backdrop';
   backdrop.id = 'storeSlideoutBackdrop';
   backdrop.innerHTML = `
-    <div class="store-slideout">
+    <div class="store-slideout" role="dialog" aria-modal="true">
       <div class="store-slideout-head">
         <h2>All Stores</h2>
         <button type="button" class="store-slideout-close" aria-label="Close">&times;</button>
@@ -2112,7 +2111,7 @@ function buildFitGallerySlideout() {
   backdrop.className = 'fit-gallery-slideout-backdrop';
   backdrop.id = 'fitGallerySlideoutBackdrop';
   backdrop.innerHTML = `
-    <div class="fit-gallery-slideout">
+    <div class="fit-gallery-slideout" role="dialog" aria-modal="true">
       <div class="fit-gallery-slideout-head">
         <h2 id="fitGallerySlideoutTitle">In-store Fitments</h2>
         <button type="button" class="fgs-back-link" id="fgsBackLink" hidden>
@@ -2976,6 +2975,18 @@ function initStickyCta() {
   }, { threshold: 0 });
   observer.observe(target);
 }
+
+// Escape closes the topmost open drawer — one handler for every right-edge slide-out
+// (ex-demo, store, Fit Finder, Fitment Gallery, PLP filter/compare/row gallery) by clicking
+// its own close button, so each drawer's own close logic still runs (2026-09-29, spec.md §15 C1).
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const open = [...document.querySelectorAll('.exdemo-slideout-backdrop.open, .store-slideout-backdrop.open, .fit-gallery-slideout-backdrop.open')];
+  if (!open.length) return;
+  const top = open.sort((a, b) => (parseInt(getComputedStyle(b).zIndex) || 0) - (parseInt(getComputedStyle(a).zIndex) || 0))[0];
+  const close = top.querySelector('.exdemo-slideout-close, .store-slideout-close, .fit-gallery-slideout-close');
+  if (close) close.click();
+});
 
 function buildAdminPanel() {
   // PLP/VPLP (docs/plp/plp-spec.md) — gated behind a [data-plp-page] marker so the 5 PDP

@@ -100,6 +100,16 @@ h1,h2,h3,h4{
 /* Product title — was locally overridden per template (23-26px, drifted over time); unified
    2026-09-13 per client request so every template renders the same size. */
 .decision-panel h1{font-size:32px;line-height:1.1;margin-bottom:6px;}
+/* Page title (H1) — one rule for every template (2026-09-29, spec.md §15 H1). Was 32px/1.1 on
+   PDPs, an unstyled browser-default 32px/1.45 on PLP/VPLP/Camping/VCLP heroes, and 28px (22px
+   mobile) on search. */
+.decision-panel h1,.plp-hero h1,.vclp-hero h1,.plp-search-headline h1{font-size:32px;line-height:1.1;}
+@media (max-width:640px){.decision-panel h1,.plp-hero h1,.vclp-hero h1,.plp-search-headline h1{font-size:28px;}}
+/* Eyebrow label — the small grey uppercase label above a group (Build Option, Colour, What's
+   Included, Consists Of, Featured Product, typeahead + region-menu section heads). Was four
+   near-identical rules at 11/12/13px with .03/.04em (2026-09-29, spec.md §15 H3). */
+.eyebrow,.variant-label-row h3,.swatch-label-row h3,.package-items h3,.details-sub h3,.plp-featured-product-heading,
+.rrg-search-suggest-section-head span,.region-switcher-menu .tsm-label{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-style:normal;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-500);}
 p{margin:0 0 1em;}
 img{max-width:100%;display:block;}
 a{color:inherit;}
@@ -147,7 +157,7 @@ button{font-family:inherit;cursor:pointer;}
 .region-switcher-toggle{background:none;border:none;padding:0;font:inherit;font-size:14px;color:#fff;cursor:pointer;}
 .region-switcher-menu{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;padding:8px;display:none;flex-direction:column;gap:1px;z-index:80;}
 .region-switcher.open .region-switcher-menu{display:flex;}
-.region-switcher-menu .tsm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-400);padding:6px 10px 4px;}
+.region-switcher-menu .tsm-label{display:block;padding:6px 10px 4px;}
 .region-switcher-menu a{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--radius);font-size:14px;font-weight:700;color:var(--rrg-black);text-decoration:none;}
 .region-switcher-menu a:hover{background:var(--rrg-bg);color:var(--rrg-red);}
 .region-switcher-menu a.current{color:var(--rrg-red);background:var(--rrg-red-bg);}
@@ -213,7 +223,7 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-search-suggest-section{padding:10px 14px;border-bottom:1px solid var(--rrg-line);}
 .rrg-search-suggest-section:last-child{border-bottom:none;}
 .rrg-search-suggest-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.rrg-search-suggest-section-head span{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--rrg-grey-500);}
+
 .rrg-search-suggest-clear{background:none;border:none;color:var(--rrg-red);font-size:12px;font-weight:700;cursor:pointer;padding:0;}
 .rrg-search-suggest-clear:hover{text-decoration:underline;}
 .rrg-search-suggest-chips{display:flex;flex-wrap:wrap;gap:8px;}
@@ -293,29 +303,71 @@ button{font-family:inherit;cursor:pointer;}
 .rrg-crumbs a{color:var(--rrg-grey-500);text-decoration:none;}
 .rrg-crumbs a:hover{text-decoration:underline;}
 
-/* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius);padding:15px 28px;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;text-align:center;transition:transform var(--t-fast), box-shadow var(--t-fast);}
+/* Drawers (right-edge slide-outs) — one base for every drawer (2026-09-29, spec.md §15 C1).
+   Was three pasted copies (ex-demo, store, fitment gallery) that had drifted (head alignment,
+   widths 380/420/600, titles 18/22/26px, close buttons). Width via --drawer-w: 420px standard,
+   600px for the Fitment Gallery photo grid. Every drawer is role="dialog", closes on Escape
+   (rrgCloseTopDrawer in shared.js), on the close button, and on a backdrop click. */
+.exdemo-slideout-backdrop,.store-slideout-backdrop,.fit-gallery-slideout-backdrop{position:fixed;inset:0;background:var(--overlay);z-index:95;opacity:0;pointer-events:none;transition:opacity var(--t-fade) ease;}
+.exdemo-slideout-backdrop.open,.store-slideout-backdrop.open,.fit-gallery-slideout-backdrop.open{opacity:1;pointer-events:auto;}
+.exdemo-slideout,.store-slideout,.fit-gallery-slideout{--drawer-w:420px;position:fixed;top:0;right:0;bottom:0;width:var(--drawer-w);max-width:90vw;background:#fff;box-shadow:var(--shadow-drawer);transform:translateX(100%);transition:transform var(--t-slide) ease;display:flex;flex-direction:column;}
+.fit-gallery-slideout{--drawer-w:600px;}
+.open>.exdemo-slideout,.open>.store-slideout,.open>.fit-gallery-slideout{transform:translateX(0);}
+.exdemo-slideout-head,.store-slideout-head,.fit-gallery-slideout-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
+.exdemo-slideout-head h2,.store-slideout-head h2,.fit-gallery-slideout-head h2,.fit-finder-drawer .ff-head h2,.plp-vehicle-notice h2{font-size:22px;margin:0;}
+.exdemo-slideout-head h2{margin-bottom:4px;}
+/* Close button — one style for every drawer and modal (C2). */
+.exdemo-slideout-close,.store-slideout-close,.fit-gallery-slideout-close,.plp-vehicle-notice-close{background:var(--rrg-bg);border:none;border-radius:50%;width:48px;height:48px;font-size:22px;line-height:1;color:var(--rrg-grey-700);flex:0 0 auto;cursor:pointer;transition:background var(--t-fast);}
+.exdemo-slideout-close:hover,.store-slideout-close:hover,.fit-gallery-slideout-close:hover,.plp-vehicle-notice-close:hover{background:var(--rrg-line);}
+
+/* Text-link button — every "Clear Filters", "Show Specs", "View All", "Change" style action
+   (2026-09-29, spec.md §15 C13; was six near-identical rules). 14px bold red underline;
+   .dc-change-link keeps its compact uppercase size inside the delivery widget. */
+.link-btn,.plp-filter-clear,.plp-filter-clear-drawer,.plp-specs-toggle,.plp-search-empty-other button,.fit-gallery-viewall,.dc-change-link{background:none;border:none;padding:0;font-family:inherit;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:underline;cursor:pointer;}
+.link-btn:hover,.plp-filter-clear:hover,.plp-filter-clear-drawer:hover,.plp-specs-toggle:hover,.plp-search-empty-other button:hover,.fit-gallery-viewall:hover,.dc-change-link:hover{color:var(--rrg-red-dark);}
+
+/* Tooltip bubble — one look for every hover/focus tooltip (2026-09-29, spec.md §15 C3): the
+   filter info icons (.plp-filter-tooltip::after) and the product-card fitment tooltip
+   (.plp-fitment-tip) had drifted (8 vs 6px offset, z-index 5 vs 6, no visibility toggle).
+   Each keeps only its own left/width; show with opacity:1 + visibility:visible. */
+.rrg-tooltip,.plp-filter-tooltip::after,.plp-fitment .plp-fitment-tip{position:absolute;top:calc(100% + 8px);z-index:6;background:var(--rrg-charcoal);color:#fff;font-family:'Lato',Arial,Helvetica,sans-serif;font-size:14px;font-weight:400;font-style:normal;text-transform:none;letter-spacing:normal;line-height:1.4;text-align:left;padding:8px 10px;border-radius:var(--radius);box-shadow:var(--shadow-pop);opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--t-fast),visibility var(--t-fast);}
+
+/* buttons — one system (2026-09-29, spec.md §15 B1–B4). Colour: .btn-primary (red),
+   .btn-cta (gold — every Add to Cart and primary purchase/vehicle action; turns UK green in
+   the UK region), .btn-outline (black), .btn-outline-red (secondary vehicle actions — Change
+   Vehicle, fitment-card actions). Size: .btn (16px) · .btn-lg · .btn-md (14px) · .btn-sm
+   (13px). Replaces ~20 per-context padding/font-size overrides and inline styles; contexts
+   that render buttons from JS without a size class are listed in the size groups below. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius);padding:15px 28px;font-weight:900;font-size:16px;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;text-align:center;transition:transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast), color var(--t-fast);}
 .btn-primary{background:var(--rrg-red);color:#fff;}
 .btn-primary:hover{background:var(--rrg-red-dark);}
-.btn-primary:active{transform:scale(.98);}
+.btn-primary:active,.btn-cta:active{transform:scale(.98);}
 .btn-block{width:100%;}
-
-/* Add to Cart is gold, not red (locked in per client, 2026-09-10) — [data-cta-label] hits
-   every Add to Cart button on the page (decision panel, sticky mobile bar, persistent bar)
-   without needing per-button wiring; other .btn-primary buttons (e.g. Find Nearest Showroom)
-   stay red. */
-[data-cta-label].btn-primary{background:var(--rrg-cta);color:var(--rrg-black);}
-[data-cta-label].btn-primary:hover{background:var(--rrg-cta-hover);}
 .btn-lg{padding:18px 28px;font-size:16px;}
-.btn-outline{background:#fff;border:1.5px solid var(--rrg-black);color:var(--rrg-black);}
+.btn-md,
+.persistent-bar .btn,.sticky-cta-mobile .btn,.install-cta-panel .btn,
+.plp-hero-cta-row .btn,.plp-list-col-actions .btn,.plp-compare-bar .btn,.plp-vehicle-notice-actions .btn{padding:12px 20px;font-size:14px;}
+.btn-sm,
+.product-card .btn,.plp-card-actions>.btn,.plp-vrs-actions .btn,.plp-list-col-media .plp-fitgallery-btn,
+.exdemo-option .btn,.fgs-nav-row .btn,.plp-crumbs-cta,.plp-search-page-btn,.fitment .actions .btn{padding:10px 14px;font-size:13px;}
+/* Small buttons step down on phones — two-up product cards are ~150px wide inside, and
+   "Add to Cart" + icon must stay on one line. */
+@media (max-width:640px){
+  .btn-sm,
+  .product-card .btn,.plp-card-actions>.btn,.plp-vrs-actions .btn,.plp-list-col-media .plp-fitgallery-btn,
+  .exdemo-option .btn,.fgs-nav-row .btn,.plp-crumbs-cta,.plp-search-page-btn,.fitment .actions .btn{padding:10px;font-size:12px;white-space:nowrap;}
+}
 
-/* Same gold as Add to Cart, for other pages' primary actions that aren't literally an Add
-   to Cart button (2026-09-16, Vehicle Landing Page's hero/Fit Finder CTAs) — a plain visual
-   variant, not [data-cta-label], so it never gets pulled into that attribute's fitment/
-   region-swap JS (shared.js) meant for the real Add to Cart button. Always this gold
-   regardless of region, unlike [data-cta-label] which turns UK green. */
-.btn-gold{background:var(--rrg-cta);color:var(--rrg-black);}
-.btn-gold:hover{background:var(--rrg-cta-hover);}
+/* Gold CTA — Add to Cart everywhere (decision panel, sticky/persistent bars, product cards,
+   Related Products) plus other primary actions (View Options, Set My Vehicle). Was split
+   across [data-cta-label].btn-primary (PDP) and .btn-gold (cards), which drifted in the UK. */
+.btn-cta{background:var(--rrg-cta);color:var(--rrg-black);}
+.btn-cta:hover{background:var(--rrg-cta-hover);}
+.btn-outline{background:#fff;border:1.5px solid var(--rrg-black);color:var(--rrg-black);}
+.btn-outline:hover{background:var(--rrg-black);color:#fff;}
+.btn-outline:disabled,.btn-outline[disabled]{background:#fff;color:var(--rrg-grey-500);border-color:var(--rrg-line);cursor:not-allowed;}
+.btn-outline-red{background:#fff;border:1.5px solid var(--rrg-red);color:var(--rrg-red);}
+.btn-outline-red:hover{background:var(--rrg-red);color:#fff;}
 
 /* UK brand skin (Region Selector, 2026-09-11) — RRG trades in the UK as "The Roof Box
    Company" (roofbox.co.uk), a real sister brand. Scope confirmed with Brenton: logo + core
@@ -328,8 +380,8 @@ button{font-family:inherit;cursor:pointer;}
    from their live "Click Here To Order" button (confirmed with Brenton as the preferred
    option over keeping RRG's gold). */
 body.region-uk{--rrg-red:#2E41AE;--rrg-red-dark:#1F2E82;}
-body.region-uk [data-cta-label].btn-primary{background:var(--rrg-uk-green);color:#fff;}
-body.region-uk [data-cta-label].btn-primary:hover{background:var(--rrg-uk-green-hover);}
+body.region-uk .btn-cta{background:var(--rrg-uk-green);color:#fff;}
+body.region-uk .btn-cta:hover{background:var(--rrg-uk-green-hover);}
 /* The Roof Box Company's real logo is a tall vertical rectangle (117.89x143.63, ~0.82:1),
    not RRG's wide horizontal wordmark (360x58, ~6.2:1) — Brenton asked for it to actually
    span both header bars (the red/navy Utility Bar above + the white Main Header row below)
@@ -426,7 +478,11 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    not just the text block's top line, and it's sized up to read clearly at a glance. */
 .fitment .dot{width:26px;height:26px;flex:0 0 auto;align-self:center;display:inline-flex;}
 .fitment .dot svg{width:100%;height:100%;display:block;}
-.persistent-bar .fitment .dot,.sticky-cta-mobile .fitment .dot{width:18px;height:18px;}
+/* Compact fitment card — product cards (.fitment-compact) and the two sticky bars: smaller icon,
+   tighter padding, 14px label, no detail line spacing. */
+.persistent-bar .fitment .dot,.sticky-cta-mobile .fitment .dot,.fitment-compact .dot{width:18px;height:18px;}
+.fitment-compact{align-items:center;gap:8px;padding:6px 10px;}
+.fitment-compact strong{font-size:14px;line-height:1.15;margin-bottom:0;}
 /* Copy-to-clipboard variant (2026-09-11, backlog item 10) — persistent bar + mobile
    sticky bar only, see [data-fitment-copyable] in applyFitmentState(). Green flash on
    click reuses the same confirmation colour as .sku-copy.copied elsewhere, regardless
@@ -446,7 +502,6 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fitment .actions{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;}
 /* min-height 48px (2026-09-11, mobile audit) — was 6px/12px padding at 12px font, well
    under Google's 48px tap-target minimum for a real "change vehicle"-type action. */
-.fitment .actions button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:6px 16px;font-size:14px;font-weight:700;color:var(--rrg-grey-700);}
 
 /* Rack Fit Guarantee (2026-09-10, Graham Sowerby meeting) — real client asset + copy.
    Main decision panel gets icon+text packed into the fitment card's top-right corner;
@@ -660,7 +715,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    sibling-color, each defined locally instead of once here). Structural .variant-option/
    .variant-picker rules are still per-template (out of scope for this pass — layout, not
    typography). */
-.variant-label-row h3,.swatch-label-row h3{font-size:13px;color:var(--rrg-grey-500);text-transform:uppercase;letter-spacing:.03em;margin:0;}
+.variant-label-row h3,.swatch-label-row h3{margin:0;}
 .variant-help{font-size:12px;color:var(--rrg-grey-500);}
 .variant-option .v-note{font-size:12px;color:var(--rrg-grey-600);margin-top:6px;line-height:1.3;}
 
@@ -735,7 +790,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .gallery-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
 .gallery-thumbs img{flex:0 0 calc((100% - 24px)/4);width:calc((100% - 24px)/4);aspect-ratio:1/1;object-fit:cover;border-radius:var(--radius);border:1px solid var(--rrg-line);cursor:pointer;scroll-snap-align:start;}
 .gallery-thumbs img.active{border-color:var(--rrg-red);border-width:2px;}
-.thumb-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid var(--rrg-line);box-shadow:0 2px 6px rgba(0,0,0,.15);align-items:center;justify-content:center;color:var(--rrg-black);padding:0;z-index:2;}
+.thumb-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#fff;border:1px solid var(--rrg-line);box-shadow:0 2px 6px rgba(0,0,0,.15);align-items:center;justify-content:center;color:var(--rrg-black);padding:0;z-index:2;}
 .thumb-nav svg{width:16px;height:16px;}
 .thumb-nav.prev{left:-4px;}
 .thumb-nav.next{right:-4px;}
@@ -791,7 +846,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .install-usps .usp-item{gap:6px;}
 .install-usps .usp-icon{width:13px;height:13px;flex:0 0 13px;color:#fff;}
 .install-usps .usp-item p{margin:0;font-size:12px;line-height:1.3;color:#eee;}
-.install-cta-panel .btn{align-self:flex-start;padding:10px 18px;font-size:14px;line-height:1.2;}
+.install-cta-panel .btn{align-self:flex-start;line-height:1.2;}
 .install-media-row.no-video .install-cta-panel{aspect-ratio:auto;min-height:230px;}
 .install-media-row.no-video .install-body{max-width:460px;padding:22px 26px;gap:12px;}
 .install-media-row.no-video .install-head{gap:12px;}
@@ -802,7 +857,6 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .install-media-row.no-video .install-usps .usp-item{gap:10px;}
 .install-media-row.no-video .install-usps .usp-icon{width:17px;height:17px;flex:0 0 17px;}
 .install-media-row.no-video .install-usps .usp-item p{font-size:14px;}
-.install-media-row.no-video .install-cta-panel .btn{padding:13px 24px;font-size:14px;}
 @media (max-width:900px){
   .install-media-row{grid-template-columns:1fr;}
   .install-cta-panel{aspect-ratio:16/9;}
@@ -821,7 +875,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-panel{
   --fg-bg:#fff; --fg-fg:var(--rrg-black); --fg-link:var(--rrg-red);
   --fg-btn-bg:var(--rrg-black); --fg-btn-fg:#fff;
-  --fg-dot:rgba(0,0,0,.18); --fg-dot-active:var(--rrg-black);
+  --fg-dot:var(--rrg-line); --fg-dot-active:var(--rrg-red);
   --fg-nav-bg:rgba(255,255,255,.9); --fg-nav-fg:var(--rrg-black); --fg-nav-border:var(--rrg-line);
   background:var(--fg-bg);color:var(--fg-fg);border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px 24px 24px;
 }
@@ -836,13 +890,13 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-badge{width:37px;height:37px;flex:0 0 auto;border-radius:var(--radius);background:var(--rrg-gold);color:#fff;display:flex;align-items:center;justify-content:center;}
 .fit-gallery-badge svg{width:19px;height:19px;}
 .fit-gallery-title h2{margin:0;line-height:1;color:var(--fg-fg);}
-.fit-gallery-viewall{margin-left:auto;color:var(--fg-link);font-weight:700;font-size:13px;text-decoration:underline;white-space:nowrap;}
+.fit-gallery-viewall{margin-left:auto;color:var(--fg-link);white-space:nowrap;}
 .fit-gallery-carousel{position:relative;}
 .fit-gallery-track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .fit-gallery-track::-webkit-scrollbar{display:none;}
 .fit-gallery-track img{flex:0 0 calc((100% - 60px)/7);aspect-ratio:16/9;object-fit:cover;border-radius:var(--radius);background:var(--rrg-line-soft);scroll-snap-align:start;cursor:pointer;transition:opacity var(--t-fast) ease;}
 .fit-gallery-track img:hover{opacity:.8;}
-.fit-gallery-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:var(--fg-nav-bg);color:var(--fg-nav-fg);border:1px solid var(--fg-nav-border);align-items:center;justify-content:center;font-size:18px;line-height:1;cursor:pointer;z-index:2;}
+.fit-gallery-nav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:var(--fg-nav-bg);color:var(--fg-nav-fg);border:1px solid var(--fg-nav-border);box-shadow:0 2px 6px rgba(0,0,0,.15);align-items:center;justify-content:center;font-size:18px;line-height:1;cursor:pointer;z-index:2;}
 .fit-gallery-nav:disabled{opacity:.3;cursor:default;}
 .fit-gallery-nav.prev{left:-4px;}
 .fit-gallery-nav.next{right:-4px;}
@@ -851,8 +905,10 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .fit-gallery-nav{display:none!important;} /* touch swipe carries the interaction on mobile */
 }
 .fit-gallery-dots{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;}
-.fit-gallery-dot{width:7px;height:7px;padding:0;border:none;border-radius:999px;background:var(--fg-dot);cursor:pointer;}
-.fit-gallery-dot.active{width:20px;background:var(--fg-dot-active);}
+/* Carousel dots — one style for every carousel (Fitment Gallery, PLP merch banner), 2026-09-29
+   spec.md §15 C7: round, grey, active red (was black pills here vs red circles on the PLP). */
+.fit-gallery-dot,.plp-merch-dot{width:8px;height:8px;padding:0;border:none;border-radius:50%;background:var(--fg-dot,var(--rrg-line));cursor:pointer;transition:background var(--t-fast);}
+.fit-gallery-dot.active,.plp-merch-dot.active{background:var(--fg-dot-active,var(--rrg-red));}
 
 /* Demo state panel (reviewer-only, not part of the shipped design) — a floating button
    that expands into a panel for toggling simulated product states (video, sale, stock,
@@ -956,7 +1012,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* Package contents (vehicle-specific kits) — each included item with its own SKU + copy
    button, so instore staff can copy individual part numbers without hunting through specs */
 .package-items{margin:16px 0;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;}
-.package-items h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-500);padding:10px 12px;margin:0;background:var(--rrg-bg);border-bottom:1px solid var(--rrg-line);font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+.package-items h3{padding:10px 12px;margin:0;background:var(--rrg-bg);border-bottom:1px solid var(--rrg-line);}
 .package-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;font-size:14px;border-top:1px solid var(--rrg-line);}
 .package-item:first-of-type{border-top:none;}
 .package-item .pi-name{flex:1;color:var(--rrg-grey-700);text-decoration:none;}
@@ -971,7 +1027,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    audit triggered by the VCLP h3 question) onto the Simple/Grouped-Bundle look as the one
    sitewide style, since that's the clearer sub-heading treatment — this is now the only
    place this selector is defined; do not re-declare it in a template's own <style> block. */
-.details-sub h3{font-size:13px;text-transform:uppercase;color:var(--rrg-grey-500);margin:14px 0 4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+.details-sub h3{margin:14px 0 4px;}
 /* Quantity per row (2026-09-10, Graham Sowerby meeting) — so a customer adding what looks
    like one product isn't confused when a multi-part kit arrives with no visible reason
    why. Real per-component quantities aren't confirmed by the client yet — see spec.md §7. */
@@ -1023,25 +1079,18 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    drawer is open never paints the header over its close button/back link (bug found by
    Brenton's colleague, 2026-09-18 — .rrg-header-shell only stacks above the mega-menu
    backdrop by design, not above modal drawers like this one). */
-.exdemo-slideout-backdrop{position:fixed;inset:0;background:var(--overlay);z-index:95;opacity:0;pointer-events:none;transition:opacity var(--t-fade) ease;}
-.exdemo-slideout-backdrop.open{opacity:1;pointer-events:auto;}
-.exdemo-slideout{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:90vw;background:#fff;box-shadow:var(--shadow-drawer);transform:translateX(100%);transition:transform var(--t-slide) ease;display:flex;flex-direction:column;}
-.exdemo-slideout-backdrop.open .exdemo-slideout{transform:translateX(0);}
-.exdemo-slideout-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.exdemo-slideout-head h2{font-size:18px;margin:0 0 4px;}
 .exdemo-slideout-head p{font-size:14px;color:var(--rrg-grey-600);margin:0;}
-.exdemo-slideout-close{background:var(--rrg-bg);border:none;border-radius:50%;width:48px;height:48px;font-size:16px;flex:0 0 auto;color:var(--rrg-grey-700);}
 .exdemo-slideout-body{padding:16px 22px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;flex:1 1 auto;}
 .exdemo-option{border:1px solid var(--rrg-line);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;}
 .exdemo-option .eo-img{width:64px;height:64px;object-fit:contain;background:var(--rrg-bg);border-radius:var(--radius);padding:6px;flex:0 0 auto;}
 .exdemo-option .eo-info{flex:1;min-width:0;}
 /* Sizing kept identical to .stock-chip (padding/font-size/weight) — same status-pill family,
    per Brenton's 2026-09-12 ask to unify every status pill on the page to one look. */
-.exdemo-option .eo-tag{display:inline-block;white-space:nowrap;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:var(--radius);background:var(--rrg-unknown-bg);color:var(--rrg-grey-700);margin-bottom:6px;}
+.exdemo-option .eo-tag{background:var(--rrg-unknown-bg);margin-bottom:6px;}
 .exdemo-option .eo-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;}
-.exdemo-option .eo-was{font-size:12px;color:var(--rrg-grey-500);text-decoration:line-through;margin-left:6px;}
+.exdemo-option .eo-was{font-size:12px;color:var(--rrg-grey-600);text-decoration:line-through;margin-left:6px;}
 .exdemo-option .eo-note{font-size:12px;color:var(--rrg-grey-600);margin-top:2px;}
-.exdemo-option .btn{padding:10px 16px;font-size:12px;flex:0 0 auto;}
+.exdemo-option .btn{flex:0 0 auto;}
 @media (max-width:520px){
   .exdemo-option{flex-wrap:wrap;}
   .exdemo-option .btn{flex:1 0 100%;}
@@ -1065,7 +1114,12 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .dc-option,.dc-store{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:12px 14px;font-size:14px;}
 .dc-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;}
 .muted{color:var(--rrg-grey-500);font-size:14px;}
-.stock-chip{display:inline-block;white-space:nowrap;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:var(--radius);margin-left:6px;color:var(--rrg-grey-700);}
+/* Chip — small uppercase status label (2026-09-29, spec.md §15 C4). Was three identical copies:
+   .stock-chip (store list), .eo-tag (ex-demo), .v-badge (variant cards). Colour per modifier. */
+.chip,.stock-chip,.exdemo-option .eo-tag,.variant-option .v-badge{display:inline-block;white-space:nowrap;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:var(--radius);color:var(--rrg-grey-700);}
+.stock-chip{margin-left:6px;}
+/* Variant-card "Save N%" — red, same as the price block's Save badge (C5, was green). */
+.variant-option .v-badge{margin-left:8px;background:var(--rrg-red);color:#fff;}
 .stock-chip.in{background:var(--rrg-fits-bg);}
 .stock-chip.order{background:var(--rrg-unknown-bg);}
 .stock-chip.none{background:var(--rrg-nofit-bg);}
@@ -1083,7 +1137,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .dc-input.error{border-color:var(--rrg-nofit);}
 .dc-results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;}
 .dc-results-head h3{margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;text-transform:none;}
-.dc-change-link{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:var(--rrg-red);text-decoration:underline;white-space:nowrap;flex:0 0 auto;}
+.dc-change-link{font-size:13px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;flex:0 0 auto;}
 .dc-select-list{display:flex;flex-direction:column;gap:10px;}
 .dc-select-option{display:flex;align-items:center;gap:12px;border:1.5px solid var(--rrg-line);border-radius:var(--radius);padding:12px 14px;font-size:14px;cursor:pointer;transition:border-color var(--t-fast),box-shadow var(--t-fast);}
 .dc-select-option:hover{border-color:var(--rrg-line-strong);}
@@ -1138,8 +1192,10 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .ff-head p{flex-basis:100%;}
 }
 .ff-row{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px;align-items:stretch;}
-.ff-row select{width:100%;background:#fff;border:1px solid var(--rrg-grey-700);border-radius:var(--radius);padding:12px 14px;font-size:14px;font-family:inherit;color:var(--rrg-black);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;}
-.ff-row select:disabled{background-color:var(--rrg-line-soft);color:var(--rrg-grey-400);cursor:not-allowed;}
+/* Select — one style for every dropdown (Fit Finder, PLP Sort By), 2026-09-29 spec.md §15 C14. */
+.ff-row select,#plpSort{background:#fff;border:1px solid var(--rrg-grey-700);border-radius:var(--radius);padding:12px 14px;font-size:14px;font-family:inherit;color:var(--rrg-black);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;padding-right:36px;}
+.ff-row select{width:100%;}
+.ff-row select:disabled,#plpSort:disabled{background-color:var(--rrg-line-soft);color:var(--rrg-grey-400);cursor:not-allowed;}
 .ff-row .btn{white-space:nowrap;}
 .ff-row .btn:disabled{opacity:.5;cursor:not-allowed;}
 @media (max-width:900px){
@@ -1155,21 +1211,12 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    Sits above the sticky header and the Add to Cart vehicle notice (z-index 400) it can be opened
    from. */
 .fit-finder-drawer-backdrop{z-index:450;}
-.fit-finder-drawer{width:420px;}
 .fit-finder-drawer .fit-finder-widget{margin:4px 0 0;padding:22px 20px;}
 .fit-finder-drawer .ff-head{margin-bottom:16px;}
-.fit-finder-drawer .ff-head h2{font-size:26px;}
 .fit-finder-drawer .ff-head p{flex-basis:100%;}
 .fit-finder-drawer .ff-row{grid-template-columns:1fr;}
 .fit-finder-drawer .ff-row .btn{grid-column:auto;}
 
-.store-slideout-backdrop{position:fixed;inset:0;background:var(--overlay);z-index:95;opacity:0;pointer-events:none;transition:opacity var(--t-fade) ease;}
-.store-slideout-backdrop.open{opacity:1;pointer-events:auto;}
-.store-slideout{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:90vw;background:#fff;box-shadow:var(--shadow-drawer);transform:translateX(100%);transition:transform var(--t-slide) ease;display:flex;flex-direction:column;}
-.store-slideout-backdrop.open .store-slideout{transform:translateX(0);}
-.store-slideout-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.store-slideout-head h2{font-size:18px;margin:0;}
-.store-slideout-close{background:var(--rrg-bg);border:none;border-radius:50%;width:48px;height:48px;font-size:16px;color:var(--rrg-grey-700);flex:0 0 auto;}
 .store-slideout-body{padding:16px 22px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;flex:1 1 auto;}
 /* Groups (2026-09-11, backlog item 14): native <details>/<summary>, same no-JS accordion
    convention as .faq-item below — "Within 100km" (when a postcode resolves to a state, see
@@ -1196,13 +1243,6 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* z-index:95 — see .exdemo-slideout-backdrop above; same header-overlap fix (this is the
    drawer the bug was originally reported on: "Back to Grid View"/close button hidden under
    the header once you scroll back up). */
-.fit-gallery-slideout-backdrop{position:fixed;inset:0;background:var(--overlay);z-index:95;opacity:0;pointer-events:none;transition:opacity var(--t-fade) ease;}
-.fit-gallery-slideout-backdrop.open{opacity:1;pointer-events:auto;}
-.fit-gallery-slideout{position:fixed;top:0;right:0;bottom:0;width:600px;max-width:90vw;background:#fff;box-shadow:var(--shadow-drawer);transform:translateX(100%);transition:transform var(--t-slide) ease;display:flex;flex-direction:column;}
-.fit-gallery-slideout-backdrop.open .fit-gallery-slideout{transform:translateX(0);}
-.fit-gallery-slideout-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.fit-gallery-slideout-head h2{font-size:18px;margin:0;}
-.fit-gallery-slideout-close{background:var(--rrg-bg);border:none;border-radius:50%;width:48px;height:48px;font-size:16px;color:var(--rrg-grey-700);flex:0 0 auto;}
 .fit-gallery-slideout-body{padding:16px 22px 22px;overflow-y:auto;flex:1 1 auto;}
 /* Grid view redesign (2026-09-18, PLP review item 5): grouped sections with captions and a
    progressive "Load More" reveal, instead of one flat wall of bare images — see fgsGroupedGridHTML()
@@ -1233,7 +1273,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fgs-browse-bar strong{color:var(--rrg-black);}
 .fgs-fit-id{font-weight:700;color:var(--rrg-black);}
 .fgs-nav-row{display:flex;gap:10px;}
-.fgs-nav-row .btn{flex:1 1 0;padding:10px;font-size:13px;}
+.fgs-nav-row .btn{flex:1 1 0;}
 .fgs-nav-row .btn:disabled{opacity:.35;cursor:default;}
 .fgs-main-image img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius);background:var(--rrg-line-soft);}
 .fgs-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
@@ -1341,7 +1381,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .persistent-bar .price-was{font-size:12px;color:var(--rrg-grey-600);}
 .sticky-cta-mobile .price-now{color:var(--rrg-red);}
 .sticky-cta-mobile .price-was{color:var(--rrg-grey-600);}
-.persistent-bar .btn{padding:12px 20px;font-size:13px;flex:0 0 auto;}
+.persistent-bar .btn{flex:0 0 auto;}
 @media (max-width:900px){.persistent-bar{display:none;}}
 
 /* Product thumbnail + truncated name (2026-09-11, backlog item 10) — gives the sticky
@@ -1383,6 +1423,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .showroom-widget h3,
 .fit-gallery-title h2,
 .faq-heading,
+.plp-search-empty-subheading,
 .tabs-heading,
 .showroom-heading,
 .ff-head h2,
@@ -1394,6 +1435,15 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   text-transform:uppercase;
   font-size:40px;
   letter-spacing:.02em;
+  line-height:1.15;
+}
+/* Mobile step (2026-09-29, spec.md §15 H2) — 40px section headings were unchanged on phones,
+   wrapping to 58px-tall lines; the zero-results headline joins the scale so it never reads
+   smaller than the "Popular Categories"/"You Might Like" headings under it. */
+.plp-search-empty h2{font-size:40px;line-height:1.15;}
+@media (max-width:640px){
+  .related-heading,.showroom-widget h3,.fit-gallery-title h2,.faq-heading,.plp-search-empty-subheading,.tabs-heading,
+  .showroom-heading,.ff-head h2,.content-block h2,.vclp-trust-inner h2,.plp-search-empty h2{font-size:32px;}
 }
 
 /* Prose content block — plain, non-heading-scale sub-sections of body copy (currently
@@ -1435,7 +1485,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .product-card .price{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24px;color:var(--rrg-black);margin:0 0 12px;}
 .product-card .price.price-on-sale .now{color:var(--rrg-red);}
 .product-card .price .rrp{font-family:'Lato',sans-serif;font-weight:400;font-size:14px;color:var(--rrg-grey-600);text-decoration:line-through;white-space:nowrap;}
-.product-card .btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;font-size:14px;}
+.product-card .btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
 .product-card .btn svg{width:14px;height:14px;flex:0 0 auto;}
 /* Two across on phones, same as the PLP-family grid (was one full-width card per row). */
 @media (max-width:640px){
@@ -1526,7 +1576,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .product-card h3{font-size:14px!important;}
   /* Inputs specifically need >=16px on iOS Safari, or focusing one auto-zooms the whole
      page in — a real, well-known mobile bug, not just a readability nicety here. */
-  .dc-input{font-size:16px!important;}
+  .dc-input,.ff-row select,#plpSort{font-size:16px!important;}
 
   .muted{font-size:14px!important;}
   .stock-status-line{font-size:14px!important;}

@@ -919,6 +919,32 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
 - **Radius and breakpoints:** the typeahead chip and index cards now use the 6px radius. The Related grid and search strip breakpoints moved from 600px to 640px.
 - **Section spacing:** every section uses one 48px rhythm with 16px from heading to content. The listing pages lost their extra 40px bottom padding.
 - **Related Products card title:** set to 14px, so it stays the compact version.
+- Committed 4034c66.
+
+**Step 2 (components) built on 2026-09-29, awaiting Brenton's review, not committed.**
+- **Buttons:** one system.
+  - Sizes: `.btn` / `.btn-lg` / `.btn-md` (14px) / `.btn-sm` (13px, 12px on phones so card Add to Cart stays on one line).
+  - `.btn-cta` gold replaces `.btn-gold` and the gold-recoloured `.btn-primary`, and turns UK green everywhere (B4).
+  - `.btn-outline` has a hover. `.btn-outline-red` is shared, and the fitment-card actions and search's "Change vehicle" use it.
+  - All inline button styles are removed.
+- **Page H1:** one rule, 32px (28px on phones), including search.
+- **Section H2s:** get a 32px mobile step, with the line height tightened.
+- **Eyebrow labels:** one rule. The empty-state headings now use the section-heading style.
+- **Drawers:** one base.
+  - Widths: 420px standard, 600px for the Fitment Gallery and Compare.
+  - Titles are 22px, and every close button is the 48px circle.
+  - `role="dialog"` everywhere, and one Escape handler.
+- **Tooltips:** one bubble style.
+- **Chips:** one `.chip` style. The variant "Save" badge is now red.
+- **Mobile quick-filter chips:** now a red outline.
+- **Carousels:** dots are round grey with a red active dot, and arrows are all 32px.
+- **Card fitment:** now `.fitment.fitment-compact`.
+- **Prices:** every "was" price uses the 600 grey.
+- **Featured Product:** rebuilt from the shared price markup.
+- **Text links:** one `.link-btn`.
+- **Selects:** one style (Fit Finder and Sort). The compare checkbox is red. Inputs and selects are 16px on phones.
+- **Store chip:** now reads "Ready Within 2 Business Days".
+- **C9 (Fitment Gallery builder)** moved to step 3, alongside the VCLP work.
 
 **Scope:** every page in `prototypes/`: root index, header, 5 PDPs, VCLP, PLP, PLP Camping, VPLP and Search.
 - **Measured:** computed styles in a real browser, at 1440px and 390px, on all 12 pages.
