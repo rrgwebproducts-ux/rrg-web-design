@@ -1817,12 +1817,13 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .product-carousel-nav.next{right:-14px;}
 .product-carousel-nav:disabled{opacity:0;pointer-events:none;}
 
-/* Page vehicle ≠ saved vehicle notice (spec Section 4) — the fitment "unknown" amber tier,
-   secondary buttons only. */
-.vlp-vehicle-notice{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin-top:12px;padding:12px 44px 12px 16px;background:var(--rrg-unknown-bg);border-left:4px solid var(--rrg-unknown);border-radius:var(--radius);color:var(--rrg-unknown-text);}
-.vlp-vehicle-notice p{margin:0;font-size:14px;}
-.vlp-vehicle-notice-actions{display:flex;gap:8px;flex-wrap:wrap;}
-.vlp-vehicle-notice-close{position:absolute;top:6px;right:8px;border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:inherit;padding:4px;}
+/* Page vehicle ≠ saved vehicle notice (spec Section 4) — IS the fitment card (.fitment.no_fit:
+   white, red left border, red car icon + label, red-outline actions), so it reads exactly like
+   the PDP decision panel's and the product cards' "Doesn't fit your …" state (Brenton,
+   2026-09-29). Only layout lives here: spacing and the dismiss button. */
+.vlp-vehicle-notice{position:relative;margin-top:12px;padding-right:44px;}
+.vlp-vehicle-notice-close{position:absolute;top:8px;right:10px;border:0;background:none;font-size:20px;line-height:1;cursor:pointer;color:var(--rrg-grey-500);padding:4px;}
+.vlp-vehicle-notice-close:hover{color:var(--rrg-text);}
 
 @media (max-width:1100px){
   .cat-tile-title{font-size:22px;}

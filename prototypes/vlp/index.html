@@ -138,7 +138,7 @@
 <div class="wrap">
   <!-- Page vehicle ≠ session vehicle (spec Section 4) — shown only when the shopper already
        has a different vehicle saved; never overwrites it. -->
-  <div class="vlp-vehicle-notice" id="vlpVehicleNotice" role="status" hidden></div>
+  <div class="fitment no_fit vlp-vehicle-notice" id="vlpVehicleNotice" role="status" hidden></div>
 
   <section class="plp-hero" id="vlpHero">
     <div>
@@ -594,12 +594,20 @@ function vlpRenderVehicleNotice() {
   notice.hidden = !differs;
   if (!differs) return;
   const saved = VLP_VEHICLES[sessionKey];
-  const savedName = saved ? vlpNameCode(saved) : rrgVehicle().label;
+  const savedName = saved ? vlpName(saved) : rrgVehicle().label;
+  const savedSpec = saved ? ` (${saved.code}, ${saved.years}, ${saved.body}, ${saved.roof})` : '';
+  const v = VLP_VEHICLE;
+  // Same card, icon and button style as the PDP fitment card's no_fit state (renderFitmentHTML()
+  // in shared.js) and the product cards' "Doesn't fit your …" chip.
   notice.innerHTML = `
-    <p>You’re viewing the <strong>${vlpNameCode(VLP_VEHICLE)}</strong>. Your saved vehicle is the <strong>${savedName}</strong>.</p>
-    <div class="vlp-vehicle-notice-actions">
-      <button type="button" class="btn btn-outline-red btn-sm" data-vlp-notice="adopt">Make this my vehicle</button>
-      ${saved ? `<a class="btn btn-outline btn-sm" href="?vehicle=${sessionKey}">View my ${saved.model}</a>` : ''}
+    <span class="dot"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></span>
+    <div>
+      <strong>This page isn’t for your ${savedName}</strong>
+      You’re viewing roof racks and accessories for the ${vlpName(v)} (${v.code}, ${v.years}, ${v.body}, ${v.roof}) — not your saved ${savedName}${savedSpec}.
+      <div class="actions">
+        <button type="button" class="btn btn-outline-red btn-sm" data-vlp-notice="adopt">Make this my vehicle</button>
+        ${saved ? `<a class="btn btn-outline-red btn-sm" href="?vehicle=${sessionKey}">View my ${saved.model}</a>` : ''}
+      </div>
     </div>
     <button type="button" class="vlp-vehicle-notice-close" aria-label="Dismiss" data-vlp-notice="dismiss">&times;</button>`;
 }
