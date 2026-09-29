@@ -230,14 +230,14 @@ Same open/close interaction pattern already used elsewhere on the page for the "
 ```html
 <div class="region-switcher u-item">
   <button type="button" class="region-switcher-toggle" aria-haspopup="true" aria-expanded="false">
-    <span class="flag-emoji" data-region-flag>🇦🇺</span> <span data-region-label>Australia</span>
+    <img class="flag-icon" data-region-flag src="/flags/au.svg" alt="" width="20" height="15"> <span data-region-label>Australia</span>
     <svg viewBox="0 0 24 24" ...><path d="M6 9l6 6 6-6"/></svg>
   </button>
   <div class="region-switcher-menu">
     <span class="tsm-label">Region</span>
-    <a href="#" data-region="AU" class="current"><span class="flag-emoji">🇦🇺</span> Australia</a>
-    <a href="#" data-region="NZ"><span class="flag-emoji">🇳🇿</span> New Zealand</a>
-    <a href="#" data-region="UK"><span class="flag-emoji">🇬🇧</span> United Kingdom</a>
+    <a href="#" data-region="AU" class="current"><img class="flag-icon" src="/flags/au.svg" alt="" width="20" height="15"> Australia</a>
+    <a href="#" data-region="NZ"><img class="flag-icon" src="/flags/nz.svg" alt="" width="20" height="15"> New Zealand</a>
+    <a href="#" data-region="UK"><img class="flag-icon" src="/flags/gb.svg" alt="" width="20" height="15"> United Kingdom</a>
   </div>
 </div>
 ```

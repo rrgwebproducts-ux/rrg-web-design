@@ -1576,7 +1576,9 @@ function applyRegionFooter(region) {
 }
 
 const REGION_LABELS = { AU: 'Australia', NZ: 'New Zealand', UK: 'United Kingdom' };
-const REGION_FLAGS = { AU: '🇦🇺', NZ: '🇳🇿', UK: '🇬🇧' };
+// Flag images, not emoji — Windows has no flag emoji and showed the letters ("AU", "GB")
+// instead (Brenton, 2026-09-29). SVGs from the flag-icons set, in _shared/flags/.
+const REGION_FLAGS = { AU: 'au', NZ: 'nz', UK: 'gb' };
 
 // AU/UK default to the Click & Collect tab, NZ defaults to Delivery — per spec.md item 21.
 const REGION_DEFAULT_DC_TAB = { AU: 'collect', NZ: 'delivery', UK: 'delivery' };
@@ -1657,7 +1659,7 @@ function applyRegion(region) {
   // Utility bar trigger label/flag
   const flagEl = document.querySelector('[data-region-flag]');
   const labelEl = document.querySelector('[data-region-label]');
-  if (flagEl) flagEl.textContent = REGION_FLAGS[region];
+  if (flagEl) flagEl.src = `${RRG_PROTO}_shared/flags/${REGION_FLAGS[region]}.svg`;
   if (labelEl) labelEl.textContent = REGION_LABELS[region];
   document.querySelectorAll('.region-switcher-menu a').forEach(a => {
     a.classList.toggle('current', a.dataset.region === region);

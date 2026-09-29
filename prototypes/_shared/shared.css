@@ -289,7 +289,7 @@ button{font-family:inherit;cursor:pointer;}
 .u-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
 .u-item svg{flex:0 0 auto;width:14px;height:14px;}
 .u-item a{color:#fff;text-decoration:underline;font-weight:700;}
-.u-item .flag-emoji{font-size:14px;line-height:1;}
+.flag-icon{width:20px;height:15px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.12);vertical-align:middle;flex:0 0 auto;}
 
 /* Region Selector (2026-09-11, backlog item 21) — the utility bar's country item, previously
    static/decorative, is now a working dropdown. Same toggle-a-class-on-click,
@@ -297,7 +297,7 @@ button{font-family:inherit;cursor:pointer;}
    (admin-panel.css), just recoloured for sitting on the red utility bar (white trigger text)
    instead of the white main header. */
 .region-switcher{position:relative;}
-.region-switcher-toggle{background:none;border:none;padding:0;font:inherit;font-size:14px;color:#fff;cursor:pointer;}
+.region-switcher-toggle{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:none;border:none;padding:0;font:inherit;font-size:14px;color:#fff;cursor:pointer;}
 .region-switcher-menu{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;padding:8px;display:none;flex-direction:column;gap:1px;z-index:80;}
 .region-switcher.open .region-switcher-menu{display:flex;}
 .region-switcher-menu .tsm-label{display:block;padding:6px 10px 4px;}
