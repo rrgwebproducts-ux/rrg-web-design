@@ -1,4 +1,4 @@
-/* Roof Racks Galore — shared design tokens & component library, used across all four PDP templates */
+/* Roof Racks Galore — shared design tokens & component library, used by every prototype page */
 
 /* Google Fonts are loaded via <link rel="preconnect">/<link rel="stylesheet"> in each
    page's <head> now, not an @import here (2026-09-11, mobile audit) — @import blocks
@@ -179,7 +179,7 @@ h1,h2,h3,h4{
 .details-sub ul{margin:0;padding-left:18px;}
 /* Low Stock "whilst stocks last" box — part of the Low Stock state on every PDP (was Simple only).
    An urgency nudge ("get in before it runs out"), not a warning. Shown by rrgRefreshStockSurfaces(). */
-.scarcity{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--rrg-unknown-text);background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:var(--radius);padding:8px 12px;margin-bottom:16px;}
+.scarcity{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--rrg-gold-text);background:var(--rrg-gold-bg);border:1px solid var(--rrg-gold);border-left-width:3px;border-radius:var(--radius);padding:8px 12px;margin-bottom:16px;}
 
 /* Variant picker — comparison cards (Config-Variant, Vehicle-Specific; was duplicated in both). */
 .variant-label-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;}
@@ -226,7 +226,7 @@ h1,h2,h3,h4{
    PDPs, an unstyled browser-default 32px/1.45 on PLP/VPLP/Camping/VCLP heroes, and 28px (22px
    mobile) on search. */
 .decision-panel h1,.plp-hero h1,.plp-search-headline h1{font-size:32px;line-height:1.1;}
-@media (max-width:640px){.decision-panel h1,.plp-hero h1,.plp-search-headline h1{font-size:28px;}}
+@media (max-width:640px){.decision-panel h1,.plp-hero h1,.plp-search-headline h1,.plp-search-scope-in,.plp-search-scope-btn{font-size:28px;}}
 /* Eyebrow label — the small grey uppercase label above a group (Build Option, Colour, What's
    Included, Consists Of, Featured Product, typeahead + region-menu section heads). Was four
    near-identical rules at 11/12/13px with .03/.04em (2026-09-29, spec.md §15 H3). */
@@ -239,9 +239,7 @@ button{font-family:inherit;cursor:pointer;}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
 
 /* top strip (legacy — superseded by .rrg-utility-bar/.rrg-main-header below, kept in case any page still references it) */
-.rrg-topbar{background:var(--rrg-black);color:#fff;font-size:12px;font-weight:900;letter-spacing:.04em;text-align:center;padding:7px 12px;}
-.rrg-header{border-bottom:1px solid var(--rrg-line);padding:14px 0;}
-.rrg-header .wrap{display:flex;align-items:center;justify-content:space-between;}
+
 .rrg-logo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.02em;}
 .rrg-logo b{color:var(--rrg-red);}
 
@@ -445,8 +443,8 @@ button{font-family:inherit;cursor:pointer;}
 /* Text-link button — every "Clear Filters", "Show Specs", "View All", "Change" style action
    (2026-09-29, spec.md §15 C13; was six near-identical rules). 14px bold red underline;
    .dc-change-link keeps its compact uppercase size inside the delivery widget. */
-.link-btn,.plp-filter-clear,.plp-filter-clear-drawer,.plp-specs-toggle,.plp-search-empty-other button,.fit-gallery-viewall,.dc-change-link{background:none;border:none;padding:0;font-family:inherit;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:underline;cursor:pointer;}
-.link-btn:hover,.plp-filter-clear:hover,.plp-filter-clear-drawer:hover,.plp-specs-toggle:hover,.plp-search-empty-other button:hover,.fit-gallery-viewall:hover,.dc-change-link:hover{color:var(--rrg-red-dark);}
+.link-btn,.plp-filter-clear,.plp-filter-clear-drawer,.plp-specs-toggle,.plp-search-empty-other button,.fit-gallery-viewall{background:none;border:none;padding:0;font-family:inherit;font-size:14px;font-weight:700;color:var(--rrg-red);text-decoration:underline;cursor:pointer;}
+.link-btn:hover,.plp-filter-clear:hover,.plp-filter-clear-drawer:hover,.plp-specs-toggle:hover,.plp-search-empty-other button:hover,.fit-gallery-viewall:hover{color:var(--rrg-red-dark);}
 
 /* Tooltip bubble — one look for every hover/focus tooltip (2026-09-29, spec.md §15 C3): the
    filter info icons (.plp-filter-tooltip::after) and the product-card fitment tooltip
@@ -482,7 +480,7 @@ button{font-family:inherit;cursor:pointer;}
 
 /* Gold CTA — Add to Cart everywhere (decision panel, sticky/persistent bars, product cards,
    Related Products) plus other primary actions (View Options, Set My Vehicle). Was split
-   across [data-cta-label].btn-primary (PDP) and .btn-gold (cards), which drifted in the UK. */
+   across two classes (PDP vs cards) that drifted apart in the UK region. */
 .btn-cta{background:var(--rrg-cta);color:var(--rrg-black);}
 .btn-cta:hover{background:var(--rrg-cta-hover);}
 .btn-outline{background:#fff;border:1.5px solid var(--rrg-black);color:var(--rrg-black);}
@@ -848,10 +846,6 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    guarantee copy inline (2026-09-10, Graham Sowerby meeting). No dedicated guarantee page
    exists yet to link to — href="#" placeholder, same convention as other not-yet-built
    destinations in this prototype (flag before this leaves prototype stage). */
-.guarantee-usps{margin:0 0 12px;padding-left:20px;}
-.guarantee-usps li{margin-bottom:4px;font-size:14px;color:var(--rrg-grey-700);}
-.guarantee-learn-more{font-size:13px;color:var(--rrg-red);font-weight:700;text-decoration:none;}
-.guarantee-learn-more:hover{text-decoration:underline;}
 
 /* Short description, 2-line clamp with an inline "Read more" (2026-09-10, Graham Sowerby
    meeting; consolidated 2026-09-11 — this used to be split across two elements, .value-prop
@@ -884,10 +878,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    the gallery/video/install column (variant pickers, showroom finder, package contents
    etc. push its height up), pin the shorter gallery column in place while the taller one
    keeps scrolling, instead of leaving blank space under it once it runs out of content.
-   Relies on .hero's existing align-items:start (defined per-page) to leave room in the
+   Relies on .hero's align-items:start (PDP hero layout, below) to leave room in the
    grid row to stick into — a no-op if the gallery column happens to be the taller side,
-   so it's safe to apply unconditionally. Scoped to a direct .hero child so it has no
-   effect once the gallery-placement demo toggle moves this column out of .hero. */
+   so it's safe to apply unconditionally. */
 @media (min-width:901px){
   .hero > .gallery-col{position:sticky;top:20px;}
 }
@@ -1008,10 +1001,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fit-gallery-title{display:flex;align-items:center;gap:10px;}
 /* 37x37/19x19 (2026-09-16) — was 26x26/15x15, resized to match the Vehicle Landing Page's
    Fit Finder badge (.ff-badge) so the two widgets, which sit directly above/below each
-   other on that page, use one consistent badge size. Also matches this heading's own
-   font-size (37px, the shared section-heading scale — same principle already applied to
-   .ff-badge: the badge matches the heading text itself, not the padded line-height box
-   around it). */
+   other on that page, use one consistent badge size — sized to sit beside the 40px
+   section heading's text, not its padded line-height box. */
 .fit-gallery-badge{width:37px;height:37px;flex:0 0 auto;border-radius:var(--radius);background:var(--rrg-gold);color:#fff;display:flex;align-items:center;justify-content:center;}
 .fit-gallery-badge svg{width:19px;height:19px;}
 .fit-gallery-title h2{margin:0;line-height:1;color:var(--fg-fg);}
@@ -1050,9 +1041,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .admin-section{margin-bottom:18px;}
 .admin-section:last-child{margin-bottom:0;}
 .admin-section h5{font-size:12px;color:var(--rrg-grey-500);text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
-.admin-vehicle-row{display:flex;flex-direction:column;gap:6px;}
-.admin-vehicle-row button{background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:8px;padding:9px 12px;font-size:14px;font-weight:700;text-align:left;color:var(--rrg-black);}
-.admin-vehicle-row button.active{background:var(--rrg-red);border-color:var(--rrg-red);color:#fff;}
+
 .admin-toggle-label{padding:9px 0 0;font-size:13px;color:var(--rrg-text);}
 .admin-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:13px;color:var(--rrg-text);border-bottom:1px solid var(--rrg-bg);cursor:pointer;}
 .admin-toggle:last-child{border-bottom:none;}
@@ -1257,32 +1246,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .stock-chip.order{background:var(--rrg-unknown-bg);}
 .stock-chip.none{background:var(--rrg-nofit-bg);}
 .stock-chip.out{background:var(--rrg-line-soft);color:var(--rrg-grey-600);}
-/* Closest / Remote are about distance, not stock — neutral so they don't read as "In Stock". */
-.stock-chip.closest{background:var(--rrg-line-soft);}
 
-/* Delivery / Click & Collect widget v2 — Demo State Panel preview (backlog items 18/19,
-   2026-09-12, dcV2*() in shared.js). Explicit postcode "Check" instead of live-as-you-type:
-   .dc-shared (prompt + input row + error banner) sits above the two .dc-panel elements and
-   is hidden once a postcode is committed, replaced by that tab's own results-head + body. */
-.dc-prompt{padding:14px 18px 0;margin:0 0 8px;font-size:14px;color:var(--rrg-grey-700);}
-.dc-shared .dc-postcode-row{padding-top:0;}
-.dc-error-banner{margin:10px 18px 0;padding:10px 14px;border-radius:var(--radius);background:var(--rrg-nofit-bg);color:var(--rrg-nofit);font-size:13px;line-height:1.4;}
+
 .dc-input.error{border-color:var(--rrg-nofit);}
-.dc-results-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;}
-.dc-results-head h3{margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;text-transform:none;}
-.dc-change-link{font-size:13px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;flex:0 0 auto;}
-.dc-select-list{display:flex;flex-direction:column;gap:10px;}
-.dc-select-option{display:flex;align-items:center;gap:12px;border:1.5px solid var(--rrg-line);border-radius:var(--radius);padding:12px 14px;font-size:14px;cursor:pointer;transition:border-color var(--t-fast),box-shadow var(--t-fast);}
-.dc-select-option:hover{border-color:var(--rrg-line-strong);}
-.dc-select-option:has(input:checked){border-color:var(--rrg-red);box-shadow:0 0 0 1px var(--rrg-red);}
-.dc-select-option input[type=radio]{accent-color:var(--rrg-red);width:18px;height:18px;flex:0 0 auto;}
-.dc-select-option .dc-select-body{flex:1 1 auto;min-width:0;}
-.dc-select-option .dc-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;flex:0 0 auto;}
-.dc-v2-copy{font-size:14px;color:var(--rrg-grey-700);line-height:1.5;margin:0 0 14px;}
-.dc-v2-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-.dc-quote-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-.dc-quote-form .dc-input{flex:1 1 220px;}
-.dc-v2-confirm{font-size:14px;color:var(--rrg-fits);font-weight:700;margin:0 0 14px;}
 
 /* "View all stores" — opens the store slide-out drawer, see .store-slideout below and
    buildStoreSlideout() in shared.js. Click & Collect panel and, where present, the Showroom
@@ -1313,10 +1279,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    flex-basis:100% on narrow screens (below) puts it back on its own full-width line under
    the badge+heading on mobile, matching the original stacked layout there. */
 .ff-head{display:flex;align-items:center;flex-wrap:wrap;gap:14px 20px;margin-bottom:20px;}
-/* Badge height matches the "Fit Finder" heading's own font-size (37px, the shared
-   section-heading scale) — corrected 2026-09-16 per Brenton, who felt the first pass
-   (54px, the heading's full line-height box including its leading) looked too big; this
-   matches the heading text itself, not the whitespace around it. */
+/* Badge sized to sit beside the "Fit Finder" heading text (40px section-heading scale), not
+   its full line-height box — corrected 2026-09-16 per Brenton, who felt the first pass (54px)
+   looked too big. Same 37px as the Fitment Gallery badge. */
 .ff-badge{flex:0 0 auto;width:37px;height:37px;border-radius:var(--radius);background:var(--rrg-gold);display:flex;align-items:center;justify-content:center;}
 .ff-badge svg{width:19px;height:19px;color:#fff;}
 .ff-head h2{margin:0;color:#fff;flex:0 0 auto;}
@@ -1596,8 +1561,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    heading > paragraph > list" sub-tier should reuse this class rather than re-declaring
    it locally. The h2 above (.content-block h2) already shares the sitewide 40px section-
    heading rule; only the h3/p/li sub-tier below was previously page-scoped. */
-.content-block{margin:40px 0;}
-.content-block h2{margin-bottom:12px;}
+.content-block{margin:var(--space-section) 0;}
+.content-block h2{margin-bottom:16px;}
 .content-block h3{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;margin:22px 0 8px;}
 .content-block p{font-size:14px;color:var(--rrg-grey-700);line-height:1.7;margin-bottom:16px;}
 .content-block ul{margin:0 0 16px;padding-left:20px;}
@@ -1666,11 +1631,6 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .faq-answer{padding:0 0 16px;font-size:14px;color:var(--rrg-grey-700);}
 .faq-answer p{margin:0;}
 
-.nav-strip{background:#fff;border-bottom:1px solid var(--rrg-line);padding:12px 0;font-size:13px;}
-.nav-strip .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
-.nav-strip a.tag{padding:6px 14px;border-radius:var(--radius);border:1px solid var(--rrg-line);text-decoration:none;font-weight:700;}
-.nav-strip a.tag.current{background:var(--rrg-black);color:#fff;border-color:var(--rrg-black);}
-
 @media (max-width: 900px){
   .trust-row{grid-template-columns:repeat(2,1fr);}
   .trust-row .item:nth-child(2n+1){border-left:0;}
@@ -1710,7 +1670,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .tabs .content{font-size:16px!important;}
   .short-desc{font-size:16px!important;}
   .specs-table th,.specs-table td{font-size:16px!important;}
-  .guarantee-usps li{font-size:16px!important;}
+
   .usp-item p{font-size:16px!important;}
   .vehicle-fit-notes{font-size:16px!important;}
   .dc-option,.dc-store{font-size:16px!important;}
@@ -1727,7 +1687,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .rrg-crumbs{font-size:13px!important;}
   .sku-row{font-size:14px!important;}
   .dc-viewall-row{font-size:13px!important;}
-  .install-cta-panel .install-tag{font-size:14px!important;}
+
   .exdemo-slideout-head p{font-size:13px!important;}
   .exdemo-option .eo-note{font-size:13px!important;}
 }

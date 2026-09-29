@@ -1029,6 +1029,35 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
 - **P6 (dependencies):** store stock, Phase 2 previews and hero image are disabled with a hint when they can't apply. Out of Stock / Discontinued untick and disable Delivery and C&C, and they're restored afterwards.
 - **P10:** Demo choices persist per template (`rrgDemo:<template>`).
 - **P5 (mobile):** both panels open from small icon-only buttons above the sticky Add to Cart bar. The "Nearest Store" link is no longer hijacked.
+- Committed 630d79e (pushed), plus 713d75f (desktop hero photo box fixed at 250px to close the gap above Shop By).
+
+**Step 6 (cleanup) built on 2026-09-29, awaiting Brenton's review. Consistency pass complete.**
+- **Z1 (dead code):**
+  - Deleted the Delivery/C&C v2 widget (289 lines of JS + its CSS; v1 is the design).
+  - Deleted the old v1 card price CSS, legacy `.rrg-topbar`/`.rrg-header`, `.guarantee-*`, `.nav-strip`, `.install-tag`, `.admin-vehicle-row` and `.plp-refine-btn-standalone`.
+  - Deleted the Grid-columns/Default-view functions and the 4-column CSS, plus `BIKE_ICON`.
+  - Kept `.plp-card-media img` (search brand logos use it).
+- **Z2 (stale comments):** ~20 rewritten across CSS, JS and templates. The header prototype's on-page note is rewritten.
+- **Z3 (dev briefs):** text updated in all 6 briefs plus PAGE-GLOSSARY.md (screenshots still held).
+- **Fixes found by the brief review:**
+  - Fit Finder (drawer + VCLP) sets the Toyota Hilux explicitly (it kept a Ford Ranger before).
+  - Search's scope switcher steps down with its H1.
+  - PLP page/OG title is "Bike Racks" (the H1 follows the session vehicle).
+  - Change Vehicle buttons carry `.btn-sm`.
+  - VCLP content-block/trust-banner on the 48px rhythm.
+  - UK footer blue uses the token.
+  - The Low Stock box is restyled as a gold nudge, not an amber warning.
+- **Final re-measure (all 12 pages, 1440 + 390):**
+  - 0 console errors; header and mega menu work everywhere.
+  - Real buttons come in 3 sizes × 4 colours.
+  - One page-H1 rule (32/28px).
+  - Every anchored element stays stable across every tab/state in 28 page × vehicle combinations.
+- **Left as-is, on purpose:**
+  - `.trust-row`/`.usp-row` keep their compact in-hero spacing.
+  - The Rack Fit Guarantee keeps its native hover titles.
+  - Drawers share one grouped base rule rather than a new `.drawer` class.
+  - Fitment Gallery drawer tiles keep 16:9.
+  - The VS `<title>` is a shortened product name.
 
 **Scope:** every page in `prototypes/`: root index, header, 5 PDPs, VCLP, PLP, PLP Camping, VPLP and Search.
 - **Measured:** computed styles in a real browser, at 1440px and 390px, on all 12 pages.
@@ -1168,7 +1197,7 @@ What the Demo State controls do on each page type today:
   - VCLP "Shop The Best Brands": red.
   - "Shop By": 22px red.
   - Search empty-state "You Might Like": 18px red, where equivalent sections use `.related-heading`.
-- **H3 ✅ Small grey eyebrow labels come in 4 versions:** "Consists Of" 13px, "What's Included" 12px, "Build Option" 13px and "Featured Product" 13px, plus the typeahead section heads and admin h5s. They also use different font stacks. Make one `.eyebrow` (11px/700/.04em).
+- **H3 ✅ Small grey eyebrow labels come in 4 versions:** "Consists Of" 13px, "What's Included" 12px, "Build Option" 13px and "Featured Product" 13px, plus the typeahead section heads and admin h5s. They also use different font stacks. Make one `.eyebrow` (built at 13px/700/.04em — most labels were already 13px).
 - **H4 ✅ Drawer titles:** 18px on most, 26px on Fit Finder, 22px on the vehicle notice. Pick one.
 
 ### 15.6 Shared components (C)

@@ -1,5 +1,7 @@
 # Footer — Developer Brief
 
+> **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15). Text only — screenshots are deliberately held until final handover.
+
 ## 1. Project context
 
 **Audience:** for Marc, same as `DEVELOPER-BRIEF.md` and `HEADER-DEVELOPER-BRIEF.md` — detailed information on the footer build so implementation decisions in Magento stay consistent with the intent, even where the exact prototype code can't be lifted verbatim.
@@ -8,21 +10,25 @@
 
 **Companion documents:** `footer-spec.md` is this project's full engineering spec/build log (every decision, in chronological detail) — this brief is the handover summary distilled from it. `spec.md` and `header-spec.md` are the equivalent specs for the page content and header this footer sits below.
 
-**Build status:** built directly into all 5 PDP templates (`prototypes/{simple,config-variant,sibling-color,vehicle-specific,grouped-bundle}/index.html`) — unlike the header, there was no separate isolated prototype stage (`footer-spec.md` Section 0 explains why). Playwright-verified on all 5 templates, desktop + mobile, plus a region round-trip (AU → UK → AU). Not yet pushed — gated on Brenton's sign-off, same as the other two briefs.
+**Build status:** first built directly into the 5 PDP templates (`prototypes/{simple,config-variant,sibling-color,vehicle-specific,grouped-bundle}/index.html`) — unlike the header, there was no separate isolated prototype stage (`footer-spec.md` Section 0 explains why) — and Playwright-verified there, desktop + mobile, plus a region round-trip (AU → UK → AU). It is now on every template page: the 5 PDPs, VCLP, PLP (Bike Racks), PLP (Camping), VPLP and Search Results, with byte-identical markup (`spec.md` §15), and — since 2026-09-29 — the root template index (`prototypes/index.html`, §15 G1). The standalone header page (`prototypes/header/index.html`) is the only prototype page without it.
+
+**Page-level rules that come with the footer (2026-09-29):**
+- **Spacing above:** a 48px gap above the footer on every page (`.rrg-footer{margin-top:48px}`, §15 G5). Search previously had about 88px. The one exception is the Vehicle Category Landing Page, whose grey brands band runs flush into the footer (margin 0) instead of leaving a white strip.
+- **Kalam font:** loaded on every page that has the footer (in the page's Google Fonts `<link>`), for the UK tagline (Section 4.4a) — previously only the 5 PDPs loaded it (§15 G4).
 
 ---
 
 ## 2. Typography & colour reference
 
-Same type scale as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings, Lato for body text) — not repeated here. Footer-specific colours, sampled directly from the client's Figma export:
+Same type scale as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings, Lato for body text) — not repeated here. Column headings are Barlow Condensed 18px, bold, uppercase (17px before the 2026-09-29 pass moved every size onto the shared scale). Footer-specific colours, sampled directly from the client's Figma export — since the 2026-09-29 pass the charcoal and copyright-bar colours come from the shared tokens in `shared.css :root` rather than hardcoded values:
 
 | Token | Value | Used for |
 |---|---|---|
-| Footer background | `#211E20` | The whole footer block |
+| Footer background | `--rrg-charcoal` (`#211E20`) | The whole footer block (also the AU/NZ social buttons' glyph colour) — the same charcoal used for tooltips and other dark surfaces |
 | Footer text | `#FFFFFF` | Headings and links |
 | Store Finder pin | `#FFCA48` | The map-pin icon only |
-| Copyright bar background | `#F5F5F5` | The strip below the four columns (AU/NZ only — UK is blue, see below) |
-| Copyright bar text | `#3A3A3A` | The copyright line (AU/NZ only) |
+| Copyright bar background | `--rrg-bg` (`#F5F5F5`) | The strip below the four columns (AU/NZ only — UK is blue, see below) |
+| Copyright bar text | `--rrg-grey-700` (`#333333`) | The copyright line (AU/NZ only) — was `#3A3A3A`, folded into the shared grey scale on 2026-09-29 |
 | UK footer background | `#2E41AE` | Whole footer block + bottom bar, UK region only — matches the real roofbox.co.uk footer and this project's existing UK brand-blue token (`body.region-uk{--rrg-red:#2E41AE}`, also used for the header skin) |
 | UK bottom bar text | `#FFFFFF` | UK's legal text (Section 4.7) — the bottom bar is part of the same continuous blue block for UK, not a separate light strip |
 
@@ -130,7 +136,7 @@ One block, present at the bottom of every page: four columns on desktop (Informa
 
 **Purpose:** real TRBC brand tagline, carried over from the live roofbox.co.uk footer.
 
-**Typography:** set in **Kalam** (a Google Font), bold — confirmed by reading the live site's own computed `font-family`/`font-weight` directly (not guessed from appearance; it reads as a bold italic script but Kalam is actually an upright typeface — the slant is the letterforms' own handwriting style, not an applied italic). Added to each template's existing Google Fonts `<link>` alongside Barlow Condensed/Lato.
+**Typography:** set in **Kalam** (a Google Font), bold — confirmed by reading the live site's own computed `font-family`/`font-weight` directly (not guessed from appearance; it reads as a bold italic script but Kalam is actually an upright typeface — the slant is the letterforms' own handwriting style, not an applied italic). Added to each template's existing Google Fonts `<link>` alongside Barlow Condensed/Lato — on every page with the footer since 2026-09-29 (Section 1), not just the 5 PDPs.
 
 **Region-aware:** hidden entirely for AU/NZ (no equivalent tagline exists) via the `hidden` attribute, toggled by `applyRegionFooter()` — not a CSS-only show/hide.
 
@@ -194,7 +200,7 @@ One block, present at the bottom of every page: four columns on desktop (Informa
 **Purpose:** legal sign-off line — AU/NZ get a simple copyright line, UK gets TRBC's real registered-company details (not a copyright placeholder).
 
 **Region-aware:**
-- **AU/NZ:** "© 2026 Roof Racks Galore" on the light bar (`#F5F5F5` background, `#3A3A3A` text).
+- **AU/NZ:** "© 2026 Roof Racks Galore" on the light bar (`--rrg-bg` `#F5F5F5` background, `--rrg-grey-700` `#333333` text).
 - **UK:** real company/legal text, two lines — "© The Roof Box Company (TRBC) Ltd, Unit 4 Station Yard, Station Road, Sedbergh, Cumbria, LA10 5HP" / "Registered in England No. 16901742    VAT No. 512 2969 95" — given directly by Brenton, not a placeholder. The bar itself also switches to the same blue as the rest of the UK footer (`#2E41AE`, white text) rather than staying the light AU/NZ bar — on the live site this is one continuous blue block, not a separate strip.
 
 Driven by `REGION_FOOTER_LEGAL` in `shared.js`, rendered via `innerHTML` (not `textContent`) so the UK block can include a line break.

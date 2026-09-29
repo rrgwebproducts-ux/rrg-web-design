@@ -6,7 +6,6 @@
    Every class here is plp- prefixed (or reuses a shared.css class verbatim, called out where
    it happens) so nothing here can collide with shared.css's own PDP-specific classes. */
 
-
 /* VRS, no vehicle set — real unfiltered catalogue stays visible (never gated/empty), plus
    this CTA banner in place of the vehicle-set hero framing (spec Section 2 live-site
    finding). Reuses the Showroom Finder's black-CTA visual language. */
@@ -136,8 +135,7 @@
 .plp-filter-tooltip{position:relative;display:inline-flex;flex:0 0 auto;color:var(--rrg-grey-500);cursor:help;}
 .plp-filter-tooltip svg{width:14px;height:14px;}
 .plp-filter-tooltip:hover,.plp-filter-tooltip:focus-visible{color:var(--rrg-red);}
-/* Same look as the product-card fitment tooltip (.plp-fitment-tip, 2026-09-29): footer charcoal,
-   white body text at 12.5px — easier to read than the original black/12px version. */
+/* Bubble look (charcoal, 14px) comes from the shared .rrg-tooltip rule in shared.css. */
 .plp-filter-tooltip::after{content:attr(data-tooltip);left:0;width:240px;}
 .plp-filter-tooltip:hover::after,.plp-filter-tooltip:focus-visible::after{opacity:1;visibility:visible;}
 
@@ -148,7 +146,7 @@
 .plp-filter-chip{flex:0 0 auto;background:#fff;border:1px solid var(--rrg-red);border-radius:var(--radius);padding:8px 14px;font-size:14px;font-weight:700;color:var(--rrg-black);white-space:nowrap;}
 .plp-filter-chip.active,.plp-filter-chip[aria-pressed="true"]{background:var(--rrg-red);color:#fff;}
 @media (min-width:901px){
-  .plp-filter-chips,.plp-refine-btn-standalone{display:none;}
+  .plp-filter-chips{display:none;}
 }
 
 /* Filter drawer — reuses .store-slideout*'s right-edge convention verbatim (see plp.js
@@ -160,12 +158,6 @@
 
 /* ---- Product grid / list + card (spec Section 7) ---- */
 .plp-results.is-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
-/* 3 per row is the default (2026-09-18, Brenton signed off), 4 kept as a Demo State Panel
-   option (.cols-4) — desktop only, where the sidebar+main layout is active; below 901px the
-   grid already falls back to auto-fill/breakpoint rules regardless of the toggle. */
-@media (min-width:901px){
-  .plp-results.is-grid.cols-4{grid-template-columns:repeat(4,1fr);}
-}
 .plp-results.is-list{display:flex;flex-direction:column;gap:14px;}
 /* List row: image | info | actions, widened from a plain 1:2:1 ratio to 0.9:1.8:1.3
    (2026-09-19 follow-up) — the actions column now carries a two-line Now/RRP price plus a
@@ -288,10 +280,8 @@
    for free. */
 .plp-list-col-actions .plp-ribbon{position:static;align-self:stretch;margin:-16px -16px 0 0;}
 .plp-list-col-actions .plp-price{align-items:center;}
-.plp-list-col-actions .plp-price-col{align-items:center;}
-/* Same size as the hero section's own CTA buttons (shared.css .plp-hero-cta-row .btn is
-   13px/11px 18px — the base .btn class alone is 16px, but that's not what the hero row
-   actually renders at, so matching the base class wasn't enough). */
+
+/* List-view card buttons use the medium button size (.btn-md group in shared.css). */
 .plp-list-col-actions .btn{margin-top:auto;}
 
 .plp-card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;min-width:0;}
@@ -319,9 +309,7 @@
    within its own half, rather than a flex row. The 2nd pass's justify-content:space-between
    pushed the price hard left and the tag hard right (Brenton: ended up looking too far apart);
    centering each side within its own ~50% column reads as two balanced columns instead. */
-.plp-price.plp-price-on-sale{display:grid;grid-template-columns:1fr 1fr;align-items:center;justify-items:center;gap:10px;}
-.plp-results.is-grid .plp-price.plp-price-on-sale{gap:6px;}
-.plp-price-col{display:flex;flex-direction:column;align-items:center;gap:2px;}
+
 /* Always centred, in both grid and list (2026-09-19 2nd follow-up) — previously left-aligned
    by default and only re-centred for grid, so in list view the Save badge sat flush left
    while the Now/RRP lines above it were centred, reading as visibly misaligned. */
@@ -341,15 +329,12 @@
    documents for the PDP version. "From" (hasOptions products) reuses this same small label
    style rather than inheriting .plp-price-now's much larger size (2nd follow-up — Brenton:
    "From" was rendering at the same oversized weight as the price digits themselves). */
-.plp-price-line-now{display:flex;align-items:baseline;gap:6px;}
-.plp-price-line-was{display:flex;align-items:center;gap:6px;}
-.plp-results.is-grid .plp-price-line-now,.plp-results.is-grid .plp-price-line-was{justify-content:center;}
+
 .plp-price-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--rrg-black);}
-.plp-price-line-now .plp-price-label{color:var(--rrg-red);}
-.plp-price-line-was .plp-price-label{font-family:inherit;font-weight:400;font-size:13px;color:var(--rrg-grey-500);text-decoration:line-through;}
+
 /* Doubled from 44px (2026-09-19 follow-up — Brenton: reads too small at the original size),
    same doubled size in both grid and list view since both share this markup/class. */
-.plp-price .plp-sale-tag{width:88px;height:auto;flex:0 0 auto;}
+
 .plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
 .plp-stock-line.out-of-stock,.plp-stock-line.discontinued{color:var(--rrg-stock-out);}
@@ -518,7 +503,6 @@
 .plp-result-count-mobile{text-align:center;margin-bottom:12px;}
 @media (max-width:900px){
   .plp-search-headline{padding:4px 0 10px;}
-  .plp-search-scope-in,.plp-search-scope-btn{font-size:28px;}
   .plp-search-page-btns{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:2px;}
 }
 
@@ -567,7 +551,6 @@
    same #plpResults grid as product cards, on the same .plp-card frame (image on top, body,
    full-width action at the bottom), so switching views keeps the page's shape. Only the
    card-body content differs: an eyebrow (type / topic), title, one-line description. */
-
 
 .plp-results-scope .plp-card-title{text-align:center;}
 .plp-results-scope .plp-card-actions{margin-top:auto;}

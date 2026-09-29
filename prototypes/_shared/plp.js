@@ -84,7 +84,7 @@ const plpState = {
   scopeTab: '',          // search-results page, non-Products views only — see plpScopeDef()
   scopeFilters: {},      // { facetKey: Set(values) }, non-Products views only
   scopeSort: 'relevance', // 'relevance' | 'az', non-Products views only
-  gridCols: 3,           // 3 | 4 — Demo State Panel test toggle, grid view only, desktop only (see plp.css). 3 is the default (2026-09-18, Brenton signed off), 4 kept as the fallback option.
+  gridCols: 3,           // cards per row on desktop grid (3 signed off 2026-09-18) — used to place the merch tile after row 1
   sort: 'relevance',
   page: 1,               // desktop numbered pagination
   visibleCount: PLP_PAGE_SIZE, // mobile "show more" cumulative count
@@ -193,9 +193,10 @@ function plpRenderBreadcrumb() {
   }).join('');
 }
 
-// Heading/description swap across both hero states — cfg.vehicleHeadingSuffix is the page's
-// own fixed "for your Toyota Hilux" (or full vehicle-spec, for vplp) phrase appended to the
-// Vehicle-Set state's H1 only; the Simple state's H1 is the bare category heading.
+// Heading/description swap across both hero states — cfg.vehicleHeadingSuffix is appended to the
+// Vehicle-Set state's H1 only: "for your {vehicle}" on PLP/Camping ({vehicle} = the session
+// vehicle's name), or the VPLP's own fixed vehicle spec. The Simple state's H1 is the bare
+// category heading.
 function plpRenderCategoryContent() {
   const cfg = window.PLP_CONFIG;
   if (!cfg.categoryRoot) return;
@@ -367,9 +368,9 @@ function plpSelectSearchCategory(key) {
 // ---- Vehicle fitment on product cards (engine-wide, 2026-09-29) --------------------------------
 // Every PLP-family page (PLP, VPLP, Camping, Search) now shares one vehicle model instead of the
 // search page defining its own: PLP_VEHICLES names each fitment the demo data uses, and the
-// session vehicle is whoever the Site Admin Panel's existing "Vehicle Set" toggle stands for —
-// the Toyota Hilux N80 everywhere in this prototype (the header already reads "Your Vehicle:
-// Toyota Hilux"). A product is vehicle-specific when it carries `fitsVehicle`, or when its page
+// session vehicle is Site Admin's "Vehicle" (None / Toyota Hilux / Ford Ranger — rrgVehicle() in
+// session-state.js), mapped to a PLP_VEHICLES key via its plpKey. A product is vehicle-specific
+// when it carries `fitsVehicle`, or when its page
 // sets `PLP_CONFIG.allProductsFitVehicle` (the VPLP — every product on it is a Hilux N80 rack
 // set). Products that aren't vehicle-specific never get a fitment status.
 const PLP_VEHICLES = {
@@ -1500,7 +1501,7 @@ function plpRenderResults() {
     return;
   }
 
-  // Desktop: numbered pages. Mobile: cumulative "Show More Results" (spec Section 8).
+  // Desktop: numbered pages. Mobile: cumulative "Load More (N)" (spec Section 8).
   const isMobile = window.matchMedia('(max-width:900px)').matches;
   let visible;
   if (isMobile) {
@@ -1510,8 +1511,7 @@ function plpRenderResults() {
     visible = all.slice(start, start + PLP_PAGE_SIZE);
   }
 
-  const gridColsClass = plpState.view === 'grid' && plpState.gridCols === 4 ? ' cols-4' : '';
-  wrap.className = `plp-results ${plpState.view === 'list' ? 'is-list' : 'is-grid'}${gridColsClass}`;
+  wrap.className = `plp-results ${plpState.view === 'list' ? 'is-list' : 'is-grid'}`;
   const cardsArr = visible.map(p => plpState.view === 'list' ? plpListCardHTML(p, cfg) : plpCardHTML(p, cfg));
 
   // Nav-depth Level 3 icon cards (2026-09-18 review item 39/40, revised same day after Brenton
@@ -1689,22 +1689,6 @@ function plpInitToolbar() {
   if (refineBtn) refineBtn.addEventListener('click', () => plpOpenFilterDrawer());
   const clearBtn = document.getElementById('plpFilterClear');
   if (clearBtn) clearBtn.addEventListener('click', plpClearFilters);
-}
-
-// Demo State Panel hook (buildAdminPanel() in shared.js calls this if defined — see the
-// PLP-only section added there, gated behind [data-plp-page]).
-function applyPlpViewFlag(mode) {
-  plpState.view = mode;
-  const gridBtn = document.getElementById('plpViewGrid');
-  const listBtn = document.getElementById('plpViewList');
-  if (gridBtn) gridBtn.classList.toggle('active', mode === 'grid');
-  if (listBtn) listBtn.classList.toggle('active', mode === 'list');
-  plpRenderResults();
-}
-
-function applyPlpGridColsFlag(cols) {
-  plpState.gridCols = Number(cols) === 4 ? 4 : 3;
-  plpRenderResults();
 }
 
 function applyPlpCompareFlag(on) {
@@ -2052,8 +2036,8 @@ function plpRenderHero() {
 // Hero image 3-state fallback (2026-09-18 design review): session vehicle photo → category
 // image → no image at all, in that priority order. Demo State Panel-only preview (see
 // applyPlpHeroImageFlag's admin-panel radio group in shared.js buildAdminPanel()) — an
-// independent override rather than derived from the Vehicle Set toggle, so a reviewer can see
-// all 3 states without also having to flip session vehicle state. "None" collapses the
+// independent override rather than derived from Site Admin's Vehicle, so a reviewer can see
+// all 3 states without also having to change the session vehicle. "None" collapses the
 // Vehicle-Set hero to the same full-width .no-media layout the Simple-state hero already uses
 // (2026-09-18 resolution: don't keep the empty second column).
 function applyPlpHeroImageFlag(mode) {

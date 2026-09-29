@@ -1,8 +1,7 @@
-/* New Site Admin Panel — separate from the PDP templates' existing Demo State Panel
-   (.admin-fab/.admin-panel in shared.css/js). Houses the Template Switcher and Dev Brief
-   links (moved out of the visible main nav) plus a toggle to show/hide the Demo State
-   Panel. See header-spec.md Section 5. Positioned bottom-LEFT so it never overlaps the
-   Demo State Panel's own FAB (bottom-right) once both exist together on a PDP template. */
+/* Site Admin Panel — global prototype state (templates, briefs, shopper session, build phase,
+   promotions, prototype tools); admin-panel.js. The page-specific Demo State Panel is
+   .admin-fab/.admin-panel in shared.css/js. Bottom-LEFT so it never overlaps the Demo State
+   button (bottom-right). */
 
 .site-admin-fab{position:fixed;left:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:var(--rrg-grey-700);color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
 .site-admin-fab svg{width:18px;height:18px;}

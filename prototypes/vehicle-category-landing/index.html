@@ -35,10 +35,9 @@
   /* ===== Vehicle Category Landing Page (VCLP) — new page type, 2026-09-15 =====
      Captures proven search terms ("Roof Racks for Toyota Hilux", "Toyota Hilux Roof Racks")
      with one page per make/model rather than one per exact model variant. Primary CTA is
-     the Fit Finder, which is meant to hand off to a category/PLP page filtered to the
-     visitor's exact vehicle — that PLP doesn't exist yet in this prototype set, so its
-     links are stubbed (data-vclp-cta, see the inline script at the bottom) rather than
-     pointed at a real URL. See PAGE-GLOSSARY.md for how this page's sections relate to the
+     the Fit Finder, which hands off to the vehicle's filtered roof rack listing (the VPLP,
+     ../vplp/index.html) with the vehicle set in the session — see the inline script at the
+     bottom (data-vclp-cta). See PAGE-GLOSSARY.md for how this page's sections relate to the
      PDP-only components (Showroom Finder, Get It Installed, etc.) it deliberately does not
      reuse wholesale.
 
@@ -59,11 +58,10 @@
 
   /* Fitment Gallery — 2026-09-15: switched from a bespoke "Recent Fits" carousel to the
      exact same widget as Vehicle-Specific's Fitment Gallery (`.fit-gallery-section` /
-     `.fit-gallery-panel`, shared.css + shared.js's initFitGalleryCarousel()/
-     buildFitGallerySlideout()), per Brenton — same widget, same function, same look
-     everywhere it appears. No new CSS needed here at all; only the markup + a
-     FIT_GALLERY_PHOTOS data array (own inline script below, same pattern every PDP template
-     uses) differ. The one real difference is what Marc's backend would populate it with: on
+     `.fit-gallery-panel`), per Brenton — same widget, same function, same look everywhere it
+     appears. Built by shared.js's fitGalleryPanelHTML()/mountFitGallery()/renderFitGalleryTrack()
+     (one builder for VS, VCLP and VPLP since 2026-09-29); only the FIT_GALLERY_PHOTOS data array
+     (inline script below) is page-specific. The one real difference is what Marc's backend would populate it with: on
      a PDP it's fitments of one SKU, here it's fitments of the whole vehicle. Re-themed
      2026-09-15 from Ford Ranger to Toyota Hilux specifically so these 16 photos (real
      Hilux N80 fitment-centre installs, same source array as vehicle-specific/index.html)
@@ -76,7 +74,7 @@
      component (photo bg + dark overlay + USP list + CTA) to a full-width band with two
      CTAs instead of one, and a reviews badge instead of the fitment-count link used on
      PDP templates. */
-  .vclp-trust-banner{position:relative;background:var(--rrg-charcoal);color:#fff;padding:48px 0;margin-bottom:40px;overflow:hidden;}
+  .vclp-trust-banner{position:relative;background:var(--rrg-charcoal);color:#fff;padding:48px 0;margin-bottom:var(--space-section);overflow:hidden;}
   .vclp-trust-banner img.install-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;}
   .vclp-trust-inner{position:relative;max-width:760px;text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px;}
   .vclp-trust-inner h2{margin:0;color:#fff;line-height:1.15;}
@@ -205,7 +203,7 @@
      the PLP/PDP that Fit Finder hands off to once that page exists. -->
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs"><a href="#">Home</a> &gt; <a href="#">Vehicles</a> &gt; <a href="#">Toyota</a> &gt; Hilux</div>
-  <a href="#" class="btn btn-outline-red plp-crumbs-cta" data-open-fit-finder>Change Vehicle</a>
+  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-open-fit-finder>Change Vehicle</a>
 </div>
 
 <!-- BreadcrumbList JSON-LD, mirrors the visible trail above. "#" placeholders match every
@@ -230,7 +228,7 @@
      entities in an ItemList, not a VehicleListing (that type/its rich-result eligibility is
      for an actual vehicle-for-sale listing, which this isn't) and not wrapped in
      Product/isAccessoryOrSparePartFor (premature — this page has no single SKU yet, it
-     hands off to a PLP that doesn't exist). Worth a second look from an SEO specialist
+     hands off to the vehicle's roof rack listing, the VPLP). Worth a second look from an SEO specialist
      before real launch since Vehicle structured data is unusual territory for a roof-rack
      accessories site, not a used-car one. -->
 <script type="application/ld+json">
@@ -304,9 +302,9 @@
   <!-- Fitment Gallery — the exact same widget as Vehicle-Specific's (.fit-gallery-section /
        .fit-gallery-panel, shared.css + shared.js), per Brenton (2026-09-15): same widget,
        same function, same look, only the backing data differs (a whole vehicle's fitments,
-       not one SKU's). Markup below is copied verbatim from vehicle-specific/index.html — the
-       real photos live in FIT_GALLERY_PHOTOS in the inline script near the bottom of this
-       file, same pattern every PDP template uses. Now genuinely Hilux content (page re-themed
+       not one SKU's). The section is mounted by shared.js's mountFitGallery() (same builder as
+       Vehicle-Specific and the VPLP); the real photos live in FIT_GALLERY_PHOTOS in the inline
+       script near the bottom of this file. Now genuinely Hilux content (page re-themed
        from Ford Ranger to Toyota Hilux same day) rather than Hilux photos standing in for a
        different vehicle. -->
   <section class="fit-gallery-section" id="fitGallerySection" data-count="16" data-fit-gallery></section>
@@ -617,7 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-vclp-cta]').forEach(el => {
     el.addEventListener('click', e => {
       e.preventDefault();
-      if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
+      if (window.rrgSetVehicle) window.rrgSetVehicle('hilux');
       window.location.href = '../vplp/index.html';
     });
   });

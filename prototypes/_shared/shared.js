@@ -259,7 +259,6 @@ function syncDcPostcode(value) {
     if (!input) return;
     input.value = value;
     if (input._dcUpdate) input._dcUpdate();
-    else if (widget.querySelector('.dc-shared')) dcV2Resolve(widget, value);
   });
   renderStoreSlideoutBody(currentRegion === 'AU' ? postcodeToState(value) : null);
 }
@@ -284,296 +283,6 @@ function postcodeToState(postcode) {
   if (n >= 7000 && n <= 7999) return 'Tasmania';
   if (n >= 800 && n <= 999) return 'Northern Territory';
   return null;
-}
-
-// ---- Delivery / Click & Collect widget v2 (Demo State Panel preview, 2026-09-12) ----
-// Figma-driven redesign (backlog items 18 & 19): explicit postcode "Check" instead of
-// live-as-you-type, a loading state, and three outcomes — a radio-selectable options list
-// (shipping methods on Delivery, nearby stores on Click & Collect; Click & Collect is also
-// offered as one of Delivery's own options, switching tabs if picked), a "no stores nearby"
-// state, and a "remote" quote-request state. AU-only — NZ/UK keep today's single-store widget
-// untouched regardless of this toggle (dcV2Resolve/applyRegion never run for them; see
-// buildAdminPanel's wiring). Fully reversible: turning the preview off restores each widget's
-// real original markup exactly (cached in its own dataset), so the shipped default is never
-// at risk from this being a work-in-progress.
-let DC_WIDGET_V2 = false;
-let dcV2WidgetCounter = 0;
-
-// Flat demo shipping rates, straight from the Figma — not postcode-dependent, same flat-rate
-// convention the original widget's Standard/Express prices already used.
-const DC_V2_RATES = { standard: 19.00, express: 45.00 };
-
-// Ranks a state's stores by a numeric-proximity heuristic (|store postcode − typed postcode|,
-// scaled into a plausible-looking km figure) — NOT real geocoding, which this prototype has
-// never had (same caveat as postcodeToState/the Showroom map). Real underlying relationship
-// (both are genuine AU postcodes), demo precision — same convention as the rest of this file.
-// Returns null for a bad/unrecognised postcode; an empty `stores` array means a real state
-// with zero RRG coverage today (Northern Territory) — reused honestly as the "remote"/
-// "no stores nearby" case rather than inventing a fake unserviceable area.
-function dcNearestStores(postcode, max = 3) {
-  const state = postcodeToState(postcode);
-  if (!state) return null;
-  const group = RRG_STORE_NETWORK.find(g => g.state === state);
-  const stores = group ? group.stores : [];
-  const n = parseInt(postcode, 10);
-  const ranked = stores
-    .map(s => ({ ...s, distanceKm: Math.round((Math.abs(parseInt(s.postcode, 10) - n) * 0.35 + 0.8) * 10) / 10 }))
-    .sort((a, b) => a.distanceKm - b.distanceKm)
-    .slice(0, max);
-  return { state, stores: ranked };
-}
-
-function dcV2PromptHTML(tabType) {
-  return tabType === 'delivery'
-    ? `Enter your <strong>delivery post code</strong> to find available options &amp; cost.`
-    : `Enter your <strong>click &amp; collect post code</strong> to find nearby stores.`;
-}
-
-function dcV2OptionsHTML(tabType, postcode, lookup, widgetId) {
-  const changeLink = `<div class="dc-results-head"><h3>${tabType === 'delivery' ? `Delivery Options to ${postcode}` : `Click &amp; Collect Options for ${postcode}`}</h3><a href="#" class="dc-change-link" data-dc-change>Change</a></div>`;
-  const viewAll = `<div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>`;
-  if (tabType === 'delivery') {
-    const collectStore = lookup.stores[0];
-    return `
-      ${changeLink}
-      <div class="dc-select-list">
-        <label class="dc-select-option">
-          <input type="radio" name="dcMethod-${widgetId}" value="standard" checked>
-          <div class="dc-select-body"><strong>Standard Shipping</strong><br><span class="muted">1–2 business days</span></div>
-          <div class="dc-price">$${DC_V2_RATES.standard.toFixed(2)}</div>
-        </label>
-        <label class="dc-select-option">
-          <input type="radio" name="dcMethod-${widgetId}" value="express">
-          <div class="dc-select-body"><strong>Express Shipping</strong><br><span class="muted">0–1 business days</span></div>
-          <div class="dc-price">$${DC_V2_RATES.express.toFixed(2)}</div>
-        </label>
-        ${collectStore ? `
-        <label class="dc-select-option" data-dc-switch-collect>
-          <input type="radio" name="dcMethod-${widgetId}" value="collect">
-          <div class="dc-select-body"><strong>Click &amp; Collect</strong><br><span class="muted" data-collect-eta>${rrgStockStatus(adminState.stockStatus, adminState.storeStock).collectEta}</span></div>
-          <div class="dc-price">FREE</div>
-        </label>` : ''}
-      </div>
-      ${viewAll}
-    `;
-  }
-  const rows = lookup.stores.map((s, i) => `
-    <label class="dc-select-option">
-      <input type="radio" name="dcStore-${widgetId}" value="${s.name}" ${i === 0 ? 'checked' : ''}>
-      <div class="dc-select-body">
-        <strong>${s.name}</strong> ${i === 0 ? '<span class="stock-chip closest">Closest</span>' : ''}<span data-store-pills="${s.name}">${rrgStorePillsHTML(s.name)}</span>
-        <br><span class="muted">${s.distanceKm} km away · ${s.street}, ${s.city}, ${s.postcode}</span>
-      </div>
-      <div class="dc-price">FREE</div>
-    </label>`).join('');
-  return `${changeLink}<div class="dc-select-list">${rows}</div>${viewAll}`;
-}
-
-function dcV2NoStoresHTML(postcode) {
-  return `
-    <div class="dc-results-head"><h3>Postcode ${postcode}</h3><span class="stock-chip none">No Stores Nearby</span></div>
-    <p class="dc-v2-copy">We don't have a store within collection distance of this postcode yet. Try a different postcode, or have it delivered instead.</p>
-    <div class="dc-v2-actions">
-      <button type="button" class="btn btn-outline" data-dc-change>Try Another Postcode</button>
-      <button type="button" class="btn btn-primary" data-dc-switch-delivery>Switch To Delivery</button>
-    </div>
-    <div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
-  `;
-}
-
-function dcV2RemoteHTML(postcode) {
-  return `
-    <div class="dc-results-head"><h3>Delivery Options to ${postcode}</h3><span class="stock-chip closest">Remote</span></div>
-    <p class="dc-v2-copy">Sorry, we can't give you an instant price. Leave your email and we'll send a custom delivery quote within 1 business day or speak to us via <a href="#">Live Chat</a> during business hours.</p>
-    <div class="dc-quote-form">
-      <input type="email" class="dc-input" placeholder="your@email.com" data-dc-quote-email>
-      <button type="button" class="btn btn-primary" data-dc-request-quote>Request Quote</button>
-    </div>
-    <div class="dc-viewall-row"><span class="dc-viewall-line">Click &amp; Collect from ${rrgStoreCount()} stores — </span><a href="#" class="dc-viewall" data-store-slideout>View all stores</a></div>
-  `;
-}
-
-function dcV2WireRemoteForm(panelEl) {
-  const btn = panelEl.querySelector('[data-dc-request-quote]');
-  const input = panelEl.querySelector('[data-dc-quote-email]');
-  if (!btn || !input) return;
-  btn.addEventListener('click', () => {
-    const val = input.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { input.classList.add('error'); return; }
-    const form = panelEl.querySelector('.dc-quote-form');
-    if (form) form.outerHTML = `<p class="dc-v2-confirm">Thanks — we'll email your quote to <strong>${val}</strong> within 1 business day.</p>`;
-  });
-  input.addEventListener('input', () => input.classList.remove('error'));
-}
-
-function dcV2UpdatePrompt(widget) {
-  const prompt = widget.querySelector('.dc-prompt');
-  if (!prompt) return;
-  const activeTab = widget.querySelector('.dc-tab.active');
-  prompt.innerHTML = dcV2PromptHTML(activeTab ? activeTab.dataset.dcTab : 'collect');
-}
-
-// Idle/prompt state: shared postcode row visible, both panels empty. Used both for the
-// initial render and for reverting out of loading/error without losing the typed postcode.
-function dcV2SetIdle(widget) {
-  widget.dataset.dcCommitted = 'false';
-  const shared = widget.querySelector('.dc-shared');
-  if (shared) shared.hidden = false;
-  widget.querySelectorAll('.dc-panel').forEach(p => { p.innerHTML = ''; });
-  const errorBanner = widget.querySelector('.dc-error-banner');
-  if (errorBanner) errorBanner.hidden = true;
-  const input = widget.querySelector('[data-dc-postcode]');
-  if (input) { input.classList.remove('error'); input.disabled = false; }
-  const btn = widget.querySelector('[data-dc-check]');
-  if (btn) { btn.disabled = false; btn.textContent = 'Check'; }
-  dcV2UpdatePrompt(widget);
-}
-
-function dcV2Reset(widget) {
-  dcV2SetIdle(widget);
-  const input = widget.querySelector('[data-dc-postcode]');
-  if (input) input.focus();
-}
-
-// Resolves a committed postcode into both tabs' final views at once (a state's coverage
-// doesn't depend on which tab is open), so switching tabs afterwards is instant — no second
-// loading flash. Only the widget that was actually checked plays the loading animation;
-// syncDcPostcode (below) mirrors the same postcode into every other .dc-widget on the page,
-// which resolves straight to its final state, matching the old widget's existing sync
-// behaviour.
-function dcV2Resolve(widget, postcode) {
-  const input = widget.querySelector('[data-dc-postcode]');
-  const btn = widget.querySelector('[data-dc-check]');
-  const errorBanner = widget.querySelector('.dc-error-banner');
-  if (input) input.disabled = false;
-  if (btn) { btn.disabled = false; btn.textContent = 'Check'; }
-
-  const lookup = dcNearestStores(postcode);
-  if (!lookup) {
-    if (input) input.classList.add('error');
-    if (errorBanner) errorBanner.hidden = false;
-    dcV2UpdatePrompt(widget);
-    return;
-  }
-
-  widget.dataset.dcCommitted = 'true';
-  const shared = widget.querySelector('.dc-shared');
-  if (shared) shared.hidden = true;
-
-  const deliveryPanel = widget.querySelector('[data-dc-panel="delivery"]');
-  const collectPanel = widget.querySelector('[data-dc-panel="collect"]');
-  const widgetId = widget.dataset.dcWidgetId;
-
-  if (lookup.stores.length === 0) {
-    if (deliveryPanel) { deliveryPanel.innerHTML = dcV2RemoteHTML(postcode); dcV2WireRemoteForm(deliveryPanel); }
-    if (collectPanel) collectPanel.innerHTML = dcV2NoStoresHTML(postcode);
-  } else {
-    if (deliveryPanel) deliveryPanel.innerHTML = dcV2OptionsHTML('delivery', postcode, lookup, widgetId);
-    if (collectPanel) collectPanel.innerHTML = dcV2OptionsHTML('collect', postcode, lookup, widgetId);
-  }
-}
-
-function dcV2Check(widget) {
-  const input = widget.querySelector('[data-dc-postcode]');
-  const btn = widget.querySelector('[data-dc-check]');
-  const errorBanner = widget.querySelector('.dc-error-banner');
-  const val = input.value.trim();
-  if (errorBanner) errorBanner.hidden = true;
-  input.classList.remove('error');
-  if (!val) { input.focus(); return; }
-  const activeTab = widget.querySelector('.dc-tab.active');
-  const tabType = activeTab ? activeTab.dataset.dcTab : 'collect';
-  input.disabled = true;
-  btn.disabled = true;
-  btn.textContent = 'Checking…';
-  const prompt = widget.querySelector('.dc-prompt');
-  if (prompt) {
-    prompt.textContent = tabType === 'delivery'
-      ? 'Checking for delivery options available for this postcode…'
-      : 'Checking for stores near this post code.';
-  }
-  setTimeout(() => { syncDcPostcode(val); }, 500);
-}
-
-function dcV2WireWidget(widget) {
-  const tabs = widget.querySelectorAll('.dc-tab');
-  const panels = widget.querySelectorAll('.dc-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      panels.forEach(p => p.hidden = p.dataset.dcPanel !== tab.dataset.dcTab);
-      if (widget.dataset.dcCommitted !== 'true') dcV2UpdatePrompt(widget);
-    });
-  });
-  const input = widget.querySelector('[data-dc-postcode]');
-  const btn = widget.querySelector('[data-dc-check]');
-  btn.addEventListener('click', () => dcV2Check(widget));
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); dcV2Check(widget); } });
-  widget.addEventListener('click', e => {
-    if (e.target.closest('[data-dc-change]')) { e.preventDefault(); dcV2Reset(widget); }
-    if (e.target.closest('[data-dc-switch-delivery]')) { e.preventDefault(); const t = widget.querySelector('[data-dc-tab="delivery"]'); if (t) t.click(); }
-    if (e.target.closest('[data-dc-switch-collect]')) { const t = widget.querySelector('[data-dc-tab="collect"]'); if (t) t.click(); }
-    // Content rendered by dcV2Resolve() is created after buildStoreSlideout() has already
-    // done its one-time trigger binding at page load, so its "View all stores" links need
-    // their own delegated handler rather than relying on that earlier pass finding them.
-    if (e.target.closest('[data-store-slideout]')) { e.preventDefault(); openStoreSlideout(); }
-  });
-}
-
-function dcV2Render(widget) {
-  const wrap = document.createElement('div');
-  wrap.innerHTML = widget.dataset.dcOriginalHtml;
-  const tabsEl = wrap.querySelector('.dc-tabs');
-  const activeTabBtn = tabsEl && tabsEl.querySelector('.dc-tab.active');
-  const activeTab = activeTabBtn ? activeTabBtn.dataset.dcTab : 'collect';
-  widget.innerHTML = `
-    ${tabsEl ? tabsEl.outerHTML : ''}
-    <div class="dc-shared">
-      <p class="dc-prompt"></p>
-      <div class="dc-postcode-row">
-        <input type="text" class="dc-input" data-dc-postcode placeholder="e.g. 4000">
-        <button type="button" class="btn btn-outline" data-dc-check>Check</button>
-      </div>
-      <div class="dc-error-banner" hidden>Error: That doesn't look like a valid Australian postcode. Please check and try again.</div>
-    </div>
-    <div class="dc-panel" data-dc-panel="delivery" ${activeTab === 'delivery' ? '' : 'hidden'}></div>
-    <div class="dc-panel" data-dc-panel="collect" ${activeTab === 'collect' ? '' : 'hidden'}></div>
-  `;
-  dcV2WireWidget(widget);
-  dcV2SetIdle(widget);
-}
-
-// Demo State Panel toggle for the whole preview, AND the region hook (called from
-// applyRegion() too) that keeps it AU-only: a widget only ever shows the v2 markup when
-// BOTH the toggle is on AND the current region is AU. Switching to NZ/UK reverts every
-// widget to its real original markup/behaviour regardless of the toggle; switching back to
-// AU with the toggle still on re-applies v2 from the same cached original. Idempotent, so
-// it's safe to call this on every region switch even when nothing needs to change.
-function dcV2SyncForRegion() {
-  // Only re-run the original widget's init functions when a widget actually just reverted
-  // from v2 markup back to its cached original (freshly-parsed nodes with zero listeners) —
-  // calling them unconditionally on every region switch would double-attach listeners onto
-  // widgets that were never touched and still hold their real page-load listeners.
-  let revertedAny = false;
-  document.querySelectorAll('.dc-widget').forEach(widget => {
-    const isV2Now = !!widget.querySelector('.dc-shared');
-    const shouldBeV2 = DC_WIDGET_V2 && currentRegion === 'AU';
-    if (shouldBeV2 && !isV2Now) {
-      if (widget.dataset.dcOriginalHtml === undefined) widget.dataset.dcOriginalHtml = widget.innerHTML;
-      if (!widget.dataset.dcWidgetId) widget.dataset.dcWidgetId = 'dcv2-' + (dcV2WidgetCounter++);
-      dcV2Render(widget);
-    } else if (!shouldBeV2 && isV2Now && widget.dataset.dcOriginalHtml !== undefined) {
-      widget.innerHTML = widget.dataset.dcOriginalHtml;
-      revertedAny = true;
-    }
-  });
-  if (revertedAny) { initDeliveryCollectTabs(); initDcPostcode(); }
-}
-
-function applyDcWidgetV2Flag(on) {
-  DC_WIDGET_V2 = on;
-  dcV2SyncForRegion();
 }
 
 // Persistent decision bar — shows once the given sentinel element scrolls above the viewport.
@@ -1073,7 +782,7 @@ function applyStockStatus(status) {
 
 // Everything on the PDP that shows stock, re-rendered from the one status (spec.md §14.1):
 // the stock line + sub-line, store pills (Click & Collect widget, Store Slide-out),
-// Click & Collect timing in the v2 widget, the simple template's "whilst stocks last" line,
+// Click & Collect timing, the Low Stock "only a few left" box on every PDP,
 // and JSON-LD availability. Runs on every stock change and on every 'rrg-session-change'
 // (Build Phase / Nearest Store Set toggles), so Phase 1/2 flips live.
 function rrgRefreshStockSurfaces() {
@@ -1426,7 +1135,7 @@ function rrgStorePillsHTML(name) {
 // Vehicle buttons are wired up to it here as well. Same backdrop/drawer convention as the Store
 // slide-out (.store-slideout*), its own instance.
 // Demo: Make/Model are fixed to Toyota Hilux, like the landing page's own widget — the only
-// vehicle this prototype's session knows (session-state.js). "View Results" sets that session
+// vehicle this prototype's session knows (session-state.js). "Set My Vehicle" sets that session
 // vehicle and closes; production has full make/model cascades and real results routing.
 function buildFitFinderDrawer() {
   if (document.getElementById('fitFinderDrawerBackdrop')) return;
@@ -1482,7 +1191,9 @@ function buildFitFinderDrawer() {
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
   backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
   submit.addEventListener('click', () => {
-    if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true);
+    // The demo Fit Finder only offers the Toyota Hilux, so it sets exactly that — rrgSetSession('vehicleSet')
+    // would keep a Ford Ranger already chosen in Site Admin.
+    if (window.rrgSetVehicle) window.rrgSetVehicle('hilux');
     closeFitFinderDrawer();
   });
 }
@@ -1499,8 +1210,9 @@ function closeFitFinderDrawer() {
 
 function initFitFinderTriggers() {
   // Header vehicle link (desktop utility bar + mobile takeover) and the PLP-family pages' own
-  // Set/Change Vehicle buttons. The Vehicle Category Landing Page keeps its own behaviour — its
-  // Fit Finder is already on the page.
+  // Set/Change Vehicle buttons. On the Vehicle Category Landing Page, Change Vehicle (breadcrumb
+  // row) opens this same drawer — changing make/model — while its on-page Fit Finder narrows the
+  // Hilux down and hands off to the VPLP.
   document.querySelectorAll('[data-session="vehicleSet"]').forEach(el => {
     const link = el.closest('a');
     if (link) link.setAttribute('data-open-fit-finder', '');
@@ -1931,11 +1643,6 @@ function applyRegion(region) {
     widget.querySelector('[data-dc-update]')?.click();
   });
 
-  // Delivery/Click & Collect v2 preview (backlog items 18/19, 2026-09-12) — AU-only, so a
-  // region switch may need to revert a widget to its real original markup (leaving AU) or
-  // re-apply the preview from that same cached original (returning to AU with the Demo State
-  // Panel toggle still on). Run after the block above so it has the final say either way.
-  dcV2SyncForRegion();
 
   // Showroom Finder heading + map pins + "View all stores" (real AU-only store list, so it
   // doesn't apply once a single-store region is showing)

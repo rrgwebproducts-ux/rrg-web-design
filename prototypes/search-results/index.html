@@ -139,8 +139,8 @@
 
   <!-- Vehicle strip (2026-09-24 meeting) — plpRenderSearchVehicleStrip() in plp.js. No vehicle
        set + vehicle-specific products in the results: "these may be vehicle-specific, set your
-       vehicle". Vehicle set (Site Admin Panel's existing Vehicle Set toggle, not a new
-       control): "products that fit your Toyota Hilux are shown first". -->
+       vehicle". Vehicle set (Site Admin's Vehicle): "products that fit your <vehicle> are
+       shown first". -->
   <div class="plp-search-vehicle-strip" id="plpSearchVehicleStrip" hidden></div>
 
   <!-- Category quick-tabs (spec Section 3) — dynamically built from whichever categories
@@ -472,7 +472,7 @@ window.PLP_CONFIG = {
   initialQuery: 'roof rack',
   // Vehicle-aware results (2026-09-24 meeting) — `product.fitsVehicle` marks a vehicle-specific
   // product; the session vehicle and vehicle names live in the shared engine (PLP_VEHICLES in
-  // plp.js), driven by the Site Admin Panel's existing "Vehicle Set" toggle. With a vehicle set,
+  // plp.js), driven by Site Admin's Vehicle (rrgVehicle(), session-state.js). With a vehicle set,
   // Relevance sorting puts products that fit it first, then non-vehicle-specific products, then
   // other vehicles' products — nothing is hidden.
 

@@ -26,9 +26,8 @@
      Bags) is scraped from the real roofracksgalore.com.au live nav (2026-09-18, confirmed with
      Brenton against the discrepancy between the page tabs and the megamenu). Product data,
      icons and prices below are fabricated demo content, not real Camping SKUs — this page
-     exists to test the pattern, not to be a production Camping PLP. No vehicle-fitment
-     concept applies to camping gear, so unlike plp/index.html this page has a single hero
-     state (not gated by the site-wide Vehicle Set session flag) and no VRS Fitment Gallery. -->
+     exists to test the pattern, not to be a production Camping PLP. Same two hero states as
+     plp/index.html (driven by Site Admin's Vehicle); no VRS Fitment Gallery. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
@@ -124,15 +123,15 @@
 
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs" id="plpCrumbTrail"></div>
-  <a href="#" class="btn btn-outline-red plp-crumbs-cta" data-vclp-cta="change-vehicle">Change Vehicle</a>
+  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-vclp-cta="change-vehicle">Change Vehicle</a>
 </div>
 
 <main class="wrap">
 
   <!-- Same two hero states as plp/index.html (2026-09-18 follow-up, Brenton: "this should be
        literally the exact same template ... just a different category") — Vehicle-Set and
-       Simple, toggled by plpRenderHero() off the same site-wide Vehicle Set session flag, not
-       a Camping-specific simplification. -->
+       Simple, toggled by plpRenderHero() off Site Admin's Vehicle, not a Camping-specific
+       simplification. -->
   <section class="plp-hero" id="plpHeroVehicleSet" hidden>
     <div>
       <h1>Camping Gear for your Toyota Hilux</h1>

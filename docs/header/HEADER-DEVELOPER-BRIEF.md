@@ -1,5 +1,7 @@
 # Header & Mega Menu — Developer Brief
 
+> **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15). Text only — screenshots are deliberately held until final handover, so some images below may predate this pass (e.g. the Site Admin Panel).
+
 ## 1. Project context
 
 **Audience:** for Marc, same as `DEVELOPER-BRIEF.md` — detailed information on the header/mega-menu build so implementation decisions in Magento stay consistent with the intent, even where the exact prototype code can't be lifted verbatim.
@@ -8,16 +10,19 @@
 
 **Companion documents:** `header-spec.md` is this project's full engineering spec/build log (every decision, every session, in chronological detail) — this brief is the handover summary distilled from it. `spec.md` is the equivalent spec for the PDP page content this header sits above.
 
-**Build status:** the header is built and Playwright-verified as an **isolated prototype** — `prototypes/header/index.html`, opened directly, not yet wired into the 5 PDP templates. Integration into those templates is a separate, later, explicitly-approved step (`header-spec.md` Section 0) — until then, the 5 PDP templates keep using their existing placeholder header, unrelated to everything in this brief.
+**Build status:** the header is built and Playwright-verified, and is now the real header on every template — the 5 PDPs, VCLP, PLP (Bike Racks), PLP (Camping), VPLP, Search Results and the root template index (`prototypes/index.html`). The header and mobile-takeover markup is byte-identical across the 10 template pages, with the same script load order (`spec.md` §15); the root index uses the same blocks with root-relative paths. `prototypes/header/index.html` remains as a standalone header-only page (`noindex`); since 2026-09-29 it loads the same shared scripts as every template (`nav-data.js` → `session-state.js` → `mega-menu.js` → `admin-panel.js` → `shared.js`) — the old duplicated `header/header-standalone.js` has been deleted (§15 G3).
+
+**Prototype paths:** every shared asset/page URL the shared JS builds (category icons, sale banner, promo tiles, template links, brief links) is built from `RRG_PROTO` — the prototypes root, defined first thing in `nav-data.js` from that script's own URL — rather than a hardcoded `../`, so the same scripts work from a template folder and from the root index. Magento will use its own asset URLs; this is prototype plumbing only.
 
 ---
 
 ## 2. Typography & colour reference
 
-Same type scale and colour tokens as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings/prices/buttons, Lato for everything else, the full `--rrg-*` custom-property table) — not repeated here. Two header-specific notes on top of that shared scale:
+Same type scale and colour tokens as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings/prices/buttons, Lato for everything else, the full `--rrg-*` custom-property table) — not repeated here. Since the 2026-09-29 consistency pass the header CSS uses the shared tokens in `shared.css :root` instead of hardcoded values — e.g. the grey scale (`--rrg-grey-700/600/500/400`), `--rrg-charcoal`, `--overlay` (every backdrop, including the mega menu's), `--shadow-pop` (dropdowns such as the search typeahead), `--radius` (6px) and the transition tokens (`--t-fast`/`--t-fade`/`--t-slide`). Header-specific notes on top of that shared scale:
 
 - **Mega menu column heads** (the red "ROOF RACKS" / "AWNINGS & ROOF TOP TENTS" bars) use Barlow Condensed, bold, uppercase, `letter-spacing:.02em` — same treatment as the shared section-heading style, just recoloured white-on-red.
 - **Category names** (Level 1 sidebar rows, both desktop and the mobile takeover's root screen) use the plain body font (Lato, 14px, 700) — including **"Shop By Brand"**, which was originally given the same Barlow-Condensed/uppercase treatment as the column heads, then corrected 2026-09-13 to match the other category rows instead. Only its yellow background sets it apart now, not its type.
+- **Level 2 rows and the mobile rows/leaf links** are 14px, weight 700 (were 13.5px and weight 600 before the 2026-09-29 pass, which moved every size onto the shared scale and every 600 weight to 700, since 600 isn't a loaded weight).
 
 ---
 
@@ -47,13 +52,15 @@ Three stacked pieces, top to bottom, present on every page that includes this he
 
 > The **Region Selector** (flag + country dropdown, AU/NZ/UK) living in this bar is already fully documented in `DEVELOPER-BRIEF.md` Section 4.1 — same component, not repeated here. Everything below is what's new to the header project specifically: the other 3 utility-bar items are no longer hardcoded-always-on content.
 
-**Session state (new, 2026-09-13):** "Your Nearest Store," "Your Vehicle," and the account name are each driven by an independent admin-toggleable boolean (`prototypes/_shared/session-state.js`, Site Admin Panel toggles — Section 4.7) rather than always showing real data:
+**Session state (new 2026-09-13, vehicle reworked 2026-09-29):** "Your Nearest Store," "Your Vehicle," and the account name are each driven by the Site Admin Panel's Shopper Session controls (`prototypes/_shared/session-state.js`, Section 4.7) rather than always showing real data. Logged In and Nearest Store are on/off; the vehicle is **one session vehicle** — None / Toyota Hilux / Ford Ranger (`spec.md` §15 P4) — the same value that drives fitment on the Vehicle-Specific PDP, the PLP-family pages and search, so the header can no longer contradict the page below it:
 
-| Item | On (default) | Off |
+| Item | Default | Other states |
 |---|---|---|
-| Nearest Store | "Your Nearest Store: North Lakes" (or the current region's store — see the Region Selector cascade in `DEVELOPER-BRIEF.md` 4.1) | "Find A Store" |
-| Vehicle | "Your Vehicle: Toyota Hilux" | "Select Your Vehicle" |
-| Account | "Graham" | "Log In" |
+| Nearest Store | "Your Nearest Store: North Lakes" (or the current region's store — see the Region Selector cascade in `DEVELOPER-BRIEF.md` 4.1) | Off: "Find A Store" |
+| Vehicle | "Your Vehicle: Toyota Hilux" | "Your Vehicle: Ford Ranger"; None: "Select Your Vehicle" |
+| Account | "Graham" | Off: "Log In" |
+
+**Implementation note:** `rrgVehicleGet()` returns `'none' | 'hilux' | 'ranger'`, `rrgVehicle()` returns that vehicle's record (or `null`), and `window.rrgSetVehicle(key)` sets it; `rrgApplySessionState()` writes the header text as "Your Vehicle: <name>". The older `rrgSetSession('vehicleSet', true/false)` still works for callers that only know "a vehicle is set" (the Fit Finder, Section 4.10) — it keeps the current vehicle, or picks the Toyota Hilux if none is set. Every change fires an `rrg-session-change` event that the rest of the page listens for.
 
 The "off" state isn't a separate designed component — it's the same link, same position, different text/CTA. Toggling **Nearest Store Set** interacts correctly with the Region Selector: switching region while the store is "off" doesn't silently turn it back "on" with a stale name, and switching it back "on" shows the correct name for whatever region is currently selected (re-verified via Playwright, not just asserted).
 
@@ -61,7 +68,7 @@ The "off" state isn't a separate designed component — it's the same link, same
 - All 3 "on" (default): ![Utility bar — session on](header-dev-brief-assets/header-shell-default.png)
 - All 3 "off": ![Utility bar — session off](header-dev-brief-assets/session-off-and-fallback-banner.png)
 
-**Click actions:** Nearest Store and Account are plain links (`href="#"`, real URLs pending — see Section 6). Nearest Store also doubles as the Site Admin Panel's mobile trigger (`data-admin-trigger`) below 900px, where the panel's own FAB is hidden.
+**Click actions:** Nearest Store and Account are plain links (`href="#"`, real URLs pending — see Section 6). The vehicle link opens the Fit Finder drawer (Section 4.10). Nearest Store is **no longer** used as a prototype panel's mobile trigger (the old `data-admin-trigger` hook was removed 2026-09-29) — it is only the store link, which keeps it free for the Phase 2 store picker; the panels have their own mobile buttons instead (Section 4.7).
 
 ---
 
@@ -75,13 +82,13 @@ The "off" state isn't a separate designed component — it's the same link, same
 
 **Contents, left to right:**
 - **Hamburger** (mobile only, ≤900px) — opens the mobile takeover (Section 4.6), not a slide-down drawer.
-- **Logo** — links home (`index.html` in this prototype; a real Magento URL at integration time). Same logo asset and link behaviour reused as the mobile takeover's own logo (Section 4.6).
+- **Logo** — should link home in Magento. In the prototype the main-header (and sticky-header) logo is a plain image, not a link. Same logo asset reused as the mobile takeover's own logo, which *is* a link (to the template index in the prototype — Section 4.6).
 - **"Products"** — opens the mega menu (Section 4.3) on desktop. **Hidden entirely below 900px** (`display:none`) — on mobile, the category list is the takeover's own root screen, not a separate tappable item (see Section 4.6's note on why).
 - **Store Finder / Fit My Vehicle / Clearance / Services** — plain links, `href="#"`, real URLs pending (Section 6). Stay as flat links on desktop; render again inside the mobile takeover's root screen, below the categories (Section 4.6) — not duplicated in the main header on mobile, since the header itself is reduced to hamburger/logo/cart there.
 - **Search bar** — has a clear button that appears once text is entered, plus a typeahead/focus-state dropdown (Section 4.9) — mostly cosmetic, but its "View All Results" link is real navigation.
 - **Cart icon** — visual only, static `0` badge.
 
-**Click actions:** logo → home. "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
+**Click actions:** logo → home (in Magento; not linked in the prototype). "Products" → opens/closes the mega menu drawer (click, not hover — see Section 4.3). Plain nav links → their real URL once supplied. Search clear button → clears the input, refocuses it. Search box focus/typing → Section 4.9.
 
 ---
 
@@ -107,7 +114,7 @@ The "off" state isn't a separate designed component — it's the same link, same
 
 **Icons:** real line-art icons for 5 of the 8 categories (Roof Racks, Bike Racks, Platforms & Trays, Roof Boxes & Cargo, Awnings & Roof Top Tents); Water & Snow Sports and Camping & Offroad fall back to a generic roof-bars icon (no specific asset sourced yet — Section 6). Brands gets no icon at all, just its yellow bar.
 
-**Backdrop:** the rest of the page darkens while the drawer is open, so focus stays on the header + drawer — the header itself and the drawer stay fully bright. Desktop only (see Section 4.6 for why mobile doesn't get this).
+**Backdrop:** the rest of the page darkens (the shared `--overlay` colour, `rgba(0,0,0,.45)` — the same dimming as every drawer/modal backdrop since 2026-09-29) while the drawer is open, so focus stays on the header + drawer — the header itself and the drawer stay fully bright. Desktop only (see Section 4.6 for why mobile doesn't get this).
 
 **Brands:** follows the identical Level 2/3 pattern as every other category, using the live site's own already-crawled Brands content — Level 2 = "Shop Product Brands" / "Shop Vehicle Makes" + View All, Level 3 = the real ~30 brand names / ~70 vehicle makes. Vehicle Makes is long enough (~70 entries) that it's the one column that still scrolls even across 2 sub-columns (Section 6).
 
@@ -173,7 +180,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Purpose:** promotes whatever sale is currently running, directly above the category list where every shopper browsing products will see it.
 
-**How it works:** a real image, not styled text — swapped between two creatives via one Site Admin Panel toggle ("Clearance Sale Banner," Section 4.7), never blank:
+**How it works:** a real image, not styled text — swapped between two creatives via one Site Admin Panel toggle ("Clearance sale banner," under Site Promotions — Section 4.7), never blank:
 
 - **On** (default): the real sale creative (currently "Adventure Sale").
 - **Off**: an evergreen fallback creative (currently a Store Finder promo) — for whenever no sale is actually running.
@@ -197,7 +204,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 **"Products" isn't its own tab here — this is deliberate.** On desktop, "Products" is a button that opens the category list. On mobile, the category list simply **is** the takeover's root screen — there's no separate "Products" row to tap through first. Internally this root screen is called **Level 0** (not "Level 1," to avoid confusion with desktop's Level 1, which sits *behind* a Products trigger that mobile doesn't have) — content-wise, mobile Level 0/1/2 correspond to desktop Level 1/2/3.
 
 **Screen 1 — Level 0 (root):**
-- Own mini header: logo (links home), account (Graham/Log In), vehicle (Your Vehicle: .../Select Your Vehicle) — same session-state toggles as the Utility Bar (Section 4.1), a close button.
+- Own mini header: logo (links to the template index, `prototypes/index.html`, from every template — it used to point at the current template; the home page in Magento), account (Graham/Log In), vehicle (Your Vehicle: .../Select Your Vehicle — opens the Fit Finder drawer, Section 4.10) — same session state as the Utility Bar (Section 4.1), a close button.
 - Search bar (same typeahead/focus-state dropdown as desktop's — Section 4.9).
 - Sale banner (Section 4.5).
 - The 8 categories, Brands styled as a yellow bar (same treatment as desktop).
@@ -223,16 +230,17 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Name:** Site Admin Panel
 
-**Location:** a floating FAB, bottom-left of every page this header is on (desktop ≥901px only — below that, the Utility Bar's "Nearest Store" link doubles as the trigger instead, since the FAB would crowd an already-tight mobile viewport).
+**Location:** a floating button, bottom-left of every page this header is on. Desktop: a "Site Admin" pill. Below 900px: a small icon-only button, raised above the sticky mobile Add to Cart bar (2026-09-29, `spec.md` §15 P5) — it no longer borrows the Utility Bar's "Nearest Store" link as its mobile trigger. The Demo State Panel's button (bottom-right, on pages that have one) gets the same icon-only mobile treatment, so both panels can be opened on a phone.
 
-**Purpose:** internal reviewer tooling for demoing every state covered in this brief without needing separate page builds — **not part of the shipped site**, same convention as the PDP prototypes' Demo State Panel (`DEVELOPER-BRIEF.md` — flag this explicitly wherever the header is integrated, same as that panel already is).
+**Purpose:** internal reviewer tooling for demoing every state covered in this brief without needing separate page builds — **not part of the shipped site**, same convention as the PDP prototypes' Demo State Panel (`DEVELOPER-BRIEF.md` — flag this explicitly wherever the header is integrated, same as that panel already is). Rebuilt 2026-09-29 (§15 P2–P11) for **global controls only**; anything that applies only to the page you're on lives in that page's Demo State Panel instead.
 
 **Contents:**
-- **Prototype Templates** — jumps between the 5 PDP prototype templates + this header build.
-- **Developer Briefs** — links to this brief and `DEVELOPER-BRIEF.md`.
-- **Header Promotions** — the Clearance Sale Banner toggle (Section 4.5).
-- **Session State** — Logged In / Vehicle Set / Nearest Store Set (Section 4.1).
-- **Demo State Panel** — a visibility toggle for the *other*, PDP-only admin panel, in case both ever coexist on the same page post-integration.
+- **Templates** — all 12 prototype pages, grouped: Product pages (Simple, Config-Variant, Sibling-Colour, Vehicle-Specific, Grouped/Bundle), Category & listing (Vehicle Landing (VCLP), PLP — Bike Racks, PLP — Camping, VPLP — Roof Racks), Other (Search Results, Header (standalone), All templates). The current page is highlighted.
+- **Developer Briefs** — all 6: Product Pages (PDP), PLP / VPLP, Search Results, Vehicle Landing (VCLP), Header, Footer.
+- **Shopper Session** — Logged in (on/off), Vehicle (None / Toyota Hilux / Ford Ranger), Nearest store set (on/off) (Section 4.1).
+- **Build Phase** — Phase 1 (launch build) / Phase 2 (future features), with a one-line explainer: Phase 2 adds store-level stock, product ribbons and Compare Products.
+- **Site Promotions** — the Clearance sale banner toggle (Section 4.5).
+- **Prototype Tools** — "Show Demo State panel" (only offered on pages that have a Demo State Panel — not the standalone header page or the root index), and **Reset all demo settings**, which, after a confirm, clears every saved prototype setting (session, build phase, promotions and each template's Demo State choices) and reloads.
 
 **Screenshot:**
 ![Site Admin Panel, open](header-dev-brief-assets/admin-panel-full.png)
@@ -263,7 +271,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 **Purpose:** gets shoppers to the right thing while they're still typing — a query, a brand, a page or a product — and into the search-results page when they press Enter. The typing state was rebuilt 2026-09-29 (from the 2026-09-24 meeting, with Supercheap Auto's search as the reference Brenton pointed to) and now genuinely matches what's typed.
 
 **Contents/behaviour — two states, depending on the input:**
-- **Focused, empty** — a "Recent Searches" section (canned list in the prototype; **session-based per shopper in production**) with a "Clear" action that hides that section for the rest of the page view only, then "Trending Searches" and "Popular Categories," all as pill-style chip rows. **Trending and Popular Categories are merchandiser-controlled in production.** Trending now uses the real top searches from RRG's Algolia analytics (2026-09-24 meeting): U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs. Every term/category here was checked against the live site before being used (see the note below) — don't add a new one without the same check.
+- **Focused, empty** — a "Recent Searches" section (canned list in the prototype; **session-based per shopper in production**) with a "Clear" action that hides that section for the rest of the page view only, then "Trending Searches" and "Popular Categories," all as chip rows. The chips use the standard 6px radius (`--radius`; they were a 999px pill until the 2026-09-29 pass), and the section heads use the shared eyebrow label style (`.eyebrow`: Barlow Condensed 13px, bold, uppercase, `.04em` letter-spacing, grey 500). The dropdown panel uses the `--shadow-pop` shadow. **Trending and Popular Categories are merchandiser-controlled in production.** Trending now uses the real top searches from RRG's Algolia analytics (2026-09-24 meeting): U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs. Every term/category here was checked against the live site before being used (see the note below) — don't add a new one without the same check.
 - **1+ characters typed** — a panel wider than the search box (up to 760px, growing leftwards so its right edge lines up with the box):
   - top row, full width: **"Search for '\<query\>'"** — same as pressing Enter.
   - **left column**, each group only shown when it has matches: **Popular searches** (up to 5 — real category names and top searches containing the typed words, each linking to the search-results page for that term), **Looking for these brands?** (up to 3 — brands whose name matches first, then brands that sell the searched category, linking to the brand page), **Pages that might be interesting** (up to 5 — Fit My Vehicle, vehicle landing pages, category pages, Find a Store, info pages and help-centre buying guides).
@@ -276,7 +284,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Why the dropdown isn't a child of `.rrg-search`:** that box has `overflow:hidden` (needed to clip the search button's rounded pill corners), which would clip the dropdown too. It's appended to `<body>` instead, `position:fixed`, with its position computed from the search box's own bounding rect in JS.
 
-**Implementation note:** lives in `shared.js` (`initHeaderSearchSuggest()`, `headerSearchTypingHTML()`, and the `RRG_SEARCH_*` data + `rrgSearch*For()` matchers) — duplicated into `header-standalone.js` for this isolated prototype rather than shared via a new script tag, matching how this prototype already duplicates `initSearchClear()`/`initPersistentBar()`. Keep the two copies in step.
+**Implementation note:** lives in `shared.js` (`initHeaderSearchSuggest()`, `headerSearchTypingHTML()`, and the `RRG_SEARCH_*` data + `rrgSearch*For()` matchers). There is one copy only — the standalone header page loads `shared.js` like every other template.
 
 **Pending:** Jack has a predictive-search example he rates that hasn't been shared yet — worth comparing against once it arrives.
 
@@ -296,19 +304,21 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Location:** a right-edge slide-out, available on every page (same backdrop/drawer convention as the Store slide-out).
 
-**Purpose:** answer "set your vehicle" wherever it's asked, without sending the shopper to another page. It's the drawer version of the Vehicle Category Landing Page's Fit Finder widget — same dark block, badge and "Fit Finder" heading, with the fields stacked one per row for the drawer's width.
+**Purpose:** answer "set your vehicle" wherever it's asked, without sending the shopper to another page. It's the drawer version of the Vehicle Category Landing Page's Fit Finder widget — same dark block, the landing page's car-and-rack badge icon (replacing an earlier generic car icon, 2026-09-29) and "Fit Finder" heading, with the fields stacked one per row for the drawer's width.
 
-**Contents:** Make, Model, Year, Body Style, Roof Type, then a full-width "Set My Vehicle" button (disabled until every field is chosen). In the prototype Make/Model are fixed to Toyota Hilux, the only vehicle the demo session knows; production needs full make/model cascades.
+**Drawer:** built on the one shared drawer base (2026-09-29, `spec.md` §15 C1) — 420px standard width, drawer title "Set Your Vehicle" at 22px, the shared 48px grey circle close button, `role="dialog"`.
 
-**Opens from:** the header's "Your Vehicle / Select Your Vehicle" link (desktop and mobile takeover); the PLP, VPLP and Camping pages' Set Your Vehicle / Change Vehicle buttons; the vehicle-specific PDP fitment card's "Select your vehicle" / "Change vehicle" buttons; the search page's fitment strip button; the product-card fitment tooltip's "Set your vehicle" / "Change your vehicle" link; the Add to Cart vehicle notice. the Vehicle Category Landing Page's hero Change Vehicle button (its own on-page Fit Finder widget stays as it is). Anything carrying `data-open-fit-finder` opens it, so new triggers need no extra code. The isolated header prototype carries a duplicate copy (`header-standalone.js`) so its vehicle link works too.
+**Contents:** Make, Model, Year, Body Style, Roof Type, then a full-width "Set My Vehicle" button (disabled until every field is chosen). The button is the shared gold CTA (`.btn-cta`), so it turns green in the UK region like every other CTA. In the prototype Make/Model are fixed to Toyota Hilux, the only vehicle the demo session knows; production needs full make/model cascades.
 
-**Behaviour:** "Set My Vehicle" sets the session vehicle and closes the drawer — every fitment status on the page updates immediately. Closes on ×, backdrop click or Escape.
+**Opens from:** the header's "Your Vehicle / Select Your Vehicle" link (desktop and mobile takeover); the PLP, VPLP and Camping pages' Set Your Vehicle / Change Vehicle buttons; the vehicle-specific PDP fitment card's "Select your vehicle" / "Change vehicle" buttons; the search page's fitment strip button; the product-card fitment tooltip's "Set your vehicle" / "Change your vehicle" link; the Add to Cart vehicle notice; the Vehicle Category Landing Page's Change Vehicle button, now in its breadcrumb row as the red outline button (its own on-page Fit Finder widget stays as it is). Anything carrying `data-open-fit-finder` opens it, so new triggers need no extra code. The standalone header page gets it from `shared.js` like every other template.
+
+**Behaviour:** "Set My Vehicle" sets the session vehicle (`rrgSetSession('vehicleSet', true)` — keeps the current vehicle if one is set, otherwise the Toyota Hilux) and closes the drawer — the header text and every fitment status on the page update immediately. Closes on ×, backdrop click or Escape (the one shared Escape handler, which closes the topmost open drawer).
 
 ---
 
 ## 5. Interactions quick reference
 
-Every hover effect and click action from Sections 4.1–4.8, gathered in one place.
+Every hover effect and click action from Sections 4.1–4.10, gathered in one place.
 
 **Hover effects (desktop only — nothing in this table applies on touch):**
 
@@ -332,8 +342,12 @@ Every hover effect and click action from Sections 4.1–4.8, gathered in one pla
 | Merchandising promo tile (anywhere it appears) | Navigates to its configured link — the whole tile is one link |
 | Sale banner | Navigates to its configured link |
 | Region Selector | See `DEVELOPER-BRIEF.md` 4.1 |
-| Site Admin FAB | Opens/closes the admin panel |
-| Any Site Admin toggle | Immediately applies (no save button) and persists across reloads until changed again |
+| Utility bar / mobile takeover vehicle link | Opens the Fit Finder drawer (Section 4.10) |
+| Fit Finder "Set My Vehicle" | Sets the session vehicle, closes the drawer |
+| Fit Finder ×, backdrop, Escape | Closes the drawer |
+| Site Admin button (pill on desktop, icon-only below 900px) | Opens/closes the admin panel |
+| Any Site Admin toggle/select | Immediately applies (no save button) and persists across reloads until changed again |
+| Site Admin "Reset all demo settings" | After a confirm, clears every saved prototype setting and reloads |
 | Search box, focused + empty | Shows Recent/Trending Searches + Popular Categories (Section 4.9) |
 | Search box, 1+ characters typed | Shows the two-column matched dropdown — searches, brands, pages, products (Section 4.9) |
 | Search box, Enter / search button | Goes to the search-results page for the typed query |

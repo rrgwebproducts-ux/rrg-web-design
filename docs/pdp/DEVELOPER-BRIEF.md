@@ -1,7 +1,6 @@
 # Developer Brief — PDP Rebuild Handover
 
-
-
+> **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15). Text only: design tokens, type scale, the button/drawer/chip/tooltip systems, PDP layout CSS, sticky/persistent bar prices, the Low Stock box, the Save band on the main photo, breadcrumbs, the Fitment Gallery builder, the Demo State and Site Admin panels, and page `<head>` meta. Screenshots are still held until final handover, so some of them show the older look. Where a screenshot and the text disagree, the text is correct.
 
 ## 1. Project context
 
@@ -16,9 +15,11 @@ RRG's current live PDP is being rebuilt from scratch for conversion (not a re-sk
 
 A quick reference for the page's real type scale and colour tokens, pulled from `prototypes/_shared/shared.css`'s base rules — so every Component Library section from here on can just say "uses the shared heading style" instead of repeating the same font spec 20+ times. Only bespoke deviations from this scale are called out on a widget's own entry.
 
-**Standing rule (2026-09-16, Brenton):** all heading and body-text typography (font-family/size/weight/style/transform/letter-spacing/colour/line-height) is defined once in `shared.css` and shared sitewide by default — a template's own `<style>` block should never re-declare it, even identically, unless there's an explicit, documented reason it must differ on that one page. This was prompted by an audit that found real drift: `.details-sub h3` (Details/Gold Guarantee/Shipping Info sub-headings — "Consists Of," "Key Features and Benefits," "About Rhino-Rack," etc.) was silently rendering two different ways, because Simple and Grouped-Bundle had each locally overridden the shared rule while the other three templates used it as-is. Fixed by consolidating onto one style (uppercase Barlow Condensed, matching what Simple/Grouped-Bundle already had) and deleting the local overrides. Several other byte-identical duplicates (`.variant-label-row h3`/`.swatch-label-row h3`, `.short-desc`, `.sku-row`, `.variant-help`, `.variant-option .v-note`) were the same underlying problem without visible drift yet, and were consolidated the same way. The Vehicle Category Landing Page's fitment-education content heading/body tier (`.vclp-content`, VCLP-only) was likewise renamed to a generic `.content-block` and moved into `shared.css`, so any future PDP content needing that same "sub-heading → paragraph → list" tier reuses it instead of a new page-local rule (see `PAGE-GLOSSARY.md`'s "Fitment education content" entry, and the Vehicle Category Landing brief's Section 2).
+**Standing rule (2026-09-16, Brenton):** all heading and body-text typography (font-family/size/weight/style/transform/letter-spacing/colour/line-height) is defined once in `shared.css` and shared sitewide by default — a template's own `<style>` block should never re-declare it, even identically, unless there's an explicit, documented reason it must differ on that one page. **Since 2026-09-29 (`spec.md` §15 D1) none of the 5 PDP templates has a `<style>` block at all** — the hero, Decision Panel, price block, reviews line, CTA column, variant picker, swatch grid and tab-list rules that used to be copied into each template (and had drifted: 14 vs 16px gaps, a sticky Decision Panel on Vehicle-Specific only) now live once in `shared.css` under "PDP hero layout", with 16px spacing throughout. This was prompted by an audit that found real drift: `.details-sub h3` (Details/Gold Guarantee/Shipping Info sub-headings — "Consists Of," "Key Features and Benefits," "About Rhino-Rack," etc.) was silently rendering two different ways, because Simple and Grouped-Bundle had each locally overridden the shared rule while the other three templates used it as-is. Fixed by consolidating onto one style (uppercase Barlow Condensed, matching what Simple/Grouped-Bundle already had) and deleting the local overrides. Several other byte-identical duplicates (`.variant-label-row h3`/`.swatch-label-row h3`, `.short-desc`, `.sku-row`, `.variant-help`, `.variant-option .v-note`) were the same underlying problem without visible drift yet, and were consolidated the same way. The Vehicle Category Landing Page's fitment-education content heading/body tier (`.vclp-content`, VCLP-only) was likewise renamed to a generic `.content-block` and moved into `shared.css`, so any future PDP content needing that same "sub-heading → paragraph → list" tier reuses it instead of a new page-local rule (see `PAGE-GLOSSARY.md`'s "Fitment education content" entry, and the Vehicle Category Landing brief's Section 2).
 
-**2026-09-16 sitewide size pass** (Brenton's request): every `12.5px` → `14px`, `15px` → `16px`, `19px` → `18px`, and the shared section-heading `37px` → `40px`, applied across every template and `shared.css` (including the mobile floor-bump `!important` overrides). Two deliberate exceptions kept off this blanket rule, both Brenton's explicit call: `.price-was`/`.price-line-was .price-label` went to `20px` instead of `18px` (was originally Playwright-measured to visually match the Save-badge pill's height at 19px; 20px is the closest value in the new scale, no longer an exact pixel match); `.ff-badge` (VCLP Fit Finder icon badge, previously matched the heading's font-size 1:1) was left at `37px` rather than following the heading to `40px`, so it's now decoupled from the heading size. The table below reflects the post-pass values.
+**2026-09-16 sitewide size pass** (Brenton's request): every `12.5px` → `14px`, `15px` → `16px`, `19px` → `18px`, and the shared section-heading `37px` → `40px`, applied across every template and `shared.css` (including the mobile floor-bump `!important` overrides). Two deliberate exceptions kept off this blanket rule, both Brenton's explicit call: `.price-was`/`.price-line-was .price-label` went to `20px` instead of `18px` (was originally sized to match the Save-badge pill beside it; that pill is no longer shown, see 4.15); `.ff-badge` (VCLP Fit Finder icon badge, previously matched the heading's font-size 1:1) was left at `37px` rather than following the heading to `40px`, so it's now decoupled from the heading size.
+
+**2026-09-29 consistency pass** (`spec.md` §15 T1–T8, H1–H4): 12.5px had crept back in (cards, tooltips, filters) and now becomes **14px** again. Half-pixel sizes rounded to the nearest step (13.5/14.5 → 14, 11.5 → 12, 16.5 → 16), and stray 15px/19px went back onto the scale. Sizes in use are now 11/12/13/14/16/18/20/22/26/28/32/40px. Weights 600 and 800 aren't loaded, so the browser was already drawing them as 700/900; they're now written as 700/900. Letter-spacing: headings `.02em`, buttons and chips `.03em`, eyebrow labels `.04em`. The table below shows the current values.
 
 **Fonts:** two families only, loaded via Google Fonts `<link>` tags in every page's `<head>` (not `@import` — that blocks font discovery until the whole stylesheet parses, a real mobile performance cost, fixed 2026-09-11).
 - **Barlow Condensed** — every heading, price, and button. Bold (700) by default; the shared section-heading style below also uses italic.
@@ -26,37 +27,65 @@ A quick reference for the page's real type scale and colour tokens, pulled from 
 
 | Element | Font | Size | Weight/style | Colour | Notes |
 |---|---|---|---|---|---|
-| Product title (`h1`, Decision Panel) | Barlow Condensed | ~23–26px (varies slightly per template, longest titles set smaller) | 700, uppercase | `--rrg-black` (`#000`) | line-height ~1.05–1.12 |
-| Shared section heading (Related Products, Showroom Finder, Fitment Gallery, FAQ, Tabs, VCLP Fit Finder/Trust banner) | Barlow Condensed | 40px | 700, *italic*, uppercase | `--rrg-black` | One shared rule (`.related-heading, .showroom-widget h3, .fit-gallery-title h2, .faq-heading, .tabs-heading, .showroom-heading, .ff-head h2, .content-block h2, .vclp-trust-inner h2`) so every top-level section reads as one consistent level — was 37px, sized so its rendered cap-height roughly matched the 26px icon badges next to it; that match is now approximate rather than verified since the 2026-09-16 bump to 40px |
-| Body copy | Lato | 16px (site base) | 400 | `#232323` | line-height 1.45 |
-| Content-block sub-heading (VCLP fitment-education content, e.g. "Why fitment varies on the Hilux") | Barlow Condensed | 21px | 700, plain (not uppercase/italic) | `--rrg-black` | `.content-block h3` — a distinct tier between body copy and the 40px section heading; shared (not page-scoped), see the standing-rule note above |
-| Short description (Decision Panel, under title) | Lato | 14px desktop / 16px mobile (floor bump) | 400 | `#555` | 2-line clamp + "Read more"; `.short-desc` — now defined once in `shared.css`, not per-template |
-| SKU row / labels / microcopy | Lato | 14px (desktop and mobile — no longer a separate floor bump, both now the same value) | 400 | `#767676` | `.sku-row` — now defined once in `shared.css`, not per-template |
-| Price (current) | Barlow Condensed | 42px | 700 | `--rrg-black` | `.price-now` |
-| Price (was/struck-through) | Lato | 20px | 400, strikethrough | `#434343` | `.price-was` / `.price-line-was .price-label` — see the sitewide-pass exception note above |
-| Button text (all buttons) | Barlow Condensed | 16px | 900, uppercase, `letter-spacing:.03em` | varies — see button colours below | `.btn` base rule |
+| Product title (`h1`, Decision Panel) | Barlow Condensed | 32px desktop / 28px at ≤640px | 700, uppercase | `--rrg-black` (`#000`) | line-height 1.1. One page-H1 rule shared with the listing-page and search H1s (`.decision-panel h1, .plp-hero h1, .plp-search-headline h1`) |
+| Shared section heading (Related Products, Showroom Finder, Fitment Gallery, FAQ, Tabs, VCLP Fit Finder/Trust banner, Search empty-state sub-heading) | Barlow Condensed | 40px desktop / 32px at ≤640px | 700, *italic*, uppercase | `--rrg-black` | line-height 1.15. One shared rule (`.related-heading, .showroom-widget h3, .fit-gallery-title h2, .faq-heading, .plp-search-empty-subheading, .tabs-heading, .showroom-heading, .ff-head h2, .content-block h2, .vclp-trust-inner h2`) so every top-level section reads as one consistent level. Heading → content gap is 16px |
+| Eyebrow label (small grey label above a group: "Build Option", "Colour", "What's Included", "Consists Of", "Featured Product") | Barlow Condensed | 13px | 700, uppercase, `letter-spacing:.04em` | `--rrg-grey-500` | One rule, `.eyebrow` (plus the existing `.variant-label-row h3, .swatch-label-row h3, .package-items h3, .details-sub h3` selectors that share it). Was four near-identical versions at 11–13px |
+| Body copy | Lato | 16px (site base) | 400 | `--rrg-text` (`#232323`) | line-height 1.45 |
+| Content-block sub-heading (VCLP fitment-education content, e.g. "Why fitment varies on the Hilux") | Barlow Condensed | 22px | 700, plain (not uppercase/italic) | `--rrg-black` | `.content-block h3` — a distinct tier between body copy and the 40px section heading; shared (not page-scoped), see the standing-rule note above |
+| Short description (Decision Panel, under title) | Lato | 14px desktop / 16px mobile (floor bump) | 400 | `--rrg-grey-600` (`#666`) | 2-line clamp + "Read more"; `.short-desc` — defined once in `shared.css` |
+| SKU row / labels / microcopy | Lato | 14px (desktop and mobile) | 400 | `--rrg-grey-500` (`#767676`) | `.sku-row` — defined once in `shared.css` |
+| Breadcrumbs | Lato | 12px desktop / 13px mobile | 400 | `--rrg-grey-500` | `.rrg-crumbs` (4.2) |
+| Price (current) | Barlow Condensed | 42px | 700 | `--rrg-black` (red when on sale) | `.price-now` |
+| Price (was/struck-through) | Lato | 20px | 400, strikethrough | `--rrg-grey-600` (`#666`) | `.price-was` / `.price-line-was .price-label`. Every "was"/RRP price on the site now uses this same grey token (was `#434343` here, `#6b6b6b` on cards, `#8a8a8a` on variant cards) |
+| Button text | Barlow Condensed | 16px (`.btn`, `.btn-lg`) · 14px (`.btn-md`) · 13px (`.btn-sm`, 12px at ≤640px) | 900, uppercase, `letter-spacing:.03em` | varies — see buttons below | `.btn` base rule + size classes |
 | Stock-status line | Lato | 14px (desktop and mobile) | 700 | varies by state — see colour tokens below | `.stock-status-line` |
+| Form inputs and selects | Lato | 14px desktop / **16px at ≤640px** | 400 | `--rrg-black` | 16px on phones so iOS Safari doesn't zoom the page on focus |
 
-**Colour tokens** (`:root` custom properties, `shared.css`):
+**Colour tokens** (`:root` custom properties, `shared.css`). **Rule since 2026-09-29 (`spec.md` §15 T1–T4):** use a token, never a hand-typed hex/rgba/shadow/timing, in new CSS. About 500 hardcoded values were replaced (27 greys became 6 tokens, about 20 one-off shadows became 6).
 
 | Token | Value | Used for |
 |---|---|---|
-| `--rrg-black` | `#000` | Headings, body text on light backgrounds, `.btn-outline` text/border |
-| `--rrg-red` | `#BB0220` | Brand red — links, tab underline, sale badges, utility bar, map pins/clusters. **UK region overrides this to navy `#2E41AE`** (see the Region Selector entry, 4.1, UK Brand Skin & Currency) — every component built against this token recolours automatically |
-| `--rrg-red-dark` | `#8f0119` | Hover state for red-token elements |
-| Add to Cart button | `#FFCA48` (gold), black text, hover `#e6b53f` | Locked real default — a separate hardcoded value, deliberately **not** on the `--rrg-red` token, so region colour swaps never touch it except UK's own explicit override to green `#26B226` |
-| `--rrg-gold` / `--rrg-gold-bg` | `#BEA98A` / `#FFF9E8` | Muted accent — Fitment Gallery badge, "Fitted" upsell option, not the Add to Cart button |
+| `--rrg-black` | `#000` | Headings, `.btn-outline` text/border |
+| `--rrg-text` | `#232323` | Body copy |
+| `--rrg-grey-700` / `-600` / `-500` / `-400` | `#333` / `#666` / `#767676` / `#999` | Grey text scale. 600 = every "was"/RRP price and secondary copy; 500 = labels, SKU, breadcrumbs, eyebrows (the lightest grey that passes 4.5:1 on white). **400 is for disabled/placeholder only, never body copy** (`#999` body text failed contrast and moved to 500) |
+| `--rrg-on-dark-muted` | `#ccc` | Secondary text on black/charcoal panels |
+| `--rrg-red` | `#BB0220` | Brand red — links, tab underline, sale badges and Save bands, utility bar, map pins/clusters, active carousel dot. **UK region overrides this to navy `#2E41AE`** (see the Region Selector entry, 4.1, UK Brand Skin & Currency) — every component built against this token recolours automatically |
+| `--rrg-red-dark` / `--rrg-red-bg` | `#8f0119` / `#FAF0EF` | Hover state / light tint for red-token elements |
+| `--rrg-cta` / `--rrg-cta-hover` | `#FFCA48` / `#E6B53F` | Gold Add to Cart (`.btn-cta`, black text). Deliberately **not** on the `--rrg-red` token, so region colour swaps never touch it, except UK's own override below |
+| `--rrg-uk-green` / `--rrg-uk-green-hover` | `#26B226` / `#1E8F1E` | UK Add to Cart (white text), every `.btn-cta` on the page in the UK region |
+| `--rrg-charcoal` | `#211E20` | Footer, tooltip bubbles, dark surfaces (Get It Installed panel) |
+| `--rrg-gold` / `--rrg-gold-bg` / `--rrg-gold-text` | `#BEA98A` / `#FFF9E8` / `#5C4D34` | Muted accent — Fitment Gallery badge, "Fitted" upsell option, not the Add to Cart button |
 | `--rrg-fits` / `--rrg-fits-bg` | `#1E7A34` / `#EAF7EE` | "Fits your vehicle" / In Stock green |
-| `--rrg-unknown` / `--rrg-unknown-bg` | `#B36B00` / `#FFF4E5` | "Confirm your vehicle" / Low Stock / Special Order amber |
+| `--rrg-unknown` / `--rrg-unknown-bg` / `--rrg-unknown-text` | `#B36B00` / `#FFF4E5` / `#5A3A00` | "Confirm your vehicle" / Low Stock / Special Order amber (`-text` is for text sitting on the amber tint) |
 | `--rrg-nofit` / `--rrg-nofit-bg` | `#A6192E` / `#FDEAEC` | "Doesn't fit" red (fitment only — not used for stock) |
-| `--rrg-stock-out` | `#767676` | Out of Stock / Discontinued stock text — **grey, never red** (Brenton, 2026-09-29: red reads too harsh). Lightest grey that still passes 4.5:1 on white. See 4.37 |
-| `--rrg-display` / `--rrg-display-bg` | `#1A56DB` / `#EAF1FD` | On Display pill blue |
-| `--rrg-line` | `#D8D8D8` | Card/panel borders |
-| `--rrg-bg` | `#F5F5F5` | Neutral section backgrounds |
+| `--rrg-stock-out` | `var(--rrg-grey-500)` (`#767676`) | Out of Stock / Discontinued stock text — **grey, never red** (Brenton, 2026-09-29: red reads too harsh). See 4.37 |
+| `--rrg-display` / `--rrg-display-bg` / `--rrg-display-hover` | `#1A56DB` / `#EAF1FD` / `#123F9E` | On Display pill blue |
+| `--rrg-star` | `#E8A83C` | Review stars |
+| `--rrg-line` / `--rrg-line-strong` / `--rrg-line-soft` | `#D8D8D8` / `#B8B8B8` / `#EEEEEE` | Card/panel borders / hover-emphasis border / hairline dividers inside a panel |
+| `--rrg-bg` / `--rrg-bg-warm` | `#F5F5F5` / `#FAF9F7` | Neutral section backgrounds / USP row background |
+| `--overlay` | `rgba(0,0,0,.45)` | Every backdrop behind a drawer, modal or menu |
+| `--shadow` · `--shadow-pop` · `--shadow-modal` · `--shadow-drawer` · `--shadow-bar` · `--shadow-bar-up` | see `shared.css` | Cards/panels · dropdowns, tooltips, popovers · modals and floating panels · right-edge drawers · top sticky bar (Persistent Bar) · bottom sticky bar (Sticky Mobile Bar) |
+| `--t-fast` / `--t-fade` / `--t-slide` | `.15s` / `.2s` / `.25s` | Hovers and small state changes / overlays fading in / drawers, bars, accordions |
+| `--radius` | `6px` | Every rounded rectangle (cards, buttons, inputs, chips). True circles (close buttons, carousel arrows/dots, swatches) stay 50% |
+| `--space-section` | `48px` | The gap between major page sections (see "Section spacing" below) |
 
-**Buttons** (`.btn` base + variants):
-- `.btn-primary` — brand red fill, white text (Add to Cart itself uses the separate gold override above, not this variant, via `[data-cta-label].btn-primary`).
-- `.btn-outline` — white fill, `1.5px solid var(--rrg-black)` border, black text. **The required style for any secondary/non-purchase CTA** (Get It Installed, etc.) — red/gold read as a second competing purchase CTA, confirmed standing rule.
+**Buttons** — one system since 2026-09-29 (`spec.md` §15 B1–B4). About 20 per-context size overrides and 30 inline `style="padding…"` attributes were removed; set a colour class and a size class, nothing else.
+- **Colour:**
+  - `.btn-cta` — **every Add to Cart** (Decision Panel, Sticky Mobile Bar, Persistent Bar, Related Products and Discontinued-alternates cards) plus other primary purchase actions. Gold `--rrg-cta` with black text; hover `--rrg-cta-hover`. **Turns UK green (`--rrg-uk-green`, white text) everywhere on the page in the UK region**, including product cards (Brenton, B4). Replaces both the old card-only `.btn-gold` and the gold-recoloured `[data-cta-label].btn-primary`. `data-cta-label` stays on the Add to Cart buttons, but only as the JS hook for the disabled-state wording (4.37), not for colour.
+  - `.btn-primary` — brand red fill, white text. Not used for Add to Cart.
+  - `.btn-outline` — white fill, `1.5px solid var(--rrg-black)` border, black text; **hover fills black with white text**; disabled state is grey. **The required style for any secondary/non-purchase CTA** (Get It Installed, etc.) — red/gold read as a second competing purchase CTA, confirmed standing rule.
+  - `.btn-outline-red` — white fill, red border and text, hover fills red. Secondary vehicle actions: the Fitment Status card's action buttons (4.10) and "Change Vehicle" on the listing pages.
+- **Size:** `.btn` (16px, `15px 28px` padding) · `.btn-lg` (16px, `18px 28px`) · `.btn-md` (14px, `12px 20px` — the Sticky Mobile Bar, Persistent Bar and Get It Installed buttons use this size) · `.btn-sm` (13px, `10px 14px`; 12px and no wrapping at ≤640px so two-up product-card "Add to Cart" stays on one line — Related Products cards, the ex-demo drawer's outline "View Item" buttons, fitment-card actions). `.btn-block` makes a button full width.
+
+**Other shared controls** (2026-09-29, `spec.md` §15 C1–C14 — each was 3–6 drifted copies, now one rule in `shared.css`):
+- **Drawers** (right-edge slide-outs: Ex-Demo 4.20, Store 4.24, Fitment Gallery 4.27, and the site-wide Fit Finder) share one base rule. Width comes from `--drawer-w`: **420px** standard, **600px** for the Fitment Gallery photo grid (capped at 90vw). Drawer titles are 22px. Every close button is the same 48px grey circle. Every drawer has `role="dialog" aria-modal="true"` and closes on its close button, a backdrop click, or **Escape** (one shared keydown handler closes the topmost open drawer). Backdrops use `--overlay`, panels `--shadow-drawer`, the slide uses `--t-slide`.
+- **Tooltips:** one bubble style, `.rrg-tooltip` — charcoal background, white 14px Lato, 8px below its trigger, `--shadow-pop`, shown via opacity/visibility. The Rack Fit Guarantee badge (4.11) still uses a native `title` hover, not this bubble.
+- **Chips:** one `.chip` style (11px, 900 weight, uppercase, `.03em`, `--radius`), colour set per modifier. The store-list stock pills (`.stock-chip`, 4.24), ex-demo option tags (4.20) and the variant-card "Save N%" badge (4.13) all use it. **The variant-card Save badge is red** (was green), the same as every other Save treatment.
+- **Carousel controls:** dots are 8px round grey (`--rrg-line`) with a red active dot; arrows are all 32px circles. Arrows are used by the Main Product Gallery thumbnails (4.3) and the Fitment Gallery (4.27); dots by the Fitment Gallery.
+- **Text-link buttons:** one `.link-btn` — 14px, bold, red, underlined, darker red on hover (e.g. the Fitment Gallery's "View All In-store Fitments").
+- **Selects:** one style (white, 1px `--rrg-grey-700` border, `--radius`, custom chevron), 16px on phones.
+
+**Section spacing** (`spec.md` §15 S5): Showroom Finder, Body Tabs, FAQ, Related Products and the Fitment Gallery section all use `margin: var(--space-section) 0` (48px), with 16px from each section heading to its content. (Was a mix of 40px and 48px, much of it inline per template.)
 
 ---
 
@@ -64,22 +93,27 @@ A quick reference for the page's real type scale and colour tokens, pulled from 
 
 Five templates share one component library (Section 4 below) but assemble it differently depending on product type. This section is the structural map for each — top-to-bottom order, what's present vs. absent, and how it reflows on mobile — so a developer building one Magento template knows exactly which shared components to pull in and in what order. **The header (Utility Bar, Main Header, nav) is out of scope here, per the standing rule** — every template's own section order below starts at Breadcrumbs, the first thing this brief covers.
 
-All 5 templates share the same underlying grid: **Hero is `1.15fr / 1fr` desktop** (Main Product Gallery left, Decision Panel right — roughly a 55/45 split, gallery column marginally wider), collapsing to a **single column on mobile** (≤900px), where `.gallery-col{display:contents}` lets the Decision Panel, gallery images, and the video/install row each get reordered independently — the Decision Panel is promoted to render **above** the video/Get It Installed row on mobile, not below it as the desktop DOM order would suggest. The left (gallery) column also goes `position:sticky` on desktop once the right (Decision Panel) column runs taller than it, so the shorter column doesn't scroll away and leave blank space. Identical across all 5 templates — confirmed via `shared.css`/each template's own `<style>` block, not just visual inspection.
+All 5 templates share the same underlying grid: **Hero is `1.15fr / 1fr` desktop** (Main Product Gallery left, Decision Panel right — roughly a 55/45 split, gallery column marginally wider), collapsing to a **single column on mobile** (≤900px), where `.gallery-col{display:contents}` lets the Decision Panel, gallery images, and the video/install row each get reordered independently — the Decision Panel is promoted to render **above** the video/Get It Installed row on mobile, not below it as the desktop DOM order would suggest. The left (gallery) column also goes `position:sticky` (`top:20px`, ≥901px) on desktop once the right (Decision Panel) column runs taller than it, so the shorter column doesn't scroll away and leave blank space. The Decision Panel itself is never sticky (Vehicle-Specific's old sticky Decision Panel was removed 2026-09-29, `spec.md` §15 D5). Identical across all 5 templates — the grid and Decision Panel rules now live once in `shared.css` ("PDP hero layout"); no template has its own `<style>` block.
+
+**USP row:** four of the five templates (Config-Variant, Sibling-Color, Vehicle-Specific, Grouped-Bundle) carry a USP row (`.usp-row`, a stacked list of the product's real Rackit marketing bullets with a red tick each) between Discontinued Alternates and Body Tabs. Simple's markup has no USP row. The row is left out of the markup entirely (not rendered empty) when a product has no USPs. Don't confuse it with the two-bullet `.install-usps` list inside Get It Installed (4.5).
+
+**Page `<head>`** (all 5, `spec.md` §15 G6/G8): `<html lang="en-AU">`, the real live favicon (`_shared/favicon.ico`), a `<title>` in the format "Product name — Roof Racks Galore", and SEO/social meta built from that product's real live URL, image and description. See Section 5.
 
 ### 3.1 Simple
 
-**Purpose:** the leanest template — no fitment logic, no variant/colour picker, no persistent desktop bar. For single-SKU accessory-type products (example: Front Runner Pro Water Tank).
+**Purpose:** the leanest template — no fitment logic, no variant/colour picker, and a Persistent Bar without the fitment box. For single-SKU accessory-type products (example: Front Runner Pro Water Tank).
 
 **Section order (top to bottom):**
 1. Breadcrumbs — 3 levels (Home → Category → Product)
 2. Hero — Main Product Gallery + Decision Panel (brand logo, SKU, price, stock line, **no variant/colour picker, no fitment widget** — this template has neither), Delivery/Click & Collect widget, payment badges, star-rating badge
 3. Trust Row
 4. Showroom Finder (+ Interactive Map)
-5. *(Discontinued Alternates — hidden unless the Demo State Panel's Discontinued toggle is on)*
-6. Body Tabs (Details / Specifications / Gold Guarantee / Shipping Info / Fitting Instructions / Reviews)
-7. FAQ
-8. Related Products
-9. Sticky Mobile Bar (mobile only) and Persistent Bar (desktop, fades in once the Decision Panel scrolls out of view — only the fitment-status portion of this bar is conditional per-template, not the bar itself; this template's version is just thumbnail + truncated name + price + Add to Cart, no fitment box)
+5. *(Discontinued Alternates — hidden unless the Demo State Panel's Stock is set to Discontinued)*
+6. *(No USP row on this template — see the USP row note above)*
+7. Body Tabs (Details / Specifications / Gold Guarantee / Shipping Info / Fitting Instructions / Reviews)
+8. FAQ
+9. Related Products
+10. Sticky Mobile Bar (mobile only: truncated name + price + Add to Cart) and Persistent Bar (desktop, fades in once the Decision Panel scrolls out of view — only the fitment-status portion of this bar is conditional per-template, not the bar itself; this template's version is just thumbnail + truncated name + price + Add to Cart, no fitment box)
 
 **Absent widgets** (present on other templates, not here): Variant Picker, Colour/Swatch Grid, Fitment Status widget, Rack Fit Guarantee, Fitted Photos Gallery, Package Contents.
 
@@ -95,7 +129,7 @@ All 5 templates share the same underlying grid: **Hero is `1.15fr / 1fr` desktop
 
 **Purpose:** for products sold as a comparison-card choice between two configurations of the same item (example: Rhino Rack Pioneer 6 Platform, Assembled vs. Flat Pack) — each variant is its own separate product listing/URL; selecting one navigates to that sibling SKU's own page (this prototype simulates that as an in-page swap of price/gallery/video/specs/fitting-instructions purely for demo convenience, not the real production behaviour).
 
-**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Variant Picker**, comparison cards for Assembled/Flat Pack, above Add to Cart) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile) and Persistent Bar (desktop, thumbnail/name/price/Add to Cart, no fitment box — same reasoning as Simple's).
+**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Variant Picker**, comparison cards for Assembled/Flat Pack, above Add to Cart) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → USP row → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile, name/price/Add to Cart) and Persistent Bar (desktop, thumbnail/name/price/Add to Cart, no fitment box — same reasoning as Simple's).
 
 **Absent widgets:** Colour/Swatch Grid, Fitment Status widget, Rack Fit Guarantee, Fitted Photos Gallery, Package Contents — same "no fitment concept" gap as Simple, since this product isn't vehicle-specific.
 
@@ -111,13 +145,13 @@ All 5 templates share the same underlying grid: **Hero is `1.15fr / 1fr` desktop
 
 **Purpose:** for products sold across a colour range, each colour its own SKU (example: MAXTRAX MKII, 13 colours) — a swatch grid drives gallery/price/stock/SKU/Colour spec. Each colour is its own separate product listing/URL; selecting a swatch navigates to that colour's own page (this prototype simulates that as an in-page swap for demo convenience, not the real production behaviour).
 
-**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Colour/Swatch Grid** in place of a variant picker) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile) and Persistent Bar (desktop, thumbnail/name/price/Add to Cart, no fitment box).
+**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Colour/Swatch Grid** in place of a variant picker) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → USP row → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile, name/price/Add to Cart) and Persistent Bar (desktop, thumbnail/name/price/Add to Cart, no fitment box).
 
 **Absent widgets:** Variant Picker, Fitment Status widget, Rack Fit Guarantee, Fitted Photos Gallery, Package Contents.
 
-**Desktop layout:** standard Hero split; the Swatch Grid is a grid of colour tiles (48px tap targets, clearing Google's tap-target guideline) sitting where Config-Variant's comparison cards would go.
+**Desktop layout:** standard Hero split; the Swatch Grid is a row of round 40px colour swatches sitting where Config-Variant's comparison cards would go.
 
-**Mobile layout:** standard reflow; swatch tiles keep their 48px minimum tap size at every width (Google tap-target guideline).
+**Mobile layout:** standard reflow; swatches grow to 48px at ≤640px to meet Google's 48px tap-target guideline.
 
 **Screenshots:**
 - Desktop (1280px), whole page: ![Sibling-Color — desktop layout](dev-brief-assets/page-layout-sibling-color-desktop.png)
@@ -127,13 +161,15 @@ All 5 templates share the same underlying grid: **Hero is `1.15fr / 1fr` desktop
 
 **Purpose:** the most complex template — for Vehicle Rack Sets sold against a specific vehicle fitment (example: Rhino Rack Pioneer 6 Platform Kit, Hilux N80). Carries the Fitment Status widget, the Fitted Photos Gallery, and both mobile *and* desktop condensed CTA bars.
 
-**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Variant Picker, Fitment Status widget + Rack Fit Guarantee badge, Package Contents/"What's Included"**) → **Fitted Photos Gallery** (full-width, default position directly above Trust Row — can be toggled to nest inside the gallery column instead, via the Demo State Panel's placement toggle) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile) **and** Persistent Bar (desktop, fades in once the Decision Panel scrolls out of view — every template has this bar, but only this one's version includes the fitment box + Rack Fit Guarantee badge, since it's the only one with fitment status worth keeping visible).
+**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Variant Picker, Fitment Status widget + Rack Fit Guarantee badge, Package Contents/"What's Included"**) → **Fitted Photos Gallery** (full-width, directly above the Trust Row — its only position; the old placement and red-background Demo toggles are gone) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → USP row → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile — thumbnail, name, price, icon-only fitment box, Rack Fit Guarantee icon, Add to Cart) **and** Persistent Bar (desktop, fades in once the Decision Panel scrolls out of view — every template has this bar, but only this one's version includes the fitment box + Rack Fit Guarantee badge, since it's the only one with fitment status worth keeping visible).
 
 **Absent widgets:** Colour/Swatch Grid (this template uses the Variant Picker for Assembled/Flat Pack, same as Config-Variant).
 
 **Desktop layout:** same Hero split as the rest, but the Decision Panel is the tallest of the 5 (fitment card + Rack Fit Guarantee + Package Contents + Variant Picker all stack above the price), which is exactly what makes the gallery column's `position:sticky` behaviour matter most on this template. The Persistent Bar is a condensed strip fixed to the top of the viewport, showing a product thumbnail + truncated name sharing space with a condensed fitment box (icon + short label, roughly half its full-detail width).
 
-**Mobile layout:** standard reflow (Decision Panel promoted above the video/Fitted-Photos-nested row); the Sticky Mobile Bar's fitment box drops to icon-only (no room once sharing the row with the thumbnail/name block) — same "icon only, tooltip carries the caption" convention as the Rack Fit Guarantee badge itself.
+**Mobile layout:** standard reflow (Decision Panel promoted above the video/Get It Installed row); the Sticky Mobile Bar's fitment box drops to icon-only (no room once sharing the row with the thumbnail/name/price block) — same "icon only, tooltip carries the caption" convention as the Rack Fit Guarantee badge itself. The bar now shows the price like the other 4 templates (it had none before 2026-09-29, `spec.md` §15 D4).
+
+**Breadcrumbs:** the vehicle trail, `Home > Vehicles > Toyota > Hilux > Platforms & Trays > <product name>` (see 4.2).
 
 **Screenshots:**
 - Desktop (1280px), whole page: ![Vehicle-Specific — desktop layout](dev-brief-assets/page-layout-vehicle-specific-desktop.png)
@@ -143,7 +179,9 @@ All 5 templates share the same underlying grid: **Hero is `1.15fr / 1fr` desktop
 
 **Purpose:** for a fixed bundle of several real components sold as one SKU (example: Yakima RoadShower 15L Complete Shower & Hose Bundle) — no variant/colour choice, but a Package Contents list breaking down what's actually in the box.
 
-**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Package Contents/"What's Included"**, no variant or colour picker) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile) and Persistent Bar (desktop, thumbnail/name/price/Add to Cart, no fitment box).
+**Section order:** Breadcrumbs → Hero (Gallery + Decision Panel **with Package Contents/"What's Included"**, no variant or colour picker) → Trust Row → Showroom Finder → *(Discontinued Alternates)* → USP row → Body Tabs → FAQ → Related Products → Sticky Mobile Bar (mobile, name/price/Add to Cart) and Persistent Bar (desktop, thumbnail/name/price/Add to Cart, no fitment box).
+
+**Save copy:** like every other template, the sale reads "Save 47%" (the old "$397 Off RRP" wording is gone, `spec.md` §15 D10).
 
 **Absent widgets:** Variant Picker, Colour/Swatch Grid, Fitment Status widget, Rack Fit Guarantee, Fitted Photos Gallery.
 
@@ -204,7 +242,7 @@ Same open/close interaction pattern already used elsewhere on the page for the "
 </div>
 ```
 
-**Important:** the page always starts on AU, every time it loads — the selected region is **not** saved anywhere (no cookie, no localStorage, no server session). This matches every other reviewer-toggle in this prototype (the Demo State Panel). A real Magento build would decide region a different way entirely (domain/subdomain, a real customer/session setting, geo-IP) — this dropdown is a prototype-only stand-in for whatever that real mechanism ends up being, not a pattern to port as-is.
+**Important:** the page always starts on AU, every time it loads — the selected region is **not** saved anywhere (no cookie, no localStorage, no server session). (The Demo State Panel's choices, by contrast, are now saved per template, see 4.36; the region switcher deliberately still resets.) A real Magento build would decide region a different way entirely (domain/subdomain, a real customer/session setting, geo-IP) — this dropdown is a prototype-only stand-in for whatever that real mechanism ends up being, not a pattern to port as-is.
 
 #### Per-widget region cascade
 
@@ -240,12 +278,12 @@ Row 3's Showroom Finder equivalent (its own "View all stores" link) follows the 
 
 #### JavaScript — the cascade function (reference, not copy-paste)
 
-**The data values below are the corrected, client-confirmed ones (2026-09-11) — the live prototype's `shared.js` still has the old placeholder UK values (`London`, `51.5074, -0.1278`) and no `phone`/`address` fields at all.** Treat this block as the target to build toward, not a description of what's in the repo today.
+**The data values below are the corrected, client-confirmed ones (2026-09-11)**, and match the prototype's `shared.js`.
 
 ```js
 const REGION_LABELS = { AU: 'Australia', NZ: 'New Zealand', UK: 'United Kingdom' };
 const REGION_FLAGS = { AU: '🇦🇺', NZ: '🇳🇿', UK: '🇬🇧' };
-const REGION_DEFAULT_DC_TAB = { AU: 'collect', NZ: 'delivery', UK: 'collect' };
+const REGION_DEFAULT_DC_TAB = { AU: 'collect', NZ: 'delivery', UK: 'delivery' };
 
 // Corrected 2026-09-11 — real addresses/phone numbers sourced from each brand's own live
 // contact page (see Region-specific store & contact data below). Coordinates are suburb/town-
@@ -266,8 +304,7 @@ const REGION_SINGLE_STORES = {
   }
 };
 
-// Trust Row phone number, by region — NOT wired up yet (item 28); currently one static AU
-// number (1300 071 264) regardless of selected region.
+// Trust Row phone number, by region (item 28).
 const REGION_PHONE = { AU: '1300 071 264', NZ: '09 481 1910', UK: '01204 899778' };
 
 const REGION_TRUST_COPY = {
@@ -308,12 +345,12 @@ RRG trades in the UK as a real sister brand, **The Roof Box Company** (`roofbox.
 
 **Colour — CSS custom-property override (copy-paste)**
 
-Every component already built against the shared `--rrg-red`/`--rrg-red-dark` tokens (utility bar, links, tab underline, sale badges, map pins, etc.) recolours automatically — no per-component CSS needed. Add to Cart needed its own override since it's a separate locked-in gold default, not on the red token.
+Every component already built against the shared `--rrg-red`/`--rrg-red-dark` tokens (utility bar, links, tab underline, sale badges and Save bands, map pins, etc.) recolours automatically — no per-component CSS needed. Add to Cart needed its own override since it's a separate locked-in gold default (`--rrg-cta`), not on the red token. Since 2026-09-29 the override targets `.btn-cta`, so **every** Add to Cart on the page turns green in the UK, including the Related Products cards (`spec.md` §15 B4; before, only the Decision Panel's button changed).
 
 ```css
 body.region-uk{--rrg-red:#2E41AE;--rrg-red-dark:#1F2E82;}
-body.region-uk [data-cta-label].btn-primary{background:#26B226;color:#fff;}
-body.region-uk [data-cta-label].btn-primary:hover{background:#1e8f1e;}
+body.region-uk .btn-cta{background:var(--rrg-uk-green);color:#fff;}        /* #26B226 */
+body.region-uk .btn-cta:hover{background:var(--rrg-uk-green-hover);}       /* #1E8F1E */
 ```
 
 ```js
@@ -399,7 +436,7 @@ The UK doesn't just hide/show a payment badge the way NZ does (NZ simply drops Z
 | 2nd badge | PayPal — "4 payments of $X" | PayPal (same logo, unchanged) — but the UK product is **"Pay in 3,"** not "Pay in 4": copy changes to "3 payments of £X" (divide price by 3, not 4) |
 | 3rd badge | Zip — weekly copy (AU only; dropped entirely for NZ, see the cascade table above) | **Klarna** — UK's "Pay in 3," spread over 3 months. This is a **different provider** from PayPal's own Pay in 3 above; both happen to land on 3 instalments, but keep them as two separate badges with their own logo/copy, don't merge or dedupe them |
 
-**Real logo files, staged but not yet referenced by any template:**
+**Real logo files** (used by the UK badge set, `paymentBadgeSet()` in `shared.js`):
 - `prototypes/_shared/payment-logos/clearpay.svg` — official black wordmark, downloaded 2026-09-11 from Clearpay's own retailer marketing-resources page ([clearpay.co.uk/en-GB/for-retailers/resources/marketing/logos](https://www.clearpay.co.uk/en-GB/for-retailers/resources/marketing/logos) → wordmark package, Adobe Illustrator-exported SVG)
 - `prototypes/_shared/payment-logos/klarna.svg` — official black wordmark, downloaded 2026-09-11 from Wikimedia Commons ([File:Klarna Logo black.svg](https://commons.wikimedia.org/wiki/File:Klarna_Logo_black.svg)) — Klarna doesn't have a self-serve brand-asset portal as directly scrapable as Clearpay's, so Commons was used instead; same general trademark-use caveat as any brand logo
 - Existing `afterpay.svg`/`paypal.svg`/`zip.svg` in the same folder are unaffected and stay as-is for AU/NZ
@@ -415,7 +452,7 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 - **NZ and UK are not real RRG store networks — this whole feature previews a hypothetical future, not a shipped capability.** RRG doesn't currently sell into NZ/UK as separate regions the way this dropdown implies (NZ is served as part of the AU network today; the UK sister brand, The Roof Box Company, trades independently and isn't integrated with RRG's systems). Confirm with the business whether/when a real region-aware storefront (real domain or session-based region detection, real UK pricing/stock, real per-region logistics) is actually wanted before treating this as a build spec rather than a design preview.
 - **Trust Row NZ/UK copy is placeholder wording** ("Now serving New Zealand" etc.) — needs real client-approved copy, same caution as the rest of this project's placeholder content.
 - **No real FX conversion exists anywhere** — if the UK ever needs real GBP pricing, that's a separate pricing/data feed decision, not something to build off the symbol-swap code above.
-- Region selection resets on every page load by design (see "How the dropdown works" above) — don't add persistence without checking this is still wanted; it was a deliberate choice to match every other reviewer toggle in this prototype.
+- Region selection resets on every page load by design (see "How the dropdown works" above) — don't add persistence without checking this is still wanted. (It originally matched the other reviewer toggles; since 2026-09-29 the Demo State and Site Admin choices are saved, but the region switcher was left resetting.)
 - The single-store coordinates for NZ/UK are town/suburb-centre approximations, not geocoded to the exact street address — same caveat as the rest of this project's store data.
 
 ---
@@ -426,17 +463,19 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 
 **Purpose:** quick category navigation trail, and confirms where the current product sits in the catalogue hierarchy.
 
-**Typography:** 12px, `#767676`; links underline on hover; bumped to 13px on mobile.
+**Typography:** 12px, `--rrg-grey-500` (`#767676`); links underline on hover; bumped to 13px on mobile.
 
 **Region differences:** none — driven by the product's own category, not region.
 
 **Links:** "Home" and each category level are real anchors, currently `href="#"` placeholders — in production these resolve to their real Magento category/home pages. The final crumb (current product name) is plain text, not a link.
 
+**The last crumb matches the product name (H1) exactly** (`spec.md` §15 D10, 2026-09-29 — on Sibling-Color and Vehicle-Specific it used to be a shortened name).
+
 **Data Source:** Magento — category structure/template-level, not a Rackit field.
 
 **States:**
 - 3 levels, Home → Category → Product (Simple, Config-Variant, Sibling-Color, Grouped-Bundle): ![Breadcrumbs — 3 level](dev-brief-assets/breadcrumbs-3level.png)
-- 4 levels, Home → Vehicle → Category → Product (Vehicle-Specific only): ![Breadcrumbs — 4 level](dev-brief-assets/breadcrumbs-4level.png)
+- Vehicle trail (Vehicle-Specific only): **`Home > Vehicles > Toyota > Hilux > Platforms & Trays > <full product name>`** (the markup separator is `&gt;`, same as every other trail). This is the same vehicle breadcrumb family used on the Vehicle Category Landing Page (`Home > Vehicles > Toyota > Hilux`) and the vehicle PLP (`… > Hilux > Roof Racks`), agreed 2026-09-29 (`spec.md` §15 L8) and still provisional pending team review. Year, body style and roof type are not crumbs; the product name carries them. *(Screenshot shows the older 4-level trail — recapture at handover.)* ![Breadcrumbs — vehicle trail](dev-brief-assets/breadcrumbs-4level.png)
 
 **Note:** the class is `.rrg-crumbs`, not a class containing the literal word "breadcrumb" — a past session grepped for that word, found nothing, and wrongly concluded breadcrumbs didn't exist on the page. Search for `.rrg-crumbs` instead.
 
@@ -458,7 +497,11 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 - Location (full page, red arrow): ![Main Product Gallery — location](dev-brief-assets/main-gallery-location.png)
 - Detail (big image + horizontal-scroll thumbnail carousel, nav arrows only appear once there are 5+ images): ![Main Product Gallery — detail](dev-brief-assets/main-gallery-detail.png)
 
-**Notes:** main image is `aspect-ratio:3/2`. Thumbnail strip is a single row (not a wrapping grid) so extra images scroll horizontally instead of pushing the row below it down — this was a deliberate 2026-09-10 fix for products with 5+ photos.
+**Notes:** main image is `aspect-ratio:3/2`. Thumbnail strip is a single row (not a wrapping grid) so extra images scroll horizontally instead of pushing the row below it down — this was a deliberate 2026-09-10 fix for products with 5+ photos. Prev/next arrows are the shared 32px round carousel arrows.
+
+**Thumbnail clicks (2026-09-29, `spec.md` §15 D3):** one delegated click handler in `shared.js` serves every template. Clicking any `.gallery-thumbs img` swaps `#mainImg` to that photo **and moves the `.active` border (2px red) to the clicked thumbnail**. It replaces the per-thumbnail inline `onclick`s; on Simple, Grouped-Bundle and Vehicle-Specific the active border used to stay on thumbnail 1. Because it's delegated, it keeps working after a variant/colour swap re-renders the strip.
+
+**On sale:** the main photo carries the diagonal "Save N%" corner band (top-left) — see 4.15 and 4.16.
 
 ---
 
@@ -484,11 +527,11 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 
 **Purpose:** drives bookings for professional fitting — a secondary conversion action, deliberately subdued so it never competes with the one primary Add to Cart CTA.
 
-**Typography:** heading uses the shared section-heading treatment at a smaller scale for the paired (half-height) state, full shared scale for the no-video full-width state; body/bullet text similarly scales up in the no-video state since it has more room. **CTA button is `.btn-outline`** (white fill, black border/text) — never red or gold, a standing rule (Section 2) since red still pulls the eye even though it isn't the Add to Cart colour.
+**Typography:** heading uses the shared section-heading treatment at a smaller scale for the paired (half-height) state, full shared scale for the no-video full-width state; body/bullet text similarly scales up in the no-video state since it has more room. **CTA button is `.btn-outline`** (white fill, black border/text, fills black on hover) at the `.btn-md` size — never red or gold, a standing rule (Section 2) since red still pulls the eye even though it isn't the Add to Cart colour. The panel background is `--rrg-charcoal`.
 
 **Region differences:** none on the 2 trust bullets (confirmed identical across regions). The CTA link itself is a **relative path** (`/roof-rack-installation-and-fitting-costs`), so it resolves correctly per-domain once each region is a real separate Magento store view — no explicit region branching needed.
 
-**Links:** real external link (opens in a new tab, `target="_blank" rel="noopener noreferrer"`) — except on Vehicle-Specific, where the CTA copy/link is fitment-count-aware (see `#fitGallerySection`'s data-driven copy in `PAGE-GLOSSARY.md`): 5+ fitments links in-page to the Fitted Photos Gallery (4.27), 1–4 does the same with different copy, 0 or "no gallery" falls back to the same external fitting-costs link as the other 4 templates.
+**Links:** real external link (opens in a new tab, `target="_blank" rel="noopener noreferrer"`) — except on Vehicle-Specific, where the CTA copy/link is fitment-count-aware (see `#fitGallerySection`'s data-driven copy in `PAGE-GLOSSARY.md`): 5+ fitments links in-page to the Fitted Photos Gallery (4.27), 1–4 does the same with different copy, 0 or "no gallery" falls back to the same external fitting-costs link as the other 4 templates. `applyFitGalleryFlag()` rewrites the copy whenever the gallery flag or count changes; Vehicle-Specific's first-load markup already carries the matching 5+ copy ("We've fitted this 283 times — view the gallery"). Before 2026-09-29 it first showed an unspecced "See 283 real fitments" (`spec.md` §15 D6). In Magento, render the copy from the real fitment count server-side.
 
 **States:**
 - Paired with video, Fitment Gallery on (16:9, matches the video's height exactly; CTA reads the fitment-count-aware copy, e.g. "We've fitted this 283 times — view the gallery"): ![Get It Installed — paired, gallery on](dev-brief-assets/install-cta-paired-gallery.png)
@@ -528,6 +571,8 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 
 **Links:** not a navigation link — a `navigator.clipboard.writeText()` action.
 
+**Markup (2026-09-29, `spec.md` §15 D9):** every template now marks the Decision Panel SKU the same way, with `data-copy-source` (the copied value is read from the element at click time, so it stays right after a variant/colour swap changes the SKU). Package Contents rows use the same handler.
+
 **States:** ![Decision Panel top — Brand Logo + SKU](dev-brief-assets/decision-panel-top-detail.png) (same shot as 4.6 — they sit in the same row)
 
 ---
@@ -538,7 +583,7 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 
 **Purpose:** the real Rackit short-description field, clamped so it never pushes the price/CTA further down the page than necessary, with a link to read the rest without losing place on the page.
 
-**Typography:** 14px desktop / 16px mobile (Section 2 floor bump), `#555`, 2-line `-webkit-line-clamp`.
+**Typography:** 14px desktop / 16px mobile (Section 2 floor bump), `--rrg-grey-600` (`#666`), 2-line `-webkit-line-clamp`.
 
 **Region differences:** none.
 
@@ -587,7 +632,7 @@ Add `data-review-sku` (same semicolon-separated SKU list as the Reviews tab, 4.3
 #### CSS
 
 ```css
-.stars{color:#E8A83C;letter-spacing:1px;font-size:16px;}
+.stars{color:var(--rrg-star);letter-spacing:1px;font-size:16px;} /* #E8A83C */
 .stars .stars-empty{opacity:.35;}
 ```
 
@@ -659,7 +704,9 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Add to Cart must stay identical in every fitment state** — same "Add To Cart" text, same primary button style, always enabled/clickable — regardless of whether the fitment verdict is Fits, Doesn't Fit, or Confirm Your Vehicle. Purchase must never hard-stop or visually change based on fitment status; only the fitment card itself (and the Rack Fit Guarantee badge, 4.11) communicates the verdict. This applies to the main Decision Panel button and both condensed instances (Sticky Mobile Bar, Persistent Bar).
 
-**States** (driven by the Demo State Panel's Session Vehicle picker — in Magento this would be the customer's real saved vehicle):
+**Action buttons** inside the card (e.g. changing the vehicle) use `.btn-outline-red .btn-sm` (Section 2) — was a third, one-off outline style.
+
+**States** (driven by the **Site Admin panel's "Vehicle" select** — None → Confirm your vehicle, Toyota Hilux → Fits, Ford Ranger → Doesn't fit. This is the one session vehicle for the whole prototype, the same one the header shows, so the header and the fitment card can no longer contradict each other. It replaced the Demo State Panel's old "Session Vehicle" buttons on 2026-09-29, `spec.md` §15 P4. In Magento this is the customer's real saved vehicle):
 - Location (full page, red arrow): ![Fitment Status — location](dev-brief-assets/fitment-status-location.png)
 - **Fits your vehicle** (green) — confirmed match, Rack Fit Guarantee badge visible (see 4.11): ![Fitment Status — fits](dev-brief-assets/fitment-status-fits.png)
 - **Doesn't fit** (red) — Rack Fit Guarantee badge auto-hidden: ![Fitment Status — doesn't fit](dev-brief-assets/fitment-status-nofit.png)
@@ -697,7 +744,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Data Source:** Rackit — field: "Important Vehicle Fit Notes."
 
-**States:** starts hidden (no real per-vehicle content source yet — placeholder copy, flagged for real client content). Shown here toggled on: ![Product Notes block](dev-brief-assets/product-notes-block.png)
+**States:** starts hidden (no real per-vehicle content source yet — placeholder copy, flagged for real client content). Shown with the Demo State Panel's "Important vehicle fit notes" toggle (in its Fitment Gallery group). Shown here toggled on: ![Product Notes block](dev-brief-assets/product-notes-block.png)
 
 ---
 
@@ -707,7 +754,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Purpose:** lets the shopper choose between two configurations of the same product (e.g. Assembled vs. Flat Pack). Each configuration is its own separate product listing/URL; selecting a card is real navigation to that sibling SKU's own page (this prototype simulates that as an in-page swap of price/gallery/video/specs/fitting instructions for demo convenience, not the real production behaviour).
 
-**Typography:** comparison cards use standard body/label sizing (Section 2); no bespoke type.
+**Typography:** comparison cards use standard body/label sizing (Section 2); the "Build Option" label above them is the shared eyebrow style. Each card's "Save N%" badge is a shared `.chip`, **red** like every other Save treatment (it was green until 2026-09-29, `spec.md` §15 C5). The card's struck-through price uses `--rrg-grey-600`. The card CSS (`.variant-option*`) now lives once in `shared.css` instead of being duplicated in Config-Variant and Vehicle-Specific.
 
 **Region differences:** none — currency symbol on the price inside each card follows the page-wide region currency swap (4.1, UK Brand Skin & Currency), nothing else.
 
@@ -733,7 +780,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **States:** ![Colour/Swatch Grid — 13-colour MAXTRAX grid](dev-brief-assets/swatch-grid-detail.png)
 
-**Notes:** tiles are 48px minimum to clear Google's tap-target guideline at every width.
+**Notes:** swatches are 40px round on desktop and 48px at ≤640px, clearing Google's 48px tap-target guideline on phones. An amber dot on a swatch means that colour is Low Stock (4.37). The helper note under the grid uses `--rrg-grey-500` (was a `#999` that failed contrast).
 
 ---
 
@@ -741,19 +788,24 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Location:** Decision Panel, directly below the title/short description — all 5 templates.
 
-**Purpose:** the price + stock-status area (`.price-block`) — redesigned 2026-09-12 off a client-supplied Figma reference to a stacked two-line layout that reads clearly at a glance: "Now" price on top, struck-through "RRP" + a Save-percent badge below.
+**Purpose:** the price + stock-status area (`.price-block`) — redesigned 2026-09-12 off a client-supplied Figma reference to a stacked two-line layout that reads clearly at a glance: "Now" price on top, struck-through "RRP" below.
 
-**Typography:** `.price-line-now` ("Now" label + `.price-now`, both red when on sale, `line-height:1`) above `.price-line-was` ("RRP" label + struck-through `.price-was` + `.badge-save`, both the label and price sharing identical dark-grey `#434343`/Lato-400 styling so the whole "RRP $X" reads as one continuous struck-through phrase — the RRP price is sized to match `.badge-save`'s own rendered height, and the two are centre-aligned). Off-sale, both labels and the whole RRP line disappear entirely, leaving a plain black price (red is reserved for the sale contrast, not every regular price).
+**Typography:** `.price-line-now` ("Now" label + `.price-now`, both red when on sale, `line-height:1`) above `.price-line-was` ("RRP" label + struck-through `.price-was`, both sharing identical `--rrg-grey-600`/Lato-400 styling so the whole "RRP $X" reads as one continuous struck-through phrase). Off-sale, both labels and the whole RRP line disappear entirely, leaving a plain black price (red is reserved for the sale contrast, not every regular price). The block has 16px top/bottom padding and a 16px bottom margin on every template (was 14px on two).
+
+**Save % (changed 2026-09-29, `spec.md` §15 L9):** the PDP now shows its saving the same way as every product card: the red diagonal **"Save N%" corner band** (`.plp-save-corner`) across the top-left of the main product photo, plus the existing sale-tag image (4.16). The old red Save pill beside the RRP (`.badge-save`) is **no longer shown** (`.price-block .badge-save{display:none!important}`). It stays in the markup only as the value source: `syncSaleTag()` copies its text into the photo's corner band and hides the band whenever the product isn't on sale. In Magento, render the corner band directly from the real saving and drop the hidden pill. Every template uses "Save N%" wording (Grouped-Bundle's "$397 Off RRP" is now "Save 47%").
+
+**Low Stock box:** when the product is Low Stock, a `.scarcity` box ("Only a few left — get in before they run out") shows directly under the price block, on **all 5 templates** (it was Simple-only). It's hidden in every other stock state. See 4.37.
 
 **Region differences:** none beyond the standard currency/price-token inheritance already covered in 4.1 — the redesign is purely a layout change, region cascade untouched.
 
 **Links:** none.
 
 **States:**
+- *(The on-sale screenshots below predate the 2026-09-29 change and still show the Save pill beside the RRP; recapture at handover.)*
 - On-sale (desktop): ![Price Block — on-sale, desktop](dev-brief-assets/price-block-desktop-onsale.png)
 - Off-sale (desktop, plain black price, no labels): ![Price Block — off-sale, desktop](dev-brief-assets/price-block-desktop-offsale.png)
 - Mobile, on-sale — price centred as a unit; the Sale Tag moves off the price block entirely onto the top-right corner of the main gallery image (a corner ribbon reads better once price content no longer runs the block's full width): ![Price Block — mobile, on-sale, gallery Sale Tag](dev-brief-assets/price-block-mobile-onsale.png)
-- The condensed Sticky Mobile Bar (4.34) / Persistent Bar (4.35) price is adapted, not the full stacked treatment — same red/dark-grey colour language on the existing single-line price, no labels/badge (no room).
+- The condensed Sticky Mobile Bar (4.34) / Persistent Bar (4.35) price is adapted, not the full stacked treatment — same red/grey colour language on a single-line price, no labels/badge (no room). Both bars **mirror this block's price** via `syncBarPrices()` (see 4.34).
 
 ---
 
@@ -769,7 +821,9 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Links:** none.
 
-**States:** both instances toggle together off one shared signal (`syncSaleTag()` updates every `.sale-tag` on the page at once), so Titanium Grey (sibling-color's no-discount swatch), the Demo State Panel's on/off toggle, and variant switches all stay correct for whichever instance is currently visible — see 4.15's screenshots (desktop shows the price-block instance; the mobile shot shows the gallery instance).
+**States:** both instances toggle together off one shared signal (`syncSaleTag()` updates every `.sale-tag` on the page at once), so Titanium Grey (sibling-color's no-discount swatch), the Demo State Panel's "Product is on sale" toggle, and variant switches all stay correct for whichever instance is currently visible — see 4.15's screenshots (desktop shows the price-block instance; the mobile shot shows the gallery instance).
+
+**Kept alongside the Save band:** since 2026-09-29 the same `syncSaleTag()` call also drives the "Save N%" corner band on the main photo's top-left corner (4.15). The sale-tag image stays as well (Brenton, `spec.md` §15 L9), so on mobile the main photo shows the Save band top-left and the sale-tag image top-right.
 
 ---
 
@@ -835,6 +889,8 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Links:** not a navigation link — opens the slide-in drawer in place.
 
+**Drawer:** uses the shared drawer base (Section 2): 420px wide, 22px title, the 48px round close button, `role="dialog"`, closes on Escape or a backdrop click. Each option's tag (Ex-Demo / Sellable Return / Factory Second) is a shared `.chip`; each option has an outline "View Item" button.
+
 **States:** 3 discount options (Ex-Demo/Sellable Return/Factory Second), computed live off whatever price is currently showing — the 3 tags are identical in every region, only the drawer heading and inline stock-line text change:
 - AU/NZ wording ("Ex-Demo & Factory Seconds"): ![Ex-Demo/B-Stock slide-in drawer — AU/NZ wording](dev-brief-assets/exdemo-slideout-au.png)
 - UK wording ("Graded Stock"): ![Ex-Demo/B-Stock slide-in drawer — UK "Graded" wording](dev-brief-assets/exdemo-slideout-uk.png)
@@ -843,7 +899,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.21 Paid "Fitted" Option
 
-**Demo-preview-only — not a real, decided feature.** Either a third Variant Picker card or a checkbox above Add to Cart, offering paid professional fitting as an add-on — **Config-Variant & Vehicle-Specific only**. No production data or pricing model backs this yet; it exists purely so stakeholders can preview both interaction patterns (Mode 1: third card: Mode 2: upsell checkbox) before a real decision is made. Not screenshotted here — confirm which interaction pattern (if either) is wanted before treating this as a build spec.
+**Demo-preview-only — not a real, decided feature.** Either a third Variant Picker card or a checkbox above Add to Cart, offering paid professional fitting as an add-on — **Config-Variant & Vehicle-Specific only**. No production data or pricing model backs this yet; it exists purely so stakeholders can preview both interaction patterns before a real decision is made. The Demo State Panel's "Get It Fitted" group (Config-Variant and Vehicle-Specific only) switches between Off / As a third variant card / As a checkbox above Add to Cart; it's labelled as a proposal pending store-ops sign-off. Not screenshotted here — confirm which interaction pattern (if either) is wanted before treating this as a build spec.
 
 ---
 
@@ -878,7 +934,11 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Links:** "View all stores" opens the Store Slide-out (4.24) — real interaction, not a placeholder.
 
-**Stock (2026-09-29, 4.37):** follows the product's stock status. Out of Stock / Discontinued → both tabs unavailable, with a note saying why. Store pills follow the stock state too (Special Order → "Special Order — 5-7 Days" on every store; Out of Stock → grey "Out of Stock"). The v2 design's Click & Collect option shows "Available Today" only when a store near the shopper has it (Phase 2); otherwise "Ready within 2 business days" (or "Ready in 5–7 business days" for Special Order). The summary line reads "Click & Collect from 35 stores —" (was "In stock and on display in 35 stores", which claimed every store held it). "Closest"/"Remote" chips are neutral grey, not the green In Stock colour.
+**One design.** This widget (the original, "v1" design) is the design to build. The alternative "v2" layout that was previewable from the Demo State Panel since 2026-09-12 has been dropped (Brenton, 2026-09-29, `spec.md` §15 P7): its toggle and code are removed, so ignore any older reference to a v2 / "New Delivery/C&C design" preview.
+
+**Spacing:** the two placements use classes, not inline margins: `.dc-widget--panel` (in the Decision Panel, 18px above) and `.dc-widget--tab` (top of the Shipping Info tab, 22px below).
+
+**Stock (2026-09-29, 4.37):** follows the product's stock status. Out of Stock / Discontinued → both tabs unavailable, with a note saying why (the Demo State Panel also unticks and disables its Delivery/C&C toggles in those states, and restores them afterwards). Store pills follow the stock state too (see 4.24). The summary line reads "Click & Collect from 35 stores —" (was "In stock and on display in 35 stores", which claimed every store held it).
 
 **States:**
 - Location (full page, red arrow): ![Delivery/Click & Collect — location](dev-brief-assets/dc-widget-location.png)
@@ -897,6 +957,14 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Typography:** standard body/label scale; store names use a slightly heavier weight than the address/phone lines beneath them.
 
+**Drawer:** the shared drawer base (Section 2) — 420px, 22px title, 48px round close button, `role="dialog"`, Escape/backdrop to close.
+
+**Store pills** (shared `.chip` style, `.stock-chip` modifiers), following the product's stock state (4.37):
+- In stock: green **"In Stock"**, or amber **"Ready Within 2 Business Days"** for a store that doesn't hold it (wording aligned with the stock model on 2026-09-29, `spec.md` §15 C15 — was "Order In — 1-2 Days"). In Phase 2 with a store set, the shopper's store and the nearby store follow the Demo State Panel's "Stock at your store" choice.
+- Special Order: **"Special Order — 5-7 Days"** on every store.
+- Out of Stock / Discontinued: grey **"Out of Stock"** on every store.
+- Plus the blue **"On Display"** pill (4.25) where that store has it on display.
+
 **Region differences:** AU-only — the trigger itself is hidden for NZ/UK (4.1 cascade), since the real 35-store data has no NZ/UK equivalent.
 
 **Links:** each store row has a real "View on map" link (Google Maps) and a real `tel:` phone link.
@@ -911,7 +979,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Location:** on individual store rows, in both the Store Slide-out (4.24) and the Delivery/Click & Collect widget's inline rows — wherever that specific store is flagged as having this product on display.
 
-**Purpose:** a per-store fact ("this exact item is set up on display at this store"), distinct from the store's own In Stock/Order In status.
+**Purpose:** a per-store fact ("this exact item is set up on display at this store"), distinct from the store's own stock pill ("In Stock" / "Ready Within 2 Business Days", 4.24).
 
 **Typography:** small pill/badge text, same size as the adjacent In Stock pill.
 
@@ -943,23 +1011,30 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.27 Fitted Photos Gallery
 
-**Location:** full-width section directly above the Trust Row by default (or nested under the Main Product Gallery in the left column, via a Demo State Panel placement toggle) — **Vehicle-Specific only**. See `PAGE-GLOSSARY.md`'s naming-clash note — this is *not* the Main Product Gallery.
+**Location:** full-width section directly above the Trust Row — **Vehicle-Specific only** among the PDPs (the Vehicle Category Landing Page and vehicle PLP show the same panel; see their briefs). This is its only position: the placement and red-background Demo toggles used to decide it were removed once it was locked in. See `PAGE-GLOSSARY.md`'s naming-clash note — this is *not* the Main Product Gallery.
 
 **Purpose:** real customer installation photos ("Fitment Gallery" panel) — builds confidence by showing the product actually fitted to the shopper's vehicle model, not just studio photos.
 
-**Typography:** heading uses the shared section-heading style (Section 2) sized to match the icon badge's cap-height; badge is a 26px icon.
+**Typography:** heading uses the shared section-heading style (Section 2: 40px, 32px on phones); badge is a 26px icon. "View All In-store Fitments (N)" is the shared `.link-btn` text-link style.
 
 **Region differences:** none — not part of the Region Selector cascade.
 
-**Links:** "View All In-store Fitments (N)" opens a real two-view slide-out drawer (not an in-page expand) — a photo grid, then a per-fitment detail view when a photo is clicked. The CTA copy itself is fitment-count-aware, driven by Get It Installed (4.5).
+**Links:** "View All In-store Fitments (N)" opens a real two-view slide-out drawer (not an in-page expand) — a photo grid, then a per-fitment detail view when a photo is clicked. The drawer is the shared drawer base at its wide **600px** size (Section 2), with Escape/backdrop to close. The CTA copy itself is fitment-count-aware, driven by Get It Installed (4.5).
+
+**One builder (2026-09-29, `spec.md` §15 C9).** The panel used to be hand-written on Vehicle-Specific and the Vehicle Category Landing Page and generated separately on the vehicle PLP, with different badge icons, alt text and image attributes. All three now use the same `shared.js` functions:
+- `fitGalleryPanelHTML(count)` returns the panel markup (badge, "Fitment Gallery" heading, View All link, carousel track with prev/next arrows, dots).
+- `mountFitGallery()` fills every `<section class="fit-gallery-section" data-fit-gallery data-count="N">` on the page with that markup. On Vehicle-Specific that section is empty in the HTML: `<section class="fit-gallery-section" id="fitGallerySection" data-count="283" data-fit-gallery></section>`.
+- `renderFitGalleryTrack(altText)` renders the photos from `FIT_GALLERY_PHOTOS` into the track. Every photo gets a descriptive alt ("… — view fitment detail"), `loading="lazy"`, and opens that fitment's detail in the drawer on click.
+
+The section uses the standard 48px section spacing (Section 2). Carousel photos are **4:3** (7 across on desktop); arrows are the shared 32px circles and hide on phones (swipe instead); dots are the shared round grey dots with a red active dot.
 
 **States:**
 - Location (full page, red arrow): ![Fitted Photos Gallery — location](dev-brief-assets/fit-gallery-location.png)
-- Detail, full-width/non-red default (7 photos visible; nested placement shows 4): ![Fitted Photos Gallery — detail](dev-brief-assets/fit-gallery-detail.png)
+- Detail, full-width (7 photos visible): ![Fitted Photos Gallery — detail](dev-brief-assets/fit-gallery-detail.png)
 - Slide-out drawer, grid view (all 283 photos, opened via "View All In-store Fitments"): ![Fitted Photos Gallery — slide-out grid view](dev-brief-assets/fit-gallery-slideout-grid.png)
 - Slide-out drawer, detail view (clicking any grid photo opens this: "Browse Fitment N of 283 / Fit #" bar, Prev/Next, main photo + 4 thumbnails, the page's own real product title + vehicle line, and a live Rack Components list read from the page's own Package Contents rows): ![Fitted Photos Gallery — slide-out detail view](dev-brief-assets/fit-gallery-slideout-detail.png)
 
-**Notes:** a "Red background (live-site style)" toggle exists for stakeholder conversations expecting the old red-background treatment — default is non-red, per client direction. Every fitment in the detail view shows the *same* real vehicle/components (no fabricated variety across vehicles) — the components list is read live from the page's own What's Included rows so the two can't drift apart; the detail view's "other angle" thumbnails reuse other real photos from the same 16-photo set rather than inventing new ones.
+**Notes:** the background is non-red (white), per client direction; there is no red-background option any more. The Demo State Panel's "Fitment Gallery" group turns the gallery on/off and sets the fitment count, to preview Get It Installed's count-aware copy (4.5). Every fitment in the detail view shows the *same* real vehicle/components (no fabricated variety across vehicles) — the components list is read live from the page's own What's Included rows so the two can't drift apart; the detail view's "other angle" thumbnails reuse other real photos from the same 16-photo set rather than inventing new ones.
 
 ---
 
@@ -969,7 +1044,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Purpose:** quick-scan trust signals (tenure, expertise, network size, contact) right below the fold, reinforcing credibility before the shopper scrolls further.
 
-**Typography:** 26px icon (`--rrg-red`); label is `h4`, 16px bold; body copy 14px, `#666` (desktop and mobile — no separate floor bump needed since the 2026-09-16 sitewide pass). The "Need Help" tile's phone number is bold red, not the default grey.
+**Typography:** 26px icon (`--rrg-red`); label is `h4`, 16px bold; body copy 14px, `--rrg-grey-600` (`#666`) (desktop and mobile — no separate floor bump needed since the 2026-09-16 sitewide pass). The "Need Help" tile's phone number is bold red, not the default grey.
 
 **Region differences:** 2 of the 4 tiles are region-aware, swapped by `applyRegion()` via `REGION_TRUST_COPY`: "Trusted Since 1989" (`[data-trust="founded"]`) and "Australia's Largest" (`[data-trust="network"]`) — NZ/UK show placeholder region-appropriate wording (e.g. NZ: "Visit In Person" / "Check it out at our Auckland showroom"), flagged as needing real client-approved copy before production. The "Need Help" tile's phone number + `tel:` link is separately region-aware via `REGION_PHONE` (AU `1300 071 264` / NZ `09 481 1910` / UK `01204 899778`) — handled as its own pass since it nests a link inside the `<p>`, unlike the other two tiles' plain-text swap. "Trained Professionals" is not region-aware — identical copy everywhere.
 
@@ -1064,14 +1139,14 @@ map.fitBounds(L.latLngBounds(latLngs), { padding: [24, 24] });
 #### CSS — pin and cluster colours
 
 ```css
-.rrg-map-pin span{display:block;width:20px;height:20px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#8a8a8a;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);}
-.rrg-map-pin.on-display span{background:#BB0220;}
+.rrg-map-pin span{display:block;width:20px;height:20px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rrg-grey-500);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+.rrg-map-pin.on-display span{background:var(--rrg-red);}
 .rrg-map-cluster{display:flex;align-items:center;justify-content:center;}
-.rrg-map-cluster span{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#8a8a8a;color:#fff;font-weight:800;font-size:13px;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);}
-.rrg-map-cluster.on-display span{background:#BB0220;}
+.rrg-map-cluster span{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--rrg-grey-500);color:#fff;font-weight:900;font-size:13px;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+.rrg-map-cluster.on-display span{background:var(--rrg-red);}
 ```
 
-Pins and cluster bubbles use hand-drawn CSS shapes (`L.divIcon`), not image files — no marker-icon assets to manage. Grey (`#8a8a8a`) is the default for a store without this product on display; `#BB0220` (brand red) marks a store that has it, for both individual pins and clusters. A cluster renders red the moment **any** store inside it is on display, so that signal is visible before a viewer zooms in — confirmed as the preferred approach over a single flat cluster colour or Leaflet.markercluster's default green/yellow/orange scheme.
+Pins and cluster bubbles use hand-drawn CSS shapes (`L.divIcon`), not image files — no marker-icon assets to manage. Grey (`--rrg-grey-500`, `#767676`; was a one-off `#8a8a8a` before the 2026-09-29 token pass) is the default for a store without this product on display; `--rrg-red` (brand red, navy in the UK skin) marks a store that has it, for both individual pins and clusters. A cluster renders red the moment **any** store inside it is on display, so that signal is visible before a viewer zooms in — confirmed as the preferred approach over a single flat cluster colour or Leaflet.markercluster's default green/yellow/orange scheme.
 
 #### Behavior summary
 
@@ -1106,7 +1181,9 @@ The black block's own heading (`<h3>` above the map, e.g. "See It In Person — 
 
 **Region differences:** none — tab content isn't part of the Region Selector cascade.
 
-**Links:** Fitting Instructions' download link is real (`cdn.rackit.app`, PDF icon rendered beside any link in this tab). Gold Guarantee currently has **no links** — nothing in the current content links out.
+**Links:** Fitting Instructions' download links are real (e.g. `cdn.rackit.app` on Simple, Rhino-Rack's own `assets.rhinorack.com` PDFs on Config-Variant/Vehicle-Specific; PDF icon rendered beside any link in this tab, class `.pdf-link`) and open in a new tab (`target="_blank" rel="noopener"`), with the same wrapper markup on every template (2026-09-29, `spec.md` §15 D9). Gold Guarantee currently has **no links** — nothing in the current content links out.
+
+**Bullet lists** in the Details, Gold Guarantee and Shipping Info panels share one `.details-sub ul` rule (no top/bottom margin, 18px indent). Config-Variant, Sibling-Color and Vehicle-Specific were missing it and fell back to browser-default list spacing until 2026-09-29 (`spec.md` §15 D2). Sub-headings in these panels ("Consists Of", "Key Features and Benefits", …) use the shared eyebrow style (Section 2).
 
 **Data Source:** Gold Guarantee tab content is Magento CMS content, not Rackit — same as the current live site.
 
@@ -1328,7 +1405,7 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 
 **Purpose:** cross-sell to keep the shopper browsing if this specific product isn't quite right.
 
-**Card design (updated 2026-09-29):** a simpler version of the PLP-family product card (`PLP-DEVELOPER-BRIEF.md` 4.6), so cards look the same everywhere on the site: same border/hover lift, 4:3 photo, centred Lato product name clamped to 2 lines, centred Barlow price, gold Add to Cart with the cart icon. On sale, the price reads "$X" in red with the struck-through "RRP $Y" beside it, and the same "SAVE X%" diagonal corner ribbon sits on the image's top-left. Deliberately **no** brand logo, reviews, stock line or fitment status — it's the lightweight version. Two cards per row on phones, same as the PLP grid. (None of the demo related products are currently on sale, so the Save ribbon isn't visible in the prototype; the CSS/markup pattern is in shared.css above `.plp-save-corner`.)
+**Card design (updated 2026-09-29):** a simpler, **deliberately smaller** version of the PLP-family product card (`PLP-DEVELOPER-BRIEF.md` 4.6), so cards look the same everywhere on the site: same border/hover lift, 4:3 photo, centred Lato product name clamped to 2 lines, centred Barlow price, gold `.btn-cta` Add to Cart at the small (`.btn-sm`) size with the cart icon (green in the UK, like every Add to Cart). Compact sizes, kept on purpose (Brenton, `spec.md` §15 C10): name **14px**, price **24px** (20px on phones), RRP **14px** in `--rrg-grey-600`. **Card titles are the product name only — no SKU** (`spec.md` §15 D10; some templates used to add it). On sale, the price reads "$X" in red with the struck-through "RRP $Y" beside it, and the same "SAVE X%" diagonal corner ribbon sits on the image's top-left. Deliberately **no** brand logo, reviews, stock line or fitment status — it's the lightweight version. Two cards per row at ≤640px, same breakpoint as the PLP grid (was 600px). (None of the demo related products are currently on sale, so the Save ribbon isn't visible in the prototype; the CSS/markup pattern is in shared.css above `.plp-save-corner`.)
 
 **Typography:** heading uses the shared section-heading style (Section 2); card name and price follow the card design above.
 
@@ -1348,15 +1425,31 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 
 **Purpose:** keeps price + Add to Cart reachable once the real Add to Cart button scrolls out of view — genuinely scroll-aware (an `IntersectionObserver` on the real button, not a width-only always-visible rule).
 
-**Typography:** condensed price/button scale, same button styling as the main Add to Cart.
+**Markup (one pattern on all 5 templates since 2026-09-29, `spec.md` §15 D4)** — no inline styles:
+
+```html
+<div class="sticky-cta-mobile">
+  <div class="sticky-info">
+    <div class="persistent-name">Front Runner Pro Water Tank With Strap 42L</div>
+    <div class="sticky-price"><span class="price-now">$299.00</span> <span class="price-was">$350.00</span></div>
+  </div>
+  <button class="btn btn-cta" data-cta-label>Add To Cart</button>
+</div>
+```
+
+Vehicle-Specific wraps the same `.sticky-info` block in `.persistent-product` beside a thumbnail, then adds the icon-only fitment box and the Rack Fit Guarantee icon before the button. **Vehicle-Specific now shows the price too** (it had none before).
+
+**Typography:** `.sticky-price` 13px bold — `.price-now` red when on sale, black (`.no-sale`) when not; `.price-was` 11px, `--rrg-grey-600`, struck through (was 12px on two templates and 13px on two, all inline). Button is `.btn-cta` at the `.btn-md` size. The bar uses `--shadow-bar-up`.
+
+**Price sync:** `syncBarPrices()` (`shared.js`) copies the Decision Panel price block's current "now" and "was" values into this bar and the Persistent Bar (4.35), hides the "was" price when the panel's is hidden, and toggles `.no-sale`. It runs at the end of every price re-render (`reapplySaleFlag()`), so variant/colour swaps and the Demo "Product is on sale" toggle update both bars (before 2026-09-29 that toggle left both bar prices stale on every template, `spec.md` §15 D8). In Magento, render both bars from the same price data as the main block.
 
 **Region differences:** follows whatever region state is active (price currency, Add to Cart colour for UK) — no separate logic of its own.
 
 **Links:** none beyond the Add to Cart action itself.
 
-**States:**
-- Vehicle-Specific (thumbnail + name sharing space with a condensed, icon-only fitment box — no room for the full fitment label once both are present): ![Sticky Mobile Bar — Vehicle-Specific](dev-brief-assets/sticky-mobile-bar.png)
-- Other 4 templates (truncated name + price + Add to Cart, no fitment box): ![Sticky Mobile Bar — no fitment box](dev-brief-assets/sticky-mobile-bar-name.png)
+**States:** *(screenshots predate the 2026-09-29 markup — the Vehicle-Specific shot has no price; recapture at handover)*
+- Vehicle-Specific (thumbnail + name + price sharing space with a condensed, icon-only fitment box — no room for the full fitment label once both are present): ![Sticky Mobile Bar — Vehicle-Specific](dev-brief-assets/sticky-mobile-bar.png)
+- Other 4 templates (truncated name + price + Add to Cart, no thumbnail, no fitment box): ![Sticky Mobile Bar — no fitment box](dev-brief-assets/sticky-mobile-bar-name.png)
 
 ---
 
@@ -1366,7 +1459,9 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 
 **Purpose:** same reasoning as the Sticky Mobile Bar (4.34) but for desktop — keeps a condensed product thumbnail + name + price + Add to Cart visible once the full Decision Panel scrolls out of view; on Vehicle-Specific, also keeps the fitment status + Rack Fit Guarantee badge visible.
 
-**Typography:** condensed scale; product name is truncated to fit alongside the thumbnail (and, on Vehicle-Specific, the condensed fitment box).
+**Typography:** condensed scale; product name is truncated to fit alongside the thumbnail (and, on Vehicle-Specific, the condensed fitment box). Price row (`.price-row`): `.price-now` 20px (red on sale, black `.no-sale` otherwise), `.price-was` 12px `--rrg-grey-600`. Button is `.btn-cta` at the `.btn-md` size. The bar uses `--shadow-bar` and slides in with `--t-slide`.
+
+**Price sync:** mirrors the Decision Panel price via `syncBarPrices()`, same as the Sticky Mobile Bar (4.34).
 
 **Region differences:** none beyond the standard price/currency inheritance.
 
@@ -1380,7 +1475,24 @@ Each template also carries a `FAQPage` JSON-LD structured-data block (in `<head>
 
 ### 4.36 Demo State Panel
 
-**Not part of the actual design — used to demo different states across the page only, do not build this in Magento.** A floating "Demo State" button (bottom-right, hidden on mobile) expanding into a panel that lets a reviewer preview every simulated product state (video/sale/stock/shipping/collect/special order/ex-demo/showroom/fitted-option/gallery-placement/session-vehicle/cart-contents) without needing real data for each. Every screenshot in this document was captured with this panel closed — see Section "Screenshot capture process" convention. Mentioned here only so a developer who notices it in the prototype's source knows to leave it out of the production build.
+**Not part of the actual design — used to demo different states across the page only, do not build this in Magento.** Mentioned here only so a developer who notices it in the prototype's source knows to leave it out of the production build. Every screenshot in this document was captured with the panels closed.
+
+The prototype has **two** reviewer panels (rebuilt 2026-09-29, `spec.md` §15 P1–P11):
+
+- **Demo State** (floating button bottom-right; `buildAdminPanel()` in `shared.js`) — **page-specific** previews only, showing just the controls that work on the page you're on. On the PDPs, grouped by topic:
+  - **Price & media:** Product has a video · Product is on sale.
+  - **Stock:** Stock level (In Stock / Low Stock / Out of Stock / Special Order / Discontinued; Sibling-Color adds "As per colour", its default) · Stock at your store (At your store / At a nearby store only / Online warehouse only — Phase 2 preview) · B-Stock / Ex-Demo available.
+  - **Delivery:** Delivery available · Click & Collect available.
+  - **In-store:** On display in-store (Showroom Finder).
+  - **Cart:** Cart already contains Nothing / A compatible item / An incompatible item (4.19).
+  - **Vehicle-Specific adds Fitment Gallery:** Has customer fitment photos · Number of fitments · Important vehicle fit notes (4.12).
+  - **Config-Variant and Vehicle-Specific add Get It Fitted:** Off / As a third variant card / As a checkbox above Add to Cart (4.21).
+
+  Controls that can't apply are disabled with a one-line hint instead of silently doing nothing: "Stock at your store" needs Build Phase 2 and a nearest store; Out of Stock / Discontinued untick and disable Delivery and Click & Collect, and restore them afterwards. **Choices are saved per template** (localStorage key `rrgDemo:<template>`), so a reload keeps them. Removed on 2026-09-29: the gallery-placement and red-background toggles, the Demo "Session Vehicle" buttons (now Site Admin's Vehicle), and the "New Delivery/C&C design" preview (v2 dropped, see 4.23).
+
+- **Site Admin** (floating button bottom-left; `admin-panel.js`) — **global** controls, the same on every page: the Templates list (all 12 pages, grouped, current page highlighted), links to all 6 developer briefs, **Shopper Session** (Logged in · **Vehicle: None / Toyota Hilux / Ford Ranger** — one session vehicle that drives the header text and the Vehicle-Specific fitment card, 4.10, replacing the old "Vehicle Set" switch · Nearest store set), **Build Phase** (Phase 1 launch build / Phase 2 future features), **Site Promotions** (Clearance sale banner), and **Prototype Tools** (Show Demo State panel · Reset all demo settings).
+
+On phones both panels open from small icon-only buttons that sit above the Sticky Mobile Bar. The header's "Nearest Store" link is no longer taken over by the Demo panel.
 
 ---
 
@@ -1417,11 +1529,11 @@ Phase 2 with no store set adds **"Set your store to see local stock"** after the
 
 **Availability filter:** on every product-listing page; details in the PLP brief.
 
-**PDP behaviour per state:** Out of Stock disables Add to Cart ("Out Of Stock") and shows a grey "✕ Currently out of stock" banner. Delivery and Click & Collect are both unavailable. Special Order keeps Add to Cart plus its banner (4.17). Low Stock also shows the Simple template's "This item is limited — whilst stocks last" box, which is hidden in every other state. Sibling-Color's per-colour stock uses the same wording; the orange swatch dot = low stock in that colour.
+**PDP behaviour per state:** Out of Stock disables Add to Cart ("Out Of Stock") and shows a grey "✕ Currently out of stock" banner. Delivery and Click & Collect are both unavailable. Special Order keeps Add to Cart plus its banner (4.17). **Low Stock also shows the `.scarcity` box "Only a few left — get in before they run out"** under the price block, on **all 5 templates** (it used to be Simple-only, worded "This item is limited — whilst stocks last"; `spec.md` §15 D7). It's hidden in every other state (`rrgRefreshStockSurfaces()` toggles it). It's meant as a positive urgency nudge, not a warning. Sibling-Color's per-colour stock uses the same wording; the orange swatch dot = low stock in that colour.
 
 **JSON-LD `offers.availability`** follows the status: InStock / LimitedAvailability / OutOfStock / BackOrder (Special Order) / Discontinued. Every template used to hard-code InStock.
 
-**Screenshots:** held until final handover, like the rest of this brief. To see every state in the prototype, use Site Admin → **Build Phase** + **Nearest Store Set**, and the Demo State Panel → **Stock status** + **Store stock** (the Phase 2 here/nearby/warehouse preview).
+**Screenshots:** held until final handover, like the rest of this brief. To see every state in the prototype, use Site Admin → **Build Phase** + Shopper Session → **Nearest store set**, and the Demo State Panel → Stock → **Stock level** + **Stock at your store** (the Phase 2 here/nearby/warehouse preview).
 
 ---
 
@@ -1429,13 +1541,31 @@ Phase 2 with no store set adds **"Set your store to see local stock"** after the
 
 **Location:** the page `<head>` and inline `<script type="application/ld+json">` blocks — not a visible widget, so it doesn't follow the Name/Location/Purpose/screenshot template used elsewhere in this document. Applies to all 5 templates.
 
-**Purpose:** technical elements that search engines and AI shopping agents (AEO — "answer engine optimization") read directly from the page, separate from anything a shopper sees. Logged via a scoping pass on 2026-09-12 (`spec.md` Section 12 item 31), after heading-hierarchy semantics and baseline `Product`/`Offer`/`FAQPage` schema were already built (see Section 4's audit and the JSON-LD blocks already in every template). **Nothing below is built in the prototype** — this section is scope notes for the real Magento build, written up directly rather than prototyped first, per Brenton's call on this item.
+**Purpose:** technical elements that search engines and AI shopping agents (AEO — "answer engine optimization") read directly from the page, separate from anything a shopper sees. Logged via a scoping pass on 2026-09-12 (`spec.md` Section 12 item 31), after heading-hierarchy semantics and baseline `Product`/`Offer`/`FAQPage` schema were already built (see Section 4's audit and the JSON-LD blocks already in every template). Items 1, 2 and 4 were added to the prototype on 2026-09-29 (`spec.md` §15 G6/G8) as a worked example; the rest are scope notes for the real Magento build, written up directly rather than prototyped first, per Brenton's call on this item.
 
-1. **Meta description.** None of the 5 prototype templates carry a `<meta name="description">` tag. Needs real, keyword-targeted copy per product in the Magento build — this is on-page-copy/SEO-strategy work, not something to template-generate generically from other fields.
-2. **Canonical URL.** None of the 5 prototype templates carry a `<link rel="canonical">` tag. Add one per product page pointing at that product's real, single canonical URL.
-3. **`BreadcrumbList` structured data.** The visual breadcrumb trail (`.rrg-crumbs`, 4.2) already exists and is correct on all 5 templates (fixed in `spec.md` Section 10 item 1), but nothing mirrors it as JSON-LD. Add a `BreadcrumbList` block matching whatever trail renders for that page.
-4. **`<title>` tag.** The prototype's `<title>` tags are dev-facing labels for this project (e.g. `"Simple Product PDP — Front Runner Pro Water Tank 42L"`), not real production titles. Build to whatever title format the wider Magento site already uses for product pages.
-5. **Alt text.** A handful of images ship with empty `alt=""` in the prototype — the payment-plan badge logos (`.pb-logo`) and the Persistent Bar thumbnail (`.persistent-thumb`). Give these real, descriptive alt text in the Magento build.
+**What every PDP `<head>` now carries** (example from Simple):
+
+```html
+<html lang="en-AU">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Front Runner Pro Water Tank With Strap 42L — Roof Racks Galore</title>
+<meta name="description" content="…">
+<link rel="canonical" href="https://www.roofracksgalore.com.au/front-runner-pro-water-tank-with-strap-42l-wtan063">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Roof Racks Galore">
+<meta property="og:title" content="…"> <meta property="og:description" content="…">
+<meta property="og:url" content="…"> <meta property="og:image" content="…">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="…"> <meta name="twitter:description" content="…"> <meta name="twitter:image" content="…">
+```
+
+`lang="en-AU"` and the favicon (the real live site's) are on every page. The description, canonical and OG/Twitter values are built from each product's own real live URL, main image and description.
+
+1. **Meta description.** Present on all 5 templates (above), taken from each product's real description. In the Magento build it still needs real, keyword-targeted copy per product — this is on-page-copy/SEO-strategy work, not something to template-generate generically from other fields.
+2. **Canonical URL.** Present on all 5 templates, pointing at that product's real live URL. Keep one per product page, pointing at its single canonical URL.
+3. **`BreadcrumbList` structured data.** The visual breadcrumb trail (`.rrg-crumbs`, 4.2) already exists and is correct on all 5 templates, but nothing on the PDPs mirrors it as JSON-LD (the Vehicle Category Landing Page has one as an example). Add a `BreadcrumbList` block matching whatever trail renders for that page.
+4. **`<title>` tag.** Now "Product name — Roof Racks Galore" on every template (the old dev-facing labels such as "Fitment Confidence Command Center" are gone). Build to whatever title format the wider Magento site already uses for product pages if it differs.
+5. **Alt text.** The payment-plan badge logos (`.pb-logo`) are `alt=""` in the markup but get the provider name (Afterpay, PayPal, Zip, Clearpay, Klarna) from `syncPaymentBadges()` at runtime; in Magento, render that alt server-side. The Persistent Bar thumbnail (`.persistent-thumb`, and Vehicle-Specific's Sticky Mobile Bar thumbnail) is still `alt=""` — give it real, descriptive alt text.
 6. **`Product` schema's `priceCurrency` — region-specific, flag to whoever builds the Region Selector (4.1).** Every prototype template hardcodes `"priceCurrency": "AUD"` inline in its own `Product`/`Offer` JSON-LD block. The Region Selector's `applyRegionCurrency()` function (`shared.js`) only swaps the visible `$`/`£` symbol in on-page text — it doesn't touch these `<script>` blocks, so a UK/NZ page would still assert AUD pricing to search engines and AI shopping agents. In the real build, `priceCurrency` needs to follow the actual region/currency the page is served in.
 7. **`AggregateRating`/`Review` schema — not blocked on missing data.** No `aggregateRating` or `Review` schema exists yet in the `Product` block on any template, but the real data to populate it already exists: the Decision Panel star-rating badge (4.9) already calls `api.reviews.io/timeline/data` live per SKU and gets back `average_rating`/`review_count`. Once a SKU has real reviews, that same response can drive `aggregateRating` — this is a straightforward addition once building in Magento, not something waiting on new data the way the FAQ content behind the `FAQPage` schema is (4.32).
 8. **`Offer.availability` must follow the real stock status** (4.37) — mapping InStock / LimitedAvailability / OutOfStock / BackOrder / Discontinued. The prototype now does this live; before 2026-09-29 every template hard-coded InStock.

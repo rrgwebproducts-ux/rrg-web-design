@@ -17,9 +17,8 @@
 .mega-menu-backdrop{position:fixed;inset:0;background:var(--overlay);opacity:0;pointer-events:none;transition:opacity var(--t-fade) ease;z-index:80;}
 .mega-menu-backdrop.visible{opacity:1;pointer-events:auto;}
 @media (max-width:900px){
-  /* Desktop-only — on mobile, .mega-menu.open drives the .rrg-nav slide-down drawer instead
-     (z-index:56 in shared.css, lower than this backdrop's 80), so leaving this active on
-     mobile would dim/cover that drawer rather than the page behind it. */
+  /* Desktop-only — on mobile the menu is the full-screen takeover (.mm-mobile-takeover), which
+     covers the page itself, so a backdrop behind it would only add a second dimming layer. */
   .mega-menu-backdrop{display:none!important;}
 }
 

@@ -94,8 +94,8 @@ body.region-uk .footer-brand-col .rrg-logo img{height:76px;}
    continuous blue block (no separate light bottom bar the way AU/NZ's is) — #2E41AE is
    already this project's UK brand-blue token (`body.region-uk{--rrg-red:#2E41AE}` in
    shared.css, used for the header/logo skin), reused here rather than a second colour value. */
-body.region-uk .rrg-footer{background:#2E41AE;}
-body.region-uk .footer-bottom{background:#2E41AE;color:#fff;}
+body.region-uk .rrg-footer{background:var(--rrg-red);}
+body.region-uk .footer-bottom{background:var(--rrg-red);color:#fff;}
 
 @media (max-width:900px){
   .footer-grid{grid-template-columns:1fr 1fr;row-gap:36px;}

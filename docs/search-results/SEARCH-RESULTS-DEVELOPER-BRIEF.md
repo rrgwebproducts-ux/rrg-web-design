@@ -1,5 +1,7 @@
 # Search Results Page — Developer Brief
 
+> **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15, steps 1–5). The text now matches the current code. Screenshots are deliberately held until final handover, so some of them may still show the pre-pass look.
+
 ## 1. Project context
 
 **Audience:** for Marc, same as `DEVELOPER-BRIEF.md`, `HEADER-DEVELOPER-BRIEF.md`, `FOOTER-DEVELOPER-BRIEF.md` and the Vehicle Category Landing Page brief — detailed information on this page's build so implementation decisions in Magento stay consistent with the intent, even where the exact prototype code can't be lifted verbatim.
@@ -12,13 +14,15 @@
 
 **Reworked 2026-09-29** after the 2026-09-24 design meeting: the page's own search box is gone (one heading line with an "in Products ▾" switcher replaces it), matching site pages appear as buttons beside the heading, and results are now vehicle-aware. Sections 3, 4.1, 4.5 and the new 4.7 describe the current build; `search-results-spec.md` Section 9 has the reasoning.
 
-**Build status:** built as `prototypes/search-results/index.html`, worked example query is "roof rack" (16 results spanning Roof Racks and Bike Racks, including 3 Ford Ranger products added 2026-09-29 to demo vehicle-aware ordering). Playwright-verified across every round below: desktop (1440px) and mobile (390px, zero horizontal overflow), category quick-tabs + Level 3 icon-card filtering, zero-results state, mobile filter drawer, sidebar merchandising, header search entry points. Zero console errors throughout (aside from the usual harmless favicon 404). Pushed to `main` across several commits from 2026-09-21 through 2026-09-22 (`6504017` initial build, `240c273`/`af18f60`/`6b218d1`/`e450ed1` follow-ups) — see the spec doc and project memory for the exact history if needed.
+**Build status:** built as `prototypes/search-results/index.html`, worked example query is "roof rack" (16 results spanning Roof Racks and Bike Racks, including 3 Ford Ranger products added 2026-09-29 to demo vehicle-aware ordering). Playwright-verified across every round below: desktop (1440px) and mobile (390px, zero horizontal overflow), category quick-tabs + Level 3 icon-card filtering, zero-results state, mobile filter drawer, sidebar merchandising, header search entry points. Zero console errors throughout (the old favicon 404 is gone; the page now loads the real favicon, 2026-09-29). Pushed to `main` across several commits from 2026-09-21 through 2026-09-22 (`6504017` initial build, `240c273`/`af18f60`/`6b218d1`/`e450ed1` follow-ups) — see the spec doc and project memory for the exact history if needed.
 
 ---
 
 ## 2. Typography & colour reference
 
 Same type scale and colour tokens as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings/buttons, Lato for body text, the full `--rrg-*` custom-property table) — not repeated here. No page-specific typography deviations.
+- **Page H1 (2026-09-29):** this page used to be the odd one out, at 28px on desktop and 22px on mobile. It now uses the one shared page-H1 rule, 32px / 1.1, stepping down to 28px at 640px and below, the same as the PDP and the PLP hero.
+- **Other shared rules:** buttons, section spacing (48px), tooltips, drawers and carousel dots all follow the site-wide rules from the same pass. They are listed once in `PLP-DEVELOPER-BRIEF.md` Section 2.
 
 The product grid/card, filter sidebar, and sort/pagination controls use the same classes and styling as the PLP/VPLP/Camping templates (`plp.css`) — again, no deviation specific to this page. The only genuinely new visual patterns this page introduces are documented with their own styling notes in Section 4 (category quick-tabs, the zero-results empty state, and the Level 3 icon-card counts).
 
@@ -29,18 +33,18 @@ The product grid/card, filter sidebar, and sort/pagination controls use the same
 One page, section order top to bottom:
 
 1. Global Header (incl. the search box that leads here — Enter, the search button, or the dropdown's links) + vehicle strip
-2. Breadcrumb — "Home > Search results for > \<query\>" (not a real taxonomy trail, since a search isn't a category; the middle crumb isn't a link)
+2. Breadcrumb — "Home > Search results for > \<query\>" (not a real taxonomy trail, since a search isn't a category). "Home" is a link (fixed 2026-09-29); the middle crumb isn't. It sits in the same `.plp-crumbs-row` as the PLP family, which is always one line and truncates with an ellipsis.
 3. Heading line — `Search results for "<query>" in Products ▾` + count on the left, up to 3 page buttons on the right (Section 4.1)
 4. **Products view** (the switcher's default):
    1. Vehicle strip — only when the results contain vehicle-specific products (Section 4.7)
    2. Category quick-tabs (Section 4.2)
-   3. Toolbar — grid/list toggle + "Showing 1–12 of N Results" + Sort dropdown (reused from PLP)
+   3. Toolbar (reused from PLP), left to right: grid/list toggle → "Refine Results" (mobile only) → "Showing 1-12 of N Results", with "Sort By" on the right. This page's order became the standard for every PLP-family page on 2026-09-29.
    4. Two-column layout below the toolbar:
       - **Sidebar:** Filters (universal facet set, Section 4.3) + Merchandising block (Section 4.4)
       - **Main:** Level 3 icon-card row when one category is narrowed (Section 4.2) → product grid/list (reused from PLP) → pagination (reused)
       - **OR**, if the query matches no products: the zero-results state replaces the grid/pagination (Section 4.5)
 5. **OR Pages / Articles / Brands view** — replaces everything in item 4 when chosen in the switcher (Section 4.1)
-6. Global Footer
+6. Global Footer. The gap above it is 48px, the same as every other page; it used to be about 88px here.
 
 **Screenshots:**
 - Desktop (1440px), full page, default "roof rack" query: ![Search Results — desktop full page](search-results-dev-brief-assets/fullpage-desktop.png)
@@ -59,21 +63,21 @@ One page, section order top to bottom:
 **Purpose:** say what was searched for and get the shopper to results immediately. The page used to have a generic heading and its own search box stacked above the tabs, which pushed every product below the fold; the header search box already does the searching, so this page no longer has one.
 
 **Contents, left to right:**
-- `<h1>`: `Search results for "<query>"`.
-- **Switcher** — `in Products ▾` (styled like the heading, in brand red with an underline; modelled on Supercheap Auto's search page). Opens a small menu: **Products (N)**, **Pages (N)**, **Articles (N)**, **Brands (N)**. Products is always listed, even at 0; the others only appear when they have at least one match.
+- `<h1>`: `Search results for "<query>"`, on the shared page-H1 rule (32px, 28px at 640px and below; Section 2).
+- **Switcher** — `in Products ▾` (styled like the heading, in brand red with a 2px underline; modelled on Supercheap Auto's search page). It is set at the heading's size, 32px, dropping to 28px on smaller screens (`.plp-search-scope-in` / `.plp-search-scope-btn`). Opens a small menu: **Products (N)**, **Pages (N)**, **Articles (N)**, **Brands (N)**. Products is always listed, even at 0; the others only appear when they have at least one match.
 - Count for the current view, e.g. "16 products".
-- **Page buttons** (right-aligned, max 3, outline buttons) — site pages whose keywords match the query *and* are flagged as button-worthy: Fit My Vehicle, the matching vehicle landing page (VCLP), Find a Store. Help articles and plain info pages (Warranty, Delivery...) never appear as buttons, only inside the Pages/Articles views. Vehicle pages (e.g. "Toyota Hilux Roof Racks") only appear when a vehicle is set in session or the query names that vehicle.
+- **Page buttons** (right-aligned, max 3; `.btn-outline` at the shared small size, 13px or 12px on phones) — site pages whose keywords match the query *and* are flagged as button-worthy: Fit My Vehicle, the matching vehicle landing page (VCLP), Find a Store. Help articles and plain info pages (Warranty, Delivery...) never appear as buttons, only inside the Pages/Articles views. Vehicle pages (e.g. "Toyota Hilux Roof Racks") only appear when a vehicle is set in session or the query names that vehicle.
 
 **Switcher views — same frame, different content** (reworked 2026-09-29 after Brenton found the first version's plain card grid too big a jump from Products): every view keeps the same page skeleton — tab row, toolbar (count + sort), filter sidebar + merchandising, 3-column card grid on the same product-card frame (image top, body, full-width action at the bottom). Only the content changes:
 
 | View | Tab row | Sidebar filters | Sort | Card |
 |---|---|---|---|---|
-| Products | Categories in the results (4.2) | Universal facets (4.3) | Relevance, Newest, Best Selling, Rating, Price | Product card |
+| Products | Categories in the results (4.2) | Universal facets (4.3) | Relevance, Newest, Best Selling, Highest Rated, Price: Low to High, Price: High to Low (the shared `PLP_PRODUCT_SORT_OPTIONS` list) | Product card |
 | Pages | Vehicle Pages / Categories / Tools & Services / Help & Policies | Page Type | Relevance, Title A–Z | Image, type, title, one-line description, View Page |
 | Articles | The same product categories as Products, same icons (Roof Racks / Bike Racks / Roof Boxes…) | Topic, Type (Buying Guide / FAQ) | Relevance, Title A–Z | Image, "FAQ · Roof Racks", title, description, Read Article |
 | Brands | The categories each brand sells (a brand can appear under several) | Sells | Relevance, Name A–Z | Logo (or wordmark), name, what it sells, Shop \<Brand\> |
 
-Tabs only show categories/groups that have results. The grid/list toggle and vehicle strip are Products-only. Each view keeps its own tab/filter/sort selection, so switching back to Products restores exactly what was selected there. The chosen view is written to `?type=` so it survives a reload or shared link.
+Tabs only show categories/groups that have results. The grid/list toggle and vehicle strip are Products-only. The Pages, Articles and Brands filter groups (Page Type, Topic, Type, Sells) have the same tooltip icon as every product filter (`plpFilterTooltipHTML()`, since 2026-09-29). Their copy is the generic "Narrow your results by \<filter\>." fallback. Each view keeps its own tab/filter/sort selection, so switching back to Products restores exactly what was selected there. The chosen view is written to `?type=` so it survives a reload or shared link.
 
 **Listing images:** every page and article card needs its own primary image — **not the site-wide Facebook share image**, which is the same on every page. In the prototype, real article images come from the help centre where they exist; the live static pages have no images at all and 7 of the articles don't either, so those use a relevant real product photo marked as a stand-in. A page with no image at all shows a logo fallback tile (Warranty/Delivery/Returns in the demo) — build that fallback for older pages/blogs, and **add a listing-image field to every CMS page and blog post** going forward.
 
@@ -91,7 +95,7 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 
 **Name:** Category Quick-Tabs (top) / Level 3 icon-cards (below the toolbar, conditional)
 
-**Location:** quick-tabs sit directly below the Results Bar; the icon-card row (when present) sits between the toolbar and the product grid.
+**Location:** quick-tabs sit directly below the heading line (and the vehicle strip, when shown); the icon-card row (when present) sits between the toolbar and the product grid.
 
 **Purpose:** replaces PLP's fixed "SHOP BY" tabs with a set **dynamically built from whichever categories actually appear in this search's result set** — e.g. a "roof rack" query pulls real matches from both the Roof Racks and Bike Racks catalogues, so both appear here; a query that only matched one category would only show one tab (plus "All"). Unlike PLP's SHOP BY (deliberately real, indexable per-category URLs), these tabs are **in-page filtering only** — a search result set isn't itself a taxonomy node, so there's no SEO reason to hard-URL each one.
 
@@ -107,11 +111,11 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 
 **Name:** Filters sidebar
 
-**Location:** left column, below the Results Bar/tabs, alongside the product grid.
+**Location:** left column, below the heading line/tabs, alongside the product grid.
 
 **Purpose:** PLP's per-category configured facets (e.g. Bike Racks' "how many bikes," Roof Racks' "cross bar quantity") can't apply here, since a mixed result set may span categories that don't share an attribute schema. This page instead shows a fixed **universal** facet set that every product in the catalogue carries regardless of category.
 
-**Contents:** Category (same set as the quick-tabs, Section 4.2 — one shared selection, not a second independent filter), Brand, Price (range buckets, not exact-match — a new engine mode, see the note below), Availability (the same site-wide filter as every PLP-family page, with options that follow Build Phase / store set — PLP brief 4.5, reworked 2026-09-29), Customer Rating. Every option shows a live count that narrows correctly against both the active query *and* any other active filters (confirmed important during build — see the engine note below). No priority-filter "gold" treatment (that's a per-category buyer-journey concept from `plp-spec.md` that doesn't map onto an arbitrary mixed set), and no category-specific technical facets.
+**Contents:** Category (same set as the quick-tabs, Section 4.2 — one shared selection, not a second independent filter), Brand, Price (range buckets, not exact-match — a new engine mode, see the note below), Availability (the same site-wide filter as every PLP-family page, with options that follow Build Phase / store set — PLP brief 4.5, reworked 2026-09-29), Customer Rating. Every option shows a live count that narrows correctly against both the active query *and* any other active filters (confirmed important during build — see the engine note below). No priority-filter treatment (the red-outline buyer-journey groups are a per-category concept from `plp-spec.md` that doesn't map onto an arbitrary mixed set), and no category-specific technical facets. Every group has the shared filter tooltip icon (PLP brief 4.5), and the sidebar and mobile drawer both have a "Clear Filters" link.
 
 **Engine note for whoever maintains `plp.js`:** two additions were needed to the shared engine to support this page, both gated behind a `PLP_CONFIG.isSearch` flag so `plp`/`vplp`/`plp-camping` are unaffected: (1) a `'range'` facet mode in `plpValueMatches()` — every other facet mode reads `product.facets[key]`, but Price here reads `product.price` directly; (2) the search-query text match itself lives in the same choke point (`plpMatchesFiltersExcept()`) as every other filter check, so a query like "roof rack" narrows the pool *before* facet counts are computed — doing this later, only in the final grid render, would have left the sidebar's counts wrong (counting against the whole catalogue instead of the query's matches).
 
@@ -127,7 +131,7 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 
 **Purpose:** added 2026-09-22 — this page was missing the same sidebar merchandising slot every PLP/VPLP/Camping page already has. No engine change was needed at all; the shared `plpRenderMerchSidebar()` function already supported any page generically, this page's markup and config just hadn't been wired up to it yet.
 
-**Contents:** a promo image carousel (dots if more than one slide) + a "Featured Product" card below it. **Because this page has no single category to draw a "real" category-level promo from, it uses a cross-category promo instead** (a storewide sale tile) rather than PLP's per-category promo — same reasoning as Section 4.3's dropped priority-filter treatment. The featured product is a single hardcoded pick from the demo dataset; in production this would presumably follow whatever merchandising rule Magento applies (same open question as the equivalent PLP component, not specific to this page).
+**Contents:** a promo image carousel (dots if more than one slide) + a "Featured Product" card below it. **Because this page has no single category to draw a "real" category-level promo from, it uses a cross-category promo instead** (a storewide sale tile) rather than PLP's per-category promo — same reasoning as Section 4.3's dropped priority-filter treatment. The featured product is a single hardcoded pick from the demo dataset; in production this would presumably follow whatever merchandising rule Magento applies (same open question as the equivalent PLP component, not specific to this page). Since 2026-09-29 the Featured Product card uses the product card's own price markup and "SAVE X%" corner band (PLP brief 4.9). The carousel dots are the shared round grey dots, with a red active dot.
 
 **Screenshot:** ![Merchandising sidebar](search-results-dev-brief-assets/merch-closeup.png)
 
@@ -146,6 +150,8 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 2. **Popular Categories** — three links to the real Roof Racks/Bike Racks/Camping Gear category pages (not `href="#"` placeholders).
 3. **"You Might Like"** — a small featured-product row reusing the exact same product card component as the main grid. **Built as a genuine horizontal-scroll carousel** (not a wrapping grid) — exactly 3 cards visible on desktop with the 4th+ reachable by scroll; this was a real regression caught and fixed 2026-09-22 (an in-progress edit had briefly turned it into a 3-column grid, which wrapped the 4th card onto a visible second row instead of scrolling).
 
+**Subheadings (2026-09-29):** "Popular Categories" and "You Might Like" (`.plp-search-empty-subheading`) use the shared section-heading style, the same as "Related Products" elsewhere. They sit on the shared 48px section spacing, with 16px to their content. "You Might Like" was an 18px red one-off before.
+
 **Screenshot:** ![Zero-results state](search-results-dev-brief-assets/zero-results-closeup.png)
 
 ---
@@ -154,7 +160,22 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 
 **Location:** main content column; mobile filter drawer is a right-edge slide-out triggered by a "Refine Results" button, mobile only.
 
-**Purpose/contents:** identical to the PLP/VPLP/Camping templates — grid/list toggle, ribbons, sale pricing (Save X%), Add to Cart vs. View Options split, Show Specs expandable row, Compare Products checkboxes/drawer, Sort dropdown (Relevance/Newest/Best Selling/Highest Rated/Price Low→High/Price High→Low), desktop numbered pagination + mobile "Show More," and the mobile filter drawer pattern. **None of this is re-documented here** — see `docs/plp/PLP-DEVELOPER-BRIEF.md` Section 4 (4.6, 4.8, 4.12) for the real component-level detail (Name/Purpose/States/screenshots per widget). This brief only confirms that search-results uses these components completely unchanged.
+**Purpose/contents:** identical to the PLP/VPLP/Camping templates. This covers:
+- grid/list toggle, with a 3-per-row desktop grid
+- ribbons (Phase 2 preview only)
+- sale pricing (Save X% corner band) in the region's currency
+- Add to Cart vs. View Options split, both gold `.btn-cta` (green in the UK)
+- Out of Stock and Discontinued, which both show a disabled button
+- "(N Reviews)"
+- Show Specs expandable row
+- Compare Products checkboxes/drawer (Phase 2 preview only)
+- Sort dropdown (Relevance/Newest/Best Selling/Highest Rated/Price: Low to High/Price: High to Low, from the shared `PLP_PRODUCT_SORT_OPTIONS`)
+- desktop numbered pagination + mobile "Load More (N)"
+- the mobile filter drawer (shared 420px drawer, closes on Escape)
+
+**None of this is re-documented here** — see `docs/plp/PLP-DEVELOPER-BRIEF.md` Section 4 (4.6, 4.8, 4.12) for the real component-level detail (Name/Purpose/States/screenshots per widget). This brief only confirms that search-results uses these components completely unchanged.
+
+**Demo State Panel (prototype only, don't build):** on this page it shows only **Phase 2 previews** (Compare Products, Product ribbons; disabled until Site Admin is on Build Phase 2) and **Search shortcuts**. The shortcuts are demo query links: "roof rack", "ranger", "bike racks", "warranty", and "snorkel" for zero results. The old Default view and Grid columns controls were removed on 2026-09-29. See PLP brief 4.13.
 
 **Screenshot (mobile filter drawer, showing the same universal facet set as 4.3):** ![Mobile filter drawer](search-results-dev-brief-assets/mobile-drawer.png)
 
@@ -168,15 +189,15 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 
 **Purpose:** search results mix vehicle-specific products (rack sets, platforms, fitting kits) with universal ones. A shopper who has told us their vehicle should see what fits first; a shopper who hasn't should be nudged to, and shouldn't quick-add the wrong vehicle's rack set without being warned.
 
-**Source of truth:** the session vehicle — the same one the header's "Your Vehicle: …" shows and the Site Admin Panel's Vehicle Set toggle controls in the prototype. Each product carries which vehicle it fits (`fitsVehicle` in the prototype; empty for universal products).
+**Source of truth:** the session vehicle — the same one the header's "Your Vehicle: …" shows. In the prototype it is set by the Site Admin Panel's **Vehicle** select (None / Toyota Hilux / Ford Ranger; `rrgVehicle()` in `session-state.js`), which replaced the old "Vehicle Set" checkbox on 2026-09-29. Choosing Ford Ranger demos the "doesn't fit" states against the Hilux products without a separate control. Each product carries which vehicle it fits (`fitsVehicle` in the prototype; empty for universal products).
 
-**One component, three levels of detail (2026-09-29, Brenton):** the strip and the card status are the **same component as the vehicle-specific PDP's fitment card** (`.fitment` in `shared.css`: white box, 3px coloured left border, car icon, Barlow uppercase label, detail line), in the same three states and colours — green *fits*, red *doesn't fit*, amber *confirm your vehicle*. The PDP card is the full version; the strip is the same card with an action button on the right; the product-card status is the compact version (a single label line, no actions). The strip literally uses the PDP card's CSS classes, so they can't drift apart — build it as one shared component in Magento.
+**One component, three levels of detail (2026-09-29, Brenton):** the strip and the card status are the **same component as the vehicle-specific PDP's fitment card** (`.fitment` in `shared.css`: white box, 3px coloured left border, car icon, Barlow uppercase label, detail line), in the same three states and colours — green *fits*, red *doesn't fit*, amber *confirm your vehicle*. The PDP card is the full version; the strip is the same card with an action button on the right (`.btn-outline-red.btn-sm`, the site-wide Change Vehicle style); the product-card status is the compact version (`.fitment.fitment-compact`: a single label line, no actions). Both the strip and the card status literally use the PDP card's CSS classes, so they can't drift apart — build it as one shared component in Magento.
 
 **States:**
 - **Vehicle set, Sort = Relevance:** results ordered in three tiers — fits the session vehicle → not vehicle-specific → fits a different vehicle — with normal relevance order inside each tier. **Nothing is hidden or filtered out** (the meeting was explicit: matches "take precedence", not "exclusively"). Strip (green): "FITS YOUR VEHICLE FIRST — Products that fit your Toyota Hilux N80 are shown first." + Change vehicle. If nothing in the results fits (e.g. searching "ranger" with a Hilux set), the strip goes red: "NOTHING HERE FITS YOUR VEHICLE — None of these vehicle-specific products fit your Toyota Hilux N80."
 - **Vehicle set, any other sort:** the shopper's chosen sort wins; no tier ordering, no strip (card statuses still show).
 - **No vehicle set:** normal relevance order. Strip (amber): "CONFIRM YOUR VEHICLE — Some of these products are vehicle-specific. Set your vehicle to see what fits first." + Select your vehicle, which opens the site-wide Fit Finder drawer (`HEADER-DEVELOPER-BRIEF.md` 4.10); Change vehicle does the same. Only shown when the results actually contain a vehicle-specific product — a "bike racks" search gets no strip.
-- **Product-card status**, between the product name and the reviews on grid cards (above the name in list view), centre-aligned in grid view, vehicle-specific products only: one line only, naming the make/model so it stays slim — green "FITS YOUR TOYOTA HILUX", red "DOESN'T FIT YOUR TOYOTA HILUX", or amber "SUITS TOYOTA HILUX ONLY" (the product's vehicle) when no vehicle is set. The car icon is hidden below 600px. **Hover / tap / keyboard focus shows a tooltip with the full vehicle** (added 2026-09-29 after the team pointed out "Suits Toyota Hilux only" doesn't say which Hilux): fits — "Confirmed for your Toyota Hilux N80 (4dr Ute, Bare Roof, 2015 to 2026)."; no vehicle — "This product is specific to the Toyota Hilux N80 (4dr Ute, Bare Roof, 2015 to 2026). Set your vehicle to confirm it fits."; doesn't fit — "This product is built for the Ford Ranger P703 (…) — not your Toyota Hilux N80 (…)." It drops down over the card under the label, the same size and shape as the filter tooltips. Tooltip colours: footer charcoal (#211E20) with white text. In the no-vehicle state "Set your vehicle" is a link (and "Change your vehicle" in the doesn't-fit state) that opens the site-wide **Fit Finder drawer** (`HEADER-DEVELOPER-BRIEF.md` 4.10). **This is on every PLP-family page, not just search** — the Vehicle PLP shows it on every card (all its products are Hilux N80 rack sets); the bike-rack and camping PLPs have no vehicle-specific products, so nothing shows there. The Add to Cart notice below works on every PLP-family page too.
+- **Product-card status**, between the product name and the reviews on grid cards (above the name in list view), centre-aligned in grid view, vehicle-specific products only: one line only, naming the make/model so it stays slim — green "FITS YOUR TOYOTA HILUX", red "DOESN'T FIT YOUR TOYOTA HILUX", or amber "SUITS TOYOTA HILUX ONLY" (the product's vehicle) when no vehicle is set. The car icon is hidden at 640px and below. **Hover / tap / keyboard focus shows a tooltip with the full vehicle** (added 2026-09-29 after the team pointed out "Suits Toyota Hilux only" doesn't say which Hilux): fits — "Confirmed for your Toyota Hilux N80 (4dr Ute, Bare Roof, 2015 to 2026)."; no vehicle — "This product is specific to the Toyota Hilux N80 (4dr Ute, Bare Roof, 2015 to 2026). Set your vehicle to confirm it fits."; doesn't fit — "This product is built for the Ford Ranger P703 (…) — not your Toyota Hilux N80 (…)." It drops down over the card under the label, using the one shared tooltip bubble (the same as the filter tooltips): footer charcoal (#211E20), white Lato 14px. In the no-vehicle state "Set your vehicle" is a link (and "Change your vehicle" in the doesn't-fit state) that opens the site-wide **Fit Finder drawer** (`HEADER-DEVELOPER-BRIEF.md` 4.10). **This is on every PLP-family page, not just search** — the Vehicle PLP shows it on every card (all its products are Hilux N80 rack sets); the bike-rack and camping PLPs have no vehicle-specific products, so nothing shows there. The Add to Cart notice below works on every PLP-family page too.
 - **Quick Add to Cart on a vehicle-specific product, no vehicle set:** the product **is added** (nothing is blocked), then a pop-up: "✓ Added to cart", the product thumbnail + name, and an amber warning — "You haven't set a vehicle yet. This product only fits the Toyota Hilux N80 4dr Ute (2015 to 2026). Please confirm it fits your vehicle before ordering." — with Set Your Vehicle / Continue Shopping buttons. Closes on the ×, the backdrop, Escape or Continue Shopping.
 - **Same, but a different vehicle is set:** same pop-up, warning reads "This product is for a different vehicle. It's made for the Ford Ranger P703 4dr Ute (2022 onwards), but your vehicle is set to the Toyota Hilux…", button reads Change Vehicle. (Not raised in the meeting — added because it's the same risk.)
 - Products with options (siblings/grouped) keep "View Options" instead of quick add, so they never trigger the pop-up — the PDP handles vehicle confirmation for those.
@@ -193,7 +214,7 @@ Tabs only show categories/groups that have results. The grid/list toggle and veh
 
 **Decided (Brenton, 2026-09-22): this page is not indexable.** It doesn't need to be findable by Google at all — query-dependent, unstable content is exactly the case a search-results page is normally kept out of the index for, and RRG doesn't need it discoverable via search regardless.
 
-**What's built:** the prototype now carries `<meta name="robots" content="noindex, nofollow">` in its `<head>`, matching that decision. No meta description, canonical tag, or `BreadcrumbList`/`ItemList` JSON-LD exists on this page, and **none of that needs building** — it would only matter for a page meant to be indexed. The prototype's `<title>` is still a dev-facing label (`"Search Results — Roof Racks Galore"`); give it a real title in the Magento build regardless of noindex status, since the tab/window title and any internal tooling that reads it still benefit from a real one.
+**What's built:** the prototype now carries `<meta name="robots" content="noindex, nofollow">` in its `<head>`, matching that decision. No meta description, canonical tag, Open Graph tags or `BreadcrumbList`/`ItemList` JSON-LD exists on this page, and **none of that needs building** — it would only matter for a page meant to be indexed. It is the only listing page left without them on purpose; PLP and Camping got them on 2026-09-29. Like every page since 2026-09-29, it has `<html lang="en-AU">` and the real favicon. The `<title>` is `"Search Results — Roof Racks Galore"`, which follows the site-wide "Page name — Roof Racks Galore" format. Still give it a real title in the Magento build regardless of noindex status, since the tab/window title and any internal tooling that reads it benefit from one.
 
 **For the real Magento build:** carry the same `noindex, nofollow` directive through (or an equivalent robots.txt/canonical-based exclusion, whichever fits the site's existing SEO tooling) — this is a one-line implementation once the decision itself was the only open question.
 
