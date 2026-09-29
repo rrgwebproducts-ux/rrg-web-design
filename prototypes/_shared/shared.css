@@ -1942,7 +1942,19 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .home-offer-tile img{position:absolute;inset:0;width:100%;height:100%;}
 .home-offer-tile img:first-child{object-fit:cover;}
 .home-offer-tile img+img{object-fit:contain;}
-@media (max-width:900px){ .home-offer-grid{grid-template-columns:1fr;gap:12px;margin-top:16px;} }
+/* ≤900px: one swipeable row instead of three stacked tiles (Brenton, 2026-09-29), bleeding to the
+   screen edge with the next tile peeking in. Auto-advances every 4s (initOfferCarousel(),
+   shared.js); dots below show where you are. */
+.home-offer-dots{display:none;}
+@media (max-width:900px){
+  .home-offer-grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:86%;gap:12px;margin:16px -24px 0;padding:0 24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 24px;scrollbar-width:none;}
+  .home-offer-grid::-webkit-scrollbar{display:none;}
+  .home-offer-tile{scroll-snap-align:start;}
+  .home-offer-tile:hover{transform:none;box-shadow:none;}
+  .home-offer-dots{display:flex;justify-content:center;gap:8px;margin-top:10px;}
+  .home-offer-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:var(--rrg-line);cursor:pointer;}
+  .home-offer-dots button[aria-current="true"]{background:var(--rrg-grey-700);width:22px;border-radius:4px;}
+}
 
 /* Help row (spec 5.8) — the VLP's Store Finder tile beside two light cards (Key Finder, Let Us
    Help), merging the live page's Key Finder / fitting costs / "Let Us Help" leftovers. */

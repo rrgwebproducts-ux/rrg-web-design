@@ -1219,6 +1219,36 @@ function initInlineFitFinders() {
   });
 }
 
+// Home page Current Offers (docs/home/home-spec.md 5.6) — on phones/tablets (≤900px, where CSS
+// turns the grid into a scroll-snap row) it auto-advances every 4s and loops. Any touch, wheel
+// or dot tap stops the autoplay for good, and it never autoplays under prefers-reduced-motion
+// or while scrolled out of view. On desktop the three tiles all show, so it does nothing.
+function initOfferCarousel() {
+  document.querySelectorAll('[data-offer-carousel]').forEach(track => {
+    const tiles = [...track.children];
+    const dotsEl = track.parentElement.querySelector('.home-offer-dots');
+    const mobile = window.matchMedia('(max-width:900px)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let userTook = false;
+    let visible = true;
+    dotsEl.innerHTML = tiles.map((t, i) => `<button type="button" aria-label="Show offer ${i + 1}"></button>`).join('');
+    const dots = [...dotsEl.children];
+    const index = () => Math.round(track.scrollLeft / (tiles[1].offsetLeft - tiles[0].offsetLeft));
+    const go = i => track.scrollTo({ left: tiles[i].offsetLeft - tiles[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+    const sync = () => { const n = index(); dots.forEach((d, i) => d.setAttribute('aria-current', i === n ? 'true' : 'false')); };
+    const stop = () => { userTook = true; };
+    dots.forEach((d, i) => d.addEventListener('click', () => { stop(); go(i); }));
+    ['touchstart', 'wheel', 'pointerdown'].forEach(ev => track.addEventListener(ev, stop, { passive: true }));
+    track.addEventListener('scroll', () => { clearTimeout(track._offerTimer); track._offerTimer = setTimeout(sync, 60); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(track);
+    setInterval(() => {
+      if (userTook || reduced || !visible || !mobile.matches || document.hidden) return;
+      go((index() + 1) % tiles.length);
+    }, 4000);
+    sync();
+  });
+}
+
 // Home page hero slider (docs/home/home-spec.md 5.2). Dots, prev/next, swipe; autoplays every 6s,
 // pausing while the pointer or focus is inside the hero, and never under prefers-reduced-motion.
 // Inactive slides are aria-hidden with their links taken out of the tab order.
@@ -2862,6 +2892,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFitFinderTriggers();
   initInlineFitFinders();
   initHomeHero();
+  initOfferCarousel();
   buildFitGallerySlideout();
   initCopyButtons();
   initFitGalleryCarousel();
