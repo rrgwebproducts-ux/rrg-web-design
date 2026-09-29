@@ -25,39 +25,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
-<style>
-  .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;padding:28px 0 8px;align-items:start;}
-  .decision-panel{background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
-  .decision-panel .reviews-strip{margin-bottom:16px;}
-
-  /* Variant picker — comparison-forward toggle cards */
-  .variant-label-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;}
-  .variant-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-  .variant-option{border:1.5px solid var(--rrg-line);border-radius:var(--radius);padding:14px;text-align:left;background:#fff;cursor:pointer;position:relative;transition:border-color var(--t-fast), box-shadow var(--t-fast);}
-  .variant-option:hover{border-color:var(--rrg-line-strong);}
-  .variant-option.selected{border-color:var(--rrg-red);box-shadow:0 0 0 1px var(--rrg-red);}
-  .variant-option .radio{position:absolute;top:12px;right:12px;width:18px;height:18px;border-radius:50%;border:2px solid var(--rrg-line);}
-  .variant-option.selected .radio{border-color:var(--rrg-red);}
-  .variant-option.selected .radio::after{content:'';display:block;width:8px;height:8px;background:var(--rrg-red);border-radius:50%;margin:3px;}
-  .variant-option .v-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;margin-bottom:2px;padding-right:24px;}
-  .variant-option .v-price-row{display:flex;align-items:baseline;flex-wrap:wrap;}
-  .variant-option .v-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;}
-  .variant-option .v-was{font-size:11px;color:var(--rrg-grey-600);text-decoration:line-through;margin-left:4px;}
-
-  .price-block{border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);padding:16px 0;margin-bottom:16px;}
-  .cta-col{display:flex;flex-direction:column;gap:10px;}
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr;gap:0;}
-    .variant-picker{grid-template-columns:1fr;}
-    /* Decision panel (price/CTA) renders above the video/Get It Installed row on mobile,
-       not below it (2026-09-10, Graham Sowerby meeting). See simple/index.html for the
-       full explanation of the display:contents technique used here. */
-    .gallery-col{display:contents;}
-    .gallery-col > *{order:1;}
-    .decision-panel{order:2;margin-top:28px;}
-    .install-media-row{order:3;margin-top:22px;}
-  }
-</style>
 </head>
 <body>
 
@@ -214,6 +181,8 @@
         <div class="stock-status-line in-stock">✓ In Stock Online</div>
       </div>
 
+      <div class="scarcity" hidden>Only a few left — get in before they run out</div>
+
       <div class="cta-col" data-conflict-item="a roof accessory" data-conflict-reason="that accessory was set up for a different platform size than this one">
         <button class="btn btn-cta btn-lg btn-block" data-cta-label>Add To Cart</button>
         <div class="payment-badges">
@@ -232,7 +201,7 @@
         </div>
       </div>
 
-      <div class="dc-widget" style="margin-top:18px;">
+      <div class="dc-widget dc-widget--panel">
         <div class="dc-tabs">
           <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
           <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -313,7 +282,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62111-Platforms--Trays._1.jpg" alt="Rhino Rack 6 Series Pioneer Platform 1300 x 1430mm">
         <div class="body">
-          <h3>6 Series Pioneer Platform 1300 x 1430mm — 62111</h3>
+          <h3>6 Series Pioneer Platform 1300 x 1430mm</h3>
           <div class="price">$1,204.72</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -321,7 +290,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62113-Platforms--Trays._1.jpg" alt="Rhino Rack 6 Series Pioneer Platform 1500 x 1430mm">
         <div class="body">
-          <h3>6 Series Pioneer Platform 1500 x 1430mm — 62113</h3>
+          <h3>6 Series Pioneer Platform 1500 x 1430mm</h3>
           <div class="price">$1,371.92</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -329,7 +298,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62109-Platforms--Trays._1.jpg" alt="Rhino Rack 6 Series Pioneer Platform 1300 x 1240mm">
         <div class="body">
-          <h3>6 Series Pioneer Platform 1300 x 1240mm — 62109</h3>
+          <h3>6 Series Pioneer Platform 1300 x 1240mm</h3>
           <div class="price">$1,134.32</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -393,7 +362,7 @@
         </div>
         <input type="radio" name="tabs" id="t4"><label for="t4">Shipping Info</label>
         <div class="content">
-          <div class="dc-widget" style="margin-bottom:22px;">
+          <div class="dc-widget dc-widget--tab">
             <div class="dc-tabs">
               <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
               <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -456,7 +425,7 @@
         </div>
         <input type="radio" name="tabs" id="t5"><label for="t5">Fitting Instructions</label>
         <div class="content">
-          <p><a id="fittingLink" class="pdf-link" href="#" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Platform Instructions</a> — specific to your selected build option above.</p>
+          <p><a id="fittingLink" class="pdf-link" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Platform Instructions</a> — specific to your selected build option above.</p>
         </div>
         <input type="radio" name="tabs" id="t6"><label for="t6">Reviews</label>
         <div class="content">
@@ -615,7 +584,7 @@
     <div class="related-grid">
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/r/h/rhino-rack-pioneer-accessory-bar-with-zwifloc-61021.jpg" alt="Rhino Rack Pioneer Accessory Bar With Zwifloc">
-        <div class="body"><h3>Rhino Rack Pioneer Accessory Bar With Zwifloc — 61021</h3><div class="price">$129.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Rhino Rack Pioneer Accessory Bar With Zwifloc</h3><div class="price">$129.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/s/t/stedi-led-light-bar-bracket-to-suit-rhino-rack-platform-v2-0-brkrhino-rack.jpg" alt="Stedi LED Light Bar Bracket to suit Rhino Rack Platform">
@@ -623,20 +592,20 @@
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/k/a/kaon-m10-stainless-steel-eye-bolt-tie-down-kit-to-suit-rhino-rack-pioneer-platform-ks0503.jpg" alt="Kaon M10 Stainless Steel Eye Bolt Tie Down Kit to suit Rhino-Rack Pioneer Platform">
-        <div class="body"><h3>Kaon M10 Stainless Steel Eye Bolt Tie Down Kit — KS0503</h3><div class="price">$58.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Kaon M10 Stainless Steel Eye Bolt Tie Down Kit</h3><div class="price">$58.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/r/h/rhino-rack-tie-down-strap-with-hook-rtdh3.jpg" alt="Rhino Rack Tie Down Strap with Hook">
-        <div class="body"><h3>Rhino Rack Tie Down Strap with Hook — RTDH3</h3><div class="price">$41.40</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Rhino Rack Tie Down Strap with Hook</h3><div class="price">$41.40</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
     </div>
   </section>
 </main>
 
 <div class="sticky-cta-mobile">
-  <div class="info" style="flex:1;min-width:0;">
+  <div class="sticky-info">
     <div class="persistent-name">Rhino Rack 6 Series Pioneer Platform 900 x 1430mm</div>
-    <div style="font-size:12px;"><span id="mobilePrice" style="font-weight:700;"></span></div>
+    <div class="sticky-price" id="mobilePrice"></div>
   </div>
   <button class="btn btn-cta" data-cta-label>Add To Cart</button>
 </div>
@@ -858,7 +827,7 @@ function renderGallery(variant) {
   const persistentThumb = document.getElementById('persistentThumb');
   if (persistentThumb) persistentThumb.src = variant.images[0];
   const thumbs = document.getElementById('galleryThumbs');
-  thumbs.innerHTML = variant.images.map((src, i) => `<img class="${i===0?'active':''}" src="${src}" onclick="document.getElementById('mainImg').src=this.src; document.querySelectorAll('#galleryThumbs img').forEach(im=>im.classList.remove('active')); this.classList.add('active');">`).join('');
+  thumbs.innerHTML = variant.images.map((src, i) => `<img class="${i===0?'active':''}" src="${src}">`).join('');
 }
 
 function renderPrice(variant) {
@@ -867,7 +836,7 @@ function renderPrice(variant) {
   document.getElementById('priceWas').hidden = false;
   document.getElementById('saveBadge').textContent = `Save ${variant.discount_pct}%`;
   document.getElementById('saveBadge').hidden = false;
-  document.getElementById('mobilePrice').innerHTML = `<span style="color:var(--rrg-red);">${fmtMoney(variant.price_now)}</span> <span style="color:var(--rrg-grey-600);font-weight:400;text-decoration:line-through;font-size:11px;">${fmtMoney(variant.price_was)}</span>`;
+  document.getElementById('mobilePrice').innerHTML = `<span class="price-now">${fmtMoney(variant.price_now)}</span> <span class="price-was">${fmtMoney(variant.price_was)}</span>`;
   const persistentPriceNow = document.getElementById('persistentPriceNow');
   const persistentPriceWas = document.getElementById('persistentPriceWas');
   if (persistentPriceNow) persistentPriceNow.textContent = fmtMoney(variant.price_now);

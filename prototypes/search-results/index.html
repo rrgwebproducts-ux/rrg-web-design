@@ -110,7 +110,7 @@
      "Home > Search results for > <query>" (Brenton, 2026-09-29); the query crumb is filled in by
      plpRenderSearchHeadline() in plp.js. -->
 <div class="plp-crumbs-row wrap">
-  <div class="rrg-crumbs">Home &gt; Search results for &gt; <span id="plpSearchCrumbQuery">…</span></div>
+  <div class="rrg-crumbs"><a href="#">Home</a> &gt; Search results for &gt; <span id="plpSearchCrumbQuery">…</span></div>
 </div>
 
 <main class="wrap">
@@ -164,14 +164,7 @@
     </div>
     <div class="plp-toolbar-right">
       <label for="plpSort">Sort By</label>
-      <select id="plpSort">
-        <option value="relevance">Relevance</option>
-        <option value="newest">Newest</option>
-        <option value="bestselling">Best Selling</option>
-        <option value="rating">Highest Rated</option>
-        <option value="price_low">Price: Low to High</option>
-        <option value="price_high">Price: High to Low</option>
-      </select>
+      <select id="plpSort"></select>
     </div>
   </div>
 
@@ -190,7 +183,7 @@
       <div id="plpResults" class="plp-results"></div>
       <div class="plp-pagination" id="plpPaginationDesktop"></div>
       <div class="plp-pagination-mobile">
-        <div id="plpResultCountMobile" style="text-align:center;font-size:13px;color:var(--rrg-grey-600);margin-bottom:12px;"></div>
+        <div class="plp-toolbar-count plp-result-count-mobile" id="plpResultCountMobile"></div>
         <div id="plpPaginationMobile"></div>
       </div>
     </div>

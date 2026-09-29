@@ -169,25 +169,18 @@
 
   <div class="plp-toolbar">
     <div class="plp-toolbar-left">
-      <span id="plpResultCount"></span>
       <div class="plp-view-toggle">
         <button type="button" id="plpViewGrid" aria-label="Grid view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
         <button type="button" id="plpViewList" aria-label="List view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
       </div>
       <button type="button" class="btn btn-outline plp-refine-btn-mobile" id="plpRefineBtn">Refine Results</button>
+      <span class="plp-toolbar-count" id="plpResultCount"></span>
     </div>
     <div class="plp-toolbar-right">
       <label for="plpSort">Sort By</label>
       <!-- Reordered 2026-09-18 (Graham): relevance/merit-based options first, price sorts
            pushed to the bottom so people don't land straight on "cheapest first". -->
-      <select id="plpSort">
-        <option value="relevance">Relevance</option>
-        <option value="newest">Newest</option>
-        <option value="bestselling">Best Selling</option>
-        <option value="rating">Highest Rated</option>
-        <option value="price_low">Price: Low to High</option>
-        <option value="price_high">Price: High to Low</option>
-      </select>
+      <select id="plpSort"></select>
     </div>
   </div>
 
@@ -207,7 +200,7 @@
       <div id="plpResults" class="plp-results"></div>
       <div class="plp-pagination" id="plpPaginationDesktop"></div>
       <div class="plp-pagination-mobile">
-        <div id="plpResultCountMobile" style="text-align:center;font-size:13px;color:var(--rrg-grey-600);margin-bottom:12px;"></div>
+        <div class="plp-toolbar-count plp-result-count-mobile" id="plpResultCountMobile"></div>
         <div id="plpPaginationMobile"></div>
       </div>
     </div>
@@ -228,19 +221,19 @@
     <div class="related-grid">
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/M/A/MAXTRAX-MTXRRM-Platforms--Trays---Accessories._1_1.jpg" alt="MAXTRAX Recovery Board Mounting Bracket">
-        <div class="body"><h3>MAXTRAX Recovery Board Mounting Bracket</h3><div class="price">$99.00</div><button class="btn btn-outline btn-block">Add to Cart</button></div>
+        <div class="body"><h3>MAXTRAX Recovery Board Mounting Bracket</h3><div class="price">$99.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/K/S/KS0054_4_1_1.jpg" alt="Kaon Universal Awning Bracket">
-        <div class="body"><h3>Kaon Universal Awning Bracket (2pk)</h3><div class="price">$80.00</div><button class="btn btn-outline btn-block">Add to Cart</button></div>
+        <div class="body"><h3>Kaon Universal Awning Bracket (2pk)</h3><div class="price">$80.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8004110-Camping._1_1.jpg" alt="Yakima Roof Box">
-        <div class="body"><h3>Yakima SkyBox Roof Box 16 Cubic Ft</h3><div class="price">$899.00</div><button class="btn btn-outline btn-block">Add to Cart</button></div>
+        <div class="body"><h3>Yakima SkyBox Roof Box 16 Cubic Ft</h3><div class="price">$899.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/M/A/MAXTRAX-MTXML30D-Locking-Cables--Padlocks._1_1.jpg" alt="MAXTRAX Locking Cable">
-        <div class="body"><h3>MAXTRAX Locking Cable &amp; Padlock</h3><div class="price">$45.00</div><button class="btn btn-outline btn-block">Add to Cart</button></div>
+        <div class="body"><h3>MAXTRAX Locking Cable &amp; Padlock</h3><div class="price">$45.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
     </div>
   </section>

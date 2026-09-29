@@ -2,47 +2,10 @@
    New components for the category listing pages that neither the 5 PDP templates nor the
    Vehicle Category Landing Page need — kept out of shared.css (mirrors the existing mega-menu.css/
    admin-panel.css split) so that file, already relied on by 6 live templates, isn't touched
-   by this work. Loaded only by prototypes/plp/ and prototypes/vplp/, alongside shared.css.
+   by this work. Loaded by the listing pages (plp, plp-camping, vplp, search-results), after shared.css.
    Every class here is plp- prefixed (or reuses a shared.css class verbatim, called out where
    it happens) so nothing here can collide with shared.css's own PDP-specific classes. */
 
-/* ---- Hero (Simple / Vehicle-Set states, spec Section 4) ---- */
-.plp-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:28px 0;}
-.plp-hero h1{margin-bottom:12px;}
-.plp-hero p{font-size:16px;color:var(--rrg-grey-700);line-height:1.6;max-width:560px;margin-bottom:20px;}
-.plp-hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
-.plp-hero-media{position:relative;aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;}
-.plp-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center;}
-.plp-hero-make-badge{position:absolute;top:16px;right:16px;width:56px;height:56px;background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;padding:9px;}
-.plp-hero-make-badge img{width:100%;height:100%;object-fit:contain;}
-/* Simple state (Section 4.2): no vehicle photo at all when the category has no fallback
-   image configured — not a placeholder graphic, no broken layout, just a narrower text
-   column with no media column reserved. Also reused for the Vehicle-Set hero's no-image
-   fallback state (plp.js applyPlpHeroImageFlag('none'), 2026-09-18 resolution).
-   2026-09-19 follow-up — Brenton: the grid itself was correctly collapsing to one column,
-   but the paragraph's own max-width (720px, originally tuned as a readable line-length cap)
-   left a big empty gap on the right in a ~1232px-wide content area, reading as "didn't
-   actually collapse." Dropped the cap so the paragraph genuinely uses the freed-up width
-   instead of leaving dead space — this is short marketing copy, not a reading-heavy block,
-   so a longer line length here is an acceptable trade for not looking broken. */
-.plp-hero.no-media{grid-template-columns:1fr;}
-.plp-hero.no-media p{max-width:none;}
-@media (max-width:900px){
-  .plp-hero{grid-template-columns:1fr;gap:18px;padding-top:16px;}
-  .plp-hero-media{order:-1;}
-}
-
-/* Breadcrumb row + Change Vehicle CTA (2026-09-18 design review — Graham: the button barely
-   gets used once a vehicle is set, so it should sit out of the way up by the breadcrumbs
-   rather than competing with the hero's other CTAs). Wraps shared.css's own .rrg-crumbs
-   (which loses its standalone .wrap class in the markup so it doesn't double up the page
-   gutter padding inside this new row) plus the CTA, right-aligned. */
-.plp-crumbs-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-.plp-crumbs-row .rrg-crumbs{padding:14px 0;}
-.plp-crumbs-cta{white-space:nowrap;}
-/* Red outline (.btn-outline-red .btn-sm, shared.css), not the gold CTA — Change Vehicle isn't a
-   purchase action (2026-09-18 design review). Now the one Change Vehicle style site-wide
-   (spec.md §15 V1, 2026-09-29). */
 
 /* VRS, no vehicle set — real unfiltered catalogue stays visible (never gated/empty), plus
    this CTA banner in place of the vehicle-set hero framing (spec Section 2 live-site
@@ -74,7 +37,9 @@
    fill colour instead) but the same effect: the tab reads as popping up out of the line, not
    as a separate box competing with it. Inactive tiles still carry no box/border at all, just
    icon + label, so they sit flush on the line like unselected tabs. */
-.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:140px;min-height:110px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-3px;}
+/* Icon pinned to the top and label starting on the same line in every tile (S2) — centring
+   pushed icons in two-line tiles ("Tow Ball Mounting") 10px higher than one-line tiles. */
+.plp-shopby-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;width:140px;min-height:110px;border:1px solid transparent;border-radius:var(--radius) var(--radius) 0 0;background:none;padding:10px 8px 11px;text-align:center;margin-bottom:-3px;}
 .plp-shopby-tile:not(.active):hover{background:var(--rrg-bg);}
 .plp-shopby-tile.active{background:#fff;border-color:var(--rrg-red) var(--rrg-red) #fff;}
 /* 100x50, i.e. the previous 124x62 scaled down ~20% (Brenton: read as a bit too large) —
@@ -86,14 +51,11 @@
 .plp-shopby-icon{width:100px;height:50px;display:flex;align-items:center;justify-content:center;color:var(--rrg-black);}
 .plp-shopby-icon svg{width:100%;height:100%;}
 .plp-shopby-icon img{width:100%;height:100%;object-fit:contain;}
-/* Matches the hero section's .btn font-size (shared.css) so the tab labels read at the same
-   weight as the page's other primary CTAs. */
-.plp-shopby-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
+.plp-shopby-label{min-height:2.4em;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
 
 /* ---- Toolbar (result count / view toggle / sort, spec Sections 7-8) ---- */
 .plp-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rrg-line);margin-bottom:20px;}
 .plp-toolbar-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-#plpResultCount{font-size:13px;color:var(--rrg-grey-600);}
 .plp-view-toggle{display:flex;border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;}
 .plp-view-toggle button{background:#fff;border:none;padding:8px 12px;display:flex;align-items:center;color:var(--rrg-grey-600);}
 .plp-view-toggle button.active{background:var(--rrg-black);color:#fff;}
@@ -390,7 +352,7 @@
 .plp-price .plp-sale-tag{width:88px;height:auto;flex:0 0 auto;}
 .plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
-.plp-stock-line.out-of-stock{color:var(--rrg-stock-out);}
+.plp-stock-line.out-of-stock,.plp-stock-line.discontinued{color:var(--rrg-stock-out);}
 .plp-stock-line.special-order{color:var(--rrg-unknown);}
 
 /* ---- Card design (2026-09-29 — trialled on search, now every PLP-family page) --------------
@@ -551,7 +513,9 @@
 .plp-search-headline-count{font-size:14px;color:var(--rrg-grey-600);}
 .plp-search-page-btns{display:flex;gap:8px;flex-wrap:wrap;}
 .plp-search-page-btn{white-space:nowrap;}
+/* Result count — one style for the toolbar and the mobile count above the grid (L6). */
 .plp-toolbar-count{font-size:13px;color:var(--rrg-grey-600);}
+.plp-result-count-mobile{text-align:center;margin-bottom:12px;}
 @media (max-width:900px){
   .plp-search-headline{padding:4px 0 10px;}
   .plp-search-scope-in,.plp-search-scope-btn{font-size:28px;}

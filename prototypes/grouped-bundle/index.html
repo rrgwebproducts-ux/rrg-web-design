@@ -25,24 +25,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
-<style>
-  .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;padding:28px 0 8px;align-items:start;}
-  .decision-panel{background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
-  .decision-panel .reviews-strip{margin-bottom:14px;}
-  .price-block{border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);padding:16px 0;margin-bottom:14px;}
-  .cta-col{display:flex;flex-direction:column;gap:10px;}
-  .details-sub ul{margin:0;padding-left:18px;}
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr;gap:0;}
-    /* Decision panel (price/CTA) renders above the video/Get It Installed row on mobile,
-       not below it (2026-09-10, Graham Sowerby meeting). See simple/index.html for the
-       full explanation of the display:contents technique used here. */
-    .gallery-col{display:contents;}
-    .gallery-col > *{order:1;}
-    .decision-panel{order:2;margin-top:28px;}
-    .install-media-row{order:3;margin-top:22px;}
-  }
-</style>
 </head>
 <body>
 
@@ -149,10 +131,10 @@
         <img class="sale-tag gallery-sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
       </div>
       <div class="gallery-thumbs">
-        <img class="active" onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004109-camping_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004103-camping_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004106-camping_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8881251-camping_1.jpg">
+        <img class="active" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004109-camping_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004103-camping_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004106-camping_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8881251-camping_1.jpg">
       </div>
       <div class="install-media-row">
         <img class="video-placeholder" src="../_shared/video-thumbnail.png" alt="Product video (preview placeholder)">
@@ -176,13 +158,13 @@
     <div class="decision-panel">
       <div class="decision-panel-top">
         <img class="brand-logo" src="../_shared/brand-yakima.webp" alt="Yakima">
-        <div class="sku-row">SKU: <span class="sku-copy" data-copy="8004109PROMO" role="button" title="Click to copy SKU">8004109PROMO</span></div>
+        <div class="sku-row">SKU: <span id="skuValue" class="sku-copy" data-copy-source="#skuValue" role="button" title="Click to copy SKU">8004109PROMO</span></div>
       </div>
       <h1>Yakima RoadShower 15L Complete Shower &amp; Hose Bundle</h1>
       <div class="short-desc">This bundle turns your RoadShower into a dedicated hose-and-shower system: a second On-Off Elbow lets you keep a rinse hose and a shower head connected to opposite ends at the same time, so you're not disconnecting and reconnecting accessories every time you switch between washing gear and showering off. <a href="#" class="short-desc-readmore">Read more</a></div>
       <div class="reviews-strip" data-review-sku="8004109PROMO"><span class="stars" data-stars>★★★★★</span> <span data-review-text>4.5+</span> <a href="#t5" data-jump-tab="t5">See reviews</a></div>
 
-      <div class="price-block on-sale">
+      <div class="price-block">
         <div class="price-line price-line-now">
           <span class="price-label">Now</span>
           <span class="price-now">$449.00</span>
@@ -190,11 +172,13 @@
         <div class="price-line price-line-was">
           <span class="price-label">RRP</span>
           <span class="price-was">$846.00</span>
-          <span class="badge badge-save">$397 Off RRP</span>
+          <span class="badge badge-save">Save 47%</span>
         </div>
         <img class="sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
         <div class="stock-status-line in-stock">✓ In Stock Online</div>
       </div>
+
+      <div class="scarcity" hidden>Only a few left — get in before they run out</div>
 
       <div class="cta-col" data-conflict-item="a roof rack platform" data-conflict-reason="this bundle's mounting kit isn't compatible with that platform">
         <button class="btn btn-cta btn-lg btn-block" data-cta-label>Add To Cart</button>
@@ -214,7 +198,7 @@
         </div>
       </div>
 
-      <div class="dc-widget" style="margin-top:18px;">
+      <div class="dc-widget dc-widget--panel">
         <div class="dc-tabs">
           <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
           <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -319,7 +303,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-roadshower-sm-15l-8004109.jpg" alt="Yakima RoadShower SM 15L">
         <div class="body">
-          <h3>Yakima RoadShower SM 15L — 8004109</h3>
+          <h3>Yakima RoadShower SM 15L</h3>
           <div class="price">$361.50</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -327,7 +311,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8004110-Camping._1_1.jpg" alt="Yakima RoadShower MD 26L">
         <div class="body">
-          <h3>Yakima RoadShower MD 26L — 8004110</h3>
+          <h3>Yakima RoadShower MD 26L</h3>
           <div class="price">$411.50</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -335,7 +319,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/3/2/32149_1VJWVY_1.jpg" alt="Rhino Rack Shower Awning">
         <div class="body">
-          <h3>Rhino Rack Shower Awning — 32149</h3>
+          <h3>Rhino Rack Shower Awning</h3>
           <div class="price">$379.05</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -452,7 +436,7 @@
         </div>
         <input type="radio" name="tabs" id="t4"><label for="t4">Shipping Info</label>
         <div class="content">
-          <div class="dc-widget" style="margin-bottom:22px;">
+          <div class="dc-widget dc-widget--tab">
             <div class="dc-tabs">
               <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
               <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -670,28 +654,28 @@
     <div class="related-grid">
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8881263-Spare-Parts._1_1.jpg" alt="Yakima RoadShower Toolless Fill Cap">
-        <div class="body"><h3>Yakima RoadShower Toolless Fill Cap — 8881263</h3><div class="price">$44.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Yakima RoadShower Toolless Fill Cap</h3><div class="price">$44.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8881256-Spare-Parts._1_1.jpg" alt="Yakima RoadShower Spray Nozzle">
-        <div class="body"><h3>Yakima RoadShower Spray Nozzle — 8881256</h3><div class="price">$17.60</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Yakima RoadShower Spray Nozzle</h3><div class="price">$17.60</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8881259-Spare-Parts._1_1.jpg" alt="Yakima RoadShower Stick-On Thermometer">
-        <div class="body"><h3>Yakima RoadShower Stick-On Thermometer — 8881259</h3><div class="price">$17.60</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Yakima RoadShower Stick-On Thermometer</h3><div class="price">$17.60</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8881255-Spare-Parts._1_1.jpg" alt="Yakima RoadShower Rack Mount Clips x2">
-        <div class="body"><h3>Yakima RoadShower Rack Mount Clips x2 — 8881255</h3><div class="price">$40.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Yakima RoadShower Rack Mount Clips x2</h3><div class="price">$40.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
     </div>
   </section>
 </main>
 
 <div class="sticky-cta-mobile">
-  <div class="info" style="flex:1;min-width:0;">
+  <div class="sticky-info">
     <div class="persistent-name">Yakima RoadShower 15L Complete Shower &amp; Hose Bundle</div>
-    <div style="font-size:13px;font-weight:700;"><span style="color:var(--rrg-red);">$449.00</span> <span style="color:var(--rrg-grey-600);font-weight:400;text-decoration:line-through;font-size:11px;">$846.00</span></div>
+    <div class="sticky-price"><span class="price-now">$449.00</span> <span class="price-was">$846.00</span></div>
   </div>
   <button class="btn btn-cta" data-cta-label>Add To Cart</button>
 </div>

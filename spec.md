@@ -945,6 +945,47 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
 - **Selects:** one style (Fit Finder and Sort). The compare checkbox is red. Inputs and selects are 16px on phones.
 - **Store chip:** now reads "Ready Within 2 Business Days".
 - **C9 (Fitment Gallery builder)** moved to step 3, alongside the VCLP work.
+- Committed a965b8b.
+
+**Step 3 (template drift) built on 2026-09-29, awaiting Brenton's review, not committed.**
+- **Listing pages:**
+  - **Hero:** text is top-aligned, so the H1 never moves between Shop By tabs (S1).
+  - **Shop By tiles:** icons are pinned to the top and labels start on the same line (S2).
+  - **Breadcrumb row:** always one line, with the trail truncating (S3).
+  - **Mobile hero description:** clamped to 3 lines with "Read more"; H1 and link space are reserved (S4).
+  - **Result:** the state audit shows every tab stable at 1440 and 390, vehicle set on and off.
+- **L1:** UK prices keep their currency (`plpFmtMoney` now calls `fmtAud`).
+- **L2:** PLP and Camping Related Products use the gold card button.
+- **L3:** VPLP has Related Products (Vehicle-Specific's real Rhino-Rack Hilux accessories).
+- **L4:** Discontinued on a card is treated like Out of Stock.
+- **L5:** Search's "Home" crumb is a link.
+- **L6:** Toolbar order follows search (view, Refine, count). There's one result-count style, and the sort options come from one list.
+- **L7 (copy):** "Clear Filters" everywhere, "Reviews" capitalised, "Load More (N)". Search's Pages, Articles and Brands filters have tooltips.
+- **L8 (vehicle trail):**
+  - VCLP: `Home › Vehicles › Toyota › Hilux`
+  - VPLP: `… › Roof Racks`
+  - VS: `… › Hilux › Platforms & Trays › <full product name>`
+- **L9:** the PDP Save % is the card's diagonal Save band on the main photo (`syncSaleTag`), and the sale-tag image stays. The price pill is hidden.
+- **PDPs:**
+  - **D1:** the 5 inline `<style>` blocks moved into shared.css (16px spacing throughout).
+  - **D2:** tab lists fixed.
+  - **D3:** one thumbnail handler; the active border now moves.
+  - **D4:** one sticky-bar price markup, and VS now shows its price.
+  - **D5:** VS's sticky decision panel removed.
+  - **D6:** VS "Get It Installed" first-load copy fixed.
+  - **D7:** the Low Stock box is on all 5 PDPs, reworded "Only a few left — get in before they run out".
+  - **D8:** the sticky and persistent bars mirror the main price, including the Demo "On sale" toggle.
+  - **D9:** SKU copy markup, `on-sale` class, stock-line id, PDF links, and delivery-widget margins as classes.
+  - **D10:** Grouped says "Save 47%", breadcrumbs match the H1, and Related titles have no SKU.
+- **VCLP:**
+  - **V1:** Change Vehicle is in the breadcrumb row as the red outline button.
+  - **V2:** Fit Finder "View Results" sets the vehicle and opens the VPLP. The site-wide drawer uses VCLP's car-and-rack icon.
+  - **V3:** uses the shared hero, which moved to shared.css along with the breadcrumb row.
+  - **V4:** one `<main>`.
+  - **V5:** all real brand logos, black heading, footer flush.
+  - **V6:** fixed Book An Installation link.
+  - **V7:** single-column FAQ; intro copy kept under the heading.
+- **C9:** one Fitment Gallery builder (`fitGalleryPanelHTML`/`mountFitGallery`/`renderFitGalleryTrack`) for VS, VCLP and VPLP. Photos are set to 4:3 (the CSS asked for 16:9, but pages were showing 4:3).
 
 **Scope:** every page in `prototypes/`: root index, header, 5 PDPs, VCLP, PLP, PLP Camping, VPLP and Search.
 - **Measured:** computed styles in a real browser, at 1440px and 390px, on all 12 pages.

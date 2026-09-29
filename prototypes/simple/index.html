@@ -25,27 +25,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
-<style>
-  .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;padding:28px 0 8px;align-items:start;}
-  .decision-panel{background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
-  .decision-panel .reviews-strip{margin-bottom:14px;}
-  .price-block{border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);padding:16px 0;margin-bottom:14px;}
-  .scarcity{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-unknown);background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:var(--radius);padding:8px 12px;margin-bottom:14px;}
-  .cta-col{display:flex;flex-direction:column;gap:10px;}
-  .details-sub ul{margin:0;padding-left:18px;}
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr;gap:0;}
-    /* Decision panel (price/CTA) renders above the video/Get It Installed row on mobile,
-       not below it (2026-09-10, Graham Sowerby meeting). .gallery-col's own children
-       become direct .hero grid items via display:contents so each can be ordered
-       independently: gallery images/thumbs (order 1) → decision panel (order 2) →
-       video/install row (order 3). */
-    .gallery-col{display:contents;}
-    .gallery-col > *{order:1;}
-    .decision-panel{order:2;margin-top:28px;}
-    .install-media-row{order:3;margin-top:22px;}
-  }
-</style>
 </head>
 <body>
 
@@ -152,12 +131,12 @@
         <img class="sale-tag gallery-sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
       </div>
       <div class="gallery-thumbs">
-        <img class="active" onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories._1_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-5._1_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-4._1_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-3._1_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-2._1_1.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-1._1_1.jpg">
+        <img class="active" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories._1_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-5._1_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-4._1_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-3._1_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-2._1_1.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories-1._1_1.jpg">
       </div>
       <div class="install-media-row">
         <img class="video-placeholder" src="../_shared/video-thumbnail.png" alt="Product video (preview placeholder)">
@@ -181,13 +160,13 @@
     <div class="decision-panel">
       <div class="decision-panel-top">
         <img class="brand-logo" src="../_shared/brand-front-runner.webp" alt="Front Runner">
-        <div class="sku-row">SKU: <span class="sku-copy" data-copy="FRWTAN063" role="button" title="Click to copy SKU">FRWTAN063</span></div>
+        <div class="sku-row">SKU: <span id="skuValue" class="sku-copy" data-copy-source="#skuValue" role="button" title="Click to copy SKU">FRWTAN063</span></div>
       </div>
       <h1>Front Runner Pro Water Tank With Strap 42L</h1>
       <div class="short-desc">The 42L Pro Water Tank with Strap is everything you need for adventure hydration, all included in one kit. This tank offers an easily accessible water source, securely strapped to your roof rack or free for campsite usage. <a href="#" class="short-desc-readmore">Read more</a></div>
       <div class="reviews-strip" data-review-sku="FRWTAN063"><span class="stars" data-stars>★★★★★</span> <span data-review-text>4.5+</span> <a href="#t6" data-jump-tab="t6">See reviews</a></div>
 
-      <div class="price-block on-sale">
+      <div class="price-block">
         <div class="price-line price-line-now">
           <span class="price-label">Now</span>
           <span class="price-now">$299.00</span>
@@ -201,7 +180,7 @@
         <div class="stock-status-line in-stock">✓ In Stock Online</div>
       </div>
 
-      <div class="scarcity" hidden>⚠ This item is limited — whilst stocks last</div>
+      <div class="scarcity" hidden>Only a few left — get in before they run out</div>
 
       <div class="cta-col" data-conflict-item="a Rhino-Rack Pioneer Platform" data-conflict-reason="this water tank's mounting kit isn't designed for that platform system">
         <button class="btn btn-cta btn-lg btn-block" data-cta-label>Add To Cart</button>
@@ -221,7 +200,7 @@
         </div>
       </div>
 
-      <div class="dc-widget" style="margin-top:18px;">
+      <div class="dc-widget dc-widget--panel">
         <div class="dc-tabs">
           <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
           <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -302,7 +281,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN007-4WD-Products._1_1.jpg" alt="Front Runner Upright Water Tank / Flat">
         <div class="body">
-          <h3>Upright Water Tank / Flat — WTAN007</h3>
+          <h3>Upright Water Tank / Flat</h3>
           <div class="price">$346.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -310,7 +289,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN008-4WD-Products._1_1.jpg" alt="Front Runner Slanted Water Tank">
         <div class="body">
-          <h3>Slanted Water Tank — WTAN008</h3>
+          <h3>Slanted Water Tank</h3>
           <div class="price">$271.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -318,7 +297,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/f/r/front-runner-water-tank-67l-wtan023.jpg" alt="Front Runner Water Tank 67L">
         <div class="body">
-          <h3>Water Tank 67L — WTAN023</h3>
+          <h3>Water Tank 67L</h3>
           <div class="price">$295.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -399,7 +378,7 @@
         </div>
         <input type="radio" name="tabs" id="t4"><label for="t4">Shipping Info</label>
         <div class="content">
-          <div class="dc-widget" style="margin-bottom:22px;">
+          <div class="dc-widget dc-widget--tab">
             <div class="dc-tabs">
               <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
               <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -462,7 +441,7 @@
         </div>
         <input type="radio" name="tabs" id="t5"><label for="t5">Fitting Instructions</label>
         <div class="content">
-          <p><a class="pdf-link" href="https://cdn.rackit.app/product_links/frontrunnerprowatertankwithstrap42l-wtan063-wtan063-Download%20Instructions_e30KI"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Download Instructions</a></p>
+          <p><a class="pdf-link" href="https://cdn.rackit.app/product_links/frontrunnerprowatertankwithstrap42l-wtan063-wtan063-Download%20Instructions_e30KI" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Download Instructions</a></p>
         </div>
         <input type="radio" name="tabs" id="t6"><label for="t6">Reviews</label>
         <div class="content">
@@ -622,7 +601,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN022-4WD-Products._1_1.jpg" alt="Footwell Water Tank">
         <div class="body">
-          <h3>Footwell Water Tank — WTAN022</h3>
+          <h3>Footwell Water Tank</h3>
           <div class="price">$266.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -630,7 +609,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/f/r/front-runner-water-tank-cap-wtan018.jpg" alt="Front Runner Water Tank Cap">
         <div class="body">
-          <h3>Front Runner Water Tank Cap — WTAN018</h3>
+          <h3>Front Runner Water Tank Cap</h3>
           <div class="price">$17.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -638,7 +617,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-RRAC042-Spare-Parts._1_1.jpg" alt="42L Water Tank Optional Mounting Brackets">
         <div class="body">
-          <h3>42L Water Tank Optional Mounting Brackets — RRAC042</h3>
+          <h3>42L Water Tank Optional Mounting Brackets</h3>
           <div class="price">$70.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -646,7 +625,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTLD001-4WD-Products._1_1.jpg" alt="Land Rover Defender 110 Water Tank 36L">
         <div class="body">
-          <h3>Land Rover Defender 110 Water Tank / 36L — WTLD001</h3>
+          <h3>Land Rover Defender 110 Water Tank / 36L</h3>
           <div class="price">$718.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -656,9 +635,9 @@
 </main>
 
 <div class="sticky-cta-mobile">
-  <div class="info" style="flex:1;min-width:0;">
+  <div class="sticky-info">
     <div class="persistent-name">Front Runner Pro Water Tank With Strap 42L</div>
-    <div style="font-size:13px;font-weight:700;"><span style="color:var(--rrg-red);">$299.00</span> <span style="color:var(--rrg-grey-600);font-weight:400;text-decoration:line-through;font-size:11px;">$350.00</span></div>
+    <div class="sticky-price"><span class="price-now">$299.00</span> <span class="price-was">$350.00</span></div>
   </div>
   <button class="btn btn-cta" data-cta-label>Add To Cart</button>
 </div>

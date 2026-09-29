@@ -25,45 +25,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
-<style>
-  .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;padding:28px 0 8px;align-items:start;}
-  .decision-panel{background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);position:sticky;top:56px;}
-  .decision-panel .reviews-strip{margin-bottom:14px;}
-  .fitment{margin-bottom:16px;}
-
-  /* Variant picker — same comparison-card pattern as config-variant, added 2026-09-10
-     to resolve spec Section 4 item 1: a vehicle-specific kit can carry a config-variant
-     (Assembled/Flat Pack) alongside fitment logic, not either/or. */
-  .variant-label-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;}
-  .variant-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-  .variant-option{border:1.5px solid var(--rrg-line);border-radius:var(--radius);padding:14px;text-align:left;background:#fff;cursor:pointer;position:relative;transition:border-color var(--t-fast), box-shadow var(--t-fast);}
-  .variant-option:hover{border-color:var(--rrg-line-strong);}
-  .variant-option.selected{border-color:var(--rrg-red);box-shadow:0 0 0 1px var(--rrg-red);}
-  .variant-option .radio{position:absolute;top:12px;right:12px;width:18px;height:18px;border-radius:50%;border:2px solid var(--rrg-line);}
-  .variant-option.selected .radio{border-color:var(--rrg-red);}
-  .variant-option.selected .radio::after{content:'';display:block;width:8px;height:8px;background:var(--rrg-red);border-radius:50%;margin:3px;}
-  .variant-option .v-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;margin-bottom:2px;padding-right:24px;}
-  .variant-option .v-price-row{display:flex;align-items:baseline;flex-wrap:wrap;}
-  .variant-option .v-price{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;}
-  .variant-option .v-was{font-size:11px;color:var(--rrg-grey-600);text-decoration:line-through;margin-left:4px;}
-
-  .price-block{border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);padding:16px 0;margin-bottom:16px;}
-  .cta-col{display:flex;flex-direction:column;gap:10px;}
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr;gap:0;}
-    .decision-panel{position:static;}
-    .variant-picker{grid-template-columns:1fr;}
-    /* Decision panel (price/CTA) renders above the video/Get It Installed row on mobile,
-       not below it (2026-09-10, Graham Sowerby meeting). .gallery-col's own children
-       become direct .hero grid items via display:contents so each can be ordered
-       independently: gallery images/thumbs (order 1) → decision panel (order 2) →
-       video/install row (order 3). */
-    .gallery-col{display:contents;}
-    .gallery-col > *{order:1;}
-    .decision-panel{order:2;margin-top:28px;}
-    .install-media-row{order:3;margin-top:22px;}
-  }
-</style>
 </head>
 <body>
 
@@ -159,7 +120,7 @@
 </div>
 
 <div class="rrg-crumbs wrap">
-  <a href="#">Home</a> &gt; <a href="#">Toyota Hilux N80</a> &gt; <a href="#">Platforms &amp; Trays</a> &gt; Rhino Rack Pioneer 6 Platform — Toyota Hilux N80
+  <a href="#">Home</a> &gt; <a href="#">Vehicles</a> &gt; <a href="#">Toyota</a> &gt; <a href="#">Hilux</a> &gt; <a href="#">Platforms &amp; Trays</a> &gt; Rhino Rack Pioneer 6 Platform Kit — Toyota Hilux N80 (2015–2026), Bare Roof
 </div>
 
 <main class="wrap">
@@ -170,10 +131,10 @@
         <img class="sale-tag gallery-sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
       </div>
       <div class="gallery-thumbs">
-        <img class="active" onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_26.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62100-Platforms--Trays._1_23.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTHB1-Platform-Backbone._1_2.jpg">
-        <img onclick="document.getElementById('mainImg').src=this.src" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg">
+        <img class="active" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_26.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-62100-Platforms--Trays._1_23.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTHB1-Platform-Backbone._1_2.jpg">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg">
       </div>
 
       <div class="install-media-row">
@@ -189,7 +150,7 @@
               <div class="usp-item"><svg class="usp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><p>Over 200,000 roof racks fitted</p></div>
               <div class="usp-item"><svg class="usp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><p>Nationwide network of trained fitters</p></div>
             </div>
-            <a href="#fitGallerySection" class="btn btn-outline">See 283 real fitments</a>
+            <a href="#fitGallerySection" class="btn btn-outline">We&#39;ve fitted this 283 times — view the gallery</a>
           </div>
         </div>
       </div>
@@ -227,7 +188,7 @@
       </div>
       <div class="variant-picker" id="variantPicker"></div>
 
-      <div class="price-block on-sale">
+      <div class="price-block">
         <div class="price-line price-line-now">
           <span class="price-label">Now</span>
           <span class="price-now">$1,893.09</span>
@@ -240,6 +201,8 @@
         <img class="sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
         <div class="stock-status-line in-stock">✓ In Stock Online</div>
       </div>
+
+      <div class="scarcity" hidden>Only a few left — get in before they run out</div>
 
       <div class="cta-col" data-conflict-item="a roof accessory" data-conflict-reason="it was configured for a different platform than this kit">
         <button class="btn btn-cta btn-lg btn-block" data-cta-label>Add To Cart</button>
@@ -259,7 +222,7 @@
         </div>
       </div>
 
-      <div class="dc-widget" style="margin-top:18px;">
+      <div class="dc-widget dc-widget--panel">
         <div class="dc-tabs">
           <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
           <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -321,25 +284,7 @@
        non-red background. Photos rendered from FIT_GALLERY_PHOTOS (below) into both the
        carousel track here and the "View All" slide-out (buildFitGallerySlideout() in
        shared.js), so there's one source for the real scraped photo set. -->
-  <section class="fit-gallery-section" id="fitGallerySection" data-count="283">
-    <div class="fit-gallery-panel" id="fitGalleryPanel">
-      <div class="fit-gallery-head">
-        <div class="fit-gallery-title">
-          <span class="fit-gallery-badge">
-            <svg viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#vi-clip-fitgallery)"><path d="M24.9152 14.5953V14.0848C24.9152 12.0661 23.2893 10.4418 21.2815 10.4418C20.6739 10.4418 20.1127 10.1054 19.8234 9.56589L17.8676 5.97512C17.5726 5.43563 17.0113 5.10498 16.4038 5.10498L5.13237 5.12238C4.63477 5.12238 4.1603 5.34862 3.84206 5.73728L1.51025 8.60874C0.567114 9.76892 0.248877 11.3236 0.653906 12.7622L1.17466 14.6185C0.931641 14.7055 0.705981 14.8505 0.520825 15.0362C0.191016 15.3668 0.00585938 15.8193 0.00585938 16.2892C0.00585938 17.2637 0.792773 18.0584 1.76484 18.0584H2.66748C2.66748 18.1165 2.66748 18.1687 2.66748 18.2209C2.66748 19.9321 4.05037 21.3244 5.76306 21.3244C7.47576 21.3244 8.85864 19.9379 8.85864 18.2209C8.85864 18.1687 8.85864 18.1165 8.85864 18.07L15.6168 18.0816C15.6168 18.1281 15.6168 18.1803 15.6168 18.2267C15.6168 19.9379 16.9997 21.3302 18.7124 21.3302C20.4251 21.3302 21.808 19.9437 21.808 18.2267C21.808 18.1803 21.808 18.1397 21.808 18.0932H24.9672C25.9219 18.0874 26.6915 17.3159 26.6915 16.3588V16.324C26.6915 15.3726 25.9219 14.5953 24.973 14.5953H24.9441H24.9152ZM5.91929 10.4708H3.1188C2.86421 10.4708 2.62698 10.3258 2.51704 10.0938C2.40132 9.86174 2.43025 9.5891 2.58647 9.38606L4.64634 6.67123C4.81992 6.43919 5.09766 6.30577 5.38696 6.30577H5.92507V10.465L5.91929 10.4708ZM11.8096 10.4708H7.60884V6.31157H11.8096V10.4708ZM18.0702 10.146C17.9487 10.3432 17.7288 10.4708 17.4973 10.4708H13.4702V6.31157H15.8946C16.2417 6.31157 16.5658 6.5088 16.722 6.81625L18.0933 9.49048C18.2032 9.69931 18.1917 9.94875 18.0702 10.146Z" fill="currentColor"/><path d="M3.92297 4.19981H16.2474C18.099 4.19981 19.6092 2.69157 19.6092 0.835275C19.6092 0.371201 19.2331 -0.00585938 18.7702 -0.00585938C18.3073 -0.00585938 17.9312 0.377002 17.9312 0.841076C17.9312 1.76922 17.1732 2.52915 16.2474 2.52915H3.92297C3.46008 2.52915 3.08398 2.8946 3.08398 3.35868C3.08398 3.82275 3.46008 4.19401 3.92297 4.19401V4.19981Z" fill="currentColor"/></g><defs><clipPath id="vi-clip-fitgallery"><rect width="26.6966" height="21.3028" fill="white"/></clipPath></defs></svg>
-          </span>
-          <h2><span class="italic-lead">Fitment</span> Gallery</h2>
-        </div>
-        <a href="#" class="fit-gallery-viewall" data-fit-gallery-slideout>View All In-store Fitments (283)</a>
-      </div>
-      <div class="fit-gallery-carousel">
-        <button type="button" class="fit-gallery-nav prev" aria-label="Previous photos">‹</button>
-        <div class="fit-gallery-track" id="fitGalleryTrack"></div>
-        <button type="button" class="fit-gallery-nav next" aria-label="Next photos">›</button>
-      </div>
-      <div class="fit-gallery-dots" id="fitGalleryDots"></div>
-    </div>
-  </section>
+  <section class="fit-gallery-section" id="fitGallerySection" data-count="283" data-fit-gallery></section>
 
   <div class="trust-row">
     <div class="item" data-trust="founded"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><h4>Trusted Since 1989</h4><p>Now with over 30 locations Australia wide</p></div>
@@ -386,7 +331,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-KRTH011T_1.jpg" alt="Front Runner Slimline II Rack Kit for Toyota Hilux N80">
         <div class="body">
-          <h3>Slimline II Rack Kit — Fits Hilux N80 — KRTH011T</h3>
+          <h3>Slimline II Rack Kit — Fits Hilux N80</h3>
           <div class="price">$409.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -402,7 +347,7 @@
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/W/C/WC-THDC16-1412_Thumbnail_X7RDIA_1.jpg" alt="Wedgetail Core Platform Roof Rack for Toyota Hilux N80">
         <div class="body">
-          <h3>Wedgetail Core Platform Roof Rack — Fits Hilux N80 — WC-THDC16-1412</h3>
+          <h3>Wedgetail Core Platform Roof Rack — Fits Hilux N80</h3>
           <div class="price">$1,400.00</div>
           <button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>
         </div>
@@ -528,7 +473,7 @@
         </div>
         <input type="radio" name="tabs" id="t4"><label for="t4">Shipping Info</label>
         <div class="content">
-          <div class="dc-widget" style="margin-bottom:22px;">
+          <div class="dc-widget dc-widget--tab">
             <div class="dc-tabs">
               <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
               <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -592,10 +537,10 @@
         <input type="radio" name="tabs" id="t5"><label for="t5">Fitting Instructions</label>
         <div class="content">
           <ul>
-            <li><a id="fittingLink" class="pdf-link" href="https://assets.rhinorack.com/Instructions/Platforms/Pioneer-6-series/520-RFI-00132%20PIONEER%20SERIES%206%20Fitting%20Instruction.pdf" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Platform Instructions</a> — specific to your selected build option above</li>
-            <li><a class="pdf-link" href="https://rackit.s3.amazonaws.com/manuals/RTHB1_uSPK3" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>RTHB1 Backbone Instructions</a></li>
-            <li><a class="pdf-link" href="https://rackit.s3.amazonaws.com/manuals/RTS556_bz5Sx" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>RTS556 Tracks Instructions</a></li>
-            <li><a class="pdf-link" href="https://www.roofracksgalore.com.au/pub/media/pdfs/roof-racks-safety.pdf" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Roof Racks Safety</a></li>
+            <li><a id="fittingLink" class="pdf-link" href="https://assets.rhinorack.com/Instructions/Platforms/Pioneer-6-series/520-RFI-00132%20PIONEER%20SERIES%206%20Fitting%20Instruction.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Platform Instructions</a> — specific to your selected build option above</li>
+            <li><a class="pdf-link" href="https://rackit.s3.amazonaws.com/manuals/RTHB1_uSPK3" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>RTHB1 Backbone Instructions</a></li>
+            <li><a class="pdf-link" href="https://rackit.s3.amazonaws.com/manuals/RTS556_bz5Sx" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>RTS556 Tracks Instructions</a></li>
+            <li><a class="pdf-link" href="https://www.roofracksgalore.com.au/pub/media/pdfs/roof-racks-safety.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5zM8 13h2.2a1.8 1.8 0 0 1 0 3.6H9v1.4H8v-5zm1 1v1.6h1.2a.8.8 0 0 0 0-1.6H9zm4-1h1.8c1 0 1.7.8 1.7 2.5S15.8 18 14.8 18H13v-5zm1 1v3h.8c.5 0 .7-.5.7-1.5S14.3 14 13.8 14H14zm4-1h2.5v1H19v1.2h1.3v1H19V18h-1v-5z"/></svg>Roof Racks Safety</a></li>
           </ul>
         </div>
         <input type="radio" name="tabs" id="t6"><label for="t6">Reviews</label>
@@ -759,7 +704,7 @@
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/4/3/43259_90BAB2_1.jpg" alt="Rhino Rack Batwing Awning Bracket">
-        <div class="body"><h3>Rhino Rack Batwing Awning Bracket — 43259</h3><div class="price">$79.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+        <div class="body"><h3>Rhino Rack Batwing Awning Bracket</h3><div class="price">$79.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
       </div>
       <div class="product-card">
         <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/m/a/maxtrax-recovery-boards-orange-2-pair-combo-mtx02so.jpg" alt="Maxtrax Recovery Boards Orange 2 Pair Combo">
@@ -776,9 +721,12 @@
 <div class="sticky-cta-mobile">
   <div class="persistent-product">
     <img class="persistent-thumb" src="https://www.roofracksgalore.com.au/pub/media/catalog/product/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_26.jpg" alt="">
-    <span class="persistent-name">Rhino Rack Pioneer 6 Platform Kit — Toyota Hilux N80 (2015–2026), Bare Roof</span>
+    <div class="sticky-info">
+      <span class="persistent-name">Rhino Rack Pioneer 6 Platform Kit — Toyota Hilux N80 (2015–2026), Bare Roof</span>
+      <div class="sticky-price"><span class="price-now">$1,893.09</span> <span class="price-was">$2,137.00</span></div>
+    </div>
   </div>
-  <div class="info fitment fits" data-fitment-slot data-fitment-copyable="icon-only" style="padding:8px;border-radius:var(--radius);font-size:11px;"></div>
+  <div class="info fitment fits" data-fitment-slot data-fitment-copyable="icon-only"></div>
   <svg class="rack-fit-badge-icon" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Rack Fit Guarantee" title="Peace of mind with our FREE Nationwide Rack Guarantee" data-jump-tab="t3"><title>Peace of mind with our FREE Nationwide Rack Guarantee</title><path fill-rule="evenodd" fill="currentColor" d="M12 3L20 6V11C20 16.5 16.5 20.5 12 22C7.5 20.5 4 16.5 4 11V6Z M8.3 11.7L10.2 14.1L16.3 7.6L17.7 9L10.6 16.6L9.2 16.6L6.8 13Z"/></svg>
   <button class="btn btn-cta" data-cta-label>Add To Cart</button>
 </div>
@@ -949,20 +897,10 @@ const FIT_GALLERY_PHOTOS = [
 // slide-out (openFitGallerySlideoutAt() in shared.js) rather than requiring "View All" first.
 // Index matches 1:1 with FIT_GALLERY_PHOTOS since the carousel shows all 16 real photos in
 // the same order the grid does before it starts cycling past them.
-function renderFitGalleryTrack() {
-  const track = document.getElementById('fitGalleryTrack');
-  if (!track) return;
-  track.innerHTML = FIT_GALLERY_PHOTOS.map((p, i) =>
-    `<img src="${p.thumb}" data-fgs-open-index="${i}" role="button" tabindex="0" alt="Rhino Rack Pioneer Platform fitted to a customer's Hilux N80 — view fitment detail">`
-  ).join('');
-  track.querySelectorAll('img').forEach(img => {
-    img.addEventListener('click', () => openFitGallerySlideoutAt(Number(img.dataset.fgsOpenIndex)));
-  });
-}
-// Runs synchronously (not on DOMContentLoaded) — #fitGalleryTrack already exists above this
-// script tag, and shared.js's own DOMContentLoaded listener calls initFitGalleryCarousel()
-// before this page's listener would otherwise fire, so the track must be populated now.
-renderFitGalleryTrack();
+// Runs synchronously (not on DOMContentLoaded): shared.js's own DOMContentLoaded listener calls
+// initFitGalleryCarousel(), which needs the section mounted and the track populated first.
+mountFitGallery();
+renderFitGalleryTrack("Rhino Rack Pioneer Platform fitted to a customer's Hilux N80");
 
 let selectedVehicleVariantIndex = 0;
 

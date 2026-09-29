@@ -211,7 +211,33 @@ function plpRenderCategoryContent() {
   document.querySelectorAll('#plpHeroVehicleSet > div > p, #plpHeroSimple > div > p').forEach(p => { p.textContent = description; });
   plpRenderBreadcrumb();
   plpApplyCategoryImage();
+  plpApplyHeroReadMore();
 }
+
+// Mobile "Read more" on the hero description (2026-09-29, spec.md §15 S4) — the description is
+// clamped to 3 lines on phones (plp.css) so the Shop By tabs don't move between tabs; this adds
+// the toggle, shown only when the text is actually cut off.
+function plpApplyHeroReadMore() {
+  document.querySelectorAll('#plpHeroVehicleSet > div > p, #plpHeroSimple > div > p').forEach(p => {
+    let btn = p.nextElementSibling && p.nextElementSibling.classList.contains('plp-hero-readmore') ? p.nextElementSibling : null;
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'link-btn plp-hero-readmore';
+      p.after(btn);
+      btn.addEventListener('click', () => {
+        const open = p.classList.toggle('is-expanded');
+        btn.textContent = open ? 'Read less' : 'Read more';
+      });
+    }
+    p.classList.remove('is-expanded');
+    btn.textContent = 'Read more';
+    // visibility, not display — the link keeps its space either way so nothing below moves.
+    btn.style.visibility = p.scrollHeight > p.clientHeight + 1 ? 'visible' : 'hidden';
+  });
+}
+window.addEventListener('resize', () => { if (typeof plpApplyHeroReadMore === 'function') plpApplyHeroReadMore(); });
+document.addEventListener('rrg-session-change', () => setTimeout(plpApplyHeroReadMore, 0));
 
 // Simple (no-vehicle) hero's image follows the same vehicle → category → none fallback as the
 // Vehicle-Set hero's Demo State Panel preview (see applyPlpHeroImageFlag()) — no vehicle photo
@@ -586,6 +612,12 @@ function plpRenderScopeTabs() {
   });
 }
 
+// Filter info icon + tooltip — one builder for product filters and search's Pages/Articles/
+// Brands filters (spec.md §15 L7; those had no icon).
+function plpFilterTooltipHTML(copy) {
+  return `<span class="plp-filter-tooltip" tabindex="0" data-tooltip="${String(copy).replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></span>`;
+}
+
 function plpRenderScopeFilters() {
   const def = plpScopeDef(plpState.searchScope);
   const priorityWrap = document.getElementById('plpPriorityFilters');
@@ -602,7 +634,7 @@ function plpRenderScopeFilters() {
     const selected = plpState.scopeFilters[f.key];
     return `
       <details class="plp-filter-group" data-facet-group="${f.key}" open>
-        <summary>${f.label}</summary>
+        <summary>${f.label}${plpFilterTooltipHTML(f.tooltip || `Narrow your results by ${f.label.toLowerCase()}.`)}</summary>
         <div class="plp-filter-options">
           ${values.map(v => {
             const count = pool.filter(item => f.values(item).includes(v)).length;
@@ -617,6 +649,7 @@ function plpRenderScopeFilters() {
         </div>
       </details>`;
   }).join('');
+  standardWrap.querySelectorAll('.plp-filter-tooltip').forEach(tip => tip.addEventListener('click', e => e.preventDefault()));
   plpBindScopeFacetInputs(standardWrap);
 }
 
@@ -970,7 +1003,7 @@ function plpFilterGroupHTML(facetDef, isPriority) {
   const storePrompt = ctx && ctx.phase === 2 && !ctx.storeSet
     ? `<p class="plp-filter-store-prompt"><a href="#" data-set-store>Set your store</a> to see local stock</p>`
     : '';
-  const tooltipIcon = `<span class="plp-filter-tooltip" tabindex="0" data-tooltip="${tooltipCopy.replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></span>`;
+  const tooltipIcon = plpFilterTooltipHTML(tooltipCopy);
   if (isPriority) {
     return `
       <div class="plp-filter-group plp-filter-priority-group" data-facet-group="${facetDef.key}">
@@ -1098,7 +1131,7 @@ function plpBuildFilterDrawer() {
     <div class="store-slideout plp-filter-slideout" role="dialog" aria-modal="true">
       <div class="store-slideout-head">
         <h2>Refine Results</h2>
-        <button type="button" class="plp-filter-clear-drawer" id="plpFilterClearDrawer">Clear All</button>
+        <button type="button" class="plp-filter-clear-drawer" id="plpFilterClearDrawer">Clear Filters</button>
         <button type="button" class="store-slideout-close" aria-label="Close">&times;</button>
       </div>
       <div class="store-slideout-body plp-filter-slideout-body" id="plpFilterSlideoutBody"></div>
@@ -1234,8 +1267,11 @@ function plpPriceHTML(product) {
   `;
 }
 
+// Region-aware (2026-09-29, spec.md §15 L1) — was a hardcoded '$', so UK prices flipped back to $
+// on every re-render (filter, sort, page change, resize). fmtAud() in shared.js follows the
+// region switcher's currency, same as the PDP.
 function plpFmtMoney(n) {
-  return '$' + n.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return fmtAud(n);
 }
 
 // No-rating gap (2026-09-18, Camping scrape) — the real Camping category listing tiles don't
@@ -1319,8 +1355,11 @@ function plpBrandHTML(product) {
 // an option first. Independent of cfg.vrs (VRS/Fitment Gallery is a separate concern), so a
 // VRS product can be either state just like a standard one.
 function plpPrimaryActionHTML(product, blockClass) {
-  if (rrgStockKey(product.stock) === 'out_of_stock') {
-    return `<button type="button" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}" disabled>Out of Stock</button>`;
+  // Discontinued is treated like Out of Stock on cards (spec.md §15 L4) — the PDP hides its Add
+  // to Cart for both, so a card must never offer a live one.
+  const stockKey = rrgStockKey(product.stock);
+  if (stockKey === 'out_of_stock' || stockKey === 'discontinued') {
+    return `<button type="button" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}" disabled>${stockKey === 'discontinued' ? 'Discontinued' : 'Out of Stock'}</button>`;
   }
   if (!product.price) {
     return `<a href="${product.url || '#'}" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Details</a>`;
@@ -1558,7 +1597,7 @@ function plpRenderPagination(total) {
   }
   if (mobileWrap) {
     const isDone = plpState.visibleCount >= total;
-    mobileWrap.innerHTML = isDone ? '' : `<button type="button" class="btn btn-outline btn-block" id="plpShowMore">Show More Results</button>`;
+    mobileWrap.innerHTML = isDone ? '' : `<button type="button" class="btn btn-outline btn-block" id="plpShowMore">Load More (${Math.min(PLP_PAGE_SIZE, total - plpState.visibleCount)})</button>`;
     const showMoreBtn = document.getElementById('plpShowMore');
     if (showMoreBtn) showMoreBtn.addEventListener('click', () => {
       plpState.visibleCount += PLP_PAGE_SIZE;
@@ -1613,6 +1652,9 @@ function plpBindCardEvents() {
 // ==== Sort / view toggle ======================================================
 function plpInitToolbar() {
   const sortSelect = document.getElementById('plpSort');
+  // Options come from the one list (PLP_PRODUCT_SORT_OPTIONS) instead of being repeated in every
+  // page's markup (spec.md §15 L6).
+  if (sortSelect && !sortSelect.options.length) sortSelect.innerHTML = PLP_PRODUCT_SORT_OPTIONS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
   if (sortSelect) sortSelect.addEventListener('change', () => {
     if (window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products') {
       plpState.scopeSort = sortSelect.value;
@@ -1847,25 +1889,7 @@ function plpInitMerchCarousel() {
 // ==== Fitment Gallery (page-level, VPLP only) — reuses shared.js's PDP widget as-is =======
 function plpFitGallerySectionHTML() {
   return `
-  <section class="fit-gallery-section plp-fitgallery-inline" id="fitGallerySection" data-count="${window.PLP_CONFIG.fitGalleryCount || 300}">
-    <div class="fit-gallery-panel" id="fitGalleryPanel">
-      <div class="fit-gallery-head">
-        <div class="fit-gallery-title">
-          <span class="fit-gallery-badge">
-            <svg viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.9 14.6c0-2-1.6-3.6-3.6-3.6-.6 0-1.2-.3-1.5-.9l-2-3.6c-.3-.5-.8-.9-1.4-.9l-11.3.02c-.5 0-1 .2-1.3.6L1.5 8.6C.6 9.8.2 11.3.7 12.8l.5 1.8c-.2.1-.5.2-.7.4-.3.3-.5.8-.5 1.2 0 1 .8 1.8 1.8 1.8h.9v.2c0 1.7 1.4 3.1 3.1 3.1s3.1-1.4 3.1-3.1v-.2l6.8.01v.2c0 1.7 1.4 3.1 3.1 3.1s3.1-1.4 3.1-3.1v-.1h3.2c1 0 1.7-.8 1.7-1.7v-.1c0-.9-.7-1.7-1.7-1.7z" fill="currentColor"/></svg>
-          </span>
-          <h2><span class="italic-lead">Fitment</span> Gallery</h2>
-        </div>
-        <a href="#" class="fit-gallery-viewall" data-fit-gallery-slideout>View All In-store Fitments (${window.PLP_CONFIG.fitGalleryCount || 300})</a>
-      </div>
-      <div class="fit-gallery-carousel">
-        <button type="button" class="fit-gallery-nav prev" aria-label="Previous photos">‹</button>
-        <div class="fit-gallery-track" id="fitGalleryTrack"></div>
-        <button type="button" class="fit-gallery-nav next" aria-label="Next photos">›</button>
-      </div>
-      <div class="fit-gallery-dots" id="fitGalleryDots"></div>
-    </div>
-  </section>`;
+  <section class="fit-gallery-section plp-fitgallery-inline" id="fitGallerySection" data-count="${window.PLP_CONFIG.fitGalleryCount || 300}">${fitGalleryPanelHTML(window.PLP_CONFIG.fitGalleryCount || 300)}</section>`;
 }
 
 // Re-run on every plpRenderResults() call (filters/sort/paging all re-insert this section
@@ -1877,12 +1901,7 @@ function plpFitGallerySectionHTML() {
 function plpInitFitGalleryWidget() {
   const track = document.getElementById('fitGalleryTrack');
   if (!track || typeof FIT_GALLERY_PHOTOS === 'undefined') return;
-  track.innerHTML = FIT_GALLERY_PHOTOS.map((p, i) =>
-    `<img src="${p.thumb}" data-fgs-open-index="${i}" role="button" tabindex="0" alt="Fitted to a customer's Toyota Hilux — view fitment detail">`
-  ).join('');
-  track.querySelectorAll('img').forEach(img => {
-    img.addEventListener('click', () => { if (typeof openFitGallerySlideoutAt === 'function') openFitGallerySlideoutAt(Number(img.dataset.fgsOpenIndex)); });
-  });
+  renderFitGalleryTrack("Roof rack fitted to a customer's Toyota Hilux");
   if (typeof buildFitGallerySlideout === 'function') buildFitGallerySlideout();
   if (typeof initFitGalleryCarousel === 'function') initFitGalleryCarousel();
 }

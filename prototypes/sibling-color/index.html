@@ -25,39 +25,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
-<style>
-  .hero{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;padding:28px 0 8px;align-items:start;}
-  .decision-panel{background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
-  .decision-panel .reviews-strip{margin-bottom:16px;}
-
-  /* Swatch picker — fast, satisfying color browsing */
-  .swatch-label-row{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;}
-  .swatch-current{font-size:13px;font-weight:700;color:var(--rrg-black);}
-  .swatch-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
-  .swatch{width:40px;height:40px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--rrg-line);cursor:pointer;position:relative;flex:0 0 auto;transition:box-shadow var(--t-fast), transform var(--t-fast);}
-  .swatch:hover{transform:scale(1.08);}
-  .swatch.selected{box-shadow:0 0 0 2.5px var(--rrg-red);}
-  .swatch.limited::after{content:'';position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;background:var(--rrg-unknown);border:2px solid #fff;}
-  .swatch-note{font-size:12px;color:var(--rrg-grey-500);margin-bottom:16px;}
-
-  .price-block{border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);padding:16px 0;margin-bottom:16px;}
-  .cta-col{display:flex;flex-direction:column;gap:10px;}
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr;gap:0;}
-    /* Decision panel (price/CTA) renders above the video/Get It Installed row on mobile,
-       not below it (2026-09-10, Graham Sowerby meeting). See simple/index.html for the
-       full explanation of the display:contents technique used here. */
-    .gallery-col{display:contents;}
-    .gallery-col > *{order:1;}
-    .decision-panel{order:2;margin-top:28px;}
-    .install-media-row{order:3;margin-top:22px;}
-  }
-  @media (max-width:640px){
-    /* 48px (2026-09-11, mobile audit) — was 44px, just under Google's 48px tap-target
-       minimum; 10px gap between swatches already clears the recommended 8px spacing. */
-    .swatch{width:48px;height:48px;}
-  }
-</style>
 </head>
 <body>
 
@@ -153,7 +120,7 @@
 </div>
 
 <div class="rrg-crumbs wrap">
-  <a href="#">Home</a> &gt; <a href="#">Camping &amp; Offroad</a> &gt; MAXTRAX MKII
+  <a href="#">Home</a> &gt; <a href="#">Camping &amp; Offroad</a> &gt; MAXTRAX MKII Recovery Boards
 </div>
 
 <main class="wrap">
@@ -210,8 +177,10 @@
           <span class="badge badge-save" id="saveBadge"></span>
         </div>
         <img class="sale-tag" src="../_shared/sale-tag.png" alt="On Sale">
-        <div class="stock-status-line in-stock" id="stockLine">✓ In Stock Online</div>
+        <div class="stock-status-line in-stock">✓ In Stock Online</div>
       </div>
+
+      <div class="scarcity" hidden>Only a few left — get in before they run out</div>
 
       <div class="cta-col" data-conflict-item="a roof rack platform" data-conflict-reason="this board's mounting brackets aren't compatible with that platform">
         <button class="btn btn-cta btn-lg btn-block" data-cta-label>Add To Cart</button>
@@ -231,7 +200,7 @@
         </div>
       </div>
 
-      <div class="dc-widget" style="margin-top:18px;">
+      <div class="dc-widget dc-widget--panel">
         <div class="dc-tabs">
           <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
           <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -397,7 +366,7 @@
         </div>
         <input type="radio" name="tabs" id="t4"><label for="t4">Shipping Info</label>
         <div class="content">
-          <div class="dc-widget" style="margin-bottom:22px;">
+          <div class="dc-widget dc-widget--tab">
             <div class="dc-tabs">
               <button class="dc-tab" data-dc-tab="delivery"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Delivery</button>
               <button class="dc-tab active" data-dc-tab="collect"><svg class="dc-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Click &amp; Collect</button>
@@ -634,9 +603,9 @@
 </main>
 
 <div class="sticky-cta-mobile">
-  <div class="info" style="flex:1;min-width:0;">
+  <div class="sticky-info">
     <div class="persistent-name">MAXTRAX MKII Recovery Boards</div>
-    <div style="font-size:12px;"><span id="mobilePrice" style="font-weight:700;"></span></div>
+    <div class="sticky-price" id="mobilePrice"></div>
   </div>
   <button class="btn btn-cta" data-cta-label>Add To Cart</button>
 </div>
@@ -796,7 +765,7 @@ function renderGallery(color) {
   const persistentThumb = document.getElementById('persistentThumb');
   if (persistentThumb) persistentThumb.src = color.images[0];
   const thumbs = document.getElementById('galleryThumbs');
-  thumbs.innerHTML = color.images.map((src, i) => `<img class="${i===0?'active':''}" src="${src}" onclick="document.getElementById('mainImg').src=this.src; document.querySelectorAll('#galleryThumbs img').forEach(im=>im.classList.remove('active')); this.classList.add('active');">`).join('');
+  thumbs.innerHTML = color.images.map((src, i) => `<img class="${i===0?'active':''}" src="${src}">`).join('');
 }
 
 function renderPrice(color) {
@@ -813,7 +782,7 @@ function renderPrice(color) {
     priceWas.hidden = true;
     saveBadge.hidden = true;
   }
-  document.getElementById('mobilePrice').innerHTML = (color.price_now < color.price_was ? `<span style="color:var(--rrg-red);">${fmtMoney(color.price_now)}</span>` : fmtMoney(color.price_now)) + (color.price_now < color.price_was ? ` <span style="color:var(--rrg-grey-600);font-weight:400;text-decoration:line-through;font-size:11px;">${fmtMoney(color.price_was)}</span>` : '');
+  document.getElementById('mobilePrice').innerHTML = `<span class="price-now${color.price_now < color.price_was ? '' : ' no-sale'}">${fmtMoney(color.price_now)}</span>` + (color.price_now < color.price_was ? ` <span class="price-was">${fmtMoney(color.price_was)}</span>` : '');
   const persistentPriceNow = document.getElementById('persistentPriceNow');
   const persistentPriceWas = document.getElementById('persistentPriceWas');
   if (persistentPriceNow) persistentPriceNow.textContent = fmtMoney(color.price_now);
@@ -834,7 +803,7 @@ function renderStock(color) {
   if (typeof adminState !== 'undefined' && adminState.stockOverride) return;
   // Per-colour stock key ('limited' is the old name for low_stock — rrgStockKey() maps it);
   // wording comes from the shared status (spec.md §14.1) via renderStockLine().
-  const el = document.getElementById('stockLine');
+  const el = document.querySelector('.decision-panel .stock-status-line');
   el.dataset.stockKey = rrgStockKey(color.stock_status);
   if (typeof renderStockLine === 'function' && typeof adminState !== 'undefined' && adminState.stockStatus) renderStockLine(el);
 }

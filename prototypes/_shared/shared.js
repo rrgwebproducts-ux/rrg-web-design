@@ -594,6 +594,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // prev/next nav, so 5+ images scroll in one row instead of wrapping to a second row.
 // Runs once at load; a MutationObserver keeps nav state in sync with later re-renders
 // (variant/colour swaps that replace .gallery-thumbs' innerHTML).
+// Gallery thumbnails — one delegated handler for every PDP (spec.md §15 D3): swaps the main
+// image and moves the .active border to the clicked thumb. Was an inline onclick per thumb,
+// and on Simple/Grouped/Vehicle-Specific the active border never moved off thumb 1.
+document.addEventListener('click', e => {
+  const thumb = e.target.closest('.gallery-thumbs img');
+  if (!thumb) return;
+  const main = document.getElementById('mainImg');
+  if (main) main.src = thumb.src;
+  thumb.parentElement.querySelectorAll('img').forEach(img => img.classList.toggle('active', img === thumb));
+});
+
 function initGalleryCarousels() {
   document.querySelectorAll('.gallery-thumbs').forEach(el => {
     if (el.parentElement.classList.contains('gallery-thumbs-wrap')) return;
@@ -750,6 +761,22 @@ function syncSaleTag(block) {
   const wasEl = block.querySelector('.price-was');
   if (!wasEl) return;
   document.querySelectorAll('.sale-tag').forEach(tag => { tag.hidden = wasEl.hidden; });
+  // Save band on the main product photo — the same diagonal "Save N%" corner every product card
+  // uses (.plp-save-corner), replacing the price block's old Save pill (2026-09-29, spec.md §15
+  // L9: PDP sale styling = card styling + the sale-tag image). Mirrors the price block's own
+  // .badge-save text/visibility, which every template's price code already keeps current.
+  const badge = block.querySelector('.badge-save');
+  const main = document.querySelector('.gallery-main');
+  if (!badge || !main) return;
+  let corner = main.querySelector('.plp-save-corner');
+  if (!corner) {
+    corner = document.createElement('div');
+    corner.className = 'plp-save-corner';
+    corner.innerHTML = '<span></span>';
+    main.appendChild(corner);
+  }
+  corner.querySelector('span').textContent = badge.textContent;
+  corner.hidden = wasEl.hidden || badge.hidden || !badge.textContent.trim();
 }
 
 // Payment-plan badge provider set, per region (backlog items 31/31a, 2026-09-11): AU keeps
@@ -844,6 +871,24 @@ function reapplySaleFlag() {
     syncPriceLabels(block);
     syncSaleTag(block);
     syncPaymentBadges(block);
+  });
+  syncBarPrices();
+}
+
+// Sticky mobile bar + desktop persistent bar mirror the decision panel's price (spec.md §15 D8)
+// — previously each template updated them its own way, and the Demo "On sale" toggle never
+// reached them on any template. The decision panel's .price-block is the one source.
+function syncBarPrices() {
+  const block = document.querySelector('.decision-panel .price-block');
+  if (!block) return;
+  const nowEl = block.querySelector('.price-now');
+  const wasEl = block.querySelector('.price-was');
+  if (!nowEl || !wasEl) return;
+  document.querySelectorAll('.sticky-cta-mobile .sticky-price, .persistent-bar .price-row').forEach(row => {
+    const n = row.querySelector('.price-now');
+    const w = row.querySelector('.price-was');
+    if (n) { n.textContent = nowEl.textContent; n.classList.toggle('no-sale', wasEl.hidden); }
+    if (w) { w.textContent = wasEl.textContent; w.hidden = wasEl.hidden; }
   });
 }
 
@@ -1395,7 +1440,7 @@ function buildFitFinderDrawer() {
       <div class="store-slideout-body">
         <section class="fit-finder-widget">
           <div class="ff-head">
-            <span class="ff-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></span>
+            <span class="ff-badge"><svg viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#vi-clip-ffdrawer)"><path d="M24.9152 14.5953V14.0848C24.9152 12.0661 23.2893 10.4418 21.2815 10.4418C20.6739 10.4418 20.1127 10.1054 19.8234 9.56589L17.8676 5.97512C17.5726 5.43563 17.0113 5.10498 16.4038 5.10498L5.13237 5.12238C4.63477 5.12238 4.1603 5.34862 3.84206 5.73728L1.51025 8.60874C0.567114 9.76892 0.248877 11.3236 0.653906 12.7622L1.17466 14.6185C0.931641 14.7055 0.705981 14.8505 0.520825 15.0362C0.191016 15.3668 0.00585938 15.8193 0.00585938 16.2892C0.00585938 17.2637 0.792773 18.0584 1.76484 18.0584H2.66748C2.66748 18.1165 2.66748 18.1687 2.66748 18.2209C2.66748 19.9321 4.05037 21.3244 5.76306 21.3244C7.47576 21.3244 8.85864 19.9379 8.85864 18.2209C8.85864 18.1687 8.85864 18.1165 8.85864 18.07L15.6168 18.0816C15.6168 18.1281 15.6168 18.1803 15.6168 18.2267C15.6168 19.9379 16.9997 21.3302 18.7124 21.3302C20.4251 21.3302 21.808 19.9437 21.808 18.2267C21.808 18.1803 21.808 18.1397 21.808 18.0932H24.9672C25.9219 18.0874 26.6915 17.3159 26.6915 16.3588V16.324C26.6915 15.3726 25.9219 14.5953 24.973 14.5953H24.9441H24.9152ZM5.91929 10.4708H3.1188C2.86421 10.4708 2.62698 10.3258 2.51704 10.0938C2.40132 9.86174 2.43025 9.5891 2.58647 9.38606L4.64634 6.67123C4.81992 6.43919 5.09766 6.30577 5.38696 6.30577H5.92507V10.465L5.91929 10.4708ZM11.8096 10.4708H7.60884V6.31157H11.8096V10.4708ZM18.0702 10.146C17.9487 10.3432 17.7288 10.4708 17.4973 10.4708H13.4702V6.31157H15.8946C16.2417 6.31157 16.5658 6.5088 16.722 6.81625L18.0933 9.49048C18.2032 9.69931 18.1917 9.94875 18.0702 10.146Z" fill="currentColor"/><path d="M3.92297 4.19981H16.2474C18.099 4.19981 19.6092 2.69157 19.6092 0.835275C19.6092 0.371201 19.2331 -0.00585938 18.7702 -0.00585938C18.3073 -0.00585938 17.9312 0.377002 17.9312 0.841076C17.9312 1.76922 17.1732 2.52915 16.2474 2.52915H3.92297C3.46008 2.52915 3.08398 2.8946 3.08398 3.35868C3.08398 3.82275 3.46008 4.19401 3.92297 4.19401V4.19981Z" fill="currentColor"/></g><defs><clipPath id="vi-clip-ffdrawer"><rect width="26.6966" height="21.3028" fill="white"/></clipPath></defs></svg></span>
             <h2><span class="italic-lead">Fit</span> Finder</h2>
             <p>Select your vehicle to see what fits it across the whole site.</p>
           </div>
@@ -2303,6 +2348,49 @@ function closeFitGallerySlideout() {
 // page dots (click a dot to jump to that page; scrolling updates the active dot). Mirrors
 // initGalleryCarousels()'s overflow-detection convention but adds dot pagination, since
 // this widget's reference design calls for it and the main product gallery's doesn't.
+// ==== Fitment Gallery section — one builder for every page that shows it (2026-09-29, spec.md
+// §15 C9). Vehicle-Specific and VCLP mount it into <section class="fit-gallery-section"
+// data-fit-gallery data-count="N">; VPLP's plpFitGallerySectionHTML() wraps the same panel. Was
+// hand-copied markup on two pages plus a generated copy on VPLP, each with a different badge
+// SVG, alt text and image attributes.
+function fitGalleryPanelHTML(count) {
+  return `
+    <div class="fit-gallery-panel" id="fitGalleryPanel">
+      <div class="fit-gallery-head">
+        <div class="fit-gallery-title">
+          <span class="fit-gallery-badge">
+            <svg viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#vi-clip-fitgallery)"><path d="M24.9152 14.5953V14.0848C24.9152 12.0661 23.2893 10.4418 21.2815 10.4418C20.6739 10.4418 20.1127 10.1054 19.8234 9.56589L17.8676 5.97512C17.5726 5.43563 17.0113 5.10498 16.4038 5.10498L5.13237 5.12238C4.63477 5.12238 4.1603 5.34862 3.84206 5.73728L1.51025 8.60874C0.567114 9.76892 0.248877 11.3236 0.653906 12.7622L1.17466 14.6185C0.931641 14.7055 0.705981 14.8505 0.520825 15.0362C0.191016 15.3668 0.00585938 15.8193 0.00585938 16.2892C0.00585938 17.2637 0.792773 18.0584 1.76484 18.0584H2.66748C2.66748 18.1165 2.66748 18.1687 2.66748 18.2209C2.66748 19.9321 4.05037 21.3244 5.76306 21.3244C7.47576 21.3244 8.85864 19.9379 8.85864 18.2209C8.85864 18.1687 8.85864 18.1165 8.85864 18.07L15.6168 18.0816C15.6168 18.1281 15.6168 18.1803 15.6168 18.2267C15.6168 19.9379 16.9997 21.3302 18.7124 21.3302C20.4251 21.3302 21.808 19.9437 21.808 18.2267C21.808 18.1803 21.808 18.1397 21.808 18.0932H24.9672C25.9219 18.0874 26.6915 17.3159 26.6915 16.3588V16.324C26.6915 15.3726 25.9219 14.5953 24.973 14.5953H24.9441H24.9152ZM5.91929 10.4708H3.1188C2.86421 10.4708 2.62698 10.3258 2.51704 10.0938C2.40132 9.86174 2.43025 9.5891 2.58647 9.38606L4.64634 6.67123C4.81992 6.43919 5.09766 6.30577 5.38696 6.30577H5.92507V10.465L5.91929 10.4708ZM11.8096 10.4708H7.60884V6.31157H11.8096V10.4708ZM18.0702 10.146C17.9487 10.3432 17.7288 10.4708 17.4973 10.4708H13.4702V6.31157H15.8946C16.2417 6.31157 16.5658 6.5088 16.722 6.81625L18.0933 9.49048C18.2032 9.69931 18.1917 9.94875 18.0702 10.146Z" fill="currentColor"/><path d="M3.92297 4.19981H16.2474C18.099 4.19981 19.6092 2.69157 19.6092 0.835275C19.6092 0.371201 19.2331 -0.00585938 18.7702 -0.00585938C18.3073 -0.00585938 17.9312 0.377002 17.9312 0.841076C17.9312 1.76922 17.1732 2.52915 16.2474 2.52915H3.92297C3.46008 2.52915 3.08398 2.8946 3.08398 3.35868C3.08398 3.82275 3.46008 4.19401 3.92297 4.19401V4.19981Z" fill="currentColor"/></g><defs><clipPath id="vi-clip-fitgallery"><rect width="26.6966" height="21.3028" fill="white"/></clipPath></defs></svg>
+          </span>
+          <h2><span class="italic-lead">Fitment</span> Gallery</h2>
+        </div>
+        <a href="#" class="fit-gallery-viewall" data-fit-gallery-slideout>View All In-store Fitments (${count})</a>
+      </div>
+      <div class="fit-gallery-carousel">
+        <button type="button" class="fit-gallery-nav prev" aria-label="Previous photos">‹</button>
+        <div class="fit-gallery-track" id="fitGalleryTrack"></div>
+        <button type="button" class="fit-gallery-nav next" aria-label="Next photos">›</button>
+      </div>
+      <div class="fit-gallery-dots" id="fitGalleryDots"></div>
+    </div>`;
+}
+function mountFitGallery() {
+  document.querySelectorAll('.fit-gallery-section[data-fit-gallery]').forEach(section => {
+    if (!section.querySelector('.fit-gallery-panel')) section.innerHTML = fitGalleryPanelHTML(section.dataset.count || 0);
+  });
+}
+// Photo track — clicking a photo opens that fitment's detail in the "View All" slide-out.
+// altText describes what's fitted (page-specific), e.g. "Roof rack fitted to a customer's Toyota Hilux".
+function renderFitGalleryTrack(altText) {
+  const track = document.getElementById('fitGalleryTrack');
+  if (!track || typeof FIT_GALLERY_PHOTOS === 'undefined') return;
+  track.innerHTML = FIT_GALLERY_PHOTOS.map((p, i) =>
+    `<img src="${p.thumb}" data-fgs-open-index="${i}" role="button" tabindex="0" alt="${altText} — view fitment detail" width="142" height="106" loading="lazy">`
+  ).join('');
+  track.querySelectorAll('img').forEach(img => {
+    img.addEventListener('click', () => openFitGallerySlideoutAt(Number(img.dataset.fgsOpenIndex)));
+  });
+}
+
 function initFitGalleryCarousel() {
   const track = document.getElementById('fitGalleryTrack');
   const dotsWrap = document.getElementById('fitGalleryDots');
@@ -2414,7 +2502,7 @@ function initReviewSummary(root = document) {
       if (!count) { strip.hidden = true; return; }
       const filled = Math.round(avg);
       starsEl.innerHTML = '★'.repeat(filled) + `<span class="stars-empty">${'★'.repeat(5 - filled)}</span>`;
-      textEl.textContent = `${avg.toFixed(1)} (${count.toLocaleString()} reviews)`;
+      textEl.textContent = `${avg.toFixed(1)} (${count.toLocaleString()} Reviews)`;
     } catch (e) {
       strip.hidden = true;
     }
