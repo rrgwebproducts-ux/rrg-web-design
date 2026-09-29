@@ -1934,14 +1934,15 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 @media (max-width:900px){ .cat-tile-grid--home{grid-template-columns:repeat(3,minmax(0,1fr));} }
 @media (max-width:520px){ .cat-tile-grid--home{grid-template-columns:repeat(2,minmax(0,1fr));} }
 
-/* Current Offers (spec 5.6) — a promo's slide art (background + artwork) as a link tile. */
-.home-offer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+/* Current Offers (spec 5.6) — a promo's slide art (background + artwork) as a link tile. Sits
+   directly under the hero, no heading (Brenton, 2026-09-29). */
+.home-offer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:24px;}
 .home-offer-tile{position:relative;display:block;aspect-ratio:1400 / 820;border-radius:var(--radius);overflow:hidden;background:var(--rrg-charcoal);transition:box-shadow var(--t-fast) ease,transform var(--t-fast) ease;}
 .home-offer-tile:hover{box-shadow:var(--shadow-pop);transform:translateY(-2px);}
 .home-offer-tile img{position:absolute;inset:0;width:100%;height:100%;}
 .home-offer-tile img:first-child{object-fit:cover;}
 .home-offer-tile img+img{object-fit:contain;}
-@media (max-width:900px){ .home-offer-grid{grid-template-columns:1fr;gap:12px;} }
+@media (max-width:900px){ .home-offer-grid{grid-template-columns:1fr;gap:12px;margin-top:16px;} }
 
 /* Help row (spec 5.8) — the VLP's Store Finder tile beside two light cards (Key Finder, Let Us
    Help), merging the live page's Key Finder / fitting costs / "Let Us Help" leftovers. */
