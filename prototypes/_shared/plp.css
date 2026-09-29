@@ -389,6 +389,27 @@
 .plp-stock-line{font-size:12.5px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
 .plp-stock-line.out-of-stock{color:#a3a3a3;}
+
+/* ---- Card design (2026-09-29 — trialled on search, now every PLP-family page) --------------
+   Corner "SAVE X%" band on the image replaces the Save pill; sale tag graphic removed; price +
+   RRP on one line; even spacing between rating / price / stock. */
+.plp-save-corner{position:absolute;top:0;left:0;width:96px;height:96px;overflow:hidden;z-index:3;pointer-events:none;}
+.plp-save-corner span{position:absolute;top:20px;left:-32px;width:140px;transform:rotate(-45deg);background:var(--rrg-red);color:#fff;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.03em;text-transform:uppercase;padding:4px 0;box-shadow:0 2px 4px rgba(0,0,0,.18);}
+/* Phase 2 stopgap: drop below the full-width Best Seller / Staff Pick bar. */
+.plp-card-media:has(.plp-ribbon) .plp-save-corner{top:34px;}
+/* List view's brand chip also lives top-left on the image — move it to the top-right when the
+   corner band is there. */
+.plp-card-media:has(.plp-save-corner) .plp-card-brand-overlay{left:auto;right:8px;}
+.plp-price.plp-price-v2{display:block;margin:0 0 10px;}
+.plp-price-v2-row{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:0;}
+.plp-results.is-grid .plp-price-v2-row,.plp-list-col-actions .plp-price-v2-row{justify-content:center;}
+.plp-price-v2-now{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap;}
+.plp-price-v2-now .plp-price-label{color:var(--rrg-black);}
+.plp-price-on-sale-v2 .plp-price-v2-now .plp-price-label{color:var(--rrg-red);}
+.plp-price-v2-was{font-size:15px;color:#6b6b6b;text-decoration:line-through;white-space:nowrap;}
+.plp-price-v2-was .plp-price-was{font-size:inherit;color:inherit;}
+.plp-card:has(.plp-price-v2) .plp-rating{margin-bottom:10px;}
+.plp-card:has(.plp-price-v2) .plp-stock-line{margin-bottom:10px;}
 .plp-view-options-btn:disabled{opacity:.5;cursor:not-allowed;background:#fff;color:#a3a3a3;border-color:var(--rrg-line);}
 
 /* Grid-only: centre the identity/price block on the card instead of left-aligning it — list
@@ -553,8 +574,8 @@
    PDP's .fitment card (shared.css): same 3px coloured left border, car icon, Barlow uppercase
    label and state colours (--rrg-fits / --rrg-nofit / --rrg-unknown), one short detail line,
    no action buttons. Left-aligned even inside the centred grid card, like the PDP card. */
-.plp-fitment{display:flex;align-items:center;gap:10px;margin:4px 0 10px;padding:8px 10px;border:1px solid var(--rrg-line);border-left-width:3px;border-radius:var(--radius);background:#fff;text-align:left;}
-.plp-fitment-icon{width:22px;height:22px;flex:0 0 auto;}
+.plp-fitment{display:flex;align-items:center;gap:8px;margin:4px 0 10px;padding:6px 10px;border:1px solid var(--rrg-line);border-left-width:3px;border-radius:var(--radius);background:#fff;text-align:left;}
+.plp-fitment-icon{width:18px;height:18px;flex:0 0 auto;}
 .plp-fitment div{min-width:0;}
 .plp-fitment strong{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;}
 .plp-fitment span{display:block;font-size:12.5px;color:#4a4a4a;line-height:1.3;}
@@ -564,6 +585,16 @@
 .plp-fitment.no_fit strong,.plp-fitment.no_fit .plp-fitment-icon{color:var(--rrg-nofit);}
 .plp-fitment.unknown{border-left-color:var(--rrg-unknown);}
 .plp-fitment.unknown strong,.plp-fitment.unknown .plp-fitment-icon{color:var(--rrg-unknown);}
+/* Grid cards are centre-aligned throughout, so the status label is too (list view stays left,
+   like the rest of that layout). */
+.plp-results.is-grid .plp-fitment{justify-content:center;}
+/* Two-up mobile cards are ~130px wide inside — drop the icon and shrink slightly so the label
+   stays on one or two lines instead of three. */
+@media (max-width:600px){
+  .plp-fitment{padding:5px 8px;}
+  .plp-fitment-icon{display:none;}
+  .plp-fitment strong{font-size:13px;}
+}
 
 /* Pages / Articles / Brands views of the switcher (2026-09-29, second pass) — rendered into the
    same #plpResults grid as product cards, on the same .plp-card frame (image on top, body,

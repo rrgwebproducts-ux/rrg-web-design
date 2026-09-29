@@ -769,16 +769,21 @@ function plpRenderSearchVehicleStrip() {
   if (setBtn) setBtn.addEventListener('click', () => { if (window.rrgSetSession) window.rrgSetSession('vehicleSet', true); });
 }
 
-// Fitment status on product cards (2026-09-29, Brenton) — a simplified version of the vehicle-
+// Fitment status on product cards (2026-09-29, Brenton) — grid cards place it between the product
+// name and the reviews (his pick after testing 4 positions); list view puts it above the name.
+// a simplified version of the vehicle-
 // specific PDP's fitment card (.fitment in shared.css: coloured left border, car icon, Barlow
 // uppercase label, one detail line), replacing the first pass's green "Fits your Toyota Hilux"
 // pill, which wasn't on brand. Same three states/colours as the PDP card; the detail line is
 // cut down to just the vehicle, and there are no action buttons (the card's own CTA is there).
 // Shown on every PLP-family page, for vehicle-specific products only.
+// One line only (Brenton, 2026-09-29 — the two-line version made the card too tall): the label
+// names the make/model itself instead of a separate grey detail line. fits / no_fit name the
+// shopper's own vehicle; unknown (no vehicle set) names the vehicle the product is for.
 const PLP_FIT_COPY = {
-  fits: { label: 'Fits your vehicle', detail: fit => PLP_VEHICLES[fit].short },
-  no_fit: { label: "Doesn't fit your vehicle", detail: fit => `Built for ${PLP_VEHICLES[fit].short}` },
-  unknown: { label: 'Confirm your vehicle', detail: fit => `Suits ${PLP_VEHICLES[fit].short}` }
+  fits: { label: fit => `Fits your ${PLP_VEHICLES[fit].name}` },
+  no_fit: { label: () => `Doesn't fit your ${PLP_VEHICLES[PLP_SESSION_VEHICLE_KEY].name}` },
+  unknown: { label: fit => `Suits ${PLP_VEHICLES[fit].name} only` }
 };
 
 function plpFitStatusHTML(product) {
@@ -789,7 +794,7 @@ function plpFitStatusHTML(product) {
   return `
     <div class="plp-fitment ${status}">
       <svg class="plp-fitment-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
-      <div><strong>${c.label}</strong><span>${c.detail(fit)}</span></div>
+      <strong>${c.label(fit)}</strong>
     </div>
   `;
 }
@@ -1080,7 +1085,35 @@ function plpCloseFilterDrawer() {
 }
 
 // ==== Product card / row ======================================================
+// Card design (2026-09-29, from the 2026-09-24 meeting — trialled on the search page, then rolled
+// out to every PLP-family page once Brenton signed it off). What changed from the earlier card:
+//   - the seasonal sale-tag graphic beside the price is gone;
+//   - "Save X%" moves off the price block into a corner ribbon on the image (top-left, grid and
+//     list view alike);
+//   - sale price and RRP sit together on one line (wrapping under on narrow cards), RRP a touch
+//     larger than before;
+//   - the price block's spacing matches the rating's, so rating / price / stock read as one
+//     evenly spaced group.
+// It also applies the Site Admin Panel's build phase: Phase 1 (launch) hides the Best Seller /
+// Staff Pick ribbons and Compare Products; Phase 2 shows them.
+function plpBuildPhase() {
+  return typeof rrgPhaseGet === 'function' ? rrgPhaseGet() : 1;
+}
+
+function plpSavePct(product) {
+  return product.price && product.wasPrice ? Math.round((1 - product.price / product.wasPrice) * 100) : 0;
+}
+
+// Diagonal "SAVE X%" band across the image's top-left corner. In Phase 2 it sits below the
+// full-width Best Seller / Staff Pick bar (.plp-card-media:has(.plp-ribbon)) so the two don't
+// collide — a stopgap; how ribbons and the Save corner live together is still to be designed.
+function plpSaveCornerHTML(product) {
+  const pct = plpSavePct(product);
+  return pct > 0 ? `<div class="plp-save-corner"><span>Save ${pct}%</span></div>` : '';
+}
+
 function plpRibbonHTML(product) {
+  if (plpBuildPhase() === 1) return ''; // Phase 2 feature
   // Bestseller vs Staff Pick — mutually exclusive, Staff Pick wins if a product somehow
   // carries both (plp-spec.md Section 7, Section 14 item 1 — flagged assumption). Full-width
   // bar across the top of the card's media, matching the Figma reference exactly (not a
@@ -1105,42 +1138,22 @@ function plpRibbonHTML(product) {
 // straight "View Details" link (see plpPrimaryActionHTML) since quick-add needs a real price.
 function plpPriceHTML(product) {
   if (!product.price) {
-    return `<div class="plp-price"><div class="plp-price-col"><span class="plp-price-poa">Price on Application</span></div></div>`;
+    return `<div class="plp-price plp-price-v2"><div class="plp-price-v2-row"><span class="plp-price-poa">Price on Application</span></div></div>`;
   }
   const now = plpFmtMoney(product.price);
-  // "From" reuses the same small .plp-price-label style as "Now"/"RRP" (2026-09-19 2nd
-  // follow-up) — it used to be plain text prepended inside .plp-price-now, which rendered it
-  // at the same oversized price font as the digits themselves.
-  const fromSpan = product.hasOptions ? `<span class="plp-price-label">From</span>` : '';
+  const from = product.hasOptions ? `<span class="plp-price-label">From</span>` : '';
   if (!product.wasPrice) {
-    return `<div class="plp-price"><div class="plp-price-col"><div class="plp-price-line-now">${fromSpan}<span class="plp-price-now">${now}</span></div></div></div>`;
+    return `<div class="plp-price plp-price-v2"><div class="plp-price-v2-row"><span class="plp-price-v2-now">${from}<span class="plp-price-now">${now}</span></span></div></div>`;
   }
-  const was = plpFmtMoney(product.wasPrice);
-  // Two-column on-sale layout (2026-09-18 design review) — price/RRP/Save badge stacked on
-  // the left, the same seasonal sale-tag graphic as the PDP price-block (shared.css
-  // .price-block .sale-tag) sitting beside it on the right, instead of overlaying the product
-  // photo (Graham: that placement was hard to control and landed wrong too often). Reuses
-  // shared.css's .badge/.badge-save verbatim, per this file's own "reuse a shared.css class
-  // where it happens" convention, so the Save pill matches the PDP's exactly.
-  //
-  // "Now"/"RRP" labels (2026-09-19 follow-up) — same wording/strikethrough-on-both-spans
-  // treatment as the PDP price-block (shared.css .price-line-now/.price-line-was/.price-label,
-  // syncPriceLabels()), just at card scale via the plp-prefixed equivalents in plp.css.
-  // "Now" is suppressed for hasOptions products even on sale (2026-09-19 3rd follow-up,
-  // Brenton) — a variant/sibling product on sale still just reads "From $X", not
-  // "Now From $X"; RRP/strikethrough/Save% still show as normal, only the "Now" label drops.
-  // A non-variant product keeps the plain PDP behaviour: "Now" only on sale, plain unlabelled
-  // number off-sale.
-  const savePct = Math.round((1 - product.price / product.wasPrice) * 100);
+  // "Now" is dropped for sibling/variant products (2026-09-19) — on sale they still just read
+  // "From $X", with the RRP beside it.
   const nowLabel = product.hasOptions ? '' : `<span class="plp-price-label">Now</span>`;
   return `
-    <div class="plp-price plp-price-on-sale">
-      <div class="plp-price-col">
-        <div class="plp-price-line-now">${nowLabel}${fromSpan}<span class="plp-price-now">${now}</span></div>
-        <div class="plp-price-line-was"><span class="plp-price-label">RRP</span><span class="plp-price-was">${was}</span></div>
-        <span class="badge badge-save">Save ${savePct}%</span>
+    <div class="plp-price plp-price-v2 plp-price-on-sale-v2">
+      <div class="plp-price-v2-row">
+        <span class="plp-price-v2-now">${nowLabel}${from}<span class="plp-price-now">${now}</span></span>
+        <span class="plp-price-v2-was">RRP <span class="plp-price-was">${plpFmtMoney(product.wasPrice)}</span></span>
       </div>
-      <img class="plp-sale-tag" src="../_shared/sale-tag.png" alt="Sale">
     </div>
   `;
 }
@@ -1179,6 +1192,7 @@ function plpSpecsHTML(product) {
 
 function plpCompareCheckHTML(product) {
   if (!plpState.compareEnabled) return '';
+  if (plpBuildPhase() === 1) return ''; // Phase 2 feature
   const checked = plpState.compareSelected.includes(product.id);
   const disabled = !checked && plpState.compareSelected.length >= 2;
   return `
@@ -1254,13 +1268,14 @@ function plpCardHTML(product, cfg) {
       <a href="${product.url || '#'}" class="plp-card-media-link">
         <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
           ${plpRibbonHTML(product)}
+          ${plpSaveCornerHTML(product)}
           ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
         </div>
       </a>
       <div class="plp-card-body">
         ${plpBrandHTML(product)}
-        ${plpFitStatusHTML(product)}
         <h3 class="plp-card-title"><a href="${product.url || '#'}" class="plp-card-title-link">${product.name}</a></h3>
+        ${plpFitStatusHTML(product)}
         ${plpRatingHTML(product)}
         ${plpPriceHTML(product)}
         ${plpStockLineHTML(product)}
@@ -1295,6 +1310,7 @@ function plpListCardHTML(product, cfg) {
         <a href="${product.url || '#'}" class="plp-card-media-link">
           <div class="plp-card-media ${product.imageSvg ? 'is-placeholder' : ''}">
             ${plpBrandOverlayHTML(product)}
+            ${plpSaveCornerHTML(product)}
             ${product.imageSvg ? product.imageSvg : `<img class="plp-card-photo" src="${product.image}" alt="${product.name}">`}
           </div>
         </a>

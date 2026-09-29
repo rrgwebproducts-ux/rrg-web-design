@@ -73,6 +73,13 @@ function buildSiteAdminPanel(currentKey) {
         </label>
       </div>
       <div class="site-admin-section">
+        <h5>Build Phase</h5>
+        <div class="site-admin-radios">
+          <label><input type="radio" name="rrgBuildPhase" value="1"> Phase 1 (launch)</label>
+          <label><input type="radio" name="rrgBuildPhase" value="2"> Phase 2 (future features)</label>
+        </div>
+      </div>
+      <div class="site-admin-section">
         <h5>Demo State Panel</h5>
         <label class="site-admin-toggle">
           <span>Show Demo State Panel</span>
@@ -126,6 +133,15 @@ function buildSiteAdminPanel(currentKey) {
     toggle.checked = rrgSessionGet(field);
     toggle.addEventListener('change', () => {
       if (window.rrgSetSession) window.rrgSetSession(field, toggle.checked);
+    });
+  });
+
+  // Build phase (session-state.js rrgPhaseGet/rrgSetPhase) — Phase 1 = launch build, Phase 2
+  // shows features agreed as later additions (e.g. Best Seller / Staff Pick ribbons, Compare).
+  panel.querySelectorAll('input[name="rrgBuildPhase"]').forEach(radio => {
+    radio.checked = Number(radio.value) === (typeof rrgPhaseGet === 'function' ? rrgPhaseGet() : 1);
+    radio.addEventListener('change', () => {
+      if (radio.checked && window.rrgSetPhase) window.rrgSetPhase(Number(radio.value));
     });
   });
 

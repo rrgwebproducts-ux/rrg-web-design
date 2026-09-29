@@ -38,3 +38,19 @@ window.rrgSetSession = (field, on) => {
   localStorage.setItem(RRG_SESSION_FIELDS[field].key, on);
   rrgApplySessionState();
 };
+
+// Build phase (2026-09-29, Brenton) — Phase 1 is what launches; Phase 2 previews everything
+// agreed as a later addition (Best Seller / Staff Pick ribbons, Compare Products, ...), so the
+// prototype can show the launch build by default without deleting future features. Set from the
+// Site Admin Panel; defaults to 1. Fires the same 'rrg-session-change' event as the session
+// toggles above so every page re-renders through its existing listener.
+const RRG_BUILD_PHASE_KEY = 'rrgBuildPhase';
+
+function rrgPhaseGet() {
+  return localStorage.getItem(RRG_BUILD_PHASE_KEY) === '2' ? 2 : 1;
+}
+
+window.rrgSetPhase = (phase) => {
+  localStorage.setItem(RRG_BUILD_PHASE_KEY, String(phase));
+  document.dispatchEvent(new CustomEvent('rrg-session-change'));
+};
