@@ -2061,7 +2061,7 @@ function applyPlpHeroImageFlag(mode) {
     return;
   }
   heroSet.classList.remove('no-media');
-  if (mediaWrap) mediaWrap.hidden = false;
+  if (mediaWrap) { mediaWrap.hidden = false; mediaWrap.classList.toggle('is-cutout', !catImg); }
   if (catImg) {
     if (img) img.src = catImg;
     if (badge) badge.hidden = true;

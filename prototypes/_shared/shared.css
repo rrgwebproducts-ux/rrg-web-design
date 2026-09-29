@@ -118,11 +118,16 @@ h1,h2,h3,h4{
 /* Desktop: the photo box is a fixed 250px tall rather than 3/2 (~346px) — the 3/2 box made the
    hero far taller than its text, leaving ~180px of dead space above Shop By (Brenton,
    2026-09-29). 250px sits just above the tallest heading + description + buttons across every
-   Shop By tab, so the hero keeps one height and the tabs still never move (S1). The Hilux cutout
-   still fits whole — the square source has a wide white margin that the cover crop removes. */
+   Shop By tab, so the hero keeps one height and the tabs still never move (S1). */
 @media (min-width:901px){
   .plp-hero-media{aspect-ratio:auto;height:250px;}
 }
+/* Vehicle cutouts (white-background studio shots) show whole rather than cover-cropped — the crop
+   was cutting off the ground shadow under the Hilux/Ranger (Brenton, 2026-09-29). The source
+   files are cropped tight to the vehicle + shadow, so contain still fills the box well.
+   Category/product photos keep cover. applyPlpHeroImageFlag() (plp.js) toggles the class when
+   the Demo State "Category image" preview swaps a photo in. */
+.plp-hero-media.is-cutout img{object-fit:contain;}
 .plp-hero-make-badge{position:absolute;top:16px;right:16px;width:56px;height:56px;background:var(--rrg-bg);border:1px solid var(--rrg-line);border-radius:50%;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;padding:9px;}
 .plp-hero-make-badge img{width:100%;height:100%;object-fit:contain;}
 /* Simple state (Section 4.2): no vehicle photo at all when the category has no fallback
