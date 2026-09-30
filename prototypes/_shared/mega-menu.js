@@ -247,7 +247,11 @@ function buildMegaMenuMobile(mobileEl) {
       </div>`;
       }).join('')}
       <div class="mm-mobile-utility-links">
-        ${MM_MOBILE_UTILITY_LINKS.map(l => `<a class="mm-mobile-row" href="${l.href}">${l.label}</a>`).join('')}
+        ${MM_MOBILE_UTILITY_LINKS.map(l => {
+          // Store Finder follows the region's open-store count (rrgStoreNavLink(), shared.js).
+          const link = l.label === 'Store Finder' && typeof rrgStoreNavLink === 'function' ? rrgStoreNavLink() : l;
+          return `<a class="mm-mobile-row" href="${link.href}"${l.label === 'Store Finder' ? ' data-store-nav="true"' : ''}>${link.label}</a>`;
+        }).join('')}
       </div>
     `;
     mobileEl.querySelectorAll('[data-cat]').forEach(row => {

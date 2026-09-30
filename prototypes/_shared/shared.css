@@ -2109,6 +2109,12 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .sf-card-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px;}
 .sf-card-actions a:not(.btn),.sf-card-actions button{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-text);text-decoration:underline;cursor:pointer;}
 .sf-card-mine{font-weight:700;color:var(--rrg-fits);}
+/* "Opening soon" (spec.md §16 item 12) — quieter than an open store and not clickable. */
+.sf-card--soon{cursor:default;background:var(--rrg-bg);border-style:dashed;}
+.sf-card--soon:hover{border-color:var(--rrg-line);}
+.sf-card--soon .sf-card-name{color:var(--rrg-grey-700);}
+.sf-soon-chip{flex:0 0 auto;padding:3px 10px;border-radius:999px;background:var(--rrg-gold-bg);color:var(--rrg-text);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
+.sf-soon-note{font-size:13px;color:var(--rrg-grey-600);}
 
 @media (max-width:900px){
   .sf-search{padding:24px 0 20px;}

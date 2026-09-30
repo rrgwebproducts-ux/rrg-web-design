@@ -254,7 +254,8 @@
 // ==== Stores (docs/store-finder/store-finder-spec.md) ================================
 // Every AU store from the shared network (RRG_STORE_NETWORK, shared.js), each with its state,
 // time zone and hours (the standard live hours — RRG_STANDARD_HOURS). NZ/UK show their single
-// store (REGION_SINGLE_STORES), like the rest of the site.
+// store (REGION_SINGLE_STORES), like the rest of the site, then any "opening soon" stores
+// (REGION_COMING_SOON, spec.md §16 item 12).
 const SF_STATE_ORDER = ['Queensland', 'New South Wales', 'Australian Capital Territory', 'Victoria', 'Tasmania', 'South Australia', 'Western Australia'];
 const SF_STORES = RRG_STORE_NETWORK
   .flatMap(g => g.stores.map(st => ({ ...st, state: g.state, timeZone: RRG_STATE_TZ[g.state], hours: RRG_STANDARD_HOURS })))
@@ -302,6 +303,16 @@ function sfCardHTML(st, km, nearest) {
     </article>`;
 }
 
+// "Opening soon" — deliberately not a link: no store page, pin or phone until it opens.
+function sfSoonCardHTML(st) {
+  return `
+    <article class="sf-card sf-card--soon" aria-label="${st.name}, opening soon">
+      <div class="sf-card-top"><h3 class="sf-card-name">${st.name}</h3><span class="sf-soon-chip">Opening soon</span></div>
+      <span>${st.city}</span>
+      <span class="sf-soon-note">We'll share the address and opening date here once it's confirmed.</span>
+    </article>`;
+}
+
 function sfVisibleStores() {
   if (sf.origin) return SF_STORES.map(st => ({ st, km: rrgKmBetween(sf.origin, st) })).sort((a, b) => a.km - b.km);
   return SF_STORES.filter(st => sf.tab === 'ALL' || st.state === sf.tab).map(st => ({ st, km: null }));
@@ -313,7 +324,9 @@ function sfRender() {
   $('sfForm').hidden = $('sfTabs').hidden = !!single;
   if (single) {
     $('sfStatus').textContent = '';
-    $('sfList').innerHTML = sfCardHTML({ ...single, street: single.address, hours: null, mapLink: `https://www.google.com/maps/search/?api=1&query=${single.lat},${single.lng}` }, null, false);
+    const soon = rrgShowComingSoon() ? REGION_COMING_SOON[region] || [] : [];
+    $('sfList').innerHTML = sfCardHTML({ ...single, street: single.address, hours: null, mapLink: `https://www.google.com/maps/search/?api=1&query=${single.lat},${single.lng}` }, null, false)
+      + (soon.length ? `<h2 class="related-heading sf-group-heading">Opening soon</h2>${soon.map(sfSoonCardHTML).join('')}` : '');
     return;
   }
   // State tabs — hidden while a search is sorting everything by distance.
@@ -344,8 +357,10 @@ function sfWhenMap(fn) {
   setTimeout(() => clearInterval(t), 15000);
 }
 function sfFitMap() {
-  if (currentRegion !== 'AU') return;
+  // Region checked when the map is ready, not when asked: on load this runs before shared.js has
+  // applied the saved region, which fitted a UK/NZ map to Australia.
   sfWhenMap(map => {
+    if (currentRegion !== 'AU') return;
     const pts = sf.origin ? sfVisibleStores().slice(0, 5).map(r => [r.st.lat, r.st.lng]) : sfVisibleStores().map(r => [r.st.lat, r.st.lng]);
     if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 12 });
   });
@@ -411,6 +426,7 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('rrg-store-pin', e => sfFocusStore(e.detail, true));
 document.addEventListener('rrg-session-change', sfRender);
+document.addEventListener('rrg-coming-soon-change', sfRender);
 // Only an actual region switch resets the search — applyRegion() also fires on page load.
 let sfRegion = 'AU';
 document.addEventListener('rrg-region-change', e => {

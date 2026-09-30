@@ -128,7 +128,12 @@ function buildSiteAdminPanel(currentKey) {
             <option value="dark">Dark</option>
           </select>
         </label>
-        <p class="site-admin-note">The merged vehicle bar + Fit Finder on Home and Fit My Vehicle (spec.md §16 item 7).</p>`, 'design')}
+        <p class="site-admin-note">The merged vehicle bar + Fit Finder on Home and Fit My Vehicle (spec.md §16 item 7).</p>
+        <label class="site-admin-toggle">
+          <span>Show "opening soon" stores (UK/NZ)</span>
+          <input type="checkbox" data-admin-coming-soon>
+        </label>
+        <p class="site-admin-note">Demo placeholders in the UK and NZ Store Finder (spec.md §16 item 12).</p>`, 'design')}
       ${acc('Prototype tools', `
         ${hasDemoPanel ? `<label class="site-admin-toggle">
           <span>Show Demo State panel</span>
@@ -171,6 +176,10 @@ function buildSiteAdminPanel(currentKey) {
   const vfStyleSelect = panel.querySelector('[data-admin-vf-style]');
   vfStyleSelect.value = typeof rrgVehicleFinderStyle === 'function' ? rrgVehicleFinderStyle() : 'light';
   vfStyleSelect.addEventListener('change', () => { if (window.rrgSetVehicleFinderStyle) window.rrgSetVehicleFinderStyle(vfStyleSelect.value); });
+
+  const comingSoonToggle = panel.querySelector('[data-admin-coming-soon]');
+  comingSoonToggle.checked = typeof rrgShowComingSoon === 'function' ? rrgShowComingSoon() : true;
+  comingSoonToggle.addEventListener('change', () => { if (window.rrgSetShowComingSoon) window.rrgSetShowComingSoon(comingSoonToggle.checked); });
 
   // Build phase (session-state.js rrgPhaseGet/rrgSetPhase).
   panel.querySelectorAll('input[name="rrgBuildPhase"]').forEach(radio => {

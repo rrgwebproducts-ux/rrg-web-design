@@ -1765,6 +1765,48 @@ function applyShowroomMapFlag(on) {
 // state, same as the rest of this file's data), but the flag now actually gates the
 // Click & Collect "On display" line and the Showroom map's single-pin popup instead of
 // both being hardcoded to assert it unconditionally.
+// "Opening soon" stores (spec.md §16 item 12) — UK and NZ keep a Store Finder so the rollout is
+// future-proofed (Graham expects two more UK stores by December). DEMO PLACEHOLDERS: none of these
+// locations is confirmed. Shown only in the Store Finder, as non-clickable cards (no store page, no
+// map pin, no phone), and switchable in Site Admin → Design options. Production rule: list a store
+// here only once its site is signed and the opening month is known, then give it a full card once
+// it opens.
+const REGION_COMING_SOON = {
+  NZ: [{ name: 'West Auckland', city: 'Auckland' }, { name: 'Christchurch', city: 'Christchurch' }],
+  UK: [{ name: 'Leeds', city: 'Leeds' }, { name: 'Birmingham', city: 'Birmingham' }]
+};
+const RRG_COMING_SOON_KEY = 'rrgShowComingSoonStores';
+function rrgShowComingSoon() {
+  try { return localStorage.getItem(RRG_COMING_SOON_KEY) !== 'false'; } catch (e) { return true; }
+}
+window.rrgSetShowComingSoon = on => {
+  try { localStorage.setItem(RRG_COMING_SOON_KEY, on); } catch (e) {}
+  document.dispatchEvent(new CustomEvent('rrg-coming-soon-change'));
+};
+// Open stores in a region — the header's store link follows it (spec.md §16 item 13).
+function rrgOpenStoreCount(region) {
+  return region === 'AU' ? rrgStoreCount() : 1;
+}
+// Header nav store link: "Store Finder" while a region has 2+ open stores; with one it goes
+// straight to that store ("Visit Our Bolton Store"), and flips back automatically when the second
+// opens. NZ/UK have no store page in the prototype, so the single-store link opens the Store
+// Finder (which shows that one store).
+function rrgStoreNavLink(region = typeof currentRegion === 'undefined' ? 'AU' : currentRegion) {
+  if (rrgOpenStoreCount(region) > 1) return { label: 'Store Finder', href: '#' };
+  const name = REGION_SINGLE_STORES[region].name;
+  return { label: `Visit Our ${name} Store`, href: rrgStorePageHref(name) || RRG_STORE_FINDER_HREF() };
+}
+function applyRegionStoreNav(region) {
+  const link = rrgStoreNavLink(region);
+  document.querySelectorAll('.rrg-nav a').forEach(a => {
+    if (!a.dataset.storeNav && a.textContent.trim() !== 'Store Finder') return;
+    a.dataset.storeNav = 'true';
+    a.textContent = link.label;
+    a.setAttribute('href', link.href);
+  });
+  if (window.rrgResetMobileMenu) window.rrgResetMobileMenu();
+}
+
 const REGION_SINGLE_STORES = {
   NZ: { name: 'Auckland', address: '195A Wairau Road, Wairau Valley, Auckland, 0627', phone: '09 481 1910', lat: -36.7747, lng: 174.7381, onDisplay: true, note: 'Roof Racks Galore, Auckland — roofracksgalore.co.nz/contact-us' },
   UK: { name: 'Bolton', address: 'Unit B9, Edge Fold Industrial Estate, Plodder Lane, Farnworth, Bolton, BL4 0LR', phone: '01204 899778', lat: 53.5503, lng: -2.3882, onDisplay: true, note: 'The Roof Box Company, Manchester North Store — roofbox.co.uk/locations/manchester-north.php' }
@@ -2034,6 +2076,7 @@ function applyRegion(region) {
   // Utility bar "Your Nearest Store" (backlog item 32, 2026-09-11) — same simple text-swap
   // treatment as the phone number above.
   applyRegionNearestStore(region);
+  applyRegionStoreNav(region);
 
   // Ex-Demo/Factory Seconds inline link (backlog item 4 follow-up, 2026-09-11): re-render
   // any stock line already showing the B-Stock link so its wording ("Graded" for UK) and
@@ -2066,7 +2109,7 @@ function applyRegion(region) {
 document.addEventListener('click', e => {
   const a = e.target.closest('a');
   if (!a || a.getAttribute('href') !== '#' || a.hasAttribute('data-store-slideout')) return;
-  if (!(a.hasAttribute('data-store-finder-link') || a.textContent.trim() === 'Store Finder' || a.closest('.footer-store-finder'))) return;
+  if (!(a.hasAttribute('data-store-finder-link') || a.hasAttribute('data-store-nav') || a.textContent.trim() === 'Store Finder' || a.closest('.footer-store-finder'))) return;
   e.preventDefault();
   location.href = RRG_STORE_FINDER_HREF();
 });
