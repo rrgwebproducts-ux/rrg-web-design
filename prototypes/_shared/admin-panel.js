@@ -34,6 +34,11 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'fit-my-vehicle', label: 'Fit My Vehicle' },
       { key: 'installation', label: 'Installation & Booking' },
     ] },
+    { title: 'Cart &amp; checkout', items: [
+      { key: 'cart', label: 'Cart' },
+      { key: 'checkout', label: 'Checkout' },
+      { key: 'order-confirmation', label: 'Order Confirmation' },
+    ] },
     { title: 'Product pages', items: [
       { key: 'simple', label: 'Simple' },
       { key: 'config-variant', label: 'Config-Variant' },

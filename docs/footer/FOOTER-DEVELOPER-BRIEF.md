@@ -153,6 +153,8 @@ One block, present at the bottom of every page: four columns on desktop (Informa
 
 **Purpose:** payment-method trust signals — same real per-region provider logic already built for the Decision Panel's payment badges (`DEVELOPER-BRIEF.md`), reused here rather than duplicated.
 
+> **Corrected 2026-09-30 (docs/checkout/checkout-spec.md Section 6).** The live sites were checked during the checkout work: **NZ** offers cards and PayPal only (no Afterpay or any buy-now-pay-later), and the **UK** (roofbox.co.uk) shows Google Pay, Visa, Mastercard, Amex and PayPal, with no Clearpay or Klarna. No site shows Apple Pay. The prototype now follows that: **PDP instalment badges show in AU only** (Afterpay, PayPal, Zip) and are hidden in NZ and the UK; the footer marks are AU PayPal · Visa · Mastercard · Zip · Afterpay · Google Pay, NZ PayPal · Visa · Mastercard, UK Google Pay · Visa · Mastercard · Amex · PayPal (`REGION_FOOTER_PAYMENTS`, shared.js). The Clearpay/Klarna notes below are kept as history.
+
 **Contents — every region shows PayPal + the card networks/wallets (Visa, MasterCard, Apple Pay, Google Pay), which are not region-specific; only the "buy now, pay later" providers change:**
 
 | Region | BNPL providers shown |

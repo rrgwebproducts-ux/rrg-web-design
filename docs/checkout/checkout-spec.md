@@ -1,8 +1,8 @@
-# Checkout — Engineering Spec (DRAFT for sign-off)
+# Checkout — Engineering Spec
 
 Project: the mini-cart, cart page, checkout and order confirmation. Spec.md §16 item 30 (checkout) and item 6 (the confirmation page pushes fitting). Companion to `docs/installation/installation-spec.md`, where the confirmation page's fitting card goes.
 
-Planning session: 2026-09-30. The decisions in Section 8 were answered by Brenton the same day. **Nothing is built yet.**
+Planning session: 2026-09-30. The decisions in Section 8 were answered by Brenton the same day. **Signed off and built 2026-09-30** (Section 10).
 
 ---
 
@@ -130,8 +130,8 @@ A **distraction-free shell**: logo, "Secure checkout", help phone number, **no m
 | Fitting card on confirmation | Yes | Yes (Auckland) | No (not offered online) |
 
 **Also fixed with this work:**
-- The prototype footer's payment logos are wrong for two regions (`REGION_FOOTER_BNPL`, shared.js): NZ shows Afterpay, and the UK shows Clearpay and Klarna.
-- The live NZ site has no BNPL; the live UK site shows Google Pay, Visa, Mastercard, Amex and PayPal. The footer and the PDP payment badges will follow the table above.
+- The prototype footer's payment logos were wrong for two regions: NZ showed Afterpay, and the UK showed Clearpay and Klarna. **Fixed:** `REGION_FOOTER_PAYMENTS` (shared.js) follows the live sites, with an Amex mark added (`payment-logos/amex-dark.svg`, Simple Icons, CC0).
+- The PDP instalment badges now show in **AU only**: the live NZ site has no BNPL, and the live UK site shows Google Pay, Visa, Mastercard, Amex and PayPal.
 
 ## 7. Prototype mechanics
 - **One demo cart** in localStorage (`rrgCart`), shared by every page. Every existing Add to Cart writes to it and opens the mini-cart; the header count reads from it.
@@ -157,3 +157,39 @@ A **distraction-free shell**: logo, "Secure checkout", help phone number, **no m
 - **Cross-sells in the mini-cart:** the source (Magento related or cross-sell products) and the PLP quick-add behaviour.
 - **Terms tickbox:** does Legal need one?
 - **Bank transfer (EFT):** keep it as an online payment method?
+
+---
+
+## 10. Build notes — built 2026-09-30, Playwright-verified
+
+**Files:**
+- `prototypes/_shared/cart.js`: the shared demo cart (`rrgCart` in localStorage), region checkout rules (`RRG_REGION_CHECKOUT`), demo products and presets, the shared cart-line markup, the mini-cart drawer, and one delegated Add to Cart handler. It's loaded on every template after shared.js.
+- `prototypes/cart/`, `prototypes/checkout/` and `prototypes/order-confirmation/`: the three pages.
+- CSS in `shared.css` (the Cart, Cart page, Checkout and Order confirmation blocks).
+
+**Add to Cart everywhere:**
+- the PDP panel, sticky and persistent bars (read from the page, including bundle parts and the vehicle fit)
+- product cards: each button carries its line as `data-cart-item` (PLP family, Search, Home, VLP, store page, the cart's own "You Might Also Need")
+- PDP related-product cards
+
+The PLP's "different vehicle" notice still wins: the item is added, but the mini-cart stays closed behind the notice. The header cart icon opens the mini-cart.
+
+**Checkout state:** `rrgCheckout` in localStorage holds the method, store, postcode and what was typed, shared with the cart page's choices. Placing an order saves `rrgLastOrder` and empties the cart. The confirmation page's Book a Fitting opens the Installation form with `?store=&order=`, which fills in the notes with the order number and its fittable items, and sets "Bought from us" to "Yes, online".
+
+**Site Admin:**
+- Shopper session → **Demo cart** (Empty · Accessories · Rack, bike rack, bundle + tank)
+- Pages → **Cart & checkout**
+
+**Fixed along the way:** pages without a region switcher (the distraction-free checkout) now still apply the saved region (`initRegionSwitcher()`).
+
+**Verified:**
+- 1440 + 390px
+- add from a PLP card, a PDP, a bundle and a vehicle-specific PDP (with the fit line)
+- qty, remove and cross-sell add
+- cart in AU (Click & Collect, delivery estimate) and NZ (delivery only, PayPal only, GST 3/23)
+- empty cart
+- checkout validation, store search by postcode, guest → payment → card validation → order
+- UK checkout (delivery only, County optional, The Roof Box Company brand, £ and VAT)
+- confirmation with the fitting card → prefilled Installation form
+- footer marks and PDP badges per region
+- no horizontal overflow and zero console errors

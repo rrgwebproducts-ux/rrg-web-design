@@ -428,6 +428,8 @@ Three separate places on the page show a phone number and/or store name that cha
 
 Both sets of coordinates in the code block above are suburb/town-centre approximations for map-pin placement — same demo-precision convention as the rest of this prototype's store data, not geocoded to the exact street address.
 
+> **Corrected 2026-09-30 (docs/checkout/checkout-spec.md Section 6).** The live sites were checked during the checkout work: **NZ** offers cards and PayPal only (no Afterpay or any buy-now-pay-later), and the **UK** (roofbox.co.uk) shows Google Pay, Visa, Mastercard, Amex and PayPal, with no Clearpay or Klarna. No site shows Apple Pay. The prototype now follows that: **PDP instalment badges show in AU only** (Afterpay, PayPal, Zip) and are hidden in NZ and the UK; the footer marks are AU PayPal · Visa · Mastercard · Zip · Afterpay · Google Pay, NZ PayPal · Visa · Mastercard, UK Google Pay · Visa · Mastercard · Amex · PayPal (`REGION_FOOTER_PAYMENTS`, shared.js). The Clearpay/Klarna notes below are kept as history.
+
 #### UK payment provider differences
 
 The UK doesn't just hide/show a payment badge the way NZ does (NZ simply drops Zip, keeping Afterpay + PayPal as-is) — **the UK payment-badges row is a full 3-provider swap**, confirmed and built 2026-09-11:
@@ -913,7 +915,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Typography:** provider logos are image assets (real SVGs); instalment text is small label-scale copy, no bespoke sizing.
 
-**Region differences (4.1, UK payment provider differences):** AU shows Afterpay + PayPal + Zip (all "Pay in 4" except Zip's own weekly copy). NZ drops Zip (2 badges, still centred with no gap). **UK is a full 3-provider swap, not a hide/show:** Clearpay (Afterpay's UK brand, "Pay in 4") + PayPal ("Pay in 3," not 4 — different math from AU/NZ) + Klarna ("Pay in 3" over 3 months, a distinct provider from PayPal's own Pay-in-3, kept as its own badge).
+**Region differences (4.1, UK payment provider differences):** *(Corrected 2026-09-30: badges now show in AU only; NZ and the UK have no BNPL on their live sites. See the note above the UK payment provider table.)*  AU shows Afterpay + PayPal + Zip (all "Pay in 4" except Zip's own weekly copy). NZ drops Zip (2 badges, still centred with no gap). **UK is a full 3-provider swap, not a hide/show:** Clearpay (Afterpay's UK brand, "Pay in 4") + PayPal ("Pay in 3," not 4 — different math from AU/NZ) + Klarna ("Pay in 3" over 3 months, a distinct provider from PayPal's own Pay-in-3, kept as its own badge).
 
 **Links:** none — informational only, no provider deep-links.
 

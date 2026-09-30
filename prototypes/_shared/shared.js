@@ -503,22 +503,11 @@ function syncSaleTag(block) {
 // dollar, floored at $10.
 function paymentBadgeSet(region) {
   const payIn4 = price => `4 payments of ${fmtAud(price / 4)}`;
-  const payIn3 = price => `3 payments of ${fmtAud(price / 3)}`;
   const zipWeekly = price => `From ${regionCurrencySymbol()}${Math.max(10, Math.ceil(price / 10))} a week`;
 
-  if (region === 'UK') {
-    return [
-      { src: 'clearpay.svg', alt: 'Clearpay', text: payIn4 },
-      { src: 'paypal.svg', alt: 'PayPal', text: payIn3 },
-      { src: 'klarna.svg', alt: 'Klarna', text: payIn3 }
-    ];
-  }
-  if (region === 'NZ') {
-    return [
-      { src: 'afterpay.svg', alt: 'Afterpay', text: payIn4 },
-      { src: 'paypal.svg', alt: 'PayPal', text: payIn4 }
-    ];
-  }
+  // NZ and UK offer no buy-now-pay-later on their live sites (2026-09-30), so no instalment
+  // badges there — was Afterpay (NZ) and Clearpay/PayPal/Klarna (UK).
+  if (region === 'UK' || region === 'NZ') return [];
   return [
     { src: 'afterpay.svg', alt: 'Afterpay', text: payIn4 },
     { src: 'paypal.svg', alt: 'PayPal', text: payIn4 },
@@ -538,6 +527,7 @@ function syncPaymentBadges(block) {
   if (!badges) return;
   const price = currentPagePrice(block);
   const set = paymentBadgeSet(currentRegion);
+  badges.hidden = !set.length;
   badges.querySelectorAll('.payment-badge').forEach((el, i) => {
     const entry = set[i];
     el.hidden = !entry;
@@ -1903,7 +1893,15 @@ function regionFooterStoreCopy(region) {
 // (Visa/MasterCard/Apple Pay/Google Pay) are shown in every region; only the BNPL providers
 // change, reusing the same real per-region set as paymentBadgeSet() above rather than a
 // second copy of that data.
-const REGION_FOOTER_BNPL = { AU: ['zip', 'afterpay'], NZ: ['afterpay'], UK: ['clearpay', 'klarna'] };
+// Payment marks per region, as each live site shows them (checked 2026-09-30, docs/checkout/
+// checkout-spec.md Section 6): AU cards, PayPal, Zip, Afterpay and Google Pay (on the cart);
+// NZ cards and PayPal only (no Afterpay); UK Google Pay, cards, Amex and PayPal (no Clearpay or
+// Klarna). No site shows Apple Pay.
+const REGION_FOOTER_PAYMENTS = {
+  AU: ['paypal', 'visa', 'mastercard', 'zip', 'afterpay', 'google-pay'],
+  NZ: ['paypal', 'visa', 'mastercard'],
+  UK: ['google-pay', 'visa', 'mastercard', 'amex', 'paypal']
+};
 
 // "-dark" assets are real brand marks built to sit directly on a dark background with no
 // added white chip behind them (Brenton's ask, 2026-09-14) — distinct from this same folder's
@@ -1923,12 +1921,13 @@ const FOOTER_PAYMENT_ICON = {
   zip: ['zip-dark.svg', 'Zip'],
   afterpay: ['afterpay-dark.svg', 'Afterpay'],
   clearpay: ['clearpay-dark.svg', 'Clearpay'],
-  klarna: ['klarna-dark.svg', 'Klarna']
+  klarna: ['klarna-dark.svg', 'Klarna'],
+  amex: ['amex-dark.svg', 'American Express']
 };
 
 function renderFooterPayments(region) {
   document.querySelectorAll('[data-footer-payment-icons]').forEach(container => {
-    const order = ['paypal', 'visa', 'mastercard', ...REGION_FOOTER_BNPL[region], 'apple-pay', 'google-pay'];
+    const order = REGION_FOOTER_PAYMENTS[region] || REGION_FOOTER_PAYMENTS.AU;
     container.innerHTML = order.map(key => {
       const [src, alt] = FOOTER_PAYMENT_ICON[key];
       return `<span class="payment-icon"><img src="${RRG_PROTO}_shared/payment-logos/${src}" alt="${alt}"></span>`;
@@ -2207,7 +2206,13 @@ function applyRegionBrand(region) {
 
 function initRegionSwitcher() {
   const wrap = document.querySelector('.region-switcher');
-  if (!wrap) return;
+  // Pages without the switcher (the distraction-free checkout) still follow the saved region.
+  if (!wrap) {
+    const region = initialRegion();
+    applyRegion(region);
+    if (region === 'UK') setTimeout(() => applyRegionCurrency(currentRegion), 0);
+    return;
+  }
   const toggle = wrap.querySelector('.region-switcher-toggle');
   const menu = wrap.querySelector('.region-switcher-menu');
   toggle.addEventListener('click', (e) => {
