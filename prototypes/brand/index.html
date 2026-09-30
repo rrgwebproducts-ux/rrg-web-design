@@ -207,6 +207,13 @@
       </div>
     </section>
 
+    <!-- 3.8a {brand} FAQs — the shared FAQ accordion. Brand questions researched from each brand's
+         own site; the RRG questions (fitting, warranty, price match) are the live policies, AU only. -->
+    <section class="faq-section" id="brandFaq">
+      <h2 class="faq-heading" id="brandFaqHeading">Frequently Asked Questions</h2>
+      <div class="faq-list" id="brandFaqList"></div>
+    </section>
+
     <!-- 3.9 Popular vehicles for {brand} — the vehicles in its real fitment photos. Hidden once a
          vehicle is set. -->
     <section class="cat-tile-section" id="brandVehicles">
@@ -443,6 +450,29 @@ window.PLP_CONFIG = {
   }
 };
 
+// ---- 3.8a FAQs --------------------------------------------------------------------------------
+// The brand's own questions (brand-data.js faqs, sourced from its site) then RRG's, which are
+// Australian policies, so AU only (brand-spec.md 3.8a).
+function brandFaqs() {
+  const n = BRAND.name;
+  const rrg = BRAND_REGION() !== 'AU' ? [] : [
+    { q: `Can Roof Racks Galore fit my ${n} gear?`, a: `Yes. Our trained installers fit ${n} products at 35+ fitment centres around Australia, and most fittings are done while you wait. <a href="../installation/index.html#book">Book a fitting</a> at your nearest store.` },
+    { q: `Is ${n} covered by an Australian warranty when I buy from Roof Racks Galore?`, a: `Yes. We buy ${n} through authorised Australian channels, so you get full local warranty support. Our own warranty covers faulty workmanship or materials for 12 months from installation or delivery, on top of ${n}’s own warranty and your rights under Australian Consumer Law.` },
+    { q: `Will you price match ${n}?`, a: `Yes. If an authorised Australian retailer advertises the identical ${n} product for less, and it’s in stock with them and us, we’ll match it. Some exclusions apply, such as clearance items, bundles and marketplace sellers; see our <a href="https://www.roofracksgalore.com.au/price-guarantee" target="_blank" rel="noopener">Price Match Guarantee</a>.` }
+  ];
+  return [...(BRAND.faqs || []), ...rrg];
+}
+function renderBrandFaq() {
+  const items = brandFaqs();
+  document.getElementById('brandFaq').hidden = !items.length;
+  document.getElementById('brandFaqHeading').textContent = `${BRAND.name} FAQs`;
+  document.getElementById('brandFaqList').innerHTML = items.map(f => `
+    <details class="faq-item">
+      <summary>${f.q}</summary>
+      <div class="faq-answer"><p>${f.a}</p></div>
+    </details>`).join('');
+}
+
 // ---- 3.9 Popular vehicles ---------------------------------------------------------------------
 function renderBrandVehicles() {
   const section = document.getElementById('brandVehicles');
@@ -483,6 +513,8 @@ function renderBrandPage() {
   renderBrandFitments();
   renderBrandVehicles();
   renderOtherBrands();
+  renderBrandFaq();
+  const faqs = brandFaqs();
   document.getElementById('brandLd').textContent = JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -490,7 +522,8 @@ function renderBrandPage() {
         { '@type': 'ListItem', position: 1, name: 'Home', item: RRG_LIVE_URL + '/' },
         { '@type': 'ListItem', position: 2, name: 'Brands', item: RRG_LIVE_URL + '/brands' },
         { '@type': 'ListItem', position: 3, name: BRAND.name, item: BRAND.liveUrl } ] },
-      { '@type': 'CollectionPage', name: BRAND.title, url: BRAND.liveUrl, about: { '@type': 'Brand', name: BRAND.name } }
+      { '@type': 'CollectionPage', name: BRAND.title, url: BRAND.liveUrl, about: { '@type': 'Brand', name: BRAND.name } },
+      { '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') } })) }
     ]
   });
 }

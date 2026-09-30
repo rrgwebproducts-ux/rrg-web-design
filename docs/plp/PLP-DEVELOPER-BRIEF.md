@@ -388,7 +388,8 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 5. **Top selling {brand} products**: `.product-carousel`. **Stand-in:** the first product of each tile's department page. Production needs a sales-ranked feed.
 6. **Recent {brand} fitments**: Home's Recent Fitments panel with this brand's Rackit photos; the session vehicle's first when it has 4 or more. Hidden when the brand has none (MAXTRAX, Rockymounts).
 7. **All {brand} products**: the PLP engine (`plp.js`) with a brand-scoped `PLP_CONFIG` (`vehicleFilter: true`, facets Category / Price / Availability). Grid contents and order as live. With a vehicle set, the **"Fits your {vehicle} ×" chip** (`#plpVehicleChip`, `plpRenderVehicleChip()`) is on: products with fitment (`fitsVehicle`) are narrowed to that vehicle, everything else stays in, and products that fit it sort first under Relevance. Clearing the chip shows everything; a new vehicle turns it back on.
-8. **Popular vehicles for {brand}**: pills from the vehicles in its fitment photos (demo vehicles → VLP, others → the live product page). Hidden once a vehicle is set.
+8. **{brand} FAQs** (`.faq-section`, `renderBrandFaq()`): the brand's own questions (`faqs` in brand-data.js, each with its source URL) then three RRG questions from the live policies (fitting, local warranty, price match), AU only. `FAQPage` JSON-LD built from the same list. In Magento: a per-brand FAQ field, plus the three shared RRG answers as a CMS block.
+8b. **Popular vehicles for {brand}**: pills from the vehicles in its fitment photos (demo vehicles → VLP, others → the live product page). Hidden once a vehicle is set.
 9. **Shop more brands** strip (the other built brands) → trust band → footer.
 
 **Regions:** AU and NZ show all 8. UK shows Thule, Rhino-Rack, Yakima and Cruz, with UK-only tile lists. A brand the region doesn't sell shows "{brand} isn't available from The Roof Box Company" and a link to the hub. Prices follow the prototype-wide currency swap.
@@ -397,7 +398,7 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 
 **Linking:** the header Brands panel (the L1 and "View All Product Brands" → hub, the 8 brands → their pages; `RRG_BUILT_BRANDS` in nav-data.js), every template's "Shop The Best Brands" strip (`rrgLinkBrandStrip()`), and Search Results' brand cards (`rrgBrandUrl()`).
 
-**SEO:** indexed. `<title>` and description as live, canonical = the live brand URL (the vehicle filter never changes the URL), `BreadcrumbList` + `CollectionPage` about a `Brand`.
+**SEO:** indexed. `<title>` and description as live, canonical = the live brand URL (the vehicle filter never changes the URL), `BreadcrumbList` + `CollectionPage` about a `Brand` + `FAQPage`.
 
 **Data:** `prototypes/brand/brand-data.js` (brand meta, tiles, copy, A–Z) and `brand-products.js` (product sample + fitments), generated from the live crawl of 30 Sep 2026. In Magento the accent, tagline, banner photo, About copy and tile list are fields on each brand category.
 

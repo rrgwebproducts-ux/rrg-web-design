@@ -104,6 +104,28 @@ const RRG_BRAND_PAGES = {
   "hasFitment": true,
   "logo": "brands/logos/thule.svg",
   "logoWhite": "brands/logos/thule-white.svg",
+  "faqs": [
+   {
+    "q": "What warranty comes with Thule roof racks?",
+    "a": "Every Thule product comes with a 2-year Thule Guarantee for the original purchaser. Register your roof rack, roof box or bike carrier with Thule and you get another 3 years, 5 years in total. It doesn’t cover misuse, overloading or fitting that doesn’t follow Thule’s instructions.",
+    "source": "https://www.thule.com/en-au/about-thule/warranty"
+   },
+   {
+    "q": "What’s the difference between Thule WingBar Evo and SquareBar Evo?",
+    "a": "WingBar Evo is Thule’s aerodynamic aluminium bar, with WindDiffuser technology to cut noise and drag and a T-track on top for accessories. SquareBar Evo is a steel bar with a black polymer coating, so expect a little more wind noise. Both are rated to a 100 kg maximum load, but your vehicle’s own roof load limit still applies.",
+    "source": "https://www.thule.com/en-au/roof-rack/roof-racks-and-accessories/thule-wingbar-evo-127-_-711300"
+   },
+   {
+    "q": "Can I use one key for all my Thule gear?",
+    "a": "Yes. The Thule One-Key System replaces the lock cylinders in your Thule products with a matched set that all open with the same key. It comes in packs of 2 to 16 cylinders, and you can swap them in yourself.",
+    "source": "https://www.thule.com/en-au/roof-rack/roof-racks-and-accessories/thule-one-key-system-4-pack-black-_-450400"
+   },
+   {
+    "q": "How are Thule roof racks tested?",
+    "a": "Thule tests to its own Thule Test Program, more than 25 in-house standards that Thule says go well beyond current ISO requirements. Testing covers heat, cold, water, wind tunnel, tensile and crash tests at its test centre in Hillerstorp, Sweden.",
+    "source": "https://www.thule.com/en-au/about-thule/thule-test-center"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center 60%",
@@ -191,6 +213,28 @@ const RRG_BRAND_PAGES = {
   "hasFitment": true,
   "logo": "brands/logos/rhino-rack.svg",
   "logoWhite": "brands/logos/rhino-rack-white.svg",
+  "faqs": [
+   {
+    "q": "What warranty does Rhino-Rack offer?",
+    "a": "Rhino-Rack’s Euro, Heavy Duty, Reconn, Vortex and Sportz crossbar systems carry a lifetime warranty. Pioneer platforms, roof trays and roof racks carry 5 years, steel parts 3 years, and fabric items, locks and electrical parts 1 year. It covers the original buyer, so keep your proof of purchase.",
+    "source": "https://www.rhinorack.com/en-au/warranty-terms"
+   },
+   {
+    "q": "What’s the difference between Rhino-Rack Vortex, Heavy Duty and Pioneer?",
+    "a": "Vortex is Rhino-Rack’s most popular crossbar: an aerodynamic aluminium bar with a rubber strip to cut wind noise. Heavy Duty is an overhang aluminium bar built for off-roaders and tradies. Pioneer is a modular platform system with more than 90 accessories for carrying bigger loads.",
+    "source": "https://www.rhinorack.com/en-au/buying-guide/roof-rack-buying-guide"
+   },
+   {
+    "q": "Is Rhino-Rack an Australian brand?",
+    "a": "Yes. Rhino-Rack was founded in 1992 and sold its first racks in Haberfield, NSW. Many of its crossbar roof racks carry the Australian Made logo and are made at its Eastern Creek facility in Sydney.",
+    "source": "https://www.rhinorack.com/en-au/about-us"
+   },
+   {
+    "q": "Do Rhino-Rack accessories fit other roof racks?",
+    "a": "Rhino-Rack says its accessories fit most roof racks with a channel, but check the compatibility on each product. Vortex accessories also fit a Pioneer platform, either directly or with an adaptor.",
+    "source": "https://www.rhinorack.com/en-au/buying-guide/faqs-fitting-times"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center 55%",
@@ -306,6 +350,28 @@ const RRG_BRAND_PAGES = {
   "hasFitment": true,
   "logo": "brands/logos/yakima.png",
   "logoWhite": null,
+  "faqs": [
+   {
+    "q": "What warranty does Yakima offer in Australia?",
+    "a": "Most Yakima products, including roof racks, mounts, cargo boxes, baskets and hitch bike racks, carry a limited lifetime warranty for the original purchaser. Cargo bags, pads, rooftop tents and awnings carry 2 years, and EasyTrip boxes 3 years. It doesn’t cover wear and tear, overloading or use outside the product’s design.",
+    "source": "https://www.yakima.com.au/warranty"
+   },
+   {
+    "q": "Do I need to register my Yakima product for the warranty?",
+    "a": "No, registration isn’t needed in Australia or New Zealand. Just keep your receipt, because you’ll need the original proof of purchase to make a claim.",
+    "source": "https://www.yakima.com.au/frequently-asked-questions"
+   },
+   {
+    "q": "What’s the difference between JetStream, JetStream FX and TrimHD bars?",
+    "a": "They’re the three crossbars in Yakima’s StreamLine system. JetStream is an aerodynamic through bar, JetStream FX an aerodynamic flush bar, and TrimHD the heavy-duty option. Each pairs with a leg for your roof: BaseLine or SkyLine for bare roofs, TimberLine for raised rails, or SightLine for flush rails.",
+    "source": "https://yakima.com.au/pages/streamline"
+   },
+   {
+    "q": "Does Yakima have a local team?",
+    "a": "Yes. Yakima is headquartered in Oregon, USA, and has had its own team in Australia since 2012, based in Queensland. Its locally developed off-road range has helped shape Yakima’s global line-up. Note that Yakima’s load ratings apply to sealed roads.",
+    "source": "https://yakima.com.au/pages/our-story"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center 40%",
@@ -392,6 +458,23 @@ const RRG_BRAND_PAGES = {
   "hasFitment": true,
   "logo": "brands/logos/front-runner.png",
   "logoWhite": "brands/logos/front-runner-white.png",
+  "faqs": [
+   {
+    "q": "Is Front Runner now Dometic?",
+    "a": "Yes. Front Runner is now part of Dometic, and its racks and accessories are sold as the Dometic Front Runner Series. Dometic says they’re still made in South Africa by the same team.",
+    "source": "https://www.dometic.com/en-au/lp/front-runner-joins-dometic"
+   },
+   {
+    "q": "What’s the difference between Slimline II, Slimsport and Slimline 3?",
+    "a": "Slimline II is the modular aluminium platform you can add or remove slats from. Slimsport is a sleek, low-profile rack for everyday and city driving. Slimline 3 is the newest, and Dometic says it has a 20% lower profile than Slimline II with 40% more strength.",
+    "source": "https://www.dometic.com/en-au/rack-systems/slimline-3-rack"
+   },
+   {
+    "q": "Will my existing Front Runner accessories fit a Slimline 3?",
+    "a": "Dometic says Slimline 3 works with all its top-mount rack accessories, plus a range of Slimline 3-specific ones. Slimline II and Slimsport are each listed as compatible with more than 55 rack accessories.",
+    "source": "https://www.dometic.com/en-au/rack-systems/slimline-3-rack"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center 62%",
@@ -507,6 +590,28 @@ const RRG_BRAND_PAGES = {
   "hasFitment": true,
   "logo": "brands/logos/cruz.png",
   "logoWhite": "brands/logos/cruz-white.png",
+  "faqs": [
+   {
+    "q": "Who makes CRUZ roof racks?",
+    "a": "CRUZ is made by CRUZBER, a Spanish manufacturer founded in 1963 and based in Rute, Córdoba. CRUZBER holds TÜV GS certification and works to ISO 9001:2015.",
+    "source": "https://cruzber.com/en/history/"
+   },
+   {
+    "q": "What warranty do CRUZ products have?",
+    "a": "New CRUZ products are covered for 3 years against material or manufacturing defects for the original buyer. Register Airo, Airo FIX, Airo Fuse or Oplus S-FIX bars at cruz-products.com for another 2 years, 5 in total. Terms can differ by country of purchase.",
+    "source": "https://cruz-products.com/en/content/18-warranty"
+   },
+   {
+    "q": "What’s the difference between CRUZ Airo and CRUZ steel bars?",
+    "a": "CRUZ Airo bars have an aerodynamic aluminium profile, and Airo Dark adds a black textured finish. CRUZ Lane and Oplus are galvanised steel bars.",
+    "source": "https://cruz-products.com/en/12-roof-bars"
+   },
+   {
+    "q": "What is the CRUZ Evo Rack?",
+    "a": "Evo Rack is CRUZ’s modular roof rack range for utes, vans and work vehicles. It comes as the Evo Rack module, Evo Rack Alu in matt anodised aluminium, and Evo Rack Pro in galvanised steel for the toughest jobs.",
+    "source": "https://cruz-products.com/en/16-roof-racks"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center",
@@ -562,6 +667,28 @@ const RRG_BRAND_PAGES = {
   "hasFitment": false,
   "logo": "brands/logos/maxtrax.png",
   "logoWhite": null,
+  "faqs": [
+   {
+    "q": "What’s the difference between MAXTRAX MKII, XTREME, LITE and MINI?",
+    "a": "MKII is the original board: 1150 mm long, 88 teeth and rated to 4500 kg. XTREME is the same size and rating with alloy teeth you can replace in the field. LITE is 895 mm and rated to 3500 kg for lighter vehicles, and MINI is 640 mm for small vehicles and ATVs.",
+    "source": "https://maxtrax.com.au/blogs/news/maxtrax-recovery-boards-range-overview-which-board-should-i-buy"
+   },
+   {
+    "q": "What warranty do MAXTRAX recovery boards have?",
+    "a": "MAXTRAX recovery boards have a lifetime warranty against manufacturing defects when used as instructed. Storage and mounting kits carry 12 months. Damage from wheel spin, rocks, excessive heat and wear and tear isn’t covered.",
+    "source": "https://maxtrax.com.au/pages/warranty"
+   },
+   {
+    "q": "Are MAXTRAX made in Australia?",
+    "a": "Yes. MAXTRAX designs and manufactures its recovery boards in Australia.",
+    "source": "https://maxtrax.com.au/pages/about-us"
+   },
+   {
+    "q": "Which mounting pins do I need for MAXTRAX?",
+    "a": "MAXTRAX Universal Pins fit MKII, LITE and XTREME boards in any combination. Use the short 17 mm thread with MAXTRAX Flat Mounting Brackets, or the long 40 mm thread for other mounts.",
+    "source": "https://maxtrax.com.au/products/maxtrax-universal-pins"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center",
@@ -648,6 +775,28 @@ const RRG_BRAND_PAGES = {
   "hasFitment": true,
   "logo": "brands/logos/rola.png",
   "logoWhite": null,
+  "faqs": [
+   {
+    "q": "What warranty does ROLA offer?",
+    "a": "ROLA roof racks and its cycling, snow, water and luggage accessories carry 5 years, luggage boxes 3 years, and some bike racks 1 year. The warranty applies to the original purchaser from an authorised ROLA stockist.",
+    "source": "https://rola.com.au/pages/warranty"
+   },
+   {
+    "q": "What’s the difference between ROLA Sports Concealed, Sports Extended and Heavy Duty?",
+    "a": "Sports Concealed is a lightweight, aerodynamic bar with a clean look. Sports Extended has a slight overhang for wider loads and roof trays. Heavy Duty is built for tradies and heavier loads, with commercial accessories like ladder racks and pipe clamps.",
+    "source": "https://rola.com.au/blogs/articles/what-is-a-roof-rack"
+   },
+   {
+    "q": "What is the ROLA Titan Tray?",
+    "a": "The Titan Tray MKIII is ROLA’s adjustable-plank roof tray, with channels on every plank and edge for mounting accessories. It has a 400 kg tray rating, though ROLA notes the rating is vehicle specific and lower off-road.",
+    "source": "https://rola.com.au/products/titan-tray-mkiii-1500mm-x-1200mm-tft31512"
+   },
+   {
+    "q": "Where are ROLA roof racks made?",
+    "a": "ROLA racks and ridge mounts are designed for each vehicle model and built to order at its Melbourne facility, then tested in an ISO-accredited laboratory.",
+    "source": "https://rola.com.au/pages/about-us"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center 60%",
@@ -707,6 +856,23 @@ const RRG_BRAND_PAGES = {
   "hasFitment": false,
   "logo": "brands/logos/rockymounts.png",
   "logoWhite": "brands/logos/rockymounts-white.png",
+  "faqs": [
+   {
+    "q": "What’s the difference between Rockymounts TomaHawk, MonoRail and BackStage?",
+    "a": "TomaHawk is a roof-mounted rack that holds the bike by the front wheel, with no frame contact. MonoRail is a platform hitch rack for 2 bikes that suits e-bikes. BackStage is a 2-bike hitch rack that swings 180 degrees so you can open the rear of the vehicle with bikes loaded.",
+    "source": "https://rockymounts.com/products/monorail-hitch-bike-rack"
+   },
+   {
+    "q": "Will the TomaHawk fit my factory crossbars?",
+    "a": "Rockymounts says TomaHawk fits most square, round, factory and aero crossbars. The maximum bike weight is about 16 kg on factory bars and 18 kg on aftermarket bars, with 20 to 29-inch wheels.",
+    "source": "https://rockymounts.com/products/tomahawk.html"
+   },
+   {
+    "q": "How much can Rockymounts hitch racks carry?",
+    "a": "MonoRail and BackStage are each rated to 27 kg per bike, with 20 to 29-inch wheels. Both hold the bike by the front wheel and come with a locking hitch bolt and cable lock on the same key.",
+    "source": "https://rockymounts.com/backstage/"
+   }
+  ],
   "images": {
    "hero": {
     "pos": "center 35%",
