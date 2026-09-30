@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="../_shared/favicon.ico">
 <title>Roof Rack Installation Costs | Expert Fitting Services - Roof Racks Galore</title>
-<meta name="description" content="Affordable roof rack installation at Roof Racks Galore. Expert fitting with our Rack Fit Guarantee at 35+ stores across Australia. Estimate your fitting cost and book online.">
+<meta name="description" content="Affordable roof rack installation at Roof Racks Galore. Expert fitting with our Rack Fit Guarantee at 35+ stores across Australia. Book your fitting online and your local store will confirm a time.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
@@ -14,11 +14,15 @@
 <link rel="stylesheet" href="../_shared/mega-menu.css">
 <link rel="stylesheet" href="../_shared/admin-panel.css">
 <link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <!-- ===== Installation (docs/installation/installation-spec.md, 2026-09-30) =====
      Replaces /roof-rack-installation-and-fitting-costs. The live price table regrouped (no
-     internal fit-charge codes), a fitting cost estimator built on the same prices, and a
-     fitting request form sent to the chosen store. Every "Book a Fitting" / "Book An
-     Installation" button on the site lands on #book. Contained hero. No page-local CSS. -->
+     internal fit-charge codes) and a fitting request form sent to the chosen store.
+     2026-09-30 design review (spec.md §16 items 1–4): the estimator is gone, the form comes
+     first with the chosen store as a card beside it, and the price list is a public collapsed
+     accordion below the form (#costs). Every "Book a Fitting" / "Book An Installation" button
+     on the site lands on #book. Contained hero. No page-local CSS. -->
 </head>
 <body>
 
@@ -109,7 +113,8 @@
 </div>
 
 <main class="wrap" data-install-page>
-  <!-- Hero (spec 3.1) — contained (Brenton, 2026-09-30). Book a Fitting is the one gold action. -->
+  <!-- Hero (spec 3.1) — contained (Brenton, 2026-09-30). Book a Fitting is the one action; the
+       prices are a quiet text link (spec.md §16 item 2). -->
   <section class="page-hero">
     <div class="page-hero-intro">
       <h1>Roof Rack Installation &amp; Fitting</h1>
@@ -117,7 +122,7 @@
       <p>With over 30 years of experience, our installers fit roof racks, bike racks, roof boxes, platforms and more every day, and every installation is covered by our warranty.</p>
       <div class="page-hero-ctas">
         <a href="#book" class="btn btn-cta">Book a Fitting</a>
-        <a href="#costs" class="btn btn-outline">See Fitting Costs</a>
+        <a href="#costs" class="page-hero-textlink" data-region-prices>See fitting charges</a>
       </div>
     </div>
     <div class="page-hero-media page-hero-media--install">
@@ -144,36 +149,34 @@
     <ol class="steps">
       <li><h3>Choose Your Setup</h3><p>Buy online or in store. Use <a href="../fit-my-vehicle/index.html">Fit My Vehicle</a> to find exactly what fits.</p></li>
       <li><h3>Book a Fitting</h3><p>Send a request below and your store will confirm a time, or just drop by.</p></li>
-      <li><h3>Fitted &amp; Tested</h3><p>Our installers mount, torque and load-test your rack, so it leaves safe and ready to go.</p></li>
+      <li><h3>Fitted &amp; Checked</h3><p>We fit it, load-check it and show you how it all works before you drive off.</p></li>
     </ol>
     <div class="callout"><strong>How long does it take?</strong> Anything from 30 minutes for a basic removable rack to 8 hours for an extremely complicated fit-out. It depends on the products and your vehicle, so check with <a href="#" data-store-finder-link>your local store</a> for advice on your fitment. Most fittings are done while you wait.</div>
   </section>
 
-  <!-- 3.5 — fitting costs: the estimator, then the full price list (#costs). -->
-  <section class="cat-tile-section" id="costs">
-    <h2 class="related-heading">Fitting Costs</h2>
-    <p class="section-intro">Pick what you're fitting to get an estimate, or see the full price list below. Your store confirms the final price when they book you in.</p>
-    <div class="estimator" id="estimator">
-      <form class="est-form" id="estForm" onsubmit="return false"></form>
-      <aside class="est-summary" aria-live="polite">
-        <h3>Your Estimate</h3>
-        <div id="estSummary"></div>
-      </aside>
-    </div>
-
-    <h3 class="related-heading price-list-heading">Full Price List</h3>
-    <div class="price-groups" id="priceGroups"></div>
-  </section>
-
-  <!-- 3.6 — fitting request (#book). Goes to the chosen store; prefilled from ?store= or the
-       saved store, and the session vehicle. -->
+  <!-- 3.6 — fitting request (#book), first (spec.md §16 item 2). Goes to the chosen store;
+       prefilled from ?store= or the saved store, and the session vehicle. The store card beside
+       it (item 3) gives the two ways in: send the request, or ring the store now. -->
   <section class="cat-tile-section" id="book">
     <h2 class="related-heading">Book a Fitting</h2>
     <p class="section-intro">Tell us what you need fitted and when suits. Your request goes straight to the store you choose, and they'll contact you to confirm a time.</p>
+    <p class="booking-from" id="bookFrom"></p>
     <div class="booking">
       <div id="bookingWrap"></div>
-      <aside class="booking-aside" id="bookingAside"></aside>
+      <aside class="booking-aside" id="bookingAside" aria-label="Your store"></aside>
     </div>
+  </section>
+
+  <!-- 3.5 — current fitting charges (#costs): public and indexable, collapsed below the form
+       (spec.md §16 item 2). AU only until regional prices exist (item 35). -->
+  <section class="cat-tile-section" data-region-prices>
+    <details class="price-accordion" id="costs">
+      <summary><h2 class="related-heading">Current Fitting Charges</h2><span><span class="when-closed">Click to view</span><span class="when-open">Hide</span></span></summary>
+      <div class="price-accordion-body">
+        <p>Prices include GST. Your store confirms the final price when they book you in, after checking your vehicle. Complex or custom fits are $150 per hour.</p>
+        <div class="price-groups" id="priceGroups"></div>
+      </div>
+    </details>
   </section>
 
   <section class="faq-section">
@@ -292,7 +295,7 @@ document.getElementById('installFitGrid').innerHTML = `
     <a class="cat-tile-media" href="#"><img src="../_shared/category-tiles/roof-racks.webp" alt="" loading="lazy"><span class="cat-tile-title">Roof Racks &amp; Platforms</span></a>
     <div class="cat-tile-body">
       <p>Our most common fit, from a 2 bar removable rack ($120) to a full platform with no drilling ($280). Every rack is torqued to spec and load-tested before you drive away.</p>
-      <a class="btn btn-outline btn-block" href="#costs">See Roof Rack Fitting Costs</a>
+      <a class="btn btn-outline btn-block" href="#costs" data-region-prices>See Roof Rack Fitting Charges</a>
     </div>
   </div>
   ${INSTALL_FITS.map(c => `
@@ -361,105 +364,36 @@ document.getElementById('priceGroups').innerHTML = FIT_PRICES.map(g => `
     </tbody></table>
   </div>`).join('');
 
-// ==== Estimator (spec Section 4.1) ==================================================
-// Every line is a price from FIT_PRICES, so the estimate can't drift from the price list.
-const EST_BASES = [
-  { key: 'removable', label: 'Removable roof racks', hint: 'No drilling — clamp, fixed points or rails', bars: true },
-  { key: 'drill', label: 'Drill-fit roof racks', hint: 'Permanent track or gutter mount', bars: true },
-  { key: 'platform', label: 'Platform, no drilling', hint: 'Including backbone', sku: 'FIT_PLATFORM_NO_DRILL' },
-  { key: 'platform-drill', label: 'Platform, drilling required', hint: 'Including backbone', sku: 'FIT_PLATFORM_DRILL' },
-  { key: 'platform-on-bars', label: 'Universal platform onto my bars', hint: 'Assembled and fitted to existing bars', sku: 'FIT_PLATFORM_ON_BARS' },
-  { key: 'none', label: 'No rack — just accessories', hint: 'Bike carrier, awning, tent, shutter…' }
-];
-const EST_VEHICLE = ['FIT_SURCHARGE_RAIL_REMOVAL', 'FIT_SURCHARGE_HOOD_LINE_DROP', 'FIT_SURCHARGE_WRANGLER', 'FIT_SURCHARGE_SPECIAL_VEHICLE', 'FIT_SURCHARGE_FRONT_RUNNER', 'FIT_INTERNAL_CANOPY_1BAR', 'FIT_INTERNAL_CANOPY_2BAR'];
-const opts = (pairs, value) => pairs.map(([v, l]) => `<option value="${v}"${v === value ? ' selected' : ''}>${l}</option>`).join('');
-document.getElementById('estForm').innerHTML = `
-  <fieldset class="est-step">
-    <legend>1. What are we fitting?</legend>
-    <div class="est-options">
-      ${EST_BASES.map((b, i) => `<label class="est-option"><input type="radio" name="base" value="${b.key}"${i === 0 ? ' checked' : ''}><span><strong>${b.label}</strong><span>${b.hint}</span></span></label>`).join('')}
-    </div>
-    <div class="est-inline" id="estBars">
-      <label>Number of bars <select name="bars">${opts([['1', '1 bar'], ['2', '2 bars'], ['3', '3 bars'], ['4', '4 bars']], '2')}</select></label>
-      <label id="estStreamline"><input type="checkbox" name="streamline"> Streamline-style 2 bar rack</label>
-    </div>
-    <div class="est-inline" id="estAssemble"><label><input type="checkbox" name="assemble"> Platform needs assembling (+${money(FIT_BY_SKU.FIT_SURCHARGE_PLATFORM_ASSEMBLY.price)})</label></div>
-  </fieldset>
-  <fieldset class="est-step">
-    <legend>2. Anything extra for your vehicle?</legend>
-    <div class="est-options">
-      ${EST_VEHICLE.map(sku => `<label class="est-option"><input type="checkbox" name="vehicle" value="${sku}"><span><strong>${money(FIT_BY_SKU[sku].price)}</strong><span>${FIT_BY_SKU[sku].label}</span></span></label>`).join('')}
-    </div>
-  </fieldset>
-  <fieldset class="est-step">
-    <legend>3. Add-ons</legend>
-    <div class="est-inline">
-      <label>Roof top tent <select name="tent">${opts([['', 'None'], ['FIT_TENT_TO_BARS', 'Onto standard bars (+$250)'], ['FIT_TENT_TO_PLATFORM', 'Onto a platform (+$500)']], '')}</select></label>
-      <label>Accessories (bike carrier, awning, basket…) <select name="accessories">${opts([['0', 'None'], ['1', '1 (+$50)'], ['2', '2 (+$100)'], ['3', '3 (+$150)'], ['4', '4 (+$200)']], '0')}</select></label>
-    </div>
-    <div class="est-inline">
-      <label>Roller shutter <select name="shutter">${opts([['', 'None'], ['FIT_MANUAL_ROLLER_SHUTTER', 'Manual (+$700)'], ['FIT_ELECTRIC_ROLLER_SHUTTER', 'Electric (+$900)']], '')}</select></label>
-      <label>Ladder slides <select name="slides">${opts([['0', 'None'], ['1', '1 (+$100)'], ['2', '2 (+$200)']], '0')}</select></label>
-      <label><input type="checkbox" name="vbike"> Vertical bike rack assembly (+$95)</label>
-      <label><input type="checkbox" name="budgetladder"> Budget ladder rack (+$180)</label>
-    </div>
-  </fieldset>
-  <fieldset class="est-step">
-    <legend>4. Bought elsewhere?</legend>
-    <div class="est-inline">
-      <label><input type="checkbox" name="elsewhere"> Some of it wasn't bought from Roof Racks Galore (+$100)</label>
-      <label id="estElsewhereTent"><input type="checkbox" name="elsewhereTent"> The tent wasn't bought from us (+$350)</label>
-    </div>
-  </fieldset>
-  <div class="est-sticky-total" id="estStickyTotal" aria-hidden="true"></div>`;
+// ==== Current fitting charges (#costs) — spec.md §16 item 2 ============================
+// Collapsed below the form. Every "See Fitting Costs" link on the site lands on #costs
+// (rrgLinkInstallation(), shared.js), so arriving there, or following one on this page, opens it.
+function openCosts() {
+  const costs = document.getElementById('costs');
+  if (!costs || costs.closest('[hidden]')) return;
+  costs.open = true;
+  costs.scrollIntoView({ block: 'start' });
+}
+if (location.hash === '#costs') document.addEventListener('DOMContentLoaded', () => setTimeout(openCosts, 0));
+window.addEventListener('hashchange', () => { if (location.hash === '#costs') openCosts(); });
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href="#costs"]');
+  if (!a) return;
+  e.preventDefault();
+  history.replaceState(null, '', '#costs');
+  openCosts();
+});
 
-function estLines() {
-  const f = new FormData(document.getElementById('estForm'));
-  const lines = [];
-  const add = (sku, qty = 1, label) => { const r = FIT_BY_SKU[sku]; lines.push({ label: label || r.label, price: r.price * qty }); };
-  const base = EST_BASES.find(b => b.key === f.get('base'));
-  const bars = f.get('bars');
-  if (base.key === 'removable') {
-    if (bars === '2' && f.get('streamline')) add('FIT_2BAR_NO_DRILL_STREAMLINE', 1, 'Removable roof rack, 2 bars (streamline style)');
-    else add(`FIT_${bars}BAR_NO_DRILL`, 1, `Removable roof rack, ${bars} bar${bars === '1' ? '' : 's'}`);
-  } else if (base.key === 'drill') {
-    add(`FIT_${bars}BAR_DRILL`, 1, `Drill-fit roof rack, ${bars} bar${bars === '1' ? '' : 's'}`);
-  } else if (base.sku) {
-    add(base.sku);
-  }
-  if (base.key.startsWith('platform') && f.get('assemble')) add('FIT_SURCHARGE_PLATFORM_ASSEMBLY');
-  f.getAll('vehicle').forEach(sku => add(sku));
-  if (f.get('tent')) add(f.get('tent'));
-  const acc = Number(f.get('accessories')); if (acc) add('FIT_ACCESSORY', acc, `Accessory fit × ${acc}`);
-  if (f.get('shutter')) add(f.get('shutter'), 1, FIT_BY_SKU[f.get('shutter')].label.split(',')[0]);
-  const slides = Number(f.get('slides')); if (slides) add('FIT_LADDERSLIDE', slides, `Ladder slide × ${slides}`);
-  if (f.get('vbike')) add('FIT_VERTICAL_BIKE_RACK_ASSEMBLY');
-  if (f.get('budgetladder')) add('FIT_BUDGET_BAR');
-  if (f.get('elsewhere')) add('FIT_SURCHARGE_NOT_SOLD_PRODUCT', 1, 'Surcharge, product bought elsewhere');
-  if (f.get('tent') && f.get('elsewhereTent')) add('FIT_SURCHARGE_NOT_SOLD_TENT', 1, 'Surcharge, tent bought elsewhere');
-  return lines;
+// Prices are AU's (the live table). NZ/UK have no regional list yet (spec.md §16 item 35), so
+// there the "from" line becomes "call your store" and the list and hero link are hidden.
+function applyInstallRegion() {
+  const au = (typeof currentRegion === 'undefined' ? 'AU' : currentRegion) === 'AU';
+  document.querySelectorAll('[data-region-prices]').forEach(el => { el.hidden = !au; });
+  document.getElementById('bookFrom').innerHTML = au
+    ? `<strong>Most roof rack fits start from ${money(FIT_BY_SKU.FIT_2BAR_NO_DRILL.price)}.</strong> Your store confirms the final price after checking your vehicle. <a href="#costs">See current fitting charges</a>`
+    : '<strong>Call your store for a fitting price.</strong> It depends on what you’re fitting and your vehicle, and your store confirms it when they book you in.';
 }
-function estRender() {
-  const form = document.getElementById('estForm');
-  const base = form.elements.base.value;
-  document.getElementById('estBars').hidden = !['removable', 'drill'].includes(base);
-  document.getElementById('estStreamline').hidden = !(base === 'removable' && form.elements.bars.value === '2');
-  document.getElementById('estAssemble').hidden = !base.startsWith('platform');
-  document.getElementById('estElsewhereTent').hidden = !form.elements.tent.value;
-  const lines = estLines();
-  const total = lines.reduce((n, l) => n + l.price, 0);
-  // Phones/tablets: the summary sits below the whole form, so a total bar sticks to the bottom
-  // of the screen while the form is in view (.est-sticky-total, hidden on desktop).
-  document.getElementById('estStickyTotal').innerHTML = `<span>Estimated fitting <strong>${money(total)}</strong></span><a href="#estSummary">See breakdown</a>`;
-  document.getElementById('estSummary').innerHTML = lines.length ? `
-    <ul class="est-lines">${lines.map(l => `<li><span>${l.label}</span><span>${money(l.price)}</span></li>`).join('')}</ul>
-    <div class="est-total"><span>Estimated fitting</span><strong>${money(total)}</strong></div>
-    <p class="est-note">Estimate only. Your store confirms the final price when they book you in — complex or custom fits are $150 per hour.</p>
-    <button type="button" class="btn btn-cta btn-block" data-est-book>Book This Fitting</button>` : `
-    <p class="est-empty">Choose what you're fitting to see an estimate.</p>`;
-}
-document.getElementById('estForm').addEventListener('change', estRender);
-estRender();
+applyInstallRegion();
+document.addEventListener('rrg-region-change', applyInstallRegion);
 
 // ==== Booking form (spec Section 5) ==================================================
 // Sends the request to the chosen store's inbox (rrgStoreEmail()). The store is prefilled from
@@ -480,7 +414,7 @@ function bookRenderForm(values = {}) {
   const store = values.store ?? bookPrefillStore();
   const vehicle = values.vehicle ?? (rrgVehicle() ? rrgVehicle().label : '');
   document.getElementById('bookingWrap').innerHTML = `
-    <form class="booking-form" id="bookForm" novalidate>
+    <form class="booking-form" id="bookForm" novalidate data-track="fitting_request">
       <div class="booking-grid">
         <label class="booking-field booking-field--full" data-field="store">Store
           <select name="store" required>
@@ -503,7 +437,7 @@ function bookRenderForm(values = {}) {
         <label class="booking-field" data-field="time">Preferred time
           <select name="time">${['Morning', 'Afternoon (weekdays)'].map(x => `<option${x === values.time ? ' selected' : ''}>${x}</option>`).join('')}</select>
         </label>
-        <label class="booking-field booking-field--full" data-field="notes">Anything else we should know?<textarea name="notes" placeholder="E.g. the rack you're fitting, or your estimate">${values.notes || ''}</textarea></label>
+        <label class="booking-field booking-field--full" data-field="notes">Anything else we should know?<textarea name="notes" placeholder="E.g. the rack you're fitting">${values.notes || ''}</textarea></label>
       </div>
       <div class="booking-actions">
         <button type="submit" class="btn btn-cta">Send Fitting Request</button>
@@ -512,18 +446,57 @@ function bookRenderForm(values = {}) {
     </form>`;
   bookStoreChanged();
 }
+// The chosen store as a card (spec.md §16 item 3) — the Store Finder's .sf-card, a small map,
+// and the two ways in. Analytics (for the brief): data-track="fitting_call" on the call links and
+// "fitting_request" on the form, each tagged with the store.
 function bookStoreChanged() {
   const name = document.querySelector('#bookForm [name=store]').value;
   const st = BOOK_STORES.find(x => x.name === name);
   document.getElementById('bookStoreNote').textContent = st ? `Goes straight to our ${st.name} team (${rrgStoreEmail(st.name)}).` : '';
-  document.getElementById('bookingAside').innerHTML = `
-    <h3>What happens next</h3>
-    <ul>
-      <li>Your request goes to ${st ? `the <strong>${st.name}</strong> store` : 'the store you choose'}.</li>
-      <li>They'll contact you to confirm a time.</li>
-      <li>Most fittings are done while you wait.</li>
-    </ul>
-    ${st ? `<p class="booking-aside-call">Need it sooner? Call ${st.name} on <a href="tel:${st.phone.replace(/[^0-9]/g, '')}">${st.phone}</a>.</p>` : ''}`;
+  const aside = document.getElementById('bookingAside');
+  if (!st) {
+    aside.innerHTML = `
+      <div class="booking-aside-empty">
+        <strong>Choose your store</strong>
+        Pick the store you'd like to visit and its details show here, with the option to call them straight away.
+        <p><a href="${RRG_STORE_FINDER_HREF()}">Not sure which store? Find your nearest ›</a></p>
+      </div>`;
+    return;
+  }
+  const tz = RRG_STATE_TZ[st.state];
+  const status = rrgStoreOpenStatus(RRG_STANDARD_HOURS, tz);
+  const today = RRG_STANDARD_HOURS[rrgStoreNow(tz).day];
+  const href = rrgStorePageHref(st.name);
+  const tel = `tel:${st.phone.replace(/[^0-9]/g, '')}`;
+  aside.innerHTML = `
+    <p class="booking-aside-label">Your store</p>
+    <article class="sf-card">
+      <div class="sf-card-top"><h3 class="sf-card-name">${href ? `<a href="${href}">${st.name}</a>` : st.name}</h3></div>
+      <div class="store-open${status.open ? ' is-open' : ''}">${status.open ? 'Open now' : 'Closed'} <span>· ${status.text}</span></div>
+      <span>${st.street}, ${st.city} ${RRG_STATE_ABBR[st.state]} ${st.postcode}</span>
+      <span>${today ? `Today ${rrgFmtTime(today[0])} – ${rrgFmtTime(today[1])}` : 'Closed today'}</span>
+      <div class="booking-store-map" id="bookStoreMap" aria-label="Map of the ${st.name} store"></div>
+      <div class="sf-card-actions">
+        <a class="btn btn-outline btn-sm" href="${tel}" data-track="fitting_call" data-track-store="${st.name}">Call ${st.name}</a>
+        ${st.mapLink ? `<a href="${st.mapLink}" target="_blank" rel="noopener noreferrer">Directions</a>` : ''}
+        ${href ? `<a href="${href}">View store</a>` : ''}
+      </div>
+    </article>
+    <ol class="booking-paths">
+      <li><span class="booking-path-num">1</span><span><strong>Send a request.</strong> ${st.name} will call you to confirm a time. Most fittings are done while you wait.</span></li>
+      <li><span class="booking-path-num">2</span><span><strong>Prefer to talk?</strong> Ring ${st.name} on <a href="${tel}" data-track="fitting_call" data-track-store="${st.name}">${st.phone}</a>${status.open ? '. They’re open now.' : '.'}</span></li>
+    </ol>`;
+  bookDrawMap(st);
+}
+// A small Leaflet map of the chosen store (Leaflet loads deferred, so wait for it).
+function bookDrawMap(st) {
+  const el = document.getElementById('bookStoreMap');
+  if (!el) return;
+  if (typeof L === 'undefined') { window.addEventListener('load', () => bookDrawMap(st), { once: true }); return; }
+  if (el._leaflet_id) return;
+  const map = L.map(el, { zoomControl: false, scrollWheelZoom: false }).setView([st.lat, st.lng], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 18 }).addTo(map);
+  L.marker([st.lat, st.lng], { icon: rrgPinIcon(ON_DISPLAY_STORES.has(st.name)) }).addTo(map);
 }
 function bookValidate(form) {
   const v = Object.fromEntries(new FormData(form));
@@ -561,18 +534,6 @@ document.addEventListener('submit', e => {
     </div>`;
   document.getElementById('bookSent').focus();
 });
-// The estimator's "Book This Fitting" fills the form with what was estimated.
-document.addEventListener('click', e => {
-  if (!e.target.closest('[data-est-book]')) return;
-  const form = document.getElementById('bookForm');
-  const lines = estLines();
-  const current = form ? Object.fromEntries(new FormData(form)) : {};
-  const base = document.getElementById('estForm').elements.base.value;
-  bookRenderForm({ ...current,
-    fit: base.startsWith('platform') ? 'Platform or tray' : base === 'none' ? (current.fit || '') : 'Roof racks',
-    notes: `Estimate: ${lines.map(l => `${l.label} ${money(l.price)}`).join('; ')}. Total ${money(lines.reduce((n, l) => n + l.price, 0))}.` });
-  document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
-});
 bookRenderForm();
 // The saved store is only known once shared.js has applied the region (DOMContentLoaded).
 document.addEventListener('DOMContentLoaded', () => {
@@ -580,14 +541,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sel && !sel.value) { sel.value = bookPrefillStore(); bookStoreChanged(); }
 });
 
-// ==== FAQ (spec Section 6) — facts from the live page and price list only ===========
+// ==== FAQ (spec Section 6) — rewritten 2026-09-30 (spec.md §16 item 4) ================
+// The old six were built around prices. These answer what customers ask about the visit itself.
+// DRAFT: to be checked against Crisp chat transcripts and Graham's NZ questions before launch.
 const INSTALL_FAQS = [
-  { q: 'How much does roof rack installation cost?', a: 'It depends on what you’re fitting and your vehicle. The most common fits are a 2 bar removable roof rack ($120), a 2 bar drill-fit rack ($280) and a platform with no drilling ($280). Use the estimator above for your setup, or see the full price list.' },
-  { q: 'How long does a fitting take?', a: 'Anything from 30 minutes for a basic removable rack through to 8 hours for an extremely complicated fit-out. It depends on the products and your vehicle, so contact your local store for advice on your fitment. Most fittings are done while you wait.' },
-  { q: 'Why get my roof rack professionally fitted?', a: 'Vehicle roofs have become thinner, weaker and harder to hold onto because of their shapes, which makes installing a rack without causing damage, leaks or rust more difficult. Our installers do it every day, and all our installations are covered by our warranty.' },
-  { q: 'Can you fit a roof rack I bought somewhere else?', a: 'Yes. There’s a $100 fit surcharge for products not bought from Roof Racks Galore, or $350 for a tent.' },
-  { q: 'Do I need to book?', a: 'You can send a fitting request above and your store will contact you to confirm a time, or just drop by. Most fittings are done while you wait.' },
-  { q: 'Do you fit roller shutters and ladder racks?', a: 'Yes. A manual roller shutter is $700 and an electric one $900 on standard vehicles (excluding bracing, racks and electrical wiring), and a budget ladder rack is $180. Van fit-outs and anything not listed are quoted by your store at $150 per hour.' }
+  { q: 'How long does a fitting take?', a: 'Anything from 30 minutes for a basic removable rack to 8 hours for a complicated fit-out. It depends on the products and your vehicle, so your store will give you a time when they confirm your booking.' },
+  { q: 'Can I wait in store while it’s fitted?', a: 'Yes. Most fittings are done while you wait, and you’re welcome to look around the showroom in the meantime. If you’d like to see how it goes on, just ask the team.' },
+  { q: 'Do I need to leave my car with you?', a: 'Usually not. Bigger jobs like platforms, roller shutters or van fit-outs can take longer, and your store will let you know if it’s easier to drop the car off.' },
+  { q: 'Can you fit a rack I bought somewhere else?', a: 'Yes, we’re happy to fit it. There’s a surcharge for products not bought from Roof Racks Galore, and your store will confirm it when they book you in.' },
+  { q: 'Do you fit accessories as well as roof racks?', a: 'Yes. Bike racks, roof boxes, awnings, roof top tents, roller shutters, ladder racks and more. If it’s not on the list, send a request anyway and your store will let you know.' },
+  { q: 'What if my vehicle needs extra work?', a: 'Some vehicles need roof rails removed or extra parts before a rack can go on. Your store checks your vehicle and tells you before any extra work starts.' }
 ];
 document.getElementById('installFaqList').innerHTML = INSTALL_FAQS.map((f, i) => `
   <details class="faq-item"${i === 0 ? ' open' : ''}>
@@ -595,8 +558,8 @@ document.getElementById('installFaqList').innerHTML = INSTALL_FAQS.map((f, i) =>
     <div class="faq-answer"><p>${f.a}</p></div>
   </details>`).join('');
 document.getElementById('installLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
-  { '@type': 'Service', name: 'Roof rack installation and fitting', provider: { '@type': 'Organization', name: 'Roof Racks Galore', url: 'https://www.roofracksgalore.com.au/' }, areaServed: 'AU',
-    offers: FIT_PRICES.flatMap(g => g.rows.filter(r => r.price != null).map(r => ({ '@type': 'Offer', name: `${g.group}: ${r.label}`, price: r.price, priceCurrency: 'AUD' }))) },
+  // No priced Offers (spec.md §16 item 4): the prices sit in a collapsed list, not the headline.
+  { '@type': 'Service', name: 'Roof rack installation and fitting', provider: { '@type': 'Organization', name: 'Roof Racks Galore', url: 'https://www.roofracksgalore.com.au/' }, areaServed: 'AU' },
   { '@type': 'FAQPage', mainEntity: INSTALL_FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
 ] });
 </script>

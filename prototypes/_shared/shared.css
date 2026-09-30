@@ -2171,28 +2171,6 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .price-table td:last-child{text-align:right;font-weight:900;color:var(--rrg-text);white-space:nowrap;padding-left:12px;}
 .price-common{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:var(--radius);background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
 
-/* Fitting cost estimator — choices on the left, a running total that stays in view on the right. */
-.estimator{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start;}
-.est-step{border:1px solid var(--rrg-line);border-radius:var(--radius);padding:18px 20px;margin:0 0 14px;background:#fff;}
-.est-step legend{padding:0 6px;margin-left:-6px;font-weight:900;font-size:15px;color:var(--rrg-text);}
-.est-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:6px;}
-.est-option{position:relative;display:flex;gap:10px;align-items:flex-start;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:12px 14px;cursor:pointer;font-size:14px;line-height:1.4;}
-.est-option:has(input:checked){border-color:var(--rrg-black);box-shadow:inset 0 0 0 1px var(--rrg-black);}
-.est-option input{margin-top:2px;accent-color:var(--rrg-black);}
-.est-option strong{display:block;color:var(--rrg-text);}
-.est-option span{color:var(--rrg-grey-600);font-size:13px;}
-.est-inline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:14px;}
-.est-inline select{padding:8px 32px 8px 10px;border:1px solid var(--rrg-grey-700);border-radius:var(--radius);font:inherit;}
-.est-summary{position:sticky;top:calc(var(--sticky-offset,0px) + 16px);border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);padding:20px;transition:top var(--t-slide) ease;}
-.est-summary h3{margin:0 0 10px;font-size:22px;}
-.est-lines{list-style:none;margin:0 0 12px;padding:0;font-size:14px;}
-.est-lines li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--rrg-line-soft);color:var(--rrg-grey-700);}
-.est-lines li span:last-child{font-weight:700;color:var(--rrg-text);white-space:nowrap;}
-.est-total{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0 4px;border-top:2px solid var(--rrg-text);font-weight:900;}
-.est-total strong{font-family:'Barlow Condensed',Arial,sans-serif;font-size:34px;color:var(--rrg-text);}
-.est-note{margin:6px 0 14px;font-size:12px;line-height:1.5;color:var(--rrg-grey-600);}
-.est-empty{margin:0 0 12px;font-size:14px;color:var(--rrg-grey-600);}
-
 /* Fitting request form. */
 .booking{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start;}
 .booking-form{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;padding:22px 24px;}
@@ -2207,22 +2185,38 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .booking-store-note{font-weight:400;font-size:13px;color:var(--rrg-grey-700);}
 .booking-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;}
 .booking-actions p{margin:0;font-size:12px;color:var(--rrg-grey-600);flex:1 1 220px;}
-.booking-aside{border-radius:var(--radius);background:var(--rrg-bg);padding:20px;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
-.booking-aside h3{margin:0 0 8px;font-size:20px;}
-.booking-aside ul{margin:0;padding-left:18px;}
+/* The chosen store beside the form (spec.md §16 item 3) — the Store Finder's .sf-card with a
+   small map and the two ways in: send the request, or ring the store now. */
+.booking-aside{display:flex;flex-direction:column;gap:12px;position:sticky;top:calc(var(--sticky-offset,0px) + 16px);transition:top var(--t-slide) ease;}
+.booking-aside .sf-card{cursor:default;}
+.booking-aside .sf-card:hover{border-color:var(--rrg-line);}
+.booking-aside-label{margin:0;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
+.booking-store-map{height:170px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--rrg-line);background:var(--rrg-bg);}
+.booking-paths{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
+.booking-paths li{display:flex;gap:10px;align-items:flex-start;}
+.booking-paths strong{color:var(--rrg-text);}
+.booking-path-num{flex:0 0 22px;height:22px;border-radius:50%;background:var(--rrg-text);color:#fff;font-size:12px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;}
+.booking-aside-empty{border:1px dashed var(--rrg-line-strong);border-radius:var(--radius);padding:18px;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);background:#fff;}
+.booking-aside-empty strong{display:block;color:var(--rrg-text);font-size:16px;margin-bottom:4px;}
+/* "Most fits start from $120" (spec.md §16 item 2) — answers "roughly how much?" above the form. */
+.booking-from{margin:-8px 0 20px;padding:10px 14px;border-left:3px solid var(--rrg-cta);background:var(--rrg-bg);font-size:15px;line-height:1.5;color:var(--rrg-grey-700);max-width:900px;}
+.booking-from strong{color:var(--rrg-text);}
+/* Current fitting charges — public, collapsed, below the form (spec.md §16 item 2). */
+.price-accordion{border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;}
+.price-accordion > summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;}
+.price-accordion > summary::-webkit-details-marker{display:none;}
+.price-accordion > summary h2{margin:0;font-size:28px;}
+.price-accordion > summary span{font-size:14px;font-weight:700;color:var(--rrg-text);text-decoration:underline;white-space:nowrap;}
+.price-accordion[open] > summary span .when-closed,.price-accordion:not([open]) > summary span .when-open{display:none;}
+.price-accordion-body{padding:0 22px 22px;}
+.price-accordion-body > p{margin:0 0 16px;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);max-width:900px;}
+.page-hero-textlink{align-self:center;font-weight:700;color:var(--rrg-text);text-decoration:underline;font-size:15px;}
 .booking-sent{border:1px solid var(--rrg-fits);background:var(--rrg-fits-bg);border-radius:var(--radius);padding:22px 24px;font-size:15px;line-height:1.6;color:var(--rrg-text);}
 .booking-sent h3{margin:0 0 6px;color:var(--rrg-fits);}
 
-.est-sticky-total{display:none;}
-@media (max-width:1100px){
-  .estimator{grid-template-columns:1fr;}
-  .est-summary{position:static;}
-  .est-sticky-total{position:sticky;bottom:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 -2px;padding:12px 16px;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow-bar-up);font-size:14px;}
-  .est-sticky-total strong{font-family:'Barlow Condensed',Arial,sans-serif;font-size:24px;margin-left:6px;}
-  .est-sticky-total a{font-weight:700;color:var(--rrg-text);}
-}
 @media (max-width:900px){
   .page-hero,.split-media,.booking{grid-template-columns:1fr;gap:24px;}
+  .booking-aside{position:static;}
   .page-hero-media{aspect-ratio:16 / 9;}
   .roof-types,.info-cards{grid-template-columns:repeat(2,minmax(0,1fr));}
   .load-panels,.price-groups,.steps{grid-template-columns:1fr;}
@@ -2235,8 +2229,6 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 
 .info-cards + .section-intro{margin-top:16px;}
 .page-hero-media--install img{object-position:8% center;}
-.price-list-heading{font-size:28px;margin:36px 0 16px;}
-.booking-aside-call{margin:14px 0 0;}
 .booking-sent-meta{margin:10px 0 0;font-size:13px;color:var(--rrg-grey-700);}
 /* Four-across category tiles (Installation "What we fit"). */
 /* "Something else?" tile — fills the spare space beside the feature tile (Installation's What We

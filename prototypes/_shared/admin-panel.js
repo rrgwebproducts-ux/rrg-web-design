@@ -44,9 +44,9 @@ function buildSiteAdminPanel(currentKey) {
     { title: 'Category &amp; listing', items: [
       { key: 'vehicle-category-landing', label: 'Vehicle Category Landing (VCLP)' },
       { key: 'vlp', label: 'Vehicle Landing (VLP)' },
-      { key: 'plp', label: 'PLP — Bike Racks' },
-      { key: 'plp-camping', label: 'PLP — Camping' },
-      { key: 'vplp', label: 'VPLP — Roof Racks' },
+      { key: 'plp-camping', label: 'PLP Camping' },
+      { key: 'plp', label: 'PLP Bike Racks' },
+      { key: 'vplp', label: 'VPLP Roof Racks' },
     ] },
     { title: 'Other', items: [
       { key: 'search-results', label: 'Search Results' },

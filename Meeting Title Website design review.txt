@@ -1,0 +1,1471 @@
+Meeting Title: Website design review and checkout optimization with Graham
+Date: Sep 30
+Meeting participants: RRG Brenton Cooley
+
+Transcript:
+Graham Sowerby: The Hi, mate. 
+Me: Morning, mate. How are you? 
+Graham Sowerby: Yeah. Not too bad. Play it one last night, mate. 
+Me: Yeah. Yeah. The little fellow has been a little bit unwell, so he's just hasn't been settling. So we're up till about, yeah, 01:30 this morning, 02:00. 
+Graham Sowerby: Goodness. 
+Me: I was like, yep. If he's up, I might as well be doing something. So 
+Graham Sowerby: Yes. 
+Me: It's good, though. I just got locked I'm, like, locked in and just lost, like, 
+Graham Sowerby: No. Seven. 
+Me: Eight hours. I'm like, holy cow. Okay. I think enough's enough. 
+Graham Sowerby: Yep. It can get like that. Those yeah. I had meetings after meetings last night, like, with The UK ten bucks team and drive down in Elliot. And like, two it's, like, two mega full time jobs. One doing The UK guys, and then kind of over here, and then Tim's obviously out the loop. So I'm trying to keep him up to there and there's so many moving parts, mate. It's bloody crazy. 
+Me: Yeah. 
+Graham Sowerby: Be nice when it's a lot of this is a lot of this is off our player, and it's just the little small tweaks. It's just literally everywhere. Website's getting redesigned. All the tech's getting redone in The UK. It it couldn't be any more complex nearly. Like, do know what I mean? 
+Me: It's it is an extremely overwhelming period of time, I think, because 
+Graham Sowerby: This is hello. 
+Me: There's there's just obviously a lot going on. But 
+Graham Sowerby: Yeah. Yeah. Yeah. The hard part is when you get, like, just, know, on the spot. Hey. Know, how how are getting on with compatibility of accessories with roof racks? You know, like, it's so far down the list, although it's still high priority. And, yeah, there's literally no focus on it. People are aware it needs doing, but it's so far down that it might never surface. And it's like, but how do you surface it? Do you know what mean? How do you actually get the time to complete that? It's actually really complex? But there's lots of other stuff that's as complex as going on that you can't just drop that and, you know, moving it all in parallels actually really difficult as well. So, anyway, that's my world trying to organize that. Where's the boys? Where's everyone at? 
+Me: I'm just putting the message up here. 
+Graham Sowerby: The website back online. Yeah. Yeah. I just bloody memory issue a few seconds ago. 
+Me: Yeah. I noticed that. I had the exact same thing, but then I refreshed it, and it worked again. So Yeah. It's working now. 
+Graham Sowerby: Cool. Yeah. So that ChatGPT have brought the dots out to there. 
+Me: Yes. Yeah. I saw your link. I I I've opened it somewhere, but I haven't actually 
+Graham Sowerby: It'd be interesting to see what they yeah. 
+Me: Had a chance to read it. Yeah. 
+Graham Sowerby: It looks exactly the same nearly. What was the oh, the advantage of that was it knows all the chat GPT. Chats you've had in the past. So its memory's already pretty good. 
+Me: Yeah. 
+Graham Sowerby: When you start using the agents, with the Grok ones, I'd sort of retrace them. Because I've never used the Grock ecosystem because of x AI. So yeah, I guess. It's gotta be weird. Interesting. Because once you're on board with one of them, you're kind of on board. You'd you you unless someone makes it very easy to switch. Which I'm sure there'll be a tool, actually. I I guess someone needs to create a tool that off boarding and onboarding between bot agents I'm sure somebody's thought of it. I'll not go down that rabbit hole. Hey, Scott. 
+Me: Scott. Oh. 
+Scott Childs: Hello? 
+Me: Yeah. I think Jake's caught up. 
+Scott Childs: Okay. 
+Me: But 
+Graham Sowerby: Does a series of pages now kinda, like, take us up the day, or is it still, like, the brand page and stuff to turn into 
+Me: So I saw the brand page Let me bring up 
+Graham Sowerby: Oh, yeah. I've got to check out and all that. Jazz as well, haven't we? But 
+Me: Yeah. 
+Graham Sowerby: anyway yeah. I'll let you 
+Me: So vehicle alerts, that's gonna actually be working on there as well. 
+Graham Sowerby: Wonder whether some of these in here, Brent, or whether you create another tab which kinda, like, focuses on that area. So keep both up to there, but maybe just when we're talking about design, 
+Me: Yeah. 
+Graham Sowerby: there's less of this clutter. Did you I I don't know. I I don't know. It might help. 
+Me: Yeah. Potentially. But I do know yeah. So brand pages. That's a big one. 
+Them: Yep. 
+Graham Sowerby: Yep. 
+Me: Yeah. So we don't I don't even think we have do we have we have store page in here somewhere? 
+Graham Sowerby: No. Maybe it didn't add it because it was like, we've got one. It's 
+Me: Yeah. But it was horrific. Like, 
+Graham Sowerby: Yeah. I I guess that's part of this is oh, I know. I know. But where do you the blog terrific I I sorry. Don't know if the blogs had worked. Sorry. But literally every 
+Me: Yeah. 
+Graham Sowerby: think every page is horrific, if if we're honest. So it's like 
+Me: Yeah. So Oh, that's well, that'll be another one is the blog articles 
+Graham Sowerby: know, where do you 
+Me: And the blog 
+Them: Yeah. 
+Me: Essentially, the category page for the blogs. 
+Graham Sowerby: Yeah. Yeah. And and, I mean, there's there's there's one part which is you know, obviously, redesigning so we all know exactly what this is going to look like. In the future is great, but it might be that some of them unless I mean I mean, it just all comes down to Mark Dev, really. If Mark can get through all of this, brilliant. Like, really good. You know? That would be amazing to get it all listed. But there might be, like I was saying, like, we gotta look If he can only deliver, let's say, right now, the PDP, the PLP, was the other main sections that we've got? The vehicle stuff. By December, like, the other stuff just can't it's it's still got merged or do know what mean? Like, loads of technical stuff to do for The UK. 
+Me: Yeah. 
+Graham Sowerby: It's like, what what can we at least we've designed it and you've presented the what it will do, which is great because then everyone got the vision and Tim and you know, everyone can see it. And we can all just keep moving that forwards. It's definitely worth doing. 
+Me: Yep. And I don't know. I like I know 
+Graham Sowerby: It's just yeah. 
+Me: Mark kind of keeps it close to his chest, but there there could always be some of this we could probably take off his plate. If if he's open to us actually making theme changes. 
+Graham Sowerby: Yeah. 
+Me: Again, it's really gonna come down to navigating how closely he holds that to his chest. 
+Them: Yeah. 
+Me: But yeah. 
+Graham Sowerby: Now I get it. 
+Me: Anyway, we might as well just run through these because I wanna try and just make sure like, all of these are work in progress. Okay? So bear that in mind. I've got them to a point where I think that they what I would present as being complete in my mind 
+Them: Yep. 
+Me: But not necessarily complete because, you know, there might be functions or anything that you've guys think of or or go, hey. We'd you think about this or whatever? So we'll we'll quickly cover off these. I'll start with the list I sent to the install page. 
+Them: Yep. Let's have a quick read. 
+Graham Sowerby: Is is the text important at this point, like, what we've got below there, or have you just taken it from the 
+Me: This is mostly just taken straight 
+Graham Sowerby: current site? 
+Me: From the current page. Same as the pricing. This is why I was asking about pricing before. The pricing is taken straight from the the live site and it's pushing that same pricing for The UK and New Zealand the moment. So we'd have to adjust those for to be whatever's accurate for each region. 
+Them: Yep. 
+Me: But yeah. So the idea But yeah. So the idea here is this this section here is what this might look very familiar to you. So this is straight out 
+Them: Yep. 
+Me: Basically, straight out of the the VLP page, with the what we fit we're just kinda covering off those those big ones Again, this is just another place we can, like, internally link and have those internal links back to the categories and the like. So we've I've added that in here. The how it works is pretty much as what we've got on the website now. Where you've got, you know, like, buy online or in store. Book a fitting, fitting and tested. And then the note about, like, time to for installs. The next bit is like a fitting cost estimator. This bit may or may not go the full length. It's really depends. So this is built based on the current big list of pricing. The idea of putting it into more of like a selecting your options kinda combats the if I bring up the current one, I guess this massive text wall of like, oh, I'm like, like, your eyes kinda can't scatter across this and make sense of like, if I was to read this as a customer, I'd have no clue what's applicable to me. I'd have no clue what total I'd be sort of looking at even roughly. So I guess the idea here was they can kind of pick between them, adding in extras, you know, whatever they whatever they need. Right? And it sort of will will 
+Them: Mhmm. 
+Me: Add up that that table and it's it's estimated fitting, estimate only. Like, we try and really push that. And then they can click on book fitting, and then it will prefill everything into the the notes that will go to the store. So, obviously, this sort of estimator type thing has both function but also usability for the customer. And I don't know if how that sits with you guys, whether you'd even want that estimator or not, but I've figured the easiest way to show this would be just in there. We still got can do it like this where it's a full price list. Or we could add both. It you know, we've sort of got a couple of options there. But, yeah, what are your thoughts on that? 
+Them: My thought is, have you run this by Chris? 
+Me: Negative. 
+Scott Childs: That would be I I would have started there before putting a second of thought into this 
+Graham Sowerby: because if the 
+Scott Childs: consensus is across the stores, they do not want this available to the customer because it's only the stores it impacts because it's the store I have to handle the customer going, no. I estimated it was showing to be 830 fitting, and they're like, well, no. We charge 900 for this, this, and this reason. There was always a huge issue when I was at the stores when customers are coming out. No. I have a look at the two bar fitment on 
+Graham Sowerby: a 120. 
+Scott Childs: I'm like, yeah. That's you don't have a car that falls into that category. You need this done first. And they're like, oh, that's what the website says. I would So is this 
+Graham Sowerby: definitely run it by 
+Scott Childs: Chris and get 
+Graham Sowerby: him 
+Scott Childs: to get feedback from the stores first. 
+Graham Sowerby: Yeah. I think 
+Scott Childs: what what I would say as well 
+Graham Sowerby: on this 
+Scott Childs: is 
+Me: Okay. 
+Scott Childs: I mean, there's a layer of data 
+Graham Sowerby: here that we should probably add as rocket. Which would understand the vehicle and the rack set being fitted. It could actually preselect You know, if you got some top options there, we should actually do the work as a as a company. To actually pre you know, kinda like advise which it would be, you know, because we can we know it's two bars. We know it's these rails removed, whatever it might be. So I'd actually say that 
+Me: Yeah. 
+Graham Sowerby: probably has more credibility if we do that layer first. Therefore, but still cost it as an estimate. And, again, they come in with all sorts of issues, don't they? Like, they might have some of these bolt ons. I can't remember what they are. They're they're no. I don't need that. You know, you just whip the bars off or you remove the old bar. You know, you're rarely charging me for that? I don't know. It it's yeah. 
+Me: Yeah. 
+Graham Sowerby: A difficult one, really. And and there's also the layer of you wanna get them to purchase a product, not be not worry about the fitting cost and just think, oh, I need these fitting. I'll I'll ring the store or once you got them on the phone, it's much easier to convince them, I think, than actually a a website saying, hey. A thousand books to fit your roof. Like, fuck that. I'll I'll just get the easy version and maybe switch to the know, the crossbars for now. I I don't know. I don't know if there's any of that. I don't know whether that happens, you know, psychologically, It definitely does, especially with the way that our fitting fees are broken into 
+Scott Childs: different layers. Like, if someone looks at their invoice and it sees four different fitting charges, that's when they start thinking, well, why you charged me to do that? Like, isn't that just part of the fit? Whenever we use quite a fit, we'd never say, you know, it's a $100 to take off the rail. $200 
+Graham Sowerby: to 
+Scott Childs: fit the bars. It's $50 to fit that accessory. We just say the total price is 300. Like, we just tell them what the fitting fee in total is. We never break it down to them. 
+Graham Sowerby: Get the 
+Scott Childs: occasional customer's like, oh, what does that include? And we just explain And, obviously, once I get handed 
+Graham Sowerby: their invoice, I'll 
+Scott Childs: see the breakdown themselves. But yeah, we we have a lot of feedback from customers who are like, oh, why 
+Graham Sowerby: are charging 
+Scott Childs: me fuck a $120 just to take the rails off? What? Ew. That that's what we judge if you can do it yourself. Difficult one, It is rarely, Brenton, I guess. Part of 
+Graham Sowerby: this is we 
+Scott Childs: don't 
+Graham Sowerby: this page exists on the website, but its original purpose was just to let stores understand what our fitting costs are. It's not really a customer facing page. It's nearly like don't put this in front of them unless they really go looking for it because it's much easier to talk to them on the phone when you've got their order. 
+Me: So I suppose then with that in mind, 
+Graham Sowerby: I don't know. I don't know. 
+Me: Because we need to have an install page. 
+Graham Sowerby: Yeah. 
+Me: Like, that's that's 
+Graham Sowerby: Yeah. Yeah. Absolutely. 
+Me: And I think we we could do this another way where we're not actually 
+Graham Sowerby: Yeah. Push them to a store. I would say you've got to 
+Me: Showing pricing at all. Yeah. So, I mean, like, 
+Them: Push them to a store. 
+Me: For example, let's say we we drop all the fitting cost section. And it would just take you basically to a information about what we do, like, yes, we do fitting. What kind of fitting do we do? How it works? And then it should be straight away to a form that gets that they can fill out that gets sent to the store. 
+Scott Childs: Yes. 
+Graham Sowerby: Yeah. I mean, there's a yeah. There's another, like, layer to this Tim and Tim and Jake Martin have been meeting with a company called Avenue. Who who run Avenue booking engine. 
+Me: Yep. 
+Graham Sowerby: So this is what puts a book book online next to your Google My Business profile. And then they're building, like, this weird, like, third party booking engine. But I think he's a friend of Tim's, and Tim's entertaining it, but I don't know how far it's gone. But he was gonna push all bookings down. I'll just send you the links. You've got it. 
+Me: We actually 
+Graham Sowerby: Again, we could just do it 
+Me: Are we actually going to have bookings online? 
+Graham Sowerby: I'll show you what it is, and then we can see. Because if some stuff up. But this is really in James Martin's wheelhouse at the minute as part of the op stuff that he meant to come to us to tell us what the hell has he been chatting about, what's he thinking about. But there's a very low level chat happened with this company. Let me just drop it in here and see if you've got avenue booking. Let me just send you the demo. Of a new I think we do my my my gut feel isn't it, and we've always said this in a think Tim's aware, we should be doing this on our website. But he's like, oh, everyone's so busy that don't wanna distract everyone. So it's a third party, does it? No one's gonna get disrupted. But the reality is it still does. You end up at that point where you may as well have done it yourself, but it's not for me to kinda like, you know, this is Tim and Jake Martin's words. So let me just get this up at Avenue. We can see what demo they've done. Avenue 
+Me: So I swear I brought this up, like, two weeks ago that we should be doing bookings. 
+Graham Sowerby: u Yeah. Well, we had it in the design, and, you know, we said, look. We probably don't want that design. You know, we don't want to throw that in people's face, but it's it's rarely difficult, mate, because I think there's everyone has a different view on this, and they will do. And and I think it's just got to come down to I don't know. I don't know whether there's my gut feel, and this is again, it's not good for me to do this. It really needs a good teammate is you're better off to get the sale and then it's a much easier conversation about sticking once you've got the sale because they're already committed. And you know, you oh, god. $500. I've already bought stuff going on. And from a business perspective, it seems to be a logical way to do it. But it's whether it actually would generate more. I I mean, I don't know the answer. This is just how I 
+Me: Well, so I've already got this 
+Graham Sowerby: know? I don't know. 
+Me: Sorted out a little bit with the customer journey stuff. And it'll definitely come more into play when I do up the the checkout process. 
+Graham Sowerby: Yeah. 
+Me: But once so as part of the checkout process, my thought pattern was similar because once they're financially invested, getting them across for an install that makes 
+Them: Yeah. 
+Me: Obviously, is a lot easier. My thought was as part of the checkout, you know, once once they've paid, rather than just landing on a hey. Thanks for your order page. Which is by the way, just trash at the moment too. 
+Them: Yeah. Yeah. 
+Me: It should be landing on a page which is like you know, your products are now locked in. Let's look at fitting. Like, 
+Them: Yeah. Yeah. Yeah. Yeah. Absolutely. 
+Me: Like, it should then be pushing the fitting. 
+Graham Sowerby: Yep. 
+Me: Oh, yeah. 
+Graham Sowerby: Yeah. Kinda like have, yeah, have unsure on the fitted. You know? Try and gonna brave it yourself. Why not consider our fitting services? You know? We'll make it much easier. Just get in touch with the store. You know, we'll sort you out type thing. I think that's a good idea. Brenton. Yeah. I don't know what they've done here, but this is effectively you got You search for roof or near me or whatever it might be on online, and then there's a book online button comes you've seen them, you? Or, like, booking.com? It says book online next to the Google My Business profile. That book online would would would bring this pop up up. And the idea is that they can book a time slot and and but it's really difficult to make this work properly. And it's I worry that the people that are actually going to be working on it don't understand tech well enough to, like, you know, what's he got you know, stores are already gonna have to look at this to see any inquiries coming. We're not controlling it. This avenue team is, and you know, I think it's very naive to think we can be completely hands off because and it saves us all from getting distracted. I don't know. Yeah. But it's important to know, obviously. I don't even know how what the demo looks like, mate, because I've left it with Jake. Mine, and I've just heard nothing back since the email threads. 
+Me: Yeah. 
+Graham Sowerby: So it's not me controlling it. I'm just aware of it, I guess. So I'm just bringing it into 
+Me: Yeah. 
+Graham Sowerby: yeah, into the picture. And they're also looking at potentially doing the replacement for Crisp. And building that into the same avenue system. So live chat bookings. But, again, it's I think the wrong people are in the conversations. But I don't really. Until Tim's back. And really sat down and pushing his brother, Jake, I really don't know. I can't do much more. My hands are a bit tied on this. But it's important for you to know I don't want you to go blind and to hate him. The booking engines, because he'll just probably go off. I've already considered you know, considered I think, yeah, Jay Van Dalla might have been in when I have a new booking engine was here. 
+Me: Yeah. Well, 
+Graham Sowerby: You remember Avenue jerk? 
+Me: Jake and I were talking about Avenue last week. 
+Graham Sowerby: Yeah. 
+Me: When he was after a chat for him. 
+Graham Sowerby: Mhmm. Yeah. 
+Me: But not not this side of it. But the crisp. Replacement sides. 
+Graham Sowerby: Yeah. Yeah. Okay. Anyway, I think, like, what you've done, like, I think it's really neat, and I like the way it does the estimate. It's more of a psychology kind of question, isn't it, whether it's gonna stop people committing because fuck. I thought Iraq was 
+Me: Yeah. 
+Graham Sowerby: I could only afford Iraq, and now I've got another $500 a fee and shit. I'm gonna reconsider. I don't know. I I think it will happen. I think if someone buys it, and then I'm committed now. 
+Me: I think following in that 
+Graham Sowerby: You'll earn more as a company. It's it's 
+Me: In that scenario, I think it'd be wise then that we drop the price from the customer facing page because we need to have a page for it. Like, the for SEO, we absolutely have to have a page for it. 
+Them: Yeah. Yeah. Yeah. Absolutely. 
+Graham Sowerby: Yeah. 
+Me: There needs to be a clear call to action on it, which in this case is submitting a a contact inquiry or a form submission. 
+Graham Sowerby: Do you not think just push them? 
+Me: We can always reach that to the Avenue one when it's finished anyway. 
+Graham Sowerby: Do you think we just throw them rather than the form? It's more of a, hey. We do installation. There's lots of, like, to get an accurate quote, we always advise it's best to speak to your local expert. Here's the store finder. To find your local expert, and then, you you know, the the best way is gonna be a phone call. Hey. Yeah. I've already got an old knack and rack on my roof. I need a roof box, a roof tent, and I'm looking at this. 
+Me: Yeah. 
+Graham Sowerby: The guys in store Scott, would be best to handle that. Would that be fair? 
+Me: Yeah. So 
+Graham Sowerby: Yeah. Yeah. And this Chris has been other ideas, but 
+Me: I guess two things there. First is, a, how do you track it? For analytics? 
+Graham Sowerby: Yep. 
+Me: And, b, this this is, I guess, the the thought process behind this form does exactly that anyway. This 
+Them: Yeah. Yeah. 
+Me: The idea here is that this is dynamically set already if they've got 
+Graham Sowerby: Yeah. I see. 
+Me: Their v like, their store set. 
+Them: Yep. 
+Me: It would auto set to whatever store they've got preset as ready. 
+Graham Sowerby: Yep. 
+Me: But they can change the store, and this would get sent an email directly to that store's email. 
+Them: Yeah. 
+Me: Basically, to get the store to give them a buzz, 
+Them: Yeah. It 
+Graham Sowerby: yeah. 
+Me: And say, hey, mate. Got your inquiry. When when are you free? Let's book it in. 
+Graham Sowerby: Yeah. 
+Me: Whatever. Right? We drop drop the prices here. We can hide I'd I'd hide the prices 
+Graham Sowerby: Do you think you give an 
+Me: Behind the login page for staff only. 
+Graham Sowerby: Yeah. Yeah. 
+Me: If that's if that's kind of what the purpose is and the use case for it, then completely ignore the fact that there's pricing on this page. 
+Them: Do you think we put, like, when they do select the store as well? Maybe not 
+Graham Sowerby: right panel under what happens next. 
+Me: Yep. 
+Graham Sowerby: Could be kinda like, want to discuss this now, Here's your store contact details. Do know what I mean? So below there would be 
+Me: So it's not at the moment, I don't know if you can read that. 
+Graham Sowerby: Oh, sorry. 
+Me: But at the moment, it's 
+Graham Sowerby: Ah, yes. Sorry. It's it was hard to see that. 
+Me: Yeah. So at the moment, I've got Mitcham set, but if I change that to, like, 
+Graham Sowerby: Yep. 
+Me: Moorbank, it changes. Your request goes to the Moorbank store. Call Morebank on their phone number. 
+Them: Yeah. I think I 
+Me: And then further from that, too, let's say I go to the FitFinder. 
+Graham Sowerby: Yep. 
+Me: Sorry. Not Fit Finder. Let's store finder. Let's say I type in Four Five Zero Three. Get North Lakes. I can actually set my store here too, which is cool. You can just sort of say, set my store. It's now North Lakes. 
+Them: Yeah. Yeah. 
+Graham Sowerby: Yeah. 
+Me: I can view the store itself. 
+Graham Sowerby: Yeah. 
+Me: And I can get 
+Graham Sowerby: It looked good. 
+Me: Book a fitting will actually take me back to that form preset to North Lakes now. 
+Graham Sowerby: Yeah. I think the only thing I would do there is that what happens next. That that that tile on the store locator on the left or or even that one on the right there, either that little one of Burleigh Heads or that big one on the right there should be what the view below that instead of just putting what needed sooner within that gray box. 
+Me: Oh, yeah. Yeah. 
+Graham Sowerby: It's quite hidden if you go back Just make it below there. Keep that need it sooner and make that more of that you know, that stack, that card. 
+Me: Make it more of a pull to action button. 
+Graham Sowerby: Yeah. It might even have a map, and and that that'll look really good, I think, because then you've got 
+Me: Yeah. 
+Graham Sowerby: the two, oh, I just wanna leave an inquiry. Someone to give me a call to discuss it, or I'll ring them now myself. 
+Me: Yeah. 
+Graham Sowerby: And, you know, they'll they'll go through them, which I think is the right way to do it, which I think you do need 
+Me: Yeah. 100%. 
+Graham Sowerby: on the on the book of fitment Sorry. The fitting per page. So, yeah, lose the pricing. That can could be actually pretty good for the store. So maybe you could ask if we have that for the the store's logged in. Or or someone's logged in. It has to be a store login Yeah. 
+Me: So we can even 
+Graham Sowerby: Yeah. No. That's cool. Does does anyone sorry. Does anyone else 
+Me: Dynamically just show or hide this 
+Graham Sowerby: Yeah. 
+Me: These tables. 
+Graham Sowerby: Yeah. 
+Me: Based on if it's stop logging, I suppose. 
+Graham Sowerby: It could be under an accordion section that isn't super easy to see that's there because stores might still want it, and 
+Me: And 
+Graham Sowerby: what what do you know about this I guess? Do you think the price is that there's some relevance to seeing the prices, Scott or Jake? 
+Me: I think 
+Graham Sowerby: On the site for customers. 
+Me: Think Scott's jumped off, but 
+Graham Sowerby: Oh, sorry. Yeah. 
+Me: Okay. 
+Graham Sowerby: I think the process is kind of relevant. 
+RRG Web Products: I'd for me, I think I would put the booking first before the prices because I feel like Yeah. Consumer might look at the prices first. We'll, oh, fuck that. Not even bother with Yeah. Doing the the form. Yeah. Put in an accordion 
+Graham Sowerby: below the form. 
+RRG Web Products: Brent, nothing. Click here to view. 
+Me: Yeah. Like, the the price list or whatever. 
+Graham Sowerby: Yeah. Fitting charges current fitting charges. Yeah. That's it. Yeah. And then that can 
+Me: Yep. I can do that. They'll drop the estimator altogether. That's easy. 
+Graham Sowerby: be yeah. 
+Me: Cool. 
+Graham Sowerby: Yep. Yep. That's cool, mate. No. It looks looks clean. 
+Me: The only thing we didn't cover is obviously then there's frequently asked questions. I'll have to adjust those anyway because they were based on 
+Graham Sowerby: Yep. 
+Me: Pushing price as well. Suppose. But 
+Them: Yeah. What have you got in the FA 
+Graham Sowerby: Qs? How have you worked about, like, is it, like, do you fit accessories? Like, do you need someone to help you with that? Do we get stores to come back with? What are your most common questions, guys, from fitting? Know, you could post that out, and people might get 
+Me: We should be able to save that out of Crisp, can't we? 
+Graham Sowerby: oh, it's true. Yeah. 
+Me: Yeah. 
+Graham Sowerby: Yeah. 
+Me: So these are obviously placeholder frequently asked questions at the moment. 
+Graham Sowerby: Yeah. 
+Me: But the concept there would be when we do the frequently asked questions, that's when we would be researching CRISPs. 
+Graham Sowerby: Yeah. 
+Me: And the most search terms are, like, what what are people asking. 
+Graham Sowerby: I I've got a few on the New Zealand one. 
+Them: If you haven't. 
+Graham Sowerby: Seen those yet. 
+RRG Web Products: Okay. I guess even the kind 
+Graham Sowerby: of sit away stuff like that. Can I watch my fit being done? Just you know, these are some things I'm thinking off my top of my head. It might not be the stuff that comes in crisp, might be some other ones which you wanna make them feel comfortable as well and answer them. Oh, shit. Am I gonna have to get a taxi somewhere? Is is a seat available? Anyway, I'm sure you'll cover that when it comes to it, but it looks looks good. It definitely needed a cleanup. 
+Me: Cool. 
+Graham Sowerby: So it's cool. 
+Me: So the next one is the fit my vehicle page. So, obviously, this is a content page anyway. Not necessarily the a theme rework, but it's there's a couple of things in here that I need to work out with Mark. Because this is where I've introduced a new widget or a new element that I really wanna be able to push on a couple of different pages. So you'll see here if I've got a vehicle set, it actually will have this, are you shopping for your Ford Ranger? 
+Graham Sowerby: Yep. 
+Me: And this shop for my Footranger will take me to the VLP. 
+Graham Sowerby: Yep. 
+Me: For that product. 
+Them: Yep. 
+Me: Sorry. For that vehicle. So this is a new widget, and I don't know I'm sure it'd be it's easy enough. I'm just gonna work out yeah, how we can enter, like, that widget into a content page halfway through and stuff like that. So 
+Them: Yeah. 
+Me: But we're having the ability to still change vehicle directly off that. Clicking shop my range, it takes you straight to the BLP. 
+Graham Sowerby: Yeah. 
+Me: And whatnot. So 
+Graham Sowerby: Yep. 
+Me: And then it's it's 
+Graham Sowerby: South 
+Me: Pretty much just the what we've got now. I guess the main thing I really wanted to show here was this new widget. 
+Graham Sowerby: Yeah. 
+Me: Here. And this could be then brought across to multiple different pages. 
+Graham Sowerby: Mhmm. 
+Me: You know? Any page that is like like a home page, our It could be a blog page. Really, it could be anything. 
+Them: Yeah. 
+Me: But it's basically if there's a vehicle set, it should be just this little bar that's like, hey. You're shopping for your Toyota Hilux, Ford Ranger? Holden Commodore, whatever, 
+Them: Yeah. 
+Graham Sowerby: Is that better than the fifth is that better than the fifth finder being prepopulated? Is it or 
+Me: To bring 
+Graham Sowerby: is that just so you can start fresh? Super easy if you wanted to, that there's nothing in the fit finder at the moment. 
+Me: Yeah. 
+Graham Sowerby: Obviously, he knows the vehicle. Yeah. 
+Me: I guess yeah. It's it's kinda twofold on that because it does I think this is a lot cleaner with, like, are you shopping for your Ford Ranger? 
+Them: Yeah. 
+Me: And then having a changed vehicle but then you've got this as a completely empty space to be able to just enter it in anyway off their own back. 
+Them: Yep. 
+Me: That being the FitFinder, obviously. And and, that's 
+Graham Sowerby: Yeah. I mean, look. 
+Me: If, for example, I have none. 
+Graham Sowerby: Yeah. 
+Me: No vehicle selected. That that widget's just 
+Them: That that's fine. I guess it's just a little bit 
+Me: Not visible. 
+Graham Sowerby: like, just put it back where the vehicle's there. It's almost like the empty space in the top right of the black bar could say. You know, hey. Have you are you still shopping for your Toyota Hilux? Then just click here. It's like, we've got two widgets now that, really, they're so similar, but I just don't yeah. It's almost like if we know the vehicle and that's what it is, you don't need the fit finder part. You know? You're It's irrelevant. It's completely 
+Me: Or or it could almost be combined, if you will. 
+Graham Sowerby: yeah. 
+Me: Or merged. 
+Graham Sowerby: Yeah. Or you click yeah, change vehicle, and it slides that fit finder out because that's effective for you. Already know they've got a Toyota Hilux, that fit finder is a change vehicle. Kind of opportunity. Don't know. It just seems the same thing, but I do like the look of what you've got down there. But remember, we always have to image of the vehicle. I was actually gonna set AI off, on our four and a half thousand master vehicles to go and find. I'll give it a good library, one that's like a common one, and just get it to go and do all that work for us. Might take, like, three or four hours, but get it to go and get all the images of all the vehicles and match them up. But, yeah, I I don't know. I mean, it it it's really difficult because some it just don't you know, it it it doesn't take anything away because at the end of the day, they're interact with one of them. It's just whether it's a bit I don't even it doesn't feel weird, but whether it's weird to some people that you've got two things doing the same thing here, It's like a blank one or 
+Me: Yeah. I suppose it it's probably a little bit weirder because they write one on top of each other. If you have a look at the home page, for example, you got the FitFinder still up here in this main hero. But then as you scroll down, you get that same widget showing. 
+Graham Sowerby: Yeah. It should always be prefilled. But the way we are at the minute is should always be prefilled with whatever that that that's the default where we are. It's whether presenting it empty but having them little widgets around, say, is it 
+Me: Think well, yeah, I I think maybe we merge the FitFinder widget with this new shopping for your vehicle widget. 
+Them: The 
+Me: Because I think this is a nice 
+Graham Sowerby: The black's good to us. 
+Me: Design. 
+Graham Sowerby: Yeah. I agree. 
+Me: And we could probably have you know, all the drop downs built into this same widget underneath, already prefilled out to the Toyota Hilux because now that makes sense given that 
+Them: Yeah. 
+Me: Within shopping for your Toyota Hilux. 
+Them: Yeah. 
+Me: I probably would then drop the change vehicle have it, like, bringing the drawer out because we don't need to do that now. Have the 
+Graham Sowerby: It could just clear it could just it could just clear the drop down if the if the drop downs are there, the change vehicle would just 
+Me: Oh, yeah. Yeah. True. Yeah. 
+Graham Sowerby: blank all the fields. So it's like, 
+Me: Yeah. Yeah. Change vehicle could clear the the FitFinder. 
+Graham Sowerby: Yeah. 
+Them: The black's good, though, remember as well. I I like the break. 
+Graham Sowerby: The that black fit finder helps break the page up, but 
+Me: Yeah. 
+Graham Sowerby: obviously, a vehicle image on the black is not 
+Me: Yeah. That won't work. Yeah. 
+Graham Sowerby: ideal. So 
+Me: I'll play around with it and see what options it can come, like, and see how it looks with with white, see how it looks with the 
+Graham Sowerby: Yeah. Yeah. Yeah. Yeah. I I don't 
+Me: With the dark, maybe 
+Graham Sowerby: I don't think yeah. My gut feel is there should never be a blank vehicle select if we already know the vehicle. Very unlikely. A stall would change vehicle because they get different customers. An individual shopping I would say less than 5% are switching cars. 
+Me: Yeah. 
+Graham Sowerby: Only if they got it wrong. Do know what I mean? So 
+Me: Yeah. No. That's fine. 
+Graham Sowerby: okay. 
+Me: And then, yeah, the rest of the page is basically what we have 
+Graham Sowerby: So does that fit my vehicle? 
+Me: Currently on our content page 
+Them: This does that fit my vehicle. 
+Me: Yeah. So that's 
+Them: When we know the vehicle. 
+Me: Where am I? 
+Graham Sowerby: Okay. 
+Me: Refract school. 
+Them: Sorry. Why are you doing that? Sorry. Why are you doing that? Is Jake Norton still on hold? 
+RRG Web Products: Yeah. He's back on, like, he's the fifth. Let me see. But 
+Graham Sowerby: would you be able to do a price upload for me today? I'll 
+RRG Web Products: sell it, mate. I'm not ready to offer with it. Yeah. 
+Graham Sowerby: If you get the sale of monies up at three, he'll do it. Okay. 
+Me: Yeah. So this is the page of the replacing, essentially. 
+Them: Yeah. 
+Me: So it's all the same exact same info. Same block, same everything. I've just cleaned it up even further by adding in, like, the 
+Graham Sowerby: Yeah. 
+Me: Where else? 
+Them: That looks a lot better. 
+Me: Yeah. 
+Graham Sowerby: Everything's looking a lot a lot need to know. 
+Me: Having images for, like, the cards instead of just being yeah, blanks like that, like weekend adventurer. Yeah. You still got that that here. And then a call to action which should take you to where are we? I guess the most relevant category or PLP page to that particular audience, I guess. So 
+Them: Yep. 
+Me: This case, a weekend adventurer, you wanna send them to platforms and trays. Tradies, send them to trade and work. Fam, like daily or 
+Them: Yeah. 
+Me: I guess, holiday 
+Them: One of the difficult things here is, yeah, some of these 
+Graham Sowerby: from a from a product category perspective, when it's, fitments, there's not really a nice place to go other than, like, spit my vehicle. Like, if you send people to the Rhino pioneer, page, the the list of most people want a a roof rack. They're not wanting that individual component. And this might actually work beware. This is an important design that we we've kind of overlooked that we need to do. I feel like if you're on a component page or you've accidentally know, some people search in, like, Ryan, Toyota Hilux backbone, and they literally they want the full platform. They know it's a backbone platform. But they end up on the backbone like, just a spine page. That spine page should say hey. Were you looking for the full roof rack? Click here. To search your vehicle because people will be landing on our component page thinking, oh, I've landed on the roof bars. Where do I know, how do I get these on my car? So any top layer component. So it's really platforms and crossbars. And I would put backbones in that as well, maybe rugged lines or any spines. They should be should have on them pages the PDP. Where you're looking for a full roof rack. Know, where you're looking for roof racks here. Do do you know what mean? It's not important to design now, Brent, but I think we do need that layer because people will go directly from Google on to their pages. Because it's just the the nature of the the know people go on the backbone pages, component looking for the platforms and the whole setup. So 
+Me: That that makes sense. 
+Graham Sowerby: sorry. I just thought I'd throw that in there. But but this one here, just just remind. So this is buying the right cell for how you actually use your vehicle. So if I'm a weekend war adventurer, and I'm I'm on the page to buy a roof racks, instead of filling in the form at the top, if I click that, what am I getting? And and is that gonna be what I want? You know, it's kinda like I almost think they'll they'll be thinking, oh, I'm gonna see roof racks now because I'm a weekend warrior, but the the reality is we don't have a page to answer that, and they're actually better going into roof racks for my vehicle Maybe the PLP, the p you know, maybe there is a you know, where we've got the tabs for through bar, crossbars, whatever it might be, maybe there's a filter in there, which is don't don't show me clamp mounts if I'm a weekend warrior. Do you know what I mean? Don't kinda like an your adventure type would filter out all the roof racks. That are not good off road options Did you get what I mean? Don't show me a shitty clamp now. Roof rack. I don't know. Sorry. Your other two 
+RRG Web Products: you're basically 
+Graham Sowerby: sending them to accessories. 
+RRG Web Products: Which one's that one? 
+Me: Yeah. 
+RRG Web Products: The trailer dry daily driver, you're sending them to roof boxes. 
+Graham Sowerby: The tradie fleet one, you're essentially sending them to, 
+RRG Web Products: like, rollers and conduit holders couriers and stuff. 
+Me: Yeah. 
+RRG Web Products: Ladder racks type thing. But then you're setting up the 
+Graham Sowerby: platforms for a weekend where 
+RRG Web Products: I'll probably would be sending them to, like, I know, our full care team. 
+Me: Camping or yeah. 
+RRG Web Products: Rooftop tanks, awnings, and 
+Me: Yeah. 
+RRG Web Products: camping gear type stuff. Maybe it's difficult. Maybe it's actually should be a landing page, which is like, hey. Your weekend adventure. If you 
+Graham Sowerby: want to search a vehicle, go here. You're a platform it's maybe I can need another page rather than use utilizing one that we've already got and just sending them to a random platform page. But I this is important, though, because these links I guess, Brenton, are really important for the credibility of this page. And but we do want to generally, people need to be filling in their vehicle at the top. And this is yeah. Just don't wanna give them the wrong impression of what they're going to. What they expect behind that link to what we know is a mess. Of a website at the moment behind it or a bad customer journey. 
+Me: Yeah. 
+Graham Sowerby: Get what I mean. I'm sure you've considered this, Brenton. But I don't wanna send them to a page where gonna be more questions than answers. Like, what am I doing here? I'm buying a platform. But where's the roof rack? It's like, yeah. I don't know. Really good, though. I really like it. I just don't know if we've got the right setup and that might just be a case if you you can create another landing page to clear just that's a weekend adventure landing page. Could be cool. I don't know. But it's more work, obviously. But it probably feels fitting and could feel nice to the customer journey. 
+Me: It's almost like a a use case landing page. Right? Like, almost 
+Graham Sowerby: Yeah. 
+Me: Like a there's probably a few variations there between not just weekend adventures, but you could have, like, more touring one, a camping one, a tradie one, you know, holiday trip. 
+Them: Yeah. 
+Me: With the family type one, 
+Them: Yeah. 
+Graham Sowerby: Yep. 
+Me: You know, they're they're probably different use case types that that would go well into it. This is probably where you know, you'd probably have one that's focused on bike riders, one that's focused on you know? 
+Them: Yes. Yeah. Yeah. Yeah. Because you the 
+Me: Skiing or kayaking or whatever. Like, 
+Them: The 
+Me: Yeah. 
+Graham Sowerby: demand gen would be really good for that, wouldn't it? Because you could just see a Facebook thing going, hey. Are you a weekend warrior? Check out what roof rack scale I have for you up to 20% of whatever. They land on the page, which is like all the fitments are big. Off road fitments. There's, you know, it's a really good arcade. Wow. I can go get a campfire if I want to. I can go get camping chairs. I can 
+Me: Yeah. 
+Graham Sowerby: you know what mean? It'd feel really good that and actually 
+Me: I'll add it to my list. I'll add it. 
+Graham Sowerby: yeah. That feel more 
+Me: I think that I think it actually it will help with the user journey. 
+Graham Sowerby: Yeah. 
+Me: To have have that, like, it makes sense. Rather than sending them straight to a plp page from here. 
+Graham Sowerby: Yeah. 
+Me: As well. But those in their own sense will will also rank organically. You know, I don't think I can't see them being, you know, our highest trafficked 
+Them: No. 
+Me: Pages, but by no means. But I I do think as a landing page for both ads 
+Them: No. 
+Me: And 
+Graham Sowerby: Yes. 
+Me: You know, and organic, I think it worked well. 
+Graham Sowerby: Absolutely. Yeah. Okay. So what else have we got on here? Let me just just scroll down slowly. So we've got to find 
+RRG Web Products: the the 
+Graham Sowerby: normal the the types of roof rack sorry, the roof. How much weight can your roof carry? Roof bars, legs, platforms, trays, what's the difference? Do we need a just go up on that one. Let me just look at that again. We've we've got roof bars, legs, platforms, and Do we need platform like, backbones? Do we need spines in there? Do we need any other types? Both bars, legs. Platforms, and trace. The spines are quite important, I guess, the difference between legs. And spines. Spines are quite a big seller in Australia. I don't know whether we can fit four across. Probably can. 
+Me: Yeah. Yeah. Yeah. We 
+Graham Sowerby: Because the icons are pretty big. 
+Me: Yeah. Yeah. Yeah. We can definitely get four four across. 
+Graham Sowerby: Five would be the missing link there. It would be really jerk. Track would you go down the track route? I know. 
+Me: What's happening? 
+Graham Sowerby: Sorry. I'd I'd definitely 
+Me: Probably not. I'd probably I'd probably 
+Graham Sowerby: backbone, spine, 
+Me: Leave the tracks out because tracks really are just more what you're mounting the the the legs to or the backbone 
+Graham Sowerby: Yeah. 
+Me: Spine two. 
+Graham Sowerby: Oh, the images are wrong, obviously. They're like the legs. That's that's a push bar. 
+Me: Yeah. Yeah. 
+Graham Sowerby: Not a through bar. The left 
+Me: I wanna redo the mini 
+Graham Sowerby: thing, so just a bit of tidying up there. But, yeah, add one more. 
+Me: Because I was looking at this platform one, and I'm like, that doesn't tell me that it's real yeah. Anyway. Yeah. It's fine. 
+Them: No. That's cool. Then we've 
+Graham Sowerby: what else do we have below that? Choosing the right set for how you 
+Me: Yep. 
+Graham Sowerby: actually use. Yep. We've seen that one. We can fit it for you, find your fit, Booking store. Sit. Fit it and test it. What's the test it? What would that be? 
+Me: Well, I think from 
+Graham Sowerby: Our streamer. We we do need you we do need a 
+Me: Do we have? 
+Graham Sowerby: the the light here of where we do need, at some point, this user generate content because we do the fitment. We capture it in a store. We've got pictures of that vehicle with the roof rack, we now need the customers using that roof rack on their adventures. 
+Me: Yeah. 
+Graham Sowerby: To complete that user generated content cycle. Which will be cool. And then that's something, I guess, Brent said early next year, we'll have to consider is how do we now and this is what the booking engine is meant to do, actually, send an SMS afterwards. So Google reviews is one. Then leave it with them for a month or two and say, hey. We'd really love see how you're using our product. We'd love to, you know, send some pictures. Don't know what we'd give them for that, but some people just like showing off their rig. What I mean? So 
+Me: Yeah. 
+Graham Sowerby: start to begin with just saying, you know, Anyway, sorry. I just thought I'd mention UGC. So what's the tested layer? 
+Me: Yeah. And that's I think I think UGC content or at least 
+Graham Sowerby: Was test it anything? 
+Me: Yeah, we could even fake a used you. Yeah. User generated content for this this type of thing because yeah, you got find your fit, could have a picture of someone sitting in front of a TV, literally use it oh, sorry, in front of a computer literally using the FitMyVehicle widget. The next one's in book in store where they're, you know, walking in the store or something, and then the fit and tester is them, like, out and about 
+Them: Yeah. Yeah. No. 
+Me: Whatever. But yeah, no. I like it. Cool. 
+Them: That's cool, mate. No. It looks good. 
+Me: The next one is will you store finder. So, obviously, UK and New Zealand only have one store, so I'll start I think like I was saying before on Slack, I think we actually drop a store finder if there's only one store. So both New Zealand and UK it would be instead of a store finder even in the header, that should just take you to it should just say Bolton score. 
+Them: Yeah. Yeah. 
+Me: When they click 
+Them: Oh, shoot. 
+Me: Yeah, 
+Them: Yeah. 
+Graham Sowerby: Sorry. I was just saying, like, on the website, the minute I 
+Me: Sorry. 
+Graham Sowerby: you say see showroom visit showroom when it's one. I don't know whether we keep that terminology. Like, because the thing in The UK, Brenton, although it's got a huge population, we are thinking for the right people that would travel half of The UK to that one store. So it's kinda like calling it our showroom. It's nearly good enough or or visit our store. Maybe just visit our store. We are gonna roll out other stores pretty quickly by the sounds of it. I don't I think Remo's back in a month to look at setting another one up, but 
+Me: Once the 
+Graham Sowerby: I would say we're gonna have 
+Me: Kind of I had this thought because this needs to be future proof at the same time. And the same goes for Auckland. 
+Graham Sowerby: W two. 
+Me: Sorry. For New Zealand. We got Auckland store now, but, like, at some point once that starts kicking off, you know, we're gonna get a second store 
+Them: Yeah. 
+Me: Which point you need a store finder. 
+Them: Yeah. I think by the time The UK is done, 
+Graham Sowerby: Have to. So maybe it has got merit. 
+Me: Yeah. Okay. 
+Graham Sowerby: I think we'll have two stores running by December. In my gut feel. I think Remo's going to do that. 
+Me: So so with that in mind then, I will just add a placeholder second one as, like, a coming soon so that it makes sense. Right? 
+Them: Yeah. Put it as Birmingham. I don't know if that's where it's going. It might be the Leeds or Birmingham. Maybe 
+Graham Sowerby: put three. Just just do three because then it might look a bit better. Do Leeds and Birmingham. If that's okay. 
+Me: Chase, Manchester is like, huge. Didn't even realize how big it was. Alright. 
+Them: It's a monster. 
+Me: That that's fine. 
+Graham Sowerby: Sorry. Yeah. Just put three in there. 
+Me: I'll go. Fine. Okay. Cool. 
+Graham Sowerby: Put leads, and 
+Them: Birmingham. 
+Me: Yeah. And then that way, it can operate the same as here essentially where 
+Them: Yeah. It doesn't 
+Me: Okay, 
+Them: Does New Zealand does New Zealand get sorry. That next 
+Graham Sowerby: big state was the one in South Island, top of the South Island. 
+Me: Christchurch. 
+Graham Sowerby: Christchurch. So we are 
+Me: Is a 
+Graham Sowerby: I know there is talks of two new 
+RRG Web Products: possible stores. Yeah. Put more more there, and then we can just we may as well do it, I think, based on that. Brenton. Yeah. 
+Graham Sowerby: So one will be Christchurch, and one will be West Auckland, I think. So it'll be another 
+RRG Web Products: one in Auckland. 
+Me: Oh, okay. 
+RRG Web Products: Yeah. Sorry about that. I'm jumping in over the top 
+Graham Sowerby: You. I just don't think it might be better just showing the future maybe. In these could be quite good. 
+Me: Yeah. Yeah. Okay. So I'll add a West Auckland and a a Christchurch 
+Graham Sowerby: Yeah. Probably just for 
+RRG Web Products: ShitsEngage, just do, like, the South Oakland across the river there from the other one. 
+Me: Yeah. 
+RRG Web Products: Just in that area. Just in that area. And then, yeah, Cross Church will be the other one. 
+Me: Yeah. Yeah. Yep. 
+RRG Web Products: Which, by the sounds of things, will be a joint store with Dodges. Okay. 
+Me: Okay. Cool. We'll do that. I'll bring this back to the Australian version too so we can see 
+Them: Yep. 
+Me: Function. 
+Them: Yep. 
+Me: Obviously, you've got a postcode search. Is it postcode in UK as well, or is that 
+Graham Sowerby: Yep. 
+Me: ZIP? It is post, isn't it? 
+Them: Yeah. 
+Graham Sowerby: That is called postcards. Yep. Yep. 
+Me: Yeah. Yeah. And I think New Zealand is postcode as well. So 
+Graham Sowerby: Yep. 
+Me: That sits well. Basically, here, it's like any normal postcode search. If you type in your postcode, obviously, it filters it down. There's a couple of points here that I I kinda wanna make. So you can set this as your store straight from in here. Which obviously, at the moment, it's Northlake. It's up in the header. If I click on more bank, it changes to more bank. That also influences phase one, phase two, of stock statuses on the PLP pages and stuff, which if you've got time or you can show you at the end of this. As well. But there's also directions, so that that will link directly to Google Maps bringing it all up so that they can pull out their directions. And view store. Which takes them to their individual store page. Which is the next one we'll we'll we'll kinda go over as well. And then in there as well, it'll it actually say it will give them the opening hours of of the day that they're like, today's opening hours, whether they're open right now or not, So if it was after hours, this actually says closed opens at 08:30AM tomorrow or Monday if it's 
+Them: Yep. 
+Me: On a weekend or whatever. 
+Them: Nice. 
+Me: So yeah. And, I mean, everything else there is pretty self explanatory. If you go into the individual store page, this is where it gets pretty big overhaul from the current disaster that this is. So I guess the biggest portion of this or I guess ugh. The the mindset of going into this is I wanted it to also feel consistent with the rest of the website. So I've actually based the top section of this off the PDP page. So you you've essentially got the decision panel on the right hand side, and you got your images on that. With more details 
+Them: Yep. Yep. 
+Me: Right? And there's a couple of things that are in play here, which I'll get to But yeah. You got your opening hours for the whole week. They'll always highlight where you're currently at terms of, like, just for a quick glance, if somebody goes 
+Them: Yeah. 
+Me: They open today, oh, yeah. I can see it's it's it's already actually kinda highlighted there. 
+Graham Sowerby: Yeah. 
+Me: It's a now it's open right now. Closes at five. Got all their contact details. If they click, you know, the email, that's a mail to link, so that will go that'll open up their mail emails, straight away. And the phone number would be 
+Them: Yeah. 
+Me: A telephone call to action. So clicking that will actually call them if they're on their mobile as well. 
+Graham Sowerby: Yep. 
+Me: But they can also click call store, get directions, same thing, goes to the Google Maps. Or book a fitting, which takes them to that form. Prefilled with that store's details. 
+Them: Yeah. On on the opening hours, just to demonstrate 
+Graham Sowerby: purposes, can we show, like, a public holiday with, like, a soft red so they can see on the Monday after or maybe on the Saturday oh, sorry, the Friday, there's a bang. A public holiday. So I think it'd be nice to put, like, a soft red and say closed. 
+Me: It's 
+Graham Sowerby: Just to demonstrate. 
+Me: It's hard because I don't wanna really introduce a new level of management for hours. 
+Them: K. 
+Me: If that makes sense. Like, you're gonna have to keep that updated for all the stores, for public holidays, for the whole year, and that's gonna be built into the actual page. And then on 
+Them: Mark does handle this centrally, though, doesn't he? Like, he'll pull this in from 
+Graham Sowerby: dynamic content. He won't he won't hard code that into that area of the opening hours. They'll be powered from wherever he stores the hours. 
+Me: So everything 
+Graham Sowerby: There should be a 
+Me: That you see here has been designed 
+Graham Sowerby: Yep. 
+Me: In a way to still utilize the way Magento is set up currently. 
+Them: Yes. 
+Me: So this like, all of the opening hours, I'm pretty sure are pulled in straight from the Magento description for the store. It's 
+Them: Okay. 
+Me: It's horrible, though. But 
+Them: Yeah. 
+Me: It's just the way it's set up. So that's the way I've tried to 
+Graham Sowerby: So just mark 
+Me: Maintain it. 
+Graham Sowerby: So does Mark know does Mark have, like, a a background? Cron job which keeps up to date, that description that from my memory, he said this is all automated from the hours and address. He he manages that centrally. 
+Me: He may he may pull it from Google My Business, maybe even. I I I 
+Graham Sowerby: It might look like he's present. Yeah. Yeah. 
+Me: There'd be a question for Mark. Sure. 
+Graham Sowerby: Sorry. I that for a second. Is this where he gets the hours from? Yeah. It's all 
+RRG Web Products: in cPanel. In PHP environment. Okay. 
+Graham Sowerby: And does that 
+RRG Web Products: hours in there ourselves. 
+Graham Sowerby: Well, 
+RRG Web Products: I used to do it. 
+Me: Do we put in, like, public holidays and stuff into that? 
+Graham Sowerby: Yes. And you can sort it by date, and I think it shows up 
+RRG Web Products: I think it shows up, like, at a a range of time. Like, a week or so beforehand, it'll show up, and then 
+Me: Yeah. Okay. 
+RRG Web Products: it'll disappear after that date. 
+Me: Yeah. 
+RRG Web Products: Yeah. Sorry. These are I I can go through it and add them all in. Basically. Yeah. 
+Graham Sowerby: It's a bad process. I mean, rarely 
+RRG Web Products: there needs to be a centralized location, rarely 
+Graham Sowerby: within bracket, maybe retail. You enter in one place that publishes to Google My Business. You you it's 
+Me: 100%. Yes. 
+Graham Sowerby: we've got so many This has been working, not working. It's been automated and isn't all It's just it can get a bit tedious. To be honest. But you need to know these rules, Brent, and so you probably need to sit and get Mark involved in this as well. I'll turn this page and say, hey, Mark. I'm not sure how you manage you know, the hours, but I I mean, I guess from what my point was, although that ties, can we demonstrate if we do know? So so if a customer's gone on this page, and we know and we prefilled that we are shut on Friday, because there's a public holiday in Victoria, whatever. 
+Me: Yep. 
+Graham Sowerby: It should be it should be shown here. Correct? Would would you agree that that's 
+Me: Yeah. Correct. I I I I do believe that should be the case. Yeah. 
+Graham Sowerby: yeah. Yeah. Yeah. Yes. Okay. 
+Me: Because otherwise, you get stuck in this position of being like, having to name it as standard operating hours excluding public holidays and, like, it just gets 
+Them: Yeah. 
+Me: Messy. 
+Them: Yeah. 
+Me: So, no, I do agree with that. 
+Graham Sowerby: Yep. 
+Me: And what I'll do is I'll at least for the plate the demonstration of this page to mark, I'll just set one of these days as a public holiday. 
+Graham Sowerby: Yes. 
+Me: On the design so he can see what that would look like. 
+Them: Yep. 
+Graham Sowerby: Yeah. Cool. No. It looks good, though, mate. I I really think that looks good. It's a it's a neat card. 
+Me: Private. 
+Graham Sowerby: Yeah. There was there was that layer of personalization. I don't know if you ever got there, like, meet your team or meet the team. I don't know whether we are that type of company or 
+Me: I think 
+Graham Sowerby: it adds a layer 
+Me: I think probably not considering most guys I've spoken to at store level don't even want their photo taken. 
+Them: Yes. Yes. Okay. No. That's fair enough, mate. 
+Graham Sowerby: Okay. What we got below that? Expert fitting, click and collect. It's the normal stuff they're seeing in person. Okay. On display products at Northwell x. That's cool. Like that. Would you put in that on display plus hundreds of install You know? Hardware. I know what we have in the front part of our stores, but 
+Me: Yeah. 
+Graham Sowerby: I want them to know there's loads of shit in the hardware they can come and look at and touch and feel and so limiting it might not be ideal. Well, I guess that's where the store file is coming. Maybe basically see that there's a shit 
+RRG Web Products: done on on this by Yeah. May maybe major. Products. 
+Graham Sowerby: No. I'm I'm 
+RRG Web Products: Core products on display at North 
+Graham Sowerby: Lakes or it's not like you wanna present this, the bigger stuff, the the stuff that you wanna touch and feel. 
+Me: I think if you say core, 
+Graham Sowerby: I don't know if there's a word that 
+Me: I think if you say core, you're almost saying, like, 
+Graham Sowerby: Yeah. 
+Me: We don't have everything. 
+Graham Sowerby: Fair enough. 
+Me: Like, it's kinda like yeah. But the idea here is that, obviously, with us moving towards 
+Graham Sowerby: That's 
+Me: Some ability to show what is in stock and what is not in stock or on display, I should say. Sorry. At a particular store. That this can be influenced by that The actual do you call it? The order that this would come through as is is the same as it would be in a PLP page with through 
+Them: Yep. 
+Me: Rackets 
+Them: Yeah. Boost. Boost. 
+Me: Or whatever the sort ordering 
+Graham Sowerby: It. 
+Me: Thing is. So so we're always pushing the ones that we want to move anyway. 
+Graham Sowerby: Yep. No. It's cool, mate. I like that. And then North Brisbane refracs. Interior, that's just, I guess, this content about the store. 
+Me: Correct. Yeah. This is where a good portion of the SEO comes into play. 
+Graham Sowerby: Yeah. 
+Me: So covering areas that we serve, 
+Graham Sowerby: Yep. 
+Me: And then obviously hitting the keywords for the the search terms around those. So you know, proudly serving, North Lakes, Mango Hill, Colangah, Red Cliff, 
+RRG Web Products: Yes. 
+Me: Yeah. We we are putting a few names in there. The reason this isn't right up the top is whilst this is readable, it's core focus is getting those search terms. 
+Them: Yep. 
+Me: So we don't want it to be, like, right in your face the moment you lean. So it shouldn't be on the fold of the page. 
+Graham Sowerby: Yeah. Do we include the Google My Business Our our rating for every store is pretty impressive, generally. Does that have a place on here? 
+Me: Yay. Absolutely. 
+Graham Sowerby: To say, you know, for 
+Me: Yeah. I think I think we could probably and that could go in the decision because I think that was relatively important. We can put a, you know, the Google reviews for the Northlake store on the Northlake's page, then the Burley Heads one as Burley Heads. And, you know, like, we keep them separate 
+Them: Yeah. 
+Me: For each one. I think that's that'd be a good one. 
+Them: Yeah. 
+Me: We could also implement actual Google reviews for that each one as well. 
+Them: Yes. Yeah. I don't know what widget was got. I use 
+Graham Sowerby: on a UK website, which 
+Me: Yeah. 
+Graham Sowerby: I, like, brought all the reviews, and you could put widgets anywhere you want on the Maybe maybe reviews.io does that. No. Sorry. It has to be Google My Business. So just see what there is may be available. 
+Me: Yeah. Yeah. We can get that. 
+Graham Sowerby: But that's I like it. It looks looks much better. How how does did you sorry. I didn't see the list of links. I'm not going back to it. But is there a parent location? To, like, Brisbane, and then you've got all the Brisbane stores all 
+Me: So Queensland. 
+Graham Sowerby: Queensland, and you've got all the 
+Me: Yeah. 
+Graham Sowerby: Queensland stores. 
+Me: Yeah. So there's no technically Queensland is, like, category of 
+Them: Yeah. 
+Me: Of product of stores. If you will. So if I go and I go East Brisbane store, 
+Graham Sowerby: Yeah. 
+Me: I can see it's home store finder 
+Graham Sowerby: Yeah. 
+Me: Queensland East Brisbane. 
+Graham Sowerby: Do we have that do we need that layer above where all them searches people going to Rufrax Brisbane, Rufrax Sydney, Rufrax Melbourne? You know, that they feel like they should exist because people aren't going to know the suburb. 
+Me: Yes. 
+Graham Sowerby: And search East Brisbane, although it's got Brisbane in it. 
+Me: I I get what you're saying, but the cannibalization of that gonna be insane. We already got all these scores, and we'll be competing against one another to some extent. Which is why the areas we serve section is so important. These are and need to be unique to each store. So we have no overlap of 
+Them: Yeah. 
+Me: Keywords for the areas that they're serving. 
+Graham Sowerby: Yeah. So how do how would that work then if someone just search Roof Racks Brisbane? What what's the if you got a company three listed, hopefully, East Brisbane, Kedron, and Springwood, is that the intention here? 
+Me: Well, Google does a really good job 
+Graham Sowerby: Yeah. Okay. No. 
+Me: At knowing locations. And and filtering based on locations. So yes, it's probably gonna show you know, 
+Graham Sowerby: The nearest 
+Me: East Brisbane whatever. 
+Graham Sowerby: to the customer. 
+Me: Yeah. It might show two two or three of them in there. Which is fine. But you know, it's probably gonna rank one of the 
+Them: Yeah. 
+Me: Higher than the others. And that'd probably be the one that will land on first. I don't think if if you're searching Brisbane, you're gonna get these three, which technically are within twenty minute drive of each other. Like, as in, like, to go from Kedron to Rocklea is twenty minutes. 
+Graham Sowerby: Yes. 
+Me: Without traffic. 
+Graham Sowerby: Does the does does the 
+Them: If a store has got 
+Graham Sowerby: assisted doors nearby on the actual store page, do we maybe give a little bit of do we highlight them in any way? I'll give a link or enough to hey. We've also got another one within Would they ever need that? Is is there any benefit of cross linking? 
+Me: Yes. And when I show you the new stock status 
+Graham Sowerby: Or cluster instance there? 
+Me: Changes I made, 
+Graham Sowerby: Yeah. Okay. 
+Me: It actually does something very similar to that as well. 
+Graham Sowerby: Cool. 
+Them: Cool. 
+Me: I might as well show that to you, Neil. 
+Them: Yeah. 
+Me: So if I I'll change this now over to build phase. Two. So this is now showing the second stage to the build, obviously. 
+Them: Yep. 
+Me: This is where so at the moment, I've got more banks set This is actually probably not gonna be too crazily correct. This should probably I'll just make this Northlake for a sec. So it makes more sense. 
+Them: Yep. 
+Me: Okay. So if I've got Northlake set, and these these three first products is the perfect example. The stock status says this one is in stock at North Lakes, so there's a priority to it. The priority is is it in stock at the store that they've got selected? Yes, no. If it's not, is it in stock at a store close by? And that's normally within a let's call it, an hour's drive. Right? If it is, it then shows in stock at Kedron 18 kilometers. And that is obviously 18 kilometers from 
+Graham Sowerby: K. 
+Me: The store they've got selected. The next one down from that okay, if it's not in stock at a close by store, is it in stock for online shipping only? Well, like, at a DC or whatever. 
+Them: Yep. 
+Me: If it is, then it says in stock online. So the idea here is that we're showing it based on the priority or relevance to the user as much as possible. 
+Them: Is it 
+Me: And then it also takes into account if we even have a store selected. If we don't, then it just says all of them will say in stock online, where they set your store to see local stock. And that's 
+Them: Yeah. Okay. Yep. It's cool. 
+Me: Set into the filter bar on the left, but we could almost even put that yeah, set your store to see local stock, somewhere more visible. 
+Them: Yeah. Okay. 
+Me: Somewhere if you wanted to as well. I tried to keep it simple, 
+Them: Yeah. 
+Me: But tried to think it out in a way that covers all bases. 
+Graham Sowerby: Yes. Yeah. I think that's good. I think I think that works pretty well. If if it's in their store, that they've selected, you kinda want them to go to store to get it. So we don't need to say, if if we know it's in the store, you can guarantee that you can deliver it. You know, you pretty much you know, it's it's showing the best and the quickest service they can get. Oh, jumping my car. I can have that within, like, ten minutes. 
+Me: Correct. Yeah. Yeah. 
+Graham Sowerby: The one in Kedron, again, they'll they'll travel to that The only bit semi misleading or the bit I'd get a bit confused as a customer is I'd almost like what my store that set North Lakes I'd even put a distance on that, and that's a distance from me. Not a distance from a not my best store. Because if you've got a chair and you've gone, I'm already traveling 30 k, the other store's another in the wrong direction. It's like 
+Me: With almost you'd have to almost 
+Graham Sowerby: it isn't really 
+Me: Store their postcode, not storing their store? 
+Graham Sowerby: Yeah. 
+Me: If that makes sense. 
+Graham Sowerby: Yeah. 
+Me: So the only way to do that would be to store their postcode 
+Them: Yeah. 
+Me: And calculating that distance 
+Graham Sowerby: Yeah. Well, that's why I think if you're on a store finder and you put the postcode to find the store, you've got both because it'll select the store. Because they've given you your postcode. But 
+Me: Will that create confusion around 
+Graham Sowerby: we didn't wanna yeah, it's yeah. 
+Me: Like, let's say I selected North Lakes and North Lakes says five kilometers or 15 kilometers, for example, Cadence is 18 kilometers. Well, to me, do like, I'm gonna be confused. I'm gonna go, right. Is it 18 kilometers from me, or is it 18 kilometers from the store I've just select? 
+Them: Yeah. Yeah. I'd always say for me, my my 
+Graham Sowerby: every measurement, which should be for me, where am I at, now? As in or where is my home address? You know, it's my postcode. I would never do it from the store. Really. I I don't think I've ever come across that. This isn't just me speaking aloud. It's whether, like, if they'd never if they just select the store, we obviously don't have their post code. So what do we it's kinda like, what do we do at that point? Do we even put the I nearly even not put the 18 kilometers. And maybe just say, if how much fucking this got that. Is that in is are they gonna know what that 18 kilometers means? My worry. Is that they go, oh, that's easy. That's twenty minutes away. But it's not. It's it's thirty minutes from North Lakes. It's for another 18 kilometers from Norfolk, so it's I don't know. Maybe I'm overthinking it. I don't know. I thought, yeah, I've I've got any value is there anything valid there? If if you wanna I just think it's for me. It's always I always think, well, if we get in a car now, it's 18 kilometers. What? Twenty minutes, maximum, like, fifteen minutes. It might not be because it's based off North Lakes. That's what we're saying here, which is sorry. I'm just 
+Me: Okay. 
+Graham Sowerby: Sorry. I'm just I I don't know. Maybe that's normal. I I'm just not not used to it, I guess. 
+Me: Maybe yeah. What do you think, 
+Graham Sowerby: One I feel like to say in stock at Kedron. Yeah. That's I even have the kilometers. 
+Me: Yeah. Drop. 
+RRG Web Products: Like, yeah, 
+Graham Sowerby: You could put nearby. It 
+RRG Web Products: went to 18 kilometers. It's nearby. So North Wales is always set. You don't need to say nearby. 
+Graham Sowerby: You as a customer selected that. But Kedron near nearby would be good, and we just set a radius. Do want me? If it's within 50 k or whatever the number is, it's just a nearby. It's obviously me it lets them know it's not their store very quickly a glance, although Kedron should do that. But it's like, it's still a good option. It's nearby. Do you know what mean? Kedron. You're gonna go and drive to that custom you're basically a customer. It's not North Lakes. But you will drive to the store because it's bloody close. So know, does nearby work? 
+Me: I almost have I I'd probably still prefer to name the store, and the reason for that 
+Graham Sowerby: Yeah. Yeah. 
+Me: Is 
+Graham Sowerby: Yeah. Yeah. Yeah. 
+Me: I want the like, it should say in stock at North Lakes. They they should be able to even click that North Lakes and get to the North Lakes store page so that they can immediately call them up and go, 
+Them: Yeah. 
+Me: Hey, guys. I just saw this on your website. Super keen on it. 
+Graham Sowerby: Yeah. 
+Me: It says it's got it in stock. 
+Graham Sowerby: Mhmm. 
+Me: Like, can you fit it today, or can you get it fitted this week? Or like, whatever. Right? So 
+Graham Sowerby: Mhmm. Yep. 
+Me: I think having the name there is important 
+Graham Sowerby: I agree. 
+Me: We can always have a tool tip like we do with the 
+Graham Sowerby: Yep. 
+Me: The fitting above it, where if you hover over it and it says in stock at Kedron, you can hover over it and it could say something like, you know, the Kedron stores 18 kilometers from your saved store of North Lakes. You could also even list out maybe in that tool tip having dynamically any other stores that are local within that radius that also hold stock of it. Because you never know. There might 
+Them: Yeah. Yeah. 
+Me: Oh, Kedron's the other way. You know? Like, it's the opposite 
+Them: Probably did that. 
+Me: Side. But but then there could be one that's, you know, slightly further than 18. There might be 24 kilometer one, that's actually in my direction, which is far more 
+Graham Sowerby: Yeah. Yes. 
+Me: Relevant to me. 
+Them: Yeah. What are you saying? 
+Me: Having in the tooltip that dynamic 
+Them: Yeah. 
+Me: Showing 
+Graham Sowerby: Yeah. I like it. Yeah. I like the tool tip just saying it having, you know, in stock at Kedron and then the tool tip 
+Me: Yeah. 
+Graham Sowerby: Explaining 
+Me: And I think 
+RRG Web Products: it. Yeah. Yeah. Yeah. 
+Me: Would work really well too for the in stock online. Because if got a tool tip there for that, and it could literally say, you know, our Brisbane warehouse, 
+Them: Yeah. 
+Me: Has stock. Our Victoria warehouse has stock. And then 
+Them: Yes. 
+Me: You know, like, it's it kinda gives that transparency of, like, if 
+Them: Yeah. Yeah. I like it. Yeah. 
+Me: Even if I'm not specifically being told, you get your you know, we ship it in two days. I can hover over that and see oh, it's it's shipping from Victoria, so I know that's probably gonna take a week to get to me. Or I can see, oh, it's shipping Brisbane. I'll probably have that tomorrow or the next day. You know what I mean? Like, 
+Them: Yeah. 
+Me: Yeah. That's that's the phase one, phase two of that. Phase one is obviously just showing whether it's in stock online. Maybe in the tool tip for the phase one. We we would just have you know, it's it's in stock online. Click here to or, like, contact your local store or something to check stock or whatever. And then that can go to the individual store if they've got one fitted sorry, selected. If they don't, then it would just go to the find your store finder page. 
+Them: Yeah. No. I think that's cool. It's all. Yep. I like that. 
+Graham Sowerby: Sorry. I was just looking at this. Are we removing the whole 
+RRG Web Products: little sale tag, you know, like spring adventure 
+Me: Yes. Yes. Remember our conversation last week where we said we're ditching it off the product card? Because it was 
+RRG Web Products: There's a lot of things to remember. 
+Me: Yeah. 
+Them: Yeah. No. 
+Me: Yeah. So we discussed it. And remember we had, like, the two columns where the sale tag was on. It was just way too much. It was 
+RRG Web Products: Yeah. 
+Me: Way too busy. Especially when you had a top ribbon and you had, like it was just too much going on. We're kinda going against the whole philosophy of changing to clear call to actions and clear easy to understand or digest information. Same 
+Them: We're not gonna have to save, though. Thought we'd oh, sorry. We we have to save in the call. Don't we? Sorry. Yep. 
+Graham Sowerby: Okay. I just go back a page. The savings in the top corner, isn't it? Yeah. 
+Me: Yes. Yeah. Correct. 
+Graham Sowerby: The same 
+Me: So if it's on sale, you'll have to save RIP x percentage. Ribbon in the top left of the product card. Same thing on the list view. So it's it's on the product card itself. 
+Them: Yeah. 
+Me: Yeah. 
+Them: Do we normally put RRP? Like, do we not just put 
+Graham Sowerby: price with the line, or do we prefix RRP? To thinking, do we need the word? RRP? We do. It's just the price. 
+Me: Yeah. It's 
+Graham Sowerby: Yeah. Just a bit weird seeing 
+Me: The price at the moment. We can we can drop the RRP. 
+RRG Web Products: RRP I think so, mate. 
+Me: That's fine. Other than nothing. Yeah. 
+Graham Sowerby: Yes. 
+Me: I think on when we get to our actual PDP page, where it says RRP. I think that's probably relatively important. It should be RRP or was. 
+Them: Yeah. 
+Me: You know, like, but the problem is if you say was, it gets 
+Graham Sowerby: We don't store the walls. Yeah. It does just 
+Me: Murky 
+Graham Sowerby: keep you up. Yeah. The walls, we don't support very well, and we never 
+Me: Yeah. 
+Graham Sowerby: fluctuate enough. Yeah. Yeah. Go with RRP. 
+Me: Yeah. 
+Graham Sowerby: It's fine. 
+Me: We can drop it off the product card, though. I'd be happy with that because that would actually 
+Graham Sowerby: Okay. Yeah. 
+Me: Reduce the overall width of that that price when it is on sale. Yeah. 
+Graham Sowerby: I think so. Yeah. We've got a from and then now. 
+Me: Cool. Yeah. 
+Graham Sowerby: So the second one is now and the first is from. Now would 
+Me: One's one's a sibling, one's not. 
+Graham Sowerby: mean there was a was? Do I just okay. So from sorry. That's right. Now 
+Me: Yes. 
+Graham Sowerby: now means it's less than RRP. Okay. And isn't it simply in from? Yeah. 
+Me: Yep. 
+Graham Sowerby: Okay. Fine. 
+Me: Yes. 
+Graham Sowerby: Do we need them? Yeah. We do. We do want the siblings for sure. 
+Me: Yeah. Yeah. 
+Graham Sowerby: Okay. 
+Me: Yep. 
+Graham Sowerby: Yep. No. I think that's yeah. I can't think of anything else. The gallery stuff just slides in now. Does it fit my gallery? 
+Me: Sorry? 
+Graham Sowerby: The fitment gallery just is that supplied in now, is it? 
+Me: Yeah. 
+Graham Sowerby: The sides of the page? Yeah. Okay. Right. What else have we got in that list you've got then? 
+Me: So the next one was home page. 
+Graham Sowerby: Okay. 
+Me: So I know we already did a new home page in Figma and supplied that to Mark, and he's kind of put it together. I think it could still do with some improvements. 
+Them: Sure. 
+Me: I think we need to I know we used to have the multiple tiles and then the slider I think we we need to find a middle ground between the two. Because now that they're all in the slider hero, you're not seeing the offers. Yeah. It's it's kinda limiting because somebody lands on here they're not normally gonna stick around for thirty seconds to see every slide. Right? It's just not gonna happen. They might see the first and the second, and then that's it. They're off and they're looking through the store or they're backed out. The idea here is that we show any of our core offerings that we've got going on as in discounts or sales or clearance stock, whatever, immediately on the fold, as well as use then using the slide to focus on services new products, anything that's not really an offer. If that makes sense. So we we we're essentially using this the same I think these were the the mobile designs. Like, literally didn't change the designs of these. Literally dragged them in. Three wide with the main full width hero. 
+RRG Web Products: Yeah. I mean, one other thing 
+Me: I think works really well. 
+RRG Web Products: Yeah. I mean, one other thing just to bring it in here, Tim really wants the 
+Graham Sowerby: categories to be above the fold. That was his main He says, you know, p these banners are gonna be relevant to 1% of people. 
+Me: Yes. 
+Graham Sowerby: Like, who's gonna buy an EGR roller shutter? One in a 10,000 to visit the site, is that? The categories people are, right, what does this company sell without going into the product menu? But, really, the big headline categories need to be really where their banners are. That would then mean the banners need to have a different home. Unless you can convince him otherwise, but I do feel I do I think I agree with Tim. On that because these are not worth anything hardly. They kind of nearly I just don't know how relevant they are to anybody. Do you know what I mean? We still want to highlight them. It's it's a bit yeah. I don't know. I don't know the answer to that. Because yeah. All all the stock is good. But the EGR raw show is what you know, the drop racks are so niche. 
+Me: Well, 
+Graham Sowerby: It should nearly not even be there, but we because we want self through them, the idea is if 
+Me: Okay. So, well, what about this then? Maybe maybe the answer there is 
+Graham Sowerby: a thousand yeah, 
+Me: We still separate the offerings from the Slider Hero. Like we have here with the overstock variance, the EGR, roller shutters, and drop racks, But those become one in itself. 
+Graham Sowerby: And 
+Me: And that is the first two tiles of your shop. Your categories. 
+Them: Yeah. 
+Graham Sowerby: Yeah. Maybe that maybe that works better. Yeah. 
+Me: You know? And at least then you know, 
+Graham Sowerby: We have on the live site, don't we? We we kinda, like, reserve that first one. Was it for the catalog? 
+Me: Yeah. Yeah. 
+Them: Maybe that can just be a 
+Me: But at least if we go two tiles 
+Graham Sowerby: bit wider. 
+Me: Wide, then at least it's 
+Graham Sowerby: Yeah. 
+Me: Still very much, hey. These are our current offerings. You know? Like, we've got rack Friday sale on. Like, that's you need to see that on the fold. Like, it has to be on the fold. And if it's not the first 
+Them: Yeah. 
+Me: Slide, in the hero, then it's probably gonna get missed. Right? 
+Graham Sowerby: Yes. Yes. 
+Me: So I think, yeah, we might try that. With the categories. I'll make the first two tiles the these offerings as a carousel. In in of itself. And then have the categories listed out after that. 
+Them: Yes. 
+Graham Sowerby: Yeah. The main I'm just, I was going back to these is that it's because of the volume of people coming through our website that even catching up one, two, or three people that will be interested in drop racks every week. Is the only way we're gonna sell the drop racks. Did you get what I mean? That's the only purpose. They they don't really fit to me, but it's it's about the amount of eyes we can get It's a numbers game, isn't it? It's like a sales thing. Someone will be going, oh, I never knew dropped racks existed. Fucking hell. I've got a bad back, and I don't really wanna lift my ebike on the roof. That's caught my eye. I didn't even know it existed, and that did did go down that path. It's the only you know, they they have no other relevance than than really that. As a sell through. I feel like more people going go I feel like putting them in those tiles with the shop by category 
+RRG Web Products: kinda 
+Graham Sowerby: takes away from the offer. Mhmm. 
+RRG Web Products: Yeah. I know what you mean. I'm sorry. Do we in the sense. Do we really need the trust 
+Me: No. No. So I was thinking that 
+Graham Sowerby: bar there? And 
+Me: Before when you were saying getting it in the fold. I'd moved the trust bar down. 
+RRG Web Products: And do we need this continue shopping for my Ford Ranger when Does 
+Graham Sowerby: that does that 
+RRG Web Products: need to be there? 
+Me: Well, so this is gonna be the thing. Right? 9090% of people landing on this page won't have a vehicle 
+RRG Web Products: Yeah. 
+Me: Set. So it's it's not there. 
+RRG Web Products: Yeah. So 
+Me: And if they do, at 
+Them: Would you 
+Graham Sowerby: I was kinda thinking 
+Me: And if they do have a vehicle set, it means they've already seen and interacted with our website, so it's okay to push categories a little bit further down. 
+RRG Web Products: Yeah. 
+Me: But yeah. 
+Them: Did you do 
+Graham Sowerby: Instead of the three there, just do two 
+RRG Web Products: rectangles. I guess. And then directly under that is shop by vehicle because then that would probably bring it all up. Right? Just Just so it's not taking away from, like, the offer and it being within Shopify category. 
+Me: So I guess there's let me correct me if I'm not understanding correct but I'm think what I getting is that saying these designs should be thinner. But two two across. Is that what you're saying? 
+Them: You could oh, no. Not really. Probably just 
+RRG Web Products: Same size, just two across. Like, same height. Just longer. So that Do they scroll the the the the slide in? 
+Me: Yeah. So the design would still need to be wider. 
+RRG Web Products: Yeah. 
+Graham Sowerby: And then As a lot of that be shop by 
+RRG Web Products: category. 
+Me: I feel I feel like if you went to two, you're still at the same height, you still got the same issue. It still puts everything on the fold at the exact same level. 
+Graham Sowerby: Yeah. But 
+Me: So I'd almost argue that it's it would make more sense to reduce the height by, like, 20%. They become even thinner. Height wise. Leave it as all three. Remove this truss bar from up here and move that so with the trusted since 1989 stuff. Move that further down the page. That brings the shop by category right right to the top. And the only time it won't be is once they've got a vehicle set and that still even with that vehicle set, the shop by category is still gonna be right up the top and and in the fold. 
+Them: Okay. 
+Me: I think it it sort of keeps everybody like, it's definitely gonna keep you, Graham, and and Tim happy that the categories are in the fold. But I think it also brings the eyes onto these offers that simply wouldn't see them because they're you know, page five, six, and seven on on the hero slider. 
+Them: Yeah. 
+Me: Let let me do that. I'll show it to you. It'll it's it'll literally take five minutes to just shuffle those around. So I'm not 
+Graham Sowerby: Yeah. 
+Me: Stressed about that. 
+Graham Sowerby: Yeah. The fit fine to having five and then that empty space is a bit weird, but 
+Me: Why? Ate that hay. 
+Graham Sowerby: do we slide that one full width, the roof type one? 
+Me: So at the oh, yeah. 
+Graham Sowerby: Do we put it like that? 
+Me: Yeah. I don't know why it's done that. I will I'll update it. 
+Graham Sowerby: You could just put 
+Me: The view results should be 
+Graham Sowerby: Yeah. Okay. Yep. Yeah. In 
+Me: In the right hand column the yeah. 
+Graham Sowerby: Yeah. Yeah. That's cool. 
+Me: That's fine. 
+Graham Sowerby: No. That's cool. Okay. I I guess I'm used to seeing the trust signals below the header, but 
+Me: Well, we can have these cross signals 
+Graham Sowerby: don't know. There was one site. Mhmm. 
+Me: Directly under the shop by category. That just brings the shop by category up. 
+Graham Sowerby: Yeah. 
+Me: Then they get a trust So we're not just going categories, products, you know, like, it's categories. Trust bar breaks it up. 
+Them: Yes. 
+Me: Products. 
+Them: Yeah. No. That's cool. 
+Graham Sowerby: What else have we got on the home page? Was there anything else you'd read on there? 
+Me: So then we can have and these are obviously not locked in categories. But then we can have priority product categories that we wanna show. Actual stock 
+Them: Yep. 
+Me: This could be the clearance products, It could be you know, let's say we're going into summer months, we might change these up. We might change it from roof boxes over to camping. For example, or awnings and rooftop tents, whatever. 
+Them: Yeah. 
+Me: So the idea here is that we can just pick a category, 
+Them: Yep. 
+Me: Assign it somewhere, and that will just update that block. So that we can just change it up based on sales, based on season, based on product priorities, 
+Them: Yep. What else have we got on here? We got 
+Me: Yeah. 
+RRG Web Products: Fitments or anything like that on the page? 
+Me: So we have our store finder, key finder, let us help. But not like a nothing to do with the fitments. No. 
+Them: Quite like the well, just to keep it relevant is, the fitment 
+Me: Oh, yeah. Like the 
+Them: Like, recent fitments, clothing, 
+Me: Oh, yeah. Like the the fit gallery. 
+Graham Sowerby: Yeah. 
+Me: Fitment gallery. 
+Graham Sowerby: Yeah. Is quite powerful to say, you know, one thing is, like, ten minutes ago and kept you know, this would just the homepage should be our recent fix, collect the reel. 
+Me: Yeah. We could do that. Could add in the basically, the exact one from where is it? Why is that? Oh, because I haven't got my vehicle set. 
+Them: Yeah. 
+Me: Like, we could add these 
+Them: Yeah. Yeah. We've got scars. 
+Me: On the home page. The Sydney gallery. And that would just apply to all vehicles. Like, it's it's not set to the vehicle that they've got selected or, yeah, that they're in a category or product for. It's all vehicles, all fitments, and it's just live updating every time they go on that. Yeah. 
+Them: It's a bit like, doesn't. 
+Graham Sowerby: Yeah. He should literally be at But everything. Yeah. Yeah. 
+RRG Web Products: It just shows. Just to show that we're busy. You'll never go into one and view that roof rack to buy it. 
+Graham Sowerby: It'll just show a nice carousel. Of fitments. The store finder was there. 
+Me: I also think yeah. Yeah. Yeah. StoreFinder is there. I think 
+Graham Sowerby: Oops. Sorry. Go 
+Me: Something that we potentially could look at doing as well is having the like, a a carousel of reviews on here as well. Like company reviews. How that would look, maybe we'd have to break it up similar to like this. Here's the fitting, sorry, install. 
+Them: Yep. 
+Me: Potentially, we could add something there similar for for reviews. Right? So it's just cycling through with reviews. 
+Them: Yeah. Yep. 
+Graham Sowerby: No. That's all. So good. All kinda makes sense. I can't remember what Beck has on original design. I mean, I'm less worried about the home page, but if it's a pain for you guys to manage, it has already had a licker pain. But if it if it's got improvements, know, by all means, I just don't want 
+Me: Think the liquid paint was like a Band Aid, if I'm being honest. 
+Graham Sowerby: you know, Yeah. Okay. 
+Me: And 
+Graham Sowerby: The house changed. Yeah. 
+Me: Like, you you go here Again, we're we're we've changed our ethos in terms of the way we're approaching these all of our designs. There should be one clear call to action. There should be We should be avoiding when there's bulk call to action buttons that they're all sharing the same block of color and stuff like that. So, like, you go onto the current live site, it's just like red buttons everywhere. Yeah. The product cards here are not gonna match the product cards on any of the PLP pages. Or even the PDP. 
+Them: Yeah. 
+Graham Sowerby: Yeah. 
+Me: Because there's two different versions of the product card and then this is just like a third super basic one. 
+Them: Yes. 
+Me: Which I don't like on the live site. So 
+Them: Yeah. Well, only only half the homepage got done anyway. Was only the 
+Graham Sowerby: bit. So Beck I felt like Beck's design looked good, but it might not be, like you said, in the current 
+Me: Yeah. 
+Graham Sowerby: format. And I know we didn't fully do it. So 
+Me: And I think 
+Graham Sowerby: but I like them tabs. I like the balance at the top of there, but it's not to say we can't. Get that with a new one. I guess it's just it's one of them. It's as long as people can search for the vehicle induced, Yeah. I'd still like to take a load of time, really. It's my worry, but it's it's not a worry, but 
+Me: Yeah. 
+Graham Sowerby: as if as long as it's something that we aim for in the future and we get it looking nice and we're all in agreement, which doesn't mean that Mark has to drop tools and get the home page done. Do know what I mean? Like, super quick. 
+Me: Yeah. Yeah. 
+Graham Sowerby: How would this be on mobile? 
+Me: I can't Yeah. 
+Them: That is all sort of functional. It's it's it's it'll be fine. It's just yeah. The the we should definitely get the whole site looking how we want it to be presented. So doing every page is logical. 
+Me: Yeah. 
+Them: In a design sense or at least giving that vision. We got to be very 
+Graham Sowerby: careful because Mark can be guilty of this, that he'll just if you say just do plp and do the header, he'll just go and run off and do the whole thing, which would be not intentional. And if him like, oh, why has he done that? We've got to kinda, like, just I don't know. We can't make 
+Me: Yeah. 
+Graham Sowerby: yeah. You know what I'm sort of saying? I don't want there's so much critical work to be done. I've got to be very careful. That we don't unintentionally get loads of Mark's time doing stuff that really just needs to be off the radar. But it it it's whether we can fit it all in. He just need to have an honest chat with with Mark, really. Brenton, and say, look. Are you happy with this? Is there anything? You know, don't do anything. It's gonna I I just don't know how we start this conversation with it because the worst scenario for me is he goes, I've not done merge stuff, which is a big development part of what we need for The UK. Because I've been doing all these designs, which has gone from PDP, PLP, now to six, seven designs. And then we don't have a valid you know, I'm sure we could go, oh, we didn't ask you to do it, Mark. And they'll go, oh, well, they were in the designs, I just thought I would do them. I can see this scenario happening, and and we need to just make sure and it's not anyone's fault that that would happen, but we've just got to be very clear with Mark or at least set Don't do anything more than this now and only do these as and when The UK project's done. And that might be for me to kinda, like, manage that expectation. But yeah. Just be careful not to yeah, kind of yes, make make him accidentally go and do all this work, which would be great. The website look great, but we'll miss The UK delivery and I'll get bit of wrap for that. So to avoid it. You know? I think I think you've 
+Me: Yeah. No. That's fine. 
+Graham Sowerby: yeah. No. It's cool. I think you're like, we should have all this done within six months but there's stuff that we should have done in two to three months. Which we're obviously very clear on and stuff that we want to do within one month even. And just have a very clear do this, do this, do this, then do that. When, you know, in the new year, would be pretty cool. And, obviously, there's a big bit here I almost feel like the the way to approach this Brampton, is mean, I'm happy with all the designs. I mean, it's all going to work. Really well. The the micro detail in, that's really I think we just go with it because you you've logically considered it. From, obviously, the booking stuff. Obviously, you've got re review that. And we'll just the aim should be just go live with it, and you the idea is you will constantly be checking 
+Me: Yeah. Absolutely. 
+Graham Sowerby: the users and how it's being interacted with to make changes. The part data driven decisions. And I think everyone needs to allow that to happen rather than, oh, I don't like the color of that or don't like the position, because we'll get stuck we do that. So I what I would do is you need a list of all of the designs at at some point. Very soon, really, maybe. And I think you need to just do one, like, Loom video Don't it doesn't have to be Polish going, hey, guys. I just wanna run everyone through. The designs. Don't spend too much time. It could be, like, a five to ten minute video. Right. This is the home page. This section exists because x, y, and y, Next, this is the PLP. And and that's then a reference for everybody. That's a reference for Mark doing all of the work. It's a reference for Tim wanting to know. What will that button do, where will that go, and things like that. I think you just we consolidate, get get it done, and then I think you should concentrate on over, like, the space of three days try and get a ten minute video to explain to everybody that needs to know or that might be involved. This is the presentation of the new design, and I'm gonna walk you through each experience. So on the home page, here's PLP, PDP, checkout, whatever it might be, Because you've done it interactive as well with synthetic data or whatever, or it's even, like, real data, really, it's gonna be really relevant, and people can relate. It and understand exactly what we're trying to deliver. I think rather you try and have a meeting with me and Jake and then Scott's missed half of this and you've got to explain stuff again, I think you're gonna save a lot of time by doing it, and do one video and just send that to everybody. It'll kind of, like, it'll just save you so much time explaining to Tim at another time. Then Elliot will want to know how The UK 
+RRG Web Products: works. And 
+Graham Sowerby: then Jack will be asking about things to try and consolidate. All them questions and answers you know is gonna come from this. Into one Loom video. I don't know if you're up for that, if you've seen the Loom videos, but just 
+Me: Yeah. Yeah. Yeah. I've done I've done plenty of videos before. 
+Graham Sowerby: kind of walk through it. Does that feel okay? I I mean, for my 
+Me: That's no issue. 
+Graham Sowerby: fine. The the detail that you've done in our on an execution on how it will all operate, that's good for Mark. Tim ain't gonna read through that. Nobody else is gonna read through it. 
+Me: Oh, yeah. Like, the dev briefs, you mean? 
+Graham Sowerby: Yeah. That Mark has to follow that that that's a 100% what he needs to follow. Anyone else going to entertain enough 
+Me: Yeah. 
+Graham Sowerby: that you'll get the value of doing that. You need to do a video, I think, that can go to the James Campbells, who's the director of Remo, Tim, Jake Martin. And so everyone goes, shit. This is gonna look fucking brilliant. This is amazing. And I can see how stores are gonna benefit from it. It looks clean. The siblings, Tim will want that. You know, Tim is gonna share that with other people and other you know, when he's having these chats with suppliers and dealers. So rather than you have a 100 separate meetings, feel like that might be a good a good task for you to do after you're happy with the designs. Because we can we can pull these apart all day longer, and we can all have different but you need to lead this, and we need to let you do that. Without it consuming even loads more of your time. Just say, look, guys. Great snapshot. We've got a good plan here. Let's execute that. I'm gonna you have data driven analytics and clarity, etcetera, and my job, and this is why I'm here. Is to monitor that, and I'll be you know? Getting oozing out all the all the, you know, conversion rate that I can from this site. Changing colors, moving elements, you know, and that and that's what this has got to be, really. We're not looking for, hey, Brenton. You've created a great new website now. You can go and you know, that's it for five years. This is great. It's like 
+Me: No. 
+Graham Sowerby: it's never done. A website's never done. 
+Me: And that that was yeah. That's sort of circles back to what I was saying before with with Mark and just making sure that, you know, I know he keeps his cards close to his chest. There are going to be times, and quite a lot of them, where we're optimizing this after 
+Graham Sowerby: Yeah. 
+Me: It's launched. Where it may be far easier for me to just go in and change the color of a button. Than to wait on Mark to 
+Them: I think so. 
+Me: Have time to 
+Them: Could do that now. 
+Graham Sowerby: Should be able to do that now. 
+Me: Sort it out. Yes. But 
+RRG Web Products: Yeah. I think you'd have do that now. 
+Me: I mean, I'm, again, trying to avoid stepping on toes. 
+RRG Web Products: Because I think so. I think you've just got to I think we 
+Graham Sowerby: need to 
+RRG Web Products: what I mean, it's fucking it to be honest, it's pretty 
+Graham Sowerby: ridiculous. We can go in and edit it and just not get control. It's it's in this we're doing a 100,000,000 a year, and it's fucking honestly, 
+Me: Yeah. Yeah. 
+Graham Sowerby: it's bloody ridiculous. Right? Let's just call it what it is. It needs some guidance here to say, right. Where do we edit now? Where is this the repository for this? And and, obviously, go down the git route. It's a 100% the way we should do this. Then get you guys on board is I'm I'm absolutely behind that. There's absolutely no reason for fundamental front end changes I would still say, look, even if you can do it, though, Jake, pass it through Brenton for approval. Think we still need an approval process. But I would say, because your owned media lead, Brenton, it should all flag through you. Do you need to get permission from Mark? To edit? I would say, and even Jake. And, Jake, you can edit, and you can do stuff on New Zealand. He's my gut feel. But I would always say, Brent, are you alright if I just update this? Just to get make sure it works with the whole user journey that Brenton is trying to direct here and that nothing goes change without somebody knowing. You know? I think that's is everyone agree that's where we need to get to here? With the with the code? Yeah. Data data best of don't get involved in it, I would say. It's not a world we should get involved with. That should be always a call upon Mark. Or a call upon sale and things like that. But any CSS, JavaScript, HTML now, whatever, the thing Magenta, you should have control to do that. 
+Me: No. No. That's that's fair. 
+Graham Sowerby: Is that fair, or or do you want database access, I guess, 
+Me: No. No. That's that's fair. I don't wanna touch that world anyway. 
+Graham Sowerby: Okay. 
+Me: It works well for me. 
+Graham Sowerby: Yeah. Yeah. Yeah. Okay. Let's I think you should open up that chat. Brenton, with Mark. 
+Me: Yep. 
+Graham Sowerby: Somehow. And just say, look. These are all designs, Mark. This will be part of the maybe the chart I said, designs are all done now. Just when this goes live, Michael, even now, can we discuss the the front end coding of the of the safe call them safe areas. Just say, competent at CSS, HTML, JavaScript, but it's not a problem. You know? We just need to agree what environment we do it on, what what I can and can't change. And everything should be open to change. It's just if he's got, like, class well, not classes, but reusable components and understanding. What affects what. Because it's something half of this is actually understanding. Have you got any scripts, Mark, going that would actually always update that description? Because from a front end perspective or looking at it, you think, oh, shit. I I'll just go and edit that. But if he's got a cron a cron job right into that field in the background, you'll hit hurdles and you just need to get them from Mark 
+RRG Web Products: and 
+Graham Sowerby: see what they are. But yeah, I'm all for it. We should all be able to front end develop this web and we just need to agree what FTP client if it even is that, whether we do it via mean, you wouldn't use control panel. You'd do it through we'd even do it through, you know, cursor or through 
+Me: Yep. 
+Graham Sowerby: know, your your your editor. It's all within there anyway. So 
+Me: And and we should be able to be directly uploading images through there as well, like, 
+Graham Sowerby: Yeah. Yeah. 
+Me: And and at least then everything is 
+Graham Sowerby: Yeah. 
+Me: Also tracked and kept clean and 
+Graham Sowerby: Yeah. 
+Me: Reversible. Is the big thing. Right? So 
+Them: Yeah. 
+Me: Like, you know, for example, 
+Them: Yes. 
+Me: If this was the live page and we came across this whole, alright, we need to bring these by category up This is a ten minute job to just jump in and just move some code around and make it work. 
+Graham Sowerby: Yeah. 
+Me: Or it could be waiting three days, three or four days to get Mark to do it. 
+Them: Yeah. Exactly. Yeah. 
+Me: He's got time. So something quick and easy like that, I should be able to push through Git It gets merged to the main. 
+Graham Sowerby: Yeah. Yep. 
+Me: And then let's say it did break something, or, you know, somebody else made an edit, and then that ended up breaking it, you could just have a revert to to the last work and you know that you can go 
+Graham Sowerby: Yeah. 
+Me: Right that had an issue. We need to fix that. So we revert it. 
+Them: Yeah. 
+Me: Bring that back to the dev 
+Them: Yeah. 
+Me: Branch, 
+Graham Sowerby: Yeah. 
+Me: Fix it, then reintroduce it. Like, it's so much easier. 
+Graham Sowerby: I believe 
+RRG Web Products: I haven't played much 
+Graham Sowerby: with Git, but can you schedule stuff? 
+RRG Web Products: Because I think that'll be the biggest thing. Like, we could schedule So we've got 
+Me: So you can schedule a merge to main 
+RRG Web Products: we've got Rack Friday ready. Right? 
+Me: Yeah. 
+RRG Web Products: We've got rack Friday homepage. Ready. We don't have to wait till midnight to go, okay. I can upload it now. Like, you can just go, 
+Me: Yeah. I get what you're saying. 
+RRG Web Products: upload at midnight. 
+Me: Potentially, I I genuinely wouldn't know the the answer. I know you can set up like, scheduled runs let's say, at midnight every day, that checks everybody's branches. And if everybody like, let's say, Jake, you've you've committed some changes. I've committed some changes. What it will do is it will put them all into one dev branch checks that everything works, and then merges it to main. Like, it can do that on a scheduled basis, I'm pretty sure, but I don't know if you could do, like, a yeah, basically, update the header, the home page, and all of these icons and this and this. At this exact time. I'd have to have a look. I'm sure that there's a way to do it. Hell, you can even just code in bloody date changes and stuff into a page, but yeah, it gets a bit messy doing it that way, I suppose. But yeah. 
+Them: Yeah. Because that's how the style tags, like, on the PDP, the 
+Me: Yeah. 
+RRG Web Products: That's what they've done there on a 
+Me: Yeah. Yeah. 
+RRG Web Products: they're on a date range. 
+Me: Yeah. Yeah. So, like, this this page I'm working on for sea otter, for example, this has date range stuff all through it. So at the moment, this is seeing that it hasn't even started. Right? The trip starts the third Thursday the first, Now if I was to go to if I is it? Via penned, the date to the October 23, this means that the event is on. It's happening. It now says it's day 23. Annie is at sea otter, so you're getting that update as to what what's currently happening as part of the event. And also restructures the whole page. So before the event or and in the drive or the lead up to the actual event, it it it has a different structure to the page. But then during the event, it brings up, you know, visit Thule and Rufrax Galore at the stand. Like, this is because that's now the most important thing at that point in time. So everything's date related. Same as this here. So it's considered actual timeline and map of where they're at. So if I change this, let's say, to the fifteenth, yeah, it says it shows where the car like, where she is as part of that journey on the fifteenth. 
+Them: Yep. 
+Me: But, yeah, So that type of thing is completely doable. And that's that section there that gets moved right to the top. 
+Them: Yeah. 
+Me: During the event. So and then you might even go as far as, like, after the event. That's a wrap. Yeah. Its road trip is complete. Watch the recap. The recap section comes up. Like, it's all built around dates. Yeah. 
+Them: Yeah. Oh, that's cool. I can't fall in here. Sorry. I was just engaged there on something. 
+RRG Web Products: Is that 
+Me: Yeah. 
+Graham Sowerby: is that a Is that following us down the page, that little road to CR? Nice. 
+Me: And Travel's a little ride. 
+Graham Sowerby: Business. I 
+Me: It's only on desktop, though. If you switch to mobile, that's not on there. But 
+Graham Sowerby: Yeah. It's nice talking about. Yeah. No. It's looking looking good. Yeah. We need to open up can of worms with Mark, really. I mean, I I've got a similar there's a there's I've got a real desire to get everyone kind of because it's very similar to what you use already. A bit of, like, a learning curve. Everyone's through going through cursor. Because Cursor is Versus Code. It's a stem. It's got everything that you need in there. But it's just built around. If everyone use 
+Me: I need need to go and download it and give it a go. 
+Graham Sowerby: you'll just find it 90% exactly what you're already using, but you'll see the other layers. Oh, fuck. Should it? Yeah. You need to make that effort to change it. And I think if we then get Mark, Salem, because I need to convince Salem as well, if we all use cursor, can all help. We can all understand the same. We can all learn the same. 
+Me: Yeah. 
+Graham Sowerby: And we're already in the grok world. I think we will continue down that route. Don't know whether OpenAI is worth I don't know. I don't know. I think Elon will be here for he's the most productive entrepreneur out of them all. I trust Grokka, but open AIs. OpenAI could disappear one day, I think, if my gut feel. Claude will always be around. Mainly for development. Whether they rarely to me, it'd be rock or Claude, but who knows? I might be wrong on that. But I I'm certainly you've just got to yeah. I don't know. The more we're in what ECOs is let's say we all have Cursor and Super Grok, or whatever the hell we whatever that here is. And we all we end up paying, say, $2 a month for everything that we all need, unlimited access. Got bots. We've got cursor. Got all the AI that we need. Because the good thing with cursor is as well, you can use any agent in there. Sorry. That's something I should have mentioned. You can use Claude. Can use the Frontier models within cursor. So you don't you're not locked to one. Yeah. We just need to stick yeah. We just need probably all go down the same path or wall. 
+Me: Yeah. Yeah. 100%. 
+Graham Sowerby: Lose a bit of focus because there's a danger here that now the dots, the chat GPU dots have landed. Oh, that might be cool. It's like, fuck, but it's yeah. 
+Me: No. 
+Graham Sowerby: Like, the Windows 
+Me: Eight 
+Graham Sowerby: my argument 
+Me: You you know what you need, Graham? 
+Graham Sowerby: Yeah. 
+Me: You know the the old horse floats where they had those things all across their eyes like this? 
+Graham Sowerby: Yeah. Yeah. I do. I do. I do. 
+Me: So 
+Graham Sowerby: I absolutely agree, Matt, and I just need to deliver to you. Deliver The UK project, and then we'll we'll worry about that. But there is a lot of there's stuff that I'm not There's stuff that the bots are doing now that I I I just aren't really opening up yet I have a meeting scheduled with Tim to talk about them first. And his he's mostly impressed and amazed by what they do. It just it's such a fundamental shift It's it's like like a revolution. It's like, fuck. It makes you reconsider nearly everything in your business. Because up till now, you have to go and compile loads of stuff to get the answers, then you have to trust the person who's given you the answers. That that isn't just trying to, like, shortcut the answer or protect or whatever it might be. You know? When you have got the power now of driving in your car, cutting into somebody going, tell me what the ROAS was in September, October, November, and and give me a breakdown per channel. One, you'd say I've jacked the effort where he should just be actually new and it improvements in efficiency, that would tell Tim exactly what he needs. It it's like same with stock. Where's all my p six platform stock? And does that align with the the the upcoming sale trend, or should I have more stock in New South Wales than I do in oh, yeah. You have you're overstocked in Queensland. You probably want to do an internal transfer. To. It's there, and these are all the questions that Tim relies on a lot of us to and we get to distracted by these questions. You know? We need to empower Tim and all these people that need these quick answers, and we could just be delivering exciting new experiences. You have to charge that, Josh. Sorry. I'm just taking my phone, but it's dead. We that's the world. So I'm gonna open up to him to hate him. All the questions that you've had and that you are always worried about And even with the monday.com, he's always constantly on the back of, like, what are the team doing? What are they focused? Are they on the right thing? What they're doing there? Why are you doing that? Why have I heard this from Scott? And I'm like, hey. You need to get off my back because I've got shitloads to do. If you want them answers, go and chat to the Monday bot. It will tell you everything we're working on. And at first, it might feel a bit weird, but this is the world that's gonna have to become mapped to everybody. Because it should create a huge amount of efficiency. 
+Me: Mhmm. 
+Graham Sowerby: And we should be delivering great experience. I just wanna deliver great experience. Brenton, with your website. And stop firefighting questions. And and there's just a lot of really not silly questions, but a bombardment of you know, will merge still work? Will that happen? Are our is our ROAS good at the minute? Is and and I get a million of them. You know, you guys probably get one fifth of the noise I get from everybody trying to me about asking what's happening in the digital world on this and that. And You know, The UK, it's just it's bonkers. So I need to protect myself with these bots will protect me as one layer. They should also be able to give us really good insight. Into marketing and things like that. So again, I know we need to talk about this meeting you've had and these these things because I know I've obviously left it to run, which is the right thing to do because everyone you should always have the control and the know, no one should be saying no to anybody if it's a good idea and commercial validation. Don't let me block it because what Tim said, and don't let me block it But have to understand the journeys we've been on and some of the fundamental I guess, there's things that we haven't been able to convince him otherwise that we had a brick wall at times, but they're not bads. You know? I'm sure, Brent, you've had. Silly brick walls with certain people you've worked with in the past. Timmy's very reasonable. Generally, but he does have some very fixed particularly around the agency. It's a bit wild. I've followed out with him a few times on on the agency, but he just thinks that the get money and that returner or that percentage or whatever the hell it might be they always he's determined. They always get to a point where you have to get rid of them. Because the they've done their work. They're just getting a cruisy $4 a month, and that's it. And and he'll never be convinced otherwise. And that's why you're involved in the company because doesn't wanna work with an agency. That's why Jack's not an agency. He needs these people living, breathing, this whole business. The the minute they're not in the business and listening to all that, the osmosis of what goes on in this business, then they don't he believes they don't they'll never truly get it. And and these are I'm just trying to protect you guys from doing a lot of work and Tim just shutting it down. From a lot of effort that I know you have been putting in. Yeah. Sorry. I'm I'm just trying to give you some I'm not trying to put any roadblocks here. I hopefully, you appreciate that. I guess on the New Zealand side of that is, like, we I don't know if you saw the messages yesterday. I had a chat with 
+RRG Web Products: Jack yesterday. Mhmm. Mhmm. 
+Graham Sowerby: A weekly meet. 
+RRG Web Products: And then, you know, he 
+Graham Sowerby: meant mentioned 
+RRG Web Products: in the chats that we just go down like a purely production side of it. Just get them to do the production side, and we can do the results. 
+Me: I 100% agree with you. 
+RRG Web Products: Oh, just run me through from a production. Just run me through what you mean from a production side. 
+Me: We we make Kiwi content. 
+RRG Web Products: So they they'll come out and do this. 
+Me: We don't have kiwi content. 
+Graham Sowerby: Yeah. Yeah. Okay. 
+Me: We need we need someone who can go to the store get content with our staff, or or an actor, I don't really care. We need to get content like, similar to what Matt does. But it needs to be in the a Kiwi message. 
+Them: I'm just 
+Me: It needs to actually relate to New Zealanders not be an Aussie dude talking with an Aussie accent 
+Graham Sowerby: Yeah. 
+Me: Selling on an Aussie platform 
+Graham Sowerby: You know, 
+Me: Do you know what I mean? Like, it would really need it needs to 
+Them: You know? 
+Graham Sowerby: Outback landscape when it's not really an Outback landscape over there. 
+Me: Yeah. 
+Graham Sowerby: It doesn't The thing is, 
+RRG Web Products: like is it is it a bit like what we've done with Beth? We we were obviously at the point where, obviously, before we had you, Branson, as 
+Graham Sowerby: well, we're we're 
+Me: Well, yeah, so it is exactly like 
+Graham Sowerby: we're in a rut. We were in a 
+Me: That. Do you just bear in mind content 
+Graham Sowerby: Alright. God. 
+Me: Expires? And this is a slight argument well, not argument, I'd say backwards and forwards that Tim and I had on the phone a couple of weeks ago. 
+Graham Sowerby: Yeah. Yeah. 
+Me: Content does expire. Right? It it 
+Graham Sowerby: Yeah. 
+Me: You can't 
+Graham Sowerby: Yeah. Yeah. 
+Me: Record a video once and run it for the next ten years. It's just not gonna work. It's gonna work great for the first four to six weeks. 
+Graham Sowerby: Yeah. 
+Me: At which point it's it's getting old. People have seen it. People don't care for it. 
+Graham Sowerby: Yeah. 
+Me: You need to 
+Graham Sowerby: Unless you make something like Frank Walker. 
+Me: Yeah. You need to be following trends So there are gonna be trend different trends in content. There's gonna be different trends in even the channels and platforms that people are using. And those require separate ratios. Separate types of content 
+Graham Sowerby: One second. 
+Me: You know, like talking to the camera content might work really well for Instagram, Or sorry. Not Instagram. For like, TikTok or Facebook. But worked horribly for Instagram because go to Instagram, wanna see nice pretty landscapes and big rigs and you know, that. So it's gonna be less camera to So there's more content that needs to be created as those trends transition from platform to platform. 
+Graham Sowerby: Yeah. 
+Me: Channel to channel, different audiences as well. So, you know, not just the full drive guys over there. In fact, it's the majority is not full drive guys from my understanding of New Zealand. 
+Them: Yeah. 
+Me: I could be wrong, and we've just been slapping shit against the wall and hoping it's 
+Them: Yeah. Oh, wait. 
+Me: Fixed, and it hasn't. 
+Them: I wait. I wait. 
+Graham Sowerby: We are we essentially right at the minute getting a frack or or a proportion of bottom funnel? Is that effectively what New Zealand is at the minute? People want a product, we're getting our slice of what we can convince them to buy with a half decent website but most are probably going to hyperdrive and trade me. From a pop of funnel, meta funnel, demand gen, it's really not happening. 
+Me: Yeah. There's there's nothing top of funnel going on. 
+Graham Sowerby: Like, whatever Elka doing is yeah. 
+Me: Like, at all. I mean, 
+Graham Sowerby: Yeah. 
+Me: 've got the campaigns there, but they're not performing 
+Graham Sowerby: Yeah. Yeah. 
+Me: And, I mean, we are getting 1.6 ROAS is, like, one of the worst one. Actually, I think the worst one was 0.6, wasn't it, Jake? Yeah. It's been turned 
+Graham Sowerby: Yeah. But I'm pretty sure it's been turned off now. 
+Me: Yeah. It's been turned off now, but 
+Them: Yeah. Yeah. 
+Me: Like, on average, I think 
+RRG Web Products: Yeah. It's like a 
+Me: We're at a 3.3 and a half. Three and a half ROAS. Like, that's not 
+Graham Sowerby: Three and a half. 
+Me: Sustainable. We're we're we're basically not even breaking even at that point. 
+RRG Web Products: Yeah. 
+Me: On our ad spend. 
+Graham Sowerby: Yeah. And do you think alright. What what does what does this 
+Me: I think 
+Graham Sowerby: What what yeah. 
+Me: I think it's a combination that the agency, ALK Media, don't understand the New Zealand market. Same as us. Like, we I am not gonna sit here and pretend like I know the New Zealand inch like, market. 
+Graham Sowerby: Yeah. 
+Me: Well enough to go 
+Graham Sowerby: Yeah. 
+Me: And change up all messaging. Not feasible. This is where the discussion was, okay, we need someone in New Zealand who knows the market who can create the content, and get the message out there. Now there's several different points to this. We could just focus on the content messaging side preferably, so that when Jack takes over all of the ad campaigns for all regions, he can still maintain it. But Jack doesn't know New Zealand. We don't know New Zealand. Only a New Zealand marketer would know New Zealand. And that's somebody that we need to engage at least to establish our marketing for the first few months. We could flick them off after that and just get stick with content creators. But I think to truly understand and break out of in New Zealand we need far better messaging or channels or whatever the case might be. But we don't understand it properly. From here, and it's not it doesn't seem to be something like we've been trying now, what, twelve months we've been there. We've been trying different things constantly. Nothing sticking to the wall. It's almost like we're we're trying all these different avenues of what we can learn from here in Australia, and it's not sticking. We need to find someone who understands the culture, 
+Them: Yes. 
+Me: Understands the channels and the platforms and the people and the industry, 
+Graham Sowerby: Yep. 
+Me: Get our messaging aligned, We can flog them off after that. And just stick to creating new and fresh content around that messaging angle. Maybe that's not even engaging an agency for Maybe that is 
+Them: Is it 
+Me: We just 
+Them: It 
+Me: Gauge a one off freelancer in New New New say, 
+Graham Sowerby: yeah. I was thinking, is there an influence 
+Me: Well, 
+Graham Sowerby: Is there an influencer that could act as a consultant? Know, kinda like not put the agency spin 
+Me: I would I would say less a influencer and more a marketer. 
+Graham Sowerby: Yeah. Yeah. Yeah. 
+Me: Like, is there a market like, a a freelance marketing manager over there who can build us brand guidelines and messaging communication messaging for New Zealand. That can be a one off project. 
+Graham Sowerby: Yeah. Yeah. 
+Me: And we can always come back to them every six months or to a year or whatever and say, right, hey. You know, like, what's new? What's changing? 
+Graham Sowerby: Yeah. 
+Me: Is there anything additional we should be doing here? Rather than having a monthly retainer with an agency, if we're gonna keep 
+Them: Yeah. 
+Me: Adding house, that's fine. But we are still gonna need the content creation. That is going to need to be I can tell you now, Tim's not gonna wanna send Jake or myself over to New Zealand once every month or two. To go and do videos and photos and and stuff like that. That's just not feasible Round trip there is gonna be $10. You may as well have paid an agency a monthly retainer of $5. And had monthly visits with all of that already done. 
+Graham Sowerby: Yeah. Yeah. I just I don't I 
+Me: And we wouldn't even need to be script. Coming up with all that. 
+Graham Sowerby: just wonder whether, if you had a one like, an individual consultant, marketing consultant, someone that knows the and everything. And, actually, the the player was actually get somebody sat with you, another pair of hands, a designer, a marketing person. That knows enough that could work with that. It brings someone in house that can do more global stuff if needed so you can switch their focus because the New Zealand marketer might not be able to help with The UK. But if you can get somebody if you can get a couple of good brands or marketing people in each region, obviously, not Australia because we probably know enough, but in The UK, which would be Jack, New Zealand, that's let's say we pay somebody in New Zealand $1,500 a month, $2 a month, would it would it be best in having a centralized resource for you 
+Me: Potentially. But I think you're probably worth 
+Graham Sowerby: instead? 
+Me: If you wanna go down that avenue of just being able to have that marketing knowledge and brain power, I wouldn't I would engage someone as a one off 
+Them: Mhmm. 
+Me: Hey. We want our business in Australia. This is what we do. This is what we like, ignore what we've done in New Zealand so far. I want you to complete like, to address, like, I guess, 
+Graham Sowerby: And 
+Me: Sorry, approach this like you were launching New Zealand today. Like, our business in New Zealand today. 
+Them: Yeah. Yeah. 
+Me: How do we met how do we change our message Is there branding changes we need to have? What channels would you be launching on? 
+Them: Yeah. 
+Me: You know, all of these because TradeMe obviously is gonna be a big one. 
+Them: Yeah. 
+Me: Liars in the meeting this morning said that apparently TikTok is massive over there for 
+Graham Sowerby: Yeah. 
+Me: Online shopping. News to me. 
+Graham Sowerby: Yeah. That's why Yeah. That's why people go to find reviews. 
+Me: Know what I mean? Like, yeah. 
+Them: For their products. Yeah. Yeah. Absolutely. 
+Me: So there is there are channels that we're missing. There's messaging angles that we're absolutely not getting right. So I think engaging I I think it would genuinely be worth paying someone $10 up front and just saying, build us a full launch plan, branding, Like, go rebrand core of the business, obviously, the the the logos and the colors and all that. That's 
+Graham Sowerby: Yes. 
+Me: What I mean by branding is more your messaging, your your PR, your like, what are we projecting out in 
+Graham Sowerby: Yeah. 
+Me: Our ads, our organics, our everything. Right? So 
+Them: So 
+Me: Is the messaging angles that we've got in Australia just 
+Them: Yeah. 
+Me: Purely off market in New Zealand? Most likely. So what would you do? And I think that is far more it I'm I'm probably exaggerating by $10. I don't think you'd spend $10 to do that. I think someone would that for 3 or $4. But my point is 
+Them: Yeah. 
+Me: Get something like that done for New Zealand by a New Zealander who's known as a great marketer. There in country. 
+Graham Sowerby: Yeah. Yeah. Yeah. No. I get I get exactly what you're saying. I 
+Me: I think 
+Graham Sowerby: mean, it I'd I'd there's just things I can foresee. Like, Tim going, well, we haven't even got tracking stable. So the tracking, you know, if we even got somebody in there, we're not doing all of it right at the minute. And it's like, it feels like in my perspective, we haven't done enough This is just me being really blunt with it. It isn't not on any of you because I know how much time you put in stuff and how busy. But I've not sat with Jack. To get a real understanding of what has he actually tried to do What's what what can we see? Is the analytics even trustworthy? And I I know what I'll get from Tim. I I I know right now my chat from Tim to me after you guys present, I can already foresee what's gonna happen. And that's why I was saying, what have we have we exhausted what we can do? And that doesn't mean, like, right now exhausted. Like, Tim, I don't see any I don't seem to see Tim going, guys, you've got one more month, though. We're going out. We might have to shut the whole operation down. Tim's not like he's not putting pressure on us to to get the best results right now out of New Zealand, but he'd like to see footsteps and some some intelligence or some what have we managed to get to, guys? Realistically? We're busy with UK, so you know, it's given us all breathing room while this is happening. It almost feels with, like, get The UK crap out of the way because we're all distracted. Mainly around Jack and me, and obviously that we try and launch new website. When the new website in New Zealand is operational, we've got our engine optimization. The tracking's done on the website. And New Zealand has a fair chance of doing okay. Kind of evaluate it at that point. Would feels to me like the right way to do I'm I'm look. I'm not saying this wrong, but I've also got to battle the things like everyone's minute and what they're working on down to ten minutes, fifteen minutes is, like, critical to Tim at the minute. Tim is making people not contact me because every minute's valuable. If we start talking about an agency in New Zealand and you're getting instructed, Brenton, Less so, Jake, you've been distracted with it. It's it's a challenge I have to deal with. Do do you get what I mean? And you might go, look. If I pass through an agency, that means I am hands off. There's a lot of thought. There's there's thought for Jack, and it's it's it's it's really difficult to actually validate these It'd be better if Tim was involved and actually rowing with us and was so ingrained in it, but he isn't, and he just sees time and effort and and priorities and I've got to balance that floor. And and it's very difficult when we can't even get the analytics on New Zealand working well to actually I kinda, like, get a bit of a bathroom from Tim is the only thing. And it's like, I I I can't really answer it, Tim, because there's so many layers to this to get to the answer of do we need an agency because he'll end up coming to you he'll end he'll he'll sort of, like, go, I've had the presentation, and it was amazing, and I get the whole objective to it. They'll go, do we have time, Graham? Have they done enough work already? Can you show me what the work they've done to validate that we can't make it work without this agency? Like, can we do more if we have analytics working? Can we do more if we if we do different assets which aren't focused? Like like what we do in New Zealand, I'll Australia. It's so off road focused. And I and I could just say and I'm not saying I'm right here. I but I think he's just gonna go. I've given you Jack. I've given you Brenton. I know we've got a lot of work on at the minute, So everyone's got grace, so nobody needs to panic. We don't need an agency. We just need to get over these hurdles. Brenton finished the design of the website. Jake, you know, get stock it, price it in place. We've already got TradeMe. It feels like there's a bit of a panic almost we need to get a solution, which is another agency. I just I don't know how the present presentation of that has got to be so good, I think, to get him excited by it. Because he'll just smash me. Honestly, he'll smash me and go, what have you done already? What have the team done already to try and get this working? They haven't even approached me to say, is it worth a trip over to New Zealand? I'll give Jake $2 to go to New Zealand to get like, a little initial boost of content. He'd rather do that than get an agency, I feel. Do do you know what I mean? I just don't I I just don't want this to be negative for anybody. And it might feel like I'm coming across negatively. But I just I don't see enough from Jack, I guess, from a paid marketing and he's not been given enough time, which I think is fair. Me to go with any substance to go, we need an agency. I'd I'd just get smashed, I think. I'm saying smashed. It sounds quite aggressive, but I would just get so many questions that I would not be able to validate and justify. I'd say, look. Don't even have analytics installed just to let you know, Tim, and we don't have this. And Jack's been busy with The UK. He hasn't even restructured the Google Ads campaigns. Help Media and Jack had a conflict where he turns the campaigns on. They weren't even returning, but that was it took him ten minute. It's just not been a fair like, know, we've not given it the love that we should as a team, as a digital team. I do not believe we've done enough, and that's not on anyone individually. It's because we're all distracted. I don't know if that's valid, guys. You know? You you you know, you can tell me anything you want. You could be crude to me as you want. I I I don't. You know, I take nothing personally. I just but it's very difficult to validate these things without Yeah. Like, the more we go in, yeah, the more we've been digging into this, well, at least for me, we don't need an 
+RRG Web Products: agency. We just need someone who can do the content for us there. Mhmm. Because I I've been trying for months on end to get the guys to do some sort of 
+Graham Sowerby: videos. 
+RRG Web Products: Just 
+Graham Sowerby: anything? 
+RRG Web Products: They have a camera. They're just not doing it. They finally did one the other day. And it did well. On on 
+Graham Sowerby: Instagram. 
+RRG Web Products: And I 
+Graham Sowerby: said, great 
+RRG Web Products: work. Keep it up. Do more. But from past, are they gonna do it? It might be another 
+Graham Sowerby: month or 
+RRG Web Products: two before I get before I see another one. Or you know, like I can share. Yeah. Even just just a 
+Graham Sowerby: layer here, Jack, 
+RRG Web Products: it's probably 
+Graham Sowerby: as as New Zealand operations manager, you should be getting an allowance to save two trips a year. Can you no questions asked It's it's actually pretty criminal you've not been there. In in the role that you're doing. You have a valid you know, I know that if you said to Tim, can I go over there to try and understand this a bit better? You'll get a green light. It's not even a I could probably allow that without speaking to Tim because this is your role. You have to it. You have to do the best you can for that region. And a couple of upfront costs to to try and alleviate some of the initial level pressures. Or questions and whatever might just be solved by you going over there. And you should go over there. It's your region. Yeah. Like To authorize. But, like, even they've been having shipping problems. Right? As well. To certain regions. But I also found out they don't even have a fucking proper 
+RRG Web Products: scale They're using a bathroom scale for 
+Graham Sowerby: fuck's sake. 
+RRG Web Products: Yeah. Also. So it does not even reading properly. And I was like, here's a trade me listing for a 
+Graham Sowerby: $78 fucking 
+RRG Web Products: you know, warehouse scale. Go 
+Graham Sowerby: fucking 
+RRG Web Products: buy it. I know. How do you not have one? Yeah. I I guess just just 
+Graham Sowerby: I I 
+RRG Web Products: guess what 
+Graham Sowerby: I want 
+RRG Web Products: to bear here is 
+Graham Sowerby: we have to be pretty well organized to go to team with something. That that doesn't just look like noise or a shortcut or a honestly, the the I think the everyone's reputation by going with something where we're not prepared and haven't done enough work ourselves or given or or or been allowed to give it enough time understand it and Jack get his fingers under the detail and things. Think everybody the it it wouldn't look good from Tim's perspective. That's how I feel. Like I think also, like, with the other place, Indie Creative, if they I sent them an email today. I 
+RRG Web Products: haven't heard back yet. 
+Graham Sowerby: Asking if they can do just 
+RRG Web Products: the content side of things. 
+Graham Sowerby: If 
+RRG Web Products: they can do, 
+Graham Sowerby: like, 
+RRG Web Products: the New Zealand stuff for 
+Graham Sowerby: us, but 
+RRG Web Products: also Australia and then Mac can actually tag 
+Graham Sowerby: along with 
+RRG Web Products: them and then learn from them on how to do it. Yeah. And, like, how things work and, like, what would be good ideas and things. I think that would be actually 
+Graham Sowerby: good for Matt to do as well. 
+RRG Web Products: Yeah. I think I'm all on this, Brent, and just while while we're trying, but it comes down 
+Graham Sowerby: to I think 
+RRG Web Products: what's surfaced and it 
+Graham Sowerby: again, we've maybe just got to get this freaking UK thing out of the way. Ordnamesia is huge. You know? Old media is fucking ridiculously big. You're juggling design. You're juggling organic and it's just huge. And and, obviously, we've asked down a route of of design resource of which Tim's already agreed. I don't know whether I was clear with that. You can have somebody two days a week. That sits in the office if we can find somebody. But it might just be moment where we actually sit back and go, to do all media correctly, what the hell is actually correctly? We need to define what correctly is. Like, what what do we need to cover to get huge gains in this space, answer engine optimization, engine optimized content answer engine optimized content is massive. Organic social will be massive. The the the emailing, all of this stuff that we know we need to get in place, the landing pages. Buyer's guides, absolutely fundamental. That should be the world you mainly live in. Now if design The design requirements you put in proposal would I think were very fair. There's there's obviously an emergent sorry, an initial huge amount of work to be done There's there's images for vehicles. There's images for fitments. There's images for booking everything. So you so justifiably, you could even argue, right, Tim, for one month two months, I want somebody five days a week or three or four, I'll scale that down to two days a week because the the ongoing demand will never disappear. Don't think it's all done. I need somebody two days on design That's it. There's no there's no kinda, like, argument here. If we don't do that, you are not going to get answer engine optimization. Organic know, social. And and we that whole owned media is not gonna get delivered to him to the level we want to. And I think the value of spending two to three days a week on the freelancer designs no. Sorry. Employee. Sorry. Part time, whatever you wanna call it. I don't know how who you would find or whatever. That might not be what you what I'm sort of I don't even know if the right thing you need. Is there a bigger chunk of this? You actually need somebody with more skills. To to help deliver. But yeah, I mean, paid media isn't really where you should be. That's Jack's cup of tea anyway. So half of this I don't know. You know, from a 
+Me: And, well, so there's there's also all the ad created stuff as well that 
+Graham Sowerby: yeah. 
+Me: Yeah, Jack will obviously be influencing at least a day a week, I would say, in creative work on for a ongoing work is what I mean. Yeah. There's probably a day 
+Graham Sowerby: Yeah. 
+Me: Just in pay. I've definitely got two days ongoing without any of the current backlog stuff. 
+Graham Sowerby: Yes. 
+Me: For owned. 
+Them: Yeah. 
+Me: So there's three days already. 
+Them: And that's just a start. 
+Me: And we're not gonna catch up with two extra days a week 
+Graham Sowerby: Yeah. Yeah. 
+Me: In a month or two. Like, it's gonna take six months at that rate. 
+Graham Sowerby: Yeah. And that's Australia because I'm doing New Zealand. 
+Me: So there's yeah. And that that's yeah. And that that's before we even look at The UK and New Zealand. 
+Graham Sowerby: And New Zealand. Yeah. 
+Me: Do know what mean? So 
+RRG Web Products: Yeah. The the is asset does it yeah. Is asset work going to become 
+Graham Sowerby: can can you see AI 
+RRG Web Products: advance if person 
+Graham Sowerby: is now? Like, if you use runway, whatever all these programs are, they create videos and stuff. 
+Me: Let's I say this I say this while gritting my teeth quite To an extent, yes, Currently, absolutely not. Not even close. 
+Graham Sowerby: Yeah. 
+Me: Hallucinations are horrible. The aspect ratio is a not aspect ratio. Sorry. Safe zone usage is horrible. 
+Graham Sowerby: Yeah. Yeah. 
+Me: Like, everything has to basically be redone. 
+Them: Yeah. 
+Me: I would say it's 
+Graham Sowerby: I think if you if it 
+Me: Not ready. It's not ready. 
+Graham Sowerby: yeah. I think you you gave me give it all the if you give it all the assets, 
+RRG Web Products: the tasks you need and then you give it the the safe zone areas, it might be able to do it. I haven't tried it, but it 
+Graham Sowerby: has the 
+RRG Web Products: figure stuff I did seem to work pretty well. It's a lot of work though, isn't it? You have to create all the you have 
+Me: That's 
+RRG Web Products: get all the best images, 
+Graham Sowerby: the 
+RRG Web Products: best video, 
+Graham Sowerby: maybe. 
+Me: The thing. You're gonna have all the assets to begin with. I would never rely on AI at this point in time to generate content. I think 
+Graham Sowerby: No. 
+Me: There's a difference here between content generation and curation. I think having having it curate assets that we already have made, taken photos of, created logos, feed it all that information. It's probably at a point now where almost to a point, we still need to have a fine tooth comb to go through it afterwards. But it's probably at a point where it could put together some static ads pretty easily. 
+Them: Yeah. 
+Me: But it's it's not at a point where it can generate new content. It's not at a point where you can say, hey. I took this Kodak moment photo on my phone. It looks like crap. Can you just clean it up? It's not at a point where it's ready to use that and not hallucinate things. 
+Them: Yeah. 
+Me: The other flip side to this is video editing. Needs to be a part of this as well because Matt can do videos, and that's fine. But he doesn't edit them in a way that's great for ads. He doesn't edit them great technically overall, if I'm being honest. But he edits them, and and they work. It's just I think having somebody else on board that can reuse a lot of the content he is making and filling out these these folders into new content pieces, both organically and paid is gonna be instrumental as well. 
+Them: Yes. 
+Me: And then obviously, we start talking about content creation in New Zealand, just being able to feed all those videos to to someone in house and say, right. Now this is the messaging angle we're going for. We need 20 different ad creatives. We need organic posts. We need all of that. And then being able to just set them on the way for a week they come back after a week and go, right. Here we are. Like, yeah. 
+Them: Yeah. Yeah. I mean I mean, what we've got to also allow ourselves to be is is 
+Graham Sowerby: okay is fine at the minute, and good is fine. Amazing shouldn't strive to to be amazing for a year, I think. The new website's gonna lift as a layer. And you know, even like the the that that trip he had away with musty b, we need to kinda, like, deliver the value back that we've done on that before we entertain, like, another cost or another mean, I don't even know who would be presenting this agency because it it's rarely is it is it more paired, or is it at all media? Is it paired and owned that we will look into? Right now, it's really the looking for an agency. It's just purely looking for someone who can do the content for us. Yeah. Like, 
+Me: And the continent the continent, I guess. 
+Graham Sowerby: I spoke to 
+RRG Web Products: Jack Yeah. 
+Me: Broad enough that it's both paid and organic. But this would probably be Jake's baby more than anything. 
+Graham Sowerby: Yeah. Yeah. 
+Me: Because he I mean, it's his region. Right? 
+RRG Web Products: Yeah. Okay. 
+Me: I should be 
+Graham Sowerby: Okay. 
+Me: Basically leaning on on Jake and saying, hey. 
+Graham Sowerby: Yeah. 
+Me: What do you need from my end? Yeah. And he might say, hey. Like, what do you need from a content side for paid? Oh, sorry. For all for owned. You should go to Jack for and say, hey. What do you need content wise for your ads? 
+Graham Sowerby: Yeah. 
+Me: And then be able to put together 
+Graham Sowerby: Yeah. That's it. I mean, this is the the the whole part is Jake. You're meant to be going to everybody within this business and for certain roles, Ken and AJ for inventory, Brent and Jack for paid and all media. And you just your your job's done now. I need these. It's I need an advert for this to sell roof boxes. And then the real the way we're getting stuck at it the minute is Jack and Brendan having enough time to give this enough love to actually give you something of use. I'll I'll I'll I guess we're on. Struggling because I'm trying to do everything. Yeah. But but and Yeah. And I and I get that. I get that. I I I I'll just finish off. Takes time. 
+RRG Web Products: How much longer is 
+Graham Sowerby: this gonna go 
+RRG Web Products: on 
+Graham Sowerby: for? Like, you pay Yeah. Yeah. Gonna be honest with month, or is it gonna be done 
+RRG Web Products: Look. Let's be honest. Right? Brent 
+Graham Sowerby: and what he's doing in the the design area is taking 
+RRG Web Products: time, and 
+Graham Sowerby: that isn't going to be at the the level it is at the minute. It's it's the whole freaking website. And friends and his rightly distracted with that. He should be working on it, deliver it, and then there should be time. So the fact that we can't all of that is fact that we can't do it right now is something Tim's already accepted is accepting that. 
+RRG Web Products: There isn't 
+Graham Sowerby: a pressure from any of you guys to to complete New Zealand. Don't get it doing anything amazing right this minute. So so there shouldn't be let's not put ourselves under pressure for that. What we do need to do, though, is what the available time we do have or what we have jacked for at Alt Media we have to Alt Media probably needs a little bit of a a rocket and say, you guys I you have to deliver ideas and you know, be testing things and and actually get into the cycle of coming back to me with like, I saw the message yesterday, like, yes. Please create some creatives for us. Like, you know, like, what what do you mean? Like, why are even asking the 
+Me: Yeah. 
+Graham Sowerby: question? It was like a daft question to me. And I I think what I need to do 
+Me: I Was a bit I was a bit stunned by that message too. It was like almost like they could read Jake and I's mind where we're 
+Graham Sowerby: yeah. 
+Me: Because we've been saying the last few days several times, like, they just 
+Graham Sowerby: Yeah. Yeah. I thought 
+Me: Don't do they we created all in house. Like, 
+Graham Sowerby: Yeah. 
+Me: And now they're asking all of a sudden 
+Graham Sowerby: Absolutely. 
+Me: Like, can they get their designer to do something? Well, yes. Shouldn't they already have been doing that? But okay. Sure. 
+Graham Sowerby: Yeah. Yeah. Yeah. What what you need, Jake right, Jake? I know right now, you might not feel this or sense it. You have every right to pull and talk to health media as a provider say it's not good enough in in a in a nicer way as you want to. Frame that, him would not care that you put pressure on help media and tell them how they should work for us. You might need help from me or Brenton, and and Jack you have every right to go. Guys, Meta is not delivering, and I cannot I'm not here to tell you what to do. I you're employed as professionals in in meta to come up with ideas, constant you know, the cycles of improvement. How are you going to do that for me? Because just at the minute, I'm stuck, guys, and I'm I'm not providing good reports to Tim and to to him. So what you're gonna do about it, guys? You have every right. Obviously, do it in in a in a tone. Think is reasonable. And just say and if they don't come up with an answer, say, do you mind if I invite Graham Jack, and Brent into a meeting next week? And they'll it'll sort of scare them to a degree and put a bit of pressure on them. They need they need to deliver more. If this will be what it will go to me again. If they'll be going, oh, if you put pressure on media? Are they doing what you need to? And we've got to get quite yeah. I think we've got to be a little bit harder with them is my gut feel. Like, we've all seen it now. The noise I'm getting from all of you is it's not good enough, and I've seen that already. It's just we don't for $4, it's fucking shambles, to be honest, what we get. So we should demand more and and and and request more. Would say. Make them work out New Zealand. Do know what I mean? Fucking just put put a task on them. Tell us what you can learn. Don't do some market research, guys. This is part of your job as an agency. Looks doing that region. You know? They're not doing it because we've asked a favour of them. They're doing it because they've they've said they could do it effectively. You know? There's no Yeah. Yeah. A bit of help on how to send that to them? Mhmm. Because you know me, Graham and Brent and your 
+RRG Web Products: son. I know. I 
+Graham Sowerby: like to swear a lot in there. 
+RRG Web Products: But 
+Me: Oh, you fucking 
+RRG Web Products: I'm also not 
+Graham Sowerby: I guess, 
+RRG Web Products: put 
+Graham Sowerby: fresh 
+Me: Dead. 
+Graham Sowerby: Yeah. 
+RRG Web Products: I'm also not I 
+Graham Sowerby: guess, you could say 
+RRG Web Products: professionally Yeah. What Yeah. Yeah. 
+Me: Tactic. Yeah. No. I I get what you're saying. 
+RRG Web Products: You know you know what I mean? I can't 
+Me: Yeah. 
+RRG Web Products: something across professionally. It's 
+Me: And there's a similar way you'll have to articulate 
+Graham Sowerby: I would use 
+RRG Web Products: Rise. 
+Graham Sowerby: Yeah. So 
+Me: This. To them. But I think you could do it in a in a pretty reasonable 
+RRG Web Products: Yeah. 
+Me: Way that just sort of says, look, guys, what's working well, sorry. What we're doing right now is not working. We need you to go to back to the drawing board 
+Them: Yeah. 
+Me: Do some research, work out what should be working in New Zealand, 
+Them: Mhmm. 
+Me: And then we need to be doing a lot of split testing 
+Graham Sowerby: Yeah. 
+Me: And audience testing 
+Graham Sowerby: Yeah. 
+Me: To really nail down the message Maybe that is the way forward. That's fine. But then I'd also be mentioning in there that we content needs to be a thing. May maybe? Do do they have anyone in New Zealand that that we can hot? Like, do they have a 
+Them: Might they might know somebody. 
+Me: Someone they can send to our store to get video and content for a day. Like, 
+Graham Sowerby: Yeah. I put pressure on them. Just said, what are you what what is our the foreground, what have you agreed to deliver for us? What is your role here as Alt Media? You know what I mean? Oh, It's fucking yeah. Anyway, sorry. I'm yeah. It was wild. You start to sound like me, Graham. You're like, fucking what have you done? Well, it is bloody annoying, isn't it? But we do I think it's time now that again and I know we're going in 
+RRG Web Products: a few circles here, we're looking at other agencies, but I think we 
+Graham Sowerby: need to do this as a as a at least, as a They do. They do. Yeah. I think you're right there, mate. I think this might be the best just again, I don't know how much work you guys have done in the back. I don't wanna knock it and anything, but 
+Me: Not not a huge amount, so that I wouldn't stress about it taking too much. It's been a 
+Graham Sowerby: Yes. 
+Me: A couple of conversations in two, three meetings, whatever. 
+Graham Sowerby: Yeah. Yeah. Yeah. Hoping I'm hoping I'm adding value value. I'm just trying to 
+Me: Yeah. 
+Them: You know, it's 
+Me: I might let you guys go. I've gotta go feed the little fella for lunch. 
+Graham Sowerby: no. No. All good, man. 
+Me: I just looked at the time and realized that 
+Graham Sowerby: All good. 
+Me: We've been on this for two and a half years now. So 
+Graham Sowerby: I'm not gonna I'm not I've got 5% of that sheet. Right, Jake. What I would say is, have you got access to Rise? Jake, or not? Yeah. I think so. I think you get Tell Rise tell Rise to give you an executive summary of the campaign structure in New 
+RRG Web Products: Zealand. Okay, for the 
+Graham Sowerby: last since 
+RRG Web Products: July. 
+Graham Sowerby: Something like that. It'll tell you the structure, tell you what your role is. It'll give you an executive summary. You need to start with something like that just so we understand, because I don't immediately understand exactly campaigns we've got going. We've probably got like, a fraction of what we should have going. And get rise to give you all the intel of how that campaign is set up. Is it is the attribution model set up correctly? Who is it? Quiz it. Quiz it. Quiz it till you understand. What our campaigns are, what's running, what's got a good roll off, what hasn't, 
+Me: It's 
+Graham Sowerby: and from that, we'll go back to we'll we'll work with you, I guess. I think me, Brenton, and Jack will think between us come with the way that we approach this. Yeah. If if that helps. I think we should do that first. Yeah. That sounds good. On another note, I guess, we talked a lot about this whole marketing agency thing. 
+RRG Web Products: Mhmm. I did schedule a meet at 
+Graham Sowerby: 04:00 
+RRG Web Products: today with Jack 
+Graham Sowerby: if you guys were 
+RRG Web Products: happy to talk with him about that as well. Yeah. I'll see if I'm about if I'm about. Just give me a nudge at a time. And if I'm 
+Graham Sowerby: about, I'll jump on 
+RRG Web Products: there. 
+Me: Yeah. 
+RRG Web Products: If that's alright. Yeah. Because he was very 
+Graham Sowerby: interested to know how the meetings and stuff 
+Me: I became to get 
+Graham Sowerby: went. Yeah. Okay. Alright. 
+Me: Jack's insight on 
+RRG Web Products: I mean, 
+Me: What he wants. Well. Like, 
+RRG Web Products: Yeah. Absolutely. 
+Me: Not just not just like, what we're seeing, but he might turn around and go, guys, we we we don't need half of that. We just this is the one thing that the core thing that we need from somebody outside of the business. The rest 
+Them: Yeah. 
+Me: Of it, we we can do or whatever. I don't I don't know what it is. 
+Them: Yeah. It's pretty much what I got from yesterday. It was basically just 
+Me: Is. 
+RRG Web Products: we have someone in The UK creating constant content. We 
+Graham Sowerby: have someone 
+RRG Web Products: in Australia 
+Graham Sowerby: creating 
+RRG Web Products: constant, but we have no one in New Zealand. That's Yeah. We're we're lacking and that's 
+Me: Okay. 
+RRG Web Products: basically the only thing that we need. 
+Me: Do we need to find an influencer over there? 
+RRG Web Products: Yeah. 
+Me: I don't I don't know. Like, doesn't have to be someone wearing our You know? Uniform. Right? Although, ideally. But 
+Graham Sowerby: Yes. 
+Me: May maybe there is 
+Them: Yeah. Alright, guys. 
+Graham Sowerby: Guess we'll we'll talk about it at four, I guess. 
+Me: Head up. 
+RRG Web Products: Yeah. 
+Graham Sowerby: Sounds good. Alright, guys. Yeah. Let's let's adjourn. Cheers. 
+Me: I'm out. I'm gonna go get lunch. See you, mate. 
+Graham Sowerby: See you. 
