@@ -421,6 +421,10 @@ function bookRenderForm(values = {}) {
     try { last = JSON.parse(localStorage.getItem('rrgLastOrder') || 'null'); } catch (e) {}
     const items = last && last.number === orderNo ? last.lines.filter(l => typeof rrgIsFittable === 'function' && rrgIsFittable(l)).map(l => l.name) : [];
     values = { ...values, notes: `Order #${orderNo}${items.length ? `: ${items.join('; ')}` : ''}. Bought from you, please fit.`, bought: 'Yes, online' };
+    // The order already has the contact details, so don't ask again.
+    if (last && last.number === orderNo) {
+      values = { ...values, name: values.name || [last.first, last.last].filter(Boolean).join(' '), phone: values.phone || last.phone || '', email: values.email || last.email || '' };
+    }
   }
   document.getElementById('bookingWrap').innerHTML = `
     <form class="booking-form" id="bookForm" novalidate data-track="fitting_request">
@@ -519,6 +523,12 @@ function bookValidate(form) {
   if (!v.date) errors.date = 'Choose a preferred date.';
   else if (new Date(v.date + 'T00:00').getDay() === 0) errors.date = 'Stores are closed on Sundays — choose another day.';
   else if (new Date(v.date + 'T00:00').getDay() === 6 && v.time.startsWith('Afternoon')) errors.date = 'Stores close at 12:30pm on Saturdays — choose a morning.';
+  else {
+    // Public holidays close the store (spec.md §16 item 14).
+    const pick = BOOK_STORES.find(x => x.name === v.store);
+    const hol = pick && rrgStoreHolidays(RRG_STATE_ABBR[pick.state]).find(h => h.date === v.date);
+    if (hol) errors.date = `${pick.name} is closed that day (${hol.name}). Choose another day.`;
+  }
   form.querySelectorAll('.booking-field').forEach(f => { f.classList.remove('is-invalid'); f.querySelector('.booking-error')?.remove(); });
   Object.entries(errors).forEach(([k, msg]) => {
     const f = form.querySelector(`[data-field="${k}"]`);

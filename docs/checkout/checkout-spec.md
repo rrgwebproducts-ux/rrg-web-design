@@ -108,7 +108,16 @@ A **distraction-free shell**: logo, "Secure checkout", help phone number, **no m
 3. **Book fitting at {store}** (item 6, the one prominent secondary action):
    - "Your products are locked in, now let's get them fitted."
    - The store card plus the fittable items from the order.
-   - **Book a Fitting** → the Installation form with the store, vehicle and order number filled in (`?store=&order=#book`).
+   - **Book a Fitting** expands the card **in place** into a short booking form (Brenton, 2026-09-30: don't re-ask what the order already knows):
+     - **Booking for:** the order's name, mobile and email, shown and not asked again
+     - **Store:** the one named on the button, with Change
+     - **What needs fitting:** the order's fittable items, all ticked
+     - **Vehicle:** prefilled from the session vehicle and its year/body/roof, editable
+     - **Preferred date and time:** the Installation form's rules: no Sundays, Saturday mornings only, and **no public holidays** for that store's state
+     - **Anything else:** optional
+
+     Send turns the card into "Fitting request sent to Kedron…" with the order number and the store's inbox. Cancel collapses it again. NZ books by phone (the form lists AU stores only).
+   - The Installation page still accepts `?store=&order=#book`, and now also fills in the order's **name, phone and email**.
    - It only shows when the order contains something fittable (racks, bike racks, boxes, awnings and so on). The store is the Click & Collect store, or the saved or nearest store for a delivery.
    - No fitting prices (stores confirm them).
 4. **Order summary** (lines, delivery, payment method, total with GST noted).

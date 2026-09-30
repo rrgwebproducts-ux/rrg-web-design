@@ -310,24 +310,7 @@ function render() {
   const fitStore = st || (order.region === 'AU' && ctx.storeSet ? STORES.find(s => s.name === ctx.store) : null);
   const box = $('confirmFitting');
   box.hidden = !fittable.length || order.region === 'UK';
-  if (!box.hidden) {
-    const nz = order.region === 'NZ' ? REGION_SINGLE_STORES.NZ : null;
-    const bookHref = `../installation/index.html?${fitStore ? `store=${encodeURIComponent(fitStore.name)}&` : ''}order=${order.number}#book`;
-    box.innerHTML = `
-      <div class="confirm-fitting-head">
-        <span class="confirm-fitting-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7.24a5 5 0 0 1-6.16 6.16l-8.3 8.3a2 2 0 0 1-2.83-2.83l8.3-8.3A5 5 0 0 1 19.76 2l-3.4 3.4 1.24 1.24L21 3.24A5 5 0 0 1 22 7.24z"/></svg></span>
-        <div>
-          <h2>Your products are locked in. Now let's get them fitted.</h2>
-          <p>Our installers fit ${fittable.length === 1 ? 'it' : 'them'} properly, torque to spec and show you how it all works${fitStore ? ` at <strong>${fitStore.name}</strong>` : nz ? ' at our <strong>Auckland</strong> store' : ''}. Most fittings are done while you wait.</p>
-        </div>
-      </div>
-      <ul class="confirm-fit-items">${fittable.map(l => `<li><img src="${l.image}" alt="" loading="lazy"><span>${esc(l.name)}</span></li>`).join('')}</ul>
-      <div class="confirm-fitting-actions">
-        ${nz ? `<a class="btn btn-cta" href="tel:${nz.phone.replace(/[^0-9]/g, '')}">Call Auckland to book · ${nz.phone}</a>`
-             : `<a class="btn btn-cta" href="${bookHref}">Book a Fitting${fitStore ? ` at ${fitStore.name}` : ''}</a>`}
-        <span>Your store confirms the time and fitting price. It's a request, not a charge.</span>
-      </div>`;
-  }
+  if (!box.hidden) renderFitting(fittable, fitStore);
 
   // Create an account (guests only).
   $('confirmAccount').hidden = !order.guest;
@@ -349,6 +332,148 @@ function render() {
       <div><dt>Order date</dt><dd>${new Date(order.placed).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</dd></div>
     </dl>`;
 }
+// ==== Book a fitting, in place (Brenton, 2026-09-30) =====================================
+// The card expands into a short version of the Installation form: the order already has the
+// name, phone and email (shown, not asked again), the store and the fittable items, so it only
+// asks for the vehicle check, a preferred date and time, and anything else. Sending it turns the
+// card into the confirmation. Same date rules as the Installation form; the request goes to the
+// store's inbox (rrgStoreEmail()). NZ books by phone (the form is AU stores only).
+const fit = { mode: 'intro', store: null };
+function fitHeadHTML(fittable, storeName, nz) {
+  return `
+    <div class="confirm-fitting-head">
+      <span class="confirm-fitting-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7.24a5 5 0 0 1-6.16 6.16l-8.3 8.3a2 2 0 0 1-2.83-2.83l8.3-8.3A5 5 0 0 1 19.76 2l-3.4 3.4 1.24 1.24L21 3.24A5 5 0 0 1 22 7.24z"/></svg></span>
+      <div>
+        <h2>Your products are locked in. Now let's get them fitted.</h2>
+        <p>Our installers fit ${fittable.length === 1 ? 'it' : 'them'} properly, torque to spec and show you how it all works${storeName ? ` at <strong>${storeName}</strong>` : nz ? ' at our <strong>Auckland</strong> store' : ''}. Most fittings are done while you wait.</p>
+      </div>
+    </div>`;
+}
+const fitMinDate = () => { const d = new Date(); d.setDate(d.getDate() + 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+function renderFitting(fittable, fitStore) {
+  const box = $('confirmFitting');
+  const nz = order.region === 'NZ' ? REGION_SINGLE_STORES.NZ : null;
+  if (!fit.store && fitStore) fit.store = fitStore.name;
+  const storeName = fit.store;
+  if (fit.mode === 'sent') return;
+  if (fit.mode === 'intro' || nz) {
+    box.innerHTML = fitHeadHTML(fittable, storeName, nz) + `
+      <ul class="confirm-fit-items">${fittable.map(l => `<li><img src="${l.image}" alt="" loading="lazy"><span>${esc(l.name)}</span></li>`).join('')}</ul>
+      <div class="confirm-fitting-actions">
+        ${nz ? `<a class="btn btn-cta" href="tel:${nz.phone.replace(/[^0-9]/g, '')}">Call Auckland to book · ${nz.phone}</a>`
+             : `<button type="button" class="btn btn-cta" data-fit-open aria-expanded="false" aria-controls="confirmFitting">Book a Fitting${storeName ? ` at ${storeName}` : ''}</button>`}
+        <span>Your store confirms the time and fitting price. It's a request, not a charge.</span>
+      </div>`;
+    return;
+  }
+  // The short form.
+  const vehicle = RRG_VEHICLES[order.vehicle] ? RRG_VEHICLES[order.vehicle].label : '';
+  const spec = typeof rrgVehicleSpec === 'function' && RRG_VEHICLES[order.vehicle] ? rrgVehicleSpec(order.vehicle) : null;
+  box.innerHTML = fitHeadHTML(fittable, storeName, null) + `
+    <form class="confirm-fit-form" id="fitForm" novalidate>
+      <div class="confirm-fit-who">
+        <span class="co-sub">Booking for</span>
+        <p><strong>${esc([order.first, order.last].filter(Boolean).join(' '))}</strong> · ${esc(order.phone || '')} · ${esc(order.email || '')}<br><span>From order #${order.number}. The store calls you on this number to confirm a time.</span></p>
+      </div>
+      <div class="booking-grid">
+        <label class="booking-field booking-field--full" data-field="store">Store
+          ${storeName && !fit.changingStore ? `
+            <span class="confirm-fit-store"><strong>${storeName}</strong> <button type="button" class="link-btn" data-fit-change-store>Change</button></span>
+            <input type="hidden" name="store" value="${storeName}">` : `
+            <select name="store" required>
+              <option value="">Choose a store</option>
+              ${RRG_STORE_NETWORK.map(g => `<optgroup label="${g.state}">${g.stores.map(x => `<option${x.name === storeName ? ' selected' : ''}>${x.name}</option>`).join('')}</optgroup>`).join('')}
+            </select>`}
+        </label>
+        <fieldset class="booking-field booking-field--full confirm-fit-what" data-field="items">
+          <legend>What needs fitting?</legend>
+          ${fittable.map((l, i) => `<label class="co-check"><input type="checkbox" name="items" value="${i}" checked> ${esc(l.name)}</label>`).join('')}
+        </fieldset>
+        <label class="booking-field booking-field--full" data-field="vehicle">Vehicle
+          <input name="vehicle" required value="${esc(vehicle ? `${vehicle}${spec ? ` ${spec.years}, ${spec.bodies}, ${spec.roofs}` : ''}` : '')}" placeholder="Make, model and year">
+        </label>
+        <label class="booking-field" data-field="date">Preferred date<input name="date" type="date" min="${fitMinDate()}" required><small>Stores are closed on Sundays.</small></label>
+        <label class="booking-field" data-field="time">Preferred time
+          <select name="time"><option>Morning</option><option>Afternoon (weekdays)</option></select>
+        </label>
+        <label class="booking-field booking-field--full" data-field="notes"><span>Anything else we should know? <span class="confirm-optional">(optional)</span></span><textarea name="notes" rows="3"></textarea></label>
+      </div>
+      <div class="booking-actions">
+        <button type="submit" class="btn btn-cta">Send Fitting Request</button>
+        <button type="button" class="link-btn" data-fit-cancel>Cancel</button>
+        <p>This is a request, not a confirmed booking or a charge. Your store confirms the time and fitting price.</p>
+      </div>
+    </form>`;
+}
+function currentFittable() { return order.lines.filter(rrgIsFittable); }
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-fit-open]')) {
+    fit.mode = 'form';
+    renderFitting(currentFittable(), null);
+    const first = document.querySelector('#fitForm [name=vehicle]');
+    document.getElementById('confirmFitting').scrollIntoView({ block: 'start', behavior: 'smooth' });
+    (document.querySelector('#fitForm [name=date]') || first).focus({ preventScroll: true });
+  }
+  if (e.target.closest('[data-fit-cancel]')) {
+    fit.mode = 'intro'; fit.changingStore = false;
+    renderFitting(currentFittable(), null);
+    document.querySelector('[data-fit-open]')?.focus();
+  }
+  if (e.target.closest('[data-fit-change-store]')) {
+    fit.changingStore = true;
+    renderFitting(currentFittable(), null);
+    document.querySelector('#fitForm [name=store]').focus();
+  }
+});
+document.addEventListener('change', e => {
+  if (e.target.matches('#fitForm select[name=store]') && e.target.value) {
+    fit.store = e.target.value;
+    const keep = Object.fromEntries(['vehicle', 'date', 'time', 'notes'].map(n => [n, document.querySelector(`#fitForm [name=${n}]`).value]));
+    fit.changingStore = false;
+    renderFitting(currentFittable(), null);
+    Object.entries(keep).forEach(([n, v]) => { document.querySelector(`#fitForm [name=${n}]`).value = v; });
+  }
+});
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'fitForm') return;
+  e.preventDefault();
+  const f = e.target;
+  const v = { store: f.store.value, vehicle: f.vehicle.value.trim(), date: f.date.value, time: f.time.value, notes: f.notes.value.trim() };
+  const items = [...f.querySelectorAll('[name=items]:checked')].map(i => currentFittable()[Number(i.value)]);
+  const errors = {};
+  if (!v.store) errors.store = 'Choose the store you’d like to visit.';
+  if (!items.length) errors.items = 'Tick at least one item to fit.';
+  if (!v.vehicle) errors.vehicle = 'Tell us your vehicle.';
+  if (!v.date) errors.date = 'Choose a preferred date.';
+  else if (new Date(v.date + 'T00:00').getDay() === 0) errors.date = 'Stores are closed on Sundays — choose another day.';
+  else if (new Date(v.date + 'T00:00').getDay() === 6 && v.time.startsWith('Afternoon')) errors.date = 'Stores close at 12:30pm on Saturdays — choose a morning.';
+  else {
+    // Public holidays close the store (spec.md §16 item 14).
+    const pick = STORES.find(x => x.name === v.store);
+    const hol = pick && rrgStoreHolidays(RRG_STATE_ABBR[pick.state]).find(h => h.date === v.date);
+    if (hol) errors.date = `${pick.name} is closed that day (${hol.name}). Choose another day.`;
+  }
+  f.querySelectorAll('[data-field]').forEach(x => { x.classList.remove('is-invalid'); x.querySelector(':scope > .booking-error')?.remove(); });
+  Object.entries(errors).forEach(([k, msg]) => {
+    const x = f.querySelector(`[data-field="${k}"]`);
+    x.classList.add('is-invalid');
+    x.insertAdjacentHTML('beforeend', `<span class="booking-error">${msg}</span>`);
+  });
+  const first = Object.keys(errors)[0];
+  if (first) { (f.querySelector(`[data-field="${first}"] input, [data-field="${first}"] select`))?.focus(); return; }
+  const st = STORES.find(x => x.name === v.store);
+  const date = new Date(v.date + 'T00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
+  fit.mode = 'sent';
+  const box = $('confirmFitting');
+  box.innerHTML = `
+    <div class="booking-sent" role="status" tabindex="-1" id="fitSent">
+      <h3>Fitting request sent to ${st.name}</h3>
+      <p>Our ${st.name} team has your request to fit ${items.map(l => esc(l.name)).join(' and ')} on your ${esc(v.vehicle)}, ${date} (${v.time.toLowerCase().replace(' (weekdays)', '')}). They'll call you on ${esc(order.phone || 'your number')} to confirm a time and the fitting price.</p>
+      <p class="booking-sent-meta">Order #${order.number} · sent to ${rrgStoreEmail(st.name)} · ${st.street}, ${st.city} · ${st.phone}</p>
+    </div>`;
+  document.getElementById('fitSent').focus();
+});
+
 $('confirmAccountForm').addEventListener('submit', e => {
   e.preventDefault();
   const pw = e.target.password.value;

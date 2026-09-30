@@ -2577,3 +2577,17 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
   .confirm-layout{grid-template-columns:1fr;}
   .confirm-summary{position:static;display:block;}
 }
+
+/* Book a fitting, in place on the confirmation page (2026-09-30) — the Installation form's
+   fields, minus what the order already knows. */
+.confirm-fit-form{margin-top:18px;padding-top:18px;border-top:1px solid var(--rrg-line);}
+.confirm-fit-who{margin-bottom:16px;padding:12px 14px;border-radius:var(--radius);background:var(--rrg-bg);font-size:14px;}
+.confirm-fit-who p{margin:0;line-height:1.6;}
+.confirm-fit-who p span{font-size:12px;color:var(--rrg-grey-600);}
+.confirm-fit-store{display:flex;align-items:center;gap:10px;font-weight:400;font-size:15px;}
+.confirm-fit-what{margin:0;padding:0;border:0;gap:8px;}
+.confirm-fit-what legend{padding:0;margin-bottom:6px;font-weight:700;}
+.confirm-fit-what .co-check{font-weight:400;font-size:14px;color:var(--rrg-text);}
+.confirm-fit-what .co-check input{width:auto;flex:0 0 auto;padding:0;}
+.confirm-optional{font-weight:400;color:var(--rrg-grey-600);}
+.confirm-fit-form .booking-actions .link-btn{color:var(--rrg-text);}
