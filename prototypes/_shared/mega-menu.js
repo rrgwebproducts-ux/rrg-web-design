@@ -124,7 +124,7 @@ function mmLevel3ColumnHTML(col) {
     <div class="mega-menu-l3-head">${col.heading}</div>
     <div class="mega-menu-l3-body${col.promoTile ? ' has-promo' : ''}">
       <div class="mega-menu-l3-links">${links}</div>
-      <a href="#" class="mm-viewall">View All ${col.heading}</a>
+      <a href="${col.viewAllHref || '#'}" class="mm-viewall">View All ${col.heading}</a>
     </div>
     ${mmPromoTileHTML(col.promoTile)}`;
 }
@@ -296,7 +296,7 @@ function buildMegaMenuMobile(mobileEl) {
       </div>
       <div class="mm-mobile-subrow">Shop ${col.heading}${MM_CHEVRON}</div>
       ${col.links.map(l => `<a class="mm-mobile-leaf" href="${l.href}">${l.label}</a>`).join('')}
-      <a class="mm-mobile-leaf mm-viewall" href="#">View All ${col.heading}</a>
+      <a class="mm-mobile-leaf mm-viewall" href="${col.viewAllHref || '#'}">View All ${col.heading}</a>
       ${mmPromoTileHTML(col.promoTile)}
     `;
     mobileEl.classList.toggle('has-promo', !!col.promoTile);

@@ -485,11 +485,6 @@ document.getElementById('homeCarousels').innerHTML = HOME_ROWS.map(row => `
       <button type="button" class="product-carousel-nav next" aria-label="Next ${row.title}">›</button>
     </div>
   </section>`).join('');
-  const original = btn.innerHTML;
-  btn.textContent = 'Added ✓';
-  btn.disabled = true;
-  setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
-});
 
 // ==== Recent fitments (spec.md §16 item 24) ============================================
 // The Fitment Gallery panel with its own track: each photo links to that vehicle's VLP. Real

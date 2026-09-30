@@ -1457,7 +1457,7 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
 27. ⬜ **Use-case landing pages:** Weekend Adventurer, Touring, Camping, Tradie, Family Holiday, Bike, Ski/Kayak. Landing pages for ads and organic search, linked from the Fit My Vehicle cards (item 9).
 28. 🅿️ **Component pages** (platforms, crossbars, backbones, spines, rugged lines): a "Looking for a complete roof rack? Search your vehicle" prompt for Google traffic that lands on a component. Graham: needed, but not urgent.
 29. 🅿️ **PLP "adventure type" filter** (e.g. hide clamp-mount racks for off-road buyers). Loose idea.
-30. ⬜ **Still to design:** brand pages, blog article and blog category pages, checkout and order confirmation (item 6). **Checkout and order confirmation built 2026-09-30** (mini-cart, cart, restyled Magento 2-step checkout, confirmation; `docs/checkout/checkout-spec.md`). Brand pages and blog still to design.
+30. ⬜ **Still to design:** brand pages, blog article and blog category pages, checkout and order confirmation (item 6). **Checkout and order confirmation built 2026-09-30** (mini-cart, cart, restyled Magento 2-step checkout, confirmation; `docs/checkout/checkout-spec.md`). **Brand pages + Brands hub built 2026-09-30** (8 brands; `docs/brand/brand-spec.md`, PLP brief Section 7). Blog still to design.
 31. ✅ **Index page:** Graham suggested a separate tab or section for the design pages, to cut the clutter. **Built 2026-09-30:** `prototypes/index.html` has two tabs, **Page designs** (grouped Home & stores / Product pages / Category & listing, with the card copy brought up to date) and **Tools & briefs** (the standalone header and the six developer briefs). `#tools` opens the second tab.
 
 ### 16.9 Actions outside the designs

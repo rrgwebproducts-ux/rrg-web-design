@@ -2592,3 +2592,123 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .confirm-fit-what .co-check input{width:auto;flex:0 0 auto;padding:0;}
 .confirm-optional{font-weight:400;color:var(--rrg-grey-600);}
 .confirm-fit-form .booking-actions .link-btn{color:var(--rrg-text);}
+
+/* ==== Brand pages + Brands hub (docs/brand/brand-spec.md, 2026-09-30) =====================
+   One template for every brand. The brand's own colour comes in as --brand-accent (set from the
+   page data; every accent is dark enough for white text at AA). It colours the banner panel and
+   the About band only, never a CTA, the header or the type. */
+[data-brand-page],[data-brands-hub]{--brand-accent:var(--rrg-charcoal);}
+
+/* 3.2 Brand banner: contained, the accent panel beside a real in-store fitment photo. */
+.brand-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);border-radius:var(--radius);overflow:hidden;background:var(--brand-accent);color:#fff;margin:4px 0 0;min-height:300px;}
+.brand-hero-panel{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:36px 40px;}
+.brand-hero h1{margin:0;line-height:1;}
+.brand-hero-logo{display:block;max-width:260px;max-height:64px;width:auto;height:auto;filter:brightness(0) invert(1);}
+/* Multi-colour logos (Front Runner, Cruz, MAXTRAX) lose their marks when turned white, so they
+   sit on a small white plate instead. */
+.brand-hero-logo.is-plated{filter:none;box-sizing:content-box;background:#fff;padding:10px 14px;border-radius:var(--radius);}
+.brand-hero-tagline{margin:0;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:26px;line-height:1.15;}
+.brand-hero-meta{margin:6px 0 0;font-size:15px;line-height:1.5;}
+.brand-hero-meta a{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+.brand-hero-media{position:relative;min-height:240px;background:var(--rrg-charcoal);}
+.brand-hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+/* No fitment photos for this brand (MAXTRAX, Rockymounts): a product shot on white instead. */
+.brand-hero-media:has(img.is-product),.brand-about-media.is-product{background:#fff;}
+.brand-hero-media img.is-product,.brand-about-media.is-product img{object-fit:contain;padding:24px;}
+.brand-photo-credit{position:absolute;left:10px;bottom:10px;padding:4px 8px;border-radius:var(--radius);background:rgba(0,0,0,.6);font-size:12px;line-height:1.3;color:#fff;}
+
+/* 3.3 Category tiles with real product photos (cutouts on white), not the lifestyle tiles. */
+.cat-tile-grid--brand{grid-template-columns:repeat(6,minmax(0,1fr));}
+.cat-tile--product .cat-tile-media{background:#fff;border-bottom:1px solid var(--rrg-line-soft);}
+.cat-tile--product .cat-tile-media::after{display:none;}
+.cat-tile--product .cat-tile-media img{inset:46px 14px 10px;width:calc(100% - 28px);height:calc(100% - 56px);object-fit:contain;}
+.cat-tile--product .cat-tile-title{color:var(--rrg-text);text-shadow:none;font-size:20px;}
+.cat-tile--product:hover{border-color:var(--brand-accent);}
+
+/* 3.4 About band: accent panel beside a fitment photo, the Figma's layout. */
+.brand-about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);border-radius:var(--radius);overflow:hidden;background:var(--brand-accent);color:#fff;margin:var(--space-section) 0;}
+.brand-about-body{padding:36px 40px;}
+.brand-about h2{color:#fff;font-size:38px;line-height:1;margin-bottom:8px;}
+.brand-about-lead{margin:0 0 14px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:18px;line-height:1.3;}
+.brand-about-body>p{margin:0 0 16px;font-size:15px;line-height:1.65;}
+.brand-about ul{margin:0;padding:0 0 0 18px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.5;}
+.brand-about li strong{font-weight:900;}
+.brand-about-note{margin:14px 0 0;font-size:12px;line-height:1.5;opacity:.85;}
+.brand-about-media{position:relative;min-height:280px;background:var(--rrg-charcoal);}
+.brand-about-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+/* 3.8 All products: the PLP grid, headed like any section, plus the vehicle chip. */
+.brand-products{margin:var(--space-section) 0;scroll-margin-top:calc(var(--sticky-offset,0px) + 16px);}
+.brand-demo-note{font-size:13px;color:var(--rrg-grey-600);margin:-6px 0 14px;}
+.plp-vehicle-chip-row{display:block;margin:0 0 14px;font-size:14px;color:var(--rrg-grey-700);}
+.plp-vehicle-chip-row[hidden]{display:none;}
+.plp-vehicle-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 6px 6px 12px;border:1px solid var(--rrg-fits);background:var(--rrg-fits-bg);border-radius:var(--radius);font-weight:700;color:var(--rrg-fits);}
+/* The ⓘ bubble hangs off the chip, not the icon, so it never runs off a phone screen. */
+.plp-vehicle-chip{position:relative;}
+.plp-vehicle-chip .plp-filter-tooltip{position:static;}
+.plp-vehicle-chip .plp-filter-tooltip::after{left:0;width:min(280px,calc(100vw - 48px));}
+.plp-vehicle-chip button{border:0;background:transparent;font-size:20px;line-height:1;width:26px;height:26px;border-radius:50%;cursor:pointer;color:var(--rrg-fits);}
+.plp-vehicle-chip button:hover{background:#fff;}
+.plp-vehicle-chip-link{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-text);text-decoration:underline;cursor:pointer;}
+
+/* 3.9 Popular vehicles: pills. */
+.brand-vehicle-pills{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:0;padding:0;}
+.brand-vehicle-pills a{display:inline-block;padding:10px 16px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;font-weight:700;font-size:14px;color:var(--rrg-text);text-decoration:none;}
+.brand-vehicle-pills a:hover{border-color:var(--rrg-text);}
+
+/* Not sold in this region (brand-spec.md Section 6). */
+.brand-unavailable{margin:28px 0;padding:28px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:var(--rrg-bg-warm);text-align:center;}
+.brand-unavailable p{margin:0 0 16px;font-size:16px;}
+.brand-unavailable[hidden],[data-brand-regional][hidden]{display:none!important;}
+
+/* Brand strip logos link to the brand pages (all templates). */
+.brands-track a{display:inline-flex;align-items:center;}
+.brands-track a:hover img,.brands-track a:focus-visible img{filter:none;opacity:1;}
+
+/* ---- Brands hub (2.x) ---- */
+.brands-hub-head{max-width:900px;padding:12px 0 8px;}
+.brands-hub-head p{font-size:16px;line-height:1.6;color:var(--rrg-grey-700);margin:0 0 12px;}
+.brands-hub-more-btn{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-text);text-decoration:underline;cursor:pointer;}
+.brand-card-body p.brand-card-cats{font-size:13px;color:var(--rrg-grey-600);}
+.brand-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;}
+.brand-card{display:flex;flex-direction:column;border:1px solid var(--rrg-line);border-top:4px solid var(--brand-accent);border-radius:var(--radius);background:#fff;overflow:hidden;}
+.brand-card[hidden]{display:none;}
+.brand-card-logo{display:flex;align-items:center;justify-content:center;height:96px;padding:18px 24px;border-bottom:1px solid var(--rrg-line-soft);}
+.brand-card-logo img{max-width:170px;max-height:44px;width:auto;height:auto;object-fit:contain;}
+.brand-card-body{display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;flex:1;}
+.brand-card-body h3{margin:0;font-size:22px;}
+.brand-card-body p{margin:0;font-size:14px;line-height:1.55;color:var(--rrg-grey-700);}
+.brand-card-count{font-size:13px;font-weight:700;color:var(--rrg-grey-600);}
+.brand-card-body .btn{margin-top:auto;}
+.az-jump{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 20px;padding:0;list-style:none;}
+.az-jump a,.az-jump span{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;border:1px solid var(--rrg-line);border-radius:var(--radius);font-weight:700;font-size:14px;color:var(--rrg-text);text-decoration:none;}
+.az-jump a:hover{border-color:var(--rrg-text);}
+.az-jump span{color:var(--rrg-grey-400);border-color:var(--rrg-line-soft);}
+.az-groups{columns:4 200px;column-gap:28px;}
+.az-group{break-inside:avoid;margin:0 0 20px;scroll-margin-top:calc(var(--sticky-offset,0px) + 16px);}
+.az-group h3{font-size:22px;margin:0 0 6px;padding-bottom:4px;border-bottom:2px solid var(--rrg-text);}
+.az-group ul{list-style:none;margin:0;padding:0;}
+.az-group li{padding:4px 0;font-size:15px;}
+.az-group a{color:var(--rrg-text);text-decoration:none;}
+.az-group a:hover{text-decoration:underline;}
+.az-group .az-built{font-weight:700;}
+
+@media (max-width:1100px){
+  .cat-tile-grid--brand{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .brand-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:900px){
+  .brand-hero,.brand-about{grid-template-columns:1fr;}
+  .brand-hero-media{order:-1;min-height:0;aspect-ratio:16/9;}
+  .brand-hero-panel,.brand-about-body{padding:24px 20px;}
+  .brand-about-media{min-height:0;aspect-ratio:16/9;}
+  .brand-about h2{font-size:30px;}
+  .cat-tile-grid--brand{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:6px;}
+  .cat-tile-grid--brand .cat-tile{flex:0 0 42%;scroll-snap-align:start;}
+}
+@media (max-width:520px){
+  .brand-hero-logo{max-width:200px;max-height:48px;}
+  .brand-hero-tagline{font-size:22px;}
+  .brand-card-grid{grid-template-columns:1fr;}
+  .az-groups{columns:2 140px;}
+}

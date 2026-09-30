@@ -58,6 +58,7 @@ function plpMatchesFiltersExcept(product, activeFilters, exceptFacetKey, activeS
   // left the sidebar showing counts against the whole catalogue instead of the search matches.
   const cfg = window.PLP_CONFIG;
   if (cfg && cfg.isSearch && !plpSearchQueryMatches(product, plpState.searchQuery)) return false;
+  if (!plpMatchesVehicleFilter(product)) return false;
   return Object.keys(activeFilters).every(facetKey => {
     if (facetKey === exceptFacetKey) return true;
     const selected = activeFilters[facetKey];
@@ -65,6 +66,41 @@ function plpMatchesFiltersExcept(product, activeFilters, exceptFacetKey, activeS
     const facetDef = plpFacetDefByKey(facetKey);
     return [...selected].some(val => plpValueMatches(product, facetKey, facetDef, val));
   });
+}
+
+// Brand pages' "Fits your {vehicle} ×" chip (cfg.vehicleFilter, docs/brand/brand-spec.md
+// Section 4): on by default whenever a vehicle is set. It only narrows products that carry
+// fitment (fitsVehicle: racks, fitting kits, bars/legs sold per vehicle, backbones); everything
+// else stays in, since RRG has no fitment data for it (plp-spec.md §2). Runs inside
+// plpMatchesFiltersExcept so the sidebar counts follow it too.
+function plpVehicleFilterActive() {
+  const cfg = window.PLP_CONFIG;
+  return !!(cfg && cfg.vehicleFilter && !plpState.vehicleFilterOff && plpSessionVehicleKey());
+}
+function plpMatchesVehicleFilter(product) {
+  if (!plpVehicleFilterActive()) return true;
+  return !product.fitsVehicle || product.fitsVehicle === plpSessionVehicleKey();
+}
+function plpRenderVehicleChip() {
+  const el = document.getElementById('plpVehicleChip');
+  if (!el) return;
+  const v = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
+  const cfg = window.PLP_CONFIG;
+  if (!cfg.vehicleFilter || !v) { el.hidden = true; el.innerHTML = ''; return; }
+  const model = v.label.split(' ').slice(1).join(' ');
+  const tip = `Roof racks and fitting parts are matched to your ${model}. Other products don't depend on your vehicle.`;
+  el.hidden = false;
+  el.innerHTML = plpState.vehicleFilterOff
+    ? `<span>Showing every ${cfg.brandName || ''} product.</span> <button type="button" class="plp-vehicle-chip-link" data-vehicle-chip="on">Show only what fits your ${model}</button>`
+    : `<span class="plp-vehicle-chip">Fits your ${v.label}${plpFilterTooltipHTML(tip)}<button type="button" data-vehicle-chip="off" aria-label="Show every product, not just what fits your ${model}">&times;</button></span>`;
+  el.querySelector('[data-vehicle-chip]').addEventListener('click', e => {
+    plpState.vehicleFilterOff = e.currentTarget.dataset.vehicleChip === 'off';
+    plpState.page = 1;
+    plpState.visibleCount = PLP_PAGE_SIZE;
+    plpRenderFilters();
+    plpRenderResults();
+  });
+  el.querySelectorAll('.plp-filter-tooltip').forEach(t => t.addEventListener('click', e => e.preventDefault()));
 }
 
 function plpFacetDefByKey(key) {
@@ -90,7 +126,8 @@ const plpState = {
   visibleCount: PLP_PAGE_SIZE, // mobile "show more" cumulative count
   compareEnabled: false, // Demo State Panel toggle, off by default (spec Section 12)
   ribbonsEnabled: false, // Demo State Panel toggle, off by default even in Phase 2 (Brenton, 2026-09-29)
-  compareSelected: []    // up to 2 product ids
+  compareSelected: [],   // up to 2 product ids
+  vehicleFilterOff: false // brand pages: the shopper cleared "Fits your {vehicle}" (plpRenderVehicleChip)
 };
 
 function plpFilteredSortedProducts() {
@@ -109,7 +146,9 @@ function plpFilteredSortedProducts() {
   // vehicle first, then non-vehicle-specific products, then products for other vehicles —
   // relevance order within each tier. Only Relevance: an explicit price/rating sort is the
   // shopper asking for that order, so it's left alone.
-  const vehicleKey = cfg.isSearch ? plpSessionVehicleKey() : null;
+  // Brand pages with "Fits your {vehicle}" on (brand-spec.md §4) tier the same way, so "Shop Thule
+  // for my Hilux" opens on the Hilux racks rather than wherever they sit in the live order.
+  const vehicleKey = cfg.isSearch || plpVehicleFilterActive() ? plpSessionVehicleKey() : null;
   if (plpState.sort === 'relevance' && vehicleKey) {
     const tier = p => { const fit = plpProductFit(p); return fit === vehicleKey ? 0 : (!fit ? 1 : 2); };
     return list.slice().sort((a, b) => (tier(a) - tier(b)) || sorter(a, b));
@@ -824,6 +863,10 @@ function plpRenderSearchVehicleStrip() {
 // Hover/focus/tap tooltip (Brenton's team, 2026-09-29) carries the full vehicle breakdown the
 // one-line label leaves out — model, generation, body style, roof type, years — mainly for the
 // no-vehicle "Suits Toyota Hilux only" case, where the label alone doesn't say which Hilux.
+// A product for a vehicle the prototype doesn't model (brand pages: fitsVehicle "other" — a real
+// rack or kit for some other vehicle, named in its title) gets generic wording instead.
+const plpFitVehicle = fit => PLP_VEHICLES[fit] || null;
+const plpFitFor = fit => { const v = plpFitVehicle(fit); return v ? `the ${v.short} (${v.spec})` : 'the vehicle named in its title'; };
 const PLP_FIT_COPY = {
   fits: {
     label: fit => `Fits your ${PLP_VEHICLES[fit].name}`,
@@ -831,11 +874,11 @@ const PLP_FIT_COPY = {
   },
   no_fit: {
     label: () => `Doesn't fit your ${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].name}`,
-    tip: fit => `This product is built for the ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}) — not your ${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].short} (${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].spec}). <a href="#" data-open-fit-finder>Change your vehicle</a>`
+    tip: fit => `This product is built for ${plpFitFor(fit)} — not your ${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].short} (${PLP_VEHICLES[plpSessionVehicleKey() || PLP_SESSION_VEHICLE_KEY].spec}). <a href="#" data-open-fit-finder>Change your vehicle</a>`
   },
   unknown: {
-    label: fit => `Suits ${PLP_VEHICLES[fit].name} only`,
-    tip: fit => `This product is specific to the ${PLP_VEHICLES[fit].short} (${PLP_VEHICLES[fit].spec}). <a href="#" data-open-fit-finder>Set your vehicle</a> to confirm it fits.`
+    label: fit => plpFitVehicle(fit) ? `Suits ${PLP_VEHICLES[fit].name} only` : 'Vehicle-specific',
+    tip: fit => `This product is specific to ${plpFitFor(fit)}. <a href="#" data-open-fit-finder>Set your vehicle</a> to confirm it fits.`
   }
 };
 
@@ -1580,6 +1623,7 @@ function plpRenderResults() {
   if (cfg.isSearch && plpState.searchScope !== 'products') { plpRenderScopeResults(); return; }
   const wrap = document.getElementById('plpResults');
   plpRenderSetStoreLine();
+  plpRenderVehicleChip();
   const countLabel = document.getElementById('plpResultCount');
   const mobileCountLabel = document.getElementById('plpResultCountMobile');
   if (!wrap) return;
@@ -2215,6 +2259,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('rrg-session-change', plpRenderHero);
   document.addEventListener('rrg-session-change', () => { plpRenderCategoryContent(); if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(plpState.heroImageMode || 'vehicle'); });
   document.addEventListener('rrg-session-change', plpApplyCategoryImage);
+  // A new vehicle turns the brand page's "Fits your {vehicle}" filter back on (brand-spec.md §4).
+  document.addEventListener('rrg-session-change', () => { plpState.vehicleFilterOff = false; plpState.page = 1; if (window.PLP_CONFIG.vehicleFilter) plpRenderFilters(); });
   document.addEventListener('rrg-session-change', plpRenderResults);
   // Vehicle-scoped page buttons/Pages results come and go with the session vehicle.
   if (window.PLP_CONFIG.isSearch) document.addEventListener('rrg-session-change', () => { plpRenderSearchHeadline(); plpRenderSearchScope(); });

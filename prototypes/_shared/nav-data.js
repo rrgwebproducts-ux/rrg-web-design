@@ -107,12 +107,20 @@ const HEADER_NAV = [
   },
   {
     label: 'Brands',
-    href: '#',
+    href: RRG_PROTO + 'brands/index.html',
     columns: [
-      { heading: 'Product Brands', links: ['Cruz', 'Thule', 'Rhino Rack', 'Yakima', 'Prorack', 'Stedi', 'DropRacks', 'BuzzRacks', 'Wedgetail', 'Front Runner', 'Darche', 'Tred Outdoors', 'Maxtrax', 'Master Lock', 'MSA 4x4', 'Rola Roof Racks', 'Tracklander', 'CampBoss', 'Mister Hitches', 'Shingleback Off Road', 'EGR', 'RacksBrax', 'Safeguard', 'Command', 'TreeFrog', 'Turtle', 'Rocky Mounts', 'KanuLock', 'EcoXGear', 'Kuat', 'Ezy Anchor', 'Kaon', 'TieGear', 'Real Truck', 'ClearView'].map(mkLink) },
+      { heading: 'Product Brands', viewAllHref: RRG_PROTO + 'brands/index.html', links: ['Cruz', 'Thule', 'Rhino Rack', 'Yakima', 'Prorack', 'Stedi', 'DropRacks', 'BuzzRacks', 'Wedgetail', 'Front Runner', 'Darche', 'Tred Outdoors', 'Maxtrax', 'Master Lock', 'MSA 4x4', 'Rola Roof Racks', 'Tracklander', 'CampBoss', 'Mister Hitches', 'Shingleback Off Road', 'EGR', 'RacksBrax', 'Safeguard', 'Command', 'TreeFrog', 'Turtle', 'Rocky Mounts', 'KanuLock', 'EcoXGear', 'Kuat', 'Ezy Anchor', 'Kaon', 'TieGear', 'Real Truck', 'ClearView'].map(mkLink) },
       { heading: 'Vehicle Makes', links: ['Alfa Romeo', 'Audi', 'BMW', 'Chery', 'Chevrolet', 'Chrysler', 'Citroen', 'Dacia', 'Daewoo', 'Daihatsu', 'Daimler', 'Dodge', 'DS', 'Fiat', 'Ford', 'Foton', 'FPV', 'GMC', 'Great Wall', 'Hino', 'Holden', 'Honda', 'HSV', 'Hyundai', 'Haval', 'Infiniti', 'Isuzu', 'Iveco', 'Jac', 'Jaguar', 'Jeep', 'JMC', 'Kia', 'Land Rover', 'LDV', 'Lexus', 'Lada', 'Mahindra', 'Maserati', 'Mazda', 'Mercedes Benz', 'MG', 'Mini', 'Mitsubishi', 'Nissan', 'Opel', 'Peugeot', 'Porsche', 'Proton', 'RAM', 'Renault', 'Rover', 'Saab', 'Scion', 'Seat', 'Skoda', 'Smart', 'Ssangyong', 'Subaru', 'Suzuki', 'Tata', 'Tesla', 'Toyota', 'Vauxhall', 'Volkswagen', 'Volvo'].map(mkLink) },
     ],
   },
 ];
 
 function mkLink(label) { return { label, href: '#' }; }
+
+// Brand pages built in the prototype (docs/brand/brand-spec.md, 2026-09-30): the Brands panel's
+// label → the page's ?brand= slug. Every other brand keeps its live /brands/brands/ URL.
+const RRG_BUILT_BRANDS = { 'Thule': 'thule', 'Rhino Rack': 'rhino-rack', 'Rhino-Rack': 'rhino-rack', 'Yakima': 'yakima', 'Front Runner': 'front-runner', 'Cruz': 'cruz', 'CRUZ': 'cruz', 'Maxtrax': 'maxtrax', 'MAXTRAX': 'maxtrax', 'Rola Roof Racks': 'rola', 'ROLA': 'rola', 'Rola': 'rola', 'Rocky Mounts': 'rockymounts', 'Rockymounts': 'rockymounts' };
+function rrgBrandPageUrl(slug) { return `${RRG_PROTO}brand/index.html?brand=${slug}`; }
+HEADER_NAV.find(c => c.label === 'Brands').columns[0].links.forEach(l => {
+  if (RRG_BUILT_BRANDS[l.label]) l.href = rrgBrandPageUrl(RRG_BUILT_BRANDS[l.label]);
+});

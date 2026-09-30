@@ -353,8 +353,6 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 
 **Unlike the search-results page, these ARE meant to be real, indexable pages** — the whole point of the SHOP BY row's real fixed URLs (Section 4.3) is SEO indexability per subcategory. In the real Magento templates, per-category meta description, canonical and title (including one per Shop By subcategory URL) and `BreadcrumbList`/`Product`-list structured data all need generating from the category data. The prototype's tags are static examples on the top-level category only. This is the same category of gap as `DEVELOPER-BRIEF.md` Section 5 flags for the PDP templates, not a genuinely open question the way search-results' indexability was.
 
----
-
 ## 6. Known gaps before production
 
 1. **SHOP BY's "real fixed URL per subcategory" behaviour is simulated, not real, in this prototype** — the demo swaps content client-side against one shared in-page dataset rather than actually navigating to a distinct URL per tile. The real build needs this to be genuine per-URL server-rendered pages (or an SPA-style route change with real URLs), not a port of this prototype's JS.
@@ -375,3 +373,32 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 16. **Whether VCLP and standard PLP eventually merge into one dynamic Magento template** — Mark's technical call, not a prototype-level decision.
 17. **VPLP canonical URL** (Section 5) — no live vehicle-specific category URL exists yet, so the VPLP has no canonical/`og:url`. It needs one once the real URL structure for vehicle categories is decided.
 18. **Vehicle breadcrumb pattern is provisional** (4.2) — `Home > Vehicles > Toyota > Hilux > Roof Racks` was agreed 2026-09-29 but may change after team review.
+
+---
+
+## 7. Brand pages + Brands hub (2026-09-30, `docs/brand/brand-spec.md`)
+
+**Templates:** `prototypes/brand/index.html?brand={slug}` (one template for all 8 built brands: thule, rhino-rack, yakima, front-runner, cruz, maxtrax, rola, rockymounts) and `prototypes/brands/index.html` (the hub). Both are built from shared components, with no page-local CSS (`shared.css` → "Brand pages + Brands hub").
+
+**Brand page, top to bottom:**
+1. **Brand banner** (`.brand-hero`): the brand's accent colour (`--brand-accent`) beside a real in-store fitment photo of that brand (Rackit gallery, 1920x1080 cache size). The logo is the H1 (alt = brand name), turned white; multi-colour logos (Front Runner, Cruz, MAXTRAX) sit on a white plate instead (`logoPlate`). Brands with no fitment photos show their signature product (`heroProduct`). Tagline, live product count (AU only) and a jump link to the grid.
+2. **Shop {brand} by category** (`.cat-tile-grid--brand`, `.cat-tile--product`): up to 6 tiles, each linking to the brand's existing department page (e.g. `/bike-racks/by-brand/thule-bike-racks`), photo = that page's first product. Hidden with fewer than 2 tiles. Per-region tile lists (`tiles[].regions`).
+3. **About {brand}** (`.brand-about`): lead line, 2–3 sentences, 4–5 bullets, warranty footnote. Copy researched from each brand's own site; every fact is sourced (brand-spec.md 3.4).
+4. **Vehicle finder** (`[data-vehicle-finder]` with `data-vf-stay="#brandProducts"`): sets the vehicle and scrolls to this page's grid instead of going to the VLP. The known-vehicle button reads "Shop {brand} for my {model}" (`data-vf-shop-label`). Hidden for brands with nothing vehicle-specific. The page's one gold CTA.
+5. **Top selling {brand} products**: `.product-carousel`. **Stand-in:** the first product of each tile's department page. Production needs a sales-ranked feed.
+6. **Recent {brand} fitments**: Home's Recent Fitments panel with this brand's Rackit photos; the session vehicle's first when it has 4 or more. Hidden when the brand has none (MAXTRAX, Rockymounts).
+7. **All {brand} products**: the PLP engine (`plp.js`) with a brand-scoped `PLP_CONFIG` (`vehicleFilter: true`, facets Category / Price / Availability). Grid contents and order as live. With a vehicle set, the **"Fits your {vehicle} ×" chip** (`#plpVehicleChip`, `plpRenderVehicleChip()`) is on: products with fitment (`fitsVehicle`) are narrowed to that vehicle, everything else stays in, and products that fit it sort first under Relevance. Clearing the chip shows everything; a new vehicle turns it back on.
+8. **Popular vehicles for {brand}**: pills from the vehicles in its fitment photos (demo vehicles → VLP, others → the live product page). Hidden once a vehicle is set.
+9. **Shop more brands** strip (the other built brands) → trust band → footer.
+
+**Regions:** AU and NZ show all 8. UK shows Thule, Rhino-Rack, Yakima and Cruz, with UK-only tile lists. A brand the region doesn't sell shows "{brand} isn't available from The Roof Box Company" and a link to the hub. Prices follow the prototype-wide currency swap.
+
+**Brands hub:** the live H1 and intro (Read more), a card per built brand (logo, lead line, what it makes, live product count in AU, Shop {brand}), then an A–Z of every brand the region sells (AU: the live Brands menu; NZ: the NZ site's list; UK: roofbox.co.uk). Built brands link to their page (bold); the rest keep their live URL. `BreadcrumbList` + `ItemList` JSON-LD.
+
+**Linking:** the header Brands panel (the L1 and "View All Product Brands" → hub, the 8 brands → their pages; `RRG_BUILT_BRANDS` in nav-data.js), every template's "Shop The Best Brands" strip (`rrgLinkBrandStrip()`), and Search Results' brand cards (`rrgBrandUrl()`).
+
+**SEO:** indexed. `<title>` and description as live, canonical = the live brand URL (the vehicle filter never changes the URL), `BreadcrumbList` + `CollectionPage` about a `Brand`.
+
+**Data:** `prototypes/brand/brand-data.js` (brand meta, tiles, copy, A–Z) and `brand-products.js` (product sample + fitments), generated from the live crawl of 30 Sep 2026. In Magento the accent, tagline, banner photo, About copy and tile list are fields on each brand category.
+
+**Known gaps:** a real bestseller feed (5); the brand logos are the live site's small 148px files and need vector or high-res versions; brand colours are taken from the brands' sites and need confirming; UK Rhino-Rack (brand-spec.md Section 11).

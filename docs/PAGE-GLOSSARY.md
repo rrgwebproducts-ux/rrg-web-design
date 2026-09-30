@@ -214,3 +214,14 @@ Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shar
 | **Checkout shell** | Distraction-free header (logo, Secure checkout, help phone) and short footer. — `.checkout-header` / `.checkout-footer` |
 | **Method choice** | Click & Collect vs Delivery cards, before any address (AU); the store picked by postcode. — `.co-method`, `.co-store-option` |
 | **Book fitting card** | On the order confirmation: the fittable items and Book a Fitting at the store, prefilled into the Installation form. — `.confirm-fitting` |
+
+## Brand pages + Brands hub (2026-09-30, `docs/brand/brand-spec.md`)
+
+| Name | What it is |
+|---|---|
+| **Brand page** | One template per brand (`prototypes/brand/?brand=`): banner, category tiles, About band, vehicle finder, top sellers, recent fitments, the full range and popular vehicles. |
+| **Brand banner** | The brand's accent panel (logo as H1, tagline, product count) beside a real in-store fitment photo of that brand. — `.brand-hero` |
+| **Brand accent** | The brand's own colour, darkened where needed for AA white text; colours the banner and About band only. — `--brand-accent` |
+| **About band** | Researched brand copy (lead, body, bullets, warranty note) on the accent, photo beside it. — `.brand-about` |
+| **Fits your vehicle chip** | On the brand grid with a vehicle set: narrows vehicle-specific products to that vehicle; × shows everything. — `#plpVehicleChip`, `plpRenderVehicleChip()` |
+| **Brands hub** | `/brands` rebuilt: featured brand cards and an A–Z of every brand the region sells. — `prototypes/brands/`, `.brand-card`, `.az-group` |

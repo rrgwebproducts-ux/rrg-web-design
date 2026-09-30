@@ -52,6 +52,8 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'plp-camping', label: 'PLP Camping' },
       { key: 'plp', label: 'PLP Bike Racks' },
       { key: 'vplp', label: 'VPLP Roof Racks' },
+      { key: 'brands', label: 'Brands (hub)' },
+      { key: 'brand', label: 'Brand Page — Thule' },
     ] },
     { title: 'Other', items: [
       { key: 'search-results', label: 'Search Results' },

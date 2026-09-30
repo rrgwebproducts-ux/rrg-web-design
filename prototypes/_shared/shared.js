@@ -1135,6 +1135,23 @@ function rrgLinkInstallation(root = document) {
 }
 document.addEventListener('DOMContentLoaded', () => rrgLinkInstallation());
 
+// "Shop The Best Brands" strip (every template): each logo links to its brand page
+// (docs/brand/brand-spec.md 0), matched by the logo's alt text. Logos already inside a link
+// (the brand page's own "Shop more brands" strip) are left alone.
+function rrgLinkBrandStrip(root = document) {
+  if (typeof RRG_BUILT_BRANDS === 'undefined') return;
+  root.querySelectorAll('.brands-track > img').forEach(img => {
+    const slug = RRG_BUILT_BRANDS[img.alt];
+    if (!slug) return;
+    const a = document.createElement('a');
+    a.href = rrgBrandPageUrl(slug);
+    a.setAttribute('aria-label', `Shop ${img.alt}`);
+    img.replaceWith(a);
+    a.appendChild(img);
+  });
+}
+document.addEventListener('DOMContentLoaded', () => rrgLinkBrandStrip());
+
 // ---- Store hours + open now (store page and Store Finder) ----
 // Structured hours per day, worked out in the store's own time zone so a Sydney store reads
 // right from Perth. Stores without their own record use the standard hours shown on the live
@@ -1334,15 +1351,19 @@ function initFitFinderCascade(root, onSubmit) {
   submit.addEventListener('click', () => onSubmit(model.value));
 }
 
-// Home page hero Fit Finder (docs/home/home-spec.md Section 3) — always lands on the VLP, the
-// same as the header's Fit My Vehicle drawer.
+// Home page hero Fit Finder (docs/home/home-spec.md Section 3) — lands on the VLP, the same as
+// the header's Fit My Vehicle drawer. [data-vf-stay="#target"] (brand pages, docs/brand/
+// brand-spec.md 3.5) sets the vehicle in place instead and scrolls to that page's own results,
+// which filter themselves on the session change.
 function initInlineFitFinders() {
   document.querySelectorAll('[data-fit-finder-inline]').forEach(root => {
     root.querySelector('[data-ff-make]').innerHTML = ffOptions(FIT_FINDER_MAKES, 'Make');
     initFitFinderCascade(root, key => {
       rrgVehicleSpecSave(key, root);
       if (window.rrgSetVehicle) window.rrgSetVehicle(key);
-      window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+      const stay = root.dataset.vfStay && document.querySelector(root.dataset.vfStay);
+      if (stay) stay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
     });
     if (root.hasAttribute('data-vehicle-finder')) initVehicleFinder(root);
   });
@@ -1354,7 +1375,9 @@ function initInlineFitFinders() {
 // read-only summary of what was picked, Shop for my Hilux (→ VLP) and Change vehicle. Change
 // resets the cascade to Make (focus there) with "← Back to Hilux" to undo, instead of opening the
 // drawer. Light or dark (Site Admin → Design options). Opt in with [data-vehicle-finder] on a
-// [data-fit-finder-inline] widget; data-vf-browse-href sets where "Shop without a vehicle" goes.
+// [data-fit-finder-inline] widget; data-vf-browse-href sets where "Shop without a vehicle" goes,
+// data-vf-shop-href / data-vf-shop-label ("{model}" = the vehicle's model) override the known
+// state's button (brand pages: "Shop Thule for my Hilux" → the page's own filtered grid).
 const RRG_VEHICLE_SPEC_KEY = 'rrgSessionVehicleSpec';
 const RRG_VF_STYLE_KEY = 'rrgVehicleFinderStyle';
 // The last Year/Body/Roof picked for each vehicle. Demo default: the generation the rest of the
@@ -1428,7 +1451,7 @@ function initVehicleFinder(root) {
         ${spec ? `<ul class="vf-spec" aria-label="Your vehicle details"><li>${spec.years}</li><li>${spec.bodies}</li><li>${spec.roofs}</li></ul>` : ''}
       </div>
       <div class="vf-actions">
-        <a class="btn btn-cta" href="${RRG_PROTO}vlp/index.html?vehicle=${key}">Shop for my ${model}</a>
+        <a class="btn btn-cta" href="${root.dataset.vfShopHref || `${RRG_PROTO}vlp/index.html?vehicle=${key}`}">${(root.dataset.vfShopLabel || 'Shop for my {model}').replace('{model}', model)}</a>
         <button type="button" class="vf-change" data-vf-change>Change vehicle</button>
       </div>`;
   };
@@ -3004,15 +3027,18 @@ function rrgSearchProductsFor(query) {
   return RRG_SEARCH_SUGGEST_PRODUCTS.filter(p => rrgSearchTextMatches(`${p.brand} ${p.name} ${p.kw}`, query));
 }
 
+// The 8 brands with a prototype brand page (RRG_BUILT_BRANDS, nav-data.js) link there; the rest
+// keep their live URL.
 function rrgBrandUrl(brand) {
-  return `${RRG_LIVE_URL}/brands/brands/${brand.slug}`;
+  const built = typeof RRG_BUILT_BRANDS !== 'undefined' && RRG_BUILT_BRANDS[brand.name];
+  return built ? rrgBrandPageUrl(built) : `${RRG_LIVE_URL}/brands/brands/${brand.slug}`;
 }
 
 // Prototype-relative hrefs ("../plp/index.html") are resolved against the current page so they
 // work from every template; live-site/help-centre links open in a new tab since they leave the
 // prototype.
 function rrgSearchLinkAttrs(href) {
-  const external = /^https?:/.test(href);
+  const external = /^https?:/.test(href) && !href.startsWith(RRG_PROTO);
   return external
     ? `href="${href}" target="_blank" rel="noopener"`
     : `href="${new URL(href, window.location.href).href}"`;
