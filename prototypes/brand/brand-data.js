@@ -104,7 +104,20 @@ const RRG_BRAND_PAGES = {
   ],
   "hasFitment": true,
   "logoPlate": false,
-  "heroProduct": null
+  "images": {
+   "hero": {
+    "pos": "center 60%",
+    "alt": "Car with a Thule bike carrier on a forest road",
+    "source": "thule.com homepage campaign",
+    "src": "brands/thule-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "Thule Test Center crash lab in Hillerstorp, Sweden",
+    "source": "thule.com \"This is Thule\"",
+    "src": "brands/thule-about.jpg"
+   }
+  }
  },
  "rhino-rack": {
   "slug": "rhino-rack",
@@ -178,7 +191,20 @@ const RRG_BRAND_PAGES = {
   ],
   "hasFitment": true,
   "logoPlate": false,
-  "heroProduct": null
+  "images": {
+   "hero": {
+    "pos": "center 55%",
+    "alt": "Rhino-Rack roof rack and gear on a Ford Ranger parked on the beach",
+    "source": "Figma \"Brand Page - Rhino-Rack - V1\" (Rhino-Rack campaign image)",
+    "src": "brands/rhino-rack-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "Toyota Hilux with a Rhino-Rack platform and gear driving a dusty bush track",
+    "source": "Figma \"Brand Page - Rhino-Rack - V1\" (Rhino-Rack campaign image)",
+    "src": "brands/rhino-rack-about.jpg"
+   }
+  }
  },
  "yakima": {
   "slug": "yakima",
@@ -280,7 +306,20 @@ const RRG_BRAND_PAGES = {
   ],
   "hasFitment": true,
   "logoPlate": false,
-  "heroProduct": null
+  "images": {
+   "hero": {
+    "pos": "center 40%",
+    "alt": "Loading gear onto a Yakima roof rack",
+    "source": "yakima.com roof racks collection banner",
+    "src": "brands/yakima-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "White SUV with a Yakima roof box",
+    "source": "yakima.com.au",
+    "src": "brands/yakima-about.jpg"
+   }
+  }
  },
  "front-runner": {
   "slug": "front-runner",
@@ -353,7 +392,20 @@ const RRG_BRAND_PAGES = {
   ],
   "hasFitment": true,
   "logoPlate": true,
-  "heroProduct": null
+  "images": {
+   "hero": {
+    "pos": "center 62%",
+    "alt": "Front Runner Slimline 3 roof rack on a 4WD in the mountains at sunset",
+    "source": "dometic.com Slimline 3 page",
+    "src": "brands/front-runner-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "Front Runner Slimline 3 roof rack loaded with storage boxes at sunset",
+    "source": "dometic.com Slimline 3 page",
+    "src": "brands/front-runner-about.jpg"
+   }
+  }
  },
  "cruz": {
   "slug": "cruz",
@@ -455,7 +507,20 @@ const RRG_BRAND_PAGES = {
   ],
   "hasFitment": true,
   "logoPlate": true,
-  "heroProduct": null
+  "images": {
+   "hero": {
+    "pos": "center",
+    "alt": "SUV with a CRUZ roof rack and roof box on the beach",
+    "source": "cruz-products.com homepage slider",
+    "src": "brands/cruz-hero.jpg"
+   },
+   "about": {
+    "pos": "22% center",
+    "alt": "Rider loading a bike onto a CRUZ bike carrier",
+    "source": "cruz-products.com homepage slider",
+    "src": "brands/cruz-about.jpg"
+   }
+  }
  },
  "maxtrax": {
   "slug": "maxtrax",
@@ -497,7 +562,20 @@ const RRG_BRAND_PAGES = {
   "tiles": [],
   "hasFitment": false,
   "logoPlate": true,
-  "heroProduct": "maxtrax-7"
+  "images": {
+   "hero": {
+    "pos": "center",
+    "alt": "MAXTRAX recovery boards under a 4WD bogged on the beach",
+    "source": "maxtrax.com.au homepage",
+    "src": "brands/maxtrax-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "Overhead view of a 4WD carrying MAXTRAX recovery boards",
+    "source": "maxtrax.com.au about page",
+    "src": "brands/maxtrax-about.jpg"
+   }
+  }
  },
  "rola": {
   "slug": "rola",
@@ -570,7 +648,20 @@ const RRG_BRAND_PAGES = {
   ],
   "hasFitment": true,
   "logoPlate": false,
-  "heroProduct": null
+  "images": {
+   "hero": {
+    "pos": "center 60%",
+    "alt": "Ford Everest with a ROLA roof rack parked in the forest",
+    "source": "rola.com.au homepage hero",
+    "src": "brands/rola-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "Surfboard on a ROLA roof rack",
+    "source": "rola.com.au ridge mount collection",
+    "src": "brands/rola-about.jpg"
+   }
+  }
  },
  "rockymounts": {
   "slug": "rockymounts",
@@ -616,7 +707,20 @@ const RRG_BRAND_PAGES = {
   "tiles": [],
   "hasFitment": false,
   "logoPlate": false,
-  "heroProduct": "rockymounts-21"
+  "images": {
+   "hero": {
+    "pos": "center 35%",
+    "alt": "Loading a bike onto a Rockymounts roof bike rack",
+    "source": "rockymounts.com collection",
+    "src": "brands/rockymounts-hero.jpg"
+   },
+   "about": {
+    "pos": "center",
+    "alt": "Friends with bikes on a Rockymounts hitch rack",
+    "source": "rockymounts.com collection",
+    "src": "brands/rockymounts-about.jpg"
+   }
+  }
  }
 };
 

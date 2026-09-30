@@ -220,8 +220,8 @@ Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shar
 | Name | What it is |
 |---|---|
 | **Brand page** | One template per brand (`prototypes/brand/?brand=`): banner, category tiles, About band, vehicle finder, top sellers, recent fitments, the full range and popular vehicles. |
-| **Brand banner** | The brand's accent panel (logo as H1, tagline, product count) beside a real in-store fitment photo of that brand. — `.brand-hero` |
+| **Brand banner** | The brand's own lifestyle photo with the logo (H1), tagline and product count over its left side; on phones the text sits in an accent panel below the photo. — `.brand-hero` |
 | **Brand accent** | The brand's own colour, darkened where needed for AA white text; colours the banner and About band only. — `--brand-accent` |
-| **About band** | Researched brand copy (lead, body, bullets, warranty note) on the accent, photo beside it. — `.brand-about` |
+| **About band** | Researched brand copy (lead, body, bullets, warranty note) on the accent, the brand's own photo beside it. — `.brand-about` |
 | **Fits your vehicle chip** | On the brand grid with a vehicle set: narrows vehicle-specific products to that vehicle; × shows everything. — `#plpVehicleChip`, `plpRenderVehicleChip()` |
 | **Brands hub** | `/brands` rebuilt: featured brand cards and an A–Z of every brand the region sells. — `prototypes/brands/`, `.brand-card`, `.az-group` |

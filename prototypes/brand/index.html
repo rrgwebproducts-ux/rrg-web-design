@@ -109,8 +109,8 @@
 </div>
 
 <main class="wrap">
-  <!-- 3.2 Brand banner — the accent panel (logo as the H1, tagline, product count + jump link)
-       beside a real in-store fitment photo of this brand (the live Rackit gallery). -->
+  <!-- 3.2 Brand banner — the brand's own lifestyle photo with the logo (the H1), tagline and
+       product count + jump link over it, as in the Figma. -->
   <section class="brand-hero" id="brandHero"></section>
 
   <!-- Section 6 — a brand the region doesn't sell (e.g. Front Runner on roofbox.co.uk). -->
@@ -125,7 +125,7 @@
       <div class="cat-tile-grid cat-tile-grid--brand" id="brandTiles"></div>
     </section>
 
-    <!-- 3.4 About {brand} — researched copy (spec 3.4), fitment photo on the right. -->
+    <!-- 3.4 About {brand} — researched copy (spec 3.4), the brand's own photo on the right. -->
     <section class="brand-about" id="brandAbout"></section>
 
     <!-- 3.5 Vehicle finder, scoped to this brand: sets the vehicle and filters the grid below
@@ -351,21 +351,17 @@ const brandFitmentLink = f => f.vehicleKey
   : `href="${f.href}" target="_blank" rel="noopener"`;
 
 // ---- 3.2 Banner -------------------------------------------------------------------------------
+// The Figma's layout: the brand's own lifestyle photo, logo and tagline over its left side. On
+// phones the photo sits above an accent panel instead (brand-spec.md 3.2).
 function renderBrandHero() {
-  const photo = BRAND_DATA.fitments[0];
-  const product = BRAND_DATA.products.find(p => p.id === (BRAND.heroProduct || BRAND_DATA.topSellers[0]));
+  const img = BRAND.images.hero;
   const inRegion = BRAND.regions.includes(BRAND_REGION());
   document.getElementById('brandHero').innerHTML = `
+    <img class="brand-hero-img" src="../_shared/${img.src}" alt="${img.alt}" style="object-position:${img.pos}" width="1920" height="600">
     <div class="brand-hero-panel">
       <h1><img class="brand-hero-logo${BRAND.logoPlate ? ' is-plated' : ''}" src="../_shared/${BRAND.logo}" alt="${BRAND.name}"></h1>
       <p class="brand-hero-tagline">${BRAND.tagline}</p>
       ${inRegion ? `<p class="brand-hero-meta">${BRAND_REGION() === 'AU' ? `${BRAND.liveCount.toLocaleString('en-AU')} ${BRAND.name} products · ` : ''}<a href="#brandProducts">Browse the full range ↓</a></p>` : ''}
-    </div>
-    <div class="brand-hero-media">
-      ${photo
-        ? `<img src="${photo.large}" alt="${photo.product} fitted to a customer's ${photo.vehicle} in store" width="1920" height="1080">
-           <span class="brand-photo-credit">Fitted in store: ${photo.vehicle}</span>`
-        : `<img class="is-product" src="${product.image}" alt="${product.name}" width="240" height="240">`}
     </div>`;
 }
 
@@ -384,8 +380,7 @@ function renderBrandTiles() {
 // ---- 3.4 About --------------------------------------------------------------------------------
 function renderBrandAbout() {
   const a = BRAND.about;
-  const photo = BRAND_DATA.fitments[1] || BRAND_DATA.fitments[0];
-  const product = BRAND_DATA.products.find(p => BRAND_DATA.topSellers[1] === p.id);
+  const img = BRAND.images.about;
   document.getElementById('brandAbout').innerHTML = `
     <div class="brand-about-body">
       <h2>About ${BRAND.name}</h2>
@@ -394,11 +389,8 @@ function renderBrandAbout() {
       <ul>${a.bullets.map(([label, text]) => `<li><strong>${label}:</strong> ${text}</li>`).join('')}</ul>
       ${a.note ? `<p class="brand-about-note">${a.note}</p>` : ''}
     </div>
-    <div class="brand-about-media${photo ? '' : ' is-product'}">
-      ${photo
-        ? `<img src="${photo.large}" alt="${photo.product} fitted to a customer's ${photo.vehicle} in store" width="1920" height="1080" loading="lazy">
-           <span class="brand-photo-credit">Fitted in store: ${photo.vehicle}</span>`
-        : `<img src="${product.image}" alt="${product.name}" width="240" height="240" loading="lazy">`}
+    <div class="brand-about-media">
+      <img src="../_shared/${img.src}" alt="${img.alt}" style="object-position:${img.pos}" width="1200" height="800" loading="lazy">
     </div>`;
 }
 
