@@ -464,7 +464,7 @@ function bookStoreChanged() {
     return;
   }
   const tz = RRG_STATE_TZ[st.state];
-  const status = rrgStoreOpenStatus(RRG_STANDARD_HOURS, tz);
+  const status = rrgStoreOpenStatus(RRG_STANDARD_HOURS, tz, rrgStoreHolidays(RRG_STATE_ABBR[st.state]));
   const today = RRG_STANDARD_HOURS[rrgStoreNow(tz).day];
   const href = rrgStorePageHref(st.name);
   const tel = `tel:${st.phone.replace(/[^0-9]/g, '')}`;

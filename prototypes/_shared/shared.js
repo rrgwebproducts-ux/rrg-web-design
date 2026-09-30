@@ -1154,24 +1154,48 @@ const RRG_STATE_TZ = { 'Queensland': 'Australia/Brisbane', 'New South Wales': 'A
 const RRG_STATE_ABBR = { 'Queensland': 'QLD', 'New South Wales': 'NSW', 'Australian Capital Territory': 'ACT', 'Victoria': 'VIC', 'Tasmania': 'TAS', 'South Australia': 'SA', 'Western Australia': 'WA', 'Northern Territory': 'NT' };
 const rrgFmtTime = t => { const [h, m] = t.split(':').map(Number); return `${h % 12 || 12}:${String(m).padStart(2, '0')}${h < 12 ? 'am' : 'pm'}`; };
 const rrgToMins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+// Public holidays (spec.md §16 item 14) — the stores close on them. Real dates for the rest of
+// 2026, by state. Production: the store hours (entered in cPanel today) should carry these, and
+// ideally feed Google Business Profile too so there's one source of truth.
+const RRG_PUBLIC_HOLIDAYS = [
+  { date: '2026-10-05', name: 'King’s Birthday', states: ['QLD'] },
+  { date: '2026-10-05', name: 'Labour Day', states: ['NSW', 'ACT', 'SA'] },
+  { date: '2026-12-25', name: 'Christmas Day', states: ['QLD', 'NSW', 'ACT', 'VIC', 'TAS', 'SA', 'WA', 'NT'] },
+  { date: '2026-12-26', name: 'Boxing Day', states: ['QLD', 'NSW', 'ACT', 'VIC', 'TAS', 'WA', 'NT'] },
+  { date: '2027-01-01', name: 'New Year’s Day', states: ['QLD', 'NSW', 'ACT', 'VIC', 'TAS', 'SA', 'WA', 'NT'] }
+];
+function rrgStoreHolidays(stateAbbr) {
+  return RRG_PUBLIC_HOLIDAYS.filter(h => h.states.includes(stateAbbr));
+}
+// A date in the store's own time zone as YYYY-MM-DD, `plusDays` from today.
+function rrgStoreIsoDate(timeZone, plusDays = 0) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-AU', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).map(x => [x.type, x.value]));
+  const d = new Date(Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day) + plusDays));
+  return d.toISOString().slice(0, 10);
+}
 function rrgStoreNow(timeZone) {
   const fake = new URLSearchParams(location.search).get('now');
   if (fake && /^[a-z]{3}-\d\d:\d\d$/.test(fake)) { const [day, time] = fake.split('-'); return { day, mins: rrgToMins(time) }; }
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-AU', { timeZone, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).map(p => [p.type, p.value]));
   return { day: parts.weekday.toLowerCase().slice(0, 3), mins: Number(parts.hour) * 60 + Number(parts.minute) };
 }
-// { open, text } — "Closes 5:00pm" / "Opens 8:30am today" / "Opens tomorrow 8:30am" / "Opens Mon 8:30am".
-function rrgStoreOpenStatus(hours, timeZone) {
+// { open, text, holiday } — "Closes 5:00pm" / "Opens 8:30am today" / "Opens tomorrow 8:30am" /
+// "Opens Mon 8:30am". `holidays` (rrgStoreHolidays()) close the store on those dates; they're
+// ignored while ?now= fakes the day, since a faked weekday has no date.
+function rrgStoreOpenStatus(hours, timeZone, holidays = []) {
   const now = rrgStoreNow(timeZone);
+  const faked = new URLSearchParams(location.search).has('now');
+  const holidayOn = n => faked ? null : holidays.find(h => h.date === rrgStoreIsoDate(timeZone, n)) || null;
   const i = RRG_DAYS.findIndex(([k]) => k === now.day);
-  const today = hours[now.day];
+  const todayHoliday = holidayOn(0);
+  const today = todayHoliday ? null : hours[now.day];
   if (today && now.mins >= rrgToMins(today[0]) && now.mins < rrgToMins(today[1])) return { open: true, text: `Closes ${rrgFmtTime(today[1])}` };
   if (today && now.mins < rrgToMins(today[0])) return { open: false, text: `Opens ${rrgFmtTime(today[0])} today` };
   for (let n = 1; n <= 7; n++) {
     const [key, label] = RRG_DAYS[(i + n) % 7];
-    if (hours[key]) return { open: false, text: `Opens ${n === 1 ? 'tomorrow' : label.slice(0, 3)} ${rrgFmtTime(hours[key][0])}` };
+    if (hours[key] && !holidayOn(n)) return { open: false, holiday: todayHoliday, text: `${todayHoliday ? `${todayHoliday.name} · ` : ''}Opens ${n === 1 ? 'tomorrow' : label.slice(0, 3)} ${rrgFmtTime(hours[key][0])}` };
   }
-  return { open: false, text: '' };
+  return { open: false, holiday: todayHoliday, text: '' };
 }
 function rrgKmBetween(a, b) {
   const R = 6371, rad = x => x * Math.PI / 180;

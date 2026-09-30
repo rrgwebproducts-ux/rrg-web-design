@@ -1112,6 +1112,14 @@ function plpInitAvailabilityFacet() {
   };
   const i = standard.findIndex(f => f.key === 'availability');
   if (i >= 0) standard.splice(i, 1, def); else standard.push(def);
+  // ?availability=here&store=Kedron — a store page's "Shop what's in stock at Kedron" (spec.md §16
+  // item 16). The prototype makes that store the session store so "In Stock at Kedron" applies;
+  // production filters by the store in the URL without changing the shopper's saved store.
+  const params = new URLSearchParams(location.search);
+  if (params.get('availability')) {
+    if (params.get('store') && window.rrgSetStore) window.rrgSetStore(params.get('store'));
+    plpState.activeFilters.availability = new Set([params.get('availability')]);
+  }
   document.addEventListener('rrg-session-change', () => {
     const active = plpState.activeFilters.availability;
     if (active) {

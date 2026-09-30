@@ -279,7 +279,7 @@ const $ = id => document.getElementById(id);
 // ==== Rendering =====================================================================
 function sfCardHTML(st, km, nearest) {
   // NZ/UK single stores have no hours record yet — no open status or today line for them.
-  const status = st.hours ? rrgStoreOpenStatus(st.hours, st.timeZone) : null;
+  const status = st.hours ? rrgStoreOpenStatus(st.hours, st.timeZone, rrgStoreHolidays(RRG_STATE_ABBR[st.state])) : null;
   const today = st.hours ? st.hours[rrgStoreNow(st.timeZone).day] : null;
   const href = rrgStorePageHref(st.name);
   const tel = `tel:${st.phone.replace(/[^0-9]/g, '')}`;

@@ -129,11 +129,14 @@
       <h1 id="storeH1"></h1>
       <p class="store-panel-area" id="storeArea"></p>
       <div class="store-open" id="storeOpen" role="status"></div>
+      <!-- Google rating (spec.md §16 item 15). DEMO FIGURES until the Places API feeds them. -->
+      <a class="store-rating" id="storeRating" target="_blank" rel="noopener noreferrer"></a>
       <ul class="store-contact">
         <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg><span id="storeAddress"></span></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.4 1.9.6 2.9.7a2 2 0 0 1 1.6 2z"/></svg><a id="storePhone" href="#"></a></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><a id="storeEmail" href="#"></a></li>
       </ul>
+      <p class="store-holidays" id="storeHolidays" hidden></p>
       <table class="store-hours" id="storeHours"><caption>Opening hours</caption><tbody></tbody></table>
       <div class="store-actions">
         <a class="btn btn-cta" id="storeDirections" href="#" target="_blank" rel="noopener noreferrer">Get Directions</a>
@@ -152,12 +155,22 @@
     <div class="product-carousel-head">
       <h2 class="related-heading" id="storeDisplayHeading"></h2>
     </div>
-    <p class="section-intro">Come and see it in person before you buy. What's on display changes, so call ahead if you're coming in for something specific.</p>
+    <p class="section-intro" id="storeDisplayIntro"></p>
     <div class="product-carousel">
       <button type="button" class="product-carousel-nav prev" aria-label="Previous products">‹</button>
       <div class="plp-results is-grid product-carousel-track" id="storeDisplayTrack"></div>
       <button type="button" class="product-carousel-nav next" aria-label="Next products">›</button>
     </div>
+  </section>
+
+  <!-- Latest Google reviews (spec.md §16 item 15) — newest first, never hand-picked, with Google's
+       attribution. The prototype shows the layout only: no review text is made up. -->
+  <section class="cat-tile-section store-reviews" id="storeReviews">
+    <div class="product-carousel-head">
+      <h2 class="related-heading" id="storeReviewsHeading"></h2>
+      <a class="product-carousel-viewall" id="storeReviewsAll" target="_blank" rel="noopener noreferrer">Read all on Google ›</a>
+    </div>
+    <div class="store-review-row" id="storeReviewRow"></div>
   </section>
 
   <!-- Section 3.6 — the store's own local copy (Magento seo_text) + areas served, beside the
@@ -302,8 +315,9 @@ const fmtTime = rrgFmtTime;
 const addressLine = s => `${s.address.street}, ${s.address.suburb} ${s.state} ${s.address.postcode}`;
 
 // ==== Open now (spec 3.3) — rrgStoreOpenStatus() / rrgStoreNow() in shared.js ============
+const HOLIDAYS = rrgStoreHolidays(STORE.state);
 function renderOpenStatus() {
-  const st = rrgStoreOpenStatus(STORE.hours, STORE.timeZone);
+  const st = rrgStoreOpenStatus(STORE.hours, STORE.timeZone, HOLIDAYS);
   const el = document.getElementById('storeOpen');
   el.classList.toggle('is-open', st.open);
   el.innerHTML = `${st.open ? 'Open now' : 'Closed'} <span>· ${st.text}</span>`;
@@ -349,7 +363,38 @@ function renderStore() {
   const tel = `tel:${s.phone.replace(/[^0-9]/g, '')}`;
   const phone = document.getElementById('storePhone'); phone.href = tel; phone.textContent = s.phone;
   const email = document.getElementById('storeEmail'); email.href = `mailto:${s.email}`; email.textContent = s.email;
-  document.getElementById('storeHours').tBodies[0].innerHTML = DAYS.map(([key, label]) => `<tr data-day="${key}"><th scope="row">${label}</th><td>${s.hours[key] ? `${fmtTime(s.hours[key][0])} – ${fmtTime(s.hours[key][1])}` : 'Closed'}</td></tr>`).join('');
+  // Hours for the next 7 days: a public holiday shows on its weekday as "Closed · King's Birthday"
+  // in soft red (spec.md §16 item 14).
+  const week = Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map(n => {
+    const iso = rrgStoreIsoDate(s.timeZone, n);
+    return [RRG_DAYS[(new Date(iso + 'T00:00:00Z').getUTCDay() + 6) % 7][0], HOLIDAYS.find(h => h.date === iso)];
+  }));
+  document.getElementById('storeHours').tBodies[0].innerHTML = DAYS.map(([key, label]) => {
+    const hol = week[key];
+    const cell = hol ? `Closed · ${hol.name}` : s.hours[key] ? `${fmtTime(s.hours[key][0])} – ${fmtTime(s.hours[key][1])}` : 'Closed';
+    return `<tr data-day="${key}"${hol ? ' class="is-holiday"' : ''}><th scope="row">${label}</th><td>${cell}</td></tr>`;
+  }).join('');
+  // The next public holidays (60 days ahead) above the table.
+  const soon = HOLIDAYS.filter(h => h.date >= rrgStoreIsoDate(s.timeZone) && h.date <= rrgStoreIsoDate(s.timeZone, 60));
+  const fmtHol = h => new Date(h.date + 'T00:00:00Z').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+  const holEl = document.getElementById('storeHolidays');
+  holEl.hidden = !soon.length;
+  holEl.innerHTML = `<strong>Holiday hours:</strong> closed ${soon.map(h => `${fmtHol(h)} (${h.name})`).join(', ')}.`;
+
+  // Google rating (spec.md §16 item 15) — links to the store's Google listing.
+  const g = STORE_GOOGLE_DEMO[STORE_SLUG] || [4.7, 150];
+  const rating = document.getElementById('storeRating');
+  rating.href = s.mapUrl;
+  rating.innerHTML = `<span class="stars" aria-hidden="true">★</span> <strong>${g[0].toFixed(1)}</strong> · ${g[1]} Google reviews <span class="store-demo-tag">demo</span>`;
+  document.getElementById('storeReviewsHeading').textContent = `Latest Google Reviews for ${s.name}`;
+  document.getElementById('storeReviewsAll').href = s.mapUrl;
+  document.getElementById('storeReviewRow').innerHTML = [1, 2, 3].map(() => `
+    <div class="store-review-card is-placeholder">
+      <div class="store-review-top"><span class="store-review-avatar" aria-hidden="true"></span><span><strong>Reviewer name</strong><span>Posted date</span></span></div>
+      <span class="stars" aria-hidden="true">★★★★★</span>
+      <p>The newest Google reviews appear here, unedited and newest first, never hand-picked.</p>
+      <span class="store-review-source">Google</span>
+    </div>`).join('');
   document.getElementById('storeDirections').href = s.mapUrl;
   document.getElementById('storeCall').href = tel;
   const bannerCall = document.getElementById('storeBannerCall'); bannerCall.href = tel; bannerCall.textContent = `Call ${s.name}`;
@@ -359,11 +404,14 @@ function renderStore() {
   document.getElementById('storeServices').innerHTML = [
     { icon: '<path d="M22 7.24a5 5 0 0 1-6.16 6.16l-8.3 8.3a2 2 0 0 1-2.83-2.83l8.3-8.3A5 5 0 0 1 19.76 2l-3.4 3.4 1.24 1.24L21 3.24A5 5 0 0 1 22 7.24z"/>', h: 'Expert Fitting', p: 'Roof racks, bike racks, awnings, roof boxes and touring gear, <a href="#">book an installation</a>' },
     s.clickAndCollect && { icon: '<path d="M3 9l1.5-5h15L21 9"/><path d="M4 9h16v11H4z"/><path d="M9 20v-6h6v6"/>', h: 'Click & Collect', p: `Order online, pick up from ${s.name}` },
-    { icon: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>', h: 'See It In Person', p: `<a href="#onDisplay">Products on display</a> in our ${s.name} showroom` },
+    { icon: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>', h: 'See It In Person', p: `Racks, fittings and accessories to see and touch, <a href="#onDisplay">see what's on show</a>` },
     { icon: '<path d="M21 12a8 8 0 0 1-11.8 7L3 21l2-6.2A8 8 0 1 1 21 12z"/>', h: 'Advice & After-Sales', p: 'Help choosing the right setup, plus warranty and spare-parts support' }
   ].filter(Boolean).map(x => `<div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg><h4>${x.h}</h4><p>${x.p}</p></div>`).join('');
 
-  document.getElementById('storeDisplayHeading').textContent = `On Display at ${s.name}`;
+  // "On display" wording (spec.md §16 item 16): make it clear there's far more in store than the
+  // showroom row. The shop-in-stock link needs store-level stock, so it's Phase 2 only.
+  document.getElementById('storeDisplayHeading').textContent = `See It in Person at ${s.name}`;
+  renderDisplayIntro();
   document.getElementById('storeDisplayTrack').innerHTML = s.onDisplay.map(k => plpCardHTML(STORE_PRODUCTS[k], { vrs: false })).join('');
 
   document.getElementById('storeLocalHeading').textContent = `${s.area} Roof Racks & Touring Accessories`;
@@ -417,11 +465,28 @@ function renderStore() {
       geo: { '@type': 'GeoCoordinates', latitude: s.lat, longitude: s.lng },
       hasMap: s.mapUrl, areaServed: s.areasServed,
       openingHoursSpecification: DAYS.filter(([k]) => s.hours[k]).map(([k, label]) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: label, opens: s.hours[k][0], closes: s.hours[k][1] })),
+      // Public holidays: closed = 00:00–00:00 (spec.md §16 item 14). No AggregateRating: Google
+      // doesn't show review stars for a business's reviews of itself (item 15).
+      specialOpeningHoursSpecification: HOLIDAYS.map(h => ({ '@type': 'OpeningHoursSpecification', validFrom: h.date, validThrough: h.date, opens: '00:00', closes: '00:00' })),
       parentOrganization: { '@type': 'Organization', name: 'Roof Racks Galore', url: origin } },
     { '@type': 'BreadcrumbList', itemListElement: trail.map((seg, i) => ({ '@type': 'ListItem', position: i + 1, name: seg.label })) },
     { '@type': 'FAQPage', mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
   ] });
 }
+
+// Google rating per store — DEMO FIGURES (spec.md §16 item 15). Production reads them from the
+// Google Places API (rating + user_ratings_total), cached as Google's terms allow.
+const STORE_GOOGLE_DEMO = {
+  'north-lakes': [4.8, 312], 'kedron': [4.7, 268], 'east-brisbane': [4.8, 241], 'rocklea': [4.6, 197],
+  'moorebank': [4.7, 355], 'castle-hill': [4.8, 289], 'silverwater': [4.6, 233], 'smeaton-grange': [4.7, 176],
+  'miranda': [4.8, 204], 'warriewood': [4.7, 158], 'matraville': [4.6, 139]
+};
+
+function renderDisplayIntro() {
+  const phase2 = typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2;
+  document.getElementById('storeDisplayIntro').innerHTML = `Plus hundreds more racks, fittings and accessories in store — ask the team. What's on show changes, so call ahead if you're coming in for something specific.${phase2 ? ` <a href="${RRG_PROTO}plp/index.html?availability=here&amp;store=${encodeURIComponent(STORE.name)}">Shop what's in stock at ${STORE.name} ›</a>` : ''}`;
+}
+document.addEventListener('rrg-session-change', renderDisplayIntro);
 
 // ==== Make this my store (spec Section 4) ===========================================
 function renderStoreMine() {

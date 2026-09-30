@@ -2025,6 +2025,28 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .store-hours th,.store-hours td{padding:6px 10px;border-top:1px solid var(--rrg-line-soft);text-align:left;font-weight:400;}
 .store-hours td{text-align:right;color:var(--rrg-grey-700);}
 .store-hours tr.is-today th,.store-hours tr.is-today td{font-weight:700;color:var(--rrg-text);background:var(--rrg-bg);}
+/* Public holiday (spec.md §16 item 14) — soft red, so it reads as an exception, not an error. */
+.store-hours tr.is-holiday td{color:var(--rrg-red);font-weight:700;}
+.store-hours tr.is-holiday th,.store-hours tr.is-holiday td{background:#FDF1F3;}
+.store-holidays{margin:0 0 12px;padding:8px 12px;border-radius:var(--radius);background:#FDF1F3;font-size:13px;line-height:1.5;color:var(--rrg-grey-700);}
+.store-holidays strong{color:var(--rrg-red);}
+/* Google rating (spec.md §16 item 15). */
+.store-rating{display:flex;align-items:center;gap:6px;margin:-8px 0 16px;font-size:14px;color:var(--rrg-grey-700);text-decoration:none;}
+.store-rating:hover{text-decoration:underline;}
+.store-rating .stars{color:#F4B400;font-size:16px;}
+.store-rating strong{color:var(--rrg-text);}
+.store-demo-tag{padding:1px 6px;border-radius:var(--radius);background:var(--rrg-line-soft);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--rrg-grey-600);}
+.store-review-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.store-review-card{display:flex;flex-direction:column;gap:8px;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:18px;background:#fff;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+.store-review-card p{margin:0;}
+.store-review-card .stars{color:#F4B400;letter-spacing:2px;}
+.store-review-top{display:flex;gap:10px;align-items:center;}
+.store-review-top > span:last-child{display:flex;flex-direction:column;line-height:1.3;}
+.store-review-top strong{color:var(--rrg-text);}
+.store-review-avatar{width:36px;height:36px;border-radius:50%;background:var(--rrg-line-soft);flex:0 0 auto;}
+.store-review-source{margin-top:auto;font-size:12px;font-weight:700;color:var(--rrg-grey-600);}
+.store-review-card.is-placeholder{border-style:dashed;background:var(--rrg-bg);}
+@media (max-width:900px){ .store-review-row{grid-template-columns:1fr;} }
 .store-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .store-actions .btn-cta{grid-column:1 / -1;}
 .store-mine{margin:14px 0 0;font-size:14px;text-align:center;}
