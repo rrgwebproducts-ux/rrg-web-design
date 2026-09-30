@@ -2185,6 +2185,10 @@ const RRG_LOGO = { src: RRG_PROTO + '_shared/headerlogo.png', alt: 'Roof Racks G
 // own background box, so it works on both the light header and the dark footer unchanged).
 const RRG_LOGO_WHITE = { src: RRG_PROTO + '_shared/headerlogo-white.png', alt: 'Roof Racks Galore' };
 const UK_LOGO = { src: RRG_PROTO + '_shared/brand-roofbox-uk-logo.svg', alt: 'The Roof Box Company' };
+// The trading name per region, for page copy (UK trades as The Roof Box Company; NZ is RRG).
+function rrgBrandName(region = typeof currentRegion === 'undefined' ? 'AU' : currentRegion) {
+  return region === 'UK' ? 'The Roof Box Company' : 'Roof Racks Galore';
+}
 
 function applyRegionBrand(region) {
   document.body.classList.toggle('region-uk', region === 'UK');

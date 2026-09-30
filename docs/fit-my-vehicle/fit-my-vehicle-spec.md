@@ -27,7 +27,7 @@ The live page has strong copy (roof types, load ratings, bars vs platforms, setu
 | 1.7 | **How much weight can your roof rack carry?** | New `.load-panels` + `.callout` | Static (parked) and dynamic (driving) side by side; "The lower number wins" pulled out as a callout. |
 | 1.8 | Bars, legs, platforms & backbones | `.info-cards--4` | Legs / Bars / Platforms & Trays / **Backbones & Spines** (added 2026-09-30, §16 item 8; no tracks), each with a shop link. New line art (`_shared/fit-guide/part-*.svg`): the same roof in perspective each time with only that card's part in red (the old legs image showed a bar, and the platform didn't read as a platform). |
 | 1.9 | Choosing the right setup | `.info-cards` + `.callout` | Weekend Adventurer (→ Awnings & Roof Top Tents, was Platforms: §16 item 9) / Tradie (→ Trade & Work) / Family (→ Roof Boxes) with photos and shop links. These are interim links until the use-case landing pages (§16 item 27) exist; the live "one mistake we see all the time" as a callout. |
-| 1.10 | **We can fit it for you** | `.steps--photos` | Find Your Fit → Book In-Store → **Fitted & Checked** ("We fit it, load-check it and show you how it all works before you drive off": Graham asked what "tested" meant; wording for Scott to confirm), each with a photo (§16 item 10). The photos are stand-ins from the prototype's own assets until lifestyle / UGC shots exist; **Book a Fitting** and **See Fitting Costs** go to the Installation page (`#book`, `#costs`). |
+| 1.10 | **We can fit it for you** | `.steps--photos` | Find Your Fit → Book In-Store → **Fitted & Checked** ("We fit it, load-check it and show you how it all works before you drive off": Graham asked what "tested" meant; wording approved 2026-09-30), each with a photo (§16 item 10). The photos are stand-ins from the prototype's own assets until lifestyle / UGC shots exist; **Book a Fitting** and **See Fitting Costs** go to the Installation page (`#book`, `#costs`). |
 | 1.11 | FAQ | `.faq-section` | The live page's 8 questions and answers, plus `FAQPage` JSON-LD. |
 | 1.12 | Brands, footer | | |
 
@@ -49,7 +49,6 @@ Indexed. `<title>` and meta description as live. One H1; `FAQPage` JSON-LD.
 
 - **Shop links** (fitting kits, roof bars, platforms, trade & work, roof boxes) go to `#` in the prototype. They're real categories on the live site.
 - **Step photos:** lifestyle or UGC shots needed (someone using the Fit Finder, walking into a store, out on the road).
-- **"Fitted & Checked"** wording: confirm with Scott that stores load-check and walk the customer through it.
 - **Make list:** the prototype's Fit Finder knows Toyota and Ford (the two demo vehicles). Production uses the full live make list.
 
 ---

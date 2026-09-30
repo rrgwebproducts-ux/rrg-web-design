@@ -1418,7 +1418,7 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
 7. ✅ **Merge the "Shopping for your [vehicle]?" bar with the Fit Finder.** When the vehicle is known, never show a blank Fit Finder: prefill it, and "Change vehicle" clears the fields instead of opening the drawer. Try light and dark versions (the black band helps break up the page, but a vehicle photo on black doesn't work). Applies to the home page too, where both are stacked. Graham: fewer than 5% of individual shoppers switch vehicles. **Built 2026-09-30:** one "vehicle finder" component on Home and Fit My Vehicle; light and dark switchable in Site Admin → Design options. Change vehicle resets to Make with a "← Back to Hilux" undo.
 8. ✅ **"Bars, legs, platforms & trays": add Backbones/Spines** as a 4th card (no tracks). Redo the line art: the legs image shows a bar, and the platform image doesn't read as a platform. **Built 2026-09-30:** Backbones & Spines added; new line art for all four (`_shared/fit-guide/part-*.svg`).
 9. ✅ **"Choosing the right setup" cards link to the wrong places** (Weekend Adventurer → Platforms, when those shoppers want camping gear, rooftop tents and awnings). Fix the links now; the proper answer is item 27. **Built 2026-09-30:** Weekend Adventurer → Awnings & Roof Top Tents (interim until item 27).
-10. ✅ **"We can fit it for you" steps:** lifestyle or UGC-style photos per step (someone using the Fit Finder, walking into a store, out on the road). Graham asked what "tested" means in "Fit It & Test It"; clarify or reword. **Built 2026-09-30:** stand-in step photos; "Fitted & Checked" wording, for Scott to confirm.
+10. ✅ **"We can fit it for you" steps:** lifestyle or UGC-style photos per step (someone using the Fit Finder, walking into a store, out on the road). Graham asked what "tested" means in "Fit It & Test It"; clarify or reword. **Built 2026-09-30:** stand-in step photos; "Fitted & Checked" wording **approved** 2026-09-30.
 11. 🅿️ **UGC loop** (early 2027): after a fitting, send an SMS asking for a Google review, then a month or two later ask for photos of the setup in use. Graham noted the booking engine is meant to send these SMSes.
 
 ### 16.3 Store Finder (`docs/store-finder/store-finder-spec.md`)
@@ -1440,7 +1440,7 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
 20. ✅ **Make "Set your store to see local stock" more visible** than the filter bar (optional). **Built 2026-09-30:** slim dismissible line above results, Phase 2 with no store set.
 
 ### 16.6 Product cards
-21. ✅ **Drop the "RRP" prefix from product card prices** (keep it on the PDP; "was" pricing isn't supported). Confirmed: the sale tags stay off the cards. **Built 2026-09-30:** "RRP" dropped from cards as agreed. **Still to take to Graham:** the ACCC risk in the analysis doc (#21).
+21. ✅ **Drop the "RRP" prefix from product card prices** (keep it on the PDP; "was" pricing isn't supported). Confirmed: the sale tags stay off the cards. **Built 2026-09-30:** "RRP" dropped from cards as agreed. **Confirmed by Graham (2026-09-30):** OK for now, knowing the ACCC risk in the analysis doc (#21).
 
 ### 16.7 Home page (`docs/home/home-spec.md`)
 22. ✅ **Categories above the fold** (Tim's request). Agreed approach: **Built 2026-09-30:** offer tiles ~20% shorter; categories → trust row → products; proof line in the hero finder; offers no longer auto-advance, hero autoplays at 10s on desktop only. At 1440×900 the category heading reaches the fold, the tiles just below it.
@@ -1450,7 +1450,7 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
     Brenton to rearrange and show. Rejected alternative: the offers as a 2-tile carousel inside the category grid (Graham felt it weakens the offers).
 23. ✅ **Fit Finder layout in the hero:** 5 fields leave an empty space. Make the last field full-width or put View Results in the right column. **Built 2026-09-30:** View Results shares the last row with Roof Type.
 24. ✅ **Add a fitment gallery carousel:** recent fitments across all vehicles, updating live, "to show we're busy". **Built 2026-09-30:** "Recent Fitments" on Home, each photo → that vehicle's VLP (real Hilux photos only in the prototype).
-25. ✅ **Company reviews carousel** (maybe), broken up like the install band. **Built 2026-09-30:** real recent Reviews.io reviews (8, incl. a 4★), manual scroll, replacing the trust band badge. **Note:** Reviews.io shows 4.3 from 1,914 reviews, but the badge used on Store Finder, store pages and the VLP/VCLP says "4.8 / 5".
+25. ✅ **Company reviews carousel** (maybe), broken up like the install band. **Built 2026-09-30:** real recent Reviews.io reviews (8, incl. a 4★), manual scroll, replacing the trust band badge. The trust-band badges on the Store Finder, store pages, VLP and VCLP said a hard-coded "4.8 / 5"; **corrected 2026-09-30** to the real "4.3 / 5 from 1,914 reviews" (Brenton). Production should read the score from the Reviews.io API.
 26. ✅ Item 7's vehicle bar and Fit Finder merge applies here too. **Built 2026-09-30:** see item 7.
 
 ### 16.8 New templates and future work
@@ -1458,7 +1458,7 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
 28. 🅿️ **Component pages** (platforms, crossbars, backbones, spines, rugged lines): a "Looking for a complete roof rack? Search your vehicle" prompt for Google traffic that lands on a component. Graham: needed, but not urgent.
 29. 🅿️ **PLP "adventure type" filter** (e.g. hide clamp-mount racks for off-road buyers). Loose idea.
 30. ⬜ **Still to design:** brand pages, blog article and blog category pages, checkout and order confirmation (item 6).
-31. 🤔 **Index page:** Graham suggested a separate tab or section for the design pages, to cut the clutter.
+31. ✅ **Index page:** Graham suggested a separate tab or section for the design pages, to cut the clutter. **Built 2026-09-30:** `prototypes/index.html` has two tabs, **Page designs** (grouped Home & stores / Product pages / Category & listing, with the card copy brought up to date) and **Tools & briefs** (the standalone header and the six developer briefs). `#tools` opens the second tab.
 
 ### 16.9 Actions outside the designs
 32. ⬜ **Loom walkthrough (5–10 min)** of every page for Tim, Jake Martin, James Campbell (Remo), Elliot and others, once Brenton is happy with the designs. Graham suggested doing it over about 3 days. The developer briefs stay the reference for Mark; the video is for everyone else.

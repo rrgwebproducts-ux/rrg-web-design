@@ -121,7 +121,7 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 
 **Purpose:** trust-building + install conversion, adapted from the PDP's existing `.install-cta-panel` "no-video" pattern (`DEVELOPER-BRIEF.md`) but reshaped into a full-width band with **two** CTAs (Book An Installation / Store Finder) instead of one, and a Reviews.io star badge instead of the fitment-count link the PDP version uses.
 
-**Contents:** installer photo background (40% opacity dark overlay) + heading + Reviews.io badge ("★★★★★ Reviews.io — 4.8 / 5") + the two CTAs: "Book An Installation" (`.btn-primary`, red) and "Store Finder" (`.btn-outline`).
+**Contents:** installer photo background (40% opacity dark overlay) + heading + Reviews.io badge ("★★★★☆ Reviews.io — 4.3 / 5 from 1,914 reviews": the real score, corrected 2026-09-30 from a hard-coded 4.8; read it from the Reviews.io API rather than hard-coding it) + the two CTAs: "Book An Installation" (`.btn-primary`, red) and "Store Finder" (`.btn-outline`).
 
 **Click actions:** both are `href="#"` placeholders pending real URLs (Section 6). "Book An Installation" no longer carries `target="_blank"` on its `#` placeholder (fixed 2026-09-29, `spec.md` §15 V6). Add `target="_blank" rel="noopener"` back only if the real booking URL is off-site.
 

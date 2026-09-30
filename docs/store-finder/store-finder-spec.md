@@ -48,7 +48,7 @@ NZ and UK show their single store (Auckland / Bolton) with no search or tabs, th
 - **Production rule:** list a store here only once its site is signed and the opening month is known. Give it a full card, page and pin once it opens. Google Business Profile allows a pre-opening listing up to a year ahead.
 - **Header label** (§16 item 13): the nav's store link follows the open-store count. With 1 store it reads **"Visit Our Bolton Store"** / **"Visit Our Auckland Store"** and goes straight to that store (the Store Finder in the prototype, which has no NZ/UK store page); with 2 or more it reads **"Store Finder"**. It flips automatically when the second store opens. `rrgStoreNavLink()` in shared.js covers the desktop nav and the mobile menu.
 - Fixed at the same time: the UK/NZ map was fitted to Australia on load (`sfFitMap()` checked the region before it was applied).
-- Still open: the H1 reads "Find a Roof Racks Galore Store" in the UK (should use The Roof Box Company).
+- The H1 and page title follow the region's trading name (`rrgBrandName()`, shared.js): "Find a Roof Box Company Store" in the UK (fixed 2026-09-30).
 
 ---
 

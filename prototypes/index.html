@@ -35,6 +35,19 @@
   .tpl-card .bundle-item p{font-size:12px;color:var(--rrg-grey-600);flex:1;margin:0 0 10px;}
   .tpl-card .bundle-item a.btn{margin-top:0;}
   .index-footnote{font-size:13px;color:var(--rrg-grey-500);}
+  /* Two tabs (spec.md §16 item 31, Graham: cut the clutter) — the page designs, and the review
+     tools + developer briefs. The open tab is kept in the URL hash (#tools) so it can be linked. */
+  .index-tabs{display:flex;gap:4px;border-bottom:2px solid var(--rrg-line);margin:0 0 28px;}
+  .index-tab{border:0;background:none;padding:12px 18px;margin-bottom:-2px;border-bottom:3px solid transparent;font:inherit;font-weight:900;font-size:15px;color:var(--rrg-grey-600);cursor:pointer;}
+  .index-tab[aria-selected="true"]{color:var(--rrg-text);border-bottom-color:var(--rrg-red);}
+  .index-tab span{margin-left:6px;font-weight:700;font-size:12px;color:var(--rrg-grey-500);}
+  .index-panel[hidden]{display:none;}
+  .index-group-heading{font-size:24px;margin:0 0 14px;}
+  .brief-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:40px;}
+  .brief-item{display:flex;flex-direction:column;gap:4px;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:14px 16px;background:var(--rrg-bg);text-decoration:none;color:var(--rrg-text);}
+  .brief-item:hover{border-color:var(--rrg-line-strong);}
+  .brief-item strong{font-size:15px;}
+  .brief-item span{font-size:13px;color:var(--rrg-grey-600);}
   @media (max-width:520px){ .tpl-card .bundle-list{grid-template-columns:1fr;} }
   @media (max-width:720px){ .template-grid{grid-template-columns:1fr;} }
 </style>
@@ -134,61 +147,71 @@
 
 <main class="wrap">
   <div class="page-head">
-    <h1>Product &amp; Landing Page Templates</h1>
-    <p>Five product-type templates, each built against real scraped data (not placeholder content), plus the Vehicle Category (Make/Model) Landing Page (VCLP), the PLP/VPLP category listing pages, Search Results and the global header. All share one component library (<code>_shared/shared.css</code>, <code>_shared/shared.js</code>) — trust icons, tabs, gallery, Delivery/Click &amp; Collect widget — but each sequences and weights those components differently for its own conversion challenge, per the design mandate.</p>
+    <h1>Roof Racks Galore Page Designs</h1>
+    <p>Every page template, built against real scraped data (not placeholder content) on one shared component library (<code>_shared/shared.css</code>, <code>_shared/shared.js</code>). Use <strong>Site Admin</strong> (bottom left on every page) to switch the shopper session, region, build phase and design options.</p>
   </div>
 
-  <div class="template-grid">
-    <div class="tpl-card">
-      <div class="thumb">Home Page</div>
-      <div class="body">
-        <div class="example">Replaces www.roofracksgalore.com.au</div>
-        <h3>Hero Fit Finder → Everything Else One Click Away</h3>
-        <p>The live home page's content rebuilt from the shared component library: a full-width promo slider with the Fit Finder over it, a "your vehicle" bar when one is saved, category and offer tiles, product carousels, and a trust band with Store Finder, Key Finder and help.</p>
-        <a class="btn btn-primary btn-sm" href="home/index.html">Open Template</a>
+  <div class="index-tabs" role="tablist" aria-label="Index sections">
+    <button type="button" class="index-tab" role="tab" id="tab-designs" aria-controls="panel-designs" aria-selected="true" data-index-tab="designs">Page designs<span>16</span></button>
+    <button type="button" class="index-tab" role="tab" id="tab-tools" aria-controls="panel-tools" aria-selected="false" tabindex="-1" data-index-tab="tools">Tools &amp; briefs<span>7</span></button>
+  </div>
+
+  <div class="index-panel" role="tabpanel" id="panel-designs" aria-labelledby="tab-designs">
+    <h2 class="index-group-heading">Home &amp; stores</h2>
+    <div class="template-grid">
+      <div class="tpl-card">
+        <div class="thumb">Home Page</div>
+        <div class="body">
+          <div class="example">Replaces www.roofracksgalore.com.au</div>
+          <h3>Categories Up Top, Vehicle Finder in the Hero</h3>
+          <p>A promo slider with the vehicle finder over it ("Shopping for your Toyota Hilux" once a vehicle is saved), current offers, Shop by Category above the fold, product carousels, recent fitments, real customer reviews, and a help row with Store Finder, Key Finder and contact details.</p>
+          <a class="btn btn-primary btn-sm" href="home/index.html">Open Template</a>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="thumb">Store Page</div>
+        <div class="body">
+          <div class="example">North Lakes · <a href="store/index.html?store=moorebank">Moorebank</a> · <a href="store/index.html?store=castle-hill">Castle Hill</a></div>
+          <h3>Every Store's Own Landing Page</h3>
+          <p>One template driven by each store's record (eleven real stores): its photos in the product-page gallery, open-now status, hours with public holidays, Google rating, what you can see in person, local copy with the store map, FAQs written for that store, and the nearest other stores.</p>
+          <a class="btn btn-primary btn-sm" href="store/index.html">Open Template</a>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="thumb">Store Finder</div>
+        <div class="body">
+          <div class="example">All 35 stores — try postcode 4000 or 2170, or switch region to UK / NZ</div>
+          <h3>Find a Store → Its Store Page</h3>
+          <p>Replaces /locations. Postcode search or Use My Location, state tabs, and every store as a card with open-now status beside the store map. UK and NZ show their store plus "opening soon" placeholders.</p>
+          <a class="btn btn-primary btn-sm" href="store-finder/index.html">Open Template</a>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="thumb">Fit My Vehicle</div>
+        <div class="body">
+          <div class="example">Where the header's "Fit My Vehicle" link goes</div>
+          <h3>Vehicle Finder + Roof Rack Fit Guide</h3>
+          <p>The vehicle finder up top (lands on the VLP), then the live guide rebuilt as cards: roof types with RRG's own diagrams, load ratings, legs / bars / platforms / backbones, setups by use, and how we can fit it for you.</p>
+          <a class="btn btn-primary btn-sm" href="fit-my-vehicle/index.html">Open Template</a>
+        </div>
+      </div>
+      <div class="tpl-card">
+        <div class="thumb">Installation &amp; Booking</div>
+        <div class="body">
+          <div class="example">Every "Book a Fitting" on the site lands here</div>
+          <h3>Booking Form, Store Card + Fitting Charges</h3>
+          <p>A fitting request form sent to the chosen store (prefilled with the saved store and vehicle), the store as a card with a map and call button, and the current fitting charges in a collapsed list below.</p>
+          <a class="btn btn-primary btn-sm" href="installation/index.html">Open Template</a>
+        </div>
       </div>
     </div>
-    <div class="tpl-card">
-      <div class="thumb">Store Page</div>
-      <div class="body">
-        <div class="example">North Lakes · <a href="store/index.html?store=moorebank">Moorebank</a> · <a href="store/index.html?store=castle-hill">Castle Hill</a></div>
-        <h3>Every Store's Own Landing Page</h3>
-        <p>One template driven by each store's record (eleven real stores): its photos in the product-page gallery, open-now status and hours, what's on display in the showroom, local copy with the store map, FAQs written for that store, and links to the nearest other stores. Now linked from everywhere a store is named.</p>
-        <a class="btn btn-primary btn-sm" href="store/index.html">Open Template</a>
-      </div>
-    </div>
-    <div class="tpl-card">
-      <div class="thumb">Store Finder</div>
-      <div class="body">
-        <div class="example">All 35 stores — try postcode 4000 or 2170</div>
-        <h3>Find a Store → Its Store Page</h3>
-        <p>Replaces /locations. Postcode search or Use My Location, state tabs, and every store as a card with open-now status and hours beside the store map. Cards and pins highlight each other, and every store links to its store page.</p>
-        <a class="btn btn-primary btn-sm" href="store-finder/index.html">Open Template</a>
-      </div>
-    </div>
-    <div class="tpl-card">
-      <div class="thumb">Fit My Vehicle</div>
-      <div class="body">
-        <div class="example">Where the header's "Fit My Vehicle" link goes</div>
-        <h3>Fit Finder + Roof Rack Fit Guide</h3>
-        <p>The Fit Finder up top (lands on the VLP), then the live guide rebuilt as cards: roof types with RRG's own diagrams, load ratings, bars vs platforms, setups by use, and how we can fit it for you.</p>
-        <a class="btn btn-primary btn-sm" href="fit-my-vehicle/index.html">Open Template</a>
-      </div>
-    </div>
-    <div class="tpl-card">
-      <div class="thumb">Installation &amp; Booking</div>
-      <div class="body">
-        <div class="example">Every "Book a Fitting" on the site lands here</div>
-        <h3>Fitting Costs, Estimator + Booking Form</h3>
-        <p>The live price list regrouped (no internal codes), a fitting cost estimator built on the same prices, and a fitting request form sent to the chosen store, prefilled with the saved store and vehicle.</p>
-        <a class="btn btn-primary btn-sm" href="installation/index.html">Open Template</a>
-      </div>
-    </div>
-    <div class="tpl-card bundle">
-      <div class="thumb">Product Detail Pages (PDP)</div>
-      <div class="body">
-        <p class="bundle-intro">Five product-type templates, each built against real scraped data. All share one component library but sequence and weight those components differently for their own conversion challenge.</p>
-        <div class="bundle-list">
+    <h2 class="index-group-heading">Product pages</h2>
+    <div class="template-grid">
+      <div class="tpl-card bundle">
+        <div class="thumb">Product Detail Pages (PDP)</div>
+        <div class="body">
+          <p class="bundle-intro">Five product-type templates, each built against real scraped data. All share one component library but sequence and weight those components differently for their own conversion challenge.</p>
+          <div class="bundle-list">
           <div class="bundle-item">
             <h4>Vehicle-Specific Kit</h4>
             <p>Fitment status sits beside price and Add to Cart, plus a persistent bar and Showroom Finder.</p>
@@ -214,50 +237,44 @@
             <p>Simple's lean layout plus a "What's Included" box for fixed multi-part bundles or kits.</p>
             <a class="btn btn-primary btn-sm" href="grouped-bundle/index.html">Open Template</a>
           </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="tpl-card">
-      <div class="thumb">Vehicle Category Landing Page (VCLP)</div>
-      <div class="body">
-        <div class="example">Toyota Hilux Roof Racks — Make/Model landing page</div>
-        <h3>Fit Finder → Category Handoff</h3>
-        <p>One page per make/model, built to capture search terms like "Toyota Hilux Roof Racks". Leads with a Fit Finder that hands off to a filtered category/PLP, plus the Fitment Gallery widget, fitment-education content and an FAQ.</p>
-        <a class="btn btn-primary btn-sm" href="vehicle-category-landing/index.html">Open Template</a>
+    <h2 class="index-group-heading">Category &amp; listing</h2>
+    <div class="template-grid">
+      <div class="tpl-card">
+        <div class="thumb">Vehicle Category Landing Page (VCLP)</div>
+        <div class="body">
+          <div class="example">Toyota Hilux Roof Racks — Make/Model landing page</div>
+          <h3>Fit Finder → Category Handoff</h3>
+          <p>One page per make/model, built to capture search terms like "Toyota Hilux Roof Racks". Leads with a Fit Finder that hands off to a filtered category/PLP, plus the Fitment Gallery widget, fitment-education content and an FAQ.</p>
+          <a class="btn btn-primary btn-sm" href="vehicle-category-landing/index.html">Open Template</a>
+        </div>
       </div>
-    </div>
-    <div class="tpl-card">
-      <div class="thumb">Vehicle Landing Page (VLP)</div>
-      <div class="body">
-        <div class="example">Toyota Hilux N80 4dr Ute, Bare Roof — or Ford Ranger P703 with raised rails</div>
-        <h3>Fit My Vehicle → Everything That Fits</h3>
-        <p>Where the header's Fit My Vehicle drawer lands: one page per exact vehicle, down to roof type. Category tiles that appear only when the vehicle has fitting products, a Store Finder tile that widens to fill the gap, the Fitment Gallery, and popular racks for that vehicle. Not indexed.</p>
-        <a class="btn btn-primary btn-sm" href="vlp/index.html">Open Template</a>
+      <div class="tpl-card">
+        <div class="thumb">Vehicle Landing Page (VLP)</div>
+        <div class="body">
+          <div class="example">Toyota Hilux N80 4dr Ute, Bare Roof — or Ford Ranger P703 with raised rails</div>
+          <h3>Fit My Vehicle → Everything That Fits</h3>
+          <p>Where the vehicle finder lands: one page per exact vehicle, down to roof type. Category tiles that appear only when the vehicle has fitting products, a Store Finder tile that widens to fill the gap, the Fitment Gallery, and popular racks for that vehicle. Not indexed.</p>
+          <a class="btn btn-primary btn-sm" href="vlp/index.html">Open Template</a>
+        </div>
       </div>
-    </div>
-    <div class="tpl-card">
-      <div class="thumb">Search Results</div>
-      <div class="body">
-        <div class="example">Search: "roof rack" — spans Roof Racks + Bike Racks</div>
-        <h3>Category Quick-Tabs + Zero-Results State</h3>
-        <p>Shares the PLP/VPLP engine rather than forking it. Search from the header; results get dynamic category quick-tabs built from whichever categories they span, Products/Pages/Articles/Brands views and a universal filter set. Try an unmatched term to see the zero-results state.</p>
-        <a class="btn btn-primary btn-sm" href="search-results/index.html">Open Template</a>
+      <div class="tpl-card">
+        <div class="thumb">Search Results</div>
+        <div class="body">
+          <div class="example">Search: "roof rack" — spans Roof Racks + Bike Racks</div>
+          <h3>Category Quick-Tabs + Zero-Results State</h3>
+          <p>Shares the PLP/VPLP engine rather than forking it. Search from the header; results get dynamic category quick-tabs built from whichever categories they span, Products/Pages/Articles/Brands views and a universal filter set. Try an unmatched term to see the zero-results state.</p>
+          <a class="btn btn-primary btn-sm" href="search-results/index.html">Open Template</a>
+        </div>
       </div>
-    </div>
-    <div class="tpl-card">
-      <div class="thumb">Global Header &amp; Mega Menu</div>
-      <div class="body">
-        <div class="example">Standalone build of the site-wide header</div>
-        <h3>Header, Mega Menu &amp; Search Typeahead</h3>
-        <p>The same header every template uses, isolated for review: utility bar, region switcher, session state, the 3-level mega menu, search typeahead and the mobile full-screen menu.</p>
-        <a class="btn btn-primary btn-sm" href="header/index.html">Open Template</a>
-      </div>
-    </div>
-    <div class="tpl-card bundle">
-      <div class="thumb">Category Listing (PLP / VPLP)</div>
-      <div class="body">
-        <p class="bundle-intro">Category grid/list pages on one shared engine: a standard non-fitment-locked branch, its Level-3 nav-depth pattern test, and the fitment-locked (VPLP) branch for categories tied to an exact vehicle spec.</p>
-        <div class="bundle-list">
+      <div class="tpl-card bundle">
+        <div class="thumb">Category Listing (PLP / VPLP)</div>
+        <div class="body">
+          <p class="bundle-intro">Category grid/list pages on one shared engine: a standard non-fitment-locked branch, its Level-3 nav-depth pattern test, and the fitment-locked (VPLP) branch for categories tied to an exact vehicle spec.</p>
+          <div class="bundle-list">
           <div class="bundle-item">
             <h4>PLP Camping</h4>
             <p>Pattern test for Level 3 icon-card filtering inside the results grid, not a real category build.</p>
@@ -273,12 +290,36 @@
             <p>Fitment-locked branch for categories strictly tied to an exact vehicle roof spec, with the Fitment Gallery widget.</p>
             <a class="btn btn-primary btn-sm" href="vplp/index.html">Open Template</a>
           </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <p class="index-footnote">Raw scraped data for the five PDP reference products lives in <code>data/raw/</code>.</p>
+  <div class="index-panel" role="tabpanel" id="panel-tools" aria-labelledby="tab-tools" hidden>
+    <h2 class="index-group-heading">Review tools</h2>
+    <div class="template-grid">
+      <div class="tpl-card">
+        <div class="thumb">Global Header &amp; Mega Menu</div>
+        <div class="body">
+          <div class="example">Standalone build of the site-wide header</div>
+          <h3>Header, Mega Menu &amp; Search Typeahead</h3>
+          <p>The same header every template uses, isolated for review: utility bar, region switcher, session state, the 3-level mega menu, search typeahead and the mobile full-screen menu.</p>
+          <a class="btn btn-primary btn-sm" href="header/index.html">Open Template</a>
+        </div>
+      </div>
+    </div>
+    <h2 class="index-group-heading">Developer briefs</h2>
+    <div class="brief-list">
+      <a class="brief-item" href="../docs/pdp/dev-brief-viewer.html" target="_blank" rel="noopener"><strong>Product Pages (PDP)</strong><span>The five PDP templates and the shared component library.</span></a>
+      <a class="brief-item" href="../docs/plp/plp-dev-brief-viewer.html" target="_blank" rel="noopener"><strong>PLP / VPLP</strong><span>Category listing pages, filters, product cards and stock.</span></a>
+      <a class="brief-item" href="../docs/search-results/search-results-dev-brief-viewer.html" target="_blank" rel="noopener"><strong>Search Results</strong><span>Search page, quick-tabs and zero-results state.</span></a>
+      <a class="brief-item" href="../docs/vehicle-category-landing/vclp-dev-brief-viewer.html" target="_blank" rel="noopener"><strong>Vehicle Category Landing (VCLP)</strong><span>Make/model landing pages.</span></a>
+      <a class="brief-item" href="../docs/header/header-dev-brief-viewer.html" target="_blank" rel="noopener"><strong>Header</strong><span>Utility bar, mega menu, search typeahead and mobile menu.</span></a>
+      <a class="brief-item" href="../docs/footer/footer-dev-brief-viewer.html" target="_blank" rel="noopener"><strong>Footer</strong><span>Footer columns and region differences.</span></a>
+    </div>
+    <p class="index-footnote">Raw scraped data for the five PDP reference products lives in <code>data/raw/</code>. Page specs and the design review backlog live in <code>docs/</code> and <code>spec.md</code>.</p>
+  </div>
 </main>
 
 <footer class="rrg-footer">
@@ -353,5 +394,29 @@
 <script src="_shared/mega-menu.js"></script>
 <script src="_shared/admin-panel.js"></script>
 <script src="_shared/shared.js"></script>
+<script>
+// Index tabs — arrow keys move between them; the open tab lives in the URL hash (#tools).
+(() => {
+  const tabs = [...document.querySelectorAll('[data-index-tab]')];
+  const select = (name, focus) => {
+    tabs.forEach(t => {
+      const on = t.dataset.indexTab === name;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      if (on && focus) t.focus();
+    });
+    history.replaceState(null, '', name === 'designs' ? location.pathname + location.search : '#' + name);
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t.dataset.indexTab));
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      select(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length].dataset.indexTab, true);
+    });
+  });
+  if (location.hash === '#tools') select('tools');
+})();
+</script>
 </body>
 </html>
