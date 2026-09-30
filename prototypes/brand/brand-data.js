@@ -6,7 +6,6 @@ const RRG_BRAND_PAGES = {
  "thule": {
   "slug": "thule",
   "name": "Thule",
-  "logo": "brand-thule.webp",
   "accent": "#181818",
   "regions": [
    "AU",
@@ -103,7 +102,8 @@ const RRG_BRAND_PAGES = {
    }
   ],
   "hasFitment": true,
-  "logoPlate": false,
+  "logo": "brands/logos/thule.svg",
+  "logoWhite": "brands/logos/thule-white.svg",
   "images": {
    "hero": {
     "pos": "center 60%",
@@ -122,7 +122,6 @@ const RRG_BRAND_PAGES = {
  "rhino-rack": {
   "slug": "rhino-rack",
   "name": "Rhino-Rack",
-  "logo": "brand-rhino-rack.webp",
   "accent": "#005cb9",
   "regions": [
    "AU",
@@ -190,7 +189,8 @@ const RRG_BRAND_PAGES = {
    }
   ],
   "hasFitment": true,
-  "logoPlate": false,
+  "logo": "brands/logos/rhino-rack.svg",
+  "logoWhite": "brands/logos/rhino-rack-white.svg",
   "images": {
    "hero": {
     "pos": "center 55%",
@@ -209,7 +209,6 @@ const RRG_BRAND_PAGES = {
  "yakima": {
   "slug": "yakima",
   "name": "Yakima",
-  "logo": "brand-yakima.webp",
   "accent": "#ab2328",
   "regions": [
    "AU",
@@ -305,7 +304,8 @@ const RRG_BRAND_PAGES = {
    }
   ],
   "hasFitment": true,
-  "logoPlate": false,
+  "logo": "brands/logos/yakima.png",
+  "logoWhite": null,
   "images": {
    "hero": {
     "pos": "center 40%",
@@ -324,7 +324,6 @@ const RRG_BRAND_PAGES = {
  "front-runner": {
   "slug": "front-runner",
   "name": "Front Runner",
-  "logo": "brand-front-runner.webp",
   "accent": "#0d0d0d",
   "regions": [
    "AU",
@@ -391,7 +390,8 @@ const RRG_BRAND_PAGES = {
    }
   ],
   "hasFitment": true,
-  "logoPlate": true,
+  "logo": "brands/logos/front-runner.png",
+  "logoWhite": "brands/logos/front-runner-white.png",
   "images": {
    "hero": {
     "pos": "center 62%",
@@ -410,7 +410,6 @@ const RRG_BRAND_PAGES = {
  "cruz": {
   "slug": "cruz",
   "name": "Cruz",
-  "logo": "brand-cruz.webp",
   "accent": "#007cb0",
   "regions": [
    "AU",
@@ -506,7 +505,8 @@ const RRG_BRAND_PAGES = {
    }
   ],
   "hasFitment": true,
-  "logoPlate": true,
+  "logo": "brands/logos/cruz.png",
+  "logoWhite": "brands/logos/cruz-white.png",
   "images": {
    "hero": {
     "pos": "center",
@@ -525,7 +525,6 @@ const RRG_BRAND_PAGES = {
  "maxtrax": {
   "slug": "maxtrax",
   "name": "MAXTRAX",
-  "logo": "brand-maxtrax.webp",
   "accent": "#c25200",
   "regions": [
    "AU",
@@ -561,7 +560,8 @@ const RRG_BRAND_PAGES = {
   },
   "tiles": [],
   "hasFitment": false,
-  "logoPlate": true,
+  "logo": "brands/logos/maxtrax.png",
+  "logoWhite": null,
   "images": {
    "hero": {
     "pos": "center",
@@ -580,7 +580,6 @@ const RRG_BRAND_PAGES = {
  "rola": {
   "slug": "rola",
   "name": "ROLA",
-  "logo": "brand-rola.webp",
   "accent": "#e7121a",
   "regions": [
    "AU",
@@ -647,7 +646,8 @@ const RRG_BRAND_PAGES = {
    }
   ],
   "hasFitment": true,
-  "logoPlate": false,
+  "logo": "brands/logos/rola.png",
+  "logoWhite": null,
   "images": {
    "hero": {
     "pos": "center 60%",
@@ -666,7 +666,6 @@ const RRG_BRAND_PAGES = {
  "rockymounts": {
   "slug": "rockymounts",
   "name": "Rockymounts",
-  "logo": "brand-rocky-mounts.png",
   "accent": "#197ea4",
   "regions": [
    "AU",
@@ -706,7 +705,8 @@ const RRG_BRAND_PAGES = {
   },
   "tiles": [],
   "hasFitment": false,
-  "logoPlate": false,
+  "logo": "brands/logos/rockymounts.png",
+  "logoWhite": "brands/logos/rockymounts-white.png",
   "images": {
    "hero": {
     "pos": "center 35%",

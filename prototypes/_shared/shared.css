@@ -2607,10 +2607,11 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .brand-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.45) 38%,rgba(0,0,0,0) 68%);}
 .brand-hero-panel{display:flex;flex-direction:column;align-items:flex-start;gap:14px;max-width:560px;padding:36px 44px;}
 .brand-hero h1{margin:0;line-height:1;}
-.brand-hero-logo{display:block;max-width:260px;max-height:64px;width:auto;height:auto;filter:brightness(0) invert(1);}
-/* Multi-colour logos (Front Runner, Cruz, MAXTRAX) lose their marks when turned white, so they
-   sit on a small white plate instead. */
-.brand-hero-logo.is-plated{filter:none;box-sizing:content-box;background:#fff;padding:10px 14px;border-radius:var(--radius);}
+/* Logos from the brands' own sites (vector or 500-2000px), so they can sit at the Figma's size.
+   A brand with a white logo file uses it (Front Runner keeps its red mark); the rest are turned
+   white here (.is-mono). */
+.brand-hero-logo{display:block;height:60px;width:auto;max-width:min(340px,100%);object-fit:contain;object-position:left center;}
+.brand-hero-logo.is-mono{filter:brightness(0) invert(1);}
 .brand-hero-tagline{margin:0;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:30px;line-height:1.1;text-shadow:0 1px 3px rgba(0,0,0,.35);}
 .brand-hero-meta{margin:4px 0 0;font-size:15px;line-height:1.5;text-shadow:0 1px 2px rgba(0,0,0,.4);}
 .brand-hero-meta a{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
@@ -2672,7 +2673,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .brand-card{display:flex;flex-direction:column;border:1px solid var(--rrg-line);border-top:4px solid var(--brand-accent);border-radius:var(--radius);background:#fff;overflow:hidden;}
 .brand-card[hidden]{display:none;}
 .brand-card-logo{display:flex;align-items:center;justify-content:center;height:96px;padding:18px 24px;border-bottom:1px solid var(--rrg-line-soft);}
-.brand-card-logo img{max-width:170px;max-height:44px;width:auto;height:auto;object-fit:contain;}
+.brand-card-logo img{max-width:210px;max-height:48px;width:auto;height:auto;object-fit:contain;}
 .brand-card-body{display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;flex:1;}
 .brand-card-body h3{margin:0;font-size:22px;}
 .brand-card-body p{margin:0;font-size:14px;line-height:1.55;color:var(--rrg-grey-700);}
@@ -2708,7 +2709,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
   .cat-tile-grid--brand .cat-tile{flex:0 0 42%;scroll-snap-align:start;}
 }
 @media (max-width:520px){
-  .brand-hero-logo{max-width:200px;max-height:48px;}
+  .brand-hero-logo{height:44px;max-width:240px;}
   .brand-hero-tagline{font-size:22px;}
   .brand-card-grid{grid-template-columns:1fr;}
   .az-groups{columns:2 140px;}

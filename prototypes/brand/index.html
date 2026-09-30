@@ -359,7 +359,7 @@ function renderBrandHero() {
   document.getElementById('brandHero').innerHTML = `
     <img class="brand-hero-img" src="../_shared/${img.src}" alt="${img.alt}" style="object-position:${img.pos}" width="1920" height="600">
     <div class="brand-hero-panel">
-      <h1><img class="brand-hero-logo${BRAND.logoPlate ? ' is-plated' : ''}" src="../_shared/${BRAND.logo}" alt="${BRAND.name}"></h1>
+      <h1><img class="brand-hero-logo${BRAND.logoWhite ? '' : ' is-mono'}" src="../_shared/${BRAND.logoWhite || BRAND.logo}" alt="${BRAND.name}"></h1>
       <p class="brand-hero-tagline">${BRAND.tagline}</p>
       ${inRegion ? `<p class="brand-hero-meta">${BRAND_REGION() === 'AU' ? `${BRAND.liveCount.toLocaleString('en-AU')} ${BRAND.name} products · ` : ''}<a href="#brandProducts">Browse the full range ↓</a></p>` : ''}
     </div>`;
