@@ -414,6 +414,14 @@ function bookMinDate() { const d = new Date(); d.setDate(d.getDate() + 1); retur
 function bookRenderForm(values = {}) {
   const store = values.store ?? bookPrefillStore();
   const vehicle = values.vehicle ?? (rrgVehicle() ? rrgVehicle().label : '');
+  // From the order confirmation's "Book a Fitting" (?order=): the order's fittable items go in the notes.
+  const orderNo = new URLSearchParams(location.search).get('order');
+  if (values.notes == null && orderNo) {
+    let last = null;
+    try { last = JSON.parse(localStorage.getItem('rrgLastOrder') || 'null'); } catch (e) {}
+    const items = last && last.number === orderNo ? last.lines.filter(l => typeof rrgIsFittable === 'function' && rrgIsFittable(l)).map(l => l.name) : [];
+    values = { ...values, notes: `Order #${orderNo}${items.length ? `: ${items.join('; ')}` : ''}. Bought from you, please fit.`, bought: 'Yes, online' };
+  }
   document.getElementById('bookingWrap').innerHTML = `
     <form class="booking-form" id="bookForm" novalidate data-track="fitting_request">
       <div class="booking-grid">

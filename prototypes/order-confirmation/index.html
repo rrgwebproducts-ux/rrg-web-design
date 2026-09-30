@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Order Confirmed | Roof Racks Galore</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<!-- ===== Order confirmation (docs/checkout/checkout-spec.md Section 5, 2026-09-30) =====
+     Magento's /checkout/onepage/success/. What happens next per method, then the one push the
+     2026-09-30 design review asked for (spec.md §16 item 6): "Book fitting at {store}", prefilled
+     into the Installation form — only when the order has something the stores fit. Guests can
+     create an account with just a password. Reads the fake order the checkout saved. Not indexed. -->
+</head>
+<body>
+
+<div class="rrg-header-shell">
+<div class="rrg-utility-bar">
+  <div class="wrap rrg-utility-inner">
+    <div class="rrg-utility-left">
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg> <span class="u-item-label" data-session-store-label>Your Nearest Store:</span> <a href="#" data-region-nearest-store>North Lakes</a></span>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg> <a href="#" data-session="vehicleSet">Your Vehicle: Toyota Hilux</a></span>
+    </div>
+    <div class="rrg-utility-right">
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z"/></svg> Call Us</span>
+      <div class="region-switcher u-item">
+        <button type="button" class="region-switcher-toggle" aria-haspopup="true" aria-expanded="false"><img class="flag-icon" data-region-flag src="../_shared/flags/au.svg" alt="" width="20" height="15"> <span data-region-label>Australia</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="region-switcher-menu">
+          <span class="tsm-label">Region</span>
+          <a href="#" data-region="AU" class="current"><img class="flag-icon" src="../_shared/flags/au.svg" alt="" width="20" height="15"> Australia</a>
+          <a href="#" data-region="NZ"><img class="flag-icon" src="../_shared/flags/nz.svg" alt="" width="20" height="15"> New Zealand</a>
+          <a href="#" data-region="UK"><img class="flag-icon" src="../_shared/flags/gb.svg" alt="" width="20" height="15"> United Kingdom</a>
+        </div>
+      </div>
+      <span class="u-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg> <a href="#" data-session="loggedIn">Graham</a></span>
+    </div>
+  </div>
+</div>
+<header class="rrg-main-header">
+  <div class="wrap rrg-main-inner">
+    <button type="button" class="mobile-nav-toggle" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="rrg-logo" href="../home/index.html" aria-label="Roof Racks Galore — home"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></a>
+    <nav class="rrg-nav">
+      <div class="mega-menu">
+        <button type="button" class="mega-menu-toggle" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg> Products</button>
+        <div class="mega-menu-drawer">
+          <div class="wrap mega-menu-drawer-inner">
+            <div class="mega-menu-l1"></div>
+            <div class="mega-menu-l2"></div>
+            <div class="mega-menu-l3"></div>
+          </div>
+        </div>
+      </div>
+      <span class="sep">|</span>
+      <a href="#">Store Finder</a>
+      <a href="#">Fit My Vehicle</a>
+      <a href="#">Clearance</a>
+      <a href="../installation/index.html">Fitting</a>
+    </nav>
+    <div class="rrg-search">
+      <input type="text" placeholder="Search Roof Racks or Accessories">
+      <button type="button" class="rrg-search-clear" aria-label="Clear search" hidden>&times;</button>
+      <button class="rrg-search-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <div class="rrg-cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+      <span class="cart-badge">0</span>
+    </div>
+  </div>
+</header>
+</div>
+<div class="rrg-sticky-header">
+  <button type="button" class="mobile-nav-toggle" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <a class="rrg-logo" href="../home/index.html" aria-label="Roof Racks Galore — home"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></a>
+  <div class="rrg-cart">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <span class="cart-badge">0</span>
+  </div>
+</div>
+
+<div class="mm-mobile-takeover">
+  <div class="mm-mobile-panel">
+    <div class="mm-mobile-topbar">
+      <a class="mm-mobile-logo" href="../home/index.html" aria-label="Roof Racks Galore — home"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></a>
+      <div class="mm-mobile-utility">
+        <a href="#" class="mm-mobile-utility-item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7v1H4v-1z"/></svg><span data-session="loggedIn">Graham</span></a>
+        <a href="#" class="mm-mobile-utility-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg><span data-session="vehicleSet">Your Vehicle: Toyota Hilux</span></a>
+      </div>
+      <button type="button" class="mm-mobile-close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="mm-mobile-search">
+      <input type="text" placeholder="Search Roof Racks or Accessories">
+      <button type="button" class="mm-mobile-search-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <div class="mega-menu-mobile"></div>
+  </div>
+</div>
+
+<main class="wrap confirm-main" data-confirm-page>
+  <div id="confirmOrder" hidden>
+    <section class="confirm-hero">
+      <span class="confirm-tick" aria-hidden="true">✓</span>
+      <div>
+        <h1 id="confirmTitle"></h1>
+        <p id="confirmLead"></p>
+      </div>
+    </section>
+
+    <div class="confirm-layout">
+      <div class="confirm-main-col">
+        <section class="co-section">
+          <h2>What happens next</h2>
+          <ol class="confirm-steps" id="confirmSteps"></ol>
+          <div id="confirmStore"></div>
+        </section>
+
+        <!-- Book fitting (§16 item 6) — the one prominent next step. No fitting prices: the store
+             confirms them. -->
+        <section class="co-section confirm-fitting" id="confirmFitting" hidden></section>
+
+        <section class="co-section" id="confirmAccount" hidden>
+          <h2>Save your details for next time</h2>
+          <p class="co-sub">Create an account to track this order and check out faster. We already have your email.</p>
+          <form class="confirm-account-form" id="confirmAccountForm" novalidate>
+            <label class="booking-field" data-field="password">Choose a password<input name="password" type="password" autocomplete="new-password" minlength="8"><small>At least 8 characters.</small></label>
+            <button type="submit" class="btn btn-outline">Create account</button>
+          </form>
+        </section>
+      </div>
+
+      <aside class="checkout-summary confirm-summary" aria-label="Order summary">
+        <div class="checkout-summary-head"><h2>Your order</h2></div>
+        <div id="confirmSummary"></div>
+      </aside>
+    </div>
+
+    <p class="confirm-help">Questions about your order? Call <a href="tel:1300071264" data-confirm-phone>1300 071 264</a> or email <a href="mailto:help@roofracksgalore.com.au" data-confirm-email>help@roofracksgalore.com.au</a>, Monday to Friday 8:30am–5pm.</p>
+  </div>
+
+  <div id="confirmNone" class="confirm-none" hidden>
+    <h1>No recent order</h1>
+    <p>Place an order through the checkout to see this page. Site Admin → Demo cart fills the cart for you.</p>
+    <a class="btn btn-cta" href="../cart/index.html">Go to your cart</a>
+  </div>
+</main>
+
+
+<section class="brands-section">
+  <div class="wrap">
+    <h2 class="related-heading">Shop The Best Brands</h2>
+    <div class="brands-track">
+      <img src="../_shared/brand-rhino-rack.webp" alt="Rhino Rack" width="145" height="23" loading="lazy">
+      <img src="../_shared/brand-yakima.webp" alt="Yakima" width="148" height="23" loading="lazy">
+      <img src="../_shared/brand-thule.webp" alt="Thule" width="148" height="38" loading="lazy">
+      <img src="../_shared/brand-front-runner.webp" alt="Front Runner" width="148" height="39" loading="lazy">
+      <img src="../_shared/brand-cruz.webp" alt="Cruz" width="148" height="68" loading="lazy">
+      <img src="../_shared/brand-maxtrax.webp" alt="MAXTRAX" width="148" height="39" loading="lazy">
+      <img src="../_shared/brand-rola.webp" alt="ROLA" width="148" height="36" loading="lazy">
+      <img src="../_shared/brand-rocky-mounts.png" alt="Rocky Mounts" width="282" height="49" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<footer class="rrg-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Opening Hours</a></li>
+          <li><a href="#">Wholesale Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Feedback</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Checkout Error Form</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="#">Terms and Conditions</a></li>
+          <li><a href="#">Warranty</a></li>
+          <li><a href="#">Payment and Pricing</a></li>
+          <li><a href="#">Shipping &amp; Delivery</a></li>
+          <li><a href="#">Refund &amp; Exchange</a></li>
+          <li><a href="#">Frequently Asked Questions</a></li>
+        </ul>
+      </div>
+      <div class="footer-info-block">
+        <div class="footer-col">
+          <h4>Store Finder</h4>
+          <div class="footer-store-finder">
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" fill="#FFCA48"/></svg>
+            <p><a href="#">Click here</a> <span data-footer-store-copy>to find your closest store from our <strong>35 nationwide locations</strong>.</span></p>
+          </div>
+        </div>
+        <div class="footer-col footer-enquiries">
+          <h4>Online Orders and Enquiries</h4>
+          <p>Our team is here to support you. Phone and chat is open Monday to Friday, 8:30am to 5pm AEST (closed Public Hols).</p>
+          <div class="footer-contact-row">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="9" fill="#fff"/><rect x="8" y="7.5" width="2" height="6" rx="1" fill="#211E20"/><rect x="8" y="4.5" width="2" height="2" rx="1" fill="#211E20"/></svg>
+            <a href="mailto:help@roofracksgalore.com.au" data-footer-email>help@roofracksgalore.com.au</a>
+          </div>
+          <div class="footer-contact-row" data-trust="phone">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2.6 1.2 5.4 1c.5 0 1 .3 1.1.8l.8 2.9c.1.4 0 .9-.3 1.2L5.6 7.3a11 11 0 0 0 4.1 4.1l1.4-1.4c.3-.3.8-.4 1.2-.3l2.9.8c.5.1.8.6.8 1.1l-.2 2.8c0 .6-.5 1-1.1 1C7.3 15.4 1.6 9.7 1.6 2.3c0-.6.4-1 1-1.1Z" fill="#fff"/></svg>
+            <span>Call Us <a href="tel:1300071264">1300 071 264</a></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-col footer-brand-col">
+        <div class="footer-logo rrg-logo"><img src="../_shared/headerlogo-white.png" alt="Roof Racks Galore"></div>
+        <div class="footer-tagline" data-footer-tagline hidden>#TakeMoreDoMore</div>
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="footer-social-icons" data-footer-social-icons></div>
+        </div>
+        <div class="footer-payment">
+          <h4>Payment Options</h4>
+          <div class="footer-payment-icons" data-footer-payment-icons></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-footer-copyright>© 2026 Roof Racks Galore</span>
+  </div>
+</footer>
+
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="../_shared/plp.js"></script>
+<script>
+// ==== Order confirmation (docs/checkout/checkout-spec.md Section 5) ====================
+const order = (() => { try { return JSON.parse(localStorage.getItem(RRG_ORDER_KEY) || 'null'); } catch (e) { return null; } })();
+const $ = id => document.getElementById(id);
+const esc = rrgEsc;
+const STORES = RRG_STORE_NETWORK.flatMap(g => g.stores.map(st => ({ ...st, state: g.state })));
+const maskEmail = e => { const [u, d] = String(e || '').split('@'); return d ? `${u.slice(0, 1)}${'•'.repeat(Math.max(2, u.length - 1))}@${d}` : ''; };
+
+function storeCardHTML(st, withMap) {
+  const tz = RRG_STATE_TZ[st.state];
+  const status = rrgStoreOpenStatus(RRG_STANDARD_HOURS, tz, rrgStoreHolidays(RRG_STATE_ABBR[st.state]));
+  const href = rrgStorePageHref(st.name);
+  return `
+    <article class="sf-card confirm-store-card">
+      <div class="sf-card-top"><h3 class="sf-card-name">${href ? `<a href="${href}">${st.name}</a>` : st.name}</h3></div>
+      <div class="store-open${status.open ? ' is-open' : ''}">${status.open ? 'Open now' : 'Closed'} <span>· ${status.text}</span></div>
+      <span>${st.street}, ${st.city} ${RRG_STATE_ABBR[st.state]} ${st.postcode}</span>
+      <a class="sf-card-phone" href="tel:${st.phone.replace(/[^0-9]/g, '')}">${st.phone}</a>
+      ${withMap ? '<div class="booking-store-map" id="confirmMap" aria-label="Map of the store"></div>' : ''}
+      <div class="sf-card-actions">
+        ${st.mapLink ? `<a href="${st.mapLink}" target="_blank" rel="noopener noreferrer">Directions</a>` : ''}
+        ${href ? `<a href="${href}">Store hours &amp; details</a>` : ''}
+      </div>
+    </article>`;
+}
+function drawMap(st) {
+  const el = $('confirmMap');
+  if (!el) return;
+  if (typeof L === 'undefined') { window.addEventListener('load', () => drawMap(st), { once: true }); return; }
+  if (el._leaflet_id) return;
+  const map = L.map(el, { zoomControl: false, scrollWheelZoom: false }).setView([st.lat, st.lng], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 18 }).addTo(map);
+  L.marker([st.lat, st.lng], { icon: rrgPinIcon(ON_DISPLAY_STORES.has(st.name)) }).addTo(map);
+}
+
+function render() {
+  if (!order) { $('confirmNone').hidden = false; return; }
+  $('confirmOrder').hidden = false;
+  const collect = order.method === 'collect';
+  const st = collect ? STORES.find(s => s.name === order.store) : null;
+  $('confirmTitle').textContent = `Thanks, ${order.first || 'there'}. Your order is confirmed.`;
+  $('confirmLead').innerHTML = `Order <strong>#${order.number}</strong> · We've emailed your receipt to ${esc(maskEmail(order.email))}.`;
+
+  // What happens next — per method, with the live timings.
+  const steps = collect ? [
+    ['We’re getting it ready', `Our ${esc(order.store)} team is picking your order. Allow up to 2 business days if stock has to come from another store.`],
+    ['We’ll SMS you', `A text to ${esc(order.phone || 'your mobile')} as soon as it’s ready to collect.`],
+    ['Collect it', `Bring your order number (#${order.number}). We’ll hold it for 14 days.`]
+  ] : [
+    ['We’re packing it', 'Your order is dispatched the next business day.'],
+    ['Tracking on its way', `We’ll email the tracking link to ${esc(maskEmail(order.email))}.`],
+    ['Delivered', `${esc(order.delivery ? order.delivery.label : 'Delivery')}: ${esc(order.delivery ? order.delivery.eta : '')}.`]
+  ];
+  $('confirmSteps').innerHTML = steps.map(([h, p]) => `<li><strong>${h}</strong><span>${p}</span></li>`).join('');
+  $('confirmStore').innerHTML = st ? storeCardHTML(st, true) : order.address
+    ? `<div class="co-store-card"><span class="co-sub">Delivering to</span><span>${esc(order.address.street)}, ${esc(order.address.suburb)} ${esc(order.address.region || '')} ${esc(order.address.postcode)}</span></div>` : '';
+  if (st) drawMap(st);
+
+  // Book fitting (§16 item 6). Only for fittable items, and not in the UK (fitting isn't offered
+  // online there). The store: the collect store, else the saved store, else the shopper picks.
+  const fittable = order.lines.filter(rrgIsFittable);
+  const ctx = rrgStoreContext();
+  const fitStore = st || (order.region === 'AU' && ctx.storeSet ? STORES.find(s => s.name === ctx.store) : null);
+  const box = $('confirmFitting');
+  box.hidden = !fittable.length || order.region === 'UK';
+  if (!box.hidden) {
+    const nz = order.region === 'NZ' ? REGION_SINGLE_STORES.NZ : null;
+    const bookHref = `../installation/index.html?${fitStore ? `store=${encodeURIComponent(fitStore.name)}&` : ''}order=${order.number}#book`;
+    box.innerHTML = `
+      <div class="confirm-fitting-head">
+        <span class="confirm-fitting-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7.24a5 5 0 0 1-6.16 6.16l-8.3 8.3a2 2 0 0 1-2.83-2.83l8.3-8.3A5 5 0 0 1 19.76 2l-3.4 3.4 1.24 1.24L21 3.24A5 5 0 0 1 22 7.24z"/></svg></span>
+        <div>
+          <h2>Your products are locked in. Now let's get them fitted.</h2>
+          <p>Our installers fit ${fittable.length === 1 ? 'it' : 'them'} properly, torque to spec and show you how it all works${fitStore ? ` at <strong>${fitStore.name}</strong>` : nz ? ' at our <strong>Auckland</strong> store' : ''}. Most fittings are done while you wait.</p>
+        </div>
+      </div>
+      <ul class="confirm-fit-items">${fittable.map(l => `<li><img src="${l.image}" alt="" loading="lazy"><span>${esc(l.name)}</span></li>`).join('')}</ul>
+      <div class="confirm-fitting-actions">
+        ${nz ? `<a class="btn btn-cta" href="tel:${nz.phone.replace(/[^0-9]/g, '')}">Call Auckland to book · ${nz.phone}</a>`
+             : `<a class="btn btn-cta" href="${bookHref}">Book a Fitting${fitStore ? ` at ${fitStore.name}` : ''}</a>`}
+        <span>Your store confirms the time and fitting price. It's a request, not a charge.</span>
+      </div>`;
+  }
+
+  // Create an account (guests only).
+  $('confirmAccount').hidden = !order.guest;
+
+  // Order summary.
+  const t = order.totals;
+  $('confirmSummary').innerHTML = `
+    <ul class="cart-lines">${order.lines.map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>
+    <dl class="cart-totals">
+      <div><dt>Subtotal</dt><dd>${rrgMoney(t.subtotal)}</dd></div>
+      ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You saved</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+      <div><dt>${collect ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery ? rrgMoney(t.delivery) : 'Free'}</dd></div>
+      <div class="cart-totals-total"><dt>Total paid</dt><dd>${rrgMoney(t.total)}</dd></div>
+      <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>
+    </dl>
+    <dl class="confirm-meta">
+      <div><dt>Payment</dt><dd>${esc(order.payment)}</dd></div>
+      <div><dt>${collect ? 'Collect from' : 'Delivery'}</dt><dd>${collect ? esc(order.store) : `${esc(order.delivery.label)} · ${esc(order.delivery.eta)}`}</dd></div>
+      <div><dt>Order date</dt><dd>${new Date(order.placed).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</dd></div>
+    </dl>`;
+}
+$('confirmAccountForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const pw = e.target.password.value;
+  const f = e.target.querySelector('[data-field="password"]');
+  f.querySelector('.booking-error')?.remove();
+  f.classList.toggle('is-invalid', pw.length < 8);
+  if (pw.length < 8) { f.insertAdjacentHTML('beforeend', '<span class="booking-error">Use at least 8 characters.</span>'); e.target.password.focus(); return; }
+  window.rrgSetSession('loggedIn', true);
+  $('confirmAccount').innerHTML = `<h2>Account created</h2><p class="co-sub">You're signed in. Order #${order.number} is in your account, and next time checkout remembers your details.</p>`;
+});
+render();
+document.addEventListener('rrg-region-change', () => { if (order) render(); });
+</script>
+</body>
+</html>

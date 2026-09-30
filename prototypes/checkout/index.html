@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Checkout | Roof Racks Galore</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<!-- ===== Checkout (docs/checkout/checkout-spec.md Section 4, 2026-09-30) =====
+     Magento's 2-step checkout restyled (decision 2): 1 Details & delivery (#shipping) →
+     2 Payment (#payment). Distraction-free shell: logo, "Secure checkout" and help only — no mega
+     menu, search or promos. Guest first (decision 3). Click & Collect is chosen BEFORE any address
+     (live asks for a full delivery address first). Payment methods follow each region's live site.
+     Reads the shared demo cart (cart.js); Place order saves a fake order for the confirmation page.
+     Not indexed. -->
+</head>
+<body class="checkout-body">
+
+<header class="checkout-header">
+  <div class="wrap checkout-header-inner">
+    <a class="rrg-logo" href="../home/index.html" aria-label="Roof Racks Galore — home"><img src="../_shared/headerlogo.png" alt="Roof Racks Galore"></a>
+    <span class="checkout-secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Secure checkout</span>
+    <span class="checkout-help" data-trust="phone">Need help? <a href="tel:1300071264">1300 071 264</a></span>
+  </div>
+</header>
+
+<main class="wrap checkout-main" data-checkout-page>
+  <ol class="checkout-steps" aria-label="Checkout steps">
+    <li data-step-nav="shipping"><span>1</span> Details &amp; delivery</li>
+    <li data-step-nav="payment"><span>2</span> Payment</li>
+  </ol>
+
+  <!-- Phones: the order summary folds away at the top. -->
+  <details class="co-summary-mobile" id="coSummaryMobile">
+    <summary><span>Show order summary</span><strong id="coSummaryMobileTotal"></strong></summary>
+    <div id="coSummaryMobileBody"></div>
+  </details>
+
+  <div class="checkout-layout">
+    <div class="checkout-forms">
+      <!-- Step 1 — Details & delivery -->
+      <form class="checkout-step" id="stepShipping" novalidate>
+        <section class="co-section">
+          <h2>Contact</h2>
+          <div id="coContact"></div>
+        </section>
+        <section class="co-section">
+          <h2 id="coMethodHeading">How do you want to get it?</h2>
+          <div id="coMethod"></div>
+        </section>
+        <section class="co-section">
+          <h2>Your details</h2>
+          <div class="booking-grid" id="coDetails"></div>
+        </section>
+        <button type="submit" class="btn btn-cta btn-lg btn-block">Continue to payment</button>
+      </form>
+
+      <!-- Step 2 — Payment -->
+      <form class="checkout-step" id="stepPayment" novalidate hidden>
+        <section class="co-section co-review" id="coReview"></section>
+        <section class="co-section">
+          <h2>Payment</h2>
+          <div class="co-pay-options" id="coPayments" role="radiogroup" aria-label="Payment method"></div>
+        </section>
+        <section class="co-section" id="coBillingSection">
+          <h2>Billing address</h2>
+          <div id="coBilling"></div>
+        </section>
+        <button type="submit" class="btn btn-cta btn-lg btn-block" id="coPlaceOrder">Place order</button>
+        <p class="co-legal">By placing your order you agree to our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.</p>
+      </form>
+    </div>
+
+    <aside class="checkout-summary" aria-label="Order summary">
+      <div class="checkout-summary-head"><h2>Order summary</h2><a href="../cart/index.html">Edit cart</a></div>
+      <div id="coSummary"></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="checkout-footer">
+  <div class="wrap">
+    <span data-footer-copyright>© 2026 Roof Racks Galore</span>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms and Conditions</a>
+    <a href="#">Shipping &amp; Delivery</a>
+    <a href="#">Refund &amp; Exchange</a>
+  </div>
+</footer>
+
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="../_shared/plp.js"></script>
+<script>
+// ==== Checkout (docs/checkout/checkout-spec.md Section 4) ==============================
+// State lives in localStorage (rrgCheckout, shared with the cart page's method/store/postcode) so a
+// reload or Back keeps what was typed. Steps are the URL hash, as in Magento.
+const CO_KEY = 'rrgCheckout';
+const co = () => { try { return JSON.parse(localStorage.getItem(CO_KEY) || '{}'); } catch (e) { return {}; } };
+const coSave = patch => { try { localStorage.setItem(CO_KEY, JSON.stringify({ ...co(), ...patch })); } catch (e) {} };
+const $ = id => document.getElementById(id);
+const esc = rrgEsc;
+const CO_STORES = RRG_STORE_NETWORK.flatMap(g => g.stores.map(st => ({ ...st, state: g.state })));
+const coRegion = () => (typeof currentRegion === 'undefined' ? 'AU' : currentRegion);
+
+// Nothing to check out → back to the (empty) cart, as Magento does.
+if (!rrgCartGet().lines.length) location.replace('../cart/index.html');
+
+function coMethod() {
+  const rc = rrgRegionCheckout();
+  const m = co().method;
+  if (m === 'collect' && rc.collect) return 'collect';
+  if (m && m !== 'collect' && rc.delivery.some(d => d.key === m)) return m;
+  return rc.collect ? 'collect' : rc.delivery[0].key;
+}
+function coStore() {
+  const s = co().store;
+  if (s && CO_STORES.some(x => x.name === s)) return s;
+  const ctx = rrgStoreContext();
+  return ctx.storeSet && CO_STORES.some(x => x.name === ctx.store) ? ctx.store : '';
+}
+
+// ---- Order summary (right column; folded at the top on phones) ----
+function renderSummary() {
+  const cart = rrgCartGet();
+  const method = coMethod();
+  const known = method === 'collect' || co().deliveryChosen;
+  const t = rrgCartTotals(cart, known ? method : null);
+  const html = `
+    <ul class="cart-lines">${cart.lines.map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>
+    <dl class="cart-totals">
+      <div><dt>Subtotal</dt><dd>${rrgMoney(t.subtotal)}</dd></div>
+      ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You're saving</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+      <div><dt>${method === 'collect' ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery === null ? 'Choose an option' : t.delivery === 0 ? 'Free' : rrgMoney(t.delivery)}</dd></div>
+      <div class="cart-totals-total"><dt>Total</dt><dd>${rrgMoney(t.total)}</dd></div>
+      <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>
+    </dl>`;
+  $('coSummary').innerHTML = html;
+  $('coSummaryMobileBody').innerHTML = html + '<a class="co-edit-cart" href="../cart/index.html">Edit cart</a>';
+  $('coSummaryMobileTotal').textContent = rrgMoney(t.total);
+  $('coPlaceOrder').textContent = `Place order · ${rrgMoney(t.total)}`;
+  return t;
+}
+
+// ---- Step 1 ----
+const field = (name, label, attrs = '', full = false, hint = '') => `
+  <label class="booking-field${full ? ' booking-field--full' : ''}" data-field="${name}">${label}
+    <input name="${name}" ${attrs} value="${esc(co()[name] || '')}">${hint ? `<small>${hint}</small>` : ''}
+  </label>`;
+
+function renderContact() {
+  const s = co();
+  const loggedIn = rrgSessionGet('loggedIn');
+  $('coContact').innerHTML = loggedIn ? `
+    <p class="co-signed-in">Signed in as <strong>Graham</strong> · <span>${esc(s.email || 'graham@example.com')}</span></p>
+    <input type="hidden" name="email" value="${esc(s.email || 'graham@example.com')}">` : `
+    <div class="booking-grid">
+      ${field('email', 'Email', 'type="email" autocomplete="email" required', true, 'Check out as a guest. You can create an account after your order.')}
+      <div class="booking-field--full co-signin" id="coSignin">
+        <button type="button" class="link-btn" data-co-signin>Already have an account? Sign in</button>
+      </div>
+      <label class="co-check booking-field--full"><input type="checkbox" name="optin"${s.optin ? ' checked' : ''}> Keep me up to date with deals and new products from ${rrgBrandName()}</label>
+    </div>`;
+}
+
+function storeCardHTML(name, { selectable = false, checked = false } = {}) {
+  const st = CO_STORES.find(x => x.name === name);
+  if (!st) return '';
+  const tz = RRG_STATE_TZ[st.state];
+  const status = rrgStoreOpenStatus(RRG_STANDARD_HOURS, tz, rrgStoreHolidays(RRG_STATE_ABBR[st.state]));
+  const inner = `
+    <span class="co-store-name">${st.name}${selectable ? '' : ''}</span>
+    <span>${st.street}, ${st.city} ${RRG_STATE_ABBR[st.state]} ${st.postcode}</span>
+    <span class="store-open${status.open ? ' is-open' : ''}">${status.open ? 'Open now' : 'Closed'} <span>· ${status.text}</span></span>
+    <span class="co-ready">Ready within 2 business days</span>`;
+  return selectable
+    ? `<label class="co-store-option"><input type="radio" name="coStorePick" value="${st.name}"${checked ? ' checked' : ''}><span>${inner}</span></label>`
+    : `<div class="co-store-card">${inner}</div>`;
+}
+// Stores nearest a postcode (its state's first store as the anchor, then by distance) or, with
+// no postcode, nearest the currently chosen store — the Store Finder's approach, not 7 accordions.
+function nearestStores(postcode, from) {
+  let origin = CO_STORES.find(x => x.name === from);
+  const state = postcode && typeof postcodeToState === 'function' ? postcodeToState(postcode) : null;
+  if (state) origin = CO_STORES.find(x => x.state === state) || origin;
+  if (!origin) origin = CO_STORES.find(x => x.name === 'North Lakes');
+  return CO_STORES.map(x => ({ x, km: rrgKmBetween(origin, x) })).sort((a, b) => a.km - b.km).slice(0, 5).map(r => r.x.name);
+}
+
+function renderMethod() {
+  const rc = rrgRegionCheckout();
+  const s = co();
+  const method = coMethod();
+  const store = coStore();
+  $('coMethodHeading').textContent = rc.collect ? 'How do you want to get it?' : 'Delivery';
+  const choice = rc.collect ? `
+    <div class="co-method-choice" role="radiogroup" aria-label="Delivery method">
+      <label class="co-method${method === 'collect' ? ' is-selected' : ''}"><input type="radio" name="coMethod" value="collect"${method === 'collect' ? ' checked' : ''}>
+        <span><strong>Click &amp; Collect</strong><span>Free · from one of our stores</span></span></label>
+      <label class="co-method${method !== 'collect' ? ' is-selected' : ''}"><input type="radio" name="coMethod" value="delivery"${method !== 'collect' ? ' checked' : ''}>
+        <span><strong>Delivery</strong><span>To your door, from ${rrgMoney(rc.delivery[0].price)}</span></span></label>
+    </div>` : '';
+  let detail;
+  if (method === 'collect') {
+    const changing = s.changingStore || !store;
+    detail = `
+      <div class="co-collect" data-field="store">
+        ${store && !changing ? `
+          <p class="co-sub">Collect from</p>
+          ${storeCardHTML(store)}
+          <button type="button" class="link-btn" data-co-change-store>Change store</button>` : `
+          <div class="co-store-search">
+            <label for="coStorePostcode">Find a store near</label>
+            <div><input id="coStorePostcode" inputmode="numeric" maxlength="4" placeholder="Your postcode" value="${esc(s.storePostcode || '')}"><button type="button" class="btn btn-outline btn-sm" data-co-store-search>Search</button></div>
+          </div>
+          <div class="co-store-list" role="radiogroup" aria-label="Choose a store">
+            ${nearestStores(s.storePostcode, store).map(n => storeCardHTML(n, { selectable: true, checked: n === store })).join('')}
+          </div>
+          <a class="co-sub-link" href="../store-finder/index.html" target="_blank" rel="noopener">See all stores on the Store Finder ›</a>`}
+        <p class="co-note">We'll SMS you when it's ready. Orders are held for 14 days.</p>
+      </div>`;
+  } else {
+    const opt = rc.delivery.find(d => d.key === method) || rc.delivery[0];
+    detail = `
+      <div class="booking-grid co-address">
+        ${field('street', 'Street address', 'autocomplete="address-line1" required', true)}
+        ${field('suburb', coRegion() === 'UK' ? 'Town or city' : 'Suburb', 'autocomplete="address-level2" required')}
+        ${rc.regionOptions ? `
+          <label class="booking-field" data-field="region">${rc.regionLabel}
+            <select name="region" required><option value="">Choose</option>${rc.regionOptions.map(o => `<option${o === s.region ? ' selected' : ''}>${o}</option>`).join('')}</select>
+          </label>` : field('region', rc.regionLabel, 'autocomplete="address-level1"')}
+        ${field('postcode', rc.postcodeLabel, `autocomplete="postal-code" required inputmode="${coRegion() === 'UK' ? 'text' : 'numeric'}"`)}
+        <label class="co-check booking-field--full"><input type="checkbox" name="business"${s.business ? ' checked' : ''}> This is a business address</label>
+        <p class="co-proto-note booking-field--full">Production: one address search box with autocomplete (e.g. Loqate or AddressFinder), with these fields as the manual fallback.</p>
+      </div>
+      <fieldset class="co-ship-options" data-field="deliveryOption">
+        <legend>Delivery option</legend>
+        ${rc.delivery.map(d => `
+          <label class="co-ship-option${d.key === opt.key ? ' is-selected' : ''}"><input type="radio" name="coShip" value="${d.key}"${d.key === opt.key ? ' checked' : ''}>
+            <span><strong>${d.label}</strong><span>${d.eta}</span></span><b>${rrgMoney(d.price)}</b></label>`).join('')}
+      </fieldset>`;
+  }
+  $('coMethod').innerHTML = choice + detail;
+}
+
+function renderDetails() {
+  const method = coMethod();
+  const loggedIn = rrgSessionGet('loggedIn');
+  const s = co();
+  $('coDetails').innerHTML = `
+    <label class="booking-field" data-field="first">First name<input name="first" autocomplete="given-name" required value="${esc(s.first || (loggedIn ? 'Graham' : ''))}"></label>
+    ${field('last', 'Last name', 'autocomplete="family-name" required')}
+    ${field('phone', 'Mobile', 'type="tel" autocomplete="tel" required', true, method === 'collect' ? 'For the SMS when your order is ready to collect.' : 'For the courier, if they need to reach you.')}`;
+}
+
+function renderShipping() {
+  renderContact();
+  renderMethod();
+  renderDetails();
+  renderSummary();
+}
+
+// Remember everything typed, as it's typed.
+document.addEventListener('input', e => {
+  const f = e.target.closest('.checkout-forms');
+  if (!f || !e.target.name || e.target.type === 'radio') return;
+  coSave({ [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value });
+});
+document.addEventListener('change', e => {
+  if (e.target.name === 'coMethod') {
+    const rc = rrgRegionCheckout();
+    coSave({ method: e.target.value === 'collect' ? 'collect' : (co().lastDelivery || rc.delivery[0].key), deliveryChosen: e.target.value === 'collect' ? co().deliveryChosen : true });
+    renderMethod(); renderDetails(); renderSummary();
+  } else if (e.target.name === 'coShip') {
+    coSave({ method: e.target.value, lastDelivery: e.target.value, deliveryChosen: true });
+    renderMethod(); renderSummary();
+  } else if (e.target.name === 'coStorePick') {
+    coSave({ store: e.target.value, changingStore: false });
+    renderMethod();
+  } else if (e.target.type === 'checkbox' || e.target.tagName === 'SELECT') {
+    if (e.target.name) coSave({ [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value });
+  }
+});
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-co-change-store]')) { coSave({ changingStore: true }); renderMethod(); $('coStorePostcode')?.focus(); }
+  if (e.target.closest('[data-co-store-search]')) { coSave({ storePostcode: $('coStorePostcode').value.trim() }); renderMethod(); $('coStorePostcode')?.focus(); }
+  if (e.target.closest('[data-co-signin]')) {
+    $('coSignin').innerHTML = `
+      <label class="booking-field" data-field="password">Password<input name="password" type="password" autocomplete="current-password"></label>
+      <button type="button" class="btn btn-outline btn-sm" data-co-do-signin>Sign in</button>`;
+    $('coSignin').querySelector('input').focus();
+  }
+  if (e.target.closest('[data-co-do-signin]')) window.rrgSetSession('loggedIn', true);
+  const step = e.target.closest('[data-step-nav="shipping"].is-done');
+  if (step) location.hash = '#shipping';
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'coStorePostcode') { e.preventDefault(); document.querySelector('[data-co-store-search]').click(); }
+});
+
+// Inline validation, the Installation form's styles. Focus moves to the first problem.
+function showErrors(form, errors) {
+  form.querySelectorAll('[data-field]').forEach(f => { f.classList.remove('is-invalid'); f.querySelector(':scope > .booking-error')?.remove(); });
+  Object.entries(errors).forEach(([k, msg]) => {
+    const f = form.querySelector(`[data-field="${k}"]`);
+    if (!f) return;
+    f.classList.add('is-invalid');
+    f.insertAdjacentHTML('beforeend', `<span class="booking-error">${msg}</span>`);
+  });
+  const first = Object.keys(errors)[0];
+  if (first) (form.querySelector(`[data-field="${first}"] input, [data-field="${first}"] select`) || form.querySelector(`[data-field="${first}"]`)).focus?.();
+  return !first;
+}
+$('stepShipping').addEventListener('submit', e => {
+  e.preventDefault();
+  const s = co();
+  const method = coMethod();
+  const email = e.target.querySelector('[name=email]')?.value.trim() || '';
+  const errors = {};
+  if (!/^\S+@\S+\.\S+$/.test(email)) errors.email = 'Enter a valid email address.';
+  if (method === 'collect') {
+    if (!coStore() || s.changingStore) errors.store = 'Choose the store you’ll collect from.';
+  } else {
+    if (!(s.street || '').trim()) errors.street = 'Enter your street address.';
+    if (!(s.suburb || '').trim()) errors.suburb = coRegion() === 'UK' ? 'Enter your town or city.' : 'Enter your suburb.';
+    if (rrgRegionCheckout().regionOptions && !s.region) errors.region = `Choose your ${rrgRegionCheckout().regionLabel.toLowerCase()}.`;
+    if (!(s.postcode || '').trim()) errors.postcode = `Enter your ${rrgRegionCheckout().postcodeLabel.toLowerCase()}.`;
+  }
+  if (!(s.first || (rrgSessionGet('loggedIn') ? 'Graham' : '')).trim()) errors.first = 'Enter your first name.';
+  if (!(s.last || '').trim()) errors.last = 'Enter your last name.';
+  if (!/^[0-9 +()-]{8,}$/.test((s.phone || '').trim())) errors.phone = 'Enter a mobile number we can reach you on.';
+  if (!showErrors(e.target, errors)) return;
+  coSave({ email, first: s.first || 'Graham', shippingDone: true, deliveryChosen: true });
+  location.hash = '#payment';
+});
+
+// ---- Step 2 ----
+const PAY_ICONS = { visa: 'Visa', mastercard: 'Mastercard', amex: 'Amex' };
+function renderPayment() {
+  const rc = rrgRegionCheckout();
+  const s = co();
+  const method = coMethod();
+  const t = renderSummary();
+  const opt = rc.delivery.find(d => d.key === method);
+  $('coReview').innerHTML = `
+    <div class="co-review-row"><span>Contact</span><p>${esc(s.email || '')}<br>${esc([s.first, s.last].filter(Boolean).join(' '))} · ${esc(s.phone || '')}</p><a href="#shipping">Change</a></div>
+    <div class="co-review-row"><span>${method === 'collect' ? 'Collect from' : 'Deliver to'}</span><p>${method === 'collect'
+      ? `<strong>${esc(coStore())}</strong> · Ready within 2 business days<br>Free Click &amp; Collect`
+      : `${esc(s.street || '')}, ${esc(s.suburb || '')} ${esc(s.region || '')} ${esc(s.postcode || '')}<br>${opt.label} · ${opt.eta} · ${rrgMoney(opt.price)}`}</p><a href="#shipping">Change</a></div>`;
+  const pay = rc.payments.includes(s.payment) ? s.payment : 'card';
+  $('coPayments').innerHTML = rc.payments.map(p => `
+    <label class="co-pay${p === pay ? ' is-selected' : ''}">
+      <input type="radio" name="coPay" value="${p}"${p === pay ? ' checked' : ''}>
+      <span class="co-pay-label"><strong>${RRG_PAYMENT_LABELS[p]}</strong>${p === 'card' ? `<span class="co-pay-cards">${rc.cards.map(c => `<i>${PAY_ICONS[c]}</i>`).join('')}</span>` : ''}
+        ${p === 'afterpay' ? `<span>4 interest-free payments of ${rrgMoney(t.total / 4)}</span>` : ''}${p === 'zip' ? '<span>Buy now, pay later from $10/week</span>' : ''}</span>
+    </label>
+    ${p === pay ? `<div class="co-pay-detail">${payDetail(p)}</div>` : ''}`).join('');
+  // Wallets and buy-now-pay-later collect billing themselves.
+  const needsBilling = ['card', 'eft'].includes(pay);
+  $('coBillingSection').hidden = !needsBilling;
+  $('coBilling').innerHTML = method !== 'collect' ? `
+    <label class="co-check"><input type="checkbox" name="billingSame"${s.billingSame !== false ? ' checked' : ''}> Same as delivery address</label>
+    ${s.billingSame === false ? billingFields() : ''}` : `<p class="co-sub">Needed for card payments.</p>${billingFields()}`;
+}
+function billingFields() {
+  const rc = rrgRegionCheckout();
+  return `<div class="booking-grid">
+    ${field('billStreet', 'Street address', 'autocomplete="billing address-line1" required', true)}
+    ${field('billSuburb', coRegion() === 'UK' ? 'Town or city' : 'Suburb', 'autocomplete="billing address-level2" required')}
+    ${field('billPostcode', rc.postcodeLabel, 'autocomplete="billing postal-code" required')}
+  </div>`;
+}
+function payDetail(p) {
+  if (p === 'card') return `<div class="booking-grid">
+      ${field('cardNumber', 'Card number', 'inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234"', true)}
+      ${field('cardExpiry', 'Expiry (MM/YY)', 'autocomplete="cc-exp" placeholder="MM/YY"')}
+      ${field('cardCvc', 'Security code', 'inputmode="numeric" autocomplete="cc-csc" placeholder="CVC"')}
+      ${field('cardName', 'Name on card', 'autocomplete="cc-name"', true)}
+    </div><p class="co-proto-note">Prototype fields. Production uses the payment gateway's hosted card fields.</p>`;
+  if (p === 'paypal') return '<p>You’ll log in to PayPal to finish paying, then come back here for your confirmation.</p>';
+  if (p === 'googlepay') return '<p>Google Pay opens when you place your order.</p>';
+  if (p === 'afterpay') return '<p>You’ll be taken to Afterpay to set up your 4 payments. The first is due today.</p>';
+  if (p === 'zip') return '<p>You’ll be taken to Zip to finish paying.</p>';
+  if (p === 'eft') return '<p>We’ll email our bank details. Your order is processed once the payment clears (usually 1–2 business days).</p>';
+  return '';
+}
+document.addEventListener('change', e => {
+  if (e.target.name === 'coPay') { coSave({ payment: e.target.value }); renderPayment(); }
+  if (e.target.name === 'billingSame') { coSave({ billingSame: e.target.checked }); renderPayment(); }
+});
+$('stepPayment').addEventListener('submit', e => {
+  e.preventDefault();
+  const s = co();
+  const rc = rrgRegionCheckout();
+  const pay = rc.payments.includes(s.payment) ? s.payment : 'card';
+  const errors = {};
+  if (pay === 'card') {
+    if ((s.cardNumber || '').replace(/\s/g, '').length < 12) errors.cardNumber = 'Enter your card number.';
+    if (!/^\d\d\/\d\d$/.test((s.cardExpiry || '').trim())) errors.cardExpiry = 'Enter the expiry as MM/YY.';
+    if (!/^\d{3,4}$/.test((s.cardCvc || '').trim())) errors.cardCvc = 'Enter the 3 or 4 digit code.';
+    if (!(s.cardName || '').trim()) errors.cardName = 'Enter the name on the card.';
+  }
+  const billingNeeded = ['card', 'eft'].includes(pay) && (coMethod() === 'collect' || s.billingSame === false);
+  if (billingNeeded) {
+    if (!(s.billStreet || '').trim()) errors.billStreet = 'Enter the billing street address.';
+    if (!(s.billSuburb || '').trim()) errors.billSuburb = 'Enter the billing suburb.';
+    if (!(s.billPostcode || '').trim()) errors.billPostcode = 'Enter the billing postcode.';
+  }
+  if (!showErrors(e.target, errors)) return;
+  placeOrder(pay);
+});
+
+// Fake order → the confirmation page. The cart empties, as it would after a real order.
+function placeOrder(pay) {
+  const s = co();
+  const cart = rrgCartGet();
+  const method = coMethod();
+  const t = rrgCartTotals(cart, method);
+  const opt = rrgRegionCheckout().delivery.find(d => d.key === method);
+  const order = {
+    number: String(100045000 + Math.floor(Math.random() * 999)), placed: new Date().toISOString(), region: coRegion(),
+    email: s.email, first: s.first, last: s.last, phone: s.phone,
+    method, store: method === 'collect' ? coStore() : null,
+    address: method === 'collect' ? null : { street: s.street, suburb: s.suburb, region: s.region, postcode: s.postcode },
+    delivery: opt ? { label: opt.label, eta: opt.eta, price: opt.price } : null,
+    payment: RRG_PAYMENT_LABELS[pay], lines: cart.lines, totals: t,
+    guest: !rrgSessionGet('loggedIn'), vehicle: rrgVehicleGet()
+  };
+  try { localStorage.setItem(RRG_ORDER_KEY, JSON.stringify(order)); } catch (err) {}
+  // Keep the shopper's method and store for next time; drop everything else they typed.
+  try { localStorage.setItem(CO_KEY, JSON.stringify({ method: s.method, store: s.store })); } catch (err) {}
+  rrgCartSave({ lines: [] });
+  location.href = '../order-confirmation/index.html';
+}
+
+// ---- Steps (URL hash) ----
+function showStep() {
+  const wantPayment = location.hash === '#payment' && co().shippingDone;
+  if (location.hash === '#payment' && !co().shippingDone) history.replaceState(null, '', '#shipping');
+  $('stepShipping').hidden = wantPayment;
+  $('stepPayment').hidden = !wantPayment;
+  document.querySelectorAll('[data-step-nav]').forEach(li => {
+    const on = li.dataset.stepNav === (wantPayment ? 'payment' : 'shipping');
+    li.classList.toggle('is-current', on);
+    li.classList.toggle('is-done', wantPayment && li.dataset.stepNav === 'shipping');
+    if (on) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+  });
+  if (wantPayment) renderPayment(); else { coSave({ shippingDone: false }); renderShipping(); }
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', showStep);
+['rrg-region-change', 'rrg-session-change', 'rrg-cart-change'].forEach(ev => document.addEventListener(ev, () => {
+  if (!rrgCartGet().lines.length) { location.replace('../cart/index.html'); return; }
+  if (location.hash === '#payment' && co().shippingDone) renderPayment(); else renderShipping();
+}));
+if (!location.hash) history.replaceState(null, '', '#shipping');
+showStep();
+</script>
+</body>
+</html>
