@@ -109,9 +109,14 @@ function rrgStockKey(stock) {
   return RRG_STOCK_LEGACY_KEYS[stock] || stock || 'in_stock';
 }
 
-// Demo nearby store per region — Kedron is ~18km from North Lakes. NZ/UK are single-store
-// regions, so "nearby" falls back to the warehouse wording there.
+// Demo nearby store per region — Kedron is ~18km from North Lakes (and North Lakes from Kedron,
+// when Kedron is the saved store). NZ/UK are single-store regions, so "nearby" falls back to the
+// warehouse wording there.
 const RRG_DEMO_NEARBY_STORE = { AU: { name: 'Kedron', km: 18 } };
+// Stock tooltips (spec.md §16 item 19) — DEMO: the warehouse that holds it, and one more store
+// that has it. Production: the per-store / per-warehouse inventory feed.
+const RRG_DEMO_WAREHOUSE = { AU: 'Brisbane', NZ: 'Auckland', UK: 'Bolton' };
+const RRG_DEMO_ALSO_IN_STOCK = { AU: 'Rocklea' };
 
 function rrgStoreContext() {
   const phase = rrgPhaseGet();
@@ -119,12 +124,24 @@ function rrgStoreContext() {
   const link = document.querySelector('[data-region-nearest-store]');
   const store = (link && (link.dataset.currentStoreName || link.dataset.auStore)) || 'North Lakes';
   const region = typeof currentRegion !== 'undefined' ? currentRegion : 'AU';
-  return { phase, storeSet, storeAware: phase === 2 && storeSet, store, nearby: RRG_DEMO_NEARBY_STORE[region] || null };
+  let nearby = RRG_DEMO_NEARBY_STORE[region] || null;
+  if (nearby && nearby.name === store) nearby = { name: 'North Lakes', km: 18 };
+  const also = RRG_DEMO_ALSO_IN_STOCK[region];
+  return { phase, storeSet, storeAware: phase === 2 && storeSet, store, region, nearby,
+    also: also && also !== store ? also : null, warehouse: RRG_DEMO_WAREHOUSE[region] || 'Brisbane' };
 }
 
-// Returns { key, label (cards), pdpLabel, subline, tone (CSS class), schema (JSON-LD),
-// collectToday, collectEta, contact (show "Contact our team"), setStore (show the
+// Returns { key, label (cards), labelHTML (cards: store names linked), pdpLabel, subline, detail
+// (PDP: which stores / warehouse), tip (cards: the ⓘ popover's HTML), tone (CSS class), schema
+// (JSON-LD), collectToday, collectEta, contact (show "Contact our team"), setStore (show the
 // Phase 2 "Set your store" prompt) }. storeStock is ignored unless Phase 2 + store set.
+// 2026-09-30 (spec.md §16 items 18–19): the card names the store with no distance (the km was
+// measured from the saved store, not the shopper); the distance, other stores and the warehouse
+// move to the ⓘ popover on cards and the detail line on the PDP.
+const rrgStoreLinkHTML = name => {
+  const href = typeof rrgStorePageHref === 'function' ? rrgStorePageHref(name) : null;
+  return href ? `<a class="store-page-link" href="${href}">${name}</a>` : name;
+};
 function rrgStockStatus(stock, storeStock, ctx = rrgStoreContext()) {
   const key = rrgStockKey(stock);
   const base = { key, subline: '', contact: false, setStore: false, collectToday: false };
@@ -144,20 +161,38 @@ function rrgStockStatus(stock, storeStock, ctx = rrgStoreContext()) {
   const common = { ...base, tone: low ? 'low-stock' : 'in-stock', schema: low ? 'LimitedAvailability' : 'InStock' };
   let where = ctx.storeAware ? (storeStock || 'warehouse') : null;
   if (where === 'nearby' && !ctx.nearby) where = 'warehouse';
+  const alsoIn = ctx.also ? ` Also in stock at ${rrgStoreLinkHTML(ctx.also)}.` : '';
+  const ships = `Ships from our ${ctx.warehouse} warehouse`;
   if (where === 'here') {
     const label = `${icon} ${word} at ${ctx.store}`;
-    return { ...common, label, pdpLabel: label + pdpSuffix, subline: 'Click & Collect today · delivery dispatched next business day', collectToday: true, collectEta: 'Available Today' };
+    const others = [ctx.nearby && ctx.nearby.name, ctx.also].filter(Boolean);
+    return { ...common, label, labelHTML: `${icon} ${word} at ${rrgStoreLinkHTML(ctx.store)}`, pdpLabel: label + pdpSuffix,
+      subline: 'Click & Collect today · delivery dispatched next business day', collectToday: true, collectEta: 'Available Today',
+      detail: others.length ? `Also in stock at ${others.join(' and ')}` : '',
+      tip: `On the shelf at ${rrgStoreLinkHTML(ctx.store)} today.${others.length ? ` Also in stock at ${others.map(rrgStoreLinkHTML).join(' and ')}.` : ''}` };
   }
   if (where === 'nearby') {
-    const label = `${icon} ${word} at ${ctx.nearby.name} (${ctx.nearby.km}km)`;
-    return { ...common, label, pdpLabel: label + pdpSuffix, subline: `Collect today from ${ctx.nearby.name}, or from ${ctx.store} within 2 business days`, collectToday: true, collectEta: `Today from ${ctx.nearby.name}` };
+    const label = `${icon} ${word} at ${ctx.nearby.name}`;
+    return { ...common, label, labelHTML: `${icon} ${word} at ${rrgStoreLinkHTML(ctx.nearby.name)}`, pdpLabel: label + pdpSuffix,
+      subline: `Collect today from ${ctx.nearby.name}, or from ${ctx.store} within 2 business days`, collectToday: true, collectEta: `Today from ${ctx.nearby.name}`,
+      detail: `${ctx.nearby.name} is about ${ctx.nearby.km}km from ${ctx.store}${ctx.also ? ` · also in stock at ${ctx.also}` : ''}`,
+      tip: `${rrgStoreLinkHTML(ctx.nearby.name)} is about ${ctx.nearby.km}km from your store (${ctx.store}).${alsoIn}` };
   }
   const label = `${icon} ${word} Online`;
+  // Phase 1 only knows online stock: say so, and point to the store for shelf stock.
+  const storeHref = ctx.storeSet && typeof rrgStorePageHref === 'function' ? rrgStorePageHref(ctx.store) : null;
+  const contact = ctx.storeSet
+    ? `<a href="${storeHref || (typeof RRG_STORE_FINDER_HREF === 'function' ? RRG_STORE_FINDER_HREF() : '#')}">Contact ${ctx.store}</a>`
+    : `<a href="${typeof RRG_STORE_FINDER_HREF === 'function' ? RRG_STORE_FINDER_HREF() : '#'}">Contact your local store</a>`;
   return {
     ...common, label, pdpLabel: label + pdpSuffix,
     subline: where === 'warehouse'
       ? `Collect at ${ctx.store} within 2 business days · delivery dispatched next business day`
       : 'Dispatched next business day · Click & Collect ready in-store within 2 business days',
+    detail: ships,
+    tip: where === 'warehouse'
+      ? `${ships}. Not on the shelf at ${rrgStoreLinkHTML(ctx.store)} yet: we can have it there within 2 business days.`
+      : `Stock shown is our online warehouse (${ctx.warehouse}). ${contact} to check shelf stock.`,
     setStore: ctx.phase === 2 && !ctx.storeSet,
     collectEta: 'Ready within 2 business days'
   };

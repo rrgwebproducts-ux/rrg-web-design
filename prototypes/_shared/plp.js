@@ -1269,13 +1269,15 @@ function plpPriceHTML(product) {
     return `<div class="plp-price plp-price-v2"><div class="plp-price-v2-row"><span class="plp-price-v2-now">${from}<span class="plp-price-now">${now}</span></span></div></div>`;
   }
   // "Now" is dropped for sibling/variant products (2026-09-19) — on sale they still just read
-  // "From $X", with the RRP beside it.
+  // "From $X", with the RRP beside it. The "RRP" prefix is dropped on cards (2026-09-30, spec.md
+  // §16 item 21; the PDP keeps it). Flagged for Graham: the ACCC treats an unlabelled strikethrough
+  // as the business's own previous price — see docs/2026-09-30-design-review-analysis.md #21.
   const nowLabel = product.hasOptions ? '' : `<span class="plp-price-label">Now</span>`;
   return `
     <div class="plp-price plp-price-v2 plp-price-on-sale-v2">
       <div class="plp-price-v2-row">
         <span class="plp-price-v2-now">${nowLabel}${from}<span class="plp-price-now">${now}</span></span>
-        <span class="plp-price-v2-was">RRP <span class="plp-price-was">${plpFmtMoney(product.wasPrice)}</span></span>
+        <span class="plp-price-v2-was"><span class="plp-price-was">${plpFmtMoney(product.wasPrice)}</span></span>
       </div>
     </div>
   `;
@@ -1350,10 +1352,101 @@ function plpStoreStock(product) {
 // Camping re-scrape) is a real gap — several real Camping SKUs are genuinely OutOfStock per
 // the live PDP's own schema.org availability; see plpPrimaryActionHTML() for the matching
 // disabled primary action.
+// The ⓘ (spec.md §16 item 19) is its own tap target, separate from the card link: tap, hover or
+// focus opens a small popover with the detail the one-line label leaves out (see
+// rrgStockStatus() for the wording). Task-critical info never lives only in it.
 function plpStockLineHTML(product) {
   const s = rrgStockStatus(product.stock, plpStoreStock(product));
-  return `<div class="plp-stock-line ${s.tone}">${s.label}</div>`;
+  const tip = s.tip ? `<button type="button" class="stock-info" aria-label="Stock details" aria-expanded="false" data-stock-tip="${s.tip.replace(/"/g, '&quot;')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></button>` : '';
+  return `<div class="plp-stock-line ${s.tone}"><span>${s.labelHTML || s.label}</span>${tip}</div>`;
 }
+
+// One shared popover for every card's ⓘ. Opens on tap/click (pinned until tapped again, Escape,
+// or a click elsewhere) and on hover or keyboard focus; positioned under the button, kept on screen.
+(function initStockTips() {
+  let pop = null, owner = null, pinned = false, hideTimer = null;
+  const ensure = () => {
+    if (pop) return pop;
+    pop = document.createElement('div');
+    pop.className = 'stock-tip-pop';
+    pop.setAttribute('role', 'status');
+    pop.hidden = true;
+    pop.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+    pop.addEventListener('mouseleave', () => { if (!pinned) hideSoon(); });
+    document.body.appendChild(pop);
+    return pop;
+  };
+  const place = btn => {
+    const r = btn.getBoundingClientRect();
+    const w = Math.min(280, window.innerWidth - 24);
+    pop.style.width = w + 'px';
+    pop.style.left = Math.max(12, Math.min(window.innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + 'px';
+    pop.style.top = (r.bottom + 8) + 'px';
+  };
+  const show = (btn, pin) => {
+    ensure(); clearTimeout(hideTimer);
+    if (owner && owner !== btn) owner.setAttribute('aria-expanded', 'false');
+    owner = btn; pinned = pin;
+    pop.innerHTML = btn.dataset.stockTip;
+    pop.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    place(btn);
+  };
+  const hide = () => {
+    if (!pop || pop.hidden) return;
+    pop.hidden = true; pinned = false;
+    if (owner) owner.setAttribute('aria-expanded', 'false');
+    owner = null;
+  };
+  const hideSoon = () => { clearTimeout(hideTimer); hideTimer = setTimeout(hide, 150); };
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.stock-info');
+    if (btn) { e.preventDefault(); e.stopPropagation(); if (owner === btn && pinned) hide(); else show(btn, true); return; }
+    if (pop && !pop.contains(e.target)) hide();
+  });
+  document.addEventListener('mouseover', e => {
+    const btn = e.target.closest('.stock-info');
+    if (btn && window.matchMedia('(hover: hover)').matches && !pinned) show(btn, false);
+  });
+  document.addEventListener('mouseout', e => {
+    const btn = e.target.closest('.stock-info');
+    if (btn && !pinned && !btn.contains(e.relatedTarget)) hideSoon();
+  });
+  document.addEventListener('focusin', e => { const btn = e.target.closest('.stock-info'); if (btn && !pinned) show(btn, false); });
+  document.addEventListener('focusout', e => {
+    if (!e.target.closest('.stock-info') || pinned) return;
+    if (pop && pop.contains(e.relatedTarget)) return;
+    hideSoon();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && owner) { const b = owner; hide(); b.focus(); } });
+  window.addEventListener('scroll', () => { if (owner) place(owner); }, { passive: true });
+  window.addEventListener('resize', hide);
+})();
+
+// "Set your store" line (spec.md §16 item 20) — one slim line above the results when store-level
+// stock exists (Phase 2) but no store is set. Dismissible for the session; gone once a store is set.
+const PLP_SET_STORE_DISMISS_KEY = 'rrgSetStoreLineDismissed';
+function plpRenderSetStoreLine() {
+  const wrap = document.getElementById('plpResults');
+  if (!wrap) return;
+  let line = document.getElementById('plpSetStoreLine');
+  if (!line) {
+    line = document.createElement('div');
+    line.id = 'plpSetStoreLine';
+    line.className = 'plp-set-store-line';
+    line.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22s7-7.58 7-13A7 7 0 1 0 5 9c0 5.42 7 13 7 13zm0-9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg><span><a href="#" data-set-store>Set your store</a> to see what's in stock near you</span><button type="button" class="plp-set-store-close" aria-label="Dismiss">&times;</button>`;
+    line.querySelector('.plp-set-store-close').addEventListener('click', () => {
+      try { sessionStorage.setItem(PLP_SET_STORE_DISMISS_KEY, '1'); } catch (e) {}
+      line.hidden = true;
+    });
+    wrap.before(line);
+  }
+  let dismissed = false;
+  try { dismissed = sessionStorage.getItem(PLP_SET_STORE_DISMISS_KEY) === '1'; } catch (e) {}
+  const ctx = rrgStoreContext();
+  line.hidden = dismissed || ctx.phase !== 2 || ctx.storeSet;
+}
+document.addEventListener('rrg-session-change', plpRenderSetStoreLine);
 
 // Real brand-logo assets where one already exists in _shared/ (reused verbatim from the PDP
 // templates); brands with no supplied logo file fall back to a plain text wordmark, same
@@ -1476,6 +1569,7 @@ function plpRenderResults() {
   const cfg = window.PLP_CONFIG;
   if (cfg.isSearch && plpState.searchScope !== 'products') { plpRenderScopeResults(); return; }
   const wrap = document.getElementById('plpResults');
+  plpRenderSetStoreLine();
   const countLabel = document.getElementById('plpResultCount');
   const mobileCountLabel = document.getElementById('plpResultCountMobile');
   if (!wrap) return;

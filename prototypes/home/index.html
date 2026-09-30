@@ -159,7 +159,7 @@
     <!-- Vehicle finder (spec.md §16 items 7/26): the Fit Finder with no vehicle, "Shopping for
          your Toyota Hilux" with one — replaces the separate vehicle bar that sat below the offers.
          Same cascade as the header's Fit My Vehicle drawer; lands on the VLP. -->
-    <section class="fit-finder-widget home-hero-finder" data-fit-finder-inline data-vehicle-finder data-vf-browse-href="#shop-by-category">
+    <section class="fit-finder-widget home-hero-finder" data-fit-finder-inline data-vehicle-finder data-vf-browse-href="#shop-by-category" data-vf-proof="Since 1989 · 35+ fitting centres · 200,000+ racks fitted">
       <div class="ff-head">
         <span class="ff-badge"><svg viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#vi-clip-homeff)"><path d="M24.9152 14.5953V14.0848C24.9152 12.0661 23.2893 10.4418 21.2815 10.4418C20.6739 10.4418 20.1127 10.1054 19.8234 9.56589L17.8676 5.97512C17.5726 5.43563 17.0113 5.10498 16.4038 5.10498L5.13237 5.12238C4.63477 5.12238 4.1603 5.34862 3.84206 5.73728L1.51025 8.60874C0.567114 9.76892 0.248877 11.3236 0.653906 12.7622L1.17466 14.6185C0.931641 14.7055 0.705981 14.8505 0.520825 15.0362C0.191016 15.3668 0.00585938 15.8193 0.00585938 16.2892C0.00585938 17.2637 0.792773 18.0584 1.76484 18.0584H2.66748C2.66748 18.1165 2.66748 18.1687 2.66748 18.2209C2.66748 19.9321 4.05037 21.3244 5.76306 21.3244C7.47576 21.3244 8.85864 19.9379 8.85864 18.2209C8.85864 18.1687 8.85864 18.1165 8.85864 18.07L15.6168 18.0816C15.6168 18.1281 15.6168 18.1803 15.6168 18.2267C15.6168 19.9379 16.9997 21.3302 18.7124 21.3302C20.4251 21.3302 21.808 19.9437 21.808 18.2267C21.808 18.1803 21.808 18.1397 21.808 18.0932H24.9672C25.9219 18.0874 26.6915 17.3159 26.6915 16.3588V16.324C26.6915 15.3726 25.9219 14.5953 24.973 14.5953H24.9441H24.9152ZM5.91929 10.4708H3.1188C2.86421 10.4708 2.62698 10.3258 2.51704 10.0938C2.40132 9.86174 2.43025 9.5891 2.58647 9.38606L4.64634 6.67123C4.81992 6.43919 5.09766 6.30577 5.38696 6.30577H5.92507V10.465L5.91929 10.4708ZM11.8096 10.4708H7.60884V6.31157H11.8096V10.4708ZM18.0702 10.146C17.9487 10.3432 17.7288 10.4708 17.4973 10.4708H13.4702V6.31157H15.8946C16.2417 6.31157 16.5658 6.5088 16.722 6.81625L18.0933 9.49048C18.2032 9.69931 18.1917 9.94875 18.0702 10.146Z" fill="currentColor"/><path d="M3.92297 4.19981H16.2474C18.099 4.19981 19.6092 2.69157 19.6092 0.835275C19.6092 0.371201 19.2331 -0.00585938 18.7702 -0.00585938C18.3073 -0.00585938 17.9312 0.377002 17.9312 0.841076C17.9312 1.76922 17.1732 2.52915 16.2474 2.52915H3.92297C3.46008 2.52915 3.08398 2.8946 3.08398 3.35868C3.08398 3.82275 3.46008 4.19401 3.92297 4.19401V4.19981Z" fill="currentColor"/></g><defs><clipPath id="vi-clip-homeff"><rect width="26.6966" height="21.3028" fill="white"/></clipPath></defs></svg></span>
         <h2><span class="italic-lead">Fit</span> Finder</h2>
@@ -179,7 +179,9 @@
 
 <div class="wrap">
   <!-- Section 5.6 — Current Offers: the three live slides not used in the hero, directly under
-       it with no heading; a swipeable, auto-advancing row at ≤900px (Brenton, 2026-09-29). -->
+       it with no heading; about 20% shorter since 2026-09-30 so Shop by Category makes the fold
+       (spec.md §16 item 22). A swipeable row at ≤900px, no longer auto-advancing (Baymard: never
+       auto-rotate on mobile). -->
   <div class="home-offer-grid" role="region" aria-label="Current offers" data-offer-carousel>
     <a class="home-offer-tile" href="#" aria-label="Overstock Clearance — up to 60% off"><img src="../_shared/home-hero/overstock-clearance-bg.webp" alt=""><img src="../_shared/home-hero/overstock-clearance-art.webp" alt=""></a>
     <a class="home-offer-tile" href="#" aria-label="Up to 35% off EGR roller shutters"><img src="../_shared/home-hero/egr-bg.webp" alt=""><img src="../_shared/home-hero/egr-art.webp" alt=""></a>
@@ -187,13 +189,6 @@
   </div>
   <div class="home-offer-dots"></div>
 
-  <!-- Section 5.3 — the PDP's trust row. Wording from the live header USPs and meta description. -->
-  <div class="trust-row">
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><h4>Trusted Since 1989</h4><p>Australia’s roof rack specialists</p></div>
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg><h4>Over 200,000 Racks Fitted</h4><p>Expert fitting at <a href="#" data-store-slideout>our stores nationwide</a></p></div>
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><h4>Price Guarantee</h4><p><a href="#">How our price guarantee works</a></p></div>
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg><h4>90 Day Exchange</h4><p><a href="#">Read our exchange policy</a></p></div>
-  </div>
 
   <!-- Section 5.5 — the live page's nine category tiles plus Recovery Gear (live's Overstock tile
        is in Current Offers). Figma tile images, _shared/category-tiles/. -->
@@ -202,9 +197,23 @@
     <div class="cat-tile-grid cat-tile-grid--home" id="homeCategoryGrid"></div>
   </section>
 
+  <!-- Section 5.3 — the PDP's trust row, below Shop by Category since 2026-09-30 so the categories
+       sit above the fold (spec.md §16 item 22, Tim's request). Wording from the live header USPs and meta description. -->
+  <div class="trust-row">
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><h4>Trusted Since 1989</h4><p>Australia’s roof rack specialists</p></div>
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg><h4>Over 200,000 Racks Fitted</h4><p>Expert fitting at <a href="#" data-store-slideout>our stores nationwide</a></p></div>
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><h4>Price Guarantee</h4><p><a href="#">How our price guarantee works</a></p></div>
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg><h4>90 Day Exchange</h4><p><a href="#">Read our exchange policy</a></p></div>
+  </div>
+
 
   <!-- Section 5.7 — the live page's three product rows, as the VLP's carousel + PLP card. -->
   <div id="homeCarousels"></div>
+
+  <!-- Recent fitments (spec.md §16 item 24) — "to show we're busy". The Fitment Gallery panel,
+       each photo linking to that vehicle's VLP. Production: the newest in-store fitment photos
+       across every vehicle; the prototype only has real Hilux photos (the VCLP's). -->
+  <section class="fit-gallery-section home-fitments" id="homeFitments"></section>
 </div>
 
 <!-- Section 5.8 — trust band + help row: merges the live page's Key Finder / review / In Store
@@ -214,7 +223,6 @@
   <div class="wrap">
     <div class="vclp-trust-inner">
       <h2>Friendly + Trusted Nationwide Experts in Roof Rack Supply and Installation</h2>
-      <div class="vclp-reviews-badge"><span class="stars">★★★★★</span> Reviews.io — 4.8 / 5</div>
       <div class="vclp-trust-ctas">
         <a href="#" class="btn btn-primary">Book An Installation</a>
         <a href="#" class="btn btn-outline">See Fitting Costs</a>
@@ -222,6 +230,25 @@
     </div>
   </div>
 </section>
+
+<!-- What our customers say (spec.md §16 item 25) — replaces the trust band's static Reviews.io
+     badge. The newest reviews, not filtered to 5 stars, scrolled by hand (never auto-rotating).
+     Real reviews and score from reviews.io/company-reviews/store/roof-racks-galore (30 Sep 2026);
+     production pulls them from the Reviews.io API. -->
+<div class="wrap">
+  <section class="cat-tile-section home-reviews">
+    <div class="product-carousel-head">
+      <h2 class="related-heading">What Our Customers Say</h2>
+      <a class="product-carousel-viewall" href="https://www.reviews.io/company-reviews/store/roof-racks-galore" target="_blank" rel="noopener noreferrer">Read all reviews ›</a>
+    </div>
+    <p class="home-reviews-score" id="homeReviewsScore"></p>
+    <div class="product-carousel">
+      <button type="button" class="product-carousel-nav prev" aria-label="Previous reviews">‹</button>
+      <div class="product-carousel-track home-review-track" id="homeReviewTrack"></div>
+      <button type="button" class="product-carousel-nav next" aria-label="Next reviews">›</button>
+    </div>
+  </section>
+</div>
 
 <div class="wrap">
   <div class="home-help-grid">
@@ -466,6 +493,48 @@ document.getElementById('homeCarousels').addEventListener('click', e => {
   btn.disabled = true;
   setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
 });
+
+// ==== Recent fitments (spec.md §16 item 24) ============================================
+// The Fitment Gallery panel with its own track: each photo links to that vehicle's VLP. Real
+// Hilux fitment photos from the live site (the VCLP's set) — production takes the newest across
+// every vehicle.
+const HOME_FITMENTS = [
+  'i/m/image_FhlLK_1.jpg', 'i/m/image_P7ZoC_1.jpg', 'i/m/image_jQonU_1.jpg', 'I/M/IMG_2750_YaaKX_1.jpg',
+  'I/M/IMG_4122_UYR7R_1.jpg', '1/7/17791433691174490956170860620194_cDO9c_1.jpg', 'P/_/P_20260511_142833_afuMl_1.jpg',
+  'i/m/image_aNE06_1.jpg', '1/7/1777955625720802347718023618055_GHZgB_1.jpg'
+].map(path => ({ thumb: `https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/${path}`, vehicle: 'hilux', label: 'Toyota Hilux' }));
+(() => {
+  const section = document.getElementById('homeFitments');
+  section.innerHTML = fitGalleryPanelHTML(HOME_FITMENTS.length)
+    .replace('<span class="italic-lead">Fitment</span> Gallery', '<span class="italic-lead">Recent</span> Fitments')
+    .replace(/<a href="#" class="fit-gallery-viewall" data-fit-gallery-slideout>[^<]*<\/a>/, '<a href="../fit-my-vehicle/index.html" class="fit-gallery-viewall">Find fitments for your vehicle ›</a>');
+  document.getElementById('fitGalleryTrack').innerHTML = HOME_FITMENTS.map(f => `
+    <a class="home-fitment" href="../vlp/index.html?vehicle=${f.vehicle}">
+      <img src="${f.thumb}" alt="Roof rack fitted in store to a customer's ${f.label}" width="142" height="106" loading="lazy">
+      <span>${f.label}</span>
+    </a>`).join('');
+})();
+
+// ==== What our customers say (spec.md §16 item 25) =====================================
+// Newest first, exactly as posted — including the 4-star one. Captured 30 Sep 2026.
+const HOME_REVIEWS_SCORE = { rating: 4.3, count: 1914 };
+const HOME_REVIEWS = [
+  { name: 'Scott', when: '30 Sep 2026', stars: 5, text: 'Excellent and fast service' },
+  { name: 'Darrell', when: '30 Sep 2026', stars: 5, text: 'Service was great and delivery to the northwest quick' },
+  { name: 'Blake Gardner', when: '30 Sep 2026', stars: 5, text: 'Nice and prompt' },
+  { name: 'Adrian', when: '29 Sep 2026', stars: 4, text: 'Purchased dropracks for a Mercedes Sprinter. Assunmed I was getting the required hardware to be able to fit the racks to my car as I brought a product that was described as racks for a Mecedes Sprinter. Unfortunately no mounting brackes were provided. After carefull review I realise that the mounts were not included. This was not clear on the website. Then tried to find brackes for my Sprinter on the web site but was unable to find any suitable brackets. Ended up having to make my own. Lucky Im a bit handy otherwise I would have a set of Racks that can\'t be fitted to my vehicle. I expected a more wholistic and complete service to be provided. If you sell racks for a particular vehicle there should be mounting brackets, at least available, if not included to enable the product to be fitted to the intended vehicle. Having said that the racks are well made and seem sturdy and good quality.' },
+  { name: 'Andrew', when: '29 Sep 2026', stars: 5, text: 'Prompt delivery' },
+  { name: 'Anonymous', when: '29 Sep 2026', stars: 5, text: 'Friendly staff, quick service. Product looks like good quality.' },
+  { name: 'LUKE', when: '28 Sep 2026', stars: 5, text: 'Eazy Process timley shipping great products' },
+  { name: 'Anonymous', when: '28 Sep 2026', stars: 5, text: 'Good price. Promote postage. Very Happy' }
+];
+document.getElementById('homeReviewsScore').innerHTML = `<span class="stars" aria-hidden="true">★</span> <strong>${HOME_REVIEWS_SCORE.rating.toFixed(1)}</strong> average from ${HOME_REVIEWS_SCORE.count.toLocaleString('en-AU')} reviews on Reviews.io`;
+document.getElementById('homeReviewTrack').innerHTML = HOME_REVIEWS.map(r => `
+  <figure class="home-review">
+    <span class="home-review-stars" aria-label="${r.stars} out of 5 stars">${'★'.repeat(r.stars)}<span>${'★'.repeat(5 - r.stars)}</span></span>
+    <blockquote>${r.text}</blockquote>
+    <figcaption><strong>${r.name}</strong><span>${r.when} · Reviews.io</span></figcaption>
+  </figure>`).join('');
 
 // Store Finder tile: centre the shared map on the nearest store at street level, as on the VLP.
 const homeMapWait = setInterval(() => {

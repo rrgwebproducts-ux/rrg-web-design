@@ -1525,9 +1525,11 @@ Phase 2 with no store set adds **"Set your store to see local stock"** after the
 
 | `storeStock` | Card + PDP line | PDP second line |
 |---|---|---|
-| `here` | ✓ In Stock at North Lakes | Click & Collect today · delivery dispatched next business day |
-| `nearby` | ✓ In Stock at Kedron (18km) | Collect today from Kedron, or from North Lakes within 2 business days |
-| `warehouse` | ✓ In Stock Online | Collect at North Lakes within 2 business days · delivery dispatched next business day |
+| `here` | ✓ In Stock at North Lakes | Click & Collect today · delivery dispatched next business day · Also in stock at Kedron and Rocklea |
+| `nearby` | ✓ In Stock at Kedron | Collect today from Kedron, or from North Lakes within 2 business days · Kedron is about 18km from North Lakes · also in stock at Rocklea |
+| `warehouse` | ✓ In Stock Online | Collect at North Lakes within 2 business days · delivery dispatched next business day · Ships from our Brisbane warehouse |
+
+2026-09-30 (spec.md §16 items 18–19): no distance in the line (it was measured from the saved store, not the shopper). The PDP second line now also names the other stores that have it, or the warehouse it ships from; Phase 1 adds "Ships from our Brisbane warehouse". Cards carry the same detail in an ⓘ popover (PLP brief). Warehouse and "also in stock" stores are demo data until the inventory feed exists.
 
 **Availability filter:** on every product-listing page; details in the PLP brief.
 

@@ -335,7 +335,23 @@
 /* Doubled from 44px (2026-09-19 follow-up — Brenton: reads too small at the original size),
    same doubled size in both grid and list view since both share this markup/class. */
 
-.plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
+.plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;display:flex;align-items:center;gap:4px;}
+.plp-stock-line a{color:inherit;}
+/* Stock ⓘ (spec.md §16 item 19) — its own 32px tap target around an 16px icon. */
+.stock-info{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin:-8px -8px -8px -4px;padding:0;border:0;background:none;color:var(--rrg-grey-600);cursor:pointer;border-radius:50%;}
+.stock-info svg{width:16px;height:16px;}
+.stock-info:hover,.stock-info[aria-expanded="true"]{color:var(--rrg-text);}
+.stock-info:focus-visible{outline:2px solid var(--rrg-text);outline-offset:-4px;}
+.stock-tip-pop{position:fixed;z-index:500;padding:10px 12px;border-radius:var(--radius);background:var(--rrg-black);color:#fff;font-size:13px;line-height:1.5;box-shadow:var(--shadow);}
+.stock-tip-pop[hidden]{display:none!important;}
+.stock-tip-pop a{color:#fff;font-weight:700;}
+/* "Set your store" line above the results (spec.md §16 item 20). */
+.plp-set-store-line{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:9px 12px;border-radius:var(--radius);background:var(--rrg-gold-bg);border:1px solid var(--rrg-line);font-size:14px;color:var(--rrg-text);}
+.plp-set-store-line[hidden]{display:none!important;}
+.plp-set-store-line > svg{flex:0 0 16px;width:16px;height:16px;color:var(--rrg-red);}
+.plp-set-store-line span{flex:1 1 auto;}
+.plp-set-store-line a{font-weight:700;color:var(--rrg-text);}
+.plp-set-store-close{flex:0 0 auto;border:0;background:none;font-size:20px;line-height:1;padding:2px 6px;cursor:pointer;color:var(--rrg-grey-600);}
 .plp-stock-line.low-stock{color:var(--rrg-unknown);}
 .plp-stock-line.out-of-stock,.plp-stock-line.discontinued{color:var(--rrg-stock-out);}
 .plp-stock-line.special-order{color:var(--rrg-unknown);}

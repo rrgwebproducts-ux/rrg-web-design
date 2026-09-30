@@ -892,7 +892,9 @@ Phase 2 with no store set: same as above, plus a small **"Set your store"** link
 | `storeStock` | Card line | PDP line | PDP sub-line |
 |---|---|---|---|
 | `here` | ✓ In Stock at North Lakes | ✓ In Stock at North Lakes | Click & Collect today · delivery dispatched next business day |
-| `nearby` | ✓ In Stock at Kedron (18km) | ✓ In Stock at Kedron (18km) | Collect today from Kedron, or from North Lakes within 2 business days |
+| `nearby` | ✓ In Stock at Kedron | ✓ In Stock at Kedron | Collect today from Kedron, or from North Lakes within 2 business days |
+
+(2026-09-30, §16 items 18–19: the "(18km)" is gone; the distance, other stores and warehouse move to a card ⓘ popover and the PDP second line.)
 | `warehouse` | ✓ In Stock Online | ✓ In Stock Online | Collect at North Lakes within 2 business days · delivery dispatched next business day |
 
 **Availability filter (all product-listing pages)**
@@ -1400,54 +1402,56 @@ P4 vehicle control merge · P7 which locked controls to remove · G8 `<head>` ex
 
 ## 16. Design review backlog — 2026-09-30 (Brenton walked Graham, Scott and Jake through the new pages; full transcript: `Meeting Title Website design review.txt`)
 
-Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing rule). The best-practice breakdown and suggestions for every item are in `docs/2026-09-30-design-review-analysis.md`. Status key: ⬜ not started · 🤔 decision needed first · 💬 needs someone outside the design work · 🅿️ parked / future.
+Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing rule). The best-practice breakdown and suggestions for every item are in `docs/2026-09-30-design-review-analysis.md`. Status key: ✅ built · ⬜ not started · 🤔 decision needed first · 💬 needs someone outside the design work · 🅿️ parked / future.
+
+**Build batch 2026-09-30** (plan agreed with Brenton the same day): items 1–4, 7–10, 12–16, 18–26 built and Playwright-verified; not pushed. Out of this batch: 27 and 31 (not opted in), 30 (future templates), and the parked / outside-design items.
 
 ### 16.1 Installation page (`docs/installation/installation-spec.md`)
-1. ⬜ **Remove the fitting cost estimator.** Scott: stores don't want customers holding an estimate or seeing a per-line breakdown. Graham: a big fitting total can put people off buying the rack. Reverses Installation decision 2.
-2. ⬜ **Booking form first, prices after.** The full price list moves into a collapsed accordion **below** the form ("Current fitting charges — click to view"). Brenton raised showing the prices only when a store is logged in. The hero's "See Fitting Costs" button and every site-wide "See Fitting Costs" link need rethinking.
-3. ⬜ **Make "What happens next / Need it sooner?" a proper store card.** The selected store as a card (like the Store Finder or store page cards) with a map and a call button, not text in a grey box. Two clear paths: leave an enquiry, or ring the store now.
-4. ⬜ **Rewrite the FAQs.** The current 6 are built around prices. Source them from Crisp chat questions and Graham's NZ ones. Ideas: "Can I watch my fit being done?", "Is there somewhere to wait?", "Do I need a lift or taxi?", "Do you fit accessories?". The `Service` JSON-LD's priced `Offer`s go when the prices are hidden.
+1. ✅ **Remove the fitting cost estimator.** Scott: stores don't want customers holding an estimate or seeing a per-line breakdown. Graham: a big fitting total can put people off buying the rack. Reverses Installation decision 2. **Built 2026-09-30:** estimator removed.
+2. ✅ **Booking form first, prices after.** The full price list moves into a collapsed accordion **below** the form ("Current fitting charges — click to view"). Brenton raised showing the prices only when a store is logged in. The hero's "See Fitting Costs" button and every site-wide "See Fitting Costs" link need rethinking. **Built 2026-09-30:** form first; public collapsed "Current fitting charges" accordion below it plus a "from $120" line; AU only (NZ/UK: "call your store"). Store-login gating not built (it would hide the prices from Google and customers).
+3. ✅ **Make "What happens next / Need it sooner?" a proper store card.** The selected store as a card (like the Store Finder or store page cards) with a map and a call button, not text in a grey box. Two clear paths: leave an enquiry, or ring the store now. **Built 2026-09-30:** store card (Store Finder `.sf-card` + map) beside the form, with Send a request / Call the store.
+4. ✅ **Rewrite the FAQs.** The current 6 are built around prices. Source them from Crisp chat questions and Graham's NZ ones. Ideas: "Can I watch my fit being done?", "Is there somewhere to wait?", "Do I need a lift or taxi?", "Do you fit accessories?". The `Service` JSON-LD's priced `Offer`s go when the prices are hidden. **Built 2026-09-30:** six visit-focused FAQs, **draft** until checked against Crisp and Graham's NZ questions; priced Offers removed from the JSON-LD.
 5. 🅿️ **Avenue booking engine** (Tim and Jake Martin, early talks; also a possible Crisp replacement). Awareness only: the form's destination could switch to Avenue later.
 6. 🅿️ **Order confirmation page should push fitting** ("your products are locked in, now let's look at fitting"). Belongs to the checkout redesign.
 
 ### 16.2 Fit My Vehicle page (`docs/fit-my-vehicle/fit-my-vehicle-spec.md`)
-7. 🤔 **Merge the "Shopping for your [vehicle]?" bar with the Fit Finder.** When the vehicle is known, never show a blank Fit Finder: prefill it, and "Change vehicle" clears the fields instead of opening the drawer. Try light and dark versions (the black band helps break up the page, but a vehicle photo on black doesn't work). Applies to the home page too, where both are stacked. Graham: fewer than 5% of individual shoppers switch vehicles.
-8. ⬜ **"Bars, legs, platforms & trays": add Backbones/Spines** as a 4th card (no tracks). Redo the line art: the legs image shows a bar, and the platform image doesn't read as a platform.
-9. 🤔 **"Choosing the right setup" cards link to the wrong places** (Weekend Adventurer → Platforms, when those shoppers want camping gear, rooftop tents and awnings). Fix the links now; the proper answer is item 27.
-10. ⬜ **"We can fit it for you" steps:** lifestyle or UGC-style photos per step (someone using the Fit Finder, walking into a store, out on the road). Graham asked what "tested" means in "Fit It & Test It"; clarify or reword.
+7. ✅ **Merge the "Shopping for your [vehicle]?" bar with the Fit Finder.** When the vehicle is known, never show a blank Fit Finder: prefill it, and "Change vehicle" clears the fields instead of opening the drawer. Try light and dark versions (the black band helps break up the page, but a vehicle photo on black doesn't work). Applies to the home page too, where both are stacked. Graham: fewer than 5% of individual shoppers switch vehicles. **Built 2026-09-30:** one "vehicle finder" component on Home and Fit My Vehicle; light and dark switchable in Site Admin → Design options. Change vehicle resets to Make with a "← Back to Hilux" undo.
+8. ✅ **"Bars, legs, platforms & trays": add Backbones/Spines** as a 4th card (no tracks). Redo the line art: the legs image shows a bar, and the platform image doesn't read as a platform. **Built 2026-09-30:** Backbones & Spines added; new line art for all four (`_shared/fit-guide/part-*.svg`).
+9. ✅ **"Choosing the right setup" cards link to the wrong places** (Weekend Adventurer → Platforms, when those shoppers want camping gear, rooftop tents and awnings). Fix the links now; the proper answer is item 27. **Built 2026-09-30:** Weekend Adventurer → Awnings & Roof Top Tents (interim until item 27).
+10. ✅ **"We can fit it for you" steps:** lifestyle or UGC-style photos per step (someone using the Fit Finder, walking into a store, out on the road). Graham asked what "tested" means in "Fit It & Test It"; clarify or reword. **Built 2026-09-30:** stand-in step photos; "Fitted & Checked" wording, for Scott to confirm.
 11. 🅿️ **UGC loop** (early 2027): after a fitting, send an SMS asking for a Google review, then a month or two later ask for photos of the setup in use. Graham noted the booking engine is meant to send these SMSes.
 
 ### 16.3 Store Finder (`docs/store-finder/store-finder-spec.md`)
-12. ⬜ **UK and NZ keep a Store Finder** (future-proofing: Graham expects two UK stores by December). Add "coming soon" placeholder stores: **UK** Leeds and Birmingham (3 in total with Bolton); **NZ** a second Auckland store (West or South Auckland, across the river from the current one) and Christchurch (possibly a joint store with Dodges). Replaces Section 3's single-store behaviour.
-13. 🤔 **Header label in single-store regions:** Graham suggested "Visit our store" while there's only one. Not settled.
+12. ✅ **UK and NZ keep a Store Finder** (future-proofing: Graham expects two UK stores by December). Add "coming soon" placeholder stores: **UK** Leeds and Birmingham (3 in total with Bolton); **NZ** a second Auckland store (West or South Auckland, across the river from the current one) and Christchurch (possibly a joint store with Dodges). Replaces Section 3's single-store behaviour. **Built 2026-09-30:** non-clickable "Opening soon" cards (demo placeholders), switchable in Site Admin.
+13. ✅ **Header label in single-store regions:** Graham suggested "Visit our store" while there's only one. Not settled. **Built 2026-09-30:** label follows the open-store count: "Visit Our Bolton Store" / "Visit Our Auckland Store" at 1 store, "Store Finder" at 2+.
 
 ### 16.4 Store page (`docs/store/store-spec.md`)
-14. ⬜ **Public holiday in the hours:** set one demo day as a public holiday, shown as "Closed" in soft red, so Mark sees the state. Real hours, including holidays, are entered in cPanel/PHP; Jake (RRG Web Products) used to maintain them.
-15. ⬜ **Google rating per store** in the store panel, with an optional per-store Google reviews widget (check which widget can pull Google Business Profile reviews).
-16. 🤔 **"On display at {store}" wording:** make it clear there's far more in store to see and touch (hardware and the like). "Core products" was rejected because it implies they don't stock everything.
+14. ✅ **Public holiday in the hours:** set one demo day as a public holiday, shown as "Closed" in soft red, so Mark sees the state. Real hours, including holidays, are entered in cPanel/PHP; Jake (RRG Web Products) used to maintain them. **Built 2026-09-30:** real 2026 holidays by state (Mon 5 Oct King's Birthday QLD / Labour Day NSW, ACT, SA); soft-red "Closed" row, holiday hours line, `specialOpeningHoursSpecification`.
+15. ✅ **Google rating per store** in the store panel, with an optional per-store Google reviews widget (check which widget can pull Google Business Profile reviews). **Built 2026-09-30:** rating line in the store panel (**demo figures**) and a Latest Google reviews layout (no review text made up); no AggregateRating.
+16. ✅ **"On display at {store}" wording:** make it clear there's far more in store to see and touch (hardware and the like). "Core products" was rejected because it implies they don't stock everything. **Built 2026-09-30:** "See It in Person at {store}" + "Plus hundreds more racks, fittings and accessories in store — ask the team." Phase 2 adds "Shop what's in stock at {store}".
 17. ✅ **Decided against:** a "Meet the team" section (store staff don't want photos), and city-level pages like "Roof Racks Brisbane" (they'd compete with the store pages; the unique "Areas we serve" per store handles this).
 
 ### 16.5 Stock status on listing pages (Section 14.1)
-18. ⬜ **Keep the store name, drop the km:** "In stock at Kedron", the store name linking to its store page, with no "(18km)" (it's measured from the saved store, not the shopper).
-19. ⬜ **Stock tooltips:**
+18. ✅ **Keep the store name, drop the km:** "In stock at Kedron", the store name linking to its store page, with no "(18km)" (it's measured from the saved store, not the shopper). **Built 2026-09-30:** store name linked, no km.
+19. ✅ **Stock tooltips:** **Built 2026-09-30:** card ⓘ popover (tap/hover/focus) + PDP second line.
     - **Nearby store:** how far it is from the saved store, plus any other nearby stores that also have stock.
     - **In stock online:** which warehouse holds it (e.g. Brisbane, Victoria), so shoppers can judge delivery time.
     - **Phase 1:** "Contact your local store to check stock", linking to the saved store's page, or the Store Finder if none is saved.
-20. 🤔 **Make "Set your store to see local stock" more visible** than the filter bar (optional).
+20. ✅ **Make "Set your store to see local stock" more visible** than the filter bar (optional). **Built 2026-09-30:** slim dismissible line above results, Phase 2 with no store set.
 
 ### 16.6 Product cards
-21. ⬜ **Drop the "RRP" prefix from product card prices** (keep it on the PDP; "was" pricing isn't supported). Confirmed: the sale tags stay off the cards.
+21. ✅ **Drop the "RRP" prefix from product card prices** (keep it on the PDP; "was" pricing isn't supported). Confirmed: the sale tags stay off the cards. **Built 2026-09-30:** "RRP" dropped from cards as agreed. **Still to take to Graham:** the ACCC risk in the analysis doc (#21).
 
 ### 16.7 Home page (`docs/home/home-spec.md`)
-22. ⬜ **Categories above the fold** (Tim's request). Agreed approach:
+22. ✅ **Categories above the fold** (Tim's request). Agreed approach: **Built 2026-09-30:** offer tiles ~20% shorter; categories → trust row → products; proof line in the hero finder; offers no longer auto-advance, hero autoplays at 10s on desktop only. At 1440×900 the category heading reaches the fold, the tiles just below it.
     - keep the 3 offer tiles but make them about 20% shorter
     - move the trust row below Shop by Category, so the order is categories → trust row → products.
 
     Brenton to rearrange and show. Rejected alternative: the offers as a 2-tile carousel inside the category grid (Graham felt it weakens the offers).
-23. ⬜ **Fit Finder layout in the hero:** 5 fields leave an empty space. Make the last field full-width or put View Results in the right column.
-24. ⬜ **Add a fitment gallery carousel:** recent fitments across all vehicles, updating live, "to show we're busy".
-25. 🤔 **Company reviews carousel** (maybe), broken up like the install band.
-26. 🤔 Item 7's vehicle bar and Fit Finder merge applies here too.
+23. ✅ **Fit Finder layout in the hero:** 5 fields leave an empty space. Make the last field full-width or put View Results in the right column. **Built 2026-09-30:** View Results shares the last row with Roof Type.
+24. ✅ **Add a fitment gallery carousel:** recent fitments across all vehicles, updating live, "to show we're busy". **Built 2026-09-30:** "Recent Fitments" on Home, each photo → that vehicle's VLP (real Hilux photos only in the prototype).
+25. ✅ **Company reviews carousel** (maybe), broken up like the install band. **Built 2026-09-30:** real recent Reviews.io reviews (8, incl. a 4★), manual scroll, replacing the trust band badge. **Note:** Reviews.io shows 4.3 from 1,914 reviews, but the badge used on Store Finder, store pages and the VLP/VCLP says "4.8 / 5".
+26. ✅ Item 7's vehicle bar and Fit Finder merge applies here too. **Built 2026-09-30:** see item 7.
 
 ### 16.8 New templates and future work
 27. ⬜ **Use-case landing pages:** Weekend Adventurer, Touring, Camping, Tradie, Family Holiday, Bike, Ski/Kayak. Landing pages for ads and organic search, linked from the Fit My Vehicle cards (item 9).

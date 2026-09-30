@@ -682,10 +682,12 @@ function renderStockLine(line) {
   // states the product is discontinued, so this line is hidden entirely instead of
   // duplicating that message — every other state clears `hidden` so it doesn't stay
   // stuck hidden after toggling back off Discontinued.
-  sub.hidden = !!cfg.discontinued || !(status.subline || status.contact || status.setStore);
+  sub.hidden = !!cfg.discontinued || !(status.subline || status.detail || status.contact || status.setStore);
   if (!sub.hidden) {
     const parts = [];
     if (status.subline) parts.push(status.subline);
+    // Which other stores have it, or the warehouse it ships from (spec.md §16 item 19).
+    if (status.detail) parts.push(status.detail);
     if (status.contact) parts.push('<a href="#" class="stock-subline-link">Contact our team</a> for availability');
     if (status.setStore) parts.push('<a href="#" class="stock-subline-link" data-set-store>Set your store</a> to see local stock');
     sub.innerHTML = parts.join(' · ');
@@ -1406,6 +1408,13 @@ function initVehicleFinder(root) {
   back.type = 'button';
   back.className = 'vf-back';
   head.appendChild(back);
+  // Optional compact proof line (home hero, spec.md §16 item 22) — shows in both states.
+  if (root.dataset.vfProof) {
+    const proof = document.createElement('p');
+    proof.className = 'vf-proof';
+    proof.textContent = root.dataset.vfProof;
+    root.appendChild(proof);
+  }
   let changing = false;
 
   const render = () => {
@@ -1455,37 +1464,29 @@ function initVehicleFinder(root) {
 }
 
 // Home page Current Offers (docs/home/home-spec.md 5.6) — on phones/tablets (≤900px, where CSS
-// turns the grid into a scroll-snap row) it auto-advances every 4s and loops. Any touch, wheel
-// or dot tap stops the autoplay for good, and it never autoplays under prefers-reduced-motion
-// or while scrolled out of view. On desktop the three tiles all show, so it does nothing.
+// turns the grid into a scroll-snap row) it's swiped by hand or moved with the dots. It no longer
+// auto-advances (2026-09-30, spec.md §16 item 22 — Baymard: never auto-rotate on mobile). On
+// desktop the three tiles all show, so it does nothing.
 function initOfferCarousel() {
   document.querySelectorAll('[data-offer-carousel]').forEach(track => {
     const tiles = [...track.children];
     const dotsEl = track.parentElement.querySelector('.home-offer-dots');
-    const mobile = window.matchMedia('(max-width:900px)');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let userTook = false;
-    let visible = true;
     dotsEl.innerHTML = tiles.map((t, i) => `<button type="button" aria-label="Show offer ${i + 1}"></button>`).join('');
     const dots = [...dotsEl.children];
     const index = () => Math.round(track.scrollLeft / (tiles[1].offsetLeft - tiles[0].offsetLeft));
     const go = i => track.scrollTo({ left: tiles[i].offsetLeft - tiles[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
     const sync = () => { const n = index(); dots.forEach((d, i) => d.setAttribute('aria-current', i === n ? 'true' : 'false')); };
-    const stop = () => { userTook = true; };
-    dots.forEach((d, i) => d.addEventListener('click', () => { stop(); go(i); }));
-    ['touchstart', 'wheel', 'pointerdown'].forEach(ev => track.addEventListener(ev, stop, { passive: true }));
+    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
     track.addEventListener('scroll', () => { clearTimeout(track._offerTimer); track._offerTimer = setTimeout(sync, 60); });
-    if ('IntersectionObserver' in window) new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(track);
-    setInterval(() => {
-      if (userTook || reduced || !visible || !mobile.matches || document.hidden) return;
-      go((index() + 1) % tiles.length);
-    }, 4000);
     sync();
   });
 }
 
-// Home page hero slider (docs/home/home-spec.md 5.2). Dots, prev/next, swipe; autoplays every 6s,
-// pausing while the pointer or focus is inside the hero, and never under prefers-reduced-motion.
+// Home page hero slider (docs/home/home-spec.md 5.2). Dots, prev/next, swipe; autoplays every 10s
+// on desktop only (was 6s everywhere; 2026-09-30, spec.md §16 item 22 — never auto-rotate on
+// mobile), pausing while the pointer or focus is inside the hero, and never under
+// prefers-reduced-motion.
 // Inactive slides are aria-hidden with their links taken out of the tab order.
 function initHomeHero() {
   document.querySelectorAll('.home-hero').forEach(hero => {
@@ -1510,7 +1511,9 @@ function initHomeHero() {
     };
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const stop = () => { clearInterval(timer); timer = null; };
-    const start = () => { if (!reduced && !timer) timer = setInterval(() => show(current + 1), 6000); };
+    const desktop = window.matchMedia('(min-width:901px)');
+    const start = () => { if (!reduced && desktop.matches && !timer) timer = setInterval(() => show(current + 1), 10000); };
+    desktop.addEventListener('change', () => { stop(); start(); });
     dots.forEach((d, n) => d.addEventListener('click', () => show(n)));
     hero.querySelector('.home-hero-nav.prev')?.addEventListener('click', () => show(current - 1));
     hero.querySelector('.home-hero-nav.next')?.addEventListener('click', () => show(current + 1));
