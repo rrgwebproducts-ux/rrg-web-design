@@ -2277,7 +2277,8 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .booking-aside .sf-card{cursor:default;}
 .booking-aside .sf-card:hover{border-color:var(--rrg-line);}
 .booking-aside-label{margin:0;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
-.booking-store-map{height:170px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--rrg-line);background:var(--rrg-bg);}
+/* position + z-index:0 keeps Leaflet's own layers (z-index 400+) inside the map box, so it scrolls under the sticky header — same fix as .showroom-map. */
+.booking-store-map{position:relative;z-index:0;height:170px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--rrg-line);background:var(--rrg-bg);}
 .booking-paths{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
 .booking-paths li{display:flex;gap:10px;align-items:flex-start;}
 .booking-paths strong{color:var(--rrg-text);}
