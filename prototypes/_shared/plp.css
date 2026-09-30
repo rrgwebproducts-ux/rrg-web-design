@@ -335,10 +335,11 @@
 /* Doubled from 44px (2026-09-19 follow-up — Brenton: reads too small at the original size),
    same doubled size in both grid and list view since both share this markup/class. */
 
-.plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;display:flex;align-items:center;gap:4px;}
+/* Block, not flex: the line inherits the card's alignment (centred in grid cards), with the ⓘ inline. */
+.plp-stock-line{font-size:14px;font-weight:700;color:var(--rrg-fits);margin-bottom:8px;}
 .plp-stock-line a{color:inherit;}
 /* Stock ⓘ (spec.md §16 item 19) — its own 32px tap target around an 16px icon. */
-.stock-info{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin:-8px -8px -8px -4px;padding:0;border:0;background:none;color:var(--rrg-grey-600);cursor:pointer;border-radius:50%;}
+.stock-info{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;width:32px;height:32px;margin:-8px -8px -8px -4px;padding:0;border:0;background:none;color:var(--rrg-grey-600);cursor:pointer;border-radius:50%;}
 .stock-info svg{width:16px;height:16px;}
 .stock-info:hover,.stock-info[aria-expanded="true"]{color:var(--rrg-text);}
 .stock-info:focus-visible{outline:2px solid var(--rrg-text);outline-offset:-4px;}
