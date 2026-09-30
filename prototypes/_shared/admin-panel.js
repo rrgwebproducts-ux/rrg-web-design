@@ -120,6 +120,15 @@ function buildSiteAdminPanel(currentKey) {
           <span>Clearance sale banner</span>
           <input type="checkbox" data-admin-flag="saleBannerOn">
         </label>`, 'promos')}
+      ${acc('Design options', `
+        <label class="site-admin-select">
+          <span>Vehicle finder style</span>
+          <select data-admin-vf-style>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <p class="site-admin-note">The merged vehicle bar + Fit Finder on Home and Fit My Vehicle (spec.md §16 item 7).</p>`, 'design')}
       ${acc('Prototype tools', `
         ${hasDemoPanel ? `<label class="site-admin-toggle">
           <span>Show Demo State panel</span>
@@ -158,6 +167,11 @@ function buildSiteAdminPanel(currentKey) {
   vehicleSelect.value = rrgVehicleGet();
   vehicleSelect.addEventListener('change', () => { if (window.rrgSetVehicle) window.rrgSetVehicle(vehicleSelect.value); });
 
+  // Vehicle finder style (shared.js rrgVehicleFinderStyle / rrgSetVehicleFinderStyle).
+  const vfStyleSelect = panel.querySelector('[data-admin-vf-style]');
+  vfStyleSelect.value = typeof rrgVehicleFinderStyle === 'function' ? rrgVehicleFinderStyle() : 'light';
+  vfStyleSelect.addEventListener('change', () => { if (window.rrgSetVehicleFinderStyle) window.rrgSetVehicleFinderStyle(vfStyleSelect.value); });
+
   // Build phase (session-state.js rrgPhaseGet/rrgSetPhase).
   panel.querySelectorAll('input[name="rrgBuildPhase"]').forEach(radio => {
     radio.checked = Number(radio.value) === (typeof rrgPhaseGet === 'function' ? rrgPhaseGet() : 1);
@@ -195,6 +209,7 @@ function buildSiteAdminPanel(currentKey) {
     const phase = panel.querySelector('input[name="rrgBuildPhase"]:checked');
     setSummary('phase', phase ? 'Phase ' + phase.value : '');
     setSummary('promos', saleBannerToggle.checked ? 'Sale on' : 'None');
+    setSummary('design', `Finder: ${vfStyleSelect.value === 'dark' ? 'Dark' : 'Light'}`);
   };
   syncSummaries();
   panel.addEventListener('change', syncSummaries);

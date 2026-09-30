@@ -1331,6 +1331,43 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .ff-row{grid-template-columns:1fr;}
 }
 
+/* Vehicle finder — the vehicle bar + Fit Finder merged (spec.md §16 items 7/26, initVehicleFinder()
+   in shared.js). data-vf-style="light" (default) is a white panel, which suits the vehicle photo;
+   "dark" keeps the black band and puts the photo on a light inset card. Site Admin → Design
+   options switches them. */
+.fit-finder-widget[data-vehicle-finder] [hidden]{display:none!important;}
+.fit-finder-widget[data-vf-style="light"]{background:#fff;color:var(--rrg-text);border:1px solid var(--rrg-line);border-left:4px solid var(--rrg-red);box-shadow:var(--shadow);}
+.fit-finder-widget[data-vf-style="light"] .ff-head h2{color:var(--rrg-text);}
+.fit-finder-widget[data-vf-style="light"] .ff-head p{color:var(--rrg-grey-700);}
+.vf-known{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px 28px;}
+.vf-photo{width:200px;aspect-ratio:956 / 556;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;}
+.vf-photo img{width:100%;height:100%;object-fit:contain;}
+.fit-finder-widget[data-vf-style="dark"]{background:var(--rrg-black);}
+.fit-finder-widget[data-vf-style="dark"] .vf-photo{background:#fff;padding:8px;}
+.vf-eyebrow{display:block;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
+.fit-finder-widget[data-vf-style="dark"] .vf-eyebrow{color:var(--rrg-on-dark-muted);}
+.vf-text h2{margin:2px 0 8px;font-size:32px;line-height:1.05;color:inherit;}
+.vf-spec{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;}
+.vf-spec li{padding:4px 10px;border-radius:999px;background:var(--rrg-line-soft);font-size:13px;font-weight:700;color:var(--rrg-grey-700);}
+.fit-finder-widget[data-vf-style="dark"] .vf-spec li{background:rgba(255,255,255,.14);color:#fff;}
+.vf-actions{display:flex;flex-direction:column;align-items:stretch;gap:10px;}
+.vf-change,.vf-back{border:0;background:none;padding:0;font:inherit;font-size:14px;font-weight:700;color:inherit;text-decoration:underline;cursor:pointer;}
+.vf-back{margin-left:auto;}
+.vf-browse{margin:12px 0 0;font-size:14px;}
+.vf-browse a{font-weight:700;color:inherit;}
+@media (max-width:900px){
+  .vf-known{grid-template-columns:120px minmax(0,1fr);}
+  .vf-photo{width:120px;}
+  .vf-actions{grid-column:1 / -1;flex-direction:row;align-items:center;gap:16px;}
+  .vf-text h2{font-size:26px;}
+}
+/* Narrow placements (the home hero panel) stack photo, text and actions. */
+.home-hero-finder .vf-known{grid-template-columns:120px minmax(0,1fr);}
+.home-hero-finder .vf-photo{width:120px;}
+.home-hero-finder .vf-text h2{font-size:26px;}
+.home-hero-finder .vf-actions{grid-column:1 / -1;flex-direction:row;align-items:center;gap:16px;}
+.home-hero-finder .vf-actions .btn{flex:1 1 auto;}
+
 /* Fit Finder drawer (buildFitFinderDrawer() in shared.js) — the widget above inside a Store
    slide-out-style drawer: fields stacked one per row for the drawer's width, button full width.
    Sits above the sticky header and the Add to Cart vehicle notice (z-index 400) it can be opened
@@ -1890,7 +1927,8 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 /* Two fields per row at every width — the shared ≤520px one-column rule would make the phone
    Fit Finder a full screen of stacked dropdowns. */
 .home-hero-finder .ff-row{grid-template-columns:1fr 1fr;}
-.home-hero-finder .ff-row .btn{grid-column:1 / -1;}
+/* Roof Type and View Results share the last row, so 5 fields leave no empty cell (§16 item 23). */
+.home-hero-finder .ff-row .btn{grid-column:auto;}
 .home-hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:26px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--t-fast);}
 .home-hero-nav:hover{background:rgba(0,0,0,.75);}
 .home-hero-nav.prev{left:12px;}
@@ -1914,19 +1952,6 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 @media (max-width:640px){
   .home-hero-link{display:none;}
   .home-hero-finder{padding:20px 16px 22px;}
-}
-
-/* Your vehicle bar (spec 5.4) — shown only while a session vehicle is set. */
-.home-vehicle-bar{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap;border:1px solid var(--rrg-line);border-left:4px solid var(--rrg-red);border-radius:var(--radius);padding:12px 20px;margin:0 0 var(--space-section);background:#fff;}
-.home-vehicle-bar img{height:64px;width:auto;flex:0 0 auto;}
-.home-vehicle-bar-text{flex:1 1 260px;min-width:0;}
-.home-vehicle-bar-text strong{display:block;font-size:16px;color:var(--rrg-black);}
-.home-vehicle-bar-text span{font-size:14px;color:var(--rrg-grey-700);}
-.home-vehicle-bar-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-.home-vehicle-bar-actions a:not(.btn){font-size:14px;font-weight:700;color:var(--rrg-text);text-decoration:underline;}
-@media (max-width:520px){
-  .home-vehicle-bar{padding:12px 14px;}
-  .home-vehicle-bar img{display:none;}
 }
 
 /* Shop by Category (spec 5.5) — the VLP's compact tile, 5 across. */

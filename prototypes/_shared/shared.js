@@ -1324,10 +1324,110 @@ function initInlineFitFinders() {
   document.querySelectorAll('[data-fit-finder-inline]').forEach(root => {
     root.querySelector('[data-ff-make]').innerHTML = ffOptions(FIT_FINDER_MAKES, 'Make');
     initFitFinderCascade(root, key => {
+      rrgVehicleSpecSave(key, root);
       if (window.rrgSetVehicle) window.rrgSetVehicle(key);
       window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
     });
+    if (root.hasAttribute('data-vehicle-finder')) initVehicleFinder(root);
   });
+}
+
+// ==== Vehicle finder: the vehicle bar and the Fit Finder merged (spec.md §16 items 7/26) ====
+// One component. With no session vehicle it's the Fit Finder, plus "Shop without a vehicle".
+// With one, it never shows blank fields: "Shopping for your Toyota Hilux", the vehicle photo, a
+// read-only summary of what was picked, Shop for my Hilux (→ VLP) and Change vehicle. Change
+// resets the cascade to Make (focus there) with "← Back to Hilux" to undo, instead of opening the
+// drawer. Light or dark (Site Admin → Design options). Opt in with [data-vehicle-finder] on a
+// [data-fit-finder-inline] widget; data-vf-browse-href sets where "Shop without a vehicle" goes.
+const RRG_VEHICLE_SPEC_KEY = 'rrgSessionVehicleSpec';
+const RRG_VF_STYLE_KEY = 'rrgVehicleFinderStyle';
+// The last Year/Body/Roof picked for each vehicle. Demo default: the generation the rest of the
+// prototype uses (RRG_VEHICLES plpKey — Hilux N80, Ranger P703), else each list's first option.
+const RRG_VEHICLE_SPEC_DEFAULTS = { hilux: { years: '2015-2023' } };
+function rrgVehicleSpec(key) {
+  const v = FIT_FINDER_VEHICLES[key];
+  if (!v) return null;
+  let saved = { ...(RRG_VEHICLE_SPEC_DEFAULTS[key] || {}) };
+  try { Object.assign(saved, JSON.parse(localStorage.getItem(RRG_VEHICLE_SPEC_KEY) || '{}')[key] || {}); } catch (e) {}
+  const pick = field => (v[field].find(([val]) => val === saved[field]) || v[field][0])[1];
+  return { years: pick('years'), bodies: pick('bodies'), roofs: pick('roofs') };
+}
+function rrgVehicleSpecSave(key, root) {
+  try {
+    const all = JSON.parse(localStorage.getItem(RRG_VEHICLE_SPEC_KEY) || '{}');
+    all[key] = Object.fromEntries([...root.querySelectorAll('[data-ff-field]')].map(s => [s.dataset.ffField, s.value]));
+    localStorage.setItem(RRG_VEHICLE_SPEC_KEY, JSON.stringify(all));
+  } catch (e) {}
+}
+function rrgVehicleFinderStyle() {
+  try { return localStorage.getItem(RRG_VF_STYLE_KEY) === 'dark' ? 'dark' : 'light'; } catch (e) { return 'light'; }
+}
+window.rrgSetVehicleFinderStyle = style => {
+  try { localStorage.setItem(RRG_VF_STYLE_KEY, style); } catch (e) {}
+  document.querySelectorAll('[data-vehicle-finder]').forEach(el => el.dataset.vfStyle = rrgVehicleFinderStyle());
+};
+function initVehicleFinder(root) {
+  const head = root.querySelector('.ff-head');
+  const row = root.querySelector('.ff-row');
+  const make = root.querySelector('[data-ff-make]');
+  root.dataset.vfStyle = rrgVehicleFinderStyle();
+  const known = document.createElement('div');
+  known.className = 'vf-known';
+  root.insertBefore(known, head);
+  const browse = document.createElement('p');
+  browse.className = 'vf-browse';
+  browse.innerHTML = `<a href="${root.dataset.vfBrowseHref || RRG_PROTO + 'home/index.html'}">Shop without a vehicle ›</a>`;
+  root.appendChild(browse);
+  const back = document.createElement('button');
+  back.type = 'button';
+  back.className = 'vf-back';
+  head.appendChild(back);
+  let changing = false;
+
+  const render = () => {
+    const key = rrgVehicleGet();
+    const v = rrgVehicle();
+    const isKnown = !!v && !changing;
+    root.classList.toggle('is-known', isKnown);
+    known.hidden = !isKnown;
+    head.hidden = row.hidden = isKnown;
+    browse.hidden = !!v;
+    back.hidden = !(v && changing);
+    if (v) back.textContent = `← Back to ${v.label.split(' ').slice(1).join(' ')}`;
+    if (!isKnown) return;
+    const model = v.label.split(' ').slice(1).join(' ');
+    const spec = rrgVehicleSpec(key);
+    known.innerHTML = `
+      <div class="vf-photo"><img src="${RRG_PROTO}_shared/${v.image}" alt="" width="956" height="556"></div>
+      <div class="vf-text">
+        <span class="vf-eyebrow">Your vehicle</span>
+        <h2>Shopping for your ${v.label}</h2>
+        ${spec ? `<ul class="vf-spec" aria-label="Your vehicle details"><li>${spec.years}</li><li>${spec.bodies}</li><li>${spec.roofs}</li></ul>` : ''}
+      </div>
+      <div class="vf-actions">
+        <a class="btn btn-cta" href="${RRG_PROTO}vlp/index.html?vehicle=${key}">Shop for my ${model}</a>
+        <button type="button" class="vf-change" data-vf-change>Change vehicle</button>
+      </div>`;
+  };
+  root.addEventListener('click', e => {
+    if (e.target.closest('[data-vf-change]')) {
+      changing = true;
+      // Reset the cascade to Make, the same as picking a make from scratch.
+      make.selectedIndex = 0;
+      root.querySelector('[data-ff-model]').innerHTML = '<option value="" selected disabled>Model</option>';
+      root.querySelectorAll('[data-ff-model], [data-ff-required]').forEach(s => { s.disabled = true; });
+      root.querySelectorAll('[data-ff-required]').forEach(s => { s.innerHTML = `<option value="" selected disabled>${FF_PLACEHOLDERS[s.dataset.ffField]}</option>`; });
+      root.querySelector('[data-ff-submit]').disabled = true;
+      render();
+      make.focus();
+    } else if (e.target.closest('.vf-back')) {
+      changing = false;
+      render();
+      known.querySelector('.vf-change')?.focus();
+    }
+  });
+  document.addEventListener('rrg-session-change', () => { changing = false; render(); });
+  render();
 }
 
 // Home page Current Offers (docs/home/home-spec.md 5.6) — on phones/tablets (≤900px, where CSS
