@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="36 36 378 162" role="img" aria-label="Two roof bars across the legs">
+  <path d="M60 150 L140 58 Q225 50 310 58 L390 150 Q225 162 60 150 Z" fill="#fff" stroke="#8C8C8C" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M60 150 L44 194 M390 150 L406 194 M76 160 Q225 172 374 160" fill="none" stroke="#D6D6D6" stroke-width="3" stroke-linecap="round"/>
+  <path d="M136.4 76.4 L152.0 76.4 L147.7 60.8 L140.7 60.8 Z" fill="#8C8C8C"/><path d="M298.0 76.4 L313.6 76.4 L309.3 60.8 L302.3 60.8 Z" fill="#8C8C8C"/><path d="M95.6 131.6 L116.0 131.6 L110.4 111.2 L101.2 111.2 Z" fill="#8C8C8C"/><path d="M334.0 131.6 L354.4 131.6 L348.8 111.2 L339.6 111.2 Z" fill="#8C8C8C"/><line x1="129.0" y1="60.8" x2="321.0" y2="60.8" stroke="#BB0220" stroke-width="7" stroke-linecap="round"/><line x1="87.0" y1="111.2" x2="363.0" y2="111.2" stroke="#BB0220" stroke-width="9" stroke-linecap="round"/>
+</svg>

@@ -2169,6 +2169,8 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .info-card img{width:100%;aspect-ratio:16 / 10;object-fit:cover;}
 /* Line-art diagrams (the shop-by roof graphics) sit whole on a light panel rather than cropped. */
 .info-card img.is-diagram{object-fit:contain;padding:22px 28px;background:var(--rrg-bg);}
+.info-cards--4{grid-template-columns:repeat(4,minmax(0,1fr));}
+@media (max-width:1100px){.info-cards--4{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .info-card-body{display:flex;flex-direction:column;gap:8px;padding:18px 20px 20px;flex:1;}
 .info-card h3{margin:0;font-size:22px;}
 .info-card p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
@@ -2184,6 +2186,12 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .steps li::before{counter-increment:step;content:counter(step);position:absolute;left:20px;top:18px;width:36px;height:36px;border-radius:50%;background:var(--rrg-red);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;}
 .steps h3{margin:0 0 4px;font-size:20px;}
 .steps p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+/* Steps with a photo on top (Fit My Vehicle's "We Can Fit It for You", spec.md §16 item 10) — the
+   number sits over the photo's corner. */
+.steps--photos li{padding:0 0 20px;overflow:hidden;}
+.steps--photos li img{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;margin-bottom:16px;}
+.steps--photos li::before{top:12px;left:12px;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+.steps--photos h3,.steps--photos p{padding:0 20px;}
 .section-ctas{display:flex;gap:12px;flex-wrap:wrap;}
 
 /* Fitting price list — grouped cards, no internal codes. */

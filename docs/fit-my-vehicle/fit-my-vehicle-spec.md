@@ -20,15 +20,14 @@ The live page has strong copy (roof types, load ratings, bars vs platforms, setu
 |---|---|---|---|
 | 1.1 | Breadcrumbs | Home › Fit My Vehicle | |
 | 1.2 | **Hero (contained)** | New `.page-hero` | H1 "Find the Right Roof Rack for Your Vehicle" + the live intro on the left, the live touring photo on the right (16:9, max 360px tall). |
-| 1.2a | **Fit Finder bar** | `.fit-finder-widget` (as on the VCLP) | Full width under the hero, all fields in one row: the header drawer's Make → Model → Year/Body/Roof cascade (`initInlineFitFinders()`). View Results sets the vehicle and lands on its VLP. Moved out of the hero on 2026-09-30 (Brenton: it didn't sit right squeezed into the hero, and didn't match the other pages). |
-| 1.3 | Your vehicle bar | The home page's `.home-vehicle-bar` | Only while a vehicle is saved: "Shopping for your Toyota Hilux?" → its VLP / Change vehicle. |
+| 1.2a | **Vehicle finder** (vehicle bar + Fit Finder merged) | `.fit-finder-widget[data-vehicle-finder]` | Full width under the hero. **No vehicle:** all fields in one row, the header drawer's Make → Model → Year/Body/Roof cascade; View Results sets the vehicle and lands on its VLP; "Shop without a vehicle" below. **Vehicle known:** photo, "Shopping for your Toyota Hilux", the year/body/roof picked as read-only chips, **Shop for my Hilux** (→ VLP) and **Change vehicle** (resets to Make, "← Back to Hilux" undoes it). Light or dark (Site Admin → Design options). Merged 2026-09-30 (spec.md §16 item 7: never a vehicle bar above a blank Fit Finder). See `PAGE-GLOSSARY.md` → Vehicle finder. |
 | 1.4 | Trust row | `.trust-row` | Over 200,000 Racks Fitted · 35+ Fitment Centres (→ Store Finder) · Expert Fitting In-Store · Rack Fit Guarantee. |
 | 1.5 | Why trust our fit advice | New `.split-media` | Live copy beside the live fitter photo, landscape and capped at 320px so the copy has no big gaps above and below (2026-09-30). |
 | 1.6 | **What roof type does your vehicle have?** | New `.roof-types` | 6 compact cards, the diagram beside the copy, with RRG's own line-art diagrams from the live page (`_shared/fit-guide/roof-*.webp`) at their true proportions (the first pass stretched them vertically; fixed 2026-09-30). |
 | 1.7 | **How much weight can your roof rack carry?** | New `.load-panels` + `.callout` | Static (parked) and dynamic (driving) side by side; "The lower number wins" pulled out as a callout. |
-| 1.8 | Bars, legs, platforms & trays | New `.info-cards` | Legs / Bars / Platforms & Trays, each with the shop-by line art and a shop link. |
-| 1.9 | Choosing the right setup | `.info-cards` + `.callout` | Weekend Adventurer / Tradie / Family with photos and shop links; the live "one mistake we see all the time" as a callout. |
-| 1.10 | **We can fit it for you** | New `.steps` | Find Your Fit → Book In-Store → Fit It & Test It; **Book a Fitting** and **See Fitting Costs** go to the Installation page (`#book`, `#costs`). |
+| 1.8 | Bars, legs, platforms & backbones | `.info-cards--4` | Legs / Bars / Platforms & Trays / **Backbones & Spines** (added 2026-09-30, §16 item 8; no tracks), each with a shop link. New line art (`_shared/fit-guide/part-*.svg`): the same roof in perspective each time with only that card's part in red (the old legs image showed a bar, and the platform didn't read as a platform). |
+| 1.9 | Choosing the right setup | `.info-cards` + `.callout` | Weekend Adventurer (→ Awnings & Roof Top Tents, was Platforms: §16 item 9) / Tradie (→ Trade & Work) / Family (→ Roof Boxes) with photos and shop links. These are interim links until the use-case landing pages (§16 item 27) exist; the live "one mistake we see all the time" as a callout. |
+| 1.10 | **We can fit it for you** | `.steps--photos` | Find Your Fit → Book In-Store → **Fitted & Checked** ("We fit it, load-check it and show you how it all works before you drive off": Graham asked what "tested" meant; wording for Scott to confirm), each with a photo (§16 item 10). The photos are stand-ins from the prototype's own assets until lifestyle / UGC shots exist; **Book a Fitting** and **See Fitting Costs** go to the Installation page (`#book`, `#costs`). |
 | 1.11 | FAQ | `.faq-section` | The live page's 8 questions and answers, plus `FAQPage` JSON-LD. |
 | 1.12 | Brands, footer | | |
 
@@ -49,6 +48,8 @@ Indexed. `<title>` and meta description as live. One H1; `FAQPage` JSON-LD.
 ## 4. Open items
 
 - **Shop links** (fitting kits, roof bars, platforms, trade & work, roof boxes) go to `#` in the prototype. They're real categories on the live site.
+- **Step photos:** lifestyle or UGC shots needed (someone using the Fit Finder, walking into a store, out on the road).
+- **"Fitted & Checked"** wording: confirm with Scott that stores load-check and walk the customer through it.
 - **Make list:** the prototype's Fit Finder knows Toyota and Ford (the two demo vehicles). Production uses the full live make list.
 
 ---
@@ -65,5 +66,8 @@ Indexed. `<title>` and meta description as live. One H1; `FAQPage` JSON-LD.
 ---
 
 ## 6. Build list — built 2026-09-30
+
+Revised the same day after the design review (§16 items 7–10): vehicle finder merged, 4th part card and new line art, setup links, step photos. Playwright-verified 1440 + 390px, Change → Back, light + dark.
+
 
 Built and Playwright-verified: 1440 + 390px, nav link from another page, Fit Finder → VLP, utility-bar link still opens the drawer, Book a Fitting / See Fitting Costs → Installation, no overflow, zero console errors. Not pushed.
