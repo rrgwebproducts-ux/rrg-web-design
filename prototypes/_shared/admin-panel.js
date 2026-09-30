@@ -108,6 +108,15 @@ function buildSiteAdminPanel(currentKey) {
         <label class="site-admin-toggle">
           <span>Nearest store set</span>
           <input type="checkbox" data-admin-flag="storeSet">
+        </label>
+        <label class="site-admin-select">
+          <span>Demo cart</span>
+          <select data-admin-cart>
+            <option value="empty">Empty</option>
+            <option value="accessories">Accessories (2 items)</option>
+            <option value="full">Rack, bike rack, bundle + tank</option>
+            <option value="custom" disabled>Your own items</option>
+          </select>
         </label>`, 'session')}
       ${acc('Build phase', `
         <div class="site-admin-radios">
@@ -172,6 +181,13 @@ function buildSiteAdminPanel(currentKey) {
   vehicleSelect.value = rrgVehicleGet();
   vehicleSelect.addEventListener('change', () => { if (window.rrgSetVehicle) window.rrgSetVehicle(vehicleSelect.value); });
 
+  // Demo cart (cart.js) — load a preset to review the cart, checkout and confirmation pages.
+  const cartSelect = panel.querySelector('[data-admin-cart]');
+  const syncCartSelect = () => { if (typeof rrgCartPresetName === 'function') cartSelect.value = rrgCartPresetName(); };
+  syncCartSelect();
+  cartSelect.addEventListener('change', () => { if (typeof rrgCartLoadPreset === 'function') rrgCartLoadPreset(cartSelect.value); });
+  document.addEventListener('rrg-cart-change', syncCartSelect);
+
   // Vehicle finder style (shared.js rrgVehicleFinderStyle / rrgSetVehicleFinderStyle).
   const vfStyleSelect = panel.querySelector('[data-admin-vf-style]');
   vfStyleSelect.value = typeof rrgVehicleFinderStyle === 'function' ? rrgVehicleFinderStyle() : 'light';
@@ -214,7 +230,8 @@ function buildSiteAdminPanel(currentKey) {
     setSummary('session', [
       panel.querySelector('[data-admin-flag="loggedIn"]').checked ? 'Logged in' : 'Guest',
       v === 'none' ? 'No vehicle' : vehicleSelect.selectedOptions[0].text.replace(/^\S+ /, ''),
-    ].join(' · '));
+      typeof rrgCartCount === 'function' ? `Cart ${rrgCartCount()}` : '',
+    ].filter(Boolean).join(' · '));
     const phase = panel.querySelector('input[name="rrgBuildPhase"]:checked');
     setSummary('phase', phase ? 'Phase ' + phase.value : '');
     setSummary('promos', saleBannerToggle.checked ? 'Sale on' : 'None');
@@ -222,6 +239,7 @@ function buildSiteAdminPanel(currentKey) {
   };
   syncSummaries();
   panel.addEventListener('change', syncSummaries);
+  document.addEventListener('rrg-cart-change', syncSummaries);
   document.addEventListener('rrg-session-change', () => {
     ['loggedIn', 'storeSet'].forEach(f => { panel.querySelector(`[data-admin-flag="${f}"]`).checked = rrgSessionGet(f); });
     vehicleSelect.value = rrgVehicleGet();

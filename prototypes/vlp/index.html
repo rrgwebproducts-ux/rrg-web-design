@@ -563,16 +563,8 @@ function vlpSizeStoreFinder(el, standardCount) {
 function vlpRenderPopular() {
   const track = document.getElementById('vlpPopularTrack');
   const products = VLP_VEHICLE.popular.map(p => ({ ...p, fitsVehicle: VLP_VEHICLE.plpKey }));
+  // Add to Cart is the shared cart's (cart.js).
   track.innerHTML = products.map(p => plpCardHTML(p, { vrs: false })).join('');
-  track.querySelectorAll('[data-addtocart-id]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.cart-badge').forEach(el => { el.textContent = String(Number(el.textContent || 0) + 1); });
-      const original = btn.innerHTML;
-      btn.textContent = 'Added ✓';
-      btn.disabled = true;
-      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
-    });
-  });
 }
 
 // ==== FAQ ===========================================================================

@@ -1476,7 +1476,17 @@ function plpPrimaryActionHTML(product, blockClass) {
   }
   // Cart icon (2026-09-19 follow-up) — same outline glyph as the header cart, sized down via
   // .plp-btn-icon rather than reusing the header's own sizing rules.
-  return `<button type="button" class="btn btn-cta plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}"><svg class="plp-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>`;
+  return `<button type="button" class="btn btn-cta plp-addtocart-btn${blockClass ? ' ' + blockClass : ''}" data-addtocart-id="${product.id}" data-cart-item="${plpCartItemAttr(product)}"><svg class="plp-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button>`;
+}
+
+// The card's line for the shared demo cart (cart.js, docs/checkout/checkout-spec.md). A vehicle-
+// specific product records which session vehicle it fits (RRG_VEHICLES key) for the cart's fit line.
+function plpCartItemAttr(product) {
+  const fitKey = product.fitsVehicle && typeof RRG_VEHICLES !== 'undefined'
+    ? Object.keys(RRG_VEHICLES).find(k => RRG_VEHICLES[k].plpKey === product.fitsVehicle) : undefined;
+  const item = { sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
+    wasPrice: product.wasPrice || null, image: product.image || '', url: '#', fitsVehicle: fitKey };
+  return JSON.stringify(item).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
 function plpCardHTML(product, cfg) {
@@ -1734,19 +1744,11 @@ function plpBindCardEvents() {
       if (product) plpOpenRowFitGallery(product);
     });
   });
-  // Quick Add to Cart (2026-09-18 design review) — simple visual confirmation + bumps the
-  // real header cart-badge count (both the main header and sticky header share that class);
-  // no real cart/line-items model exists anywhere in this prototype set to add to.
+  // Quick Add to Cart — the shared cart (cart.js) adds the line from the button's data-cart-item
+  // and opens the mini-cart (2026-09-30, docs/checkout/checkout-spec.md). This listener runs first
+  // and opens the "different vehicle" notice when needed; the mini-cart then stays closed.
   document.querySelectorAll('#plpResults [data-addtocart-id]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.cart-badge').forEach(el => { el.textContent = String(Number(el.textContent || 0) + 1); });
-      // innerHTML, not textContent — the button now carries a cart-icon <svg> (2026-09-19
-      // follow-up), so a plain textContent capture/restore would silently drop the icon on
-      // revert.
-      const original = btn.innerHTML;
-      btn.textContent = 'Added ✓';
-      btn.disabled = true;
-      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
       const product = window.PLP_CONFIG.products.find(p => p.id === btn.dataset.addtocartId);
       if (product) plpMaybeShowVehicleNotice(product);
     });

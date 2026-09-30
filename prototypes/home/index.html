@@ -398,6 +398,7 @@
 <script src="../_shared/mega-menu.js"></script>
 <script src="../_shared/admin-panel.js"></script>
 <script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
 <script src="../_shared/plp.js"></script>
 <script>
 // ==== Shop by Category (docs/home/home-spec.md 5.5) =================================
@@ -484,10 +485,6 @@ document.getElementById('homeCarousels').innerHTML = HOME_ROWS.map(row => `
       <button type="button" class="product-carousel-nav next" aria-label="Next ${row.title}">›</button>
     </div>
   </section>`).join('');
-document.getElementById('homeCarousels').addEventListener('click', e => {
-  const btn = e.target.closest('[data-addtocart-id]');
-  if (!btn) return;
-  document.querySelectorAll('.cart-badge').forEach(el => { el.textContent = String(Number(el.textContent || 0) + 1); });
   const original = btn.innerHTML;
   btn.textContent = 'Added ✓';
   btn.disabled = true;
