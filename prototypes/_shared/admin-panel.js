@@ -52,6 +52,7 @@ function buildSiteAdminPanel(currentKey) {
     ] },
     { title: 'Review tools', items: [
       { key: 'header', label: 'Header &amp; Footer' },
+      { key: 'components', label: 'Component Library' },
       { key: 'index', label: 'All templates (index)', href: RRG_PROTO + 'index.html' },
     ] },
   ];

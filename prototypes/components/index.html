@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Component Library — Roof Racks Galore Prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<style>
+  /* Component Library (2026-10-01) — every widget, in every variation, loaded live from the real
+     pages (components/registry.js + _shared/component-mode.js). */
+  body{background:var(--rrg-bg);}
+  .cl-top{position:sticky;top:0;z-index:20;background:var(--rrg-black);color:#fff;}
+  .cl-top-inner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 24px;}
+  .cl-top h1{margin:0;font-size:22px;color:#fff;}
+  .cl-top a{color:#fff;}
+  .cl-top-spacer{flex:1;}
+  .cl-sizes{display:flex;border:1px solid rgba(255,255,255,.35);border-radius:var(--radius);overflow:hidden;}
+  .cl-sizes button{background:none;border:0;color:#fff;font:inherit;font-size:13px;font-weight:700;padding:6px 12px;cursor:pointer;}
+  .cl-sizes button[aria-pressed="true"]{background:#fff;color:var(--rrg-black);}
+  .cl-search{padding:7px 10px;border-radius:var(--radius);border:0;font:inherit;font-size:14px;width:220px;}
+  .cl-rule{background:var(--rrg-gold-bg);border-bottom:1px solid var(--rrg-gold);color:var(--rrg-gold-text, #6b4e00);font-size:14px;padding:10px 24px;}
+  .cl-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:0;}
+  .cl-nav{position:sticky;top:56px;align-self:start;height:calc(100vh - 56px);overflow-y:auto;padding:16px 14px 40px 24px;border-right:1px solid var(--rrg-line);background:#fff;}
+  .cl-nav h2{margin:16px 0 4px;font-family:'Lato',Arial,sans-serif;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--rrg-grey-500);}
+  .cl-nav h2:first-child{margin-top:0;}
+  .cl-nav a{display:flex;align-items:center;gap:8px;padding:4px 6px;margin:0 -6px;border-radius:var(--radius);font-size:13px;color:var(--rrg-text);text-decoration:none;}
+  .cl-nav a:hover{background:var(--rrg-bg);color:var(--rrg-red);}
+  .cl-nav a.is-active{background:var(--rrg-red-bg);color:var(--rrg-red);font-weight:700;}
+  .cl-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+  .cl-dot.shared{background:var(--rrg-fits);}
+  .cl-dot.mixed{background:var(--rrg-gold);}
+  .cl-dot.copied{background:var(--rrg-red);}
+  .cl-key{margin:0 0 6px;font-size:12px;color:var(--rrg-grey-600);display:flex;flex-direction:column;gap:3px;}
+  .cl-key span{display:flex;align-items:center;gap:6px;}
+  .cl-main{padding:24px;min-width:0;}
+  .cl-group-title{margin:8px 0 16px;font-size:26px;}
+  .cl-widget{background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);padding:20px;margin:0 0 24px;scroll-margin-top:72px;}
+  .cl-widget[hidden]{display:none;}
+  .cl-widget-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;}
+  .cl-widget-head h3{margin:0;font-size:22px;}
+  .cl-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid var(--rrg-line);}
+  .cl-head-actions{margin-left:auto;display:flex;gap:8px;}
+  .cl-meta{font-size:13px;color:var(--rrg-grey-600);margin:0 0 4px;line-height:1.5;}
+  .cl-meta strong{color:var(--rrg-text);}
+  .cl-meta a{color:var(--rrg-red);}
+  .cl-note{font-size:13px;margin:4px 0 0;color:var(--rrg-grey-700);}
+  .cl-variant{margin-top:18px;border-top:1px solid var(--rrg-line-soft);padding-top:12px;}
+  .cl-variant-label{font-size:14px;font-weight:900;margin:0 0 8px;}
+  .cl-frames{display:flex;flex-direction:column;gap:12px;}
+  .cl-frame-cap{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--rrg-grey-500);margin:0 0 4px;display:flex;gap:8px;}
+  .cl-frame-cap a{color:var(--rrg-grey-500);text-transform:none;letter-spacing:0;font-weight:400;}
+  .cl-frame.m .cl-frame-box{max-width:392px;}
+  .cl-frame.d .cl-frame-box{max-width:1282px;}
+  .cl-frame-box{position:relative;overflow:hidden;border:1px dashed var(--rrg-line-strong);border-radius:var(--radius);background:#fff;}
+  .cl-frame-box iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;background:#fff;}
+  .cl-frame-box.is-loading::after{content:'Loading…';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--rrg-grey-500);}
+  .cl-frame-box.is-missing{border-color:var(--rrg-red);}
+  body.cl-size-d .cl-frame.m, body.cl-size-m .cl-frame.d{display:none;}
+  .cl-compare{margin-top:18px;}
+  .cl-only-bar{display:none;}
+  body.cl-only .cl-nav, body.cl-only .cl-group-title, body.cl-only .cl-rule{display:none;}
+  body.cl-only .cl-layout{grid-template-columns:minmax(0,1fr);}
+  body.cl-only .cl-only-bar{display:block;margin:0 0 16px;font-size:14px;}
+  .cl-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--rrg-black);color:#fff;padding:10px 16px;border-radius:var(--radius);font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;}
+  .cl-toast.show{opacity:1;}
+  /* Building blocks drawn on this page */
+  .cl-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+  .cl-swatch{border:1px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;font-size:12px;}
+  .cl-swatch div{height:56px;}
+  .cl-swatch p{margin:0;padding:6px 8px;}
+  .cl-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0;}
+  .cl-type > *{margin:0 0 10px;}
+  .cl-form{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+  .cl-form label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;}
+  .cl-form input,.cl-form select,.cl-form textarea{font:inherit;font-weight:400;padding:10px 12px;border:1px solid var(--rrg-line-strong);border-radius:var(--radius);}
+  @media (max-width:900px){
+    .cl-layout{grid-template-columns:1fr;}
+    .cl-nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--rrg-line);}
+    .cl-main{padding:16px;}
+    .cl-search{width:100%;}
+  }
+</style>
+</head>
+<body class="cl-size-both">
+<header class="cl-top">
+  <div class="cl-top-inner">
+    <h1>Component Library</h1>
+    <a href="../index.html">All pages</a>
+    <span class="cl-top-spacer"></span>
+    <input type="search" class="cl-search" placeholder="Find a widget…" aria-label="Find a widget">
+    <div class="cl-sizes" role="group" aria-label="Sizes shown">
+      <button type="button" data-size="both" aria-pressed="true">Both</button>
+      <button type="button" data-size="d" aria-pressed="false">Desktop</button>
+      <button type="button" data-size="m" aria-pressed="false">Mobile</button>
+    </div>
+  </div>
+</header>
+<p class="cl-rule"><strong>Update here first.</strong> Every widget below is live from the page named under it. Change a widget, check every variation here, then update every page in its <strong>Used on</strong> list and check them with <strong>Compare across pages</strong>.</p>
+<div class="cl-layout">
+  <nav class="cl-nav" aria-label="Widgets">
+    <div class="cl-key">
+      <span><i class="cl-dot shared"></i> Shared code: updates everywhere</span>
+      <span><i class="cl-dot mixed"></i> Copied shell + shared code</span>
+      <span><i class="cl-dot copied"></i> Copied markup: update each page</span>
+    </div>
+    <div data-cl-nav></div>
+  </nav>
+  <main class="cl-main">
+    <p class="cl-only-bar"><a href="index.html">&lsaquo; View the full Component Library</a></p>
+    <div data-cl-main></div>
+  </main>
+</div>
+<div class="cl-toast" role="status" aria-live="polite"></div>
+<script src="registry.js"></script>
+<script>
+(() => {
+  const BUILD = {
+    shared: 'Shared code: updates everywhere',
+    mixed: 'Copied shell + shared code',
+    copied: 'Copied markup: update each page',
+  };
+  const PAGE_NAMES = {
+    home: 'Home', store: 'Store Page', 'store-finder': 'Store Finder', 'fit-my-vehicle': 'Fit My Vehicle', installation: 'Installation',
+    cart: 'Cart', checkout: 'Checkout', 'order-confirmation': 'Order Confirmation', 'vehicle-specific': 'Vehicle-Specific', 'config-variant': 'Config-Variant',
+    'sibling-color': 'Sibling / Colour', simple: 'Simple', 'grouped-bundle': 'Grouped / Bundle', 'vehicle-category-landing': 'VCLP', vlp: 'VLP',
+    'plp-camping': 'PLP Camping', plp: 'PLP Bike Racks', vplp: 'VPLP Roof Racks', brand: 'Brand Page', brands: 'Brands Hub', 'search-results': 'Search Results', header: 'Header & Footer',
+  };
+  const WIDTH = { d: 1280, m: 390 };
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  const params = new URLSearchParams(location.search);
+  const only = params.get('only');
+
+  const frameUrl = (variant, size, frameId) => {
+    const q = new URLSearchParams(variant.q || '');
+    q.set('component', size === 'm' && variant.selM ? variant.selM : variant.sel);
+    q.set('frame', frameId);
+    if (variant.nth) q.set('nth', variant.nth);
+    if (variant.ls) q.set('ls', JSON.stringify(variant.ls));
+    if (variant.cart) q.set('cart', variant.cart);
+    if (variant.order) q.set('order', variant.order);
+    if (variant.do) q.set('do', variant.do);
+    if (variant.keep) q.set('keep', variant.keep);
+    return `../${variant.page}/index.html?${q}`;
+  };
+  // The same page without component mode, for "open the real page".
+  const pageUrl = variant => `../${variant.page}/index.html${variant.q ? '?' + variant.q : ''}`;
+
+  let frameCount = 0;
+  const frameHTML = (variant, size) => {
+    const id = 'f' + (++frameCount);
+    return `<div class="cl-frame ${size}">
+      <p class="cl-frame-cap">${size === 'd' ? 'Desktop 1280' : 'Mobile 390'} <a href="${esc(pageUrl(variant))}" target="_blank" rel="noopener">on ${esc(PAGE_NAMES[variant.page] || variant.page)} ↗</a></p>
+      <div class="cl-frame-box is-loading" data-native="${WIDTH[size]}" data-fixed-h="${variant.h || ''}" style="height:${variant.h ? '' : '160px'}">
+        <iframe id="${id}" title="${esc(variant.label)} — ${size === 'd' ? 'desktop' : 'mobile'}" loading="lazy" width="${WIDTH[size]}" height="${variant.h || 900}" data-src="${esc(frameUrl(variant, size, id))}"></iframe>
+      </div>
+    </div>`;
+  };
+  const variantHTML = variant => `<div class="cl-variant">
+      <p class="cl-variant-label">${esc(variant.label)}</p>
+      <div class="cl-frames">${(variant.sizes || ['d', 'm']).map(s => frameHTML(variant, s)).join('')}</div>
+    </div>`;
+
+  // Building blocks — drawn here with the real shared.css classes.
+  const local = {
+    colours: () => {
+      const tokens = [];
+      [...document.styleSheets].forEach(sheet => {
+        let rules = [];
+        try { rules = [...sheet.cssRules]; } catch (e) {}
+        rules.filter(r => r.selectorText === ':root').forEach(r => { for (const p of r.style) if (p.startsWith('--rrg-') && !tokens.includes(p)) tokens.push(p); });
+      });
+      return `<div class="cl-swatches">${tokens.map(t => `<div class="cl-swatch"><div style="background:var(${t})"></div><p><strong>${t.replace('--rrg-', '')}</strong><br>${getComputedStyle(document.documentElement).getPropertyValue(t).trim()}</p></div>`).join('')}</div>`;
+    },
+    typography: () => `<div class="cl-type"><h1>Heading 1 — Roof Racks</h1><h2>Heading 2 — Roof Racks</h2><h3>Heading 3 — Roof Racks</h3><h4>Heading 4 — Roof Racks</h4><p class="eyebrow">Eyebrow</p><p>Body text — Lato 16px. The quick brown fox fits a roof rack to a Hilux.</p><p><small>Small text — 13px helper copy.</small></p></div>`,
+    buttons: () => ['btn-cta', 'btn-primary', 'btn-outline', 'btn-outline-red'].map(c => `<div class="cl-row">${['btn-lg', 'btn-md', '', 'btn-sm'].map(s => `<button type="button" class="btn ${c} ${s}">${c.replace('btn-', '')}${s ? ' · ' + s.replace('btn-', '') : ''}</button>`).join('')}</div>`).join('')
+      + `<div class="cl-row"><button type="button" class="btn btn-cta btn-block">btn-cta · block</button></div><div class="cl-row"><button type="button" class="link-btn">link-btn</button><button type="button" class="btn btn-cta" disabled>Disabled</button></div>`,
+    chips: () => `<div class="cl-row"><span class="chip">Chip</span></div><div class="cl-row">${[['in', 'In Stock'], ['order', 'Ready Within 2 Business Days'], ['out', 'Out of Stock'], ['display', 'On Display'], ['none', 'Not stocked']].map(([c, l]) => `<span class="stock-chip ${c}">${l}</span>`).join('')}</div>`,
+    forms: () => `<div class="cl-form"><label>Text input<input type="text" placeholder="Postcode"></label><label>Select<select><option>Toyota</option><option>Ford</option></select></label><label>Textarea<textarea rows="3" placeholder="Message"></textarea></label><label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" checked> Checkbox</label><label style="flex-direction:row;align-items:center;gap:8px"><input type="radio" checked> Radio</label></div>`,
+  };
+
+  const widgetHTML = w => {
+    const multi = w.usedOn.length > 1 && w.build !== 'shared' && w.variants && w.variants.length;
+    return `<section class="cl-widget" id="${w.id}" data-name="${esc(w.name.toLowerCase())}">
+      <div class="cl-widget-head">
+        <h3>${esc(w.name)}</h3>
+        <span class="cl-badge"><i class="cl-dot ${w.build}"></i>${BUILD[w.build]}</span>
+        <span class="cl-head-actions">
+          <button type="button" class="btn btn-outline btn-sm" data-copy="${w.id}">Copy link</button>
+        </span>
+      </div>
+      <p class="cl-meta"><strong>Used on (${w.usedOn.length}):</strong> ${w.usedOn.map(p => `<a href="../${p}/index.html" target="_blank" rel="noopener">${esc(PAGE_NAMES[p] || p)}</a>`).join(', ')}</p>
+      <p class="cl-meta"><strong>Code:</strong> ${esc(w.source)}</p>
+      ${w.note ? `<p class="cl-note">${esc(w.note)}</p>` : ''}
+      ${w.local ? `<div class="cl-variant">${local[w.local]()}</div>` : w.variants.map(variantHTML).join('')}
+      ${multi ? `<div class="cl-compare"><button type="button" class="btn btn-outline btn-sm" data-compare="${w.id}">Compare across pages (${w.usedOn.length})</button><div data-compare-out></div></div>` : ''}
+    </section>`;
+  };
+
+  const nav = document.querySelector('[data-cl-nav]');
+  const main = document.querySelector('[data-cl-main]');
+  const list = only ? RRG_COMPONENTS.filter(w => w.id === only) : RRG_COMPONENTS;
+  if (only) document.body.classList.add('cl-only');
+  nav.innerHTML = RRG_GROUPS.map(g => `<h2>${esc(g.title)}</h2>` + RRG_COMPONENTS.filter(w => w.group === g.id).map(w => `<a href="#${w.id}" data-nav="${w.id}"><i class="cl-dot ${w.build}"></i>${esc(w.name)}</a>`).join('')).join('');
+  main.innerHTML = RRG_GROUPS.map(g => {
+    const ws = list.filter(w => w.group === g.id);
+    return ws.length ? `<h2 class="cl-group-title">${esc(g.title)}</h2>` + ws.map(widgetHTML).join('') : '';
+  }).join('') || `<p>No widget called "${esc(only)}". <a href="index.html">View the full library</a>.</p>`;
+  if (only && list[0]) document.title = list[0].name + ' — Component Library';
+
+  // Frames: scale each to its box, size it from the height the frame reports, and only start
+  // loading when it comes near the screen.
+  const fit = box => {
+    const iframe = box.querySelector('iframe');
+    const native = Number(box.dataset.native);
+    const scale = Math.min(1, box.clientWidth / native);
+    const h = Number(box.dataset.fixedH) || Number(iframe.dataset.h) || 160;
+    iframe.style.transform = `scale(${scale})`;
+    // The page inside always gets at least a normal 900px-tall window (widgets sized to the
+    // window, like the search dropdown, would otherwise shrink); the box crops to the widget.
+    iframe.height = box.dataset.fixedH ? h : Math.max(900, h);
+    box.style.height = Math.ceil(h * scale) + 'px';
+  };
+  const start = box => {
+    const iframe = box.querySelector('iframe');
+    if (!iframe.src && iframe.dataset.src) iframe.src = iframe.dataset.src;
+    if (box.dataset.fixedH) setTimeout(() => box.classList.remove('is-loading'), 2500);
+  };
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { start(e.target); io.unobserve(e.target); } }), { rootMargin: '800px 0px' }) : null;
+  const wire = root => root.querySelectorAll('.cl-frame-box').forEach(box => { fit(box); io ? io.observe(box) : start(box); });
+  wire(main);
+  window.addEventListener('resize', () => document.querySelectorAll('.cl-frame-box').forEach(fit));
+  window.addEventListener('message', e => {
+    const d = e.data;
+    if (!d || d.type !== 'rrg-component') return;
+    const iframe = document.getElementById(d.id);
+    if (!iframe) return;
+    const box = iframe.closest('.cl-frame-box');
+    if (d.height) iframe.dataset.h = d.height;
+    box.classList.remove('is-loading');
+    box.classList.toggle('is-missing', !!d.missing);
+    fit(box);
+  });
+
+  // Compare across pages — the widget's first variation, taken from every page it is used on.
+  main.addEventListener('click', e => {
+    const btn = e.target.closest('[data-compare]');
+    if (!btn) return;
+    const w = RRG_COMPONENTS.find(x => x.id === btn.dataset.compare);
+    const base = w.variants[0];
+    const out = btn.parentElement.querySelector('[data-compare-out]');
+    out.innerHTML = w.usedOn.map(p => variantHTML({ ...base, page: p, label: PAGE_NAMES[p] || p, ls: undefined, q: undefined, sizes: ['d'] })).join('');
+    btn.remove();
+    wire(out);
+  });
+
+  // Share links: #id jumps to a widget; ?only=id opens it on its own.
+  const toast = document.querySelector('.cl-toast');
+  main.addEventListener('click', e => {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    const url = `${location.origin}${location.pathname}?only=${btn.dataset.copy}`;
+    const done = () => { toast.textContent = 'Link copied — opens this widget on its own'; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2200); };
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(done, () => { window.prompt('Copy this link:', url); });
+  });
+
+  // Sizes shown (kept for next visit).
+  const setSize = size => {
+    document.body.classList.remove('cl-size-both', 'cl-size-d', 'cl-size-m');
+    document.body.classList.add('cl-size-' + size);
+    document.querySelectorAll('[data-size]').forEach(b => b.setAttribute('aria-pressed', b.dataset.size === size));
+    try { localStorage.setItem('rrgLibrarySize', size); } catch (e) {}
+    document.querySelectorAll('.cl-frame-box').forEach(fit);
+  };
+  document.querySelectorAll('[data-size]').forEach(b => b.addEventListener('click', () => setSize(b.dataset.size)));
+  try { const s = localStorage.getItem('rrgLibrarySize'); if (s) setSize(s); } catch (e) {}
+
+  // Find a widget.
+  document.querySelector('.cl-search').addEventListener('input', e => {
+    const term = e.target.value.trim().toLowerCase();
+    document.querySelectorAll('.cl-widget').forEach(s => { s.hidden = !!term && !s.dataset.name.includes(term); });
+    document.querySelectorAll('[data-nav]').forEach(a => { a.hidden = !!term && !a.textContent.toLowerCase().includes(term); });
+  });
+
+  // Highlight the widget in view in the side list.
+  if ('IntersectionObserver' in window) {
+    const navObs = new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('is-active', a.dataset.nav === en.target.id));
+    }), { rootMargin: '-80px 0px -70% 0px' });
+    document.querySelectorAll('.cl-widget').forEach(s => navObs.observe(s));
+  }
+  // Jump to #widget — repeated while the frames above it load and change height.
+  if (location.hash && !only) {
+    const t = document.querySelector(location.hash);
+    if (t) [0, 1200, 3000, 6000].forEach(ms => setTimeout(() => t.scrollIntoView(), ms));
+  }
+})();
+</script>
+</body>
+</html>

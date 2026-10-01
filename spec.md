@@ -1471,3 +1471,30 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
 34. 💬 **Run fitting and booking changes past Chris and the stores** (Scott). Matters less once prices are hidden.
 35. 💬 **Regional fitting prices** for UK and NZ (currently the AU live prices everywhere). Matters less once prices are hidden.
 36. 💬 **Design help two days a week:** approved by Tim, pending finding someone.
+
+## 17. Component Library (Brenton, 2026-10-01)
+
+`prototypes/components/index.html`: every widget on the site, in every variation, at desktop (1280) and mobile (390), on one page.
+
+**The rule: update the Component Library first.** When a widget changes:
+1. Change it on the page the library shows it from.
+2. Check every variation in the library.
+3. Update every page in its **Used on** list.
+4. Check them with **Compare across pages**.
+
+**How it works**
+- **Nothing in the library is a copy.** Each variation is the real widget, loaded live from a real page in a small frame.
+  - `_shared/component-mode.js` (loaded first on every template) is what makes this possible. When a page is opened with `?component=<selector>`, it hides everything except that widget and applies the state the variation asks for: region, session, build phase, Demo State choices, a demo cart or order, or an action such as opening a drawer.
+  - In this mode the page's storage is held in memory, so the library can never change the settings you see on the real pages. Without `?component=`, pages behave exactly as before.
+- **The registry.** `components/registry.js` lists each widget with:
+  - its **Used on** pages (crawled from every template on 2026-10-01);
+  - how it's built: *shared* (one function, updates everywhere), *mixed* (copied shell, shared code) or *copied* (hand-written markup in each page);
+  - where its code lives;
+  - every variation.
+- **Links.**
+  - `#widget-id` jumps straight to a widget.
+  - **Copy link** gives `?only=widget-id`, which shows that one widget on its own, for sharing.
+- **Coverage.**
+  - 97 widgets in 7 groups (Global, Product page, Listing & search, Cart & checkout, Stores & vehicles & brands, Home & content, Building blocks) and 221 variations (51 copied, 20 mixed, 26 shared).
+  - Building blocks (colours, typography, buttons, chips, form fields) are drawn on the library page with the real `shared.css` classes.
+- **Next step (agreed):** review every *copied* and *mixed* widget for design drift and move it into shared code, so the library and every page update together.
