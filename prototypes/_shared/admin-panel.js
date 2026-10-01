@@ -51,7 +51,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'search-results', label: 'Search Results' },
     ] },
     { title: 'Review tools', items: [
-      { key: 'header', label: 'Header &amp; Mega Menu' },
+      { key: 'header', label: 'Header &amp; Footer' },
       { key: 'index', label: 'All templates (index)', href: RRG_PROTO + 'index.html' },
     ] },
   ];
