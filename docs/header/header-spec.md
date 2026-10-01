@@ -22,7 +22,7 @@ This project's real work is: (a) turn the "Products" nav button into a real mega
 
 ## 1. Current state — the design base (not a wholesale replacement)
 
-Defined once per template (e.g. `prototypes/simple/index.html:53-119`), shared styling/behaviour in `prototypes/_shared/shared.css`/`shared.js`. Per Section 0's correction: this shell is the target structure. Only the items marked **(placeholder — replace)** below are actually being rebuilt; everything else stays as-is.
+Defined once for all templates in `prototypes/_shared/widgets.js` (`rrgWidgetHeaderHTML()`, since 2026-10-01; it was copied into each template before that), shared styling/behaviour in `prototypes/_shared/shared.css`/`shared.js`. Per Section 0's correction: this shell is the target structure. Only the items marked **(placeholder — replace)** below are actually being rebuilt; everything else stays as-is.
 
 - **Utility bar** (`.rrg-utility-bar`): left side — "Your Nearest Store: North Lakes" (real region data, doubles as the mobile Admin Panel trigger via `data-admin-trigger`) and "Your Vehicle: Toyota Hilux" (hardcoded — feeds the PDP fitment-matching demo, see Session Vehicle in the Demo State Panel); right side — Call Us (decorative), Region Selector (real, working — AU/NZ/UK, see `PAGE-GLOSSARY.md`), Account (decorative, "Graham"). **Keep as-is** — part of the target design.
 - **Main header** (`.rrg-main-header`): hamburger (mobile only) → logo → main nav → search input (visual only) → cart icon (visual only, static badge). **Keep as-is.**

@@ -1495,6 +1495,6 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
   - `#widget-id` jumps straight to a widget.
   - **Copy link** gives `?only=widget-id`, which shows that one widget on its own, for sharing.
 - **Coverage.**
-  - 97 widgets in 7 groups (Global, Product page, Listing & search, Cart & checkout, Stores & vehicles & brands, Home & content, Building blocks) and 221 variations (51 copied, 20 mixed, 26 shared).
+  - 97 widgets in 7 groups (Global, Product page, Listing & search, Cart & checkout, Stores & vehicles & brands, Home & content, Building blocks) and 221 variations (48 copied, 15 mixed, 34 shared — after the header and footer moved into shared code, 2026-10-01).
   - Building blocks (colours, typography, buttons, chips, form fields) are drawn on the library page with the real `shared.css` classes.
-- **Next step (agreed):** review every *copied* and *mixed* widget for design drift and move it into shared code, so the library and every page update together.
+- **Next step (agreed):** review every *copied* and *mixed* widget for design drift and move it into shared code, so the library and every page update together. Plan and progress: `docs/widgets/widgets-spec.md`; shared renderers live in `_shared/widgets.js`.
