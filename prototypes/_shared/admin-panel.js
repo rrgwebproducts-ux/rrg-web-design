@@ -3,14 +3,9 @@
 // the build phase, site promotions, and prototype tools. Anything that only applies to the page
 // you're on lives in the Demo State Panel instead (buildAdminPanel() in shared.js).
 //
-// Accordion behaviour shared by both prototype panels (2026-09-29): every .rrg-acc row starts
-// closed, and opening one closes the others in the same panel.
-function wireAccordion(root) {
-  const rows = root.querySelectorAll('details.rrg-acc');
-  rows.forEach(row => row.addEventListener('toggle', () => {
-    if (row.open) rows.forEach(other => { if (other !== row) other.open = false; });
-  }));
-}
+// 2026-10-01 layout: no accordions. Every template and brief sits in one "Pages & briefs"
+// flyout that opens to the side of the panel (hover or click, like a mega menu); on phones it
+// slides over the panel with a Back button. The settings below it are always visible.
 
 // `currentKey` is the page's folder name ('simple', 'plp', …) — marks that template "current".
 // The root template index passes its parent folder name ('prototypes'), mapped to 'index'.
@@ -24,15 +19,14 @@ function buildSiteAdminPanel(currentKey) {
   fab.setAttribute('aria-label', 'Open site admin panel');
   fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span class="fab-label">Site Admin</span>';
 
-  // Every template, grouped the way the template index groups them (P2 — reverses the
-  // 2026-09-17 PDP-only trim).
+  // Every template, grouped the same way as the template index (prototypes/index.html).
   const templateGroups = [
-    { title: 'Home', items: [
+    { title: 'Home &amp; stores', items: [
       { key: 'home', label: 'Home Page' },
       { key: 'store', label: 'Store Page — North Lakes' },
       { key: 'store-finder', label: 'Store Finder' },
       { key: 'fit-my-vehicle', label: 'Fit My Vehicle' },
-      { key: 'installation', label: 'Installation & Booking' },
+      { key: 'installation', label: 'Installation &amp; Booking' },
     ] },
     { title: 'Cart &amp; checkout', items: [
       { key: 'cart', label: 'Cart' },
@@ -40,11 +34,11 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'order-confirmation', label: 'Order Confirmation' },
     ] },
     { title: 'Product pages', items: [
-      { key: 'simple', label: 'Simple' },
+      { key: 'vehicle-specific', label: 'Vehicle-Specific Kit' },
       { key: 'config-variant', label: 'Config-Variant' },
-      { key: 'sibling-color', label: 'Sibling-Colour' },
-      { key: 'vehicle-specific', label: 'Vehicle-Specific' },
-      { key: 'grouped-bundle', label: 'Grouped/Bundle' },
+      { key: 'sibling-color', label: 'Sibling / Colour' },
+      { key: 'simple', label: 'Simple' },
+      { key: 'grouped-bundle', label: 'Grouped / Bundle' },
     ] },
     { title: 'Category &amp; listing', items: [
       { key: 'vehicle-category-landing', label: 'Vehicle Category Landing (VCLP)' },
@@ -52,13 +46,13 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'plp-camping', label: 'PLP Camping' },
       { key: 'plp', label: 'PLP Bike Racks' },
       { key: 'vplp', label: 'VPLP Roof Racks' },
-      { key: 'brands', label: 'Brands (hub)' },
-      { key: 'brand', label: 'Brand Page — Thule' },
-    ] },
-    { title: 'Other', items: [
+      { key: 'brand', label: 'Brand Page — Thule', href: RRG_PROTO + 'brand/index.html?brand=thule' },
+      { key: 'brands', label: 'Brands Hub' },
       { key: 'search-results', label: 'Search Results' },
-      { key: 'header', label: 'Header (standalone)' },
-      { key: 'index', label: 'All templates', href: RRG_PROTO + 'index.html' },
+    ] },
+    { title: 'Review tools', items: [
+      { key: 'header', label: 'Header &amp; Mega Menu' },
+      { key: 'index', label: 'All templates (index)', href: RRG_PROTO + 'index.html' },
     ] },
   ];
   // Every developer brief (P3).
@@ -72,14 +66,7 @@ function buildSiteAdminPanel(currentKey) {
   ];
   const templateHref = t => t.href || `${RRG_PROTO}${t.key}/index.html`;
   const hasDemoPanel = !!document.querySelector('.admin-fab');
-
-  // Accordion rows (2026-09-29): every section starts closed on every page load and only one is
-  // open at a time (wireAccordion above), so the panel stays short. A settings row shows
-  // its current value in the closed row (data-acc-summary, filled by syncSummaries below).
-  const acc = (title, body, summaryKey) => `<details class="rrg-acc">
-      <summary><span class="rrg-acc-title">${title}</span>${summaryKey ? `<span class="rrg-acc-value" data-acc-summary="${summaryKey}"></span>` : ''}</summary>
-      <div class="rrg-acc-body">${body}</div>
-    </details>`;
+  const current = templateGroups.flatMap(g => g.items).find(t => t.key === key);
 
   const panel = document.createElement('div');
   panel.className = 'site-admin-panel';
@@ -89,84 +76,150 @@ function buildSiteAdminPanel(currentKey) {
       <button type="button" class="site-admin-close" aria-label="Close">&times;</button>
     </div>
     <div class="site-admin-body">
-      <div class="site-admin-heading">Pages</div>
-      ${templateGroups.map(g => acc(`${g.title} <span class="site-admin-count">${g.items.length}</span>`, `
+      <button type="button" class="site-admin-nav" aria-haspopup="true" aria-expanded="false" aria-controls="siteAdminFlyout">
+        <span class="site-admin-nav-label">Pages &amp; briefs</span>
+        <span class="site-admin-nav-current">${current ? current.label : ''}</span>
+      </button>
+      <div class="site-admin-heading">Shopper session</div>
+      <label class="site-admin-toggle">
+        <span>Logged in</span>
+        <input type="checkbox" data-admin-flag="loggedIn">
+      </label>
+      <label class="site-admin-select">
+        <span>Vehicle</span>
+        <select data-admin-vehicle>
+          <option value="none">None</option>
+          <option value="hilux">Toyota Hilux</option>
+          <option value="ranger">Ford Ranger</option>
+        </select>
+      </label>
+      <label class="site-admin-toggle">
+        <span>Nearest store set</span>
+        <input type="checkbox" data-admin-flag="storeSet">
+      </label>
+      <label class="site-admin-select">
+        <span>Demo cart</span>
+        <select data-admin-cart>
+          <option value="empty">Empty</option>
+          <option value="accessories">Accessories (2 items)</option>
+          <option value="full">Rack, bike rack, bundle + tank</option>
+          <option value="custom" disabled>Your own items</option>
+        </select>
+      </label>
+      <div class="site-admin-heading">Build phase</div>
+      <div class="site-admin-segment">
+        <label><input type="radio" name="rrgBuildPhase" value="1"><span>Phase 1 · launch</span></label>
+        <label><input type="radio" name="rrgBuildPhase" value="2"><span>Phase 2 · future</span></label>
+      </div>
+      <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>
+      <div class="site-admin-heading">Promotions &amp; design</div>
+      <label class="site-admin-toggle">
+        <span>Clearance sale banner</span>
+        <input type="checkbox" data-admin-flag="saleBannerOn">
+      </label>
+      <label class="site-admin-select" title="The merged vehicle bar + Fit Finder on Home and Fit My Vehicle">
+        <span>Vehicle finder style</span>
+        <select data-admin-vf-style>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
+      <label class="site-admin-toggle" title="Demo placeholders in the UK and NZ Store Finder">
+        <span>"Opening soon" stores (UK/NZ)</span>
+        <input type="checkbox" data-admin-coming-soon>
+      </label>
+      <div class="site-admin-heading">Prototype</div>
+      ${hasDemoPanel ? `<label class="site-admin-toggle">
+        <span>Show Demo State panel</span>
+        <input type="checkbox" data-admin-flag="showDemoPanel">
+      </label>` : ''}
+      <button type="button" class="site-admin-reset" data-admin-reset>Reset all demo settings</button>
+    </div>
+  `;
+
+  // The flyout is its own fixed element (not inside the panel) so the panel's scroll box can't
+  // clip it.
+  const flyout = document.createElement('div');
+  flyout.className = 'site-admin-flyout';
+  flyout.id = 'siteAdminFlyout';
+  flyout.hidden = true;
+  flyout.innerHTML = `
+    <div class="site-admin-flyout-head">
+      <button type="button" class="site-admin-flyout-back" aria-label="Back to Site Admin">&lsaquo; Back</button>
+      <span>Pages &amp; briefs</span>
+    </div>
+    <div class="site-admin-flyout-cols">
+      ${templateGroups.map(g => `<div class="site-admin-flyout-col">
+        <div class="site-admin-heading">${g.title}</div>
         <div class="site-admin-links">
           ${g.items.map(t => `<a href="${templateHref(t)}" class="${t.key === key ? 'current' : ''}">${t.label}</a>`).join('')}
-        </div>`)).join('')}
-      ${acc(`Developer briefs <span class="site-admin-count">${briefs.length}</span>`, `
+        </div>
+      </div>`).join('')}
+      <div class="site-admin-flyout-col">
+        <div class="site-admin-heading">Developer briefs</div>
         <div class="site-admin-links">
           ${briefs.map(b => `<a href="${RRG_PROTO}../${b.href}" target="_blank" rel="noopener">${b.label}</a>`).join('')}
-        </div>`)}
-      <div class="site-admin-heading">Settings</div>
-      ${acc('Shopper session', `
-        <label class="site-admin-toggle">
-          <span>Logged in</span>
-          <input type="checkbox" data-admin-flag="loggedIn">
-        </label>
-        <label class="site-admin-select">
-          <span>Vehicle</span>
-          <select data-admin-vehicle>
-            <option value="none">None</option>
-            <option value="hilux">Toyota Hilux</option>
-            <option value="ranger">Ford Ranger</option>
-          </select>
-        </label>
-        <label class="site-admin-toggle">
-          <span>Nearest store set</span>
-          <input type="checkbox" data-admin-flag="storeSet">
-        </label>
-        <label class="site-admin-select">
-          <span>Demo cart</span>
-          <select data-admin-cart>
-            <option value="empty">Empty</option>
-            <option value="accessories">Accessories (2 items)</option>
-            <option value="full">Rack, bike rack, bundle + tank</option>
-            <option value="custom" disabled>Your own items</option>
-          </select>
-        </label>`, 'session')}
-      ${acc('Build phase', `
-        <div class="site-admin-radios">
-          <label><input type="radio" name="rrgBuildPhase" value="1"> Phase 1 — launch build</label>
-          <label><input type="radio" name="rrgBuildPhase" value="2"> Phase 2 — future features</label>
         </div>
-        <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>`, 'phase')}
-      ${acc('Site promotions', `
-        <label class="site-admin-toggle">
-          <span>Clearance sale banner</span>
-          <input type="checkbox" data-admin-flag="saleBannerOn">
-        </label>`, 'promos')}
-      ${acc('Design options', `
-        <label class="site-admin-select">
-          <span>Vehicle finder style</span>
-          <select data-admin-vf-style>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </label>
-        <p class="site-admin-note">The merged vehicle bar + Fit Finder on Home and Fit My Vehicle (spec.md §16 item 7).</p>
-        <label class="site-admin-toggle">
-          <span>Show "opening soon" stores (UK/NZ)</span>
-          <input type="checkbox" data-admin-coming-soon>
-        </label>
-        <p class="site-admin-note">Demo placeholders in the UK and NZ Store Finder (spec.md §16 item 12).</p>`, 'design')}
-      ${acc('Prototype tools', `
-        ${hasDemoPanel ? `<label class="site-admin-toggle">
-          <span>Show Demo State panel</span>
-          <input type="checkbox" data-admin-flag="showDemoPanel">
-        </label>` : ''}
-        <button type="button" class="site-admin-reset" data-admin-reset>Reset all demo settings</button>`)}
+      </div>
     </div>
   `;
 
   document.body.appendChild(panel);
+  document.body.appendChild(flyout);
   document.body.appendChild(fab);
-  wireAccordion(panel);
 
+  // Flyout: opens on hover (desktop) or click/Enter (everywhere). A click pins it open; leaving
+  // an un-pinned flyout closes it after a short grace period so the pointer can cross the gap.
+  const navBtn = panel.querySelector('.site-admin-nav');
+  const canHover = window.matchMedia('(hover: hover) and (min-width: 901px)');
+  let pinned = false;
+  let closeTimer = null;
+  const placeFlyout = () => {
+    if (!canHover.matches) { flyout.style.top = ''; return; }
+    const top = navBtn.getBoundingClientRect().top;
+    flyout.style.top = Math.max(12, Math.min(top, window.innerHeight - flyout.offsetHeight - 12)) + 'px';
+  };
+  const openFlyout = (pin) => {
+    clearTimeout(closeTimer);
+    if (pin) pinned = true;
+    flyout.hidden = false;
+    navBtn.setAttribute('aria-expanded', 'true');
+    placeFlyout();
+  };
+  const closeFlyout = () => {
+    clearTimeout(closeTimer);
+    pinned = false;
+    flyout.hidden = true;
+    navBtn.setAttribute('aria-expanded', 'false');
+  };
+  const scheduleClose = () => {
+    if (pinned || !canHover.matches) return;
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(closeFlyout, 250);
+  };
+  navBtn.addEventListener('click', () => {
+    if (!flyout.hidden && pinned) { closeFlyout(); return; }
+    openFlyout(true);
+    if (!canHover.matches) flyout.querySelector('.site-admin-flyout-back').focus();
+  });
+  navBtn.addEventListener('mouseenter', () => { if (canHover.matches) openFlyout(false); });
+  navBtn.addEventListener('mouseleave', scheduleClose);
+  flyout.addEventListener('mouseenter', () => clearTimeout(closeTimer));
+  flyout.addEventListener('mouseleave', scheduleClose);
+  flyout.querySelector('.site-admin-flyout-back').addEventListener('click', () => { closeFlyout(); navBtn.focus(); });
+  flyout.addEventListener('click', (e) => e.stopPropagation());
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || flyout.hidden) return;
+    closeFlyout();
+    navBtn.focus();
+  });
+  window.addEventListener('resize', () => { if (!flyout.hidden) placeFlyout(); });
+
+  const closePanel = () => { closeFlyout(); panel.classList.remove('open'); };
   fab.addEventListener('click', (e) => { e.stopPropagation(); panel.classList.add('open'); });
-  panel.querySelector('.site-admin-close').addEventListener('click', () => panel.classList.remove('open'));
+  panel.querySelector('.site-admin-close').addEventListener('click', closePanel);
   panel.addEventListener('click', (e) => e.stopPropagation());
-  document.addEventListener('click', () => panel.classList.remove('open'));
+  document.addEventListener('click', closePanel);
 
   // Sale banner state lives in mega-menu.js (rrgSetSaleBannerOn/localStorage) since that's what
   // renders it — this panel just reflects and toggles it.
@@ -230,27 +283,10 @@ function buildSiteAdminPanel(currentKey) {
     });
   }
 
-  // Closed-row values for the settings rows, kept in step with every change.
-  const syncSummaries = () => {
-    const setSummary = (k, text) => { const el = panel.querySelector(`[data-acc-summary="${k}"]`); if (el) el.textContent = text; };
-    const v = vehicleSelect.value;
-    setSummary('session', [
-      panel.querySelector('[data-admin-flag="loggedIn"]').checked ? 'Logged in' : 'Guest',
-      v === 'none' ? 'No vehicle' : vehicleSelect.selectedOptions[0].text.replace(/^\S+ /, ''),
-      typeof rrgCartCount === 'function' ? `Cart ${rrgCartCount()}` : '',
-    ].filter(Boolean).join(' · '));
-    const phase = panel.querySelector('input[name="rrgBuildPhase"]:checked');
-    setSummary('phase', phase ? 'Phase ' + phase.value : '');
-    setSummary('promos', saleBannerToggle.checked ? 'Sale on' : 'None');
-    setSummary('design', `Finder: ${vfStyleSelect.value === 'dark' ? 'Dark' : 'Light'}`);
-  };
-  syncSummaries();
-  panel.addEventListener('change', syncSummaries);
-  document.addEventListener('rrg-cart-change', syncSummaries);
+
   document.addEventListener('rrg-session-change', () => {
     ['loggedIn', 'storeSet'].forEach(f => { panel.querySelector(`[data-admin-flag="${f}"]`).checked = rrgSessionGet(f); });
     vehicleSelect.value = rrgVehicleGet();
-    syncSummaries();
   });
 
   // Reset (P10): clears every saved prototype setting — session, phase, promotions and each

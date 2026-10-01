@@ -11,7 +11,7 @@
   .site-admin-panel{bottom:140px;left:12px;max-height:calc(100vh - 160px);}
 }
 
-.site-admin-panel{position:fixed;left:20px;bottom:78px;z-index:61;width:300px;max-height:70vh;overflow-y:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-modal);display:none;flex-direction:column;}
+.site-admin-panel{position:fixed;left:20px;bottom:78px;z-index:88;width:300px;max-height:70vh;overflow-y:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-modal);display:none;flex-direction:column;}
 .site-admin-panel.open{display:flex;}
 .site-admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:var(--rrg-grey-700);color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .site-admin-close{background:none;border:none;color:#fff;font-size:20px;line-height:1;cursor:pointer;padding:0 4px;}
@@ -37,19 +37,39 @@
 .site-admin-reset{margin-top:6px;width:100%;padding:9px;border:1px solid var(--rrg-line-strong);border-radius:var(--radius);background:#fff;font:inherit;font-size:13px;font-weight:700;color:var(--rrg-red);cursor:pointer;}
 .site-admin-reset:hover{background:var(--rrg-red-bg);}
 
-/* Accordion rows (2026-09-29) — both prototype panels. Every row starts closed; one open at a
-   time (wireAccordion in admin-panel.js). Settings rows show their current value on the right. */
-.site-admin-heading{margin:12px 0 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-400);}
-.site-admin-heading:first-child{margin-top:8px;}
-.rrg-acc{border-bottom:1px solid var(--rrg-line);}
-.rrg-acc:last-child{border-bottom:none;}
-.rrg-acc > summary{display:flex;align-items:center;gap:8px;padding:11px 2px;cursor:pointer;list-style:none;font-size:14px;font-weight:700;color:var(--rrg-black);}
-.rrg-acc > summary::-webkit-details-marker{display:none;}
-.rrg-acc > summary::after{content:'';flex:0 0 auto;width:7px;height:7px;margin:0 3px 3px 0;border-right:2px solid var(--rrg-grey-500);border-bottom:2px solid var(--rrg-grey-500);transform:rotate(45deg);transition:transform var(--t-fast) ease;}
-.rrg-acc[open] > summary::after{transform:rotate(-135deg);margin-bottom:-3px;}
-.rrg-acc > summary:hover{color:var(--rrg-red);}
-.rrg-acc > summary:focus-visible{outline:2px solid var(--rrg-red);outline-offset:2px;border-radius:var(--radius);}
-.rrg-acc-title{flex:1 1 auto;min-width:0;}
-.rrg-acc-value{flex:0 0 auto;font-size:12px;font-weight:400;color:var(--rrg-grey-600);}
-.site-admin-count{margin-left:4px;font-size:12px;font-weight:400;color:var(--rrg-grey-500);}
-.rrg-acc-body{padding:0 0 12px;}
+/* Flat layout (2026-10-01) — replaced the accordion rows. Small group headings, every setting
+   visible, and one "Pages & briefs" row that opens the flyout below. */
+@media (min-width:901px){ .site-admin-panel{max-height:calc(100vh - 100px);} }
+.site-admin-heading{margin:12px 0 2px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--rrg-grey-500);}
+.site-admin-nav{display:flex;align-items:center;gap:8px;width:100%;margin:10px 0 2px;padding:10px 12px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:var(--rrg-bg);font:inherit;text-align:left;cursor:pointer;color:var(--rrg-black);}
+.site-admin-nav::after{content:'';flex:0 0 auto;width:7px;height:7px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);}
+.site-admin-nav:hover,.site-admin-nav[aria-expanded="true"]{border-color:var(--rrg-black);background:#fff;}
+.site-admin-nav:focus-visible{outline:2px solid var(--rrg-red);outline-offset:2px;}
+.site-admin-nav-label{font-size:14px;font-weight:900;flex:0 0 auto;}
+.site-admin-nav-current{flex:1 1 auto;min-width:0;text-align:right;font-size:12px;color:var(--rrg-grey-500);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.site-admin-segment{display:grid;grid-template-columns:1fr 1fr;margin:4px 0 0;border:1px solid var(--rrg-line-strong);border-radius:var(--radius);overflow:hidden;}
+.site-admin-segment label{position:relative;cursor:pointer;}
+.site-admin-segment input{position:absolute;opacity:0;pointer-events:none;}
+.site-admin-segment span{display:block;padding:7px 6px;text-align:center;font-size:13px;font-weight:700;color:var(--rrg-grey-600);}
+.site-admin-segment label + label span{border-left:1px solid var(--rrg-line-strong);}
+.site-admin-segment input:checked + span{background:var(--rrg-black);color:#fff;}
+.site-admin-segment input:focus-visible + span{outline:2px solid var(--rrg-red);outline-offset:-2px;}
+.site-admin-reset{margin-top:8px;}
+.site-admin-select > span{white-space:nowrap;}
+.site-admin-select select{min-width:0;max-width:62%;}
+
+/* Panels + flyout sit at z-index 88/89: above the header shell (85) so a tall panel is never
+   cut off under it, below the slide-outs (95). */
+/* "Pages & briefs" flyout — opens beside the panel (desktop) like a mega menu, every template
+   group + the developer briefs as columns. Phones: slides over the panel with a Back button. */
+.site-admin-flyout{position:fixed;left:328px;top:20px;z-index:89;width:min(680px, calc(100vw - 348px));max-height:calc(100vh - 24px);overflow-y:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-modal);padding:6px 20px 16px;}
+.site-admin-flyout[hidden]{display:none;}
+.site-admin-flyout-head{display:none;}
+.site-admin-flyout-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 20px;}
+.site-admin-flyout .site-admin-links a{padding:6px 8px;margin:0 -8px;font-size:13px;}
+@media (max-width:900px){
+  .site-admin-flyout{left:12px;right:12px;top:auto;bottom:140px;width:auto;max-height:calc(100vh - 160px);padding:0 16px 14px;}
+  .site-admin-flyout-head{display:flex;align-items:center;gap:10px;margin:0 -16px 4px;padding:10px 12px;background:var(--rrg-grey-700);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;position:sticky;top:0;}
+  .site-admin-flyout-back{background:none;border:1px solid rgba(255,255,255,.4);border-radius:var(--radius);color:#fff;font:inherit;font-family:'Lato',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:none;letter-spacing:0;padding:4px 10px;cursor:pointer;}
+  .site-admin-flyout-cols{grid-template-columns:1fr 1fr;}
+}

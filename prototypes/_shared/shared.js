@@ -3409,9 +3409,11 @@ function buildAdminPanel() {
   const STORE_KEY = 'rrgDemo:' + templateKey;
   const hint = (id, text) => `<p class="admin-hint" data-admin-hint="${id}" hidden>${text}</p>`;
   const toggle = (flag, label, checked) => `<label class="admin-toggle"><span>${label}</span><input type="checkbox" data-admin-flag="${flag}" ${checked ? 'checked' : ''}></label>`;
-  const radios = (name, opts, sel) => `<div class="admin-radio-row">${opts.map(([v, l]) => `<label><input type="radio" name="${name}" value="${v}" ${v === sel ? 'checked' : ''}> ${l}</label>`).join('')}</div>`;
-  // Each section is a closed accordion row (wireAccordion, admin-panel.js) — one open at a time.
-  const section = (title, body) => `<details class="rrg-acc admin-section"><summary><span class="rrg-acc-title">${title}</span></summary><div class="rrg-acc-body">${body}</div></details>`;
+  // One-row dropdown (2026-10-01 — was a stack of radio buttons, one per option).
+  const choice = (name, label, opts, sel) => `<label class="admin-select"><span>${label}</span><select name="${name}">${opts.map(([v, l]) => `<option value="${v}" ${v === sel ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`;
+  // Flat groups under a small heading (2026-10-01 — were closed accordion rows, which hid every
+  // control behind a click). The whole panel is visible at once.
+  const section = (title, body) => `<div class="admin-section"><div class="admin-section-title">${title}</div>${body}</div>`;
 
   let html = '';
   if (isPdp) {
@@ -3421,8 +3423,8 @@ function buildAdminPanel() {
     const stockOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['out_of_stock', 'Out of Stock'], ['special_order', 'Special Order'], ['discontinued', 'Discontinued']];
     if (hasSwatches) stockOpts.unshift(['per_colour', 'As per colour (real data)']);
     html += section('Stock',
-      '<div class="admin-toggle-label">Stock level</div>' + radios('stockStatus', stockOpts, hasSwatches ? 'per_colour' : 'in_stock') +
-      '<div class="admin-toggle-label">Stock at your store</div>' + radios('storeStock', [['here', 'At your store'], ['nearby', 'At a nearby store only'], ['warehouse', 'Online warehouse only']], 'here') +
+      choice('stockStatus', 'Stock level', stockOpts, hasSwatches ? 'per_colour' : 'in_stock') +
+      choice('storeStock', 'Stock at your store', [['here', 'At your store'], ['nearby', 'Nearby store only'], ['warehouse', 'Warehouse only']], 'here') +
       hint('storeStock', 'Needs Build Phase 2 and a nearest store — both in Site Admin.') +
       toggle('exdemo', 'B-Stock / Ex-Demo available', false));
     html += section('Delivery',
@@ -3430,21 +3432,20 @@ function buildAdminPanel() {
       toggle('collect', 'Click &amp; Collect available', initialCollect) +
       hint('delivery', 'Off while the product is Out of Stock or Discontinued.'));
     if (hasShowroom) html += section('In-store', toggle('showroom', 'On display in-store (Showroom Finder)', true));
-    html += section('Cart', '<div class="admin-toggle-label">Cart already contains</div>' +
-      radios('cartConflict', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
+    html += section('Cart', choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
   }
   if (isVlp) {
     // VLP (docs/vlp/vlp-spec.md Sections 2 + 7.1). Neither control is saved (data-admin-nosave):
     // the page vehicle comes from the URL, and the category list starts from that vehicle's own
     // data, so a saved choice from the other vehicle would be wrong here.
     const vs = window.VLP_STATE;
-    const nosave = html => html.replace(/<input /g, '<input data-admin-nosave ');
-    html += section('Page vehicle <span class="admin-note">(the landing URL — session vehicle is in Site Admin)</span>',
-      nosave(radios('vlpPageVehicle', [['hilux', 'Toyota Hilux N80'], ['ranger', 'Ford Ranger P703']], vs.pageKey)));
+    const nosave = html => html.replace(/<(input|select) /g, '<$1 data-admin-nosave ');
+    html += section('Page vehicle <span class="admin-note">(the URL — session vehicle is in Site Admin)</span>',
+      nosave(choice('vlpPageVehicle', 'Landing page for', [['hilux', 'Toyota Hilux N80'], ['ranger', 'Ford Ranger P703']], vs.pageKey)));
     const cats = (typeof VLP_CATEGORIES !== 'undefined' ? VLP_CATEGORIES : []).filter(c => c.vehicleSpecific);
-    html += section('Vehicle-specific categories with results',
+    html += section('Categories with results',
       nosave(cats.map(c => toggle('vlpCat:' + c.slug, c.label, vs.vsAvailable.has(c.slug))).join('')) +
-      '<p class="admin-note">Untick one to remove its tile. The Store Finder widens to fill the gap; a section with nothing left hides.</p>');
+      '<p class="admin-note">Untick one to remove its tile; the Store Finder widens to fill the gap.</p>');
   }
   if (hasFitGallery) {
     const count = document.getElementById('fitGallerySection').dataset.count || 0;
@@ -3454,12 +3455,12 @@ function buildAdminPanel() {
       (hasVehicleFitNotes ? toggle('vehicleFitNotes', 'Important vehicle fit notes', false) : ''));
   }
   if (hasVariantPicker) {
-    html += section('Get It Fitted <span class="admin-note">(proposal — pending store-ops sign-off)</span>',
-      radios('fittedMode', [['off', 'Off'], ['card', 'As a third variant card'], ['checkbox', 'As a checkbox above Add to Cart']], 'off'));
+    html += section('Get It Fitted <span class="admin-note">(proposal)</span>',
+      choice('fittedMode', 'Show it', [['off', 'Off'], ['card', 'As a 3rd variant card'], ['checkbox', 'As a checkbox']], 'off'));
   }
   if (isPlpPage && !isSearchPage) {
     html += section('Hero image',
-      radios('plpHeroImage', [['vehicle', 'Vehicle photo'], ['category', 'Category image'], ['none', 'No image']], 'vehicle') +
+      choice('plpHeroImage', 'Show', [['vehicle', 'Vehicle photo'], ['category', 'Category image'], ['none', 'No image']], 'vehicle') +
       hint('heroImage', 'Needs a vehicle — set one in Site Admin.'));
   }
   if (isPlpPage) {
@@ -3469,7 +3470,7 @@ function buildAdminPanel() {
       hint('phase2', 'Switch Site Admin to Build Phase 2 to see these.'));
   }
   if (isSearchPage) {
-    html += section('Search shortcuts <span class="admin-note">(or search from the header)</span>', `<div class="admin-radio-row admin-links">
+    html += section('Search shortcuts', `<div class="admin-links">
       <a href="${headerSearchResultsUrl('roof rack')}">"roof rack" — two categories, vehicle-aware</a>
       <a href="${headerSearchResultsUrl('ranger')}">"ranger" — another vehicle's products</a>
       <a href="${headerSearchResultsUrl('bike racks')}">"bike racks" — nothing vehicle-specific</a>
@@ -3492,9 +3493,10 @@ function buildAdminPanel() {
     </div>
     <div class="admin-panel-body">${html}</div>
   `;
+  // Busy pages (most PDPs) lay the groups out in two columns so the panel never needs scrolling.
+  if (panel.querySelectorAll('.admin-section').length > 3) panel.classList.add('is-wide');
   document.body.appendChild(panel);
   document.body.appendChild(fab);
-  wireAccordion(panel);
 
   // Click-outside-to-close (2026-09-11) — clicks inside the panel never bubble out.
   fab.addEventListener('click', (e) => { e.stopPropagation(); panel.classList.add('open'); });
@@ -3511,9 +3513,9 @@ function buildAdminPanel() {
   };
   const syncDependencies = () => {
     const phase2 = typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2;
-    setDisabled('input[name="storeStock"]', !(phase2 && rrgSessionGet('storeSet')), 'storeStock');
+    setDisabled('select[name="storeStock"]', !(phase2 && rrgSessionGet('storeSet')), 'storeStock');
     setDisabled('[data-admin-flag="plpCompare"], [data-admin-flag="plpRibbons"]', !phase2, 'phase2');
-    setDisabled('input[name="plpHeroImage"]', !rrgSessionGet('vehicleSet'), 'heroImage');
+    setDisabled('select[name="plpHeroImage"]', !rrgSessionGet('vehicleSet'), 'heroImage');
     const stock = STOCK_STATUS[adminState.stockStatus];
     const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);
     panel.querySelectorAll('[data-admin-flag="shipping"], [data-admin-flag="collect"]').forEach(i => {
@@ -3527,8 +3529,8 @@ function buildAdminPanel() {
   // same way Site Admin's global state already persists. Site Admin → Reset clears them.
   const save = () => {
     const state = {};
-    panel.querySelectorAll('input:not([data-admin-nosave])').forEach(i => {
-      if (i.type === 'radio') { if (i.checked) state['r:' + i.name] = i.value; }
+    panel.querySelectorAll('input:not([data-admin-nosave]), select:not([data-admin-nosave])').forEach(i => {
+      if (i.tagName === 'SELECT') state['r:' + i.name] = i.value;
       else if (i.type === 'checkbox') state['c:' + i.dataset.adminFlag] = i.disabled && i.dataset.prev !== undefined ? i.dataset.prev === 'true' : i.checked;
       else state['n:' + i.dataset.adminInput] = i.value;
     });
@@ -3559,12 +3561,10 @@ function buildAdminPanel() {
       }
     });
   });
-  panel.querySelectorAll('input[name="vlpPageVehicle"]').forEach(input => {
-    input.addEventListener('change', () => { if (input.checked && window.vlpSetPageVehicle) window.vlpSetPageVehicle(input.value); });
-  });
-  panel.querySelectorAll('input[name="plpHeroImage"]').forEach(input => {
-    input.addEventListener('change', () => { if (input.checked && typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(input.value); });
-  });
+  // Dropdown choices (were radio groups) — each handler gets the chosen value.
+  const onChoice = (name, fn) => { const sel = panel.querySelector(`select[name="${name}"]`); if (sel) sel.addEventListener('change', () => fn(sel.value)); };
+  onChoice('vlpPageVehicle', v => { if (window.vlpSetPageVehicle) window.vlpSetPageVehicle(v); });
+  onChoice('plpHeroImage', v => { if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(v); });
   panel.querySelectorAll('[data-admin-input]').forEach(input => {
     input.addEventListener('input', () => {
       if (input.dataset.adminInput === 'fitGalleryCount') {
@@ -3574,37 +3574,26 @@ function buildAdminPanel() {
       }
     });
   });
-  panel.querySelectorAll('input[name="stockStatus"]').forEach(input => {
-    input.addEventListener('change', () => {
-      if (!input.checked) return;
-      if (input.value === 'per_colour') {
-        // Sibling-Colour (P8): hand the stock line back to each colour's own real stock data.
-        adminState.stockOverride = false;
-        if (typeof renderAll === 'function') renderAll();
-        rrgRefreshStockSurfaces();
-        return;
-      }
-      adminState.stockOverride = true;
-      applyStockStatus(input.value);
-    });
-  });
-  panel.querySelectorAll('input[name="storeStock"]').forEach(input => {
-    input.addEventListener('change', () => {
-      if (!input.checked) return;
-      adminState.storeStock = input.value;
+  onChoice('stockStatus', value => {
+    if (value === 'per_colour') {
+      // Sibling-Colour (P8): hand the stock line back to each colour's own real stock data.
+      adminState.stockOverride = false;
+      if (typeof renderAll === 'function') renderAll();
       rrgRefreshStockSurfaces();
-    });
+      return;
+    }
+    adminState.stockOverride = true;
+    applyStockStatus(value);
   });
-  panel.querySelectorAll('input[name="cartConflict"]').forEach(input => {
-    input.addEventListener('change', () => { if (input.checked) applyCartConflict(input.value); });
+  onChoice('storeStock', value => {
+    adminState.storeStock = value;
+    rrgRefreshStockSurfaces();
   });
-  panel.querySelectorAll('input[name="fittedMode"]').forEach(input => {
-    input.addEventListener('change', () => {
-      if (!input.checked) return;
-      if (input.value === 'off') { setFittedOptionFlag(false); return; }
-      setFittedOptionMode(input.value);
-      setFittedOptionFlag(true);
-    });
+  onChoice('cartConflict', value => applyCartConflict(value));
+  onChoice('fittedMode', value => {
+    if (value === 'off') { setFittedOptionFlag(false); return; }
+    setFittedOptionMode(value);
+    setFittedOptionFlag(true);
   });
   // Dependencies + save after every control change (the listeners above run first).
   panel.addEventListener('change', () => { syncDependencies(); save(); });
@@ -3621,10 +3610,10 @@ function buildAdminPanel() {
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) {}
   if (saved) {
-    panel.querySelectorAll('input:not([data-admin-nosave])').forEach(i => {
-      if (i.type === 'radio') {
+    panel.querySelectorAll('input:not([data-admin-nosave]), select:not([data-admin-nosave])').forEach(i => {
+      if (i.tagName === 'SELECT') {
         const v = saved['r:' + i.name];
-        if (v === i.value && !i.checked) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); }
+        if (v !== undefined && v !== i.value && [...i.options].some(o => o.value === v)) { i.value = v; i.dispatchEvent(new Event('change', { bubbles: true })); }
       } else if (i.type === 'checkbox') {
         const v = saved['c:' + i.dataset.adminFlag];
         if (typeof v === 'boolean' && v !== i.checked) { i.checked = v; i.dispatchEvent(new Event('change', { bubbles: true })); }

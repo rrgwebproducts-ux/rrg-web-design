@@ -1080,14 +1080,13 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    for fitment. Replaces the old fixed top "REVIEWER DEMO" bar. */
 .admin-fab{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:8px;background:var(--rrg-black);color:#fff;border:none;border-radius:999px;padding:13px 18px 13px 14px;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 8px 20px rgba(0,0,0,.25);cursor:pointer;}
 .admin-fab svg{width:18px;height:18px;flex:0 0 auto;}
-.admin-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:300px;max-width:calc(100vw - 40px);max-height:calc(100vh - 40px);background:#fff;border-radius:14px;box-shadow:var(--shadow-modal);display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);opacity:0;pointer-events:none;transition:transform var(--t-fast) ease, opacity var(--t-fast) ease;}
+.admin-panel{position:fixed;right:20px;bottom:20px;z-index:88;width:300px;max-width:calc(100vw - 40px);max-height:calc(100vh - 40px);background:#fff;border-radius:14px;box-shadow:var(--shadow-modal);display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.98);opacity:0;pointer-events:none;transition:transform var(--t-fast) ease, opacity var(--t-fast) ease;}
 .admin-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
 .admin-panel-head{display:flex;align-items:center;justify-content:space-between;background:var(--rrg-black);color:#fff;padding:14px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .admin-panel-head button{background:none;border:none;color:#fff;font-size:18px;line-height:1;padding:2px;opacity:.7;}
 .admin-panel-head button:hover{opacity:1;}
 .admin-panel-body{padding:6px 16px 10px;overflow-y:auto;}
 
-.admin-toggle-label{padding:9px 0 0;font-size:13px;color:var(--rrg-text);}
 .admin-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:13px;color:var(--rrg-text);border-bottom:1px solid var(--rrg-bg);cursor:pointer;}
 .admin-toggle:last-child{border-bottom:none;}
 .admin-toggle input{appearance:none;-webkit-appearance:none;width:36px;height:21px;border-radius:999px;background:var(--rrg-line);position:relative;flex:0 0 auto;cursor:pointer;transition:background var(--t-fast) ease;}
@@ -1232,10 +1231,19 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .fitted-upsell-checkbox input{margin-top:2px;flex:0 0 auto;}
 .fitted-upsell-checkbox .fitted-sub{display:block;color:var(--rrg-gold-text);font-size:12px;margin-top:2px;}
 
-.admin-section summary .admin-note{display:block;font-size:12px;text-transform:none;font-weight:400;color:var(--rrg-grey-400);letter-spacing:0;}
 .admin-section p.admin-note{margin:6px 0 0;font-size:12px;line-height:1.4;color:var(--rrg-grey-600);}
-.admin-radio-row{display:flex;flex-direction:column;gap:6px;margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--rrg-line-soft);}
-.admin-radio-row label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--rrg-grey-700);cursor:pointer;}
+/* Flat groups + one-row dropdowns (2026-10-01) — replaced the accordion rows and radio stacks. */
+.admin-section{padding:2px 0 8px;break-inside:avoid;}
+.admin-panel.is-wide{width:600px;}
+.admin-panel.is-wide .admin-panel-body{column-count:2;column-gap:28px;column-rule:1px solid var(--rrg-line);}
+@media (max-width:900px){ .admin-panel.is-wide .admin-panel-body{column-count:1;} }
+.admin-section-title{padding:8px 0 2px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--rrg-grey-500);}
+.admin-section-title .admin-note{font-weight:400;text-transform:none;letter-spacing:0;color:var(--rrg-grey-400);}
+.admin-section .admin-toggle{padding:6px 0;border-bottom:none;}
+.admin-select{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 0;font-size:13px;color:var(--rrg-text);}
+.admin-select span{flex:0 0 auto;}
+.admin-select select{min-width:0;max-width:62%;font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;}
+.admin-links{display:flex;flex-direction:column;gap:6px;padding:4px 0;}
 
 /* Ex-Demo slide-out — right-edge drawer, backlog item 4 (2026-09-11: replaces the previous
    centered modal to match the Store Slide-out pattern below). Structurally identical to
