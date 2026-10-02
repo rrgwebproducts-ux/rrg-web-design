@@ -177,7 +177,7 @@ function render() {
   $('confirmSummary').innerHTML = `
     <ul class="cart-lines">${order.lines.map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>
     <dl class="cart-totals">
-      <div><dt>Subtotal</dt><dd>${rrgMoney(t.subtotal)}</dd></div>
+      <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
       ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You saved</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
       <div><dt>${collect ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery ? rrgMoney(t.delivery) : 'Free'}</dd></div>
       <div class="cart-totals-total"><dt>Total paid</dt><dd>${rrgMoney(t.total)}</dd></div>

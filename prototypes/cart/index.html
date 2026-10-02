@@ -194,7 +194,7 @@ function renderCart() {
   const known = method === 'collect' || postcode;
   const t = rrgCartTotals(cart, known ? method : null);
   document.getElementById('cartTotals').innerHTML = `
-    <div><dt>Subtotal</dt><dd>${rrgMoney(t.subtotal)}</dd></div>
+    <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
     ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You're saving</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
     <div><dt>${method === 'collect' ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery === null ? 'Calculated at checkout' : t.delivery === 0 ? 'Free' : rrgMoney(t.delivery)}</dd></div>
     <div class="cart-totals-total"><dt>Total</dt><dd>${rrgMoney(t.total)}</dd></div>

@@ -112,6 +112,10 @@ function rrgCartPresetName(cart = rrgCartGet()) {
 }
 
 // Totals. method: 'collect' (free) | a delivery key | null (not chosen yet). Prices include tax.
+// fullSubtotal is before savings (every line at its was-price): the cart, checkout and order
+// confirmation summaries show it as Subtotal, so Subtotal − You're saving + delivery = Total adds up
+// on the page (2026-10-02, Brenton — it showed the already-discounted subtotal, then subtracted the
+// saving again, so the Total looked wrong). `subtotal` stays the amount payable (mini-cart, BNPL).
 function rrgCartTotals(cart = rrgCartGet(), method = null) {
   const rc = rrgRegionCheckout();
   const subtotal = cart.lines.reduce((n, l) => n + l.price * l.qty, 0);
@@ -119,7 +123,7 @@ function rrgCartTotals(cart = rrgCartGet(), method = null) {
   const opt = rc.delivery.find(d => d.key === method);
   const delivery = method === 'collect' ? 0 : opt ? opt.price : null;
   const total = subtotal + (delivery || 0);
-  return { count: rrgCartCount(cart), subtotal, savings: Math.max(0, was - subtotal), delivery, total, tax: total * rc.taxFraction, taxName: rc.taxName };
+  return { count: rrgCartCount(cart), subtotal, fullSubtotal: Math.max(was, subtotal), savings: Math.max(0, was - subtotal), delivery, total, tax: total * rc.taxFraction, taxName: rc.taxName };
 }
 const rrgMoney = n => fmtAud(Math.round(n * 100) / 100);
 const rrgPath = rel => rel === '#' ? '#' : RRG_PROTO + rel;
