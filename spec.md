@@ -267,9 +267,9 @@ Components to build (all templates draw from this pool, not all use all of them)
 **Last updated: 2026-09-10.** Framework decision made: plain HTML/CSS/JS (not a component framework) — fastest to iterate on visually, no build step.
 
 ### Version control
-This project is a git repo pushed to **https://github.com/TonnieGit/RRG-Design-Staging.git** (`main` branch). Commits to this repo are authored as `brenton.cooley@gmail.com` (set as this repo's local `user.email`/`user.name`, not the machine's global git identity — don't change the global config to match).
+This project is a git repo pushed to **https://github.com/rrgwebproducts-ux/rrg-web-design.git** (`main` branch; moved from the personal TonnieGit repo 2026-09-14). Commits are authored as `rrgwebproducts@gmail.com` (this repo's local `user.email`, not the machine's global git identity — don't change the global config to match).
 
-**Workflow: push once a round of changes has been reviewed and approved, not after every individual edit.** Batch a session's changes into one commit (or a few logically-grouped commits) covering everything just signed off, with a message describing what changed and why, then push to `origin main`. Don't push mid-task or speculatively — only once the user is happy with the current state.
+**Workflow (updated 2026-10-02, Brenton: "always push so I can review"):** push every finished, verified change to `origin main` straight away. Brenton reviews on the Vercel deploy, so unpushed work can't be reviewed. Commit messages describe what changed and why. Don't push half-finished or broken mid-task states.
 
 ### Folder structure
 ```
