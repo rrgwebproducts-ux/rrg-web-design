@@ -15,6 +15,9 @@
   --rrg-bg:#F5F5F5;
   --rrg-fits:#1E7A34;
   --rrg-fits-bg:#EAF7EE;
+  /* "You're saving" in the mini-cart, cart, checkout and order confirmation (2026-10-02, Brenton):
+     green, not red — red read as a mistake or a charge. The UK keeps its brand blue (below). */
+  --rrg-saving:var(--rrg-fits);
   --rrg-unknown:#B36B00;
   --rrg-unknown-bg:#FFF4E5;
   --rrg-nofit:#A6192E;
@@ -524,7 +527,7 @@ a.rrg-logo{display:block;}
    scraped brand values: navy #2E41AE / #FFFF19 from their logo SVG itself, green #26B226
    from their live "Click Here To Order" button (confirmed with Brenton as the preferred
    option over keeping RRG's gold). */
-body.region-uk{--rrg-red:#2E41AE;--rrg-red-dark:#1F2E82;}
+body.region-uk{--rrg-red:#2E41AE;--rrg-red-dark:#1F2E82;--rrg-saving:#2E41AE;}
 body.region-uk .btn-cta{background:var(--rrg-uk-green);color:#fff;}
 body.region-uk .btn-cta:hover{background:var(--rrg-uk-green-hover);}
 /* The Roof Box Company's real logo is a tall vertical rectangle (117.89x143.63, ~0.82:1),
@@ -2389,7 +2392,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .mini-cart-foot:empty{display:none;}
 .mini-cart-subtotal{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;}
 .mini-cart-subtotal strong{font-size:22px;font-family:'Barlow Condensed',Arial,sans-serif;}
-.mini-cart-savings{margin:-8px 0 0;font-size:13px;font-weight:700;color:var(--rrg-red);}
+.mini-cart-savings{margin:-8px 0 0;font-size:13px;font-weight:700;color:var(--rrg-saving);}
 .mini-cart-collect{font-size:13px;color:var(--rrg-grey-700);}
 .mini-cart-collect strong{color:var(--rrg-fits);}
 .mini-cart-cross{margin-top:12px;padding-top:14px;border-top:1px solid var(--rrg-line);}
@@ -2429,7 +2432,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .cart-totals div{display:flex;justify-content:space-between;gap:12px;}
 .cart-totals dt{color:var(--rrg-grey-700);}
 .cart-totals dd{margin:0;font-weight:700;}
-.cart-totals-save dd,.cart-totals-save dt{color:var(--rrg-red);}
+.cart-totals-save dd,.cart-totals-save dt{color:var(--rrg-saving);}
 .cart-totals-total{border-top:2px solid var(--rrg-text);padding-top:10px;margin-top:4px;}
 .cart-totals-total dt{font-weight:900;color:var(--rrg-text);}
 .cart-totals-total dd{font-family:'Barlow Condensed',Arial,sans-serif;font-size:30px;line-height:1;}
