@@ -62,8 +62,8 @@ Breadcrumb structure is driven by **the page type's own taxonomy**, not by sessi
 ### 4.1 Vehicle-Set state
 - Vehicle photo + brand badge, "Change Vehicle" gold CTA — same shared component/assets as the VCLP hero.
 - H1/intro copy is dynamically tagged based on the category-level fitment-locked flag (Section 2):
-  - **VRS/fitment-locked:** full vehicle spec in the H1 — "Roof Racks for Toyota Hilux 2015-2026 4dr Ute with Bare Roof."
-  - **Standard:** short framing — "Bike Racks for your Toyota Hilux."
+  - **VRS/fitment-locked:** full vehicle spec in the H1 — "Shop Roof Racks for your Toyota Hilux 2015-2026 4dr Ute with Bare Roof."
+  - **Standard:** short framing — "Shop Bike Racks for your Toyota Hilux." With no vehicle: "Shop Bike Racks." (Every H1 starts "Shop", 2026-10-02, Brenton.)
 - Secondary CTA row (Buyers Guide / Fitting / FAQs / Videos) — category-general, unchanged between states.
 
 ### 4.2 Simple state

@@ -337,7 +337,7 @@ function vlpRenderHeader() {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: trail.map((seg, i) => ({ '@type': 'ListItem', position: i + 1, name: seg.label, ...(seg.href ? { item: seg.href } : {}) }))
   });
-  document.getElementById('vlpH1').textContent = `Roof Racks & Accessories for ${vlpSpec(v)}`;
+  document.getElementById('vlpH1').textContent = `Shop Roof Racks & Accessories for your ${vlpSpec(v)}`;
   document.getElementById('vlpIntro').textContent = v.intro;
   const img = document.getElementById('vlpHeroImg');
   img.src = v.image; img.alt = vlpName(v);

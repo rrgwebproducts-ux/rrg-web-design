@@ -232,10 +232,10 @@ function plpRenderBreadcrumb() {
   }).join('');
 }
 
-// Heading/description swap across both hero states — cfg.vehicleHeadingSuffix is appended to the
-// Vehicle-Set state's H1 only: "for your {vehicle}" on PLP/Camping ({vehicle} = the session
-// vehicle's name), or the VPLP's own fixed vehicle spec. The Simple state's H1 is the bare
-// category heading.
+// Heading/description swap across both hero states. Both H1s start "Shop" (2026-10-02, Brenton):
+// "Shop {category} for your {vehicle}" with a vehicle, "Shop {category}" without.
+// cfg.vehicleHeadingSuffix is appended to the Vehicle-Set state's H1 only: "for your {vehicle}" on
+// PLP/Camping ({vehicle} = the session vehicle's name), or the VPLP's own fixed vehicle spec.
 function plpRenderCategoryContent() {
   const cfg = window.PLP_CONFIG;
   if (!cfg.categoryRoot) return;
@@ -247,8 +247,8 @@ function plpRenderCategoryContent() {
   const suffix = cfg.vehicleHeadingSuffix ? ` ${cfg.vehicleHeadingSuffix.replace('{vehicle}', sessionVehicle ? sessionVehicle.label : 'vehicle')}` : '';
   const setH1 = document.querySelector('#plpHeroVehicleSet h1');
   const simpleH1 = document.querySelector('#plpHeroSimple h1');
-  if (setH1) setH1.textContent = heading + suffix;
-  if (simpleH1) simpleH1.textContent = heading;
+  if (setH1) setH1.textContent = `Shop ${heading}${suffix}`;
+  if (simpleH1) simpleH1.textContent = `Shop ${heading}`;
   document.querySelectorAll('#plpHeroVehicleSet > div > p, #plpHeroSimple > div > p').forEach(p => { p.textContent = description; });
   plpRenderBreadcrumb();
   plpApplyCategoryImage();

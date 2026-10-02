@@ -22,7 +22,7 @@
 
 Same type scale and colour tokens as `DEVELOPER-BRIEF.md` Section 2 (Barlow Condensed for headings/buttons, Lato for body text, the full `--rrg-*` custom-property table) — not repeated here. No page-specific typography deviations; every heading/label on this page uses the shared scale as-is:
 
-- **Page H1** ("Toyota Hilux Roof Racks") uses the one site-wide H1 rule — 32px / 1.1, 28px on phones (`.plp-hero h1`, shared with the PDP and PLP-family H1s).
+- **Page H1** ("Shop Toyota Hilux Roof Racks" — "Shop" added 2026-10-02 to match every category hero; the `<title>` keeps "Toyota Hilux Roof Racks" for search) uses the one site-wide H1 rule — 32px / 1.1, 28px on phones (`.plp-hero h1`, shared with the PDP and PLP-family H1s).
 - **Section H2s** (Fit Finder, Fitment Gallery, the education content's H2, Trust Banner, FAQ, Shop The Best Brands) all use the shared 40px Barlow Condensed italic section-heading rule, stepping down to 32px on phones. "Shop The Best Brands" uses `.related-heading` and is **black**, like every other section heading (it was red before the consistency pass).
 - **Buttons** use the shared button system (`DEVELOPER-BRIEF.md`): `.btn-cta` (gold, UK green in the UK region) for the Fit Finder's "View Results", `.btn-outline-red` compact for Change Vehicle, `.btn-primary`/`.btn-outline` for the Trust Banner. No inline button styles remain.
 - **Colours** come from the shared `shared.css :root` tokens (greys, charcoal, CTA gold, overlay) rather than hardcoded hex values (only white/near-white text on the dark Trust Banner is still literal).
