@@ -63,7 +63,7 @@ Governing rule (2026-09-10): one unmistakable primary action above the fold. On 
 | # | Section | Build | Notes |
 |---|---|---|---|
 | 5.1 | Header / utility bar | Global shell as-is | No breadcrumbs (it's the root). |
-| 5.2 | **Hero** | **New `.home-hero`** | Full-bleed (decision 1). Details below. |
+| 5.2 | **Hero** | **New `.home-hero`** | Framed to the content width, rounded (decision 1, revised 2026-10-02). Details below. |
 | 5.3 | Trust row (**now after 5.5**) | `.trust-row` (the PDP's) | Moved below Shop by Category on 2026-09-30 so the categories reach the fold (spec.md §16 item 22). A compact proof line sits in the hero finder instead: "Since 1989 · 35+ fitting centres · 200,000+ racks fitted". | Trusted Since 1989 · Over 200,000 Racks Fitted · Price Guarantee · 90 Day Exchange. Wording from the live site's header USPs + meta description; each links to the live page it names. |
 | 5.4 | ~~Your vehicle bar~~ | — | **Merged into the hero Fit Finder** on 2026-09-30 (§16 items 7/26): with a vehicle set, the hero panel reads "Shopping for your Toyota Hilux?" with Shop for my Hilux and Change vehicle. See `PAGE-GLOSSARY.md` → Vehicle finder. |
 | 5.5 | **Shop by Category** | `.cat-tile` compact, new 5-column `.cat-tile-grid--home` | 10 tiles in 2 rows: Roof Racks, Bike Racks, Roof Boxes, Baskets, Awnings, Roof Top Tents, Kayak & SUP, Ski & Snowboard, Lighting, Recovery Gear. The first 9 are the live page's own tiles (labels as live); Recovery Gear replaces live's Overstock tile, which moves to 5.6. Images are the Figma originals already in `_shared/category-tiles/`. Mobile: 3-up then 2-up. |
@@ -116,7 +116,7 @@ This is the site's most-linked page, so it's **indexed**.
 
 | # | Question | Answer |
 |---|---|---|
-| 1 | Full-width hero? (Full-bleed heroes were ruled out for PDPs because of product photography) | **Yes for the home page.** Hero artwork is made by marketing, not catalogue photography. |
+| 1 | Full-width hero? (Full-bleed heroes were ruled out for PDPs because of product photography) | ~~**Yes for the home page.** Hero artwork is made by marketing, not catalogue photography.~~ **Revised 2026-10-02 (Brenton): no** — framed in like the rest of the site (`.wrap` width less gutters, rounded corners); the Fit Finder sits 64px in to clear the slider arrows. |
 | 2 | Fit Finder in the hero, or rely on the header drawer? | **In the hero, like live.** |
 | 3 | Key Finder + "Let Us Help" | **Merge** into the trust band (5.8). |
 | 4 | Existing Figma / meeting notes to follow? | **None.** Built from the live page + existing components. |

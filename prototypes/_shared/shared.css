@@ -1954,23 +1954,25 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
    hero artwork already says visually (spec Section 7). */
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 
-/* Hero (spec 5.2) — full-bleed slider (Brenton, 2026-09-29: full width is fine here, the art is
-   marketing's, not catalogue photography). Each slide is the live site's two layers: a
-   background that covers the width, and transparent artwork anchored right, kept clear of the
-   Fit Finder panel, which sits over the left inside .wrap and stays put while slides change. */
-.home-hero{position:relative;background:var(--rrg-charcoal);}
+/* Hero (spec 5.2) — framed to the content width like the rest of the site (Brenton, 2026-10-02;
+   was full-bleed): .wrap's max width less its 24px gutters, rounded like the Current Offers
+   tiles below it. Each slide is the live site's two layers: a background that covers the frame,
+   and transparent artwork anchored right, kept clear of the Fit Finder panel, which sits over
+   the left inside .wrap and stays put while slides change. */
+.home-hero{position:relative;background:var(--rrg-charcoal);width:calc(100% - 48px);max-width:calc(var(--maxw) - 48px);margin:24px auto 0;border-radius:var(--radius);overflow:hidden;}
 .home-hero-stage{position:relative;height:460px;overflow:hidden;}
 .home-hero-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s linear .6s;}
 .home-hero-slide.is-active{opacity:1;visibility:visible;transition:opacity .6s ease,visibility 0s;}
 .home-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-/* Art starts where the Fit Finder column ends (the .wrap gutter + 420px panel + 48px), so the
-   two never overlap at any desktop width. */
-.home-hero-art{position:absolute;top:0;bottom:0;right:0;left:calc(max(0px,(100% - var(--maxw)) / 2) + 24px + 420px + 48px);display:block;}
+/* Art starts where the Fit Finder column ends (64px inset + 504px panel + 24px), so the two
+   never overlap at any desktop width. */
+.home-hero-art{position:absolute;top:0;bottom:0;right:0;left:calc(64px + 504px + 24px);display:block;}
 .home-hero-art img{width:100%;height:100%;object-fit:contain;object-position:right center;}
 /* Slide link — deliberately the quiet white-outline button: the Fit Finder's gold View Results
    is the one primary action above the fold (spec Section 4). */
-.home-hero-link{position:absolute;right:calc(max(0px,(100% - var(--maxw)) / 2) + 24px);bottom:44px;z-index:1;}
-.home-hero-finder-wrap{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;z-index:2;}
+.home-hero-link{position:absolute;right:24px;bottom:44px;z-index:1;}
+/* Inset 64px so the Fit Finder clears the ‹ arrow (12px + 40px) inside the framed hero. */
+.home-hero-finder-wrap{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;z-index:2;padding:0 64px;}
 .home-hero-finder{width:504px;margin:0;pointer-events:auto;}
 .home-hero-finder .ff-head{margin-bottom:16px;}
 .home-hero-finder .ff-head p{flex-basis:100%;}
