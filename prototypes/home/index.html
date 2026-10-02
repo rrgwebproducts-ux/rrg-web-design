@@ -87,13 +87,14 @@
   <!-- Section 5.6 — Current Offers: the three live slides not used in the hero, directly under
        it with no heading; about 20% shorter since 2026-09-30 so Shop by Category makes the fold
        (spec.md §16 item 22). A swipeable row at ≤900px, no longer auto-advancing (Baymard: never
-       auto-rotate on mobile). -->
-  <div class="home-offer-grid" role="region" aria-label="Current offers" data-offer-carousel>
+       auto-rotate on mobile). Hidden for now (Brenton, 2026-10-02): remove `hidden` from the grid
+       and dots to bring them back. -->
+  <div class="home-offer-grid" role="region" aria-label="Current offers" data-offer-carousel hidden>
     <a class="home-offer-tile" href="#" aria-label="Overstock Clearance — up to 60% off"><img src="../_shared/home-hero/overstock-clearance-bg.webp" alt=""><img src="../_shared/home-hero/overstock-clearance-art.webp" alt=""></a>
     <a class="home-offer-tile" href="#" aria-label="Up to 35% off EGR roller shutters"><img src="../_shared/home-hero/egr-bg.webp" alt=""><img src="../_shared/home-hero/egr-art.webp" alt=""></a>
     <a class="home-offer-tile" href="#" aria-label="Up to 50% off Dropracks"><img src="../_shared/home-hero/dropracks-bg.webp" alt=""><img src="../_shared/home-hero/dropracks-art.webp" alt=""></a>
   </div>
-  <div class="home-offer-dots"></div>
+  <div class="home-offer-dots" hidden></div>
 
 
   <!-- Section 5.5 — the live page's nine category tiles plus Recovery Gear (live's Overstock tile
