@@ -446,7 +446,11 @@ a.rrg-logo{display:block;}
      and was also a real overflow bug fix: that label text couldn't fit both items on one
      390px-wide row with flex-wrap:nowrap above (needed to keep them fixed at opposite
      ends rather than wrapping to a second line under the label). */
-  .u-item-label{display:none;}
+  .rrg-utility-bar .u-item-label{display:none;}
+  /* Vehicle names vary in length — cap it to the bar's right-hand side so a long one
+     ellipsises instead of running under the centred logo (the UK logo rises into this bar). */
+  .rrg-utility-left .u-item:nth-child(2){max-width:45%;}
+  .rrg-utility-left .u-item:nth-child(2) a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 }
 .rrg-crumbs{font-size:12px;color:var(--rrg-grey-500);padding:14px 0;}
 .rrg-crumbs a{color:var(--rrg-grey-500);text-decoration:none;}

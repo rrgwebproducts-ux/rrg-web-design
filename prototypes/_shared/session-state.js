@@ -54,7 +54,9 @@ function rrgApplySessionState() {
   });
   const vehicle = rrgVehicle();
   document.querySelectorAll('[data-session="vehicleSet"]').forEach(el => {
-    el.textContent = vehicle ? `Your Vehicle: ${vehicle.label}` : RRG_SESSION_FIELDS.vehicleSet.off;
+    // "Your Vehicle:" sits in .u-item-label so the mobile utility bar can drop it and show just
+    // the vehicle name, like the store item (shared.css) — the full text ran behind the UK logo.
+    el.innerHTML = vehicle ? `<span class="u-item-label">Your Vehicle:</span> ${vehicle.label}` : RRG_SESSION_FIELDS.vehicleSet.off;
   });
   document.dispatchEvent(new CustomEvent('rrg-session-change'));
 }
