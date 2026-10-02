@@ -70,6 +70,7 @@ function rrgWidgetMainHeaderHTML() {
       <a href="#">Fit My Vehicle</a>
       <a href="#">Clearance</a>
       <a href="../installation/index.html">Fitting</a>
+      ${typeof rrgCampaignNavLinkHTML === 'function' ? rrgCampaignNavLinkHTML() : ''}
     </nav>
     <div class="rrg-search">
       <input type="text" placeholder="Search Roof Racks or Accessories">
@@ -126,11 +127,13 @@ function rrgWidgetMobileTakeoverHTML() {
 </div>`;
 }
 
-// The whole header: .rrg-header-shell (utility bar + main header; the desktop sticky header,
+// The whole header: the sale campaign strip when a sale is on (campaign.js — scrolls away, never
+// sticky), .rrg-header-shell (utility bar + main header; the desktop sticky header,
 // initStickyHeader in shared.js, pins this), then the sticky mobile header and the takeover —
-// three siblings at body level, as the pages always had them.
+// siblings at body level, as the pages always had them.
 function rrgWidgetHeaderHTML() {
-  return `<div class="rrg-header-shell">
+  return `${typeof rrgCampaignStripHTML === 'function' ? rrgCampaignStripHTML() : ''}
+<div class="rrg-header-shell">
 ${rrgWidgetUtilityBarHTML()}
 ${rrgWidgetMainHeaderHTML()}
 </div>

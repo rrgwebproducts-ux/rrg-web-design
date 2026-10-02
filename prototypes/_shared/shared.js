@@ -2255,6 +2255,8 @@ function applyRegionBrand(region) {
     img.src = footerLogo.src;
     img.alt = footerLogo.alt;
   });
+  // The sale takeover is AU/NZ only (campaign.js) — re-check it whenever the region changes.
+  if (typeof rrgApplyCampaign === 'function') rrgApplyCampaign();
 }
 
 function initRegionSwitcher() {

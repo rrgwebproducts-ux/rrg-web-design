@@ -242,7 +242,7 @@ function rrgRenderMiniCart() {
     : '<span class="mini-cart-collect">Delivery calculated at checkout</span>';
   document.getElementById('miniCartFoot').innerHTML = `
     <div class="mini-cart-subtotal"><span>Subtotal (${t.count} item${t.count === 1 ? '' : 's'})</span><strong>${rrgMoney(t.subtotal)}</strong></div>
-    ${t.savings > 0 ? `<p class="mini-cart-savings">You're saving ${rrgMoney(t.savings)}</p>` : ''}
+    ${t.savings > 0 ? `<p class="mini-cart-savings">${typeof rrgSavingsLabel === 'function' ? rrgSavingsLabel() : "You're saving"} ${rrgMoney(t.savings)}</p>` : ''}
     ${fulfil}
     <a class="btn btn-cta btn-block" href="${RRG_PROTO}checkout/index.html">Checkout</a>
     <a class="btn btn-outline btn-block" href="${RRG_PROTO}cart/index.html">View cart</a>

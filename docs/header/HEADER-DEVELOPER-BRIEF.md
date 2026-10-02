@@ -172,18 +172,18 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 ---
 
-### 4.5 Clearance Sale Banner
+### 4.5 Sale Banner (mega menu)
 
-**Name:** Clearance Sale Banner
+**Name:** Sale Banner (mega menu)
 
 **Location:** the top strip of the Level 1 sidebar (desktop drawer) and the top of the mobile takeover's root screen (Section 4.6) — same image, same toggle, both places.
 
 **Purpose:** promotes whatever sale is currently running, directly above the category list where every shopper browsing products will see it.
 
-**How it works:** a real image, not styled text — swapped between two creatives via one Site Admin Panel toggle ("Clearance sale banner," under Site Promotions — Section 4.7), never blank:
+**How it works:** a real image, not styled text — swapped between two creatives, never blank. Since 2026-10-02 it follows the **sale takeover** switch (Site Admin → "Sale on", Section 4.7; full spec in `docs/campaign/campaign-spec.md`) rather than its own toggle, so it always matches the rest of the takeover:
 
-- **On** (default): the real sale creative (currently "Adventure Sale").
-- **Off**: an evergreen fallback creative (currently a Store Finder promo) — for whenever no sale is actually running.
+- **Sale on** (AU/NZ): the running campaign's banner (currently "Rack Friday Sale"), set per campaign alongside its colours, tag and favicon.
+- **No sale** (default, and always in the UK): an evergreen fallback creative (currently a Store Finder promo).
 
 **States:**
 - On: ![Sale banner on](header-dev-brief-assets/mega-menu-level1-open.png)
@@ -239,7 +239,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 - **Developer Briefs** — all 6: Product Pages (PDP), PLP / VPLP, Search Results, Vehicle Landing (VCLP), Header, Footer.
 - **Shopper Session** — Logged in (on/off), Vehicle (None / Toyota Hilux / Ford Ranger), Nearest store set (on/off) (Section 4.1).
 - **Build Phase** — Phase 1 (launch build) / Phase 2 (future features), with a one-line explainer: Phase 2 adds store-level stock, product ribbons and Compare Products.
-- **Site Promotions** — the Clearance sale banner toggle (Section 4.5).
+- **Site Promotions** — "Sale on (Rack Friday)": switches the whole sale website takeover on/off (AU/NZ only) and reloads — see `docs/campaign/campaign-spec.md`. The mega-menu banner (Section 4.5) follows it.
 - **Prototype Tools** — "Show Demo State panel" (only offered on pages that have a Demo State Panel — not the standalone header page or the root index), and **Reset all demo settings**, which, after a confirm, clears every saved prototype setting (session, build phase, promotions and each template's Demo State choices) and reloads.
 
 **Screenshot:**

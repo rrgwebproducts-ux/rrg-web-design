@@ -153,8 +153,9 @@
 .mega-menu-promo-eyebrow{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,.75);margin-bottom:3px;}
 .mega-menu-promo strong{display:block;font-size:13px;line-height:1.3;color:#fff;}
 
-/* Promo banner above Level 1 — a real image now (Brenton supplied `sale-banner.png` /
-   `sale-banner-fallback.png`, 2026-09-13), swapped by mmApplySaleBannerVisibility() rather
+/* Promo banner above Level 1 — a real image: the current sale campaign's banner while a sale
+   is on (RRG_CAMPAIGN.megaMenuBanner, campaign.js — 2026-10-02), otherwise
+   `sale-banner-fallback.png` (Store Finder promo), swapped by mmApplySaleBannerVisibility() rather
    than shown/hidden, so the strip never goes blank (see mega-menu.js). Box height is set
    inline by mega-menu.js to exactly match a Level 1 row, so it lines up with the Level 2/3
    heads; the image fills that box via object-fit so its exact source aspect ratio doesn't

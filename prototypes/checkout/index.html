@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="../_shared/mega-menu.css">
 <link rel="stylesheet" href="../_shared/admin-panel.css">
 <link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
 <!-- ===== Checkout (docs/checkout/checkout-spec.md Section 4, 2026-09-30) =====
      Magento's 2-step checkout restyled (decision 2): 1 Details & delivery (#shipping) →
      2 Payment (#payment). Distraction-free shell: logo, "Secure checkout" and help only — no mega
@@ -99,6 +100,7 @@
 <script src="../_shared/component-mode.js"></script>
 <script src="../_shared/nav-data.js"></script>
 <script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
 <script src="../_shared/mega-menu.js"></script>
 <script src="../_shared/admin-panel.js"></script>
 <script src="../_shared/shared.js"></script>
@@ -143,7 +145,7 @@ function renderSummary() {
     <ul class="cart-lines">${cart.lines.map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>
     <dl class="cart-totals">
       <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
-      ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You're saving</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+      ${t.savings > 0 ? `<div class="cart-totals-save"><dt>${typeof rrgSavingsLabel === 'function' ? rrgSavingsLabel() : "You're saving"}</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
       <div><dt>${method === 'collect' ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery === null ? 'Choose an option' : t.delivery === 0 ? 'Free' : rrgMoney(t.delivery)}</dd></div>
       <div class="cart-totals-total"><dt>Total</dt><dd>${rrgMoney(t.total)}</dd></div>
       <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>

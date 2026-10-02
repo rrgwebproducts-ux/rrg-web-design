@@ -53,32 +53,25 @@ function mmPromoTileHTML(promoTile) {
   </a>`;
 }
 
-// Clearance/sale banner (Level 1's top strip) swaps between two real creatives rather than a
-// single banner that just disappears when off (Brenton, 2026-09-13, after supplying real
-// assets): the sale creative while a sale is actually on, a fallback evergreen creative
-// (e.g. Store Finder promo) the rest of the time — never blank. Admin-toggleable, persisted
-// the same way as the Demo State Panel visibility toggle (admin-panel.js) — read directly
-// here rather than depending on load order between the two files, since only the Site Admin
-// Panel's checkbox needs to call rrgSetSaleBannerOn (on user interaction, well after both
-// scripts have run).
-const MM_SALE_BANNER_KEY = 'rrgSaleBannerOn';
-const MM_SALE_BANNER_SRC = RRG_PROTO + '_shared/sale-banner.png';
+// Sale banner (Level 1's top strip) swaps between two real creatives rather than a single banner
+// that just disappears when off (Brenton, 2026-09-13): the current sale campaign's banner while a
+// sale is on, a fallback evergreen creative (e.g. Store Finder promo) the rest of the time — never
+// blank. Since 2026-10-02 the switch is the sale takeover's own "Sale on" (campaign.js —
+// rrgCampaignActive, RRG_CAMPAIGN.megaMenuBanner), so the banner always matches the rest of the
+// takeover (and the UK, which never gets the takeover, keeps the fallback).
 const MM_SALE_BANNER_FALLBACK_SRC = RRG_PROTO + '_shared/sale-banner-fallback.png';
 // `src` is set by mmApplySaleBannerVisibility() right after this markup is inserted (both
 // desktop and mobile) — kept out of this string so there's one place deciding which image.
 const MM_BANNER_HTML = '<a class="mega-menu-banner" href="#"><img alt="Sale"></a>';
-function mmIsSaleBannerOn() {
-  const v = localStorage.getItem(MM_SALE_BANNER_KEY);
-  return v === null ? true : v === 'true';
-}
 function mmApplySaleBannerVisibility() {
-  const src = mmIsSaleBannerOn() ? MM_SALE_BANNER_SRC : MM_SALE_BANNER_FALLBACK_SRC;
-  document.querySelectorAll('.mega-menu-banner img').forEach(img => { img.src = src; });
+  const on = typeof rrgCampaignActive === 'function' && rrgCampaignActive();
+  document.querySelectorAll('.mega-menu-banner').forEach(a => {
+    a.href = on ? RRG_CAMPAIGN.href : '#';
+    const img = a.querySelector('img');
+    img.src = on ? RRG_PROTO + RRG_CAMPAIGN.megaMenuBanner : MM_SALE_BANNER_FALLBACK_SRC;
+    img.alt = on ? RRG_CAMPAIGN.title : 'Store Finder — 35+ locations nationwide';
+  });
 }
-window.rrgSetSaleBannerOn = (on) => {
-  localStorage.setItem(MM_SALE_BANNER_KEY, on);
-  mmApplySaleBannerVisibility();
-};
 
 // Desktop — one shared full-width drawer (header-spec.md Section 3.6, restructured
 // 2026-09-13 per Brenton's direction): Level 1 is a static sidebar; Level 2 and Level 3 are

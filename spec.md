@@ -1498,3 +1498,21 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
   - 97 widgets in 7 groups (Global, Product page, Listing & search, Cart & checkout, Stores & vehicles & brands, Home & content, Building blocks) and 221 variations (48 copied, 15 mixed, 34 shared — after the header and footer moved into shared code, 2026-10-01).
   - Building blocks (colours, typography, buttons, chips, form fields) are drawn on the library page with the real `shared.css` classes.
 - **Next step (agreed):** review every *copied* and *mixed* widget for design drift and move it into shared code, so the library and every page update together. Plan and progress: `docs/widgets/widgets-spec.md`; shared renderers live in `_shared/widgets.js`.
+
+## 18. Sale Website Takeover (Brenton, 2026-10-02)
+
+When a big sale is on, the whole site takes on the campaign's colours, with no layout change. Rack Friday is the worked example. Full spec: `docs/campaign/campaign-spec.md`.
+
+- **Switch:** Site Admin → **Sale on (Rack Friday)**. It replaces the old "Clearance sale banner" toggle, is off by default and covers AU and NZ only (never the UK).
+- **What changes:**
+  - Favicon.
+  - New black campaign strip with a live countdown above the header.
+  - Lime utility bar.
+  - Sale link in the nav.
+  - Campaign mega-menu banner.
+  - Lime Add to Cart.
+  - Campaign sale tag on the PDP and on every *discounted* product card (replaces the Spring Sale tag, which is retired). The Save band turns lime.
+  - Home hero campaign slide.
+  - "Rack Friday savings" line in the cart, checkout and mini-cart.
+  - Black footer with lime accents.
+- **Open:** whether the red brand bits (links, outline-red buttons, sale prices) change too; final Figma assets (favicon, tag, toolbar are still WIP); the hero's "XX%" placeholder; a pre-sale "Starts in" state; Cyber Monday as a second campaign.

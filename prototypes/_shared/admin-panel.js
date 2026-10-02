@@ -114,9 +114,9 @@ function buildSiteAdminPanel(currentKey) {
       </div>
       <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>
       <div class="site-admin-heading">Promotions &amp; design</div>
-      <label class="site-admin-toggle">
-        <span>Clearance sale banner</span>
-        <input type="checkbox" data-admin-flag="saleBannerOn">
+      <label class="site-admin-toggle" title="Sale website takeover — colours, strip + countdown, sale tags, favicon. AU & NZ only.">
+        <span>Sale on (Rack Friday)</span>
+        <input type="checkbox" data-admin-flag="saleOn">
       </label>
       <label class="site-admin-select" title="The merged vehicle bar + Fit Finder on Home and Fit My Vehicle">
         <span>Vehicle finder style</span>
@@ -222,14 +222,12 @@ function buildSiteAdminPanel(currentKey) {
   panel.addEventListener('click', (e) => e.stopPropagation());
   document.addEventListener('click', closePanel);
 
-  // Sale banner state lives in mega-menu.js (rrgSetSaleBannerOn/localStorage) since that's what
-  // renders it — this panel just reflects and toggles it.
-  const SALE_BANNER_KEY = 'rrgSaleBannerOn';
-  const saleBannerToggle = panel.querySelector('[data-admin-flag="saleBannerOn"]');
-  const storedSale = localStorage.getItem(SALE_BANNER_KEY);
-  saleBannerToggle.checked = storedSale === null ? true : storedSale === 'true';
-  saleBannerToggle.addEventListener('change', () => {
-    if (window.rrgSetSaleBannerOn) window.rrgSetSaleBannerOn(saleBannerToggle.checked);
+  // Sale takeover state lives in campaign.js (rrgSaleOn / rrgSetSaleOn, which reloads the page) —
+  // this panel just reflects and toggles it.
+  const saleOnToggle = panel.querySelector('[data-admin-flag="saleOn"]');
+  saleOnToggle.checked = typeof rrgSaleOn === 'function' && rrgSaleOn();
+  saleOnToggle.addEventListener('change', () => {
+    if (window.rrgSetSaleOn) window.rrgSetSaleOn(saleOnToggle.checked);
   });
 
   // Session state lives in session-state.js — this panel reflects and sets it.

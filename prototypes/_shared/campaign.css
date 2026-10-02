@@ -1,0 +1,93 @@
+/* Sale takeover skin (docs/campaign/campaign-spec.md, 2026-10-02) — campaign.js sets
+   body.campaign-on + data-campaign="<id>" while a sale is on (AU/NZ only). A colour takeover,
+   never a layout change: every rule here recolours or decorates something that already exists,
+   except the campaign strip and the nav link, which only render while a sale is on.
+
+   Lime can't be used like the UK skin's navy (a single --rrg-red swap): lime text on white is
+   unreadable, and --rrg-red is used for text and links all over the site. So the campaign colour
+   is only ever a BACKGROUND (with black text) or a mark on black — each surface is overridden
+   individually. Red brand bits (links, outline-red buttons, sale prices, logo) stay red. */
+
+/* Campaign palette — Figma "RRG Campaign Templates" › Colours. A future campaign adds its own
+   block (e.g. Cyber Monday: Electric Cyan #00E5FF) and sets its id in RRG_CAMPAIGN. */
+body[data-campaign="rack-friday"]{--campaign-accent:#D8FF1E;--campaign-accent-hover:#C2EB00;--campaign-ink:#000;}
+
+/* ---- Campaign strip (above the header, every page but checkout) ----------------------------- */
+.campaign-strip{display:none;}
+body.campaign-on .campaign-strip{display:block;background:var(--campaign-ink);color:#fff;text-decoration:none;font-size:14px;}
+.campaign-strip-inner{display:flex;align-items:center;gap:18px;min-height:44px;padding-top:6px;padding-bottom:6px;box-sizing:border-box;}
+.campaign-strip-title{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:.01em;color:var(--campaign-accent);white-space:nowrap;text-shadow:0 0 12px color-mix(in srgb,var(--campaign-accent) 45%,transparent);}
+.campaign-strip-offer{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.campaign-strip-terms{font-weight:400;color:var(--rrg-on-dark-muted);}
+.campaign-countdown{display:inline-flex;align-items:center;gap:8px;margin-left:auto;white-space:nowrap;}
+.campaign-countdown[hidden]{display:none;}
+.campaign-countdown-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-on-dark-muted);}
+.campaign-countdown-units{display:inline-flex;gap:4px;}
+.campaign-countdown-unit{display:inline-flex;align-items:baseline;gap:1px;background:var(--campaign-accent);color:var(--campaign-ink);border-radius:4px;padding:3px 6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:lowercase;}
+.campaign-countdown-unit b{font-size:17px;line-height:1;font-variant-numeric:tabular-nums;}
+.campaign-strip-cta{font-weight:700;color:var(--campaign-accent);white-space:nowrap;}
+.campaign-strip:hover .campaign-strip-cta{text-decoration:underline;}
+@media (max-width:1100px){
+  .campaign-strip-terms{display:none;}
+}
+@media (max-width:900px){
+  .campaign-strip-inner{gap:10px;min-height:40px;padding-left:16px;padding-right:16px;}
+  .campaign-strip-title{font-size:20px;}
+  .campaign-strip-offer,.campaign-strip-cta,.campaign-countdown-label{display:none;}
+  .campaign-countdown-unit{padding:2px 5px;}
+  .campaign-countdown-unit b{font-size:15px;}
+}
+@media (max-width:360px){
+  .campaign-countdown-unit:last-child{display:none;}
+}
+
+/* ---- Utility bar: red → campaign colour, black text ----------------------------------------- */
+body.campaign-on .rrg-utility-bar{background:var(--campaign-accent);color:var(--campaign-ink);}
+body.campaign-on .rrg-utility-bar .u-item a,
+body.campaign-on .rrg-utility-bar .region-switcher-toggle{color:var(--campaign-ink);}
+body.campaign-on .rrg-utility-bar .region-switcher-menu a{color:var(--rrg-black);}
+
+/* ---- Nav: the sale link, styled like the Figma toolbar button (campaign colour on black) ---- */
+.rrg-nav-campaign{display:none!important;}
+body.campaign-on .rrg-nav .rrg-nav-campaign{display:inline-flex!important;background:var(--campaign-ink);color:var(--campaign-accent);font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.01em;padding:5px 12px;border-radius:var(--radius);white-space:nowrap;}
+body.campaign-on .rrg-nav .rrg-nav-campaign:hover{color:var(--campaign-ink);background:var(--campaign-accent);}
+/* The nav is tight below ~1200px — the strip still carries the sale, so the link steps aside. */
+@media (max-width:1199px){
+  body.campaign-on .rrg-nav .rrg-nav-campaign{display:none!important;}
+}
+
+/* ---- Mega menu banner: the campaign creative is wider than the slot — show it whole ---------- */
+body.campaign-on .mega-menu-banner{background:var(--campaign-accent);}
+body.campaign-on .mega-menu-banner img{object-fit:contain;}
+
+/* ---- Add to Cart / primary actions: gold → campaign colour ---------------------------------- */
+body.campaign-on .btn-cta{background:var(--campaign-accent);color:var(--campaign-ink);}
+body.campaign-on .btn-cta:hover{background:var(--campaign-accent-hover);}
+
+/* ---- Sale tags --------------------------------------------------------------------------------
+   PDP: the campaign's tag graphic (img.sale-tag, src set by campaign.js) only exists during a
+   sale — with no sale on there is no seasonal tag, just the Save band on the photo. */
+body:not(.campaign-on) .sale-tag{display:none!important;}
+/* Product cards: every discounted card (anything carrying the Save band — PLP-family .plp-card
+   and the simpler .product-card) gets the campaign tag in the photo's top-right corner, and the
+   Save band itself turns campaign-coloured. Pure CSS, so every card renderer is covered. */
+body.campaign-on .plp-save-corner span{background:var(--campaign-accent);color:var(--campaign-ink);}
+body.campaign-on .plp-card-media:has(.plp-save-corner:not([hidden]))::after,
+body.campaign-on .product-card:has(> .plp-save-corner)::after{content:'';position:absolute;top:6px;right:6px;width:68px;aspect-ratio:382/250;background:var(--campaign-tag) center/contain no-repeat;z-index:3;pointer-events:none;}
+body.campaign-on .plp-card-media:has(.plp-ribbon)::after{top:40px;}
+@media (max-width:640px){
+  body.campaign-on .plp-card-media:has(.plp-save-corner:not([hidden]))::after,
+  body.campaign-on .product-card:has(> .plp-save-corner)::after{width:52px;top:4px;right:4px;}
+}
+
+/* ---- Cart savings line ------------------------------------------------------------------------ */
+body.campaign-on .mini-cart-savings,
+body.campaign-on .cart-totals-save dt,
+body.campaign-on .cart-totals-save dd{color:var(--campaign-ink);}
+body.campaign-on .mini-cart-savings{display:inline-block;background:var(--campaign-accent);padding:3px 8px;border-radius:4px;}
+body.campaign-on .cart-totals-save{background:var(--campaign-accent);border-radius:4px;padding:6px 8px;margin-left:-8px;margin-right:-8px;}
+
+/* ---- Footer: charcoal → black with campaign-colour headings and a top stripe --------------- */
+body.campaign-on .rrg-footer{background:var(--campaign-ink);border-top:6px solid var(--campaign-accent);}
+body.campaign-on .rrg-footer h4{color:var(--campaign-accent);}
+body.campaign-on .footer-col a:hover{color:var(--campaign-accent);}

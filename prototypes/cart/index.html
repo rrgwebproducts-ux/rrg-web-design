@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="../_shared/mega-menu.css">
 <link rel="stylesheet" href="../_shared/admin-panel.css">
 <link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
 <!-- ===== Cart (docs/checkout/checkout-spec.md Section 3, 2026-09-30) =====
      Replaces /checkout/cart/. Lines with fitment and stock, bundles with their parts, a summary
      that asks Click & Collect or Delivery up front, one total with GST noted under it (not a
@@ -109,6 +110,7 @@
 <script src="../_shared/component-mode.js"></script>
 <script src="../_shared/nav-data.js"></script>
 <script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
 <script src="../_shared/widgets.js"></script>
 <script src="../_shared/mega-menu.js"></script>
 <script src="../_shared/admin-panel.js"></script>
@@ -195,7 +197,7 @@ function renderCart() {
   const t = rrgCartTotals(cart, known ? method : null);
   document.getElementById('cartTotals').innerHTML = `
     <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
-    ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You're saving</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+    ${t.savings > 0 ? `<div class="cart-totals-save"><dt>${typeof rrgSavingsLabel === 'function' ? rrgSavingsLabel() : "You're saving"}</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
     <div><dt>${method === 'collect' ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery === null ? 'Calculated at checkout' : t.delivery === 0 ? 'Free' : rrgMoney(t.delivery)}</dd></div>
     <div class="cart-totals-total"><dt>Total</dt><dd>${rrgMoney(t.total)}</dd></div>
     <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>`;

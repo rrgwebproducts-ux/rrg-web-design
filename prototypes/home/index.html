@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="../_shared/mega-menu.css">
 <link rel="stylesheet" href="../_shared/admin-panel.css">
 <link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
 <!-- Leaflet — the help row's Store Finder tile is the VLP's (same #showroomMap). -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
@@ -54,12 +55,13 @@
 
 <!-- Section 5.2 — hero (docs/home/home-spec.md). Slide 1 is the draft Rack Friday banner
      (Brenton, 2026-10-02): one flat image, text baked in, so no artwork layer and no separate
-     slide link — the whole banner is the link. Then four of the live slider's seven slides
+     slide link — the whole banner is the link. It only shows while the Rack Friday sale is on
+     (data-campaign-slide — campaign.js removes it otherwise). Then four of the live slider's seven slides
      (_shared/home-hero/); the other three rotate in the Current Offers tile below.
      initHomeHero() in shared.js. -->
 <section class="home-hero" aria-roledescription="carousel" aria-label="Featured offers">
   <div class="home-hero-stage">
-    <div class="home-hero-slide home-hero-slide--flat is-active" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Rack Friday" style="--slide-fill:#d8ff1e">
+    <div class="home-hero-slide home-hero-slide--flat is-active" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Rack Friday" data-campaign-slide="rack-friday" style="--slide-fill:#d8ff1e">
       <a class="home-hero-flat" href="#"><img src="../_shared/home-hero/rack-friday-desktop.webp" alt="Rack Friday sale on now — platforms from just $599.95, take up to XX% off. 1–29 Nov 2026, in-store and online, selected lines while stocks last. Shop Rack Friday" width="2464" height="828" fetchpriority="high"></a>
     </div>
     <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" data-title="Spring Adventure Sale">
@@ -257,6 +259,7 @@
 <script src="../_shared/component-mode.js"></script>
 <script src="../_shared/nav-data.js"></script>
 <script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
 <script src="../_shared/widgets.js"></script>
 <script src="../_shared/mega-menu.js"></script>
 <script src="../_shared/admin-panel.js"></script>

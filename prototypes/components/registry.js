@@ -37,7 +37,7 @@ const S = {
   nz: { rrgRegion: 'NZ' },
   uk: { rrgRegion: 'UK' },
   dark: { rrgVehicleFinderStyle: 'dark' },
-  saleOff: { rrgSaleBannerOn: 'false' },
+  sale: { rrgSaleOn: 'true' },
   noComingSoon: { rrgShowComingSoonStores: 'false' },
 };
 // A template's Demo State choices, as the Demo State panel saves them.
@@ -56,6 +56,11 @@ const RRG_GROUPS = [
 
 const RRG_COMPONENTS = [
   // ---------------------------------------------------------------- Global
+  { id: 'campaign-strip', group: 'global', name: 'Sale Campaign Strip + Countdown', build: 'shared', usedOn: NOT_CHECKOUT,
+    source: 'rrgCampaignStripHTML (campaign.js), drawn by rrgWidgetHeaderHTML (widgets.js); campaign.css. Only while Site Admin → Sale on (AU/NZ)',
+    variants: [
+      v('Sale on (Rack Friday)', 'header', '.campaign-strip', { ls: S.sale }),
+    ] },
   { id: 'utility-bar', group: 'global', name: 'Utility Bar', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'rrgWidgetUtilityBarHTML (widgets.js); filled by applyRegion + rrgApplySessionState (shared.js, session-state.js)',
     variants: [
@@ -63,6 +68,7 @@ const RRG_COMPONENTS = [
       v('Guest, no vehicle, no store', 'header', '.rrg-utility-bar', { ls: { ...S.guest, ...S.noVehicle, ...S.noStore } }),
       v('NZ', 'header', '.rrg-utility-bar', { ls: S.nz }),
       v('UK', 'header', '.rrg-utility-bar', { ls: S.uk }),
+      v('Sale on (Rack Friday)', 'header', '.rrg-utility-bar', { ls: S.sale }),
     ] },
   { id: 'region-selector', group: 'global', name: 'Region Selector', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'Menu in rrgWidgetUtilityBarHTML (widgets.js); initRegionSwitcher (shared.js)',
@@ -75,12 +81,13 @@ const RRG_COMPONENTS = [
       v('AU', 'header', '.rrg-header-shell'),
       v('UK skin', 'header', '.rrg-header-shell', { ls: S.uk }),
       v('With items in the cart', 'header', '.rrg-header-shell', { cart: 'full' }),
+      v('Sale on (Rack Friday) — nav sale link', 'header', '.rrg-header-shell', { ls: S.sale, sizes: ['d'] }),
     ] },
   { id: 'mega-menu', group: 'global', name: 'Mega Menu (desktop)', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'Shell in rrgWidgetMainHeaderHTML (widgets.js); buildMegaMenuDesktop + mmPromoTileHTML (mega-menu.js)',
     variants: [
-      v('Open, clearance banner on', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', sizes: ['d'], h: 760 }),
-      v('Open, clearance banner off', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.saleOff, sizes: ['d'], h: 760 }),
+      v('Open, sale on (Rack Friday banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.sale, sizes: ['d'], h: 760 }),
+      v('Open, no sale (Store Finder banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', sizes: ['d'], h: 760 }),
     ] },
   { id: 'search-typeahead', group: 'global', name: 'Header Search & Typeahead', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'Search box in rrgWidgetMainHeaderHTML (widgets.js); headerSearchFocusHTML / headerSearchTypingHTML (shared.js)',
@@ -116,6 +123,7 @@ const RRG_COMPONENTS = [
       v('AU', 'header', '.rrg-footer'),
       v('NZ', 'header', '.rrg-footer', { ls: S.nz }),
       v('UK', 'header', '.rrg-footer', { ls: S.uk }),
+      v('Sale on (Rack Friday)', 'header', '.rrg-footer', { ls: S.sale }),
     ] },
   { id: 'mini-cart', group: 'global', name: 'Mini-cart Drawer', build: 'shared', usedOn: ALL_PAGES.filter(p => !['vlp', 'checkout'].includes(p)),
     source: 'rrgBuildMiniCart / rrgRenderMiniCart (cart.js)',
@@ -195,7 +203,8 @@ const RRG_COMPONENTS = [
   { id: 'price-block', group: 'product', name: 'Price Block + Sale Tag', build: 'mixed', usedOn: PDP5,
     source: 'Static per page; syncSaleTag (shared.js)',
     variants: [
-      v('On sale', 'simple', '.price-block'),
+      v('On sale, no sale event (no tag)', 'simple', '.price-block'),
+      v('On sale, Rack Friday on (tag)', 'simple', '.price-block', { ls: S.sale }),
       v('Not on sale', 'simple', '.price-block', { ls: demo('simple', { 'c:sale': false }) }),
       v('NZ', 'simple', '.price-block', { ls: S.nz }),
       v('UK', 'simple', '.price-block', { ls: S.uk }),
@@ -206,6 +215,7 @@ const RRG_COMPONENTS = [
       v('AU', 'simple', '.cta-col'),
       v('NZ', 'simple', '.cta-col', { ls: S.nz }),
       v('UK', 'simple', '.cta-col', { ls: S.uk }),
+      v('Sale on (Rack Friday)', 'simple', '.cta-col', { ls: S.sale }),
     ] },
   { id: 'exdemo', group: 'product', name: 'Ex-Demo / B-Stock Link + Drawer', build: 'shared', usedOn: PDP5,
     source: 'applyExdemoFlag / buildExdemoSlideout (shared.js)',
@@ -295,6 +305,7 @@ const RRG_COMPONENTS = [
       v('Grid card', 'plp', '.plp-card'),
       v('Grid card — fitment chip', 'vplp', '.plp-card'),
       v('Phase 2 — ribbons + compare', 'plp', '.plp-card', { ls: { ...S.phase2, ...demo('plp', { 'c:plpRibbons': true, 'c:plpCompare': true }) } }),
+      v('Sale on (Rack Friday) — campaign tag', 'plp', '.plp-card', { ls: S.sale }),
     ] },
   { id: 'results-grid', group: 'listing', name: 'Results Grid / List', build: 'shared', usedOn: [...PLP3, 'brand', 'search-results'],
     source: 'plpCardHTML / plpListCardHTML (plp.js)',
@@ -372,6 +383,7 @@ const RRG_COMPONENTS = [
       v('AU', 'cart', '.cart-summary', { cart: 'full' }),
       v('NZ', 'cart', '.cart-summary', { cart: 'full', ls: S.nz }),
       v('UK', 'cart', '.cart-summary', { cart: 'full', ls: S.uk }),
+      v('Sale on (Rack Friday)', 'cart', '.cart-summary', { cart: 'full', ls: S.sale }),
     ] },
   { id: 'cart-empty', group: 'cart', name: 'Empty Cart', build: 'copied', usedOn: ['cart'],
     source: 'Inline in cart',
@@ -468,7 +480,7 @@ const RRG_COMPONENTS = [
   // ---------------------------------------------------------------- Home & content blocks
   { id: 'home-hero', group: 'content', name: 'Home Hero Slider', build: 'mixed', usedOn: ['home'],
     source: 'Static; initHomeHero (shared.js)',
-    variants: [v('Vehicle known', 'home', '.home-hero'), v('No vehicle', 'home', '.home-hero', { ls: S.noVehicle })] },
+    variants: [v('Vehicle known', 'home', '.home-hero'), v('No vehicle', 'home', '.home-hero', { ls: S.noVehicle }), v('Sale on — Rack Friday slide first', 'home', '.home-hero', { ls: S.sale })] },
   { id: 'offer-tiles', group: 'content', name: 'Promo Row (Category Tiles + Offers Carousel)', build: 'mixed', usedOn: ['home'],
     source: 'Static; initOfferCarousel (shared.js)',
     variants: [v('Default', 'home', '.home-promo-row')] },
