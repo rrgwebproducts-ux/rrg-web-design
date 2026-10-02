@@ -52,27 +52,32 @@
   <div data-widget="vehicle-finder" data-class="home-finder" data-vf-browse-href="#shop-by-category"></div>
 </div>
 
-<!-- Section 5.2 — hero (docs/home/home-spec.md). Four of the live slider's seven slides, their
-     images downloaded from the live site (_shared/home-hero/); the other three rotate in the
-     Current Offers tile below, so nothing shows twice. initHomeHero() in shared.js. -->
+<!-- Section 5.2 — hero (docs/home/home-spec.md). Slide 1 is the draft Rack Friday banner
+     (Brenton, 2026-10-02): one flat image, text baked in, so no artwork layer and no separate
+     slide link — the whole banner is the link. Then four of the live slider's seven slides
+     (_shared/home-hero/); the other three rotate in the Current Offers tile below.
+     initHomeHero() in shared.js. -->
 <section class="home-hero" aria-roledescription="carousel" aria-label="Featured offers">
   <div class="home-hero-stage">
-    <div class="home-hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 of 4" data-title="Spring Adventure Sale">
-      <img class="home-hero-bg" src="../_shared/home-hero/adventure-sale-bg.webp" alt="" width="1441" height="410" fetchpriority="high">
-      <a class="home-hero-art" href="#"><img src="../_shared/home-hero/adventure-sale-art.webp" alt="Spring Adventure Sale — up to 60% off camping, fishing, touring and watersports gear" width="1400" height="820" fetchpriority="high"></a>
+    <div class="home-hero-slide home-hero-slide--flat is-active" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Rack Friday" style="--slide-fill:#d8ff1e">
+      <a class="home-hero-flat" href="#"><img src="../_shared/home-hero/rack-friday-desktop.webp" alt="Rack Friday sale on now — platforms from just $599.95, take up to XX% off. 1–29 Nov 2026, in-store and online, selected lines while stocks last. Shop Rack Friday" width="2464" height="828" fetchpriority="high"></a>
+    </div>
+    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" data-title="Spring Adventure Sale">
+      <img class="home-hero-bg" src="../_shared/home-hero/adventure-sale-bg.webp" alt="" width="1441" height="410" loading="lazy">
+      <a class="home-hero-art" href="#"><img src="../_shared/home-hero/adventure-sale-art.webp" alt="Spring Adventure Sale — up to 60% off camping, fishing, touring and watersports gear" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#">Shop Adventure Sale</a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="2 of 4" data-title="New Platform Slimline 3">
+    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" data-title="New Platform Slimline 3">
       <img class="home-hero-bg" src="../_shared/home-hero/slimline-3-bg.webp" alt="" width="1441" height="410" loading="lazy">
       <a class="home-hero-art" href="#"><img src="../_shared/home-hero/slimline-3-art.webp" alt="New platform: Front Runner Slimline 3" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#">Shop Slimline 3</a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="3 of 4" data-title="Cruz Kicker 2">
+    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" data-title="Cruz Kicker 2">
       <img class="home-hero-bg" src="../_shared/home-hero/cruz-kicker-bg.webp" alt="" width="2000" height="569" loading="lazy">
       <a class="home-hero-art" href="#"><img src="../_shared/home-hero/cruz-kicker-art.webp" alt="Person loading bikes onto a Cruz Kicker 2 bike rack" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#">Shop Cruz Kicker 2</a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="4 of 4" data-title="Expert Fitting">
+    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" data-title="Expert Fitting">
       <img class="home-hero-bg" src="../_shared/home-hero/expert-fitting-bg.webp" alt="" width="2000" height="569" loading="lazy">
       <a class="home-hero-art" href="#" data-store-slideout><img src="../_shared/home-hero/expert-fitting-art.webp" alt="Expert fitting — two people fitting roof racks, 35+ nationwide locations" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#" data-store-slideout>Find Your Store</a>
