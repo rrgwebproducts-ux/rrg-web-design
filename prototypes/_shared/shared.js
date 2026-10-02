@@ -1479,23 +1479,50 @@ function initVehicleFinder(root) {
   render();
 }
 
-// Home page Current Offers (docs/home/home-spec.md 5.6) — on phones/tablets (≤900px, where CSS
-// turns the grid into a scroll-snap row) it's swiped by hand or moved with the dots. It no longer
-// auto-advances (2026-09-30, spec.md §16 item 22 — Baymard: never auto-rotate on mobile). On
-// desktop the three tiles all show, so it does nothing.
+// Home page Current Offers (docs/home/home-spec.md 5.6) — since 2026-10-02 one tile that
+// cross-fades between the offers, beside the Roof Racks / Bike Racks tiles. Dots and swipe;
+// autoplays every 6s on desktop only (never auto-rotate on mobile — spec.md §16 item 22),
+// pausing while the pointer or focus is inside it, and never under prefers-reduced-motion.
+// Inactive offers are aria-hidden and out of the tab order.
 function initOfferCarousel() {
-  document.querySelectorAll('[data-offer-carousel]').forEach(track => {
-    const tiles = [...track.children];
-    const dotsEl = track.parentElement.querySelector('.home-offer-dots');
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    dotsEl.innerHTML = tiles.map((t, i) => `<button type="button" aria-label="Show offer ${i + 1}"></button>`).join('');
+  document.querySelectorAll('[data-offer-carousel]').forEach(box => {
+    const tiles = [...box.querySelectorAll('.home-offer-tile')];
+    const dotsEl = box.querySelector('.home-offer-dots');
+    if (tiles.length < 2) return;
+    let current = 0;
+    let timer = null;
+    dotsEl.innerHTML = tiles.map((t, i) => `<button type="button" aria-label="Show offer ${i + 1}: ${t.getAttribute('aria-label')}"></button>`).join('');
     const dots = [...dotsEl.children];
-    const index = () => Math.round(track.scrollLeft / (tiles[1].offsetLeft - tiles[0].offsetLeft));
-    const go = i => track.scrollTo({ left: tiles[i].offsetLeft - tiles[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
-    const sync = () => { const n = index(); dots.forEach((d, i) => d.setAttribute('aria-current', i === n ? 'true' : 'false')); };
-    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
-    track.addEventListener('scroll', () => { clearTimeout(track._offerTimer); track._offerTimer = setTimeout(sync, 60); });
-    sync();
+    const show = i => {
+      current = (i + tiles.length) % tiles.length;
+      tiles.forEach((t, n) => {
+        const on = n === current;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-hidden', on ? 'false' : 'true');
+        if (on) t.removeAttribute('tabindex'); else t.setAttribute('tabindex', '-1');
+      });
+      dots.forEach((d, n) => d.setAttribute('aria-current', n === current ? 'true' : 'false'));
+    };
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const desktop = window.matchMedia('(min-width:901px)');
+    const stop = () => { clearInterval(timer); timer = null; };
+    const start = () => { if (!reduced && desktop.matches && !timer) timer = setInterval(() => show(current + 1), 6000); };
+    desktop.addEventListener('change', () => { stop(); start(); });
+    dots.forEach((d, n) => d.addEventListener('click', () => show(n)));
+    let touchX = null;
+    box.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      touchX = null;
+    });
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', start);
+    box.addEventListener('focusin', stop);
+    box.addEventListener('focusout', e => { if (!box.contains(e.relatedTarget)) start(); });
+    show(0);
+    start();
   });
 }
 

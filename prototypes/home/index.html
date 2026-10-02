@@ -84,17 +84,29 @@
 </section>
 
 <div class="wrap">
-  <!-- Section 5.6 — Current Offers: the three live slides not used in the hero, directly under
-       it with no heading; about 20% shorter since 2026-09-30 so Shop by Category makes the fold
-       (spec.md §16 item 22). A swipeable row at ≤900px, no longer auto-advancing (Baymard: never
-       auto-rotate on mobile). Hidden for now (Brenton, 2026-10-02): remove `hidden` from the grid
-       and dots to bring them back. -->
-  <div class="home-offer-grid" role="region" aria-label="Current offers" data-offer-carousel hidden>
-    <a class="home-offer-tile" href="#" aria-label="Overstock Clearance — up to 60% off"><img src="../_shared/home-hero/overstock-clearance-bg.webp" alt=""><img src="../_shared/home-hero/overstock-clearance-art.webp" alt=""></a>
-    <a class="home-offer-tile" href="#" aria-label="Up to 35% off EGR roller shutters"><img src="../_shared/home-hero/egr-bg.webp" alt=""><img src="../_shared/home-hero/egr-art.webp" alt=""></a>
-    <a class="home-offer-tile" href="#" aria-label="Up to 50% off Dropracks"><img src="../_shared/home-hero/dropracks-bg.webp" alt=""><img src="../_shared/home-hero/dropracks-art.webp" alt=""></a>
+  <!-- Section 5.6 — promo row (Brenton, 2026-10-02): directly under the hero, no heading. Two
+       category tiles (Roof Racks, Bike Racks) on the left, and the three live slides not used
+       in the hero rotating in one Current Offers tile on the right — all three the size the
+       old 3-up offer tiles were (1400:656). ≤900px: the offers tile goes full width on top and
+       the two categories sit side by side under it. initOfferCarousel() in shared.js. -->
+  <div class="home-promo-row">
+    <a class="home-offer-tile home-cat-promo" href="#" data-cat="roof-racks">
+      <img src="../_shared/category-tiles/roof-racks.webp" alt="">
+      <span class="home-cat-promo-title">Roof Racks</span>
+      <span class="home-cat-promo-cta">Shop Roof Racks<span aria-hidden="true"> ›</span></span>
+    </a>
+    <a class="home-offer-tile home-cat-promo" href="../plp/index.html" data-cat="bike-racks">
+      <img src="../_shared/category-tiles/bike-racks.webp" alt="">
+      <span class="home-cat-promo-title">Bike Racks</span>
+      <span class="home-cat-promo-cta">Shop Bike Racks<span aria-hidden="true"> ›</span></span>
+    </a>
+    <div class="home-offer-carousel" role="region" aria-roledescription="carousel" aria-label="Current offers" data-offer-carousel>
+      <a class="home-offer-tile is-active" href="#" aria-label="Overstock Clearance — up to 60% off"><img src="../_shared/home-hero/overstock-clearance-bg.webp" alt=""><img src="../_shared/home-hero/overstock-clearance-art.webp" alt=""></a>
+      <a class="home-offer-tile" href="#" aria-label="Up to 35% off EGR roller shutters"><img src="../_shared/home-hero/egr-bg.webp" alt=""><img src="../_shared/home-hero/egr-art.webp" alt=""></a>
+      <a class="home-offer-tile" href="#" aria-label="Up to 50% off Dropracks"><img src="../_shared/home-hero/dropracks-bg.webp" alt=""><img src="../_shared/home-hero/dropracks-art.webp" alt=""></a>
+      <div class="home-offer-dots"></div>
+    </div>
   </div>
-  <div class="home-offer-dots" hidden></div>
 
 
   <!-- Section 5.5 — the live page's nine category tiles plus Recovery Gear (live's Overstock tile
