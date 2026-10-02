@@ -125,10 +125,10 @@ const RRG_COMPONENTS = [
       v('Empty', 'header', '.mini-cart-backdrop', { do: 'call:rrgOpenMiniCart', h: 520 }),
     ] },
   { id: 'fit-finder-drawer', group: 'global', name: 'Fit Finder Drawer', build: 'shared', usedOn: NOT_CHECKOUT,
-    source: 'buildFitFinderDrawer / openFitFinderDrawer (shared.js)',
+    source: 'buildFitFinderDrawer / openFitFinderDrawer (shared.js), holding rrgWidgetVehicleFinderHTML (widgets.js) — always the no-vehicle cascade',
     variants: [
-      v('Vehicle known', 'header', '.fit-finder-drawer-backdrop', { do: 'call:openFitFinderDrawer|navigate', h: 760 }),
-      v('No vehicle (cascade)', 'header', '.fit-finder-drawer-backdrop', { ls: S.noVehicle, do: 'call:openFitFinderDrawer|navigate', h: 760 }),
+      v('Light', 'header', '.fit-finder-drawer-backdrop', { do: 'call:openFitFinderDrawer|navigate', h: 760 }),
+      v('Dark', 'header', '.fit-finder-drawer-backdrop', { ls: S.dark, do: 'call:openFitFinderDrawer|navigate', h: 760 }),
     ] },
 
   // ---------------------------------------------------------------- Product page
@@ -403,15 +403,15 @@ const RRG_COMPONENTS = [
     variants: [v('Default', 'order-confirmation', '#confirmFitting', { order: 'collect' })] },
 
   // ---------------------------------------------------------------- Stores, vehicles & brands
-  { id: 'vehicle-finder', group: 'stores', name: 'Vehicle Finder (inline)', build: 'mixed', usedOn: ['home', 'fit-my-vehicle', 'cart', 'vehicle-category-landing', 'brand'],
-    source: 'Static shell per page (home, VCLP, brand differ); initInlineFitFinders / initVehicleFinder (shared.js)',
+  { id: 'vehicle-finder', group: 'stores', name: 'Vehicle Finder (inline)', build: 'shared', usedOn: ['home', 'fit-my-vehicle', 'cart', 'vehicle-category-landing', 'brand'],
+    source: 'rrgWidgetVehicleFinderHTML (widgets.js); initInlineFitFinders / initVehicleFinder (shared.js). Also inside the Fit Finder Drawer',
     variants: [
       v('Vehicle known — light', 'fit-my-vehicle', '.fit-finder-widget'),
       v('Vehicle known — dark', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.dark }),
       v('No vehicle — light', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.noVehicle }),
       v('No vehicle — dark', 'fit-my-vehicle', '.fit-finder-widget', { ls: { ...S.noVehicle, ...S.dark } }),
       v('Home hero', 'home', '.home-hero .fit-finder-widget'),
-      v('VCLP (make/model locked)', 'vehicle-category-landing', '#fitFinder'),
+      v('VCLP (Toyota / Hilux pre-filled)', 'vehicle-category-landing', '#fitFinder', { ls: S.noVehicle }),
       v('Brand page', 'brand', '#brandFinder'),
     ] },
   { id: 'store-card', group: 'stores', name: 'Store Card', build: 'copied', usedOn: ['store-finder', 'installation', 'order-confirmation', 'checkout'],

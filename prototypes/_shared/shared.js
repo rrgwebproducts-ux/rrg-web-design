@@ -1270,9 +1270,9 @@ function rrgStorePillsHTML(name) {
 // buildExdemoSlideout() above (both are right-edge slide-ins, independent of each other).
 // Multiple triggers on one page (Click & Collect's link and, where present, the Showroom
 // Finder's) all open the same drawer.
-// Fit Finder drawer (Brenton, 2026-09-29) — a site-wide, right-edge slide-out version of the
-// Vehicle Category Landing Page's Fit Finder widget (same .fit-finder-widget look, fields
-// stacked for the drawer's width), so "set your vehicle" can be answered from wherever it's
+// Fit Finder drawer (Brenton, 2026-09-29) — a site-wide, right-edge slide-out holding the shared
+// vehicle finder (rrgWidgetVehicleFinderHTML, widgets.js — the same widget as Home, Fit My Vehicle,
+// Cart, Brand and VCLP since 2026-10-02; fields stacked for the drawer's width), so "set your vehicle" can be answered from wherever it's
 // asked instead of sending the shopper elsewhere. Any element with [data-open-fit-finder] opens
 // it (delegated, so links rendered later — product-card tooltips, the search strip, the Add to
 // Cart notice — work too); the header's vehicle link and the PLP-family pages' Set/Change
@@ -1293,25 +1293,16 @@ function buildFitFinderDrawer() {
         <button type="button" class="store-slideout-close" aria-label="Close">&times;</button>
       </div>
       <div class="store-slideout-body">
-        <section class="fit-finder-widget">
-          <div class="ff-head">
-            <span class="ff-badge"><svg viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#vi-clip-ffdrawer)"><path d="M24.9152 14.5953V14.0848C24.9152 12.0661 23.2893 10.4418 21.2815 10.4418C20.6739 10.4418 20.1127 10.1054 19.8234 9.56589L17.8676 5.97512C17.5726 5.43563 17.0113 5.10498 16.4038 5.10498L5.13237 5.12238C4.63477 5.12238 4.1603 5.34862 3.84206 5.73728L1.51025 8.60874C0.567114 9.76892 0.248877 11.3236 0.653906 12.7622L1.17466 14.6185C0.931641 14.7055 0.705981 14.8505 0.520825 15.0362C0.191016 15.3668 0.00585938 15.8193 0.00585938 16.2892C0.00585938 17.2637 0.792773 18.0584 1.76484 18.0584H2.66748C2.66748 18.1165 2.66748 18.1687 2.66748 18.2209C2.66748 19.9321 4.05037 21.3244 5.76306 21.3244C7.47576 21.3244 8.85864 19.9379 8.85864 18.2209C8.85864 18.1687 8.85864 18.1165 8.85864 18.07L15.6168 18.0816C15.6168 18.1281 15.6168 18.1803 15.6168 18.2267C15.6168 19.9379 16.9997 21.3302 18.7124 21.3302C20.4251 21.3302 21.808 19.9437 21.808 18.2267C21.808 18.1803 21.808 18.1397 21.808 18.0932H24.9672C25.9219 18.0874 26.6915 17.3159 26.6915 16.3588V16.324C26.6915 15.3726 25.9219 14.5953 24.973 14.5953H24.9441H24.9152ZM5.91929 10.4708H3.1188C2.86421 10.4708 2.62698 10.3258 2.51704 10.0938C2.40132 9.86174 2.43025 9.5891 2.58647 9.38606L4.64634 6.67123C4.81992 6.43919 5.09766 6.30577 5.38696 6.30577H5.92507V10.465L5.91929 10.4708ZM11.8096 10.4708H7.60884V6.31157H11.8096V10.4708ZM18.0702 10.146C17.9487 10.3432 17.7288 10.4708 17.4973 10.4708H13.4702V6.31157H15.8946C16.2417 6.31157 16.5658 6.5088 16.722 6.81625L18.0933 9.49048C18.2032 9.69931 18.1917 9.94875 18.0702 10.146Z" fill="currentColor"/><path d="M3.92297 4.19981H16.2474C18.099 4.19981 19.6092 2.69157 19.6092 0.835275C19.6092 0.371201 19.2331 -0.00585938 18.7702 -0.00585938C18.3073 -0.00585938 17.9312 0.377002 17.9312 0.841076C17.9312 1.76922 17.1732 2.52915 16.2474 2.52915H3.92297C3.46008 2.52915 3.08398 2.8946 3.08398 3.35868C3.08398 3.82275 3.46008 4.19401 3.92297 4.19401V4.19981Z" fill="currentColor"/></g><defs><clipPath id="vi-clip-ffdrawer"><rect width="26.6966" height="21.3028" fill="white"/></clipPath></defs></svg></span>
-            <h2><span class="italic-lead">Fit</span> Finder</h2>
-            <p>Select your vehicle to see what fits it across the whole site.</p>
-          </div>
-          <div class="ff-row">
-            <select aria-label="Make" data-ff-make>${ffOptions(FIT_FINDER_MAKES, 'Make')}</select>
-            <select aria-label="Model" data-ff-model disabled><option value="" selected disabled>Model</option></select>
-            <select aria-label="Year range" data-ff-required data-ff-field="years" disabled><option value="" selected disabled>Year</option></select>
-            <select aria-label="Body style" data-ff-required data-ff-field="bodies" disabled><option value="" selected disabled>Body Style</option></select>
-            <select aria-label="Roof type" data-ff-required data-ff-field="roofs" disabled><option value="" selected disabled>Roof Type</option></select>
-            <button type="button" class="btn btn-cta" data-ff-submit disabled>Set My Vehicle</button>
-          </div>
-        </section>
+        ${rrgWidgetVehicleFinderHTML({ inline: false, submit: 'Set My Vehicle' })}
       </div>
     </div>
   `;
   document.body.appendChild(backdrop);
+  // Always the no-vehicle cascade (it only opens to set or change a vehicle), in the same light/dark
+  // style as the inline widget — rrgSetVehicleFinderStyle restyles it with them.
+  const widget = backdrop.querySelector('.fit-finder-widget');
+  widget.dataset.vfStyle = rrgVehicleFinderStyle();
+  widget.querySelector('[data-ff-make]').innerHTML = ffOptions(FIT_FINDER_MAKES, 'Make');
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closeFitFinderDrawer(); });
   backdrop.querySelector('.store-slideout-close').addEventListener('click', closeFitFinderDrawer);
   // Opened from the header (Fit My Vehicle nav link, utility-bar vehicle link, a VLP's own
@@ -1355,23 +1346,35 @@ function initFitFinderCascade(root, onSubmit) {
 // the header's Fit My Vehicle drawer. [data-vf-stay="#target"] (brand pages, docs/brand/
 // brand-spec.md 3.5) sets the vehicle in place instead and scrolls to that page's own results,
 // which filter themselves on the session change.
+// [data-vf-submit-href] sends it somewhere else instead (VCLP → its roof rack listing, the VPLP).
+// [data-vf-preset="hilux"] (VCLP, 2026-10-02) pre-picks that vehicle's Make and Model, still
+// changeable, so a single make/model page starts the shopper at Year.
 function initInlineFitFinders() {
   document.querySelectorAll('[data-fit-finder-inline]').forEach(root => {
-    root.querySelector('[data-ff-make]').innerHTML = ffOptions(FIT_FINDER_MAKES, 'Make');
+    const make = root.querySelector('[data-ff-make]');
+    make.innerHTML = ffOptions(FIT_FINDER_MAKES, 'Make');
     initFitFinderCascade(root, key => {
       rrgVehicleSpecSave(key, root);
       if (window.rrgSetVehicle) window.rrgSetVehicle(key);
       const stay = root.dataset.vfStay && document.querySelector(root.dataset.vfStay);
       if (stay) stay.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      else window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+      else window.location.href = root.dataset.vfSubmitHref || `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
     });
+    const preset = FIT_FINDER_VEHICLES[root.dataset.vfPreset];
+    if (preset) {
+      const model = root.querySelector('[data-ff-model]');
+      make.value = preset.make;
+      make.dispatchEvent(new Event('change'));
+      model.value = root.dataset.vfPreset;
+      model.dispatchEvent(new Event('change'));
+    }
     if (root.hasAttribute('data-vehicle-finder')) initVehicleFinder(root);
   });
 }
 
 // ==== Vehicle finder: the vehicle bar and the Fit Finder merged (spec.md §16 items 7/26) ====
 // One component. With no session vehicle it's the Fit Finder, plus "Shop without a vehicle".
-// With one, it never shows blank fields: "Shopping for your Toyota Hilux", the vehicle photo, a
+// With one, it never shows blank fields: "Shopping for your Toyota Hilux?", the vehicle photo, a
 // read-only summary of what was picked, Shop for my Hilux (→ VLP) and Change vehicle. Change
 // resets the cascade to Make (focus there) with "← Back to Hilux" to undo, instead of opening the
 // drawer. Light or dark (Site Admin → Design options). Opt in with [data-vehicle-finder] on a
@@ -1447,7 +1450,7 @@ function initVehicleFinder(root) {
       <div class="vf-photo"><img src="${RRG_PROTO}_shared/${v.image}" alt="" width="956" height="556"></div>
       <div class="vf-text">
         <span class="vf-eyebrow">Your vehicle</span>
-        <h2>Shopping for your ${v.label}</h2>
+        <h2>Shopping for your ${v.label}?</h2>
         ${spec ? `<ul class="vf-spec" aria-label="Your vehicle details"><li>${spec.years}</li><li>${spec.bodies}</li><li>${spec.roofs}</li></ul>` : ''}
       </div>
       <div class="vf-actions">

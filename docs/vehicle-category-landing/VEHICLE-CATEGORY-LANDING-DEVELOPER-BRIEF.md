@@ -1,6 +1,6 @@
 # Vehicle Category Landing Page — Developer Brief
 
-*Text updated for the 2026-09-29 cross-template consistency pass (`spec.md` §15 — V1–V7, C9, L8, G5/G6, P9). Screenshots are deliberately held until final handover, so the images below still show the pre-pass page (gold Change Vehicle button in the hero, red brands heading, 2-column FAQ, 4 brand logos).*
+*Text updated for the 2026-09-29 cross-template consistency pass (`spec.md` §15 — V1–V7, C9, L8, G5/G6, P9). Screenshots are deliberately held until final handover, so the images below still show the pre-pass page (gold Change Vehicle button in the hero, red brands heading, 2-column FAQ, 4 brand logos). Text also updated 2026-10-02 for the shared Vehicle Finder (Section 4.1); the screenshots still show the old dark Fit Finder.*
 
 ## 1. Project context
 
@@ -73,22 +73,29 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 
 **Name:** Fit Finder
 
-**Location:** dark full-width widget directly below the hero.
+**Location:** full-width widget directly below the hero.
 
-**Purpose:** progressive vehicle-detail capture that hands off to the vehicle's roof rack listing (VPLP). On this single make/model page, Make and Model are pre-locked (there's only one vehicle this page is about) — the widget's real job here is narrowing Year/Body/Roof Type.
+**Since 2026-10-02 this is the one shared Vehicle Finder widget** (`rrgWidgetVehicleFinderHTML()` in `_shared/widgets.js`), the same component as Home, Fit My Vehicle, Cart and the Brand page — the page only places `<div data-widget="vehicle-finder" data-id="fitFinder" …>` with its options (below). It replaced this page's old bespoke dark block (Make/Model locked to single options, its own inline progressive-validation script); that script is gone. Like every other page it follows the session vehicle and the Site Admin → Design options light/dark setting (default light). (2026-10-02, Brenton)
 
-**Contents:** car-and-rack icon badge (`.ff-badge`) + "Fit Finder" heading + intro line, then 5 selects (Make, Model, Year, Body Style, Roof Type) + a gold "View Results" button (`.btn-cta`). The widget's CSS (`.fit-finder-widget`, `.ff-head`, `.ff-badge`, `.ff-row`) now lives in `shared.css`, because the site-wide Fit Finder drawer (`buildFitFinderDrawer()` in `shared.js`) reuses the same widget — including this page's car-and-rack icon, which replaced the drawer's generic car icon. The selects use the one shared select style (same chevron and padding as the PLP Sort select), 16px on phones so iOS doesn't zoom on tap.
+**Purpose:** vehicle-detail capture that hands off to the vehicle's roof rack listing (VPLP). On this single make/model page, Make and Model are **pre-filled to Toyota / Hilux but still changeable** (`data-vf-preset="hilux"`), so the shopper starts at Year — the widget's real job here is narrowing Year/Body/Roof Type.
 
-- **Make/Model:** locked, single option each (Toyota / Hilux).
+**Contents (no vehicle known):** car-and-rack icon badge (`.ff-badge`) + "Fit Finder" heading + intro line ("Looking for Complete Racks for your vehicle? Select your vehicle to find the perfect fit.", `data-intro`), then 5 selects (Make, Model, Year, Body Style, Roof Type) + a gold "View Results" button (`.btn-cta`), and a "Shop without a vehicle ›" link (→ VPLP, `data-vf-browse-href`). The widget's CSS (`.fit-finder-widget`, `.ff-head`, `.ff-badge`, `.ff-row`) lives in `shared.css`. The selects use the one shared select style (same chevron and padding as the PLP Sort select), 16px on phones so iOS doesn't zoom on tap.
+
+- **Make/Model:** real Make → Model cascade (Toyota Hilux / Ford Ranger in the demo, `FIT_FINDER_VEHICLES`), pre-filled to Toyota / Hilux.
 - **Year:** 2024 Onwards (N90) / 2015–2023 (N80) / 2005–2015 (N70) / Pre-2005 — kept in sync with the Generation Table (Section 4.2) so the two never disagree about where the generation boundaries fall.
 - **Body Style:** Double Cab (4dr Ute) / Xtra Cab / Single Cab.
 - **Roof Type:** No Rails — Bare Roof / Styling Bars Only (Non Load-Rated) / Aftermarket Rails Fitted.
 
-**Validation:** "View Results" stays disabled until Year, Body Style and Roof Type all have a value (Make/Model don't count — they're pre-set). Not a real cascade (nothing narrows the options in a later select based on an earlier one) — this is progressive-validation only, appropriate for a single-vehicle page.
+**Contents (vehicle known):** the shared vehicle bar — vehicle photo, "Shopping for your Toyota Hilux?", the picked Year/Body/Roof summary, a gold "Shop Hilux roof racks" button (`data-vf-shop-label="Shop {model} roof racks"`, → VPLP via `data-vf-shop-href`) and "Change vehicle", which resets the cascade to Make in place. On phones (≤600px) the photo sits on top full width, then the text, then a full-width button with Change vehicle centred under it.
 
-**Click action:** "View Results" (`data-vclp-cta="view-results"`) sets the session vehicle (`rrgSetSession('vehicleSet', true)` in `session-state.js`) and navigates to the VPLP (`../vplp/index.html`) — the same result the site-wide Fit Finder drawer produces. There is no alert any more (the old "no PLP exists yet" `alert()` predated the VPLP). In production this should go to the real vehicle roof rack listing filtered to the selected Year/Body/Roof. **This is the one hand-off every other piece of this page's SEO/content work points toward** — the Generation Table, the Fit Finder's own Year select, and the fitment-education copy all exist to get a visitor to a confident answer here.
+**Validation:** "View Results" stays disabled until Model, Year, Body Style and Roof Type all have a value; changing Make or Model resets the later selects (the shared cascade, `initFitFinderCascade()` in `shared.js`).
+
+**Click action:** "View Results" (`[data-ff-submit]`) sets the session vehicle and navigates to the VPLP (`data-vf-submit-href="../vplp/index.html"`). In production this should go to the real vehicle roof rack listing filtered to the selected Year/Body/Roof. **This is the one hand-off every other piece of this page's SEO/content work points toward** — the Generation Table, the Fit Finder's own Year select, and the fitment-education copy all exist to get a visitor to a confident answer here.
 
 **States:**
+
+*These screenshots predate 2026-10-02 — they show the old bespoke dark widget with Make/Model locked, not the shared Vehicle Finder.*
+
 - Empty (default): ![Fit Finder — empty](vclp-dev-brief-assets/vclp-hero-closeup.png)
 - All fields filled, "View Results" enabled: ![Fit Finder — filled](vclp-dev-brief-assets/vclp-fitfinder-filled.png)
 
@@ -173,7 +180,7 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 
 ## 6. Known gaps before production
 
-1. **Almost every link on this page is a placeholder** (`href="#"`) — header/footer nav (documented separately), breadcrumbs, and both Trust Banner CTAs. The exceptions are the Fit Finder's "View Results", which goes to the prototype VPLP (`../vplp/index.html`), and Change Vehicle, which opens the Fit Finder drawer. **This is the single hard blocker on this page having real SEO/AEO value**, not just a content gap: a page with no real internal links in or out is effectively orphaned regardless of how solid its on-page content and structured data are. In production, "View Results" must point at the real vehicle listing URL (there's no live vehicle-category URL yet, which is also why the VPLP has no canonical), and the breadcrumb/JSON-LD `#` items need real URLs.
+1. **Almost every link on this page is a placeholder** (`href="#"`) — header/footer nav (documented separately), breadcrumbs, and both Trust Banner CTAs. The exceptions are the Fit Finder's "View Results" (and, since 2026-10-02, its "Shop without a vehicle ›" link and the vehicle-known "Shop Hilux roof racks" button), which goes to the prototype VPLP (`../vplp/index.html`), and Change Vehicle, which opens the Fit Finder drawer. **This is the single hard blocker on this page having real SEO/AEO value**, not just a content gap: a page with no real internal links in or out is effectively orphaned regardless of how solid its on-page content and structured data are. In production, "View Results" must point at the real vehicle listing URL (there's no live vehicle-category URL yet, which is also why the VPLP has no canonical), and the breadcrumb/JSON-LD `#` items need real URLs.
 2. **Canonical/OG/Twitter URL slug** (Section 5, item 3) is an educated guess, not confirmed against the real Magento URL structure.
 3. **Social share image** (Section 5, item 3) — the hero vehicle cutout is standing in for a proper 1200×630 `og:image`/`twitter:image` asset.
 4. **Generation Table content** (Section 4.2) needs review against real Toyota model-code references, and the `Vehicle` structured data built from it (Section 5, item 6) needs a second look from whoever owns this project's SEO before launch.

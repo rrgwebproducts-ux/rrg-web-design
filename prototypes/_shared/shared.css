@@ -459,7 +459,7 @@ a.rrg-logo{display:block;}
 .fit-gallery-slideout{--drawer-w:600px;}
 .open>.exdemo-slideout,.open>.store-slideout,.open>.fit-gallery-slideout{transform:translateX(0);}
 .exdemo-slideout-head,.store-slideout-head,.fit-gallery-slideout-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid var(--rrg-line);flex:0 0 auto;}
-.exdemo-slideout-head h2,.store-slideout-head h2,.fit-gallery-slideout-head h2,.fit-finder-drawer .ff-head h2,.plp-vehicle-notice h2{font-size:22px;margin:0;}
+.exdemo-slideout-head h2,.store-slideout-head h2,.fit-gallery-slideout-head h2,.plp-vehicle-notice h2{font-size:22px;margin:0;}
 .exdemo-slideout-head h2{margin-bottom:4px;}
 /* Close button — one style for every drawer and modal (C2). */
 .exdemo-slideout-close,.store-slideout-close,.fit-gallery-slideout-close,.plp-vehicle-notice-close{background:var(--rrg-bg);border:none;border-radius:50%;width:48px;height:48px;font-size:22px;line-height:1;color:var(--rrg-grey-700);flex:0 0 auto;cursor:pointer;transition:background var(--t-fast);}
@@ -1392,6 +1392,16 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .home-hero-finder .vf-text h2{font-size:26px;}
 .home-hero-finder .vf-actions{grid-column:1 / -1;flex-direction:row;align-items:center;gap:16px;}
 .home-hero-finder .vf-actions .btn{flex:1 1 auto;}
+/* Phones (2026-10-02, Brenton): photo on top, text and actions full width below — beside a 120px
+   photo the text column was squeezed to a few words a line. Covers the home hero too. */
+@media (max-width:600px){
+  .vf-known,.home-hero-finder .vf-known{grid-template-columns:minmax(0,1fr);gap:14px;}
+  .vf-photo,.home-hero-finder .vf-photo{width:100%;max-width:320px;justify-self:center;}
+  /* Full-width button with Change vehicle centred under it — side by side, the button wrapped
+     onto two lines (and VCLP's "Shop roof racks for my Hilux" is longer still). */
+  .vf-actions,.home-hero-finder .vf-actions{flex-direction:column;align-items:stretch;gap:12px;}
+  .vf-change{align-self:center;}
+}
 
 /* Fit Finder drawer (buildFitFinderDrawer() in shared.js) — the widget above inside a Store
    slide-out-style drawer: fields stacked one per row for the drawer's width, button full width.
