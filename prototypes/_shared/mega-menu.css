@@ -192,6 +192,11 @@ body.mm-mobile-locked{overflow:hidden;}
 .mm-mobile-utility{flex:1 1 auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-left:auto;min-width:0;}
 .mm-mobile-utility-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--rrg-black);text-decoration:none;text-align:right;}
 .mm-mobile-utility-item svg{width:15px;height:15px;flex:0 0 auto;color:var(--rrg-red);}
+/* Vehicle name only, no "Your Vehicle:" prefix (2026-10-02) — same as the mobile utility bar;
+   the full text wrapped onto two lines beside the logo. One line, ellipsised if very long. */
+.mm-mobile-utility .u-item-label{display:none;}
+.mm-mobile-utility-item{max-width:100%;}
+.mm-mobile-utility-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .mm-mobile-close{background:none;border:none;padding:2px;margin-top:2px;color:var(--rrg-black);display:flex;cursor:pointer;flex:0 0 auto;}
 .mm-mobile-close svg{width:20px;height:20px;}
 /* Levels 1/2's back+title bar gets its own close button too (the topbar's is hidden on
