@@ -262,7 +262,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 ---
 
-### 4.9 Search Typeahead / Recent & Trending Searches
+### 4.9 Search Typeahead / Recent & Popular Searches
 
 **Name:** Header Search Typeahead
 
@@ -271,11 +271,15 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 **Purpose:** gets shoppers to the right thing while they're still typing — a query, a brand, a page or a product — and into the search-results page when they press Enter. The typing state was rebuilt 2026-09-29 (from the 2026-09-24 meeting, with Supercheap Auto's search as the reference Brenton pointed to) and now genuinely matches what's typed.
 
 **Contents/behaviour — two states, depending on the input:**
-- **Focused, empty** — a "Recent Searches" section (canned list in the prototype; **session-based per shopper in production**) with a "Clear" action that hides that section for the rest of the page view only, then "Trending Searches" and "Popular Categories," all as chip rows. The chips use the standard 6px radius (`--radius`; they were a 999px pill until the 2026-09-29 pass), The panel is the **same width and position as the typing state** below (up to 760px, right edge lined up with the box), and the section heads match the typing state's column titles (Barlow Condensed 16px bold, black, sentence case) with the same 18px inset. Changed 2026-09-29 so the panel doesn't jump size and style on the first keystroke. The dropdown panel uses the `--shadow-pop` shadow. **Trending and Popular Categories are merchandiser-controlled in production.** Trending now uses the real top searches from RRG's Algolia analytics (2026-09-24 meeting): U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs. Every term/category here was checked against the live site before being used (see the note below) — don't add a new one without the same check.
-- **1+ characters typed** — a panel wider than the search box (up to 760px, growing leftwards so its right edge lines up with the box):
+- **Both states use the same two-column layout** (2026-10-02, Brenton — the focus state used to be chip rows, so the panel changed shape on the first keystroke): link groups on the left, products on the right, in a panel wider than the search box (up to 760px, growing leftwards so its right edge lines up with the box), with the `--shadow-pop` shadow. Column titles are Barlow Condensed 16px bold, black, sentence case, with an 18px inset.
+- **Focused, empty:**
+  - **left column:** **Recent searches** (canned list in the prototype; **session-based per shopper in production**) with a "Clear" action beside the title that hides the group for the rest of the page view only; **Popular searches** — the real top searches from RRG's Algolia analytics (2026-09-24 meeting): U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs; **Pages that might be interesting** — Fit My Vehicle, Find a Store, the installation-service help article, Shipping & Delivery.
+  - **right column: Suggested products** — five products RRG wants to push (thumbnail, brand, name, price). No View All Results here, as there's no query yet.
+  - **Popular searches, pages and suggested products are merchandiser-controlled in production.** Every term here was checked against the live site before being used (see the note below) — don't add a new one without the same check.
+- **1+ characters typed** — everything filters to the typed text:
   - top row, full width: **"Search for '\<query\>'"** — same as pressing Enter.
   - **left column**, each group only shown when it has matches: **Popular searches** (up to 5 — real category names and top searches containing the typed words, each linking to the search-results page for that term), **Looking for these brands?** (up to 3 — brands whose name matches first, then brands that sell the searched category, linking to the brand page), **Pages that might be interesting** (up to 5 — Fit My Vehicle, vehicle landing pages, category pages, Find a Store, info pages and help-centre buying guides).
-  - **right column: Products** (up to 5 — thumbnail, brand, name clamped to 2 lines, price), then **View All Results**. If no product matches, it shows "Popular right now" instead of an empty column.
+  - **right column: Products** (up to 5 — thumbnail, brand, name clamped to 2 lines, price), then **View All Results**, pinned to the bottom of the panel (2026-10-02 — it sat straight under the last product, leaving a gap below it whenever the left column was taller). If no product matches, it shows "Popular right now" instead of an empty column.
   - Vehicle-specific pages (e.g. "Toyota Hilux Roof Racks") only appear once a vehicle is set in session, or when the typed text names that vehicle.
   - Under 640px wide (mobile), the two columns stack: searches / brands / pages, then products.
 - **Enter / the search button** go to the search-results page with `?q=<query>` (added 2026-09-29 — the results page no longer has its own search box, so this is the only way in). On the search-results page itself, the box is pre-filled with the current query.
@@ -288,13 +292,13 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Pending:** Jack has a predictive-search example he rates that hasn't been shared yet — worth comparing against once it arrives.
 
-**A note on the demo content itself:** the first pass at Trending Searches named products RRG doesn't actually sell (snorkels, dual battery kits) or mislabeled ones it does (camping fridges — the real category is fridge slides/accessories, not the fridge itself) — caught by the client's team reviewing literally, fixed by crawling the live site's real category nav before choosing terms. Worth remembering for anyone extending this list later.
+**A note on the demo content itself:** the first pass at the popular (then "Trending") searches named products RRG doesn't actually sell (snorkels, dual battery kits) or mislabeled ones it does (camping fridges — the real category is fridge slides/accessories, not the fridge itself) — caught by the client's team reviewing literally, fixed by crawling the live site's real category nav before choosing terms. Worth remembering for anyone extending this list later.
 
 **Screenshots:**
-- Focus state (Recent/Trending Searches + Popular Categories), desktop: ![Search focus state](header-dev-brief-assets/search-focus-state.png)
+- Focus state, desktop (*screenshot predates the 2026-10-02 two-column focus state — recapture at final handover*): ![Search focus state](header-dev-brief-assets/search-focus-state.png)
 - Typing state (two columns — searches/brands/pages + products), desktop: ![Search typeahead](header-dev-brief-assets/search-typeahead.png)
 - Typing state, mobile (stacked): ![Search typeahead, mobile](header-dev-brief-assets/search-mobile-typing.png)
-- Focus state, mobile takeover: ![Search focus state, mobile](header-dev-brief-assets/search-mobile-focus.png)
+- Focus state, mobile takeover (*predates 2026-10-02 too*): ![Search focus state, mobile](header-dev-brief-assets/search-mobile-focus.png)
 
 ---
 
@@ -348,11 +352,11 @@ Every hover effect and click action from Sections 4.1–4.10, gathered in one pl
 | Site Admin button (pill on desktop, icon-only below 900px) | Opens/closes the admin panel |
 | Any Site Admin toggle/select | Immediately applies (no save button) and persists across reloads until changed again |
 | Site Admin "Reset all demo settings" | After a confirm, clears every saved prototype setting and reloads |
-| Search box, focused + empty | Shows Recent/Trending Searches + Popular Categories (Section 4.9) |
+| Search box, focused + empty | Shows the two-column dropdown — recent searches, popular searches, pages, suggested products (Section 4.9) |
 | Search box, 1+ characters typed | Shows the two-column matched dropdown — searches, brands, pages, products (Section 4.9) |
 | Search box, Enter / search button | Goes to the search-results page for the typed query |
 | Search dropdown's "Clear" (Recent Searches) | Hides that section for this page view only, not persisted |
-| Search dropdown's "Search for…" / "View All Results" / any chip or popular search | Search-results page for that term |
+| Search dropdown's "Search for…" / "View All Results" / any recent or popular search | Search-results page for that term |
 | Search dropdown's brand / page link | That brand page or site page (live-site and help-centre links open in a new tab in the prototype) |
 
 ---

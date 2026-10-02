@@ -3045,28 +3045,37 @@ function rrgSearchLinkAttrs(href) {
 }
 
 // ==== Header search dropdown ===================================================================
-// Two states. Box focused but empty: Recent / Trending / Popular Categories chips (2026-09-22).
-// 1+ characters typed (reworked 2026-09-29 on Brenton's ask, modelled on Supercheap Auto's
-// search): a "Search for '<query>'" row across the top (same as pressing Enter), then two
-// columns — Popular searches / Looking for these brands? / Pages that might be interesting on
-// the left, matching products on the right. Everything in it is matched against the typed text
-// for real (rrgSearch*For above), unlike the 2026-09-22 version's rotating canned batches. The
-// panel collapses to one stacked column when it's narrower than 640px (mobile takeover).
+// Two states, one layout (2026-10-02, Brenton — the focus state used to be chip rows, so the panel
+// changed shape on the first keystroke). Both are two columns: link groups on the left, products
+// on the right; the panel collapses to one stacked column when it's narrower than 640px (mobile
+// takeover).
+// - Box focused but empty: Recent searches (with Clear) / Popular searches / Pages that might be
+//   interesting on the left, Suggested products on the right — all merchandiser-picked.
+// - 1+ characters typed (reworked 2026-09-29 on Brenton's ask, modelled on Supercheap Auto's
+//   search): a "Search for '<query>'" row across the top (same as pressing Enter), then Popular
+//   searches / Looking for these brands? / Pages that might be interesting on the left, matching
+//   products on the right with View All Results pinned to the bottom of the panel. Everything is
+//   matched against the typed text for real (rrgSearch*For above).
 //
 // Recent Searches is a fixed canned list (session-based in production — each shopper's own),
-// with a Clear action that hides it for this page view only. Trending and Popular Categories are
-// merchandiser-controlled in production.
-// Trending (2026-09-29) = the real top searches from Algolia, shown in the 2026-09-24 meeting:
-// U-Bolts by a long way, then Roof Boxes and Light Bars; "Rhino Rack tie down" was in the
-// "searches without results" report, so it's worth fixing in Algolia too. Every term here was
+// with a Clear action that hides it for this page view only. Popular searches, pages and
+// suggested products are merchandiser-controlled in production.
+// Popular searches (2026-09-29) = the real top searches from Algolia, shown in the 2026-09-24
+// meeting: U-Bolts by a long way, then Roof Boxes and Light Bars; "Rhino Rack tie down" was in
+// the "searches without results" report, so it's worth fixing in Algolia too. Every term here was
 // checked as a real category/search first — don't add one without doing the same (2026-09-22:
 // the client's team caught invented terms like "snorkels" and "dual battery kits").
 const HEADER_SEARCH_RECENT = ['Roof Rack for Hilux', 'Bike Rack', 'Thule Bars'];
 const HEADER_SEARCH_TRENDING = ['U-Bolts', 'Roof Boxes', 'Light Bars', 'Rhino Rack Tie Downs'];
-const HEADER_SEARCH_POPULAR_CATEGORIES = [
-  { label: 'Roof Racks', href: RRG_PROTO + 'vplp/index.html' },
-  { label: 'Bike Racks', href: RRG_PROTO + 'plp/index.html' },
-  { label: 'Camping Gear', href: RRG_PROTO + 'plp-camping/index.html' },
+// Picked by title from RRG_SEARCH_PAGES / by name from RRG_SEARCH_SUGGEST_PRODUCTS, so the focus
+// state's links and products are the same real entries the typing state matches against.
+const HEADER_SEARCH_FOCUS_PAGES = ['Fit My Vehicle', 'Find a Store', 'Do you offer an installation service?', 'Shipping & Delivery'];
+const HEADER_SEARCH_FOCUS_PRODUCTS = [
+  'Rhino Rack 62112 Pioneer Platform (1500mm x 1240mm)',
+  'Thule SmartRack XT Silver 2 Bar Roof Rack',
+  'Thule FreeRide 532 Silver Roof Mounted Bike Carrier x1',
+  'Yakima RoadShower MD 26L',
+  'Darche Ranger Solo + Swag'
 ];
 
 // Resolved against the current page's own URL (not a hardcoded "../search-results/..." string)
@@ -3075,58 +3084,21 @@ function headerSearchResultsUrl(query) {
   return new URL(`${RRG_PROTO}search-results/index.html?${new URLSearchParams({ q: query })}`, window.location.href).href;
 }
 
-function headerSearchFocusHTML(recentCleared) {
-  return `
-    ${recentCleared ? '' : `
-      <div class="rrg-search-suggest-section">
-        <div class="rrg-search-suggest-section-head">
-          <span>Recent Searches</span>
-          <button type="button" class="rrg-search-suggest-clear" data-clear-recent>Clear</button>
-        </div>
-        <div class="rrg-search-suggest-chips">
-          ${HEADER_SEARCH_RECENT.map(term => `<a class="rrg-search-suggest-chip" href="${headerSearchResultsUrl(term)}">${term}</a>`).join('')}
-        </div>
-      </div>
-    `}
-    <div class="rrg-search-suggest-section">
-      <div class="rrg-search-suggest-section-head"><span>Trending Searches</span></div>
-      <div class="rrg-search-suggest-chips">
-        ${HEADER_SEARCH_TRENDING.map(term => `<a class="rrg-search-suggest-chip" href="${headerSearchResultsUrl(term)}">${term}</a>`).join('')}
-      </div>
-    </div>
-    <div class="rrg-search-suggest-section">
-      <div class="rrg-search-suggest-section-head"><span>Popular Categories</span></div>
-      <div class="rrg-search-suggest-chips">
-        ${HEADER_SEARCH_POPULAR_CATEGORIES.map(c => `<a class="rrg-search-suggest-chip" href="${new URL(c.href, window.location.href).href}">${c.label}</a>`).join('')}
-      </div>
-    </div>
-  `;
-}
-
-function headerSearchTypingHTML(query) {
-  const queries = rrgSearchQueriesFor(query).slice(0, 5);
-  const brands = rrgSearchBrandsFor(query).slice(0, 3);
-  const pages = rrgSearchPagesFor(query).slice(0, 5);
-  const matchedProducts = rrgSearchProductsFor(query).slice(0, 5);
-  // Nothing matched: fall back to a generic "popular right now" set rather than an empty
-  // column (Supercheap does the same).
-  const products = matchedProducts.length ? matchedProducts : RRG_SEARCH_SUGGEST_PRODUCTS.slice(0, 4);
-  const listSection = (title, items) => items.length ? `
+// Shared by both states: left-column link group (skipped when empty; `action` sits beside the
+// title, e.g. Recent searches' Clear), and the two-column body.
+function headerSearchGroupHTML(title, items, action = '') {
+  return items.length ? `
     <div class="rrg-search-suggest-group">
-      <div class="rrg-search-suggest-coltitle">${title}</div>
+      <div class="rrg-search-suggest-coltitle">${title}${action}</div>
       ${items.join('')}
     </div>` : '';
-  const left = [
-    listSection('Popular searches', queries.map(s => `<a class="rrg-search-suggest-link" href="${headerSearchResultsUrl(s)}">${rrgEscapeHTML(s)}</a>`)),
-    listSection('Looking for these brands?', brands.map(b => `<a class="rrg-search-suggest-link" ${rrgSearchLinkAttrs(rrgBrandUrl(b))}>${b.name}</a>`)),
-    listSection('Pages that might be interesting', pages.map(p => `<a class="rrg-search-suggest-link" ${rrgSearchLinkAttrs(p.href)}>${rrgEscapeHTML(p.title)}</a>`))
-  ].join('');
+}
+function headerSearchColsHTML(left, productsTitle, products, footer = '') {
   return `
-    <a class="rrg-search-suggest-searchfor" href="${headerSearchResultsUrl(query)}">Search for <strong>${rrgEscapeHTML(query)}</strong></a>
     <div class="rrg-search-suggest-cols${left ? '' : ' is-single'}">
       ${left ? `<div class="rrg-search-suggest-col">${left}</div>` : ''}
       <div class="rrg-search-suggest-col rrg-search-suggest-col-products">
-        <div class="rrg-search-suggest-coltitle">${matchedProducts.length ? 'Products' : 'Popular right now'}</div>
+        <div class="rrg-search-suggest-coltitle">${productsTitle}</div>
         ${products.map(p => `
           <div class="rrg-search-suggest-product">
             <img src="${p.image}" alt="" loading="lazy">
@@ -3137,9 +3109,43 @@ function headerSearchTypingHTML(query) {
             </div>
           </div>
         `).join('')}
-        <a class="rrg-search-suggest-viewall" href="${headerSearchResultsUrl(query)}">View All Results</a>
+        ${footer}
       </div>
     </div>
+  `;
+}
+const headerSearchQueryLink = s => `<a class="rrg-search-suggest-link" href="${headerSearchResultsUrl(s)}">${rrgEscapeHTML(s)}</a>`;
+const headerSearchPageLink = p => `<a class="rrg-search-suggest-link" ${rrgSearchLinkAttrs(p.href)}>${rrgEscapeHTML(p.title)}</a>`;
+
+function headerSearchFocusHTML(recentCleared) {
+  const pages = HEADER_SEARCH_FOCUS_PAGES.map(t => RRG_SEARCH_PAGES.find(p => p.title === t)).filter(Boolean);
+  const products = HEADER_SEARCH_FOCUS_PRODUCTS.map(n => RRG_SEARCH_SUGGEST_PRODUCTS.find(p => p.name === n)).filter(Boolean);
+  const left = [
+    recentCleared ? '' : headerSearchGroupHTML('Recent searches', HEADER_SEARCH_RECENT.map(headerSearchQueryLink),
+      '<button type="button" class="rrg-search-suggest-clear" data-clear-recent>Clear</button>'),
+    headerSearchGroupHTML('Popular searches', HEADER_SEARCH_TRENDING.map(headerSearchQueryLink)),
+    headerSearchGroupHTML('Pages that might be interesting', pages.map(headerSearchPageLink))
+  ].join('');
+  return headerSearchColsHTML(left, 'Suggested products', products);
+}
+
+function headerSearchTypingHTML(query) {
+  const queries = rrgSearchQueriesFor(query).slice(0, 5);
+  const brands = rrgSearchBrandsFor(query).slice(0, 3);
+  const pages = rrgSearchPagesFor(query).slice(0, 5);
+  const matchedProducts = rrgSearchProductsFor(query).slice(0, 5);
+  // Nothing matched: fall back to a generic "popular right now" set rather than an empty
+  // column (Supercheap does the same).
+  const products = matchedProducts.length ? matchedProducts : RRG_SEARCH_SUGGEST_PRODUCTS.slice(0, 4);
+  const left = [
+    headerSearchGroupHTML('Popular searches', queries.map(headerSearchQueryLink)),
+    headerSearchGroupHTML('Looking for these brands?', brands.map(b => `<a class="rrg-search-suggest-link" ${rrgSearchLinkAttrs(rrgBrandUrl(b))}>${b.name}</a>`)),
+    headerSearchGroupHTML('Pages that might be interesting', pages.map(headerSearchPageLink))
+  ].join('');
+  return `
+    <a class="rrg-search-suggest-searchfor" href="${headerSearchResultsUrl(query)}">Search for <strong>${rrgEscapeHTML(query)}</strong></a>
+    ${headerSearchColsHTML(left, matchedProducts.length ? 'Products' : 'Popular right now', products,
+      `<a class="rrg-search-suggest-viewall" href="${headerSearchResultsUrl(query)}">View All Results</a>`)}
   `;
 }
 

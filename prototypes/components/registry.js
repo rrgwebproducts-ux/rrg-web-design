@@ -85,7 +85,7 @@ const RRG_COMPONENTS = [
   { id: 'search-typeahead', group: 'global', name: 'Header Search & Typeahead', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'Search box in rrgWidgetMainHeaderHTML (widgets.js); headerSearchFocusHTML / headerSearchTypingHTML (shared.js)',
     variants: [
-      v('Focused (recent + trending)', 'header', '.rrg-header-shell', { do: 'focus:.rrg-main-header .rrg-search input', keep: '.rrg-search-suggest', sizes: ['d'] }),
+      v('Focused (recent + popular + suggested products)', 'header', '.rrg-header-shell', { do: 'focus:.rrg-main-header .rrg-search input', keep: '.rrg-search-suggest', sizes: ['d'] }),
       v('Typing "roof"', 'header', '.rrg-header-shell', { do: 'type:.rrg-main-header .rrg-search input|roof', keep: '.rrg-search-suggest', sizes: ['d'] }),
     ] },
   { id: 'sticky-header', group: 'global', name: 'Sticky Mobile Header', build: 'shared', usedOn: NOT_CHECKOUT,
