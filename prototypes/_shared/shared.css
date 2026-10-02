@@ -1386,12 +1386,16 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 .vf-proof{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--rrg-line-soft);font-size:13px;font-weight:700;color:var(--rrg-grey-700);}
 .fit-finder-widget[data-vf-style="dark"] .vf-proof{border-top-color:rgba(255,255,255,.15);color:var(--rrg-on-dark-muted);}
-/* Narrow placements (the home hero panel) stack photo, text and actions. */
-.home-hero-finder .vf-known{grid-template-columns:120px minmax(0,1fr);}
-.home-hero-finder .vf-photo{width:120px;}
-.home-hero-finder .vf-text h2{font-size:26px;}
-.home-hero-finder .vf-actions{grid-column:1 / -1;flex-direction:row;align-items:center;gap:16px;}
-.home-hero-finder .vf-actions .btn{flex:1 1 auto;}
+/* The desktop home hero panel (over the banner, >1100px) stacks like phones below (2026-10-02,
+   Brenton): photo on top, then text and actions the panel's full width. Between 601 and 1100px the
+   panel drops below the banner at full width, so it uses the standard side-by-side layout. */
+@media (min-width:1101px){
+  .home-hero-finder .vf-known{grid-template-columns:minmax(0,1fr);gap:12px;}
+  .home-hero-finder .vf-photo{width:100%;max-width:240px;justify-self:center;}
+  .home-hero-finder .vf-text h2{font-size:26px;}
+  .home-hero-finder .vf-actions{flex-direction:row;align-items:center;gap:16px;}
+  .home-hero-finder .vf-actions .btn{flex:1 1 auto;}
+}
 /* Phones (2026-10-02, Brenton): photo on top, text and actions full width below — beside a 120px
    photo the text column was squeezed to a few words a line. Covers the home hero too. */
 @media (max-width:600px){
@@ -1958,7 +1962,7 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
    is the one primary action above the fold (spec Section 4). */
 .home-hero-link{position:absolute;right:calc(max(0px,(100% - var(--maxw)) / 2) + 24px);bottom:44px;z-index:1;}
 .home-hero-finder-wrap{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;z-index:2;}
-.home-hero-finder{width:420px;margin:0;pointer-events:auto;}
+.home-hero-finder{width:504px;margin:0;pointer-events:auto;}
 .home-hero-finder .ff-head{margin-bottom:16px;}
 .home-hero-finder .ff-head p{flex-basis:100%;}
 /* Two fields per row at every width — the shared ≤520px one-column rule would make the phone
