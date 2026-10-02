@@ -410,7 +410,7 @@ const RRG_COMPONENTS = [
       v('Vehicle known — dark', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.dark }),
       v('No vehicle — light', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.noVehicle }),
       v('No vehicle — dark', 'fit-my-vehicle', '.fit-finder-widget', { ls: { ...S.noVehicle, ...S.dark } }),
-      v('Home hero', 'home', '.home-hero .fit-finder-widget'),
+      v('Home (above the hero)', 'home', '.home-finder'),
       v('VCLP (Toyota / Hilux pre-filled)', 'vehicle-category-landing', '#fitFinder', { ls: S.noVehicle }),
       v('Brand page', 'brand', '#brandFinder'),
     ] },

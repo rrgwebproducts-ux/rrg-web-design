@@ -45,10 +45,16 @@
 <main data-home-page>
 <h1 class="visually-hidden">Roof Racks Galore — Australia’s Roof Rack Specialists</h1>
 
+<!-- Vehicle finder (spec.md §16 items 7/26) — since 2026-10-02 (Brenton) the standard horizontal
+     inline widget above the hero, as on Fit My Vehicle, instead of a panel over the banner: the
+     Fit Finder with no vehicle, "Shopping for your Toyota Hilux?" with one. Lands on the VLP. -->
+<div class="wrap">
+  <div data-widget="vehicle-finder" data-class="home-finder" data-vf-browse-href="#shop-by-category"></div>
+</div>
+
 <!-- Section 5.2 — hero (docs/home/home-spec.md). Four of the live slider's seven slides, their
-     images downloaded from the live site (_shared/home-hero/); the other three are the Current
-     Offers tiles below, so nothing shows twice. The Fit Finder sits over the left on desktop and
-     drops below the banner at ≤1100px. initHomeHero() + initInlineFitFinders() in shared.js. -->
+     images downloaded from the live site (_shared/home-hero/); the other three rotate in the
+     Current Offers tile below, so nothing shows twice. initHomeHero() in shared.js. -->
 <section class="home-hero" aria-roledescription="carousel" aria-label="Featured offers">
   <div class="home-hero-stage">
     <div class="home-hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 of 4" data-title="Spring Adventure Sale">
@@ -74,12 +80,6 @@
     <button type="button" class="home-hero-nav prev" aria-label="Previous slide">‹</button>
     <button type="button" class="home-hero-nav next" aria-label="Next slide">›</button>
     <div class="home-hero-dots"></div>
-  </div>
-  <div class="wrap home-hero-finder-wrap">
-    <!-- Vehicle finder (spec.md §16 items 7/26): the Fit Finder with no vehicle, "Shopping for
-         your Toyota Hilux" with one — replaces the separate vehicle bar that sat below the offers.
-         Same cascade as the header's Fit My Vehicle drawer; lands on the VLP. -->
-    <div data-widget="vehicle-finder" data-class="home-hero-finder" data-vf-browse-href="#shop-by-category" data-vf-proof="Since 1989 · 35+ fitting centres · 200,000+ racks fitted"></div>
   </div>
 </section>
 
@@ -109,10 +109,12 @@
   </div>
 
 
-  <!-- Section 5.5 — the live page's nine category tiles plus Recovery Gear (live's Overstock tile
-       is in Current Offers). Figma tile images, _shared/category-tiles/. -->
-  <section class="cat-tile-section" id="shop-by-category">
-    <h2 class="related-heading">Shop by Category</h2>
+  <!-- Section 5.5 — the live page's category tiles plus Recovery Gear (less Roof Racks / Bike
+       Racks, which are in the promo row). Since 2026-10-02 no visible heading and the promo row's
+       20px gap above, so the promo row and these tiles read as one block (Brenton). Figma tile
+       images, _shared/category-tiles/. -->
+  <section class="cat-tile-section cat-tile-section--home" id="shop-by-category">
+    <h2 class="visually-hidden">Shop by Category</h2>
     <div class="cat-tile-grid cat-tile-grid--home" id="homeCategoryGrid"></div>
   </section>
 
