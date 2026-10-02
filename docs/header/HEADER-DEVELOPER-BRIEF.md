@@ -57,7 +57,7 @@ Three stacked pieces, top to bottom, present on every page that includes this he
 | Item | Default | Other states |
 |---|---|---|
 | Nearest Store | "Your Nearest Store: North Lakes" (or the current region's store — see the Region Selector cascade in `DEVELOPER-BRIEF.md` 4.1) | Off: "Find A Store" |
-| Vehicle | "Your Vehicle: Toyota Hilux" | "Your Vehicle: Ford Ranger"; None: "Select Your Vehicle" |
+| Vehicle | "Your Vehicle: Toyota Hilux" (mobile: just "Toyota Hilux") | "Your Vehicle: Ford Ranger"; None: "Select Your Vehicle" |
 | Account | "Graham" | Off: "Log In" |
 
 **Implementation note:** `rrgVehicleGet()` returns `'none' | 'hilux' | 'ranger'`, `rrgVehicle()` returns that vehicle's record (or `null`), and `window.rrgSetVehicle(key)` sets it; `rrgApplySessionState()` writes the header text as "Your Vehicle: <name>". The older `rrgSetSession('vehicleSet', true/false)` still works for callers that only know "a vehicle is set" (the Fit Finder, Section 4.10) — it keeps the current vehicle, or picks the Toyota Hilux if none is set. Every change fires an `rrg-session-change` event that the rest of the page listens for.
@@ -204,7 +204,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 **"Products" isn't its own tab here — this is deliberate.** On desktop, "Products" is a button that opens the category list. On mobile, the category list simply **is** the takeover's root screen — there's no separate "Products" row to tap through first. Internally this root screen is called **Level 0** (not "Level 1," to avoid confusion with desktop's Level 1, which sits *behind* a Products trigger that mobile doesn't have) — content-wise, mobile Level 0/1/2 correspond to desktop Level 1/2/3.
 
 **Screen 1 — Level 0 (root):**
-- Own mini header: logo (links to the Home Page template, `prototypes/home/`, from every template since 2026-09-29 — it used to point at the template index; the home page in Magento), account (Graham/Log In), vehicle (Your Vehicle: .../Select Your Vehicle — opens the Fit Finder drawer, Section 4.10) — same session state as the Utility Bar (Section 4.1), a close button.
+- Own mini header: logo (links to the Home Page template, `prototypes/home/`, from every template since 2026-09-29 — it used to point at the template index; the home page in Magento), account (Graham/Log In), vehicle (just the vehicle name, e.g. "Toyota Hilux", without the "Your Vehicle:" prefix so it fits on one line beside the logo — 2026-10-02; or Select Your Vehicle — opens the Fit Finder drawer, Section 4.10) — same session state as the Utility Bar (Section 4.1), a close button.
 - Search bar (same typeahead/focus-state dropdown as desktop's — Section 4.9).
 - Sale banner (Section 4.5).
 - The 8 categories, Brands styled as a yellow bar (same treatment as desktop).
