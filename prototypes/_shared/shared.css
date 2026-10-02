@@ -1395,6 +1395,12 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
   .home-hero-finder .vf-text h2{font-size:26px;}
   .home-hero-finder .vf-actions{flex-direction:row;align-items:center;gap:16px;}
   .home-hero-finder .vf-actions .btn{flex:1 1 auto;}
+  /* Same size in every state (2026-10-02, Brenton): the vehicle state is ~13px taller than the
+     Fit Finder, so Change vehicle made the centred panel shrink in from top and bottom. One
+     min-height for both (the taller state plus the proof line's usual 14px gap), with the proof
+     line pinned to the bottom so the slack sits above it. */
+  .home-hero-finder{min-height:412px;display:flex;flex-direction:column;}
+  .home-hero-finder .vf-proof{margin-top:auto;}
 }
 /* Phones (2026-10-02, Brenton): photo on top, text and actions full width below — beside a 120px
    photo the text column was squeezed to a few words a line. Covers the home hero too. */
