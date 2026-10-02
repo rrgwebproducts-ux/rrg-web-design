@@ -20,7 +20,7 @@ When a big sale is on, the whole site takes on the campaign's colours, so that *
 | **Favicon** | RRG favicon | Lime 12-point "SALE" burst (Figma › FAV ICONS WIP) |
 | **Campaign strip** (new) | — | Black bar above the header on every page except checkout. Shows the campaign title (italic, lime), the offer and terms, a **live countdown** to the end of the sale, and "Shop the sale →". The whole strip is a link. It scrolls away and is never sticky. On mobile it's just the title + countdown. |
 | **Utility bar** | Red, white text | **Lime, black text** |
-| **Main nav** | — | Extra "Rack Friday Sale" link in the Figma toolbar-button style (lime italic on black). Desktop ≥1200px only; below that the strip carries the sale. |
+| **Main nav** | "Clearance" | **The sale replaces Clearance** in the same slot, because a sale takes priority over clearance (Brenton, 2026-10-02). The button uses the Figma toolbar-button style (lime italic on black) and a short label (`navLabel`: "Rack Friday", or just "Sale"). It's sized so the nav stays as wide as with Clearance, and the search box never drops to a second row: the header is a single row at the same widths with the sale on or off. |
 | **Mega-menu banner** | Store Finder promo (fallback) | The campaign banner (Figma node 3072-3886) |
 | **Add to Cart / primary buttons** (`.btn-cta`) | Gold | **Lime, black text** |
 | **PDP sale tag** | **None.** With no sale event there's no seasonal tag, just the Save band on the photo. | The campaign tag (Figma node 3075-641), beside the price on desktop and over the photo on mobile. It only shows when the product is actually discounted. |

@@ -81,7 +81,7 @@ const RRG_COMPONENTS = [
       v('AU', 'header', '.rrg-header-shell'),
       v('UK skin', 'header', '.rrg-header-shell', { ls: S.uk }),
       v('With items in the cart', 'header', '.rrg-header-shell', { cart: 'full' }),
-      v('Sale on (Rack Friday) — nav sale link', 'header', '.rrg-header-shell', { ls: S.sale, sizes: ['d'] }),
+      v('Sale on (Rack Friday) — sale button replaces Clearance', 'header', '.rrg-header-shell', { ls: S.sale, sizes: ['d'] }),
     ] },
   { id: 'mega-menu', group: 'global', name: 'Mega Menu (desktop)', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'Shell in rrgWidgetMainHeaderHTML (widgets.js); buildMegaMenuDesktop + mmPromoTileHTML (mega-menu.js)',

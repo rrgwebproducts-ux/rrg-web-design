@@ -47,14 +47,14 @@ body.campaign-on .rrg-utility-bar .u-item a,
 body.campaign-on .rrg-utility-bar .region-switcher-toggle{color:var(--campaign-ink);}
 body.campaign-on .rrg-utility-bar .region-switcher-menu a{color:var(--rrg-black);}
 
-/* ---- Nav: the sale link, styled like the Figma toolbar button (campaign colour on black) ---- */
+/* ---- Nav: the sale button replaces Clearance (a sale takes priority over clearance), styled
+   like the Figma toolbar button (campaign colour on black). Same slot, kept about as wide as
+   "Clearance" (short navLabel, small padding, negative margins to soak up its own padding) so
+   the header never gets wider than it is with no sale on. */
 .rrg-nav-campaign{display:none!important;}
-body.campaign-on .rrg-nav .rrg-nav-campaign{display:inline-flex!important;background:var(--campaign-ink);color:var(--campaign-accent);font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.01em;padding:5px 12px;border-radius:var(--radius);white-space:nowrap;}
+body.campaign-on .rrg-nav .rrg-nav-clearance{display:none;}
+body.campaign-on .rrg-nav .rrg-nav-campaign{display:inline-flex!important;background:var(--campaign-ink);color:var(--campaign-accent);font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:16px;line-height:1;text-transform:uppercase;letter-spacing:.01em;padding:6px 8px;margin:0 -6px;border-radius:var(--radius);white-space:nowrap;}
 body.campaign-on .rrg-nav .rrg-nav-campaign:hover{color:var(--campaign-ink);background:var(--campaign-accent);}
-/* The nav is tight below ~1200px — the strip still carries the sale, so the link steps aside. */
-@media (max-width:1199px){
-  body.campaign-on .rrg-nav .rrg-nav-campaign{display:none!important;}
-}
 
 /* ---- Mega menu banner: the campaign creative is wider than the slot — show it whole ---------- */
 body.campaign-on .mega-menu-banner{background:var(--campaign-accent);}

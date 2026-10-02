@@ -68,9 +68,9 @@ function rrgWidgetMainHeaderHTML() {
       <span class="sep">|</span>
       <a href="#">Store Finder</a>
       <a href="#">Fit My Vehicle</a>
-      <a href="#">Clearance</a>
-      <a href="../installation/index.html">Fitting</a>
+      <a href="#" class="rrg-nav-clearance">Clearance</a>
       ${typeof rrgCampaignNavLinkHTML === 'function' ? rrgCampaignNavLinkHTML() : ''}
+      <a href="../installation/index.html">Fitting</a>
     </nav>
     <div class="rrg-search">
       <input type="text" placeholder="Search Roof Racks or Accessories">

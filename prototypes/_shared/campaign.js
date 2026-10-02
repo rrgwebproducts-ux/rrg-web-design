@@ -15,6 +15,9 @@ const RRG_CAMPAIGN = {
   id: 'rack-friday',
   name: 'Rack Friday',
   title: 'Rack Friday Sale',
+  // The header nav button, which takes Clearance's slot while the sale is on — kept short so the
+  // nav is no wider than with Clearance (e.g. 'Rack Friday', or just 'Sale').
+  navLabel: 'Rack Friday',
   offer: 'Up to 50% off racks, platforms & more',
   terms: 'In-store + online',
   // End of the sale, Brisbane time (the hero creative: 1–29 Nov 2026).
@@ -72,9 +75,11 @@ function rrgCampaignStripHTML() {
 </a>`;
 }
 
+// Takes the Clearance link's slot (campaign.css hides Clearance while a sale is on): a sale takes
+// priority over clearance, and the nav keeps its width so the search box never drops a row.
 function rrgCampaignNavLinkHTML() {
   if (!rrgSaleOn()) return '';
-  return `<a class="rrg-nav-campaign" href="${RRG_CAMPAIGN.href}">${RRG_CAMPAIGN.title}</a>`;
+  return `<a class="rrg-nav-campaign" href="${RRG_CAMPAIGN.href}" aria-label="${RRG_CAMPAIGN.title}">${RRG_CAMPAIGN.navLabel}</a>`;
 }
 
 function rrgCampaignCountdownTick() {

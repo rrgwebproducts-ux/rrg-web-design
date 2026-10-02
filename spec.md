@@ -1508,7 +1508,7 @@ When a big sale is on, the whole site takes on the campaign's colours, with no l
   - Favicon.
   - New black campaign strip with a live countdown above the header.
   - Lime utility bar.
-  - Sale link in the nav.
+  - The nav's Clearance link becomes the sale button ("Rack Friday"), in the same slot, so the header doesn't get wider. A sale takes priority over clearance.
   - Campaign mega-menu banner.
   - Lime Add to Cart.
   - Campaign sale tag on the PDP and on every *discounted* product card (replaces the Spring Sale tag, which is retired). The Save band turns lime.
