@@ -1505,7 +1505,7 @@ When a big sale is on, the whole site takes on the campaign's colours, with no l
 
 - **Running a future sale:** `docs/campaign/campaign-spec.md` §3 lists every takeover item (19 of them) with what each sale supplies, the asset sizes and where each is set; §4 is the step-by-step checklist.
 - **Switch:** Site Admin → **Sale takeover** dropdown (Off / Rack Friday Sale / Christmas Sale, one option per campaign). It replaces the old "Clearance sale banner" toggle, is off by default and covers AU and NZ only (never the UK).
-- **Christmas Sale (2026-10-04):** the second campaign, in green with white text and gold on black. Its assets are drafts and its offer/dates placeholders until the designer and marketing supply finals. Building it split the colours into 6 roles, so light and dark campaign colours both work.
+- **Christmas Sale (2026-10-04):** the second campaign: green with white text on the utility bar, buttons and cards, an RRG-red strip and nav sale button (gold title, white text), and a gold-on-black footer. Its assets are drafts and its offer/dates placeholders until the designer and marketing supply finals. Building it split the colours into 6 roles, so light and dark campaign colours both work.
 - **What changes:**
   - Favicon.
   - New black campaign strip with a live countdown above the header.

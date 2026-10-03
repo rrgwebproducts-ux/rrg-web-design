@@ -16,26 +16,36 @@
      --campaign-dark           dark surfaces: campaign strip, nav sale button, footer
      --campaign-highlight      colour marks on the dark surfaces: strip title + CTA, countdown,
                                nav button text, footer stripe + headings
-     --campaign-on-highlight   text on the highlight (the countdown boxes) */
+     --campaign-on-highlight   text on the highlight (the countdown boxes)
+   Optional — the campaign strip and the nav sale button can have their own colour instead of the
+   dark surface (Christmas: RRG red, 2026-10-04). Each falls back as shown when a campaign leaves
+   it out:
+     --campaign-strip          strip + nav sale button background     (→ --campaign-dark)
+     --campaign-strip-title    strip title                            (→ --campaign-highlight)
+     --campaign-strip-link     strip "Shop the sale" + nav button text (→ --campaign-highlight)
+     --campaign-strip-muted    strip terms + "Ends in" label          (→ --rrg-on-dark-muted) */
 /* Rack Friday — Figma "RRG Campaign Templates" › Colours (Electric Lime + Pure Black). */
 body[data-campaign="rack-friday"]{--campaign-accent:#D8FF1E;--campaign-accent-hover:#C2EB00;--campaign-on-accent:#000;--campaign-dark:#000;--campaign-highlight:#D8FF1E;--campaign-on-highlight:#000;}
-/* Christmas — festive green (white text) + gold on black (2026-10-04, Brenton picked green + gold). */
-body[data-campaign="christmas"]{--campaign-accent:#0E5A36;--campaign-accent-hover:#0A4428;--campaign-on-accent:#fff;--campaign-dark:#000;--campaign-highlight:#F2C14E;--campaign-on-highlight:#000;}
+/* Christmas — festive green (white text) + gold on black (2026-10-04, Brenton picked green + gold);
+   the strip and nav sale button in RRG red with a gold title and white text, so red and green mix
+   (Brenton, same day). */
+body[data-campaign="christmas"]{--campaign-accent:#0E5A36;--campaign-accent-hover:#0A4428;--campaign-on-accent:#fff;--campaign-dark:#000;--campaign-highlight:#F2C14E;--campaign-on-highlight:#000;
+  --campaign-strip:var(--rrg-red);--campaign-strip-title:#F2C14E;--campaign-strip-link:#fff;--campaign-strip-muted:#F8D9DE;}
 
 /* ---- Campaign strip (above the header, every page but checkout) ----------------------------- */
 .campaign-strip{display:none;}
-body.campaign-on .campaign-strip{display:block;background:var(--campaign-dark);color:#fff;text-decoration:none;font-size:14px;}
+body.campaign-on .campaign-strip{display:block;background:var(--campaign-strip,var(--campaign-dark));color:#fff;text-decoration:none;font-size:14px;}
 .campaign-strip-inner{display:flex;align-items:center;gap:18px;min-height:44px;padding-top:6px;padding-bottom:6px;box-sizing:border-box;}
-.campaign-strip-title{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:.01em;color:var(--campaign-highlight);white-space:nowrap;text-shadow:0 0 12px color-mix(in srgb,var(--campaign-highlight) 45%,transparent);}
+.campaign-strip-title{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:24px;line-height:1;text-transform:uppercase;letter-spacing:.01em;color:var(--campaign-strip-title,var(--campaign-highlight));white-space:nowrap;text-shadow:0 0 12px color-mix(in srgb,var(--campaign-strip-title,var(--campaign-highlight)) 45%,transparent);}
 .campaign-strip-offer{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
-.campaign-strip-terms{font-weight:400;color:var(--rrg-on-dark-muted);}
+.campaign-strip-terms{font-weight:400;color:var(--campaign-strip-muted,var(--rrg-on-dark-muted));}
 .campaign-countdown{display:inline-flex;align-items:center;gap:8px;margin-left:auto;white-space:nowrap;}
 .campaign-countdown[hidden]{display:none;}
-.campaign-countdown-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-on-dark-muted);}
+.campaign-countdown-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--campaign-strip-muted,var(--rrg-on-dark-muted));}
 .campaign-countdown-units{display:inline-flex;gap:4px;}
 .campaign-countdown-unit{display:inline-flex;align-items:baseline;gap:1px;background:var(--campaign-highlight);color:var(--campaign-on-highlight);border-radius:4px;padding:3px 6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:lowercase;}
 .campaign-countdown-unit b{font-size:17px;line-height:1;font-variant-numeric:tabular-nums;}
-.campaign-strip-cta{font-weight:700;color:var(--campaign-highlight);white-space:nowrap;}
+.campaign-strip-cta{font-weight:700;color:var(--campaign-strip-link,var(--campaign-highlight));white-space:nowrap;}
 .campaign-strip:hover .campaign-strip-cta{text-decoration:underline;}
 @media (max-width:1100px){
   .campaign-strip-terms{display:none;}
@@ -63,7 +73,7 @@ body.campaign-on .rrg-utility-bar .region-switcher-menu a{color:var(--rrg-black)
    the header never gets wider than it is with no sale on. */
 .rrg-nav-campaign{display:none!important;}
 body.campaign-on .rrg-nav .rrg-nav-clearance{display:none;}
-body.campaign-on .rrg-nav .rrg-nav-campaign{display:inline-flex!important;background:var(--campaign-dark);color:var(--campaign-highlight);font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:16px;line-height:1;text-transform:uppercase;letter-spacing:.01em;padding:6px 8px;margin:0 -6px;border-radius:var(--radius);white-space:nowrap;}
+body.campaign-on .rrg-nav .rrg-nav-campaign{display:inline-flex!important;background:var(--campaign-strip,var(--campaign-dark));color:var(--campaign-strip-link,var(--campaign-highlight));font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:16px;line-height:1;text-transform:uppercase;letter-spacing:.01em;padding:6px 8px;margin:0 -6px;border-radius:var(--radius);white-space:nowrap;}
 body.campaign-on .rrg-nav .rrg-nav-campaign:hover{color:var(--campaign-on-highlight);background:var(--campaign-highlight);}
 
 /* ---- Mega menu banner: the campaign creative is wider than the slot — show it whole ---------- */

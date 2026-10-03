@@ -7,7 +7,7 @@
 | Campaign | Colours | Assets | Copy / dates |
 |---|---|---|---|
 | **Rack Friday** (`rack-friday`) | Electric Lime `#D8FF1E` + black (light main colour, black text) | From Figma (favicon, tag, banner still WIP there); hero is the draft banner | Real: 1–29 Nov 2026, up to 50% off |
-| **Christmas Sale** (`christmas`) | Festive green `#0E5A36` (white text) + gold `#F2C14E` on black (dark main colour) | **Drafts** made in the campaign style (2026-10-04), as there's no Figma creative yet. Replace them using the checklist (Section 4). | **Placeholder:** "Up to XX% off — gifts for every adventure", ends 24 Dec 2026 |
+| **Christmas Sale** (`christmas`) | Festive green `#0E5A36` (white text) on the utility bar, buttons and cards; the strip and nav sale button in RRG red with a gold title; gold-on-black footer | **Drafts** made in the campaign style (2026-10-04), as there's no Figma creative yet. Replace them using the checklist (Section 4). | **Placeholder:** "Up to XX% off — gifts for every adventure", ends 24 Dec 2026 |
 **Owner:** Brenton Cooley. **Branding source:** Figma "RRG Campaign Templates" › *Rack Friday & Cyber Monday Sale 2026* (node 2949-363).
 
 ## 1. What it is
@@ -22,7 +22,7 @@ When a big sale is on, the whole site takes on the campaign's colours, so that *
 
 ## 2. What changes (decisions agreed with Brenton, 2026-10-02)
 
-Shown for Rack Friday (lime/black). Every campaign changes the same surfaces in its own colours; Christmas uses green with white text, and gold on black (Section 3, colour roles).
+Shown for Rack Friday (lime/black). Every campaign changes the same surfaces in its own colours; Christmas uses green with white text, an RRG-red strip and nav button, and a gold-on-black footer (Section 3, colour roles).
 
 | Surface | No sale | Sale on |
 |---|---|---|
@@ -79,6 +79,10 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
 | `--campaign-dark` | Dark surfaces: campaign strip, nav sale button, footer | `#000` | `#000` |
 | `--campaign-highlight` | Marks on the dark surfaces: strip title and CTA, countdown, nav button text, footer stripe and headings | `#D8FF1E` lime | `#F2C14E` gold |
 | `--campaign-on-highlight` | Text on the highlight (the countdown boxes) | `#000` | `#000` |
+| *Optional:* `--campaign-strip` | Campaign strip + nav sale button background. Leave it out to use `--campaign-dark`. | *(black)* | `var(--rrg-red)` RRG red |
+| *Optional:* `--campaign-strip-title` | Strip title. Leave it out to use `--campaign-highlight`. | *(lime)* | `#F2C14E` gold |
+| *Optional:* `--campaign-strip-link` | Strip "Shop the sale" + nav button text. Leave it out to use `--campaign-highlight`. | *(lime)* | `#fff` |
+| *Optional:* `--campaign-strip-muted` | Strip terms + "Ends in" label. Leave it out to use the site's muted grey. | *(grey)* | `#F8D9DE` pale pink |
 
 **Never changes per sale:** the UK never gets a takeover, checkout never shows the strip, and tags only ever go on products that are actually discounted.
 
