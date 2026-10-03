@@ -243,6 +243,10 @@ function buildMegaMenuMobile(mobileEl) {
         ${MM_MOBILE_UTILITY_LINKS.map(l => {
           // Store Finder follows the region's open-store count (rrgStoreNavLink(), shared.js).
           const link = l.label === 'Store Finder' && typeof rrgStoreNavLink === 'function' ? rrgStoreNavLink() : l;
+          // A running sale takes Clearance's place, same as the desktop nav (campaign.js / campaign.css).
+          if (l.label === 'Clearance' && typeof rrgCampaignActive === 'function' && rrgCampaignActive()) {
+            return `<a class="mm-mobile-row mm-mobile-row--campaign" href="${RRG_CAMPAIGN.href}">${RRG_CAMPAIGN.title}</a>`;
+          }
           return `<a class="mm-mobile-row" href="${link.href}"${l.label === 'Store Finder' ? ' data-store-nav="true"' : ''}>${link.label}</a>`;
         }).join('')}
       </div>

@@ -76,6 +76,18 @@ body.campaign-on .rrg-nav .rrg-nav-clearance{display:none;}
 body.campaign-on .rrg-nav .rrg-nav-campaign{display:inline-flex!important;background:var(--campaign-strip,var(--campaign-dark));color:var(--campaign-strip-link,var(--campaign-highlight));font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:16px;line-height:1;text-transform:uppercase;letter-spacing:.01em;padding:6px 8px;margin:0 -6px;border-radius:var(--radius);white-space:nowrap;}
 body.campaign-on .rrg-nav .rrg-nav-campaign:hover{color:var(--campaign-on-highlight);background:var(--campaign-highlight);}
 
+/* Mobile menu: the same swap in the menu's link list (mega-menu.js), in the strip's colours. */
+body.campaign-on .mm-mobile-row--campaign{background:var(--campaign-strip,var(--campaign-dark));color:var(--campaign-strip-link,var(--campaign-highlight));font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:700;font-size:18px;text-transform:uppercase;margin:0 -16px;padding:13px 16px;border-bottom:0;}
+
+/* ---- Campaign logo (optional, e.g. Christmas: the logo wearing a Santa hat) ------------------
+   The campaign logo is the normal logo plus extra height above it (--campaign-logo-overflow, a
+   fraction of the wordmark's height, set by campaign.js). It renders that much taller and is
+   pulled up by the same amount, so the wordmark lands exactly where the normal logo's does and
+   the header rows keep their height — the extra part just rises into the space above. */
+body.campaign-logo .rrg-main-header .rrg-logo img{height:calc(34px * (1 + var(--campaign-logo-overflow)));margin-top:calc(-34px * var(--campaign-logo-overflow));}
+body.campaign-logo .rrg-sticky-header .rrg-logo img,
+body.campaign-logo .mm-mobile-logo img{height:calc(26px * (1 + var(--campaign-logo-overflow)));margin-top:calc(-26px * var(--campaign-logo-overflow));}
+
 /* ---- Mega menu banner: the campaign creative is wider than the slot — show it whole ---------- */
 body.campaign-on .mega-menu-banner{background:var(--campaign-accent);}
 body.campaign-on .mega-menu-banner img{object-fit:contain;}

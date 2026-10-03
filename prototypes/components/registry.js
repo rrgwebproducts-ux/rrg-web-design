@@ -85,7 +85,7 @@ const RRG_COMPONENTS = [
       v('UK skin', 'header', '.rrg-header-shell', { ls: S.uk }),
       v('With items in the cart', 'header', '.rrg-header-shell', { cart: 'full' }),
       v('Sale on (Rack Friday) — sale button replaces Clearance', 'header', '.rrg-header-shell', { ls: S.sale, sizes: ['d'] }),
-      v('Sale on (Christmas) — sale button replaces Clearance', 'header', '.rrg-header-shell', { ls: S.xmas, sizes: ['d'] }),
+      v('Sale on (Christmas) — Santa-hat logo, sale button replaces Clearance', 'header', '.rrg-header-shell', { ls: S.xmas, sizes: ['d'] }),
     ] },
   { id: 'mega-menu', group: 'global', name: 'Mega Menu (desktop)', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'Shell in rrgWidgetMainHeaderHTML (widgets.js); buildMegaMenuDesktop + mmPromoTileHTML (mega-menu.js)',
@@ -108,6 +108,7 @@ const RRG_COMPONENTS = [
     variants: [
       v('Open', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', sizes: ['m'], h: 780 }),
       v('Guest', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', ls: S.guest, sizes: ['m'], h: 780 }),
+      v('Sale on (Christmas) — Santa-hat logo, sale replaces Clearance', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', ls: S.xmas, sizes: ['m'], h: 780 }),
     ] },
   { id: 'breadcrumbs', group: 'global', name: 'Breadcrumbs', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results'],
     source: 'Static on most pages; plpRenderBreadcrumb (plp.js) on listing pages',

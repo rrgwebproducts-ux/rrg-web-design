@@ -7,7 +7,7 @@
 | Campaign | Colours | Assets | Copy / dates |
 |---|---|---|---|
 | **Rack Friday** (`rack-friday`) | Electric Lime `#D8FF1E` + black (light main colour, black text) | From Figma (favicon, tag, banner still WIP there); hero is the draft banner | Real: 1–29 Nov 2026, up to 50% off |
-| **Christmas Sale** (`christmas`) | Festive green `#0E5A36` (white text) on the utility bar, buttons and cards; the strip and nav sale button in RRG red with a gold title; gold-on-black footer | **Drafts** made in the campaign style (2026-10-04), as there's no Figma creative yet. Replace them using the checklist (Section 4). | **Placeholder:** "Up to XX% off — gifts for every adventure", ends 24 Dec 2026 |
+| **Christmas Sale** (`christmas`) | Festive green `#0E5A36` (white text) on the utility bar, buttons and cards; the strip and nav sale button in RRG red with a gold title; gold-on-black footer | **Drafts** made in the campaign style (2026-10-04), as there's no Figma creative yet, including a logo wearing a Santa hat. Replace them using the checklist (Section 4). | **Placeholder:** "Up to XX% off — gifts for every adventure", ends 24 Dec 2026 |
 **Owner:** Brenton Cooley. **Branding source:** Figma "RRG Campaign Templates" › *Rack Friday & Cyber Monday Sale 2026* (node 2949-363).
 
 ## 1. What it is
@@ -57,7 +57,7 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
 | 6 | **Campaign strip: offer + terms** | One short offer line, plus a short terms line (the terms are hidden below 1100px) | `offer`, `terms` | "Up to 50% off racks, platforms & more" · "Up to XX% off — gifts for every adventure" (both "In-store + online") |
 | 7 | **Countdown** | Sale end date and time **with timezone** | `ends` (e.g. `2026-11-29T23:59:59+10:00`). The countdown hides itself once that time has passed. | 29 Nov · 24 Dec 2026, 11:59pm Brisbane |
 | 8 | **Sale landing link** | URL of the sale page | `href`. Used by the strip, nav button and mega-menu banner. | `#` (no sale page yet) |
-| 9 | **Header nav button** (replaces "Clearance" while the sale is on) | **Short** label, about the width of the word "Clearance" (e.g. the sale name, or just "Sale"). Longer labels can push the search box onto a second row. | `navLabel` | "Rack Friday" · "Xmas Sale" |
+| 9 | **Header nav button + mobile menu row** (replace "Clearance" while the sale is on) | **Short** label, about the width of the word "Clearance" (e.g. the sale name, or just "Sale"). Longer labels can push the search box onto a second row. | `navLabel` | "Rack Friday" · "Xmas Sale" |
 | 10 | **Mega-menu banner** | Banner image, **828×184** (2× the slot). Text kept away from the left and right edges. | `megaMenuBanner` → `_shared/campaign/<id>-mega-menu.webp` | `rack-friday-mega-menu.webp` · `christmas-mega-menu.webp` |
 | 11 | **Home hero slide** | Flat finished banner, **2464×828**, all text baked into the image. Letterboxed in the slide colour on narrower screens. | `home/index.html`: one slide per campaign at the top of the hero. Each carries `data-campaign-slide="<id>"`, `style="--slide-fill:<edge colour>"` and the image, alt text and link. Only the running campaign's slide is kept. Make the image's left and right edges the fill colour, so it letterboxes without a seam. | `home-hero/rack-friday-desktop.webp` · `home-hero/christmas-desktop.webp` |
 | 12 | **Sale tag** (product pages + every discounted product card) | Tag graphic on a **transparent background**, about **380px wide** (it shows at 52–86px wide). It needs to read on white product photos. | `saleTag` → `_shared/campaign/<id>-tag.webp` | "Rack Friday" tag · "Xmas Sale" tag |
@@ -68,6 +68,7 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
 | 17 | **Footer** | Nothing | **Automatic** (dark surface + highlight stripe and headings) | Black + lime · black + gold |
 | 18 | **Strip / nav button / countdown styling** | Nothing | **Automatic** (highlight on the dark surface) | Lime on black · gold on black |
 | 19 | **Sale name used in copy** | Short sale name | `name` (savings line) | "Rack Friday" · "Christmas" |
+| 20 | **Campaign logo** *(optional)* | The normal logo with a seasonal touch (Christmas: a Santa hat on the "G"), as a transparent PNG at **2× (720px wide)**. It's **the same width as the normal logo**, with any extra height only **above** the wordmark. | `logo` → `_shared/campaign/<id>-logo.png`, plus `logoOverflow`: the extra height above the wordmark ÷ the wordmark's height (e.g. `14 / 58`). Shows in the header, sticky mobile header and mobile menu; never the footer or checkout. Leave it out to keep the normal logo. | — · Santa-hat logo (draft) |
 
 **The 6 colour roles** (item 2), set as one line in `campaign.css`:
 
@@ -88,13 +89,13 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
 
 ## 4. Running the next sale: checklist
 
-1. **Brief the designer** for the assets in items 4, 10, 11 and 12, at the sizes above. The Figma file *RRG Campaign Templates* has a page per campaign; Rack Friday's is node 2949-363, and its frames are the reference for what each asset looks like.
+1. **Brief the designer** for the assets in items 4, 10, 11 and 12 (and 20 if the sale gets a logo touch), at the sizes above. The Figma file *RRG Campaign Templates* has a page per campaign; Rack Friday's is node 2949-363, and its frames are the reference for what each asset looks like.
 2. **Pick the 6 colours** (item 2). A light main colour (lime, cyan, yellow) takes black text; a dark one (green, navy) takes white. The highlight needs to stand out on the dark surface.
 3. **Export the assets:**
-   - Into `prototypes/_shared/campaign/`: `<id>-favicon.ico`, `<id>-tag.webp` and `<id>-mega-menu.webp`.
+   - Into `prototypes/_shared/campaign/`: `<id>-favicon.ico`, `<id>-tag.webp`, `<id>-mega-menu.webp` and, optionally, `<id>-logo.png`.
    - The hero: `prototypes/_shared/home-hero/<id>-desktop.webp`.
 4. **Add an entry to `RRG_CAMPAIGNS`** in `campaign.js` (copy an existing one).
-   - Fill in `id`, `name`, `title`, `navLabel`, `offer`, `terms`, `ends`, `href` and the three image paths.
+   - Fill in `id`, `name`, `title`, `navLabel`, `offer`, `terms`, `ends`, `href` and the three image paths (plus `logo` + `logoOverflow` if there's a campaign logo).
    - It appears in the Site Admin dropdown automatically.
 5. **Add the colour line** in `campaign.css`: `body[data-campaign="<id>"]{…}` with all 6 roles (copy an existing line).
 6. **Add a home hero slide** (item 11) at the top of the hero, next to the other campaign slides. It needs the image, alt text, link, `--slide-fill` and `data-campaign-slide="<id>"`.
@@ -103,7 +104,7 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
    - Site Admin → *Sale takeover* → the new campaign.
    - Add a preset and variants for the new campaign to the Component Library (`prototypes/components/registry.js`; copy the Christmas ones, `S.xmas`), and check them.
    - Click through Home, a PLP, a product page, the cart and checkout at desktop and phone width.
-   - Make sure the header stays on one row between about 1150px and 1300px wide.
+   - Make sure the header stays on one row between about 1150px and 1300px wide, and (with a campaign logo) that the logo doesn't move the wordmark or make the header taller.
    - Switch the region to UK: there should be no takeover.
 8. **On the day:** pick the campaign. **After the sale:** set it back to Off. Clearance returns to the nav, the Store Finder banner returns to the mega menu, the campaign slide disappears and tags disappear from product pages.
 
@@ -153,4 +154,4 @@ Step-by-step for a new sale: Section 4.
 5. **PLP / search merch tile:** could carry a campaign creative, but needs a tile-sized asset.
 6. **Cyber Monday:** another campaign entry (30 Nov), if wanted as its own one-day skin.
 7. **Developer brief:** add a Sale Takeover section at final handover. Screenshots are held until then, per the standing rule.
-8. **Christmas finals:** designer creative for the tag, mega-menu banner, hero and favicon (the current ones are drafts), plus the real offer line, percentage and dates.
+8. **Christmas finals:** designer creative for the tag, mega-menu banner, hero, favicon and Santa-hat logo (the current ones are drafts), plus the real offer line, percentage and dates. The logo is a change to the brand mark, so it needs brand sign-off.

@@ -44,6 +44,12 @@ const RRG_CAMPAIGNS = {
     favicon: '_shared/campaign/christmas-favicon.ico',
     saleTag: '_shared/campaign/christmas-tag.webp',
     megaMenuBanner: '_shared/campaign/christmas-mega-menu.webp',
+    // Optional campaign logo (2026-10-04: the logo wearing a Santa hat). Same width as the normal
+    // logo; `logoOverflow` is how much taller it is ABOVE the wordmark, as a fraction of the
+    // wordmark's height (here 14px over 58px) — CSS pulls that part up into the space above, so the
+    // wordmark sits exactly where the normal one does and the header never grows.
+    logo: '_shared/campaign/christmas-logo.png',
+    logoOverflow: 14 / 58,
   },
 };
 
@@ -147,8 +153,22 @@ function rrgApplyCampaign() {
   if (!icon.dataset.defaultHref) icon.dataset.defaultHref = icon.getAttribute('href') || `${RRG_PROTO}_shared/favicon.ico`;
   icon.href = on ? `${RRG_PROTO}${RRG_CAMPAIGN.favicon}` : icon.dataset.defaultHref;
 
-  // PDP sale tags: the campaign's tag while a sale is on (CSS hides them otherwise).
-  document.querySelectorAll('img.sale-tag').forEach(img => { img.src = `${RRG_PROTO}${RRG_CAMPAIGN.saleTag}`; img.alt = RRG_CAMPAIGN.title; });
+  // PDP sale tags: the campaign's tag while a sale is on (CSS hides them otherwise). Guarded —
+  // RRG_CAMPAIGN is null with no sale on, and this also runs inside applyRegionBrand, where a
+  // throw would stop the rest of the region set-up.
+  if (on) document.querySelectorAll('img.sale-tag').forEach(img => { img.src = `${RRG_PROTO}${RRG_CAMPAIGN.saleTag}`; img.alt = RRG_CAMPAIGN.title; });
+
+  // Campaign logo (optional): header, sticky mobile header and mobile menu only — never the footer
+  // or checkout. The header widget is drawn after this file loads, so this also runs again from
+  // applyRegionBrand (shared.js) once the header exists, after it has set the region's own logo.
+  const logo = on && RRG_CAMPAIGN.logo;
+  body.classList.toggle('campaign-logo', !!logo);
+  if (logo) body.style.setProperty('--campaign-logo-overflow', RRG_CAMPAIGN.logoOverflow || 0);
+  document.querySelectorAll('.rrg-main-header .rrg-logo img, .rrg-sticky-header .rrg-logo img, .mm-mobile-logo img').forEach(img => {
+    if (!img.dataset.defaultSrc) img.dataset.defaultSrc = img.getAttribute('src');
+    if (logo) img.src = `${RRG_PROTO}${RRG_CAMPAIGN.logo}`;
+    else if (img.closest('.mm-mobile-logo')) img.src = img.dataset.defaultSrc;
+  });
 
   if (typeof mmApplySaleBannerVisibility === 'function') mmApplySaleBannerVisibility();
 }
