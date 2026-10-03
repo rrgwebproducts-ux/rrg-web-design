@@ -1389,6 +1389,50 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 }
 .vf-proof{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--rrg-line-soft);font-size:13px;font-weight:700;color:var(--rrg-grey-700);}
 .fit-finder-widget[data-vf-style="dark"] .vf-proof{border-top-color:rgba(255,255,255,.15);color:var(--rrg-on-dark-muted);}
+/* Compact (one-row) variant — home page, 2026-10-03 (Brenton): thinner so more of the page sits
+   above the fold. No vehicle: badge + "Fit Finder", the five selects and the button on one line,
+   no intro or "Shop without a vehicle" link. With a vehicle: a slim bar — small photo, heading
+   with the spec chips beside it, button and Change vehicle side by side. One row from 1101px;
+   below that the heading sits above the selects (and the selects go two-up at 900px). */
+@media (min-width:1101px){
+  .fit-finder-widget--compact{padding:14px 20px;display:flex;align-items:center;gap:20px;}
+  .fit-finder-widget--compact .ff-head{margin:0;flex:0 0 auto;flex-wrap:nowrap;gap:12px;}
+  .fit-finder-widget--compact .ff-head h2{font-size:28px;line-height:1;white-space:nowrap;}
+  .fit-finder-widget--compact .ff-head p,
+  .fit-finder-widget--compact .vf-browse,
+  .fit-finder-widget--compact .vf-eyebrow{display:none;}
+  .fit-finder-widget--compact .vf-back{margin-left:4px;white-space:nowrap;}
+  .fit-finder-widget--compact .ff-row{flex:1 1 auto;min-width:0;gap:8px;}
+  .fit-finder-widget--compact .ff-row select{padding-top:10px;padding-bottom:10px;}
+  .fit-finder-widget--compact .vf-known{flex:1 1 auto;gap:20px;}
+  .fit-finder-widget--compact .vf-photo{width:104px;}
+  .fit-finder-widget--compact .vf-text{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;}
+  .fit-finder-widget--compact .vf-text h2{margin:0;font-size:26px;}
+  .fit-finder-widget--compact .vf-actions{flex-direction:row;align-items:center;gap:18px;}
+  .fit-finder-widget--compact .vf-proof{display:none;}
+}
+/* Compact on tablet/phone: still the stacked widget, but slimmer — no intro or eyebrow, selects
+   two-up (Roof Type beside the button), and with a vehicle a small photo beside the heading
+   instead of a full-width photo on top. */
+@media (max-width:1100px){
+  .fit-finder-widget--compact{padding:16px;}
+  .fit-finder-widget--compact .ff-head{margin-bottom:12px;}
+  .fit-finder-widget--compact .ff-head p,
+  .fit-finder-widget--compact .vf-eyebrow{display:none;}
+  .fit-finder-widget--compact .vf-photo{width:96px;max-width:none;justify-self:start;}
+  .fit-finder-widget--compact .vf-text h2{margin:0 0 6px;font-size:22px;}
+  .fit-finder-widget--compact .vf-spec li{padding:3px 8px;font-size:12px;}
+}
+@media (max-width:900px){
+  .fit-finder-widget--compact .ff-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  .fit-finder-widget--compact .ff-row .btn{grid-column:auto;padding-left:12px;padding-right:12px;}
+  .fit-finder-widget--compact .ff-row select{padding-left:12px;padding-right:28px;background-position:right 9px center;}
+  .fit-finder-widget--compact .vf-browse{margin-top:10px;}
+  .fit-finder-widget--compact .vf-known{grid-template-columns:96px minmax(0,1fr);gap:12px 14px;}
+  .fit-finder-widget--compact .vf-actions{flex-direction:row;align-items:center;gap:16px;}
+  .fit-finder-widget--compact .vf-actions .btn{flex:1 1 auto;padding-left:14px;padding-right:14px;font-size:15px;white-space:nowrap;}
+  .fit-finder-widget--compact .vf-change{white-space:nowrap;}
+}
 /* Phones (2026-10-02, Brenton): photo on top, text and actions full width below — beside a 120px
    photo the text column was squeezed to a few words a line. */
 @media (max-width:600px){
@@ -1947,8 +1991,8 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
    below it. Each slide is the live site's two layers: a background that covers the frame, and
    transparent artwork, centred now the Fit Finder no longer sits over the left (2026-10-02). */
 .home-hero{position:relative;background:var(--rrg-charcoal);width:calc(100% - 48px);max-width:calc(var(--maxw) - 48px);margin:20px auto 0;border-radius:var(--radius);overflow:hidden;}
-/* 414px — 10% shorter than the 460px it was with the Fit Finder over it (2026-10-02). */
-.home-hero-stage{position:relative;height:414px;overflow:hidden;}
+/* 360px (2026-10-03, Brenton) — was 414px (2026-10-02), 460px with the Fit Finder over it. */
+.home-hero-stage{position:relative;height:360px;overflow:hidden;}
 .home-hero-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s linear .6s;}
 .home-hero-slide.is-active{opacity:1;visibility:visible;transition:opacity .6s ease,visibility 0s;}
 .home-hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
@@ -1971,9 +2015,9 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .home-hero-dots{position:absolute;left:0;right:0;bottom:16px;z-index:3;display:flex;justify-content:center;gap:8px;pointer-events:none;}
 .home-hero-dots button{pointer-events:auto;width:10px;height:10px;padding:0;border-radius:50%;border:1.5px solid #fff;background:rgba(0,0,0,.35);cursor:pointer;}
 .home-hero-dots button[aria-current="true"]{background:#fff;width:26px;border-radius:5px;}
-/* Tablet/mobile: a fixed-ratio strip showing the artwork, 10% shorter cap than before. */
+/* Tablet/mobile: a fixed-ratio strip showing the artwork, capped at 330px (378px until 2026-10-03). */
 @media (max-width:1100px){
-  .home-hero-stage{height:auto;aspect-ratio:1400 / 820;max-height:378px;width:100%;}
+  .home-hero-stage{height:auto;aspect-ratio:1400 / 820;max-height:330px;width:100%;}
   .home-hero-link{bottom:40px;right:16px;}
 }
 @media (max-width:900px){
