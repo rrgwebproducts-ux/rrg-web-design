@@ -4,35 +4,66 @@
 // the campaign sale tag on the PDP and on every discounted product card, a lime Add to Cart, the
 // footer, the home hero's campaign slide and the cart's savings line.
 //
-// One switch (Site Admin → Promotions & design → "Sale on", saved as rrgSaleOn) turns it on and
-// off; RRG_CAMPAIGN below is everything that changes from one sale to the next (full list of
-// takeover items + the new-sale checklist: campaign-spec.md Sections 3 and 4). The takeover is
-// AU and NZ only — the UK (The Roof Box Company) keeps its own skin.
+// One control (Site Admin → Promotions & design → "Sale takeover", saved as rrgSale) picks which
+// campaign is running, or none. RRG_CAMPAIGNS below holds one entry per sale — everything that
+// changes from one sale to the next (full list of takeover items + the new-sale checklist:
+// campaign-spec.md Sections 3 and 4); its colours live in campaign.css. The takeover is AU and NZ
+// only — the UK (The Roof Box Company) keeps its own skin.
 //
 // Load this after session-state.js and before widgets.js, so the header widget can draw the strip
 // and nav link. Everything else reads rrgCampaignActive() / body.campaign-on.
 
-const RRG_CAMPAIGN = {
-  id: 'rack-friday',
-  name: 'Rack Friday',
-  title: 'Rack Friday Sale',
-  // The header nav button, which takes Clearance's slot while the sale is on — kept short so the
-  // nav is no wider than with Clearance (e.g. 'Rack Friday', or just 'Sale').
-  navLabel: 'Rack Friday',
-  offer: 'Up to 50% off racks, platforms & more',
-  terms: 'In-store + online',
-  // End of the sale, Brisbane time (the hero creative: 1–29 Nov 2026).
-  ends: '2026-11-29T23:59:59+10:00',
-  href: '#',
-  favicon: '_shared/campaign/favicon-sale.ico',
-  saleTag: '_shared/campaign/rack-friday-tag.webp',
-  megaMenuBanner: '_shared/campaign/rack-friday-mega-menu.webp',
+const RRG_CAMPAIGNS = {
+  'rack-friday': {
+    id: 'rack-friday',
+    name: 'Rack Friday',
+    title: 'Rack Friday Sale',
+    // The header nav button, which takes Clearance's slot while the sale is on — kept short so the
+    // nav is no wider than with Clearance (e.g. 'Rack Friday', or just 'Sale').
+    navLabel: 'Rack Friday',
+    offer: 'Up to 50% off racks, platforms & more',
+    terms: 'In-store + online',
+    // End of the sale, Brisbane time (the hero creative: 1–29 Nov 2026).
+    ends: '2026-11-29T23:59:59+10:00',
+    href: '#',
+    favicon: '_shared/campaign/rack-friday-favicon.ico',
+    saleTag: '_shared/campaign/rack-friday-tag.webp',
+    megaMenuBanner: '_shared/campaign/rack-friday-mega-menu.webp',
+  },
+  // Christmas Sale (2026-10-04) — green + gold, a dark accent with white text. Assets are DRAFTS
+  // made in the campaign style until the designer supplies finals; offer and dates are placeholders.
+  'christmas': {
+    id: 'christmas',
+    name: 'Christmas',
+    title: 'Christmas Sale',
+    navLabel: 'Xmas Sale',
+    offer: 'Up to XX% off — gifts for every adventure',
+    terms: 'In-store + online',
+    ends: '2026-12-24T23:59:59+10:00',
+    href: '#',
+    favicon: '_shared/campaign/christmas-favicon.ico',
+    saleTag: '_shared/campaign/christmas-tag.webp',
+    megaMenuBanner: '_shared/campaign/christmas-mega-menu.webp',
+  },
 };
 
-const RRG_SALE_ON_KEY = 'rrgSaleOn';
+const RRG_SALE_KEY = 'rrgSale';
+
+// The running campaign's id, or '' for none. (rrgSaleOn = 'true' is the 2026-10-02 on/off switch,
+// when Rack Friday was the only campaign — still honoured so saved demo state carries over.)
+function rrgSaleId() {
+  try {
+    const id = localStorage.getItem(RRG_SALE_KEY);
+    if (id !== null) return RRG_CAMPAIGNS[id] ? id : '';
+    return localStorage.getItem('rrgSaleOn') === 'true' ? 'rack-friday' : '';
+  } catch (err) { return ''; }
+}
+
+// The running campaign (null when no sale is on).
+const RRG_CAMPAIGN = RRG_CAMPAIGNS[rrgSaleId()] || null;
 
 function rrgSaleOn() {
-  try { return localStorage.getItem(RRG_SALE_ON_KEY) === 'true'; } catch (err) { return false; }
+  return !!RRG_CAMPAIGN;
 }
 
 // The region as shared.js will resolve it (initialRegion) — read here too because this runs before
@@ -48,9 +79,9 @@ function rrgCampaignActive() {
   return rrgSaleOn() && rrgCampaignRegion() !== 'UK';
 }
 
-// Admin toggle — reloads so every page part (hero slides, cards, tags) is drawn for the new state.
-window.rrgSetSaleOn = (on) => {
-  try { localStorage.setItem(RRG_SALE_ON_KEY, on); } catch (err) {}
+// Admin control — reloads so every page part (hero slides, cards, tags) is drawn for the new state.
+window.rrgSetSale = (id) => {
+  try { localStorage.setItem(RRG_SALE_KEY, id); localStorage.removeItem('rrgSaleOn'); } catch (err) {}
   window.location.reload();
 };
 
@@ -84,6 +115,7 @@ function rrgCampaignNavLinkHTML() {
 }
 
 function rrgCampaignCountdownTick() {
+  if (!RRG_CAMPAIGN) return;
   const left = new Date(RRG_CAMPAIGN.ends) - Date.now();
   document.querySelectorAll('[data-campaign-countdown]').forEach(el => {
     el.hidden = left <= 0;
@@ -121,8 +153,8 @@ function rrgApplyCampaign() {
   if (typeof mmApplySaleBannerVisibility === 'function') mmApplySaleBannerVisibility();
 }
 
-// Home hero: a slide marked data-campaign only shows while its campaign is on (removed before
-// initHomeHero counts the slides).
+// Home hero: a slide marked data-campaign-slide="<id>" only shows while that campaign is on
+// (removed before initHomeHero counts the slides).
 function rrgCampaignPruneSlides() {
   document.querySelectorAll('[data-campaign-slide]').forEach(slide => {
     if (rrgCampaignActive() && slide.dataset.campaignSlide === RRG_CAMPAIGN.id) return;

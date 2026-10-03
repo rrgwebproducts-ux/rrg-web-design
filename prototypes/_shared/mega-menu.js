@@ -56,7 +56,7 @@ function mmPromoTileHTML(promoTile) {
 // Sale banner (Level 1's top strip) swaps between two real creatives rather than a single banner
 // that just disappears when off (Brenton, 2026-09-13): the current sale campaign's banner while a
 // sale is on, a fallback evergreen creative (e.g. Store Finder promo) the rest of the time — never
-// blank. Since 2026-10-02 the switch is the sale takeover's own "Sale on" (campaign.js —
+// blank. Since 2026-10-02 the switch is the sale takeover's own "Sale takeover" (campaign.js —
 // rrgCampaignActive, RRG_CAMPAIGN.megaMenuBanner), so the banner always matches the rest of the
 // takeover (and the UK, which never gets the takeover, keeps the fallback).
 const MM_SALE_BANNER_FALLBACK_SRC = RRG_PROTO + '_shared/sale-banner-fallback.png';

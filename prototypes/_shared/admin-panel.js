@@ -114,9 +114,12 @@ function buildSiteAdminPanel(currentKey) {
       </div>
       <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>
       <div class="site-admin-heading">Promotions &amp; design</div>
-      <label class="site-admin-toggle" title="Sale website takeover — colours, strip + countdown, sale tags, favicon. AU & NZ only.">
-        <span>Sale on (${typeof RRG_CAMPAIGN === 'object' ? RRG_CAMPAIGN.name : 'campaign'})</span>
-        <input type="checkbox" data-admin-flag="saleOn">
+      <label class="site-admin-select" title="Sale website takeover — colours, strip + countdown, sale tags, favicon. AU & NZ only.">
+        <span>Sale takeover</span>
+        <select data-admin-sale>
+          <option value="">Off</option>
+          ${typeof RRG_CAMPAIGNS === 'object' ? Object.values(RRG_CAMPAIGNS).map(c => `<option value="${c.id}">${c.title}</option>`).join('') : ''}
+        </select>
       </label>
       <label class="site-admin-select" title="The merged vehicle bar + Fit Finder on Home and Fit My Vehicle">
         <span>Vehicle finder style</span>
@@ -222,12 +225,12 @@ function buildSiteAdminPanel(currentKey) {
   panel.addEventListener('click', (e) => e.stopPropagation());
   document.addEventListener('click', closePanel);
 
-  // Sale takeover state lives in campaign.js (rrgSaleOn / rrgSetSaleOn, which reloads the page) —
-  // this panel just reflects and toggles it.
-  const saleOnToggle = panel.querySelector('[data-admin-flag="saleOn"]');
-  saleOnToggle.checked = typeof rrgSaleOn === 'function' && rrgSaleOn();
-  saleOnToggle.addEventListener('change', () => {
-    if (window.rrgSetSaleOn) window.rrgSetSaleOn(saleOnToggle.checked);
+  // Sale takeover state lives in campaign.js (rrgSaleId / rrgSetSale, which reloads the page) —
+  // this panel just reflects and sets it.
+  const saleSelect = panel.querySelector('[data-admin-sale]');
+  saleSelect.value = typeof rrgSaleId === 'function' ? rrgSaleId() : '';
+  saleSelect.addEventListener('change', () => {
+    if (window.rrgSetSale) window.rrgSetSale(saleSelect.value);
   });
 
   // Session state lives in session-state.js — this panel reflects and sets it.

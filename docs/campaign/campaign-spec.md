@@ -1,19 +1,28 @@
 # Sale Website Takeover — spec
 
-**Status:** built 2026-10-02 (Rack Friday as the worked example), awaiting review.
+**Status:** built 2026-10-02 (Rack Friday as the worked example); Christmas Sale added 2026-10-04 as the second campaign. Awaiting review.
+
+**Campaigns built:**
+
+| Campaign | Colours | Assets | Copy / dates |
+|---|---|---|---|
+| **Rack Friday** (`rack-friday`) | Electric Lime `#D8FF1E` + black (light main colour, black text) | From Figma (favicon, tag, banner still WIP there); hero is the draft banner | Real: 1–29 Nov 2026, up to 50% off |
+| **Christmas Sale** (`christmas`) | Festive green `#0E5A36` (white text) + gold `#F2C14E` on black (dark main colour) | **Drafts** made in the campaign style (2026-10-04), as there's no Figma creative yet. Replace them using the checklist (Section 4). | **Placeholder:** "Up to XX% off — gifts for every adventure", ends 24 Dec 2026 |
 **Owner:** Brenton Cooley. **Branding source:** Figma "RRG Campaign Templates" › *Rack Friday & Cyber Monday Sale 2026* (node 2949-363).
 
 ## 1. What it is
 
 When a big sale is on, the whole site takes on the campaign's colours, so that **no page can be reached without seeing that a sale is on**. It's a colour takeover, not a new layout or theme: the page structure stays exactly the same.
 
-- **One switch:** Site Admin → Promotions & design → **Sale on (<campaign name>)**.
-  - Saved as `rrgSaleOn`. It is **off by default**.
-  - Flipping it reloads the page, so every part of every page is redrawn in the new state.
+- **One control:** Site Admin → Promotions & design → **Sale takeover: Off / Rack Friday Sale / Christmas Sale**. There's one option per entry in `RRG_CAMPAIGNS`, added automatically.
+  - Saved as `rrgSale` (the campaign id, or empty for off). It is **off by default**. The old `rrgSaleOn = true` setting from 2026-10-02 still reads as Rack Friday.
+  - Changing it reloads the page, so every part of every page is redrawn in the new state.
 - **AU and NZ only.** The UK (The Roof Box Company) never gets the takeover and keeps its own navy/green skin, even with the switch on.
-- **For Magento:** a single scheduled campaign setting (on/off + which campaign). It adds `campaign-on` and `data-campaign="<id>"` to `<body>`. Marketing switches it by date with no deploy.
+- **For Magento:** a single scheduled campaign setting (which campaign, or none, by date). It adds `campaign-on` and `data-campaign="<id>"` to `<body>`. Marketing switches it by date with no deploy.
 
 ## 2. What changes (decisions agreed with Brenton, 2026-10-02)
+
+Shown for Rack Friday (lime/black). Every campaign changes the same surfaces in its own colours; Christmas uses green with white text, and gold on black (Section 3, colour roles).
 
 | Surface | No sale | Sale on |
 |---|---|---|
@@ -36,47 +45,63 @@ When a big sale is on, the whole site takes on the campaign's colours, so that *
 
 ## 3. Takeover items: what changes for each sale
 
-Every item the takeover touches, what a new sale needs to supply for it, and where that lives. **Settings** are keys in `RRG_CAMPAIGN` (`prototypes/_shared/campaign.js`). Everything marked **Automatic** follows the settings and colours, with no work per sale.
+Every item the takeover touches, what a new sale needs to supply for it, and where that lives. **Settings** are keys in the campaign's entry in `RRG_CAMPAIGNS` (`prototypes/_shared/campaign.js`). Everything marked **Automatic** follows the settings and colours, with no work per sale.
 
 | # | Item | Per sale, supply… | Where it's set | Current (Rack Friday) |
 |---|---|---|---|---|
-| 1 | **On/off switch** | Nothing. Turn it on when the sale starts and off when it ends. In Magento this would be a scheduled start/end date. | Site Admin → *Sale on (…)*. The label shows the campaign's `name`. | Off by default |
-| 2 | **Campaign colours** | 1 accent colour (a background with black text on top), a slightly darker hover shade of it, and the "ink" colour (normally black) | `campaign.css` → one `body[data-campaign="<id>"]{…}` line | `#D8FF1E` / `#C2EB00` / `#000` |
-| 3 | **Campaign id** | A short lowercase id with no spaces | `id`. It must match the colour line (2) and the hero slide (11). | `rack-friday` |
-| 4 | **Favicon** | Square icon, readable at 16×16 and 32×32 | `favicon` → `.ico` containing 16, 32 and 48px sizes, in `_shared/campaign/` | Lime "SALE" burst (`favicon-sale.ico`) |
-| 5 | **Campaign strip: title** | Campaign name as it should read in the strip | `title` (also used for the mega-menu banner and tag alt text, and the nav button's screen-reader label) | "Rack Friday Sale" |
-| 6 | **Campaign strip: offer + terms** | One short offer line, plus a short terms line (the terms are hidden below 1100px) | `offer`, `terms` | "Up to 50% off racks, platforms & more" · "In-store + online" |
-| 7 | **Countdown** | Sale end date and time **with timezone** | `ends` (e.g. `2026-11-29T23:59:59+10:00`). The countdown hides itself once that time has passed. | 29 Nov 2026, 11:59pm Brisbane |
+| 1 | **Which sale is running** | Nothing. Pick the campaign when the sale starts and set it back to Off when it ends. In Magento this would be a scheduled start/end date. | Site Admin → *Sale takeover*. The dropdown lists every campaign by its `title`. | Off by default |
+| 2 | **Campaign colours** | 6 colour roles (see the table below): main colour, its hover shade and its text colour, a dark surface colour, and a highlight colour and its text colour | `campaign.css` → one `body[data-campaign="<id>"]{…}` line | Rack Friday: lime / lime / black · Christmas: green / gold / black |
+| 3 | **Campaign id** | A short lowercase id with no spaces | `id` (and the entry's key in `RRG_CAMPAIGNS`). It must match the colour line (2), the hero slide (11) and the asset file names. | `rack-friday`, `christmas` |
+| 4 | **Favicon** | Square icon, readable at 16×16 and 32×32 | `favicon` → `_shared/campaign/<id>-favicon.ico`, containing 16, 32 and 48px sizes | Lime "SALE" burst · gold "SALE" burst |
+| 5 | **Campaign strip: title** | Campaign name as it should read in the strip | `title` (also the Site Admin dropdown option, the mega-menu banner and tag alt text, and the nav button's screen-reader label) | "Rack Friday Sale" · "Christmas Sale" |
+| 6 | **Campaign strip: offer + terms** | One short offer line, plus a short terms line (the terms are hidden below 1100px) | `offer`, `terms` | "Up to 50% off racks, platforms & more" · "Up to XX% off — gifts for every adventure" (both "In-store + online") |
+| 7 | **Countdown** | Sale end date and time **with timezone** | `ends` (e.g. `2026-11-29T23:59:59+10:00`). The countdown hides itself once that time has passed. | 29 Nov · 24 Dec 2026, 11:59pm Brisbane |
 | 8 | **Sale landing link** | URL of the sale page | `href`. Used by the strip, nav button and mega-menu banner. | `#` (no sale page yet) |
-| 9 | **Header nav button** (replaces "Clearance" while the sale is on) | **Short** label, about the width of the word "Clearance" (e.g. the sale name, or just "Sale"). Longer labels can push the search box onto a second row. | `navLabel` | "Rack Friday" |
-| 10 | **Mega-menu banner** | Banner image, **828×184** (2× the slot). Text kept away from the left and right edges. | `megaMenuBanner` → `_shared/campaign/<id>-mega-menu.webp` | `rack-friday-mega-menu.webp` |
-| 11 | **Home hero slide** | Flat finished banner, **2464×828**, all text baked into the image. Letterboxed in the slide colour on narrower screens. | `home/index.html`: the first slide carries `data-campaign-slide="<id>"`, `style="--slide-fill:<bg colour>"` and the image/alt/link. It only shows while that campaign is on. | `home-hero/rack-friday-desktop.webp` |
-| 12 | **Sale tag** (product pages + every discounted product card) | Tag graphic on a **transparent background**, about **380px wide** (it shows at 52–86px wide). It needs to read on white product photos. | `saleTag` → `_shared/campaign/<id>-tag.webp` | "Rack Friday" tag (`rack-friday-tag.webp`) |
-| 13 | **Cart / checkout / mini-cart savings line** | Nothing | **Automatic:** reads "`<name>` savings" | "Rack Friday savings" |
-| 14 | **Utility bar** | Nothing | **Automatic** (accent colour) | Lime, black text |
-| 15 | **Add to Cart + primary buttons** | Nothing | **Automatic** (accent colour) | Lime, black text |
-| 16 | **"Save X%" band on cards and product photos** | Nothing | **Automatic** (accent colour) | Lime, black text |
-| 17 | **Footer** | Nothing | **Automatic** (ink colour + accent stripe and headings) | Black, lime stripe + headings |
-| 18 | **Strip / nav button / countdown styling** | Nothing | **Automatic** (accent on ink) | Lime on black |
-| 19 | **Sale name used in copy** | Short sale name | `name` (savings line, admin label) | "Rack Friday" |
+| 9 | **Header nav button** (replaces "Clearance" while the sale is on) | **Short** label, about the width of the word "Clearance" (e.g. the sale name, or just "Sale"). Longer labels can push the search box onto a second row. | `navLabel` | "Rack Friday" · "Xmas Sale" |
+| 10 | **Mega-menu banner** | Banner image, **828×184** (2× the slot). Text kept away from the left and right edges. | `megaMenuBanner` → `_shared/campaign/<id>-mega-menu.webp` | `rack-friday-mega-menu.webp` · `christmas-mega-menu.webp` |
+| 11 | **Home hero slide** | Flat finished banner, **2464×828**, all text baked into the image. Letterboxed in the slide colour on narrower screens. | `home/index.html`: one slide per campaign at the top of the hero. Each carries `data-campaign-slide="<id>"`, `style="--slide-fill:<edge colour>"` and the image, alt text and link. Only the running campaign's slide is kept. Make the image's left and right edges the fill colour, so it letterboxes without a seam. | `home-hero/rack-friday-desktop.webp` · `home-hero/christmas-desktop.webp` |
+| 12 | **Sale tag** (product pages + every discounted product card) | Tag graphic on a **transparent background**, about **380px wide** (it shows at 52–86px wide). It needs to read on white product photos. | `saleTag` → `_shared/campaign/<id>-tag.webp` | "Rack Friday" tag · "Xmas Sale" tag |
+| 13 | **Cart / checkout / mini-cart savings line** | Nothing | **Automatic:** reads "`<name>` savings" | "Rack Friday savings" · "Christmas savings" |
+| 14 | **Utility bar** | Nothing | **Automatic** (main colour + its text colour) | Lime / black text · green / white text |
+| 15 | **Add to Cart + primary buttons** | Nothing | **Automatic** (main colour + its text colour, hover shade) | Lime / black · green / white |
+| 16 | **"Save X%" band on cards and product photos** | Nothing | **Automatic** (main colour + its text colour) | Lime / black · green / white |
+| 17 | **Footer** | Nothing | **Automatic** (dark surface + highlight stripe and headings) | Black + lime · black + gold |
+| 18 | **Strip / nav button / countdown styling** | Nothing | **Automatic** (highlight on the dark surface) | Lime on black · gold on black |
+| 19 | **Sale name used in copy** | Short sale name | `name` (savings line) | "Rack Friday" · "Christmas" |
+
+**The 6 colour roles** (item 2), set as one line in `campaign.css`:
+
+| Role | Used for | Rack Friday | Christmas |
+|---|---|---|---|
+| `--campaign-accent` | Main colour: utility bar, Add to Cart, Save band, savings line | `#D8FF1E` lime | `#0E5A36` green |
+| `--campaign-accent-hover` | Button hover, a shade darker | `#C2EB00` | `#0A4428` |
+| `--campaign-on-accent` | Text on the main colour: black on a light colour, white on a dark one | `#000` | `#fff` |
+| `--campaign-dark` | Dark surfaces: campaign strip, nav sale button, footer | `#000` | `#000` |
+| `--campaign-highlight` | Marks on the dark surfaces: strip title and CTA, countdown, nav button text, footer stripe and headings | `#D8FF1E` lime | `#F2C14E` gold |
+| `--campaign-on-highlight` | Text on the highlight (the countdown boxes) | `#000` | `#000` |
 
 **Never changes per sale:** the UK never gets a takeover, checkout never shows the strip, and tags only ever go on products that are actually discounted.
 
 ## 4. Running the next sale: checklist
 
 1. **Brief the designer** for the assets in items 4, 10, 11 and 12, at the sizes above. The Figma file *RRG Campaign Templates* has a page per campaign; Rack Friday's is node 2949-363, and its frames are the reference for what each asset looks like.
-2. **Pick the colours** (item 2). If the accent is light (lime, cyan, yellow), black text goes on it. A dark accent would need white "ink" text instead, so check the strip, buttons and footer still read.
-3. **Export the assets** into `prototypes/_shared/campaign/` as `<id>-tag.webp`, `<id>-mega-menu.webp` and the favicon `.ico`, and the hero into `prototypes/_shared/home-hero/`.
-4. **Update `RRG_CAMPAIGN`** in `campaign.js`: `id`, `name`, `title`, `navLabel`, `offer`, `terms`, `ends`, `href` and the three image paths.
-5. **Add the colour line** in `campaign.css`: `body[data-campaign="<id>"]{--campaign-accent:…;--campaign-accent-hover:…;--campaign-ink:…;}`. Leave the old campaign's line in, since it does no harm.
-6. **Swap the home hero's first slide** (item 11): image, alt text, link, `--slide-fill` and `data-campaign-slide="<id>"`.
+2. **Pick the 6 colours** (item 2). A light main colour (lime, cyan, yellow) takes black text; a dark one (green, navy) takes white. The highlight needs to stand out on the dark surface.
+3. **Export the assets:**
+   - Into `prototypes/_shared/campaign/`: `<id>-favicon.ico`, `<id>-tag.webp` and `<id>-mega-menu.webp`.
+   - The hero: `prototypes/_shared/home-hero/<id>-desktop.webp`.
+4. **Add an entry to `RRG_CAMPAIGNS`** in `campaign.js` (copy an existing one).
+   - Fill in `id`, `name`, `title`, `navLabel`, `offer`, `terms`, `ends`, `href` and the three image paths.
+   - It appears in the Site Admin dropdown automatically.
+5. **Add the colour line** in `campaign.css`: `body[data-campaign="<id>"]{…}` with all 6 roles (copy an existing line).
+6. **Add a home hero slide** (item 11) at the top of the hero, next to the other campaign slides. It needs the image, alt text, link, `--slide-fill` and `data-campaign-slide="<id>"`.
+   - Past campaigns can stay in place, since they never show unless picked. Remove them and their assets once they won't run again.
 7. **Check it:**
-   - Site Admin → *Sale on*.
-   - Look at the Component Library's "Sale on" variants (`prototypes/components/`).
+   - Site Admin → *Sale takeover* → the new campaign.
+   - Add a preset and variants for the new campaign to the Component Library (`prototypes/components/registry.js`; copy the Christmas ones, `S.xmas`), and check them.
    - Click through Home, a PLP, a product page, the cart and checkout at desktop and phone width.
    - Make sure the header stays on one row between about 1150px and 1300px wide.
    - Switch the region to UK: there should be no takeover.
-8. **On the day:** switch it on. **After the sale:** switch it off. Clearance returns to the nav, the Store Finder banner returns to the mega menu, the campaign slide disappears and tags disappear from product pages.
+8. **On the day:** pick the campaign. **After the sale:** set it back to Off. Clearance returns to the nav, the Store Finder banner returns to the mega menu, the campaign slide disappears and tags disappear from product pages.
 
 **Ready-made in Figma for Cyber Monday** (Electric Cyan `#00E5FF` + black): cyan "SALE" favicon burst, Cyber Monday tag, "Cyber Monday Sale On Now" banner and hero art. Items 4, 10 and 12 are still marked WIP there.
 
@@ -84,34 +109,36 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
 
 | File | What |
 |---|---|
-| `prototypes/_shared/campaign.js` | `RRG_CAMPAIGN` config (below), `rrgSaleOn()` / `rrgCampaignActive()` / `rrgSetSaleOn()`, strip + nav-link HTML, countdown, favicon/tag swap, hero-slide pruning, `rrgSavingsLabel()`. Loaded on every page after `session-state.js`, before `widgets.js`. |
-| `prototypes/_shared/campaign.css` | The whole skin, scoped to `body.campaign-on` and `body[data-campaign="…"]`. Loaded after `footer.css`. |
-| `prototypes/_shared/campaign/` | Campaign assets: `favicon-sale.ico`, `rack-friday-tag.webp`, `rack-friday-mega-menu.webp` |
+| `prototypes/_shared/campaign.js` | `RRG_CAMPAIGNS` (one entry per sale, below) and `RRG_CAMPAIGN` (the running one, or null), `rrgSaleId()` / `rrgSaleOn()` / `rrgCampaignActive()` / `rrgSetSale(id)`, strip + nav-link HTML, countdown, favicon/tag swap, hero-slide pruning, `rrgSavingsLabel()`. Loaded on every page after `session-state.js`, before `widgets.js`. |
+| `prototypes/_shared/campaign.css` | The whole skin, scoped to `body.campaign-on`, plus one colour line per campaign (`body[data-campaign="…"]`). Loaded after `footer.css`. |
+| `prototypes/_shared/campaign/` | Campaign assets: `<id>-favicon.ico`, `<id>-tag.webp` and `<id>-mega-menu.webp` for each campaign |
+| `admin-panel.js` | The *Sale takeover* dropdown, built from `RRG_CAMPAIGNS` |
 | `widgets.js` | Header widget draws the strip (before `.rrg-header-shell`) and the nav link |
 | `mega-menu.js` | Banner follows `rrgCampaignActive()` (replaces the old "Clearance sale banner" toggle) |
 | `shared.js` | `applyRegionBrand()` re-applies the campaign on every region change (UK switches it off) |
-| `home/index.html` | Rack Friday slide marked `data-campaign-slide="rack-friday"` |
+| `home/index.html` | One slide per campaign, marked `data-campaign-slide="<id>"` |
 
-**Per-campaign config** is everything that changes from one sale to the next:
+**Per-campaign config** is everything that changes from one sale to the next, one entry per sale:
 
 ```js
-const RRG_CAMPAIGN = {
-  id: 'rack-friday', name: 'Rack Friday', title: 'Rack Friday Sale', navLabel: 'Rack Friday',
-  offer: 'Up to 50% off racks, platforms & more', terms: 'In-store + online',
-  ends: '2026-11-29T23:59:59+10:00',   // countdown target, Brisbane time
-  href: '#', favicon: '…', saleTag: '…', megaMenuBanner: '…',
+const RRG_CAMPAIGNS = {
+  'rack-friday': { id: 'rack-friday', name: 'Rack Friday', title: 'Rack Friday Sale', navLabel: 'Rack Friday',
+    offer: 'Up to 50% off racks, platforms & more', terms: 'In-store + online',
+    ends: '2026-11-29T23:59:59+10:00',   // countdown target, Brisbane time
+    href: '#', favicon: '…', saleTag: '…', megaMenuBanner: '…' },
+  'christmas': { … },
 };
 ```
 
-The colours go in a `body[data-campaign="<id>"]` block in `campaign.css`: `--campaign-accent`, `--campaign-accent-hover` and `--campaign-ink`.
+Each campaign's colours are one `body[data-campaign="<id>"]` line in `campaign.css` (the 6 roles, Section 3).
 
 Step-by-step for a new sale: Section 4.
 
 ## 6. Component Library
 
 - **New entry:** *Sale Campaign Strip + Countdown*.
-- **"Sale on" variants added to:** Utility Bar, Main Header & Nav, Mega Menu (replaces the old banner on/off pair), Footer, Price Block, Add to Cart, Product Card, Home Hero, Cart Summary.
-- **Registry change:** the `S.saleOff` preset is replaced by `S.sale` (`rrgSaleOn: 'true'`).
+- **Rack Friday and Christmas variants on:** Campaign Strip, Utility Bar, Main Header & Nav, Mega Menu (replaces the old banner on/off pair), Footer, Price Block, Add to Cart, Product Card, Home Hero, Cart Summary.
+- **Registry presets:** `S.sale` (`rrgSale: 'rack-friday'`) and `S.xmas` (`rrgSale: 'christmas'`), replacing the old `S.saleOff`.
 
 ## 7. Open / next
 
@@ -120,5 +147,6 @@ Step-by-step for a new sale: Section 4.
 3. **Hero creative:** it still reads "XX% OFF", a placeholder in the artwork itself.
 4. **Countdown pre-sale state:** the strip currently always counts down to the end. It could say "Starts in…" before 1 Nov.
 5. **PLP / search merch tile:** could carry a campaign creative, but needs a tile-sized asset.
-6. **Cyber Monday:** a second campaign config (30 Nov), if wanted as its own one-day skin.
+6. **Cyber Monday:** another campaign entry (30 Nov), if wanted as its own one-day skin.
 7. **Developer brief:** add a Sale Takeover section at final handover. Screenshots are held until then, per the standing rule.
+8. **Christmas finals:** designer creative for the tag, mega-menu banner, hero and favicon (the current ones are drafts), plus the real offer line, percentage and dates.

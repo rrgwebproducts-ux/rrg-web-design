@@ -54,16 +54,21 @@
   <div data-widget="vehicle-finder" data-compact="true" data-class="home-finder" data-vf-browse-href="#shop-by-category"></div>
 </div>
 
-<!-- Section 5.2 — hero (docs/home/home-spec.md). Slide 1 is the draft Rack Friday banner
-     (Brenton, 2026-10-02): one flat image, text baked in, so no artwork layer and no separate
-     slide link — the whole banner is the link. It only shows while the Rack Friday sale is on
-     (data-campaign-slide — campaign.js removes it otherwise). Then four of the live slider's seven slides
+<!-- Section 5.2 — hero (docs/home/home-spec.md). Slide 1 is the running sale campaign's banner:
+     one flat image, text baked in, so no artwork layer and no separate slide link — the whole
+     banner is the link. One slide per campaign (data-campaign-slide="<id>"); campaign.js keeps only
+     the running campaign's and removes the rest, so with no sale on the hero starts at the
+     evergreen slides. Rack Friday: draft banner (Brenton, 2026-10-02). Christmas: draft made in
+     the campaign style (2026-10-04) until the designer supplies the final. Then four of the live slider's seven slides
      (_shared/home-hero/); the other three rotate in the Current Offers tile below.
      initHomeHero() in shared.js. -->
 <section class="home-hero" aria-roledescription="carousel" aria-label="Featured offers">
   <div class="home-hero-stage">
     <div class="home-hero-slide home-hero-slide--flat is-active" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Rack Friday" data-campaign-slide="rack-friday" style="--slide-fill:#d8ff1e">
       <a class="home-hero-flat" href="#"><img src="../_shared/home-hero/rack-friday-desktop.webp" alt="Rack Friday sale on now — platforms from just $599.95, take up to XX% off. 1–29 Nov 2026, in-store and online, selected lines while stocks last. Shop Rack Friday" width="2464" height="828" fetchpriority="high"></a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--flat" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Christmas Sale" data-campaign-slide="christmas" style="--slide-fill:#083a22">
+      <a class="home-hero-flat" href="#"><img src="../_shared/home-hero/christmas-desktop.webp" alt="Christmas sale on now — gifts for every adventure, take up to XX% off. 1–24 Dec 2026, in-store and online, selected lines while stocks last. Shop the Christmas sale" width="2464" height="828" fetchpriority="high"></a>
     </div>
     <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" data-title="Spring Adventure Sale">
       <img class="home-hero-bg" src="../_shared/home-hero/adventure-sale-bg.webp" alt="" width="1441" height="410" loading="lazy">

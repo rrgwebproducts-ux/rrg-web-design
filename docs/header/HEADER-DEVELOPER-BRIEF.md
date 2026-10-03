@@ -180,9 +180,9 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 
 **Purpose:** promotes whatever sale is currently running, directly above the category list where every shopper browsing products will see it.
 
-**How it works:** a real image, not styled text — swapped between two creatives, never blank. Since 2026-10-02 it follows the **sale takeover** switch (Site Admin → "Sale on", Section 4.7; full spec in `docs/campaign/campaign-spec.md`) rather than its own toggle, so it always matches the rest of the takeover:
+**How it works:** a real image, not styled text — swapped between two creatives, never blank. Since 2026-10-02 it follows the **sale takeover** (Site Admin → "Sale takeover", Section 4.7; full spec in `docs/campaign/campaign-spec.md`) rather than its own toggle, so it always matches the rest of the takeover:
 
-- **Sale on** (AU/NZ): the running campaign's banner (currently "Rack Friday Sale"), set per campaign alongside its colours, tag and favicon.
+- **A sale running** (AU/NZ): that campaign's banner (Rack Friday Sale or Christmas Sale), set per campaign alongside its colours, tag and favicon.
 - **No sale** (default, and always in the UK): an evergreen fallback creative (currently a Store Finder promo).
 
 **States:**
@@ -239,7 +239,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 - **Developer Briefs** — all 6: Product Pages (PDP), PLP / VPLP, Search Results, Vehicle Landing (VCLP), Header, Footer.
 - **Shopper Session** — Logged in (on/off), Vehicle (None / Toyota Hilux / Ford Ranger), Nearest store set (on/off) (Section 4.1).
 - **Build Phase** — Phase 1 (launch build) / Phase 2 (future features), with a one-line explainer: Phase 2 adds store-level stock, product ribbons and Compare Products.
-- **Site Promotions** — "Sale on (Rack Friday)": switches the whole sale website takeover on/off (AU/NZ only) and reloads — see `docs/campaign/campaign-spec.md`. The mega-menu banner (Section 4.5) follows it.
+- **Site Promotions** — "Sale takeover" dropdown (Off / Rack Friday Sale / Christmas Sale): picks which sale website takeover is running (AU/NZ only) and reloads — see `docs/campaign/campaign-spec.md`. The mega-menu banner (Section 4.5) follows it.
 - **Prototype Tools** — "Show Demo State panel" (only offered on pages that have a Demo State Panel — not the standalone header page or the root index), and **Reset all demo settings**, which, after a confirm, clears every saved prototype setting (session, build phase, promotions and each template's Demo State choices) and reloads.
 
 **Screenshot:**
