@@ -115,7 +115,7 @@ function buildSiteAdminPanel(currentKey) {
       <p class="site-admin-note">Phase 2 adds store-level stock, product ribbons and Compare Products.</p>
       <div class="site-admin-heading">Promotions &amp; design</div>
       <label class="site-admin-toggle" title="Sale website takeover — colours, strip + countdown, sale tags, favicon. AU & NZ only.">
-        <span>Sale on (Rack Friday)</span>
+        <span>Sale on (${typeof RRG_CAMPAIGN === 'object' ? RRG_CAMPAIGN.name : 'campaign'})</span>
         <input type="checkbox" data-admin-flag="saleOn">
       </label>
       <label class="site-admin-select" title="The merged vehicle bar + Fit Finder on Home and Fit My Vehicle">

@@ -5,7 +5,8 @@
 // footer, the home hero's campaign slide and the cart's savings line.
 //
 // One switch (Site Admin → Promotions & design → "Sale on", saved as rrgSaleOn) turns it on and
-// off; RRG_CAMPAIGN below is everything that changes from one sale to the next. The takeover is
+// off; RRG_CAMPAIGN below is everything that changes from one sale to the next (full list of
+// takeover items + the new-sale checklist: campaign-spec.md Sections 3 and 4). The takeover is
 // AU and NZ only — the UK (The Roof Box Company) keeps its own skin.
 //
 // Load this after session-state.js and before widgets.js, so the header widget can draw the strip
@@ -115,7 +116,7 @@ function rrgApplyCampaign() {
   icon.href = on ? `${RRG_PROTO}${RRG_CAMPAIGN.favicon}` : icon.dataset.defaultHref;
 
   // PDP sale tags: the campaign's tag while a sale is on (CSS hides them otherwise).
-  document.querySelectorAll('img.sale-tag').forEach(img => { img.src = `${RRG_PROTO}${RRG_CAMPAIGN.saleTag}`; });
+  document.querySelectorAll('img.sale-tag').forEach(img => { img.src = `${RRG_PROTO}${RRG_CAMPAIGN.saleTag}`; img.alt = RRG_CAMPAIGN.title; });
 
   if (typeof mmApplySaleBannerVisibility === 'function') mmApplySaleBannerVisibility();
 }

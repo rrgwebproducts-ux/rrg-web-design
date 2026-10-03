@@ -1503,6 +1503,7 @@ Logged 2026-09-30. Nothing built yet: agree each item's approach first (standing
 
 When a big sale is on, the whole site takes on the campaign's colours, with no layout change. Rack Friday is the worked example. Full spec: `docs/campaign/campaign-spec.md`.
 
+- **Running a future sale:** `docs/campaign/campaign-spec.md` §3 lists every takeover item (19 of them) with what each sale supplies, the asset sizes and where each is set; §4 is the step-by-step checklist.
 - **Switch:** Site Admin → **Sale on (Rack Friday)**. It replaces the old "Clearance sale banner" toggle, is off by default and covers AU and NZ only (never the UK).
 - **What changes:**
   - Favicon.
