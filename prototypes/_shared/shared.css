@@ -2792,3 +2792,241 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
   .brand-card-grid{grid-template-columns:1fr;}
   .az-groups{columns:2 140px;}
 }
+
+/* ===== Buying Guide (docs/buying-guide/buying-guide-spec.md, 2026-10-06) =====
+   First used by /bike-racks-info. Layout only: headings use .related-heading and the shared type
+   rules above. Every block is generic so the Roof Box / Water & Snow / Awnings guides can reuse it. */
+.guide-section{margin:var(--space-section) 0;scroll-margin-top:calc(var(--sticky-offset,0px) + 72px);}
+.guide-eyebrow{margin:0 0 6px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--rrg-red);}
+/* The direct answer under each heading (AEO: a sentence search engines and AI answers can quote). */
+.guide-answer{font-size:17px;line-height:1.6;color:var(--rrg-text);margin:-6px 0 20px;max-width:900px;}
+.page-hero-intro .guide-answer{font-size:18px;margin:0 0 14px;color:var(--rrg-text);}
+.page-hero-intro .guide-meta{display:flex;flex-wrap:wrap;gap:6px 0;margin:4px 0 0;font-size:13px;color:var(--rrg-grey-600);}
+.guide-meta span + span::before{content:'';display:inline-block;vertical-align:middle;width:4px;height:4px;border-radius:50%;background:var(--rrg-grey-400);margin:0 12px;}
+.guide-subhead{font-size:24px;margin:32px 0 12px;}
+.guide-small{font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+.guide-hero{align-items:start;padding-top:20px;}
+.guide-hero-finder{scroll-margin-top:calc(var(--sticky-offset,0px) + 16px);}
+
+/* Bike Rack Finder (widget: rrgWidgetBikeRackFinderHTML; logic: buying-guide.js). */
+.brf{border:1px solid var(--rrg-line);border-top:4px solid var(--rrg-red);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);padding:22px 24px 24px;}
+.brf-head{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:12px;margin-bottom:16px;}
+.brf-title{margin:0;font-size:28px;font-style:italic;}
+.brf-sub{grid-column:1;margin:2px 0 0;font-size:14px;color:var(--rrg-grey-600);}
+.brf-progress{grid-column:2;grid-row:1 / 3;display:flex;gap:6px;margin:0;padding:0;list-style:none;}
+.brf-progress li{width:22px;height:4px;border-radius:2px;background:var(--rrg-line);transition:background var(--t-fast);}
+.brf-progress li.is-on{background:var(--rrg-red);}
+.brf.has-result .brf-progress{display:none;}
+.brf-q{margin:0 0 12px;font-weight:900;font-size:17px;color:var(--rrg-text);}
+.brf-q span{display:block;margin-bottom:2px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
+.brf-q small{font-weight:400;font-size:13px;color:var(--rrg-grey-600);}
+.brf-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.brf-chip{font:inherit;font-weight:700;font-size:15px;min-height:44px;padding:9px 16px;border:1.5px solid var(--rrg-line-strong);border-radius:var(--radius);background:#fff;color:var(--rrg-text);cursor:pointer;transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);}
+.brf-chip:hover{border-color:var(--rrg-text);}
+.brf-chip.is-on{border-color:var(--rrg-red);background:var(--rrg-red-bg);color:var(--rrg-red);}
+.brf-chip.is-on::before{content:"\2713";margin-right:6px;}
+.brf-chips--count{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));}
+.brf-chips--count .brf-chip{font-size:22px;font-weight:900;min-height:56px;padding:0;}
+.brf-chips--count .brf-chip.is-on::before{content:none;}
+.brf-nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.brf-back{font:inherit;font-size:14px;font-weight:700;background:none;border:0;padding:6px 0;color:var(--rrg-grey-700);cursor:pointer;text-decoration:underline;}
+.brf-eyebrow{margin:0 0 2px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--rrg-fits);}
+.brf-match{margin:0 0 4px;font-size:30px;line-height:1.05;}
+.brf-hold{margin:0 0 6px;font-size:15px;color:var(--rrg-grey-700);}
+.brf-hold strong{color:var(--rrg-text);}
+.brf-summary{margin:0 0 12px;font-size:13px;color:var(--rrg-grey-600);}
+.brf-why{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
+.brf-why li{position:relative;padding-left:24px;}
+.brf-why li::before{content:"\2713";position:absolute;left:0;top:1px;width:17px;height:17px;border-radius:50%;background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.brf-note{margin:0 0 12px;padding:10px 12px;border-left:3px solid var(--rrg-cta);background:var(--rrg-bg);font-size:13px;line-height:1.5;color:var(--rrg-grey-700);}
+.brf-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:16px 0 12px;}
+.brf-link{font-weight:700;font-size:14px;color:var(--rrg-text);}
+.brf-also{margin:0 0 8px;font-size:13px;color:var(--rrg-grey-700);}
+.brf-also a{color:var(--rrg-red);font-weight:700;}
+
+/* On this page: sticky chapter bar + reading progress (initGuideToc). */
+.guide-toc{position:sticky;top:var(--sticky-offset,0px);z-index:30;background:#fff;border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);transition:top var(--t-slide) ease,box-shadow var(--t-fast);}
+.guide-toc.is-stuck{box-shadow:var(--shadow-bar);}
+.guide-toc-inner{display:flex;align-items:center;gap:20px;}
+.guide-toc-label{flex:0 0 auto;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
+.guide-toc-list{display:flex;gap:4px;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none;}
+.guide-toc-list::-webkit-scrollbar{display:none;}
+.guide-toc-list a{display:inline-flex;align-items:center;gap:6px;padding:14px 12px 11px;font-size:14px;font-weight:700;color:var(--rrg-grey-700);text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;}
+.guide-toc-list a:hover{color:var(--rrg-text);}
+.guide-toc-list a.is-active{color:var(--rrg-text);border-bottom-color:var(--rrg-text);}
+.guide-toc-list b{width:20px;height:20px;border-radius:50%;background:var(--rrg-grey-600);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center;}
+.guide-toc-list a.is-active b{background:var(--rrg-red);}
+.guide-toc-progress{height:3px;}
+.guide-toc-progress span{display:block;height:100%;background:var(--rrg-red);transform:scaleX(0);transform-origin:left;}
+
+/* Numbered step header. */
+.guide-step{display:flex;align-items:center;gap:16px;margin-bottom:8px;}
+.guide-step h2{margin:0;}
+.guide-step-num{flex:0 0 auto;width:56px;height:56px;border-radius:50%;background:var(--rrg-red);color:#fff;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:32px;display:flex;align-items:center;justify-content:center;}
+.guide-step-label{margin:0 0 2px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
+.guide-step + .guide-answer{margin-top:12px;}
+
+/* "Your match": cards the finder's answer points to. */
+.is-match{position:relative;border-color:var(--rrg-fits)!important;box-shadow:0 0 0 2px var(--rrg-fits);}
+.is-match::after{content:"Your match";position:absolute;top:-11px;right:12px;padding:3px 9px;border-radius:var(--radius);background:var(--rrg-fits);color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;line-height:1.3;}
+
+/* Compare table. */
+.compare-scroll{overflow-x:auto;border:1px solid var(--rrg-line);border-radius:var(--radius);}
+.compare-table{width:100%;border-collapse:collapse;font-size:14px;min-width:820px;background:#fff;}
+.compare-table th,.compare-table td{padding:12px 14px;text-align:left;vertical-align:top;border-top:1px solid var(--rrg-line-soft);color:var(--rrg-grey-700);line-height:1.45;}
+.compare-table thead th{border-top:0;background:var(--rrg-charcoal);color:#fff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.compare-table tbody th{position:sticky;left:0;background:#fff;font-weight:900;color:var(--rrg-text);min-width:150px;}
+.compare-table tbody th a{color:var(--rrg-text);}
+.compare-table tbody tr.is-pick th,.compare-table tbody tr.is-pick td{background:var(--rrg-fits-bg);}
+.compare-table td:nth-child(2){font-weight:900;font-size:18px;color:var(--rrg-text);}
+.compare-pick{display:block;margin-top:3px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-fits);}
+.compare-table .yes,.compare-table .no{font-weight:900;white-space:nowrap;}
+.compare-table .yes{color:var(--rrg-fits);}
+.compare-table .yes::before{content:"\2713\00a0";}
+.compare-table .no{color:var(--rrg-nofit);}
+.compare-table .no::before{content:"\2715\00a0";}
+.ask{display:inline-block;padding:1px 7px;border-radius:var(--radius);background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);font-size:12px;font-weight:900;white-space:nowrap;}
+.compare-foot{margin:10px 0 0;font-size:13px;color:var(--rrg-grey-600);}
+.compare-foot a{color:var(--rrg-text);font-weight:700;}
+
+/* Step 1: number of bikes. */
+.count-tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;}
+.count-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:18px 8px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;color:var(--rrg-text);text-decoration:none;transition:border-color var(--t-fast),transform var(--t-fast);}
+.count-tile:hover{border-color:var(--rrg-red);transform:translateY(-2px);}
+.count-tile b{font-family:'Barlow Condensed',Arial,sans-serif;font-size:44px;line-height:1;color:var(--rrg-red);}
+.count-tile span{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+
+/* Verdict chip (bike types, hold styles). */
+.verdict{display:inline-block;margin:0 0 6px;padding:2px 8px;border-radius:var(--radius);font-size:12px;font-weight:900;line-height:1.5;}
+.verdict--ok{background:var(--rrg-fits-bg);color:var(--rrg-fits);}
+.verdict--limit{background:var(--rrg-nofit-bg);color:var(--rrg-nofit);}
+.verdict--tip{background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);}
+
+/* Step 1: bike types. */
+.bike-types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+.bike-type{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:18px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;}
+.bike-type img{width:64px;height:64px;}
+.bike-type h4{margin:0 0 6px;font-size:20px;}
+.bike-type p{margin:0;font-size:14px;line-height:1.55;color:var(--rrg-grey-700);}
+
+/* Step 2: mounting styles. */
+.option-badge{display:inline-block;margin:0 0 8px;padding:3px 9px;border-radius:var(--radius);background:var(--rrg-text);color:#fff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
+.option-points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
+.option-points li{position:relative;padding-left:24px;}
+.option-points li::before{position:absolute;left:0;top:1px;width:17px;height:17px;border-radius:50%;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.option-points .is-pro::before{content:"\2713";background:var(--rrg-fits-bg);color:var(--rrg-fits);}
+.option-points .is-con::before{content:"!";background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);}
+.option-points a{color:var(--rrg-text);font-weight:700;}
+.option-needs{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:12px 0 0;font-size:14px;font-weight:700;color:var(--rrg-text);}
+.option-needs span{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--rrg-grey-600);}
+.option-note{margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--rrg-cta);background:var(--rrg-bg);font-size:13px;line-height:1.5;color:var(--rrg-grey-700);}
+.option-note a{color:var(--rrg-text);font-weight:700;}
+.option-card{display:flex;flex-direction:column;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;scroll-margin-top:calc(var(--sticky-offset,0px) + 80px);}
+.option-card-media{display:flex;align-items:center;justify-content:center;height:150px;background:var(--rrg-bg);border-radius:var(--radius) var(--radius) 0 0;}
+.option-card-media img{max-height:110px;width:auto;}
+.option-card-body{display:flex;flex-direction:column;align-items:flex-start;padding:18px 20px 20px;flex:1;}
+.option-card-body h3{margin:0 0 10px;font-size:24px;}
+.option-card-body > p{margin:0;font-size:14px;line-height:1.55;color:var(--rrg-grey-700);}
+.option-card-body .option-needs{margin-top:12px;}
+.option-card-body .info-card-link{margin-top:auto;padding-top:14px;}
+.option-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.option-cards--4{grid-template-columns:repeat(4,minmax(0,1fr));}
+/* Roof: the second most common choice, so it gets a full-width card between the tow bar group and the rest. */
+.option-card--wide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);margin-bottom:20px;}
+.option-card--wide .option-card-media{height:auto;min-height:220px;border-radius:var(--radius) 0 0 var(--radius);}
+.option-card--wide .option-card-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px;align-content:start;}
+.option-card--wide .option-card-body > *{grid-column:1;}
+.option-card--wide .option-card-body > .option-note{grid-column:2;grid-row:1 / span 4;margin:0;align-self:start;}
+.option-card--wide .option-card-body > .info-card-link{margin-top:0;}
+.mount-group{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px;align-items:stretch;padding:20px;margin-bottom:20px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:var(--rrg-bg-warm);}
+.mount-group-head h3{margin:0 0 6px;font-size:28px;}
+.mount-pick{display:block;margin:0 0 14px;font-size:13px;font-weight:900;color:var(--rrg-fits);}
+.mount-pick::before{content:"\2605\00a0";}
+.mount-group-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mount-group-cards .option-card-media{height:130px;}
+
+/* Step 3: hold styles. */
+.hold-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+.hold-card{display:flex;flex-direction:column;align-items:flex-start;padding:16px 18px 18px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;color:var(--rrg-text);text-decoration:none;transition:border-color var(--t-fast);}
+.hold-card:hover{border-color:var(--rrg-text);}
+.hold-card img{align-self:center;height:80px;width:auto;margin:0 0 12px;}
+.hold-card h3{margin:0 0 6px;font-size:20px;}
+.hold-card p{margin:0;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
+
+/* Before you buy: checklist. */
+.guide-checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0;padding:0;list-style:none;}
+.guide-checklist li{display:flex;gap:16px;padding:18px 20px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;}
+.guide-checklist li:last-child:nth-child(odd){grid-column:1 / -1;}
+.guide-check-icon{flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:var(--rrg-red-bg);color:var(--rrg-red);display:flex;align-items:center;justify-content:center;}
+.guide-check-icon svg{width:22px;height:22px;}
+.guide-checklist h3{margin:0 0 6px;font-size:20px;}
+.guide-checklist p{margin:0;font-size:14px;line-height:1.6;color:var(--rrg-grey-700);}
+.guide-checklist a{color:var(--rrg-text);font-weight:700;}
+
+/* Number plates: copy beside a photo. */
+.guide-split{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:start;}
+.guide-split .callout{margin:0;}
+.guide-split-media{margin:0;}
+.guide-split-media img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:var(--radius);}
+.guide-split-media figcaption{margin-top:8px;font-size:13px;color:var(--rrg-grey-600);}
+.plate-states{list-style:none;margin:0 0 14px;padding:0;border:1px solid var(--rrg-line);border-radius:var(--radius);}
+.plate-states li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:12px 16px;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
+.plate-states li + li{border-top:1px solid var(--rrg-line-soft);}
+.plate-states b{color:var(--rrg-text);}
+.plate-states a{color:var(--rrg-red);font-weight:700;}
+
+/* Straight advice band. */
+.guide-advice{background:var(--rrg-charcoal);color:#fff;padding:40px 0;margin:var(--space-section) 0;}
+.guide-advice-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 40px;align-items:center;}
+.guide-advice h2{color:#fff;margin:0 0 8px;}
+.guide-advice p{margin:0;font-size:16px;line-height:1.6;color:var(--rrg-on-dark-muted);max-width:640px;}
+.guide-advice-ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.guide-advice-ctas .btn{padding:13px 20px;font-size:15px;}
+.guide-advice-ctas .btn-outline{background:transparent;border-color:#fff;color:#fff;}
+.guide-advice-ctas .btn-outline:hover{background:#fff;color:var(--rrg-black);}
+
+/* FAQ groups, related guides, brands. */
+#faqs .faq-heading + .guide-answer + .guide-subhead{margin-top:8px;}
+.info-card--link{color:inherit;text-decoration:none;transition:border-color var(--t-fast);}
+.info-card--link:hover{border-color:var(--rrg-text);}
+.brands-intro{text-align:center;margin:-12px auto 24px;max-width:720px;font-size:15px;color:var(--rrg-grey-700);}
+.brands-track a{display:inline-flex;}
+
+/* Mobile bottom button (shares .sticky-cta-mobile's show/hide rules). */
+.guide-sticky .guide-sticky-label{flex:1;min-width:0;font-size:12px;color:var(--rrg-grey-600);line-height:1.3;}
+.guide-sticky .guide-sticky-label strong{display:block;font-size:14px;color:var(--rrg-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+@media (max-width:1100px){
+  .bike-types,.hold-cards,.option-cards--4{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .option-card--wide .option-card-body{display:flex;}
+  .option-card--wide .option-card-body > .option-note{margin-top:12px;}
+  .mount-group{grid-template-columns:1fr;}
+}
+@media (max-width:900px){
+  .guide-split,.guide-advice-inner{grid-template-columns:1fr;}
+  .guide-split-media{max-width:420px;}
+  .option-cards{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .count-tiles{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .guide-checklist{grid-template-columns:1fr;}
+  /* The mobile sticky header (logo bar) is fixed above everything once you scroll. */
+  .guide-toc{top:var(--guide-mobile-header-h,47px);}
+  .guide-toc-label{display:none;}
+  .guide-section,.option-card{scroll-margin-top:110px;}
+}
+@media (max-width:640px){
+  .brf{padding:18px 16px 20px;}
+  .brf-chips--count{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .guide-step-num{width:44px;height:44px;font-size:26px;}
+  .guide-answer{font-size:16px;}
+  .mount-group{padding:14px;}
+  .mount-group-cards,.option-cards,.option-cards--4,.option-card--wide{grid-template-columns:1fr;}
+  .option-card--wide .option-card-media{min-height:150px;border-radius:var(--radius) var(--radius) 0 0;}
+  .bike-types{grid-template-columns:1fr;}
+  .bike-type{flex-direction:row;align-items:flex-start;}
+  .bike-type img{width:52px;height:52px;flex:0 0 auto;}
+  .hold-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .hold-card{padding:14px;}
+  .hold-card img{height:64px;}
+  .plate-states li{grid-template-columns:1fr;gap:2px;}
+  .guide-advice-ctas{grid-template-columns:1fr;}
+}

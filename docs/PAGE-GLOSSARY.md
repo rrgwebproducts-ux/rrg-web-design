@@ -178,6 +178,26 @@ Added 2026-09-30 (`docs/fit-my-vehicle/fit-my-vehicle-spec.md`, `docs/installati
 
 ---
 
+## Buying Guide (`prototypes/buying-guide/`)
+
+Added 2026-10-06 (`docs/buying-guide/buying-guide-spec.md`). Replaces `/bike-racks-info`. A template: the Roof Box, Water & Snow and Awnings guides can move onto it later. Reuses the Page hero, Trust row, Callout, Info cards, FAQ section and brands strip; the pieces below are new.
+
+| Name | Description |
+|---|---|
+| **Bike Rack Finder** | 3 questions (how many bikes · bike types · what the vehicle has), then a recommendation: rack style, how it holds the bike, why (live copy), Shop These Racks, Show me why. Falls back to "talk to us" where the live copy doesn't cover the case. Remembers the answers for the tab. — `rrgWidgetBikeRackFinderHTML()` (widgets.js), `initBikeRackFinder()` (buying-guide.js), `.brf` |
+| **"Your match" highlight** | Green outline + tag on every card further down that matches the Finder's answer (bike count, bike types, mounting style, hold style). — `.is-match` |
+| **On this page bar** | Sticky chapter bar under the header with a red reading-progress line; the current section is highlighted. A swipeable chip row on phones. — `.guide-toc`, `initGuideToc()` |
+| **Comparison table** | Every mounting style × max bikes / eBikes / carbon / needs / best for; "Ask us" where the live page is silent. — `.compare-table` |
+| **Step header** | Red numbered circle + "Step 1 of 3" label + the H2. — `.guide-step` |
+| **Answer line** | The 1–2 sentence direct answer under every heading (for search snippets and AI answers). — `.guide-answer` |
+| **Count tiles / Type cards / Hold cards** | 1–6 bike tiles; bike types with a verdict chip (Most racks / Wheel hold only…); hold styles with Carbon-safe etc. — `.count-tiles`, `.bike-types`, `.hold-cards`, `.verdict` |
+| **Option cards** | Mounting styles: badge, ✓ / ! points, "Needs", shop link. Hitch + Tow Ball share a group (`.mount-group`), Roof is wide (`.option-card--wide`), the rest are 4-up. — `.option-card` |
+| **Checklist** | "Before you buy" checks with icons. — `.guide-checklist` |
+| **Advice band** | Dark band: Straight Advice copy + Call / Chat / Find a Store / Get It Fitted. — `.guide-advice` |
+| **Mobile Finder button** | Bottom bar once the Finder scrolls away: "Find My Rack", then "Shop My Match" after an answer. — `[data-guide-sticky]` |
+
+---
+
 ## Shared building blocks (2026-09-29 consistency pass)
 
 Site-wide pieces that the consistency pass (`spec.md` §15) turned into one shared rule each. Use these names rather than the old per-page ones.

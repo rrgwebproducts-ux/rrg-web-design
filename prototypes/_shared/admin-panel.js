@@ -27,6 +27,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'store-finder', label: 'Store Finder' },
       { key: 'fit-my-vehicle', label: 'Fit My Vehicle' },
       { key: 'installation', label: 'Installation &amp; Booking' },
+      { key: 'buying-guide', label: 'Buying Guide — Bike Racks' },
     ] },
     { title: 'Cart &amp; checkout', items: [
       { key: 'cart', label: 'Cart' },

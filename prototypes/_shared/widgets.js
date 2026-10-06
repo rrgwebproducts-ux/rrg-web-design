@@ -5,6 +5,8 @@
 //                                        mobile menu takeover (checkout has its own header)
 //   <div data-widget="footer"></div>
 //   <div data-widget="vehicle-finder"></div>   the Fit Finder / vehicle bar (options below)
+//   <div data-widget="bike-rack-finder"></div> the Buying Guide's 3-question finder (logic in
+//                                        buying-guide.js, which the page must also load)
 //
 // rrgMountWidgets() swaps each placeholder for the widget's markup (the placeholder itself is
 // replaced, not filled, so the page's element order is exactly what it was — e.g. the footer stays
@@ -254,10 +256,47 @@ function rrgWidgetVehicleFinderHTML(opts = {}) {
 </section>`;
 }
 
+// ---------------------------------------------------------------- Bike Rack Finder
+
+// Bike Rack Finder (2026-10-06, docs/buying-guide/buying-guide-spec.md §2.3 + §3): 3 questions
+// (bikes, bike types, what the vehicle has), then a recommendation. The rules and copy live in
+// _shared/buying-guide.js (initBikeRackFinder), which also fills the result panel.
+//   shopHref   the bike rack listing the result links to (filters are added to its query string)
+function rrgWidgetBikeRackFinderHTML(opts = {}) {
+  const chip = (q, value, label, extra = '') => `<button type="button" class="brf-chip" data-brf-q="${q}" data-brf-value="${value}"${extra} aria-pressed="false">${label}</button>`;
+  return `<section class="brf" data-bike-rack-finder data-brf-shop-href="${opts.shopHref || '#'}" aria-labelledby="brfTitle">
+  <div class="brf-head">
+    <h2 id="brfTitle" class="brf-title">Bike Rack Finder</h2>
+    <p class="brf-sub">3 quick questions. We'll tell you which rack suits you.</p>
+    <ol class="brf-progress" aria-hidden="true"><li class="is-on"></li><li></li><li></li></ol>
+  </div>
+  <div class="brf-step" data-brf-step="1">
+    <p class="brf-q"><span>1 of 3</span>How many bikes do you need to carry?</p>
+    <div class="brf-chips brf-chips--count">${[1, 2, 3, 4, 5, 6].map(n => chip('count', n, n)).join('')}</div>
+  </div>
+  <div class="brf-step" data-brf-step="2" hidden>
+    <p class="brf-q"><span>2 of 3</span>Are any of them&hellip; <small>Pick all that apply</small></p>
+    <div class="brf-chips">
+      ${chip('bikes', 'ebike', 'eBike')}${chip('bikes', 'carbon', 'Carbon frame')}${chip('bikes', 'kids', "Kids' bike")}${chip('bikes', 'fat', 'Fat / XXL tyres')}${chip('bikes', 'stepthrough', 'Step-through')}${chip('bikes', 'none', 'No, standard bikes', ' data-brf-only')}
+    </div>
+    <div class="brf-nav"><button type="button" class="brf-back" data-brf-back>&lsaquo; Back</button><button type="button" class="btn btn-primary btn-sm" data-brf-next disabled>Next</button></div>
+  </div>
+  <div class="brf-step" data-brf-step="3" hidden>
+    <p class="brf-q"><span>3 of 3</span>What does your vehicle have? <small>Pick all that apply</small></p>
+    <div class="brf-chips">
+      ${chip('vehicle', 'towbar', 'Tow bar')}${chip('vehicle', 'roofbars', 'Roof racks / bars')}${chip('vehicle', 'spare', 'Rear spare wheel')}${chip('vehicle', 'ute', 'Ute tub')}${chip('vehicle', 'none', 'None of these', ' data-brf-only')}
+    </div>
+    <div class="brf-nav"><button type="button" class="brf-back" data-brf-back>&lsaquo; Back</button><button type="button" class="btn btn-primary btn-sm" data-brf-next disabled>Show My Match</button></div>
+  </div>
+  <div class="brf-result" data-brf-result hidden aria-live="polite"></div>
+</section>`;
+}
+
 const RRG_WIDGETS = {
   header: rrgWidgetHeaderHTML,
   footer: rrgWidgetFooterHTML,
   'vehicle-finder': rrgWidgetVehicleFinderHTML,
+  'bike-rack-finder': rrgWidgetBikeRackFinderHTML,
 };
 
 // Replaces every [data-widget] placeholder under `root` with its widget. The placeholder's data-*
