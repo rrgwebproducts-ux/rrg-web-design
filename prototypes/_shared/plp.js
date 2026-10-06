@@ -35,6 +35,9 @@ function plpValueMatches(product, facetKey, facetDef, selectedValue) {
   const v = (product.facets || {})[facetKey];
   if (v === undefined) return false;
   if (facetDef.mode === 'atleast') return Number(v) >= Number(selectedValue);
+  // A product can carry more than one value for a facet (Roof Boxes: a box listed under both
+  // X Large and Low Profile on the live site) — matches if any of them is the selected one.
+  if (Array.isArray(v)) return v.some(x => String(x) === String(selectedValue));
   return String(v) === String(selectedValue);
 }
 

@@ -1518,3 +1518,38 @@ When a big sale is on, the whole site takes on the campaign's colours, with no l
   - "Rack Friday savings" line in the cart, checkout and mini-cart.
   - Black footer with lime accents.
 - **Open:** whether the red brand bits (links, outline-red buttons, sale prices) change too; final Figma assets (favicon, tag, toolbar are still WIP); the hero's "XX%" placeholder; a pre-sale "Starts in" state; Cyber Monday as a second campaign.
+
+## 19. Package Deal + Roof Boxes PLP (Brenton, Jake & Graham, 2026-10-06)
+
+Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox.co.uk's package-deal journey; Claude then re-walked it with Playwright (screenshots in `.playwright-mcp/rb/`).
+
+**The concept (agreed in the meeting):** buy any roof rack and any qualifying roof-mounted product (RMP) in the same basket and the accessory gets a discount. We do **not** copy the UK's pre-built package SKUs or step flow.
+- Discount is set per accessory brand: **10% default, 15% for CRUZ**. It applies to the accessory's *current* price, so it stacks on a sale price.
+- Rack first or accessory first, the basket works it out.
+- Customer-facing name: **"Package Deal"** for now (may change).
+- Demo covers all regions, UK included. Real dev work ships AU/NZ first.
+- Roof boxes + racks first; bike racks (roof-mounted only), rooftop tents, awnings etc. after.
+
+**What the UK store does (Playwright walkthrough, 2026-10-06):**
+- Packages are pre-built "-P" SKUs; bike packages exist per rack *and* per quantity (P1–P4).
+- PLP "Package Deals Available" strip → modal → a *generic* package page that forgets the product you clicked. The box PDP's sticker does link to that box's own package PDP.
+- A saved vehicle skips the "find your car" step. Bar options show as combined bar+box cards with "You save £31–£51" (varies by bar).
+- The item goes in the basket at "Select Box/Package", before bars are chosen. An **incomplete package blocks checkout** ("You need to add a set of roof bars…").
+- Basket: separate lines + one "Package Deal Discount" line after the subtotal. The box is the parent line; removing it removes the whole package.
+- **The gap our concept fixes:** the same box + bars bought separately cost £546.00 vs £509.95 as a package, with no discount and no nudge.
+- Box PDPs carry bar-compatibility specs ("fits bars up to 80mm wide…"); RRG's own PDPs carry **Max Crossbar Spread** and the mounting system — the data our compatibility check will use.
+
+**Plan (in build order):**
+1. ✅ **Roof Boxes PLP** — `prototypes/plp-roof-boxes/`, built 2026-10-06. The exact Bike Racks PLP template, config and data only.
+   - Shop By = the four live shape categories (Long Wide / Medium / Narrow / Short Wide). Brenton chose shape over size; **size is the priority filter**. Tab size unchanged.
+   - Shape icons = roofbox.co.uk's silhouettes, recoloured RRG red; the UK region shows the original blue (it swaps the site red for blue).
+   - 35 real products scraped from roofracksgalore.com.au (price/stock from each PDP, USPs + specs from the listing), in the live default order. No ratings (the live pages have none). Each carries `maxCrossbarSpread` for step 3.
+   - plp.js facets now accept an array value (a box listed under both X Large and Low Profile).
+2. **Package Deal data layer** (`_shared`): rack / qualifying-RMP flags, discount % per brand, reads the real demo cart.
+3. **Rack-aware compatibility:** extend the PDP cart-conflict banner (PDP brief 4.19) to show both "✓ Compatible with the [rack] in your cart" and "Heads up: not compatible…", each with a tooltip. Also on rack PDPs, cart, mini-cart and checkout. Never hide products.
+4. **PDP Package Deal tag + drawer:** tag near the price (no third price); drawer explains the deal; "Add to cart & choose your rack" leads into a rack finder that uses the saved vehicle and remembers the product.
+5. **Cart / mini-cart / checkout:** "Package Deal" saving line when both are in the basket; before that, a "potential saving" line and a missing-item nudge like the UK's, **without blocking checkout**. Rack + accessory grouped visually, either removable.
+6. **PLP marker:** light "Package Deal available" strip on qualifying cards, leading to the drawer (not a generic page).
+7. Then repeat the PLP for Awnings, Rooftop Tents etc. on the same template.
+
+**Not for the build:** Vercel is near its free-tier size limit (upgrade may be needed); buying-guide analytics; package-vs-single sales data; the UK "stage one" split.

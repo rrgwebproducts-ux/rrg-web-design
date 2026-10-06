@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Roof Boxes — Roof Racks Galore</title>
+<meta name="description" content="Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.">
+<link rel="canonical" href="https://www.roofracksgalore.com.au/roof-boxes">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Roof Racks Galore">
+<meta property="og:title" content="Roof Boxes">
+<meta property="og:description" content="Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.">
+<meta property="og:url" content="https://www.roofracksgalore.com.au/roof-boxes">
+<meta property="og:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Dualsideopening_645XXX_1_4.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Roof Boxes">
+<meta name="twitter:description" content="Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.">
+<meta name="twitter:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Dualsideopening_645XXX_1_4.jpg">
+<!-- Roof Boxes PLP (2026-10-06) — the exact Bike Racks PLP template (plp/index.html), config and
+     data only. Shop By = the four live shape categories (roofracksgalore.com.au/roof-boxes/
+     roof-box-shapes), size = priority filter. Products are the real live range, scraped
+     2026-10-06 (price/stock from each product page). Built as the demo page for the Package Deal
+     (spec.md §19): roof boxes are the first qualifying accessory. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<style>
+/* Shop By shape icons: RRG red everywhere, the original roofbox.co.uk blue on the UK region
+   (which swaps the site red for blue — shared.css body.region-uk). See rbShapeIcon() below. */
+.rb-shape-icon-uk{display:none;}
+body.region-uk .rb-shape-icon{display:none;}
+body.region-uk .rb-shape-icon-uk{display:block;}
+</style>
+</head>
+<body data-plp-page>
+
+<div data-widget="header"></div>
+
+<!-- Change Vehicle moved up here from the hero CTA row (2026-09-18 design review — Graham:
+     it's a low-usage action once a vehicle is set, better placed out of the way near the
+     breadcrumbs than competing with the hero's other CTAs). Right-aligned, red outline not
+     gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="plpCrumbTrail"></div>
+  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-vclp-cta="change-vehicle">Change Vehicle</a>
+</div>
+
+<main class="wrap">
+
+  <!-- Hero — Vehicle-Set state (spec Section 4.1): short framing, no full vehicle spec in
+       the H1 since Roof Boxes is a standard (non-fitment-locked) category. Media/badge reuse
+       the same real assets + component pattern as the Vehicle Category Landing Page hero. -->
+  <section class="plp-hero" id="plpHeroVehicleSet" hidden>
+    <div>
+      <h1>Shop Roof Boxes for your Toyota Hilux</h1>
+      <p>Roof boxes for your Toyota Hilux in every shape: long wide for skis and long gear, medium for family luggage, narrow to leave room for a bike rack, and short wide for short roofs. Boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro.</p>
+      <!-- Change Vehicle moved to the breadcrumb row (2026-09-18 design review) — see
+           .plp-crumbs-cta above, shown whenever Site Admin has a Vehicle set. -->
+      <div class="plp-hero-cta-row">
+        <a href="#" class="btn btn-primary">Buyers Guide</a>
+        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#faqSection" class="btn btn-outline">FAQs</a>
+        <a href="#plpVideoCarousel" class="btn btn-outline">Videos</a>
+      </div>
+    </div>
+    <div class="plp-hero-media is-cutout">
+      <img class="plp-hero-vehicle-img" src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="956" height="556">
+      <span class="plp-hero-make-badge"><img src="../_shared/brand-toyota-badge.png" alt="Toyota" width="534" height="370"></span>
+    </div>
+  </section>
+
+  <!-- Hero — Simple state (spec Section 4.2). No Figma reference exists for this state;
+       drafted from the rest of the session's decisions, flagged for review at first build
+       (spec Section 14 item 4 — Claude's own call on CTA copy/prominence). No vehicle photo:
+       this category has no fallback image configured in this demo, so the media column is
+       dropped entirely rather than showing a placeholder graphic. -->
+  <section class="plp-hero no-media" id="plpHeroSimple" hidden>
+    <div>
+      <h1>Shop Roof Boxes</h1>
+      <p>Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.</p>
+      <div class="plp-hero-cta-row">
+        <a href="#" class="btn btn-cta" data-vclp-cta="set-vehicle">Set Your Vehicle</a>
+        <a href="#" class="btn btn-primary">Buyers Guide</a>
+        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#faqSection" class="btn btn-outline">FAQs</a>
+      </div>
+    </div>
+    <div class="plp-hero-media" hidden>
+      <img class="plp-hero-category-img" src="" alt="">
+    </div>
+  </section>
+
+  <!-- SHOP BY row (spec Section 5) — real, fixed URLs per tile in production; this demo
+       simulates that navigation in-page (plp.js:plpRenderShopBy()) since there's no second
+       real page to route to. Full sibling row always stays visible. -->
+  <section class="plp-shopby">
+    <div class="plp-shopby-head">
+      <h2>Shop By</h2>
+    </div>
+    <div class="plp-shopby-track" id="plpShopByTrack"></div>
+  </section>
+
+  <div class="plp-toolbar">
+    <div class="plp-toolbar-left">
+      <div class="plp-view-toggle">
+        <button type="button" id="plpViewGrid" aria-label="Grid view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+        <button type="button" id="plpViewList" aria-label="List view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-outline plp-refine-btn-mobile" id="plpRefineBtn">Refine Results</button>
+      <span class="plp-toolbar-count" id="plpResultCount"></span>
+    </div>
+    <div class="plp-toolbar-right">
+      <label for="plpSort">Sort By</label>
+      <!-- Reordered 2026-09-18 (Graham): relevance/merit-based options first, price sorts
+           pushed to the bottom so people don't land straight on "cheapest first". -->
+      <select id="plpSort"></select>
+    </div>
+  </div>
+
+  <div class="plp-layout">
+    <aside class="plp-sidebar">
+      <!-- Reset/Clear Filters (2026-09-18 design review — Graham/Tim) -->
+      <div class="plp-filter-head">
+        <h3>Filters</h3>
+        <button type="button" class="plp-filter-clear" id="plpFilterClear">Clear Filters</button>
+      </div>
+      <div id="plpPriorityFilters"></div>
+      <div id="plpStandardFilters"></div>
+      <div class="plp-merch-sidebar" id="plpMerchSidebar"></div>
+    </aside>
+    <div class="plp-main">
+      <div class="plp-filter-chips" id="plpPriorityChips"></div>
+      <div id="plpResults" class="plp-results"></div>
+      <div class="plp-pagination" id="plpPaginationDesktop"></div>
+      <div class="plp-pagination-mobile">
+        <div class="plp-toolbar-count plp-result-count-mobile" id="plpResultCountMobile"></div>
+        <div id="plpPaginationMobile"></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="plp-video-carousel-section" id="plpVideoCarousel">
+    <h2 class="related-heading">Roof Box Videos</h2>
+    <div class="plp-video-carousel-track" id="plpVideoCarouselTrack"></div>
+  </section>
+
+  <section class="faq-section" id="faqSection">
+    <h2 class="faq-heading">Frequently Asked Questions</h2>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+  <section class="related-section">
+    <h2 class="related-heading">Related Products</h2>
+    <div class="related-grid">
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/M/A/MAXTRAX-MTXRRM-Platforms--Trays---Accessories._1_1.jpg" alt="MAXTRAX Recovery Board Mounting Bracket">
+        <div class="body"><h3>MAXTRAX Recovery Board Mounting Bracket</h3><div class="price">$99.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/K/S/KS0054_4_1_1.jpg" alt="Kaon Universal Awning Bracket">
+        <div class="body"><h3>Kaon Universal Awning Bracket (2pk)</h3><div class="price">$80.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8004110-Camping._1_1.jpg" alt="Yakima Roof Box">
+        <div class="body"><h3>Yakima SkyBox Roof Box 16 Cubic Ft</h3><div class="price">$899.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/M/A/MAXTRAX-MTXML30D-Locking-Cables--Padlocks._1_1.jpg" alt="MAXTRAX Locking Cable">
+        <div class="body"><h3>MAXTRAX Locking Cable &amp; Padlock</h3><div class="price">$45.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-widget="footer"></div>
+
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="../_shared/plp.js"></script>
+<script>
+// Real roofracksgalore.com.au roof box range, scraped 2026-10-06 (.playwright-mcp/rb/rrg-roofboxes.json):
+// name/image/price/was-price/stock from each product page, the 3 USPs + spec values from the
+// category listing, subcategories = the live shape category, facets.size = the live size
+// categories it sits in. No ratings: the live roof box pages show none (rating 0 hides the row).
+// maxCrossbarSpread is the PDP spec value, kept for the Package Deal compatibility check.
+const ROOF_BOX_PRODUCTS = [
+  {
+    id: 'rb1', sku: 'C940-349U', brand: 'CRUZ', brandLogo: '../_shared/brand-cruz.webp', name: 'Cruz Easy Gloss Black 430 litre Roof Box - 940-349U',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/r/cruz-easy-gloss-black-430-litre-roof-box-940-349u-view-6.jpg', price: 499.00, wasPrice: 699.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 1030,
+    facets: { size: ['large'], volume: 430, loadRating: 50, mount: 'u-bolt', colour: 'gloss-black', brand: 'CRUZ' },
+    specs: [ { icon:'📦', label:'Volume', value:'430L' }, { icon:'⚖️', label:'Product Weight', value:'14kg' }, { icon:'🏋️', label:'Load Rating', value:'50kg' }, { icon:'📏', label:'External Dimensions', value:'1800 x 780 x 440mm' } ],
+    usps: ['Larger Easy-series shell supports bulkier travel gear', 'Straightforward packing space for mixed gear', 'U-bolt style mounting kit provides secure bar attachment'],
+    relevanceRank: 100, newnessRank: 100, salesRank: 100
+  },
+  {
+    id: 'rb2', sku: 'T634208', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Touring M Matte Black 400 litre Roof Box - 634208',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-touring-m-matte-black-400-litre-roof-box-634208.jpg', price: 799.00, wasPrice: 999.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 955,
+    facets: { size: ['medium'], volume: 400, loadRating: 50, mount: 'fastclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'13kg' }, { icon:'🏋️', label:'Load Rating', value:'50kg' }, { icon:'📏', label:'External Dimensions', value:'1750 x 820 x 450mm' } ],
+    usps: ['Mid-size Touring model built for versatile everyday travel needs', 'Dual-side opening allows easy loading from either side of the vehicle', 'FastClick mounting system provides quick, torque-indicated attachment'],
+    relevanceRank: 99, newnessRank: 99, salesRank: 99
+  },
+  {
+    id: 'rb3', sku: 'T634804', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Touring L Matte Black 420 litre Roof Box - 634804',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-touring-l-matte-black-420-litre-roof-box-634804.jpg', price: 899.00, wasPrice: 1099.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 955,
+    facets: { size: ['large'], volume: 420, loadRating: 50, mount: 'fastclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'420L' }, { icon:'⚖️', label:'Product Weight', value:'15kg' }, { icon:'🏋️', label:'Load Rating', value:'50kg' }, { icon:'📏', label:'External Dimensions', value:'1960 x 780 x 430mm' } ],
+    usps: ['Touring-series design focused on practical, all-round travel storage', 'Dual-side opening allows easy loading from either side of the vehicle', 'FastClick mounting system provides quick, torque-indicated attachment'],
+    relevanceRank: 98, newnessRank: 98, salesRank: 98
+  },
+  {
+    id: 'rb4', sku: 'Y9812111', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima EasyTrip Textured Black 550 litre Roof Box - 9812111',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-9812111-Roof-Boxes._1_1.jpg', price: 1099.00, wasPrice: 1299.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 1200,
+    facets: { size: ['x-large'], volume: 550, loadRating: 75, mount: 'clamp', colour: 'matte-black', brand: 'Yakima' },
+    specs: [ { icon:'📦', label:'Volume', value:'550L' }, { icon:'⚖️', label:'Product Weight', value:'20kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2060 x 900 x 470mm' } ],
+    usps: ['Extra-long design suits oversized and awkward gear', 'Dual-side opening allows convenient access from either side', 'Quick-grip mounting hardware delivers simple, secure bar attachment'],
+    relevanceRank: 97, newnessRank: 97, salesRank: 97
+  },
+  {
+    id: 'rb5', sku: 'C940-344U', brand: 'CRUZ', brandLogo: '../_shared/brand-cruz.webp', name: 'Cruz Easy Gloss Black 320 litre Roof Box - 940-344U',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/r/cruz-easy-gloss-black-320-litre-roof-box-940-344u-view-6.jpg', price: 499.00, wasPrice: 599.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 770,
+    facets: { size: ['small'], volume: 320, loadRating: 50, mount: 'u-bolt', colour: 'gloss-black', brand: 'CRUZ' },
+    specs: [ { icon:'📦', label:'Volume', value:'320L' }, { icon:'⚖️', label:'Product Weight', value:'10kg' }, { icon:'🏋️', label:'Load Rating', value:'50kg' }, { icon:'📏', label:'External Dimensions', value:'1320 x 780 x 360mm' } ],
+    usps: ['Compact Easy-series body suits smaller vehicles and short trips', 'Assisted right-side opening with secure central lock system', 'U-bolt style mounting kit provides secure bar attachment'],
+    relevanceRank: 96, newnessRank: 96, salesRank: 96
+  },
+  {
+    id: 'rb6', sku: 'Y8007565', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima GearBox 400 Litre Cargo Box - 8007565',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-gearbox-400-litre-cargo-box-8007565.jpg', price: 899.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 890,
+    facets: { size: ['medium'], volume: 400, loadRating: 75, mount: 'clamp', colour: 'matte-black', brand: 'Yakima' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'17.4kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1650 x 900 x 420mm' } ],
+    usps: ['Gearbox gives you a sleek, angular roof box designed to match modern vehicles', 'Dual-side opening for easy access from either side', 'Quick clamp mounting system for secure fitment'],
+    relevanceRank: 93, newnessRank: 93, salesRank: 93
+  },
+  {
+    id: 'rb7', sku: 'T610200', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Pulse 2 Roof Box M - 610200',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-pulse-2-roof-box-m-610200-bab4571234ef.jpg', price: 899.95, wasPrice: 999.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['medium'], volume: 400, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'16kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1750 x 810 x 420mm' } ],
+    usps: ['DualSide opening provides convenient access from either side of the vehicle', '400L capacity makes it suitable for luggage, sports gear, skis and boards', 'PowerClick mounting system installs quickly with built-in torque indicator'],
+    relevanceRank: 92, newnessRank: 92, salesRank: 92
+  },
+  {
+    id: 'rb8', sku: 'RHRMFT370A', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack MasterFit Black 370 litre Roof Box - RMFT370A',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RMFT370A-Roof-Boxes._1_1.jpg', price: 967.12, wasPrice: 1099.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 890,
+    facets: { size: ['medium'], volume: 370, loadRating: 75, mount: 'claw', colour: 'matte-black', brand: 'Rhino-Rack' },
+    specs: [ { icon:'📦', label:'Volume', value:'370L' }, { icon:'⚖️', label:'Product Weight', value:'15kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1770 x 770 x 420mm' } ],
+    usps: ['MasterFit series compact body suits smaller vehicles and tight roof space', 'Dual-side opening allows easy loading from either side of the vehicle', 'MasterFit quick-mount system provides simple, tool-free bar fitment'],
+    relevanceRank: 90, newnessRank: 90, salesRank: 90
+  },
+  {
+    id: 'rb9', sku: 'Y8007566', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima GearBox 470 Litre Cargo Box - 8007566',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-gearbox-470-litre-cargo-box-8007566.jpg', price: 999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 970,
+    facets: { size: ['large'], volume: 470, loadRating: 75, mount: 'clamp', colour: 'matte-black', brand: 'Yakima' },
+    specs: [ { icon:'📦', label:'Volume', value:'470L' }, { icon:'⚖️', label:'Product Weight', value:'18.5kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1860 x 900 x 430mm' } ],
+    usps: ['Gearbox gives you a sleek, angular roof box designed to match modern vehicles', 'Dual-side opening for easy access from either side', 'Quick clamp mounting system for secure fitment'],
+    relevanceRank: 89, newnessRank: 89, salesRank: 89
+  },
+  {
+    id: 'rb10', sku: 'T610700', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Pulse 2 Roof Box L - 610700',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-pulse-2-roof-box-l-610700-05ca5568305c.jpg', price: 999.95, wasPrice: 1149.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['large'], volume: 450, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'18.7kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1940 x 840 x 390mm' } ],
+    usps: ['DualSide opening provides convenient access from either side of the vehicle', '450L capacity makes it suitable for luggage, sports gear, skis and boards', 'PowerClick mounting system installs quickly with built-in torque indicator'],
+    relevanceRank: 88, newnessRank: 88, salesRank: 88
+  },
+  {
+    id: 'rb11', sku: 'RHRMFT410A', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack MasterFit Black 410 litre Roof Box - RMFT410A',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RMFT410A-Roof-Boxes._1_1.jpg', price: 1055.12, wasPrice: 1199.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 950,
+    facets: { size: ['medium'], volume: 410, loadRating: 75, mount: 'claw', colour: 'matte-black', brand: 'Rhino-Rack' },
+    specs: [ { icon:'📦', label:'Volume', value:'410L' }, { icon:'⚖️', label:'Product Weight', value:'18kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1910 x 810 x 420mm' } ],
+    usps: ['MasterFit mid-size body balances storage with daily drivability', 'Dual-side opening allows easy loading from either side of the vehicle', 'MasterFit quick-mount system provides simple, tool-free bar fitment'],
+    relevanceRank: 87, newnessRank: 87, salesRank: 87
+  },
+  {
+    id: 'rb12', sku: 'Y8007567', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima GearBox 560 Litre Cargo Box - 8007567',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-gearbox-560-litre-cargo-box-8007567.jpg', price: 1099.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 970,
+    facets: { size: ['xx-large'], volume: 560, loadRating: 75, mount: 'clamp', colour: 'matte-black', brand: 'Yakima' },
+    specs: [ { icon:'📦', label:'Volume', value:'560L' }, { icon:'⚖️', label:'Product Weight', value:'20.92kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2060 x 900 x 460mm' } ],
+    usps: ['Gearbox gives you a sleek, angular roof box designed to match modern vehicles', 'Dual-side opening for easy access from either side', 'Quick clamp mounting system for secure fitment'],
+    relevanceRank: 86, newnessRank: 86, salesRank: 86
+  },
+  {
+    id: 'rb13', sku: 'T610800', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Pulse 2 Roof Box XL - 610800',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-pulse-2-roof-box-xl-610800-6c3610b4b6c7.jpg', price: 1099.95, wasPrice: 1299.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['x-large'], volume: 500, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'500L' }, { icon:'⚖️', label:'Product Weight', value:'20.2kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2150mm x 870mm x 400mm' } ],
+    usps: ['DualSide opening provides convenient access from either side of the vehicle', '500L capacity makes it suitable for luggage, sports gear, skis and boards', 'PowerClick mounting system installs quickly with built-in torque indicator'],
+    relevanceRank: 85, newnessRank: 85, salesRank: 85
+  },
+  {
+    id: 'rb14', sku: 'RHRMFT530A', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack MasterFit Black 530 litre Roof Box - RMFT530A',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RMFT530A-Roof-Boxes._1_1.jpg', price: 1299.00, wasPrice: 1399.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 950,
+    facets: { size: ['x-large'], volume: 530, loadRating: 75, mount: 'claw', colour: 'matte-black', brand: 'Rhino-Rack' },
+    specs: [ { icon:'📦', label:'Volume', value:'530L' }, { icon:'⚖️', label:'Product Weight', value:'21.5kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2150 x 900 x 430mm' } ],
+    usps: ['MasterFit large-format body built for bulky travel loads', 'Dual-side opening allows easy loading from either side of the vehicle', 'MasterFit quick-mount system provides simple, tool-free bar fitment'],
+    relevanceRank: 84, newnessRank: 84, salesRank: 84
+  },
+  {
+    id: 'rb15', sku: 'T645100', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Force 3 S Roof Box - 645100',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_L_Iso_P_645700_1_1.jpg', price: 1299.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['short-wide'], stock: 'in_stock', maxCrossbarSpread: 828,
+    facets: { size: ['small'], volume: 300, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'300L' }, { icon:'⚖️', label:'Product Weight', value:'14.8kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1400 x 898 x 380mm' } ],
+    usps: ['Compact-capacity design ideal for smaller vehicles and lighter loads', 'Dual-side opening allows easy loading from either side of the vehicle', 'Quick-mount clamp system enables fast, tool-free attachment to roof bars'],
+    relevanceRank: 83, newnessRank: 83, salesRank: 83
+  },
+  {
+    id: 'rb16', sku: 'HAP35370', brand: 'Hapro', brandLogo: '../_shared/brand-hapro.webp', name: 'Hapro Trivor Anthracite Black 440 litre Roof Box - 35370',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/h/a/hapro-trivor-anthracite-black-440-litre-roof-box-35370-98dcc7fe0634.jpg', price: 1299.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 950,
+    facets: { size: ['medium'], volume: 440, loadRating: 75, mount: 'premium-fit', colour: 'matte-black', brand: 'Hapro' },
+    specs: [ { icon:'📦', label:'Volume', value:'440L' }, { icon:'⚖️', label:'Product Weight', value:'20kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1920 x 820 x 450mm' } ],
+    usps: ['Trivor aerodynamic design with premium anthracite black finish', 'Dual-side opening allows easy loading from either side of the vehicle', 'Fast-fit mounting system enables quick, secure bar installation'],
+    relevanceRank: 82, newnessRank: 82, salesRank: 82
+  },
+  {
+    id: 'rb17', sku: 'T645600', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Force 3 L Sport Roof Box - 645600',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Trunkaccess_645XXX_1_2.jpg', price: 1399.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['narrow'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['large'], volume: 300, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'300L' }, { icon:'⚖️', label:'Product Weight', value:'14.8kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1910 x 630 x 420mm' } ],
+    usps: ['Long, low Sport profile suits skis and longer gear without excess height', 'Dual-side opening allows easy loading from either side of the vehicle', 'Quick-mount clamp system enables fast, tool-free attachment to roof bars'],
+    relevanceRank: 81, newnessRank: 81, salesRank: 81
+  },
+  {
+    id: 'rb18', sku: 'T645200', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Force 3 M Roof Box - 645200',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-force-3-medium-645200-fitted-angle_1.jpg', price: 1399.95, wasPrice: 1499.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['medium'], volume: 400, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'16.5kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1753 x 812 x 443mm' } ],
+    usps: ['Mid-size capacity sweet spot for family travel and weekend gear', 'Dual-side opening allows easy loading from either side of the vehicle', 'Quick-mount clamp system enables fast, tool-free attachment to roof bars'],
+    relevanceRank: 80, newnessRank: 80, salesRank: 80
+  },
+  {
+    id: 'rb19', sku: 'T645800', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Force 3 XL Roof Box - 645800',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Dualsideopening_645XXX_1.jpg', price: 1709.95, wasPrice: 1899.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['x-large'], volume: 500, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'500L' }, { icon:'⚖️', label:'Product Weight', value:'22kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2150 x 870 x 430mm' } ],
+    usps: ['XL-capacity model offers generous all-round storage for bulky gear', 'Dual-side opening allows easy loading from either side of the vehicle', 'Quick-mount clamp system enables fast, tool-free attachment to roof bars'],
+    relevanceRank: 79, newnessRank: 79, salesRank: 79
+  },
+  {
+    id: 'rb20', sku: 'T645700', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Force 3 L Roof Box - 645700',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Dualsideopening_645XXX_1_4.jpg', price: 1699.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['large'], volume: 450, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'18.7kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1950 x 845 x 425mm' } ],
+    usps: ['Large-capacity model suited to bulky family and travel gear', 'Dual-side opening allows easy loading from either side of the vehicle', 'Quick-mount clamp system enables fast, tool-free attachment to roof bars'],
+    relevanceRank: 78, newnessRank: 78, salesRank: 78
+  },
+  {
+    id: 'rb21', sku: 'T645300', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Force 3 XXL SPORT Roof Box - 645300',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Trunkaccess_645XXX_1_1.jpg', price: 1799.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['narrow'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['xx-large'], volume: 450, loadRating: 75, mount: 'powerclick', colour: 'matte-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'18.7kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2320 x 700 x 440mm' } ],
+    usps: ['XXL Sport format delivers maximum-length storage for big adventure gear', 'Dual-side opening allows easy loading from either side of the vehicle', 'Quick-mount clamp system enables fast, tool-free attachment to roof bars'],
+    relevanceRank: 77, newnessRank: 77, salesRank: 77
+  },
+  {
+    id: 'rb22', sku: 'T639200', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 M Gloss Black Roof Box - 639200',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639200-Roof-Boxes._1.jpg', price: 1809.95, wasPrice: 1899.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['medium'], volume: 400, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'17kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1750 x 840 x 440mm' } ],
+    usps: ['Motion 3 M mid-body format suits versatile everyday travel', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 76, newnessRank: 76, salesRank: 76
+  },
+  {
+    id: 'rb23', sku: 'T639600', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 Sport Gloss Black Roof Box - 639600',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639600-Roof-Boxes._1.jpg', price: 1799.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['narrow'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['small'], volume: 300, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'300L' }, { icon:'⚖️', label:'Product Weight', value:'15kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1880 x 650 x 420mm' } ],
+    usps: ['Motion 3 Sport long, low profile suits skis and longer gear', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 75, newnessRank: 75, salesRank: 75
+  },
+  {
+    id: 'rb24', sku: 'T639701', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 L Gloss Titan Roof Box - 639701',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639701-Roof-Boxes-1._1.jpg', price: 1999.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['large'], volume: 450, loadRating: 75, mount: 'powerclick', colour: 'titan', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'20kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1940 x 890 x 430mm' } ],
+    usps: ['Motion 3 L gloss titan colourway adds a distinctive premium finish', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 72, newnessRank: 72, salesRank: 72
+  },
+  {
+    id: 'rb25', sku: 'T639700', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 L Gloss Black Roof Box - 639700',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-motion-3-l-gloss-black-roof-box-639700-f854bc4c2831.jpg', price: 1999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['large'], volume: 450, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'20kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1940 x 890 x 430mm' } ],
+    usps: ['Motion 3 L gloss black finish delivers a sleek, premium vehicle upgrade', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 71, newnessRank: 71, salesRank: 71
+  },
+  {
+    id: 'rb26', sku: 'T639801', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XL Gloss Titan Roof Box - 639801',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639801-Roof-Boxes._1.jpg', price: 2399.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['x-large'], volume: 500, loadRating: 75, mount: 'powerclick', colour: 'titan', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'500L' }, { icon:'⚖️', label:'Product Weight', value:'23kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2150 x 890 x 430mm' } ],
+    usps: ['Motion 3 XL gloss titan finish delivers a high-end touring look', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 70, newnessRank: 70, salesRank: 70
+  },
+  {
+    id: 'rb27', sku: 'T639400', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XL Low Gloss Black Roof Box - 639400',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639400-Roof-Boxes._1.jpg', price: 2399.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['x-large', 'low-profile'], volume: 400, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'23kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2160 x 890 x 350mm' } ],
+    usps: ['Motion 3 XL low gloss black finish gives a tough, understated look', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 69, newnessRank: 69, salesRank: 69
+  },
+  {
+    id: 'rb28', sku: 'T639800', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XL Gloss Black Roof Box - 639800',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639800-Roof-Boxes-2._1.jpg', price: 2399.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['x-large'], volume: 500, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'500L' }, { icon:'⚖️', label:'Product Weight', value:'23kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2150 x 890 x 430mm' } ],
+    usps: ['Motion 3 XL gloss black shell offers sleek, high-contrast styling', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 68, newnessRank: 68, salesRank: 68
+  },
+  {
+    id: 'rb29', sku: 'T639401', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XL Low Gloss Titan Roof Box - 639401',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-motion-3-xl-low-gloss-titan-roof-box-639401-bdc557e7911d.jpg', price: 2399.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['large'], volume: 400, loadRating: 75, mount: 'powerclick', colour: 'titan', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'400L' }, { icon:'⚖️', label:'Product Weight', value:'23kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2160 x 890 x 350mm' } ],
+    usps: ['Motion 3 XL low gloss titan finish gives a subtle premium appearance', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 67, newnessRank: 67, salesRank: 67
+  },
+  {
+    id: 'rb30', sku: 'T639900', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XXL Gloss Black Roof Box - 639900',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-motion-3-xxl-gloss-black-roof-box-639900-724976733a91.jpg', price: 2799.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['xx-large'], volume: 600, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'600L' }, { icon:'⚖️', label:'Product Weight', value:'25kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2320 x 920 x 450mm' } ],
+    usps: ['Motion 3 XXL gloss black finish gives a deep, premium vehicle match', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 66, newnessRank: 66, salesRank: 66
+  },
+  {
+    id: 'rb31', sku: 'T639901', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XXL Gloss Titan Roof Box - 639901',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639901-Roof-Boxes._1.jpg', price: 2799.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['xx-large'], volume: 600, loadRating: 75, mount: 'powerclick', colour: 'titan', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'600L' }, { icon:'⚖️', label:'Product Weight', value:'25kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2320 x 920 x 450mm' } ],
+    usps: ['Motion 3 XXL gloss titan finish delivers a standout premium look', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 65, newnessRank: 65, salesRank: 65
+  },
+  {
+    id: 'rb32', sku: 'T639500', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 XXL Low Gloss Black Roof Box - 639500',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-639500-Roof-Boxes._1.jpg', price: 2799.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'in_stock', maxCrossbarSpread: 930,
+    facets: { size: ['xx-large', 'low-profile'], volume: 450, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'25kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2320 x 920 x 370mm' } ],
+    usps: ['Motion 3 XXL low-profile design reduces visual bulk on large vehicles', 'Dual-side opening allows easy loading from either side of the vehicle', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 10, newnessRank: 10, salesRank: 10
+  },
+  {
+    id: 'rb33', sku: 'Y8007546', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima SkyBox NX XL NEW - 8007546',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-skybox-nx-xl-new-8007546-3f95e6e481a1.jpg', price: 1499.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'out_of_stock', maxCrossbarSpread: 1010,
+    facets: { size: ['x-large'], volume: 500, loadRating: 75, mount: 'clamp', colour: 'matte-black', brand: 'Yakima' },
+    specs: [ { icon:'📦', label:'Volume', value:'500L' }, { icon:'⚖️', label:'Product Weight', value:'24kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'2130 x 910 x 420mm' } ],
+    usps: ['Designed to maximise storage space without compromising style', 'Flat floor design maximises usable internal storage space', 'Removable torque knob ensures fast, secure installation'],
+    relevanceRank: 10, newnessRank: 10, salesRank: 10
+  },
+  {
+    id: 'rb34', sku: 'T639300', brand: 'Thule', brandLogo: '../_shared/brand-thule.webp', name: 'Thule Motion 3 L Low Gloss Black Roof Box - 639300',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-motion-3-l-low-gloss-black-roof-box-639300-202d3017908d.jpg', price: 2399.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['long-wide'], stock: 'out_of_stock', maxCrossbarSpread: null,
+    facets: { size: ['large', 'low-profile'], volume: 370, loadRating: 75, mount: 'powerclick', colour: 'gloss-black', brand: 'Thule' },
+    specs: [ { icon:'📦', label:'Volume', value:'370L' }, { icon:'⚖️', label:'Product Weight', value:'20kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1940 x 870 x 350mm' } ],
+    usps: ['Adds 370L of secure storage without excessive roof height', 'Aerodynamic profile helps reduce wind resistance on the road', 'PowerClick mounting system provides fast, torque-indicated attachment'],
+    relevanceRank: 10, newnessRank: 10, salesRank: 10
+  },
+  {
+    id: 'rb35', sku: 'Y8007545', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima SkyBox NX LG 450L Cargo Box - 8007545',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-skybox-roof-box-450l-8007545-rear_J0TNTD_1_1.jpg', price: 1299.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ['medium'], stock: 'out_of_stock', maxCrossbarSpread: 910,
+    facets: { size: ['large'], volume: 450, loadRating: 75, mount: 'clamp', colour: 'matte-black', brand: 'Yakima' },
+    specs: [ { icon:'📦', label:'Volume', value:'450L' }, { icon:'⚖️', label:'Product Weight', value:'21.3kg' }, { icon:'🏋️', label:'Load Rating', value:'75kg' }, { icon:'📏', label:'External Dimensions', value:'1920 x 890 x 410mm' } ],
+    usps: ['Fits a wide range of vehicles with excellent rear hatch clearance', 'Dual-side opening for quick access from either side', 'Flat floor design maximises usable storage space'],
+    relevanceRank: 10, newnessRank: 10, salesRank: 10
+  }
+];
+
+// Shop By shape icons (2026-10-06): the roofbox.co.uk shape silhouettes (their "-mobile" 2:1
+// versions, so they fill the existing 100x50 tab icon box with no resize), recoloured to RRG red.
+// The UK region swaps the site red for blue (shared.css body.region-uk), so each tab carries the
+// original blue copy too and the page CSS above shows whichever matches the region.
+const rbShapeIcon = (key, label) =>
+  `<img class="rb-shape-icon" src="../_shared/shopby-roofbox-${key}.png" alt="${label} Icon">` +
+  `<img class="rb-shape-icon-uk" src="../_shared/shopby-roofbox-${key}-uk.png" alt="${label} Icon">`;
+
+// FAQ content per Shop By tab, same convention as BIKE_RACK_FAQS on plp/index.html.
+const ROOF_BOX_FAQS = {
+  all: [
+    { q: 'Which roof box shape should I choose?', a: 'Pick by what else goes on the roof. Long wide boxes take skis and long gear; medium boxes suit everyday family luggage; narrow boxes leave room beside them for a bike rack or kayak; short wide boxes stay clear of a rear hatch on smaller cars.' },
+    { q: 'Will a roof box fit my roof bars?', a: 'Most boxes clamp around standard aero and square bars. Check the box’s Max Crossbar Spread against the distance between your bars, and the mounting system (PowerClick, FastClick, Claw, U-Bolt) against your bar profile.' },
+    { q: 'How much can I put in a roof box?', a: 'The box’s Load Rating is the most it can carry, but your vehicle’s roof load limit and your roof bars’ rating also apply. Use the lowest of the three, and remember the box’s own weight counts toward it.' },
+    { q: 'Does a roof box open from both sides?', a: 'Most boxes in this range open from either side, which makes loading easier in car parks and on the roadside. Check the product page for single-side models.' }
+  ],
+  'long-wide': [
+    { q: 'Will a long roof box hit my rear hatch?', a: 'Check the box’s length against your roof and how far forward it can sit on the bars. Most long boxes are shaped to clear the hatch on wagons and SUVs.' },
+    { q: 'Can I fit skis in a long wide roof box?', a: 'Yes. Long wide boxes are the usual choice for skis, snowboards and fishing rods.' }
+  ],
+  'medium': [
+    { q: 'Is a medium roof box big enough for a family holiday?', a: 'Most medium boxes hold 370 to 470 litres, enough for soft bags, bedding and camping gear for a family of four.' }
+  ],
+  'narrow': [
+    { q: 'Can I fit a bike rack next to a narrow roof box?', a: 'That is what narrow boxes are for. On most bar sets they leave room for one bike carrier or a kayak cradle alongside.' }
+  ],
+  'short-wide': [
+    { q: 'Why choose a short wide roof box?', a: 'They give generous width without overhanging the windscreen or rear hatch, which suits smaller hatchbacks and vehicles with short roofs.' }
+  ]
+};
+
+window.PLP_CONFIG = {
+  categoryKey: 'roof-boxes',
+  vrs: false,
+  vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
+  categoryImage: '../_shared/icons/roof-boxes-cargo.png',
+  shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  categoryRoot: {
+    breadcrumbLabel: 'Roof Boxes',
+    heading: 'Roof Boxes',
+    description: 'Move more gear with less hassle. Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape below, then narrow it down by size, volume and mounting system.',
+    heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645700').image
+  },
+  breadcrumbRoot: [ { label: 'Home' } ],
+  vehicleHeadingSuffix: 'for your {vehicle}',
+  // Level 2, real, from roofracksgalore.com.au/roof-boxes/roof-box-shapes (2026-10-06): the four
+  // shape categories, in the live tab order. Shop By uses shape, not size (Brenton, 2026-10-06);
+  // size is the priority filter instead. Headings/descriptions follow each live page's own H1 and
+  // meta description. No Level 3 children on the live site.
+  shopBy: [
+    { key: 'long-wide', label: 'Long Wide', icon: rbShapeIcon('long-wide', 'Long Wide'),
+      heading: 'Long Wide Roof Boxes',
+      description: 'Long, wide boxes ideal for skis, snowboards and fishing rods. The biggest boxes in the range, up to 600 litres, for full family loads.',
+      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645800').image },
+    { key: 'medium', label: 'Medium', icon: rbShapeIcon('medium', 'Medium'),
+      heading: 'Medium Roof Boxes',
+      description: 'Balanced length and width for versatile gear storage. The most popular shape for everyday family luggage and weekends away.',
+      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T634208').image },
+    { key: 'narrow', label: 'Narrow', icon: rbShapeIcon('narrow', 'Narrow'),
+      heading: 'Narrow Roof Boxes',
+      description: 'Slim roof boxes that leave room on the roof for bike racks or kayaks, so you can carry the box and your toys on one set of bars.',
+      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645600').image },
+    { key: 'short-wide', label: 'Short Wide', icon: rbShapeIcon('short-wide', 'Short Wide'),
+      heading: 'Short Wide Roof Boxes',
+      description: 'Shorter but wider boxes that offer generous width without extending far over the roof. A good fit for hatchbacks and short roofs.',
+      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645100').image }
+  ],
+  products: ROOF_BOX_PRODUCTS,
+  facets: {
+    priority: [
+      // Size was the live /roof-boxes tab row; here it is the first filter. A box can be in two
+      // sizes on the live site (e.g. X Large and Low Profile), so facets.size is an array.
+      { key: 'size', label: 'What size roof box do you need?', mode: 'eq', tooltip: 'Roof box sizes run from Small (around 300 litres) up to XX Large, the longest boxes at up to 600 litres. Low Profile boxes sit lower on the roof for garage clearance and less wind noise.', options: [
+        { value:'small', label:'Small' }, { value:'medium', label:'Medium' }, { value:'large', label:'Large' },
+        { value:'x-large', label:'X Large' }, { value:'xx-large', label:'XX Large' }, { value:'low-profile', label:'Low Profile' } ] }
+    ],
+    standard: [
+      { key: 'volume', label: 'Volume', mode: 'atleast', tooltip: 'How much the box holds, in litres. Around 400 litres suits a family of four for a week away.', options: [ { value:300, label:'300L+' }, { value:400, label:'400L+' }, { value:450, label:'450L+' }, { value:500, label:'500L+' }, { value:600, label:'600L+' } ] },
+      { key: 'loadRating', label: 'Product Load Rating', mode: 'atleast', options: [ { value:50, label:'50kg' }, { value:75, label:'75kg' } ] },
+      { key: 'mount', label: 'Mounting System', mode: 'eq', tooltip: 'How the box clamps to your roof bars. All of these fit standard aero and square bars; check the box’s Max Crossbar Spread against the gap between your bars.', options: [ { value:'powerclick', label:'PowerClick' }, { value:'fastclick', label:'FastClick' }, { value:'claw', label:'Claw' }, { value:'clamp', label:'Crossbar Clamp' }, { value:'u-bolt', label:'U-Bolt' }, { value:'premium-fit', label:'Premium-Fit' } ] },
+      { key: 'colour', label: 'Colour', mode: 'eq', options: [ { value:'matte-black', label:'Matte Black' }, { value:'gloss-black', label:'Gloss Black' }, { value:'titan', label:'Gloss Titan Silver' } ] },
+      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value:'Thule', label:'Thule' }, { value:'Yakima', label:'Yakima' }, { value:'Rhino-Rack', label:'Rhino-Rack' }, { value:'CRUZ', label:'CRUZ' }, { value:'Hapro', label:'Hapro' } ] }
+    ]
+  },
+  videos: [
+    { title: 'How to Fit a Roof Box', thumb: '../_shared/video-thumbnail.png', url: '#' },
+    { title: 'Choosing the Right Roof Box Shape', thumb: '../_shared/video-thumbnail.png', url: '#' },
+    { title: 'Packing a Roof Box: Tips & Load Limits', thumb: '../_shared/video-thumbnail.png', url: '#' }
+  ],
+  merchPromos: [
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 20% Off Roof Boxes', href: '#' },
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Package Deal', label: 'Save on a Roof Box when you buy a Roof Rack', href: '#' }
+  ],
+  featuredProduct: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T634208'),
+  faqByCategory: ROOF_BOX_FAQS
+};
+
+</script>
+</body>
+</html>

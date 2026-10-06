@@ -46,6 +46,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'vlp', label: 'Vehicle Landing (VLP)' },
       { key: 'plp-camping', label: 'PLP Camping' },
       { key: 'plp', label: 'PLP Bike Racks' },
+      { key: 'plp-roof-boxes', label: 'PLP Roof Boxes' },
       { key: 'vplp', label: 'VPLP Roof Racks' },
       { key: 'brand', label: 'Brand Page — Thule', href: RRG_PROTO + 'brand/index.html?brand=thule' },
       { key: 'brands', label: 'Brands Hub' },
