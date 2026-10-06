@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Awnings — Roof Racks Galore</title>
+<meta name="description" content="Vehicle awnings for every setup: quick pull-out awnings, 180 and 270 degree wings, full 360 coverage and shower awnings, plus the brackets, extensions and accessories to finish the job. From Rhino-Rack, Darche, Yakima and more.">
+<link rel="canonical" href="https://www.roofracksgalore.com.au/awnings">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Roof Racks Galore">
+<meta property="og:title" content="Awnings">
+<meta property="og:description" content="Vehicle awnings for every setup: quick pull-out awnings, 180 and 270 degree wings, full 360 coverage and shower awnings, plus the brackets, extensions and accessories to finish the job. From Rhino-Rack, Darche, Yakima and more.">
+<meta property="og:url" content="https://www.roofracksgalore.com.au/awnings">
+<meta property="og:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Awnings">
+<meta name="twitter:description" content="Vehicle awnings for every setup: quick pull-out awnings, 180 and 270 degree wings, full 360 coverage and shower awnings, plus the brackets, extensions and accessories to finish the job. From Rhino-Rack, Darche, Yakima and more.">
+<meta name="twitter:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg">
+<!-- Awnings PLP (2026-10-06) — the Bike Racks PLP template (plp/index.html), config and data
+     only. Shop By = the live category's own tabs and icons; real products scraped 2026-10-06. Qualifying
+     products carry the Package Deal (spec.md §19). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+</head>
+<body data-plp-page>
+
+<div data-widget="header"></div>
+
+<!-- Change Vehicle moved up here from the hero CTA row (2026-09-18 design review — Graham:
+     it's a low-usage action once a vehicle is set, better placed out of the way near the
+     breadcrumbs than competing with the hero's other CTAs). Right-aligned, red outline not
+     gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="plpCrumbTrail"></div>
+  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-vclp-cta="change-vehicle">Change Vehicle</a>
+</div>
+
+<main class="wrap">
+
+  <!-- Hero — Vehicle-Set state (spec Section 4.1): short framing, no full vehicle spec in
+       the H1 since Awnings is a standard (non-fitment-locked) category. Media/badge reuse
+       the same real assets + component pattern as the Vehicle Category Landing Page hero. -->
+  <section class="plp-hero" id="plpHeroVehicleSet" hidden>
+    <div>
+      <h1>Shop Awnings for your Toyota Hilux</h1>
+      <p>Vehicle awnings for every setup: quick pull-out awnings, 180 and 270 degree wings, full 360 coverage and shower awnings, plus the brackets, extensions and accessories to finish the job. From Rhino-Rack, Darche, Yakima and more.</p>
+      <!-- Change Vehicle moved to the breadcrumb row (2026-09-18 design review) — see
+           .plp-crumbs-cta above, shown whenever Site Admin has a Vehicle set. -->
+      <div class="plp-hero-cta-row">
+        <a href="#" class="btn btn-primary">Buyers Guide</a>
+        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#faqSection" class="btn btn-outline">FAQs</a>
+        <a href="#plpVideoCarousel" class="btn btn-outline">Videos</a>
+      </div>
+    </div>
+    <div class="plp-hero-media is-cutout">
+      <img class="plp-hero-vehicle-img" src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="956" height="556">
+      <span class="plp-hero-make-badge"><img src="../_shared/brand-toyota-badge.png" alt="Toyota" width="534" height="370"></span>
+    </div>
+  </section>
+
+  <!-- Hero — Simple state (spec Section 4.2). No Figma reference exists for this state;
+       drafted from the rest of the session's decisions, flagged for review at first build
+       (spec Section 14 item 4 — Claude's own call on CTA copy/prominence). No vehicle photo:
+       this category has no fallback image configured in this demo, so the media column is
+       dropped entirely rather than showing a placeholder graphic. -->
+  <section class="plp-hero no-media" id="plpHeroSimple" hidden>
+    <div>
+      <h1>Shop Awnings</h1>
+      <p>Vehicle awnings for every setup: quick pull-out awnings, 180 and 270 degree wings, full 360 coverage and shower awnings, plus the brackets, extensions and accessories to finish the job. From Rhino-Rack, Darche, Yakima and more.</p>
+      <div class="plp-hero-cta-row">
+        <a href="#" class="btn btn-cta" data-vclp-cta="set-vehicle">Set Your Vehicle</a>
+        <a href="#" class="btn btn-primary">Buyers Guide</a>
+        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#faqSection" class="btn btn-outline">FAQs</a>
+      </div>
+    </div>
+    <div class="plp-hero-media" hidden>
+      <img class="plp-hero-category-img" src="" alt="">
+    </div>
+  </section>
+
+  <!-- SHOP BY row (spec Section 5) — real, fixed URLs per tile in production; this demo
+       simulates that navigation in-page (plp.js:plpRenderShopBy()) since there's no second
+       real page to route to. Full sibling row always stays visible. -->
+  <section class="plp-shopby">
+    <div class="plp-shopby-head">
+      <h2>Shop By</h2>
+    </div>
+    <div class="plp-shopby-track" id="plpShopByTrack"></div>
+  </section>
+
+  <div class="plp-toolbar">
+    <div class="plp-toolbar-left">
+      <div class="plp-view-toggle">
+        <button type="button" id="plpViewGrid" aria-label="Grid view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+        <button type="button" id="plpViewList" aria-label="List view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-outline plp-refine-btn-mobile" id="plpRefineBtn">Refine Results</button>
+      <span class="plp-toolbar-count" id="plpResultCount"></span>
+    </div>
+    <div class="plp-toolbar-right">
+      <label for="plpSort">Sort By</label>
+      <!-- Reordered 2026-09-18 (Graham): relevance/merit-based options first, price sorts
+           pushed to the bottom so people don't land straight on "cheapest first". -->
+      <select id="plpSort"></select>
+    </div>
+  </div>
+
+  <div class="plp-layout">
+    <aside class="plp-sidebar">
+      <!-- Reset/Clear Filters (2026-09-18 design review — Graham/Tim) -->
+      <div class="plp-filter-head">
+        <h3>Filters</h3>
+        <button type="button" class="plp-filter-clear" id="plpFilterClear">Clear Filters</button>
+      </div>
+      <div id="plpPriorityFilters"></div>
+      <div id="plpStandardFilters"></div>
+      <div class="plp-merch-sidebar" id="plpMerchSidebar"></div>
+    </aside>
+    <div class="plp-main">
+      <div class="plp-filter-chips" id="plpPriorityChips"></div>
+      <div id="plpResults" class="plp-results"></div>
+      <div class="plp-pagination" id="plpPaginationDesktop"></div>
+      <div class="plp-pagination-mobile">
+        <div class="plp-toolbar-count plp-result-count-mobile" id="plpResultCountMobile"></div>
+        <div id="plpPaginationMobile"></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="plp-video-carousel-section" id="plpVideoCarousel">
+    <h2 class="related-heading">Awning Videos</h2>
+    <div class="plp-video-carousel-track" id="plpVideoCarouselTrack"></div>
+  </section>
+
+  <section class="faq-section" id="faqSection">
+    <h2 class="faq-heading">Frequently Asked Questions</h2>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+  <section class="related-section">
+    <h2 class="related-heading">Related Products</h2>
+    <div class="related-grid">
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/M/A/MAXTRAX-MTXRRM-Platforms--Trays---Accessories._1_1.jpg" alt="MAXTRAX Recovery Board Mounting Bracket">
+        <div class="body"><h3>MAXTRAX Recovery Board Mounting Bracket</h3><div class="price">$99.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/K/S/KS0054_4_1_1.jpg" alt="Kaon Universal Awning Bracket">
+        <div class="body"><h3>Kaon Universal Awning Bracket (2pk)</h3><div class="price">$80.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8004110-Camping._1_1.jpg" alt="Yakima Roof Box">
+        <div class="body"><h3>Yakima SkyBox Roof Box 16 Cubic Ft</h3><div class="price">$899.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+      <div class="product-card">
+        <img src="https://www.roofracksgalore.com.au/pub/media/catalog/product/M/A/MAXTRAX-MTXML30D-Locking-Cables--Padlocks._1_1.jpg" alt="MAXTRAX Locking Cable">
+        <div class="body"><h3>MAXTRAX Locking Cable &amp; Padlock</h3><div class="price">$45.00</div><button class="btn btn-cta btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>Add to Cart</button></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-widget="footer"></div>
+
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="../_shared/plp.js"></script>
+<script>
+// Awnings PLP (2026-10-06) — real roofracksgalore.com.au range, scraped 2026-10-06
+// (.playwright-mcp/rb/rrg-rmp-categories.json): up to 8 products per live Shop By tab, in the live
+// order; name/price/was-price/stock/image/attributes from each product page, the 3 USPs from the
+// listing. No ratings (the live listing shows none). pkgCategory = Package Deal role (spec.md §19).
+const AWNINGS_PRODUCTS = [
+  {
+    id: 'aw1', sku: 'RH32141', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Dome 1300 Awning - 32141',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg', price: 299.00, wasPrice: 427.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "No", "headHeight": 2200.0, "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'6m²' }, { icon:'↕️', label:'Head Height', value:'2200mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'10.2kg' } ],
+    usps: ['Quick to deploy and pack away for touring convenience', 'Raised dome canopy increases head clearance for more usable camp space', 'Optional side wall accessories available (sold separately)'],
+    relevanceRank: 100, newnessRank: 100, salesRank: 100
+  },
+  {
+    id: 'aw2', sku: 'RH32143', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Sunseeker Awning 2m - 32143',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/3/2/32143_Z72FU3_1.jpg', price: 379.05, wasPrice: 399.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "No", "headHeight": 2200.0, "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'4m²' }, { icon:'↕️', label:'Head Height', value:'2200mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'10.3kg' } ],
+    usps: ['Straight pull-out shade for quick touring stops and everyday camp use', 'Touring-grade canopy protection built for harsh outdoor conditions', 'Optional walls and accessories available (sold separately)'],
+    relevanceRank: 99, newnessRank: 99, salesRank: 99
+  },
+  {
+    id: 'aw3', sku: 'RH32144', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Sunseeker Awning 2.5m - 32144',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/3/2/32144_HMDXOS_1.jpg', price: 395.12, wasPrice: 449.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "No", "headHeight": 2200.0, "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'5m²' }, { icon:'↕️', label:'Head Height', value:'2200mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'11.9kg' } ],
+    usps: ['Straight pull-out shade for quick touring stops and everyday camp use', 'Touring-grade canopy protection built for harsh outdoor conditions', 'Optional walls and accessories available (sold separately)'],
+    relevanceRank: 98, newnessRank: 98, salesRank: 98
+  },
+  {
+    id: 'aw4', sku: 'RH32148', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Sunseeker Freestanding Awning 2m - 32148',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhinoracksunseekerfreestandingawning2m32148-32148-additional_image_2_URTbF_1.jpg', price: 638.00, wasPrice: 725.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2300.0, "waterRating": 2000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'4m²' }, { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'18.5kg' } ],
+    usps: ['Freestanding touring shade for quick stops with minimal pole setup', 'Gas strut system enables fast, tool-free setup and pack-down for touring stops', 'Optional side wall accessories available (sold separately)'],
+    relevanceRank: 97, newnessRank: 97, salesRank: 97
+  },
+  {
+    id: 'aw5', sku: 'DART050801793', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse Slimline 2.5m X 2.5m - T050801793',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-slimline-2-5m-x-2-5m-t050801793-8c11ce75aaa1.jpg', price: 521.10, wasPrice: 579.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "No", "headHeight": 2500.0, "waterRating": 1500.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'6.25m²' }, { icon:'↕️', label:'Head Height', value:'2500mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'12kg' } ],
+    usps: ['Straight pull-out shade for quick touring stops and everyday camp use', 'Touring-grade canopy protection built for harsh outdoor conditions', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 96, newnessRank: 96, salesRank: 96
+  },
+  {
+    id: 'aw6', sku: 'DART050801794', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse Slimline 2m X 2.5m - T050801794',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-slimline-2m-x-2-5m-t050801794-8c11ce75aaa1.jpg', price: 515.77, wasPrice: 529.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "No", "headHeight": 2500.0, "waterRating": 1500.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'5m²' }, { icon:'↕️', label:'Head Height', value:'2500mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'10.5kg' } ],
+    usps: ['Straight pull-out shade for quick touring stops and everyday camp use', 'Touring-grade canopy protection built for harsh outdoor conditions', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 95, newnessRank: 95, salesRank: 95
+  },
+  {
+    id: 'aw7', sku: 'DART050801738', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche 120 Awning - T050801738',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-120-awning-t050801738.jpg', price: 899.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "No", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'5.4m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'17kg' } ],
+    usps: ['120° awning expands side shade beyond a pull-out for a larger camp footprint', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Compact touring design that sets up quickly and packs away neatly'],
+    relevanceRank: 94, newnessRank: 94, salesRank: 94
+  },
+  {
+    id: 'aw8', sku: 'DART050801733', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse Rapid X Awning - T050801733',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-rapid-x-awning-t050801733-view-1.jpg', price: 1549.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["pullout-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 5000.0, "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'4m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'19kg' } ],
+    usps: ['Rapid-deploy touring awning designed for fast setup and pack-down', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Scissor-arm awning with tough ABS shell for rapid deployment and transit protection'],
+    relevanceRank: 93, newnessRank: 93, salesRank: 93
+  },
+  {
+    id: 'aw9', sku: 'Y8007516', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima OverNOut 180 Awning - 8007516',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakimaovernout180awning8007516-8007516-primary_image_alhzo_N7FXFU_1.jpg', price: 999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Yakima", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2400.0, "waterRating": 2000.0, "colour": "Other"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'8.7m2' }, { icon:'↕️', label:'Head Height', value:'2400mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'21.7kg' } ],
+    usps: ['Freestanding 180° side shade coverage setup for easy camp access', 'Signature Yakima topographic canopy design for a premium touring look', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 92, newnessRank: 92, salesRank: 92
+  },
+  {
+    id: 'aw10', sku: 'RH32147', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing 180 Freestanding Awning - 32147',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-batwing-180-freestanding-awning-32147-view-3.jpg', price: 1099.12, wasPrice: 1249.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2300.0, "waterRating": 2000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'8m²' }, { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'24.7kg' } ],
+    usps: ['Freestanding 180° side shade coverage from front to rear for easy camp access', 'Integrated fold-out legs allow freestanding shade with fewer poles needed', 'Optional wall kit enclosure and accessories available (sold separately)'],
+    relevanceRank: 91, newnessRank: 91, salesRank: 91
+  },
+  {
+    id: 'aw11', sku: 'DARKSA3000', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Kozi 180 G2 Awning - KSA3000',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-kozi-180-g2-awning-ksa3000.jpg', price: 999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2500.0, "waterRating": 3000.0, "colour": "Grey"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'7.4m2' }, { icon:'↕️', label:'Head Height', value:'2500mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'19kg' } ],
+    usps: ['Generous 180° shelter creates a comfortable space beside your vehicle', 'Freestanding design makes campsite setup quick and convenient', 'Reinforced A-frame arms provide stiffness and easy repairability'],
+    relevanceRank: 90, newnessRank: 90, salesRank: 90
+  },
+  {
+    id: 'aw12', sku: 'DART050801744B', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse 180 Gen 2 - T050801744B',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-180-gen-2-t050801744b-view-14.jpg', price: 1199.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "No", "headHeight": 2100.0, "waterRating": 1500.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'8.2m²' }, { icon:'↕️', label:'Head Height', value:'2100mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'18kg' } ],
+    usps: ['Full 180° side shade coverage from front to rear for easy camp access', 'Touring-grade canopy protection built for harsh outdoor conditions', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 89, newnessRank: 89, salesRank: 89
+  },
+  {
+    id: 'aw13', sku: 'DART050801739', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche 180 Freestanding LED Awning - T050801739',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-180-freestanding-led-awning-t050801739.jpg', price: 1421.10, wasPrice: 1579.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'8.2m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'21kg' } ],
+    usps: ['Freestanding 180° side shade coverage setup for easy camp access', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 88, newnessRank: 88, salesRank: 88
+  },
+  {
+    id: 'aw14', sku: 'CBA6967', brand: 'Campboss', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/roofracks/algoliasearch/pos_brands/campboss.png', name: 'Campboss Shadow 180 Awning - CBA6967',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/a/campboss-shadow-180-awning-cba6967.jpg', price: 1049.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Campboss", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 300.0, "colour": "Grey"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'8m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'27.5kg' } ],
+    usps: ['Freestanding 180° side shade coverage from front to rear for easy camp access', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 87, newnessRank: 87, salesRank: 87
+  },
+  {
+    id: 'aw15', sku: 'DART050801730', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Freestanding 180 EXR Awning - T050801730',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-freestanding-180-exr-awning-t050801730-bca5bad7f4a9.jpg', price: 1299.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["180-awnings"], stock: 'out_of_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side/Rear", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'8.4m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Side/Rear' }, { icon:'⚖️', label:'Product Weight', value:'23kg' } ],
+    usps: ['Telescoping 6-arm design delivers expansive shelter without the long backing plate', '4 built-in dual colour dimmable LEDs provide built-in lighting around camp', 'Integrated RTT entry hatch provides convenient access with waterproof zips'],
+    relevanceRank: 86, newnessRank: 86, salesRank: 86
+  },
+  {
+    id: 'aw16', sku: 'RH33118', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing 270 Awning - Left - 33118',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-batwing-270-awning-left-33118-view-5.jpg', price: 999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Left", "freeStanding": "No", "headHeight": 2300.0, "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'10m²' }, { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Left' }, { icon:'⚖️', label:'Product Weight', value:'21.5kg' } ],
+    usps: ['Full 270° shade covering the side and rear for a full camp setup', 'Fold-out legs with ropes and pegs stored inside the awning for easy setup', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 85, newnessRank: 85, salesRank: 85
+  },
+  {
+    id: 'aw17', sku: 'Y8007524', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima OverNOut 270 XL Awning LH - 8007524',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-overnout-270-xl-awning-lh-8007524-83d688d66ab7.jpg', price: 1299.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Yakima", "mountType": "Left", "freeStanding": "Yes", "headHeight": 2400.0, "waterRating": 2000.0, "colour": "Other"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'12.3m2' }, { icon:'↕️', label:'Head Height', value:'2400mm' }, { icon:'🚙', label:'Mount Type', value:'Left' }, { icon:'⚖️', label:'Product Weight', value:'31kg' } ],
+    usps: ['Freestanding 270° XL shade covering side and rear for a full camp footprint', 'Signature Yakima topographic canopy design for a premium touring look', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 84, newnessRank: 84, salesRank: 84
+  },
+  {
+    id: 'aw18', sku: 'RH32145', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing 270 Freestanding Awning -Left - 32145',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/3/2/32145_D2G25K_1.jpg', price: 1319.12, wasPrice: 1499.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Left", "freeStanding": "Yes", "headHeight": 2300.0, "waterRating": 2000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'12.3m²' }, { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Left' }, { icon:'⚖️', label:'Product Weight', value:'31.7kg' } ],
+    usps: ['Freestanding 270° shade covering side and rear for a full camp footprint', 'Integrated fold-out legs allow freestanding shade with fewer poles needed', 'Optional wall kit enclosure and accessories available (sold separately)'],
+    relevanceRank: 83, newnessRank: 83, salesRank: 83
+  },
+  {
+    id: 'aw19', sku: 'RH32146', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing 270 Freestanding Awning - Right - 32146',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhinorackbatwing270freestandingawning-right32146-32146-additional_image_1_i82Pl_1.jpg', price: 1319.12, wasPrice: 1499.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Right", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 2000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'12.3m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Right' }, { icon:'⚖️', label:'Product Weight', value:'31.7kg' } ],
+    usps: ['Freestanding 270° shade covering side and rear for a full camp footprint', 'Integrated fold-out legs allow freestanding shade with fewer poles needed', 'Optional wall kit enclosure and accessories available (sold separately)'],
+    relevanceRank: 82, newnessRank: 82, salesRank: 82
+  },
+  {
+    id: 'aw20', sku: 'DARKSA4000', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Kozi 270 G2 Awning - KSA4000',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-kozi-270-g2-awning-ksa4000-1658b997c54e.jpg', price: 1199.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side", "freeStanding": "Yes", "headHeight": 2500.0, "waterRating": 3000.0, "colour": "Grey"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'11.2m2' }, { icon:'↕️', label:'Head Height', value:'2500mm' }, { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'23kg' } ],
+    usps: ['Expansive 270° shelter provides generous space around your vehicle', 'Freestanding design enables quick and convenient campsite setup', 'Reinforced A-frame arms provide stiffness and easy repairability'],
+    relevanceRank: 81, newnessRank: 81, salesRank: 81
+  },
+  {
+    id: 'aw21', sku: 'DART050801740', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche 270 Freestanding LED Awning (Left) - T050801740',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-270-freestanding-led-awning-left-t050801740-view-2.jpg', price: 1699.01, wasPrice: 1879.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Left", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'11.5m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Left' }, { icon:'⚖️', label:'Product Weight', value:'26kg' } ],
+    usps: ['Freestanding 270° shade covering side and rear for a full camp footprint', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 80, newnessRank: 80, salesRank: 80
+  },
+  {
+    id: 'aw22', sku: 'DART050801736', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Freestanding Hardshell 270 Awning - T050801736',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-freestanding-hardshell-270-awning-t050801736-view-13.jpg', price: 1999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Left", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'7.5m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Left' }, { icon:'⚖️', label:'Product Weight', value:'27kg' } ],
+    usps: ['Hardshell freestanding 270° shade covering with RTT zip access panel', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 79, newnessRank: 79, salesRank: 79
+  },
+  {
+    id: 'aw23', sku: 'DART050801737', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche 270 Freestanding RTT Entry - T050801737',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-270-freestanding-rtt-entry-t050801737-view-2.jpg', price: 1979.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["270-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Left", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'11.5m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Left' }, { icon:'⚖️', label:'Product Weight', value:'26kg' } ],
+    usps: ['Freestanding 270° shade covering with RTT zip access panel', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 78, newnessRank: 78, salesRank: 78
+  },
+  {
+    id: 'aw24', sku: 'DART050801754', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Freestanding 360 Awning - T050801754',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-freestanding-360-awning-t050801754-636c26e68311.jpg', price: 1999.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["360-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Rear", "freeStanding": "Yes", "headHeight": 2600.0, "waterRating": 3000.0, "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'13.8m²' }, { icon:'↕️', label:'Head Height', value:'2600mm' }, { icon:'🚙', label:'Mount Type', value:'Rear' }, { icon:'⚖️', label:'Product Weight', value:'25.3kg' } ],
+    usps: ['Freestanding 360° All-around coverage for a complete camp footprint around your vehicle', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional wall and enclosure accessories available (sold separately)'],
+    relevanceRank: 77, newnessRank: 77, salesRank: 77
+  },
+  {
+    id: 'aw25', sku: 'T050801084', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse Cube Shower Tent - T050801084',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-cube-shower-tent-t050801084.jpg', price: 399.00, wasPrice: 449.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side/Rear", "freeStanding": "Yes", "headHeight": 2300.0, "waterRating": 2000.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Side/Rear' }, { icon:'⚖️', label:'Product Weight', value:'9.1kg' } ],
+    usps: ['Fast-deploy privacy shelter for showering and changing at camp', 'USB-powered LED light strip included for nighttime visibility', 'Optional shower awning floor available for added comfort (sold separately)'],
+    relevanceRank: 76, newnessRank: 76, salesRank: 76
+  },
+  {
+    id: 'aw26', sku: 'CB-NB', brand: 'Campboss', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/roofracks/algoliasearch/pos_brands/campboss.png', name: 'Campboss Nudie Boss Shower Awning - CB-NB',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/C/a/Campboss-CB-NB-Awnings._1.jpg', price: 299.00, wasPrice: 389.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Campboss", "mountType": "Side/Rear", "freeStanding": "Yes", "headHeight": 2000.0, "waterRating": 3000.0, "colour": "Grey"},
+    specs: [ { icon:'↕️', label:'Head Height', value:'2000mm' }, { icon:'🚙', label:'Mount Type', value:'Side/Rear' }, { icon:'⚖️', label:'Product Weight', value:'10kg' } ],
+    usps: ['Fast-deploy privacy shelter for showering and changing at camp', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Compact touring design that sets up quickly and packs away neatly'],
+    relevanceRank: 75, newnessRank: 75, salesRank: 75
+  },
+  {
+    id: 'aw27', sku: 'RH32149', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Shower Awning - 32149',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhinorackshowertent32149-32149-additional_image_1_to9UU_1.jpg', price: 379.05, wasPrice: 399.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Rhino-Rack", "mountType": "Side/Rear", "freeStanding": "Yes", "headHeight": 2300.0, "waterRating": 2000.0, "colour": "Khaki"},
+    specs: [ { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Side/Rear' }, { icon:'⚖️', label:'Product Weight', value:'6.7kg' } ],
+    usps: ['Fast-deploy privacy shelter for showering and changing at camp', 'Touring-ready privacy solution that sets up fast and packs away neatly', 'Removable roof adds flexible ventilation and weather protection when needed'],
+    relevanceRank: 74, newnessRank: 74, salesRank: 74
+  },
+  {
+    id: 'aw28', sku: 'DART050801090', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse Shower Awning G2 - T050801090',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-shower-awning-g2-t050801090-f411858c679e.jpg', price: 499.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "mountType": "Side/Rear", "freeStanding": "Yes", "headHeight": 2300.0, "waterRating": 3000.0, "colour": "Other"},
+    specs: [ { icon:'↕️', label:'Head Height', value:'2300mm' }, { icon:'🚙', label:'Mount Type', value:'Side/Rear' }, { icon:'⚖️', label:'Product Weight', value:'7.4kg' } ],
+    usps: ['Fast-deploy privacy shelter for showering and changing at camp', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Optional shower awning floor available for added comfort (sold separately)'],
+    relevanceRank: 73, newnessRank: 73, salesRank: 73
+  },
+  {
+    id: 'aw29', sku: 'CBA0289', brand: 'Campboss', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/roofracks/algoliasearch/pos_brands/campboss.png', name: 'Campboss Nudie Boss Shower Tent 2.0 - CBA0289',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/a/campboss-nudie-boss-shower-tent-2-0-cba0289.jpg', price: 389.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Campboss", "mountType": "Side/Rear", "freeStanding": "Yes", "headHeight": 2100.0, "waterRating": 3000.0, "colour": "Grey"},
+    specs: [ { icon:'↕️', label:'Head Height', value:'2100mm' }, { icon:'🚙', label:'Mount Type', value:'Side/Rear' }, { icon:'⚖️', label:'Product Weight', value:'8.9kg' } ],
+    usps: ['Fast-deploy privacy shelter for showering and changing at camp', 'Built-in dual-colour, dimmable LED lighting (white + bug-free amber)', 'Compact touring design that sets up quickly and packs away neatly'],
+    relevanceRank: 72, newnessRank: 72, salesRank: 72
+  },
+  {
+    id: 'aw30', sku: 'DART050801094', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse Shower Awning Floor - T050801094',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-shower-awning-floor-t050801094-e426eeb445ee.jpg', price: 99.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'out_of_stock', pkgCategory: 'awning',
+    facets: {"brand": "Darche", "freeStanding": "No", "colour": "Black"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'1.4kg' } ],
+    usps: ['Universal floor to suit most shower awning setups', 'Mesh drainage panels help prevent water pooling underfoot', 'Peg-down design packs away compact with storage bag included'],
+    relevanceRank: 71, newnessRank: 71, salesRank: 71
+  },
+  {
+    id: 'aw31', sku: 'KAOKS1009', brand: 'Kaon', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/kaon.webp', name: 'Kaon Shower Awning Slide Mount - KS1009',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/k/a/kaon-shower-awning-slide-mount-ks1009.jpg', price: 220.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["shower-awnings"], stock: 'in_stock', pkgCategory: 'awning',
+    facets: {"brand": "Kaon", "freeStanding": "No"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'2.5kg' } ],
+    usps: ['200mm slide-out clearance for improved shower space', 'Smooth sliding action with secure aluminium latch', 'Suits most shower awnings rated up to 10kg'],
+    relevanceRank: 70, newnessRank: 70, salesRank: 70
+  },
+  {
+    id: 'aw32', sku: 'RH31124', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Front Edge Zippered Insert - 31124',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-31124-Awnings---Extensions._1_1.jpg', price: 65.00, wasPrice: 101.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No", "colour": "Khaki"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'1kg' } ],
+    usps: ['Squares off the Batwing front edge for straight-out shade like a normal awning', 'Easy zipper attachment creates a cleaner, more enclosed front edge at camp', 'Includes telescopic pole, peg, guy rope and storage bag for quick setup'],
+    relevanceRank: 69, newnessRank: 69, salesRank: 69
+  },
+  {
+    id: 'aw33', sku: 'RH33112', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Tapered Extension with Door - 33112',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-33112-Awnings---Extensions._1_1.jpg', price: 223.52, wasPrice: 254.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No", "colour": "Khaki"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'4kg' } ],
+    usps: ['Tapered extension adds extra sheltered coverage to create a larger camp footprint', 'Built-in door provides easy entry while keeping the shelter more enclosed at camp', 'Ideal for creating a protected camp kitchen area or weather-safe gear storage zone'],
+    relevanceRank: 68, newnessRank: 68, salesRank: 68
+  },
+  {
+    id: 'aw34', sku: 'DART050801743B', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Eclipse 270 Gen 2 Wall 2 Left - T050801743B',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-270-gen-2-wall-2-left-t050801743b-914bc0dfad8c.jpg', price: 399.00, wasPrice: 549.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Darche", "freeStanding": "No", "waterRating": 1500.0, "colour": "Beige / Tan"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'5.9m²*' }, { icon:'⚖️', label:'Product Weight', value:'5kg' } ],
+    usps: ['Creates a more usable camp area for cooking or relaxing out of the weather', 'Modular wall panel attaches via zips and sail track for a secure fit in use', 'Mesh door improve airflow and insect protection while keeping the space enclosed'],
+    relevanceRank: 67, newnessRank: 67, salesRank: 67
+  },
+  {
+    id: 'aw35', sku: 'RH31132', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Wall Extension - 31132',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/3/1/31132-00_NL6M6R_1.jpg', price: 199.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No"},
+    specs: [  ],
+    usps: ['Zip-on wall extension adds extra shelter and privacy at camp', 'Ripstop polycotton fabric with 2000mm waterproof rating', 'Modular design allows multiple walls to create enclosed setups'],
+    relevanceRank: 66, newnessRank: 66, salesRank: 66
+  },
+  {
+    id: 'aw36', sku: 'RH31131', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Awning Extension 2.5M - 31131',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-awning-extension-sunseeker-31131_4HNV51_1.jpg', price: 159.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No"},
+    specs: [  ],
+    usps: ['Fits Rhino-Rack Sunseeker 2.5 and Batwing awnings', 'Adds up to 2 metres of extra shade and shelter', '2000mm waterproof ripstop polycotton fabric'],
+    relevanceRank: 65, newnessRank: 65, salesRank: 65
+  },
+  {
+    id: 'aw37', sku: 'RH31130', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Awning Extension 2M - 31130',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-awning-extension-31130_1.jpg', price: 179.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No", "waterRating": 2000.0, "colour": "Khaki"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'2.4kg' } ],
+    usps: ['Add-on extension increases awning coverage for extra shade and shelter at camp', 'Use as an awning side wall or extension, with optional poles (sold separately)', 'Includes pegs and guy ropes to help secure the extension in outdoor conditions'],
+    relevanceRank: 64, newnessRank: 64, salesRank: 64
+  },
+  {
+    id: 'aw38', sku: 'RH31133', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Compact Wall Extension - 31133',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/3/1/31133-00_Q9R8II_1.jpg', price: 189.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No", "colour": "Khaki"},
+    specs: [  ],
+    usps: ['Zip-on wall extension adds extra shelter and campsite privacy', 'Ripstop polycotton fabric with 2000mm waterproof rating', 'Modular design allows multiple walls to create enclosed setups'],
+    relevanceRank: 63, newnessRank: 63, salesRank: 63
+  },
+  {
+    id: 'aw39', sku: 'RH33110', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Compact Tapered Extension With Door - 33110',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-33110-Awnings---Extensions._1_1.jpg', price: 178.65, wasPrice: 203.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-extensions"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No", "colour": "Khaki"},
+    specs: [ { icon:'☂️', label:'Coverage', value:'6.3m²*' }, { icon:'⚖️', label:'Product Weight', value:'3.5kg' } ],
+    usps: ['Tapered extension adds extra sheltered coverage to create a larger camp footprint', 'Built-in door provides easy entry while keeping the shelter more enclosed at camp', 'Ideal for creating a protected camp kitchen area or weather-safe gear storage zone'],
+    relevanceRank: 62, newnessRank: 62, salesRank: 62
+  },
+  {
+    id: 'aw40', sku: 'RH43259', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Awning Bracket - 43259',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-batwing-awning-bracket-43259-b0a9b9c552e0.jpg', price: 79.00, wasPrice: 101.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "No"},
+    specs: [ { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'1kg' } ],
+    usps: ['Pair of brackets to mount a Batwing awning', 'Designed for Rhino-Rack Pioneer & compatible platforms and crossbars', 'Strong powder-coated steel construction for long life'],
+    relevanceRank: 61, newnessRank: 61, salesRank: 61
+  },
+  {
+    id: 'aw41', sku: 'RH32102', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Sunseeker Euro Bar Bracket Kit - 32102',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-sunseeker-euro-bar-bracket-kit-32102-a5d78719202f.jpg', price: 59.00, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No"},
+    specs: [  ],
+    usps: ['Required bracket for Euro/square bar awning fitment', 'Compatible across multiple square bar brands', 'Includes required hardware for installation'],
+    relevanceRank: 60, newnessRank: 60, salesRank: 60
+  },
+  {
+    id: 'aw42', sku: 'RH31104', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Batwing Tracklander Bracket Kit - 31104',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-batwing-tracklander-bracket-kit-31104-d525484dd601.jpg', price: 99.00, wasPrice: 142.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "freeStanding": "No"},
+    specs: [  ],
+    usps: ['Designed to mount Rhino-Rack Batwing awnings to Tracklander platform racks', 'Purpose-fit bracket kit for cleaner fitment than universal awning brackets', 'Stable awning support for touring travel and harsh off-road conditions'],
+    relevanceRank: 59, newnessRank: 59, salesRank: 59
+  },
+  {
+    id: 'aw43', sku: 'FRRRAC169', brand: 'Front Runner', brandLogo: '../_shared/brand-front-runner.webp', name: 'Front Runner Quick Release Awning Mount Kit - RRAC169',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-RRAC169-Awnings---Accessories-2._1.jpg', price: 199.00, wasPrice: 224.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Front Runner", "mountType": "Side", "freeStanding": "No"},
+    specs: [ { icon:'🚙', label:'Mount Type', value:'Side' } ],
+    usps: ['Quick-release design makes awning install and removal fast and simple', 'Secure mounting interface built for tough touring and off-road use', 'Ideal for swapping setups or removing awning for storage and security'],
+    relevanceRank: 58, newnessRank: 58, salesRank: 58
+  },
+  {
+    id: 'aw44', sku: 'BR1003', brand: 'RacksBrax', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/racksbrax.webp', name: 'RacksBrax Slimline II Bracket Packer Kit Triple - 1003',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/a/racksbrax-slimline-ii-bracket-packer-kit-triple-1003-12b05571e574.jpg', price: 49.00, wasPrice: 77.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "RacksBrax", "freeStanding": "No"},
+    specs: [  ],
+    usps: ['Designed specifically for mounting to Front Runner Slimline II roof racks', 'Helps improve bracket alignment and mounting fitment', 'Triple packer setup suits larger awning installations'],
+    relevanceRank: 57, newnessRank: 57, salesRank: 57
+  },
+  {
+    id: 'aw45', sku: 'Y8005029', brand: 'Yakima', brandLogo: '../_shared/brand-yakima.webp', name: 'Yakima Awning Bracket - 8005029',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8005029-Awnings---Accessories._1_1.jpg', price: 49.00, wasPrice: 55.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Yakima", "mountType": "Side", "freeStanding": "No"},
+    specs: [ { icon:'🚙', label:'Mount Type', value:'Side' } ],
+    usps: ['Pair of brackets to mount an awning to roof rack systems', 'Designed for Yakima LockNLoad, HD, and Aero crossbars', 'Includes hardware for awning and crossbar attachment'],
+    relevanceRank: 56, newnessRank: 56, salesRank: 56
+  },
+  {
+    id: 'aw46', sku: 'RHBSIT', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack STOW iT Awning Adaptor - BSIT',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-stow-it-awning-adaptor-bsit-view-6_1.jpg', price: 61.60, wasPrice: 70.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Rhino-Rack", "mountType": "Side", "freeStanding": "No"},
+    specs: [ { icon:'🚙', label:'Mount Type', value:'Side' }, { icon:'⚖️', label:'Product Weight', value:'0.5kg' } ],
+    usps: ['Slides into STOW iT base bracket for quick removal and storage', 'Suits Rhino-Rack Batwing and Sunseeker awnings with adjustable height slots', 'Includes 2 adaptors plus mounting hardware and Torx key in the box'],
+    relevanceRank: 55, newnessRank: 55, salesRank: 55
+  },
+  {
+    id: 'aw47', sku: 'BR1005', brand: 'RacksBrax', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/racksbrax.webp', name: 'RacksBrax Wedgetail Bracket Packer Kit Triple - 1005',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/a/racksbrax-wedgetail-bracket-packer-kit-triple-1005-95f0e95c7b0b.jpg', price: 59.00, wasPrice: 68.00, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-brackets"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "RacksBrax", "freeStanding": "No"},
+    specs: [  ],
+    usps: ['Designed specifically for Wedgetail roof rack mounting geometry', 'Helps improve bracket alignment and mounting fitment', 'Triple packer setup suits larger awning installations'],
+    relevanceRank: 54, newnessRank: 54, salesRank: 54
+  },
+  {
+    id: 'aw48', sku: 'DART050802016', brand: 'Darche', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/darche.webp', name: 'Darche Flash Bang Speaker Light - T050802016',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-flash-bang-speaker-light-t050802016.jpg', price: 79.00, wasPrice: 99.95, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Darche"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'0.3kg' } ],
+    usps: ['3-in-1 design combines light, speaker, and power bank', 'Long battery life with USB-C recharge', 'Compact, hang-anywhere campsite solution'],
+    relevanceRank: 53, newnessRank: 53, salesRank: 53
+  },
+  {
+    id: 'aw49', sku: 'TREDEADT50', brand: 'Ezy Anchor', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/ezyanchor.webp', name: 'Ezy Anchor Driver - EADT50',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/E/z/Ezy-Anchor-EADT50-Awnings---Accessories._1.jpg', price: 8.50, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Ezy Anchor"},
+    specs: [  ],
+    usps: ['Drill bit for driving Ezy Anchor screw-in pegs', 'When you’re tired of bent awning or tent pegs coming loose upgrade to Ezy Anchor pegs', 'Ezy anchor make a range of tough screw-in pegs that can be driven in by hand or with a cordless drill'],
+    relevanceRank: 52, newnessRank: 52, salesRank: 52
+  },
+  {
+    id: 'aw50', sku: 'TIHTPL-1', brand: 'Tiegear', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/tiegear.webp', name: 'Tiegear Hard Terra Lite Single - HTPL-1',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/i/tiegear-hard-terra-lite-single-htpl-1-c406ebd57699.jpg', price: 9.95, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Tiegear", "freeStanding": "No"},
+    specs: [ { icon:'⚖️', label:'Product Weight', value:'0.08kg' } ],
+    usps: ['Compact screw-in anchor designed for strong hold in firm ground', 'Ideal spare anchor for adding extra tie-down points to awnings and tents', 'Lite design packs small while offering reliable touring-grade anchoring'],
+    relevanceRank: 51, newnessRank: 51, salesRank: 51
+  },
+  {
+    id: 'aw51', sku: 'TREDT2TCKIT', brand: 'TRED', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/tred.webp', name: 'TRED GT Awning Tensioner Clamp 2pk - T2TCKIT',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/r/tred-gt-awning-tensioner-clamp-2pk-t2tckit-67664bf69842.jpg', price: 42.96, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "TRED"},
+    specs: [  ],
+    usps: [],
+    relevanceRank: 50, newnessRank: 50, salesRank: 50
+  },
+  {
+    id: 'aw52', sku: 'TREDEAO01BU', brand: 'Ezy Anchor', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/ezyanchor.webp', name: 'Ezy Anchor Single Outback - Blue - EAO01BU',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/E/z/Ezy-Anchor-EAO01BU-Awnings---Accessories._1.jpg', price: 10.99, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Ezy Anchor"},
+    specs: [  ],
+    usps: ['When you’re tired of bent awning or tent pegs coming loose upgrade to Ezy Anchor pegs', 'Ezy anchor make a range of tough screw in pegs that can be driven in by hand or with a cordless drill', 'This model is suitable for hard gravelly soil'],
+    relevanceRank: 49, newnessRank: 49, salesRank: 49
+  },
+  {
+    id: 'aw53', sku: 'TREDEAO01GR', brand: 'Ezy Anchor', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/ezyanchor.webp', name: 'Ezy Anchor Single Outback - Green - EAO01GR',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/E/z/Ezy-Anchor-EAO01GR-Awnings---Accessories._1.jpg', price: 10.99, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Ezy Anchor"},
+    specs: [  ],
+    usps: ['When you’re tired of bent awning or tent pegs coming loose upgrade to Ezy Anchor pegs', 'Ezy anchor make a range of tough screw in pegs that can be driven in by hand or with a cordless drill', 'This model is suitable for hard gravelly soil'],
+    relevanceRank: 48, newnessRank: 48, salesRank: 48
+  },
+  {
+    id: 'aw54', sku: 'TREDEAO01OR', brand: 'Ezy Anchor', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/ezyanchor.webp', name: 'Ezy Anchor Single Outback - Orange - EAO01OR',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/E/z/Ezy-Anchor-EAO01OR-Awnings---Accessories._1.jpg', price: 10.99, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Ezy Anchor"},
+    specs: [  ],
+    usps: ['When you’re tired of bent awning or tent pegs coming loose upgrade to Ezy Anchor pegs', 'Ezy anchor make a range of tough screw in pegs that can be driven in by hand or with a cordless drill', 'This model is suitable for hard gravelly soil'],
+    relevanceRank: 47, newnessRank: 47, salesRank: 47
+  },
+  {
+    id: 'aw55', sku: 'TREDEAC01OR', brand: 'Ezy Anchor', brandLogo: 'https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/ezyanchor.webp', name: 'Ezy Anchor Single Coastal - Orange - EAC01OR',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/E/z/Ezy-Anchor-EAC01OR-Awnings---Accessories._1.jpg', price: 12.99, wasPrice: null, rating: 0, reviews: 0, ribbon: null,
+    subcategories: ["awning-accessories"], stock: 'in_stock', pkgCategory: null,
+    facets: {"brand": "Ezy Anchor"},
+    specs: [  ],
+    usps: ['When you’re tired of bent awning or tent pegs coming loose upgrade to Ezy Anchor pegs', 'Ezy anchor make a range of tough screw in pegs that can be driven in by hand or with a cordless drill', 'This model is designed for loamy soils found near to coastal areas, not suitable for hard rocky soil or soft sand'],
+    relevanceRank: 46, newnessRank: 46, salesRank: 46
+  }
+];
+
+const AWNINGS_FAQS = {
+  all: [
+    { q: 'Do I need a roof rack to fit an awning?', a: 'Yes. Awnings bolt to a roof rack, platform or bar system with awning brackets; check the Awning Brackets tab for kits that suit your rack.' },
+    { q: 'What is the difference between a pull-out, 180 and 270 awning?', a: 'A pull-out awning rolls out along one side of the vehicle. A 180 swings out to cover one side in a half circle, and a 270 wraps around the side and rear for the most shade from one awning.' },
+    { q: 'Which side should my awning go on?', a: 'In Australia most people fit it on the passenger (left) side, so you step out of the vehicle into the shade away from traffic. Some awnings are made for one side only; check Mount Type.' },
+    { q: 'Are free-standing awnings better?', a: 'Free-standing awnings hold themselves up without poles in calm weather, so they are faster to set up. Use the poles and guy ropes when it is windy.' }
+  ]
+};
+
+window.PLP_CONFIG = {
+  categoryKey: 'awnings',
+  vrs: false,
+  vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
+  categoryImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg',
+  shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  categoryRoot: {
+    breadcrumbLabel: 'Awnings',
+    heading: 'Awnings',
+    description: 'Vehicle awnings for every setup: quick pull-out awnings, 180 and 270 degree wings, full 360 coverage and shower awnings, plus the brackets, extensions and accessories to finish the job. From Rhino-Rack, Darche, Yakima and more.',
+    heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg'
+  },
+  breadcrumbRoot: [ { label: 'Home' } ],
+  vehicleHeadingSuffix: 'for your {vehicle}',
+  // Level 2 tabs = the live category's own Shop By tabs and icons (2026-10-06); headings and
+  // descriptions follow each live tab page.
+  shopBy: [
+    { key: 'pullout-awnings', label: 'Pullout Awnings', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17643.webp" alt="Pullout Awnings Icon">`,
+      heading: 'Pullout Awnings', description: 'Compact pull-out vehicle awnings that deploy in seconds to create instant shelter.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg' },
+    { key: '180-awnings', label: '180 Awnings', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17644.webp" alt="180 Awnings Icon">`,
+      heading: '180 Awnings', description: 'Half-circle awnings that swing out to cover one side of your vehicle; ideal for 4WD adventures.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakimaovernout180awning8007516-8007516-primary_image_alhzo_N7FXFU_1.jpg' },
+    { key: '270-awnings', label: '270 Awnings', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17645.webp" alt="270 Awnings Icon">`,
+      heading: '270 Awnings', description: '270-degree awnings provide broad coverage around the side and rear of your vehicle for campsites.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-batwing-270-awning-left-33118-view-5.jpg' },
+    { key: '360-awnings', label: '360 Awnings', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17728.webp" alt="360 Awnings Icon">`,
+      heading: '360 Awnings', description: 'Full-circle awnings that surround your vehicle, offering total shade for off-grid camping.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-freestanding-360-awning-t050801754-636c26e68311.jpg' },
+    { key: 'shower-awnings', label: 'Shower Awnings', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17750.webp" alt="Shower Awnings Icon">`,
+      heading: 'Shower Awnings', description: 'Shop shower awnings for camping, touring and off-road adventures with quick-deploy privacy shelters for showering, changing and portable toilet setups.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-eclipse-cube-shower-tent-t050801084.jpg' },
+    { key: 'awning-extensions', label: 'Awning Extensions', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17646.webp" alt="Awning Extensions Icon">`,
+      heading: 'Awning Extensions', description: 'Add side walls or extra panels to your awning to increase coverage and privacy.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-31124-Awnings---Extensions._1_1.jpg' },
+    { key: 'awning-brackets', label: 'Awning Brackets', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17647.webp" alt="Awning Brackets Icon">`,
+      heading: 'Awning Brackets', description: 'Strong brackets and mounting kits to attach awnings to roof racks or platforms.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-batwing-awning-bracket-43259-b0a9b9c552e0.jpg' },
+    { key: 'awning-accessories', label: 'Awning Accessories', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/17648.webp" alt="Awning Accessories Icon">`,
+      heading: 'Awning Accessories', description: 'Accessories for awnings including poles, guy ropes, lighting kits and storage bags.', heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/d/a/darche-flash-bang-speaker-light-t050802016.jpg' }
+  ],
+  products: AWNINGS_PRODUCTS,
+  facets: {
+    priority: [{"key": "mountType", "label": "Which side does it mount on?", "mode": "eq", "options": [{"value": "Side", "label": "Side"}, {"value": "Side/Rear", "label": "Side/Rear"}, {"value": "Rear", "label": "Rear"}, {"value": "Left", "label": "Left"}, {"value": "Right", "label": "Right"}], "tooltip": "Side awnings fit either side; Left and Right models are made for one side only. Side/Rear awnings wrap around the back too."}],
+    standard: [{"key": "freeStanding", "label": "Free Standing", "mode": "eq", "options": [{"value": "Yes", "label": "Yes"}, {"value": "No", "label": "No"}], "tooltip": "Free-standing awnings hold themselves up without poles in calm weather."}, {"key": "headHeight", "label": "Head Height", "mode": "atleast", "options": [{"value": 2100, "label": "2100mm+"}, {"value": 2300, "label": "2300mm+"}, {"value": 2500, "label": "2500mm+"}]}, {"key": "waterRating", "label": "Water Rating", "mode": "atleast", "options": [{"value": 1500, "label": "1500mm+"}, {"value": 2000, "label": "2000mm+"}, {"value": 3000, "label": "3000mm+"}], "tooltip": "Higher is more waterproof."}, {"key": "colour", "label": "Colour", "mode": "eq", "options": [{"value": "Khaki", "label": "Khaki"}, {"value": "Beige / Tan", "label": "Beige / Tan"}, {"value": "Grey", "label": "Grey"}, {"value": "Black", "label": "Black"}, {"value": "Other", "label": "Other"}]}, {"key": "brand", "label": "Brand", "mode": "eq", "options": [{"value": "Campboss", "label": "Campboss"}, {"value": "Darche", "label": "Darche"}, {"value": "Ezy Anchor", "label": "Ezy Anchor"}, {"value": "Front Runner", "label": "Front Runner"}, {"value": "Kaon", "label": "Kaon"}, {"value": "RacksBrax", "label": "RacksBrax"}, {"value": "Rhino-Rack", "label": "Rhino-Rack"}, {"value": "TRED", "label": "TRED"}, {"value": "Tiegear", "label": "Tiegear"}, {"value": "Yakima", "label": "Yakima"}]}]
+  },
+  videos: [
+    { title: 'How to Fit a Vehicle Awning', thumb: '../_shared/video-thumbnail.png', url: '#' },
+    { title: 'Pull-out vs 270 Awnings: Which Is Right for You?', thumb: '../_shared/video-thumbnail.png', url: '#' },
+    { title: 'Setting Up an Awning in the Wind', thumb: '../_shared/video-thumbnail.png', url: '#' }
+  ],
+  merchPromos: [
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 20% Off Awnings', href: '#' },
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Package Deal', label: 'Save when you buy with a Roof Rack', href: '#' }
+  ],
+  featuredProduct: AWNINGS_PRODUCTS.find(p => p.pkgCategory) || AWNINGS_PRODUCTS[0],
+  faqByCategory: AWNINGS_FAQS
+};
+
+</script>
+</body>
+</html>

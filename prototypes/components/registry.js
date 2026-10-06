@@ -23,7 +23,7 @@
 //            sizes ['d','m'] (default both): d = 1280px desktop, m = 390px mobile
 
 const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box'];
-const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'vplp'];
+const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers', 'vplp'];
 const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'header'];
 const NOT_CHECKOUT = ALL_PAGES.filter(p => p !== 'checkout');
 
@@ -320,7 +320,7 @@ const RRG_COMPONENTS = [
     ] },
   { id: 'shop-by', group: 'listing', name: 'Shop By Row', build: 'shared', usedOn: [...PLP3, 'search-results'],
     source: 'plpRenderShopBy (plp.js)',
-    variants: [v('PLP Bike Racks', 'plp', '.plp-shopby'), v('PLP Roof Boxes', 'plp-roof-boxes', '.plp-shopby'), v('PLP Roof Boxes — UK', 'plp-roof-boxes', '.plp-shopby', { ls: S.uk }), v('PLP Camping', 'plp-camping', '.plp-shopby'), v('Search category tabs', 'search-results', '.plp-shopby')] },
+    variants: [v('PLP Bike Racks', 'plp', '.plp-shopby'), v('PLP Roof Boxes', 'plp-roof-boxes', '.plp-shopby'), v('PLP Roof Boxes — UK', 'plp-roof-boxes', '.plp-shopby', { ls: S.uk }), v('PLP Awnings', 'plp-awnings', '.plp-shopby'), v('PLP Roof Top Tents', 'plp-roof-top-tents', '.plp-shopby'), v('PLP Camping', 'plp-camping', '.plp-shopby'), v('Search category tabs', 'search-results', '.plp-shopby')] },
   { id: 'listing-toolbar', group: 'listing', name: 'Listing Toolbar', build: 'copied', usedOn: [...PLP3, 'brand', 'search-results'],
     source: 'Static per page; wired by plp.js',
     variants: [v('PLP', 'plp', '.plp-toolbar'), v('Search', 'search-results', '.plp-toolbar')] },

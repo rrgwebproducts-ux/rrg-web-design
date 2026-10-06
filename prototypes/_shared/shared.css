@@ -2491,6 +2491,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .pkg-rack-info{display:flex;flex-direction:column;gap:2px;font-size:13px;min-width:0;}
 .pkg-rack-name{font-weight:700;line-height:1.3;}
 .pkg-shop-link{font-size:14px;font-weight:700;color:var(--rrg-red);}
+.pkg-shop-links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
 .pkg-done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0;}
 .pkg-done h3{margin:0;font-size:22px;}
 .pkg-done p{margin:0;font-size:15px;}

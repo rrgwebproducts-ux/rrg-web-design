@@ -114,9 +114,10 @@ const RRG_PACKAGE_DEAL = {
   name: 'Package Deal',     // customer-facing name (may change, Brenton 2026-10-06)
   defaultRate: 0.10,
   brandRates: { CRUZ: 0.15 },
-  // Which RMP categories qualify. Roof boxes first (Graham: start there, bike racks are more
-  // complex); the rest are switched on as each is demoed.
-  qualifying: { 'roof-box': true, 'roof-bike': false, 'rooftop-tent': false, 'awning': false, 'water-snow': false }
+  // Which RMP categories qualify. Roof boxes first (2026-10-06); the rest switched on the same day
+  // with their PLPs (Brenton). water-snow = kayak, SUP & surfboard, ski and snowboard carriers.
+  // Never: brackets, extensions, accessories, spares, tie-downs, soft racks, load assist.
+  qualifying: { 'roof-box': true, 'roof-bike': true, 'rooftop-tent': true, 'awning': true, 'water-snow': true }
 };
 // Name fallback for lines that don't carry pkgCategory (older demo data, related-product cards).
 // Deliberately narrow: tracks, brackets, tub/ladder racks, spares and extensions are neither.
@@ -494,8 +495,27 @@ const RRG_PACKAGE_RACKS = {
 RRG_PACKAGE_EXCLUSIONS[0].racks.push('JC-01605');
 
 const rrgPctLabel = r => `${Math.round(r * 100)}%`;
-// The qualifying categories as words: "roof box" now; "roof box or bike rack" as more switch on.
-const rrgPackageQualifyingLabel = () => Object.keys(RRG_PACKAGE_DEAL.qualifying).filter(k => RRG_PACKAGE_DEAL.qualifying[k]).map(k => RRG_PACKAGE_CATEGORY_LABEL[k]).join(' or ');
+// Words for the qualifying categories. On an accessory the copy names that product's own category
+// ("this awning"); on a rack it lists them all, or a short version on cards/tags.
+const RRG_PACKAGE_CATEGORY_PLURAL = { 'roof-box': 'roof boxes', 'roof-bike': 'roof-mounted bike racks', 'rooftop-tent': 'rooftop tents', awning: 'awnings', 'water-snow': 'water and snow carriers' };
+// Singular words for an "any …" list ("any roof box, bike rack, … or water/snow carrier").
+const RRG_PACKAGE_CATEGORY_ANY = { 'roof-box': 'roof box', 'roof-bike': 'roof-mounted bike rack', 'rooftop-tent': 'rooftop tent', awning: 'awning', 'water-snow': 'water/snow carrier' };
+const rrgPackageQualifyingAny = () => rrgListWords(rrgPackageQualifyingKeys().map(k => RRG_PACKAGE_CATEGORY_ANY[k]), 'or');
+// Where to shop each qualifying category in the demo (rack drawer links).
+const RRG_PACKAGE_CATEGORY_PLP = {
+  'roof-box': [['Roof boxes', 'plp-roof-boxes/index.html']], awning: [['Awnings', 'plp-awnings/index.html']], 'rooftop-tent': [['Rooftop tents', 'plp-roof-top-tents/index.html']],
+  'water-snow': [['Kayak & SUP carriers', 'plp-water-carriers/index.html'], ['Ski & snowboard carriers', 'plp-snow-carriers/index.html']],
+  'roof-bike': [['Roof-mounted bike racks', 'plp/index.html?attachment=roof-mounting']]
+};
+const rrgPackageQualifyingKeys = () => Object.keys(RRG_PACKAGE_DEAL.qualifying).filter(k => RRG_PACKAGE_DEAL.qualifying[k]);
+const rrgListWords = (words, joiner = 'and') => words.length < 2 ? (words[0] || '') : `${words.slice(0, -1).join(', ')} ${joiner} ${words[words.length - 1]}`;
+// Every qualifying category, e.g. "roof boxes, awnings, rooftop tents, … and kayak, SUP and snow carriers".
+const rrgPackageQualifyingLabel = (joiner = 'and') => rrgListWords(rrgPackageQualifyingKeys().map(k => RRG_PACKAGE_CATEGORY_PLURAL[k]), joiner);
+// Short form for tags and cards: the first two, then "and more".
+const rrgPackageQualifyingShort = () => { const w = rrgPackageQualifyingKeys().map(k => RRG_PACKAGE_CATEGORY_PLURAL[k]); return w.length > 2 ? `${w.slice(0, 2).join(', ')} and more` : rrgListWords(w); };
+// One product's category word ("roof box", "awning"…); "accessory" when unknown or mixed.
+const rrgPackageItemLabel = item => RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)] || 'accessory';
+const rrgPackageLinesLabel = lines => { const labels = [...new Set(lines.map(rrgPackageItemLabel))]; return labels.length === 1 && lines.length === 1 ? labels[0] : 'accessories'; };
 // The rate range across brands ("10–15%"), for a rack page where the accessory isn't known yet.
 function rrgPackageRateRange() {
   const rates = [RRG_PACKAGE_DEAL.defaultRate, ...Object.values(RRG_PACKAGE_DEAL.brandRates)];
@@ -533,9 +553,9 @@ function rrgRenderPackageTag() {
     active = acc.length > 0 && inCart;
     const accSave = rrgMoney(acc.reduce((n, l) => n + (deal.lines[l.key] || 0), 0));
     body = acc.length
-      ? (inCart ? `You're saving <b>${accSave}</b> on the ${rrgPackageQualifyingLabel()} in your cart with this rack.`
+      ? (inCart ? `You're saving <b>${accSave}</b> on the ${rrgPackageLinesLabel(acc)} in your cart with this rack.`
         : `Add this rack and save <b>${accSave}</b> on the <b>${rrgEsc(rrgShortName(acc[0].name))}</b> in your cart.`)
-      : `Buy this rack with a ${rrgPackageQualifyingLabel()} and save <b>${rrgPackageRateRange()}</b> on the ${rrgPackageQualifyingLabel()}.`;
+      : `Save <b>${rrgPackageRateRange()}</b> on ${rrgPackageQualifyingShort()} when you buy them with this rack.`;
   }
   // Same fitment-card style as the compatibility notice: red edge/label, green once active.
   block.insertAdjacentHTML('afterend', rrgNoticeCardHTML(active ? 'fits' : 'deal',
@@ -580,11 +600,11 @@ function rrgBuildPackageDrawer() {
     if (e.target.closest('[data-pkg-close]')) rrgClosePackageDrawer();
   });
 }
-function rrgPackageSteps(role) {
-  const acc = rrgPackageQualifyingLabel();
+function rrgPackageSteps(role, item) {
+  const acc = role === 'rmp' ? rrgPackageItemLabel(item) : 'roof-mounted accessory';
   const steps = role === 'rmp'
     ? ['Add this ' + acc + ' to your cart.', 'Add any roof rack for your vehicle (we\'ll show you the ones that fit).', 'The saving comes off in your cart. Either order works.']
-    : ['Add this roof rack to your cart.', `Add any ${acc}, any brand.`, `${rrgPackageRateRange()} comes off the ${acc} in your cart. Either order works.`];
+    : ['Add this roof rack to your cart.', `Add any ${rrgPackageQualifyingAny()}, any brand.`, `${rrgPackageRateRange()} comes off the accessory in your cart. Either order works.`];
   return `<ol class="pkg-steps">${steps.map(s => `<li>${s}</li>`).join('')}</ol>`;
 }
 function rrgRenderPackageDrawer() {
@@ -595,12 +615,15 @@ function rrgRenderPackageDrawer() {
   const role = item && rrgPackageRole(item);
   if (!role) { body.innerHTML = ''; foot.innerHTML = ''; return; }
   const deal = rrgPackageDeal();
-  const acc = rrgPackageQualifyingLabel();
-  const intro = `<p class="pkg-lead">Buy any roof rack and a ${acc} in the same order and the ${acc} is <strong>${role === 'rmp' ? rrgPctLabel(rrgPackageRate(item)) : rrgPackageRateRange()} off</strong>. It stacks on sale prices.</p>`;
+  const acc = rrgPackageItemLabel(item);
+  const intro = role === 'rmp'
+    ? `<p class="pkg-lead">Buy any roof rack and this ${acc} in the same order and the ${acc} is <strong>${rrgPctLabel(rrgPackageRate(item))} off</strong>. It stacks on sale prices.</p>`
+    : `<p class="pkg-lead">Buy this rack and a roof-mounted accessory in the same order and the accessory is <strong>${rrgPackageRateRange()} off</strong>. That covers ${rrgPackageQualifyingLabel()}. It stacks on sale prices.</p>`;
 
   if (role === 'rack') {
-    body.innerHTML = `${intro}${rrgPackageSteps('rack')}
-      <a class="pkg-shop-link" href="${RRG_PROTO}plp-roof-boxes/index.html">Shop roof boxes ›</a>`;
+    const links = rrgPackageQualifyingKeys().flatMap(k => RRG_PACKAGE_CATEGORY_PLP[k] || []);
+    body.innerHTML = `${intro}${rrgPackageSteps('rack', item)}
+      <ul class="pkg-shop-links">${links.map(([label, href]) => `<li><a class="pkg-shop-link" href="${RRG_PROTO}${href}">Shop ${label.charAt(0).toLowerCase() + label.slice(1)} ›</a></li>`).join('')}</ul>`;
     foot.innerHTML = `<button type="button" class="btn btn-outline btn-block" data-pkg-close>Got it</button>`;
     return;
   }
@@ -628,7 +651,7 @@ function rrgRenderPackageDrawer() {
       <div class="pkg-done">
         <span class="mini-cart-added">✓</span>
         <h3>${RRG_PACKAGE_DEAL.name} applied</h3>
-        <p>You're saving <strong>${rrgMoney(now.discount)}</strong> on your ${acc} in this order.</p>
+        <p>You're saving <strong>${rrgMoney(now.discount)}</strong> on your ${rrgPackageLinesLabel(now.matched)} in this order.</p>
       </div>
       <ul class="cart-lines">${[...now.racks, ...now.accessories].map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>`;
     foot.innerHTML = `<button type="button" class="btn btn-cta btn-block" data-pkg-view-cart>View cart</button>
@@ -666,7 +689,7 @@ function rrgRenderPackageDrawer() {
 
   // intro
   const rackInCart = deal.racks.find(r => rrgPackageCompatible(item, r));
-  body.innerHTML = `${intro}${card}${rrgPackageSteps('rmp')}
+  body.innerHTML = `${intro}${card}${rrgPackageSteps('rmp', item)}
     ${rackInCart ? `<p class="pkg-added">✓ You already have the <strong>${rrgEsc(rrgShortName(rackInCart.name))}</strong> in your cart, so the saving applies as soon as you add this ${acc}.</p>` : ''}`;
   foot.innerHTML = rackInCart
     ? `<button type="button" class="btn btn-cta btn-block" data-pkg-add-only>Add to cart</button>`

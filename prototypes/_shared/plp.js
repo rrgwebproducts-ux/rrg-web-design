@@ -1552,10 +1552,9 @@ function plpPackageStripHTML(product) {
     wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory };
   const role = rrgPackageRole(item);
   if (!role) return '';
-  const acc = rrgPackageQualifyingLabel();
   const text = role === 'rmp'
     ? `Save ${rrgPctLabel(rrgPackageRate(item))} with a roof rack`
-    : `Save ${rrgPackageRateRange()} on a ${acc} with this rack`;
+    : `Save ${rrgPackageRateRange()} on roof accessories with this rack`;
   return `<button type="button" class="plp-card-pkg" data-package-open data-package-item="${String(JSON.stringify(item)).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">
     ${RRG_PACKAGE_ICON}<span><b>${RRG_PACKAGE_DEAL.name}:</b> ${text}</span><span class="plp-card-pkg-go" aria-hidden="true">›</span></button>`;
 }

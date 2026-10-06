@@ -449,6 +449,10 @@ const BIKE_RACK_PRODUCTS = [
   }
 ];
 
+// Package Deal (spec.md §19, 2026-10-06): roof-mounted bike racks qualify; tow ball, hitch and rear
+// carriers and bike rack accessories never do (they don't sit on a roof rack).
+BIKE_RACK_PRODUCTS.forEach(p => { p.pkgCategory = (p.subcategories || []).includes('roof-mounting') ? 'roof-bike' : null; });
+
 // FAQ content, keyed per Level 2/3 tab (2026-09-21, matching plp-camping/index.html's own
 // CAMPING_FAQS convention) — clearly authored, category-appropriate Q&As, consumed by
 // plpRenderFAQ() in plp.js, re-run on every Shop By tab / icon-card change. 'all' reuses the 4

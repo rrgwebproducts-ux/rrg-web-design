@@ -231,9 +231,9 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ### 4.6a Package Deal strip (2026-10-06, spec.md §19)
 
-**Location:** full width along the bottom edge of a product card (grid and list), on any listing — only for roof racks and for qualifying roof-mounted accessories (roof boxes for now). First demoed on PLP Roof Boxes (`prototypes/plp-roof-boxes/`, the Bike Racks template with the four live shape categories as Shop By) and VPLP Roof Racks.
+**Location:** full width along the bottom edge of a product card (grid and list), on any listing — only for roof racks and for qualifying roof-mounted accessories: roof boxes, awnings, rooftop tents, kayak/SUP/ski/snowboard carriers and roof-mounted bike racks (2026-10-06). Category PLPs built on this template so far: Bike Racks, Roof Boxes, Awnings, Roof Top Tents, Water Carriers, Snow Carriers, Camping, VPLP Roof Racks. First demoed on PLP Roof Boxes (`prototypes/plp-roof-boxes/`, the Bike Racks template with the four live shape categories as Shop By) and VPLP Roof Racks.
 
-**Copy:** tag icon + "**Package Deal:** Save 10% with a roof rack" (15% for CRUZ) on an accessory; "**Package Deal:** Save 10–15% on a roof box with this rack" on a rack. Percentages only — **no deal price on listings** (meeting 2026-10-06: RRP and sale price are already there; a third price confuses).
+**Copy:** tag icon + "**Package Deal:** Save 10% with a roof rack" (15% for CRUZ) on an accessory; "**Package Deal:** Save 10–15% on roof accessories with this rack" on a rack. Percentages only — **no deal price on listings** (meeting 2026-10-06: RRP and sale price are already there; a third price confuses).
 
 **Behaviour:** the whole strip is a button that opens the Package Deal drawer (PDP brief 4.19a) for **that** product — unlike roofbox.co.uk, whose strip leads to a generic package page and loses the product. From an accessory card the drawer offers "Add to cart & choose your rack".
 
