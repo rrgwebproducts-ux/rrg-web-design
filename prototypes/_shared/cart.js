@@ -84,7 +84,7 @@ const RRG_DEMO_CARTS = {
   // Rack only — to view an accessory page against a rack (compatibility, phase 3):
   platformOnly: ['platformKit'],         // Pioneer platform: the Motion 3 L shows "not compatible" (demo exclusion)
   thuleRackOnly: ['thuleRack'],          // Thule bars: the Motion 3 L shows "compatible"
-  notCompatible: ['platformKit', 'motionBox'] // Package Deal active, but the pair is a demo exclusion
+  notCompatible: ['platformKit', 'motionBox'] // Package Deal still applies; both lines show the demo exclusion note
 };
 
 // ---- Store ----
@@ -154,19 +154,20 @@ function rrgPackageRate(item) {
 // Per-unit saving on a qualifying accessory, off its current price.
 const rrgPackageSaving = item => Math.round((item.price || 0) * rrgPackageRate(item) * 100) / 100;
 // The cart's Package Deal state. Every unit of every qualifying accessory saves while at least one
-// rack is in the cart (assumption — no one-accessory-per-rack cap was discussed).
+// rack is in the cart — no one-accessory-per-rack cap (Brenton, 2026-10-07).
 //   active     a rack and a qualifying accessory are both in the cart
 //   discount   what the order saves now (0 unless active)
-//   potential  what adding a (compatible) rack would save: the accessories not yet matched
+//   potential  what adding a rack would save: the accessories not yet matched
 //   lines      { [line key]: saving for that line (all units) }
-//   matched    accessories with a COMPATIBLE rack in the cart — only these save (Brenton,
-//              2026-10-06: an incompatible pair isn't a Package Deal; the PDP drops the tag too)
+//   matched    accessories that save: all of them once any rack is in the cart. Compatibility
+//              doesn't affect the discount (Brenton, 2026-10-07: an incompatible pair still gets
+//              it; the compatibility note still shows on the PDP and the cart line)
 function rrgPackageDeal(cart = rrgCartGet()) {
   const racks = cart.lines.filter(l => rrgPackageRole(l) === 'rack');
   const accessories = cart.lines.filter(l => rrgPackageRole(l) === 'rmp');
   const lines = {};
   accessories.forEach(l => { lines[l.key] = Math.round(rrgPackageSaving(l) * l.qty * 100) / 100; });
-  const matched = accessories.filter(a => racks.some(r => rrgPackageCompatible(a, r)));
+  const matched = racks.length ? accessories : [];
   const sum = list => Math.round(list.reduce((n, l) => n + lines[l.key], 0) * 100) / 100;
   const active = matched.length > 0;
   return { racks, accessories, matched, active, hasRack: racks.length > 0,
@@ -286,7 +287,7 @@ function rrgCartTotals(cart = rrgCartGet(), method = null) {
 // the applied discount, or the potential one (greyed, not in the total). paid = confirmation wording.
 function rrgPackageTotalsRowHTML(t, { paid = false } = {}) {
   if (t.packageDiscount > 0) return `<div class="cart-totals-package"><dt>${RRG_PACKAGE_DEAL.name}${paid ? ' saving' : ''}</dt><dd>−${rrgMoney(t.packageDiscount)}</dd></div>`;
-  if (!paid && t.packagePotential > 0) return `<div class="cart-totals-package is-potential"><dt>${RRG_PACKAGE_DEAL.name} available<small>Add ${t.packageHasRack ? 'a compatible' : 'a'} roof rack to this order</small></dt><dd>save ${rrgMoney(t.packagePotential)}</dd></div>`;
+  if (!paid && t.packagePotential > 0) return `<div class="cart-totals-package is-potential"><dt>${RRG_PACKAGE_DEAL.name} available<small>Add a roof rack to this order</small></dt><dd>save ${rrgMoney(t.packagePotential)}</dd></div>`;
   return '';
 }
 // The cart-level notice (cart page, above the lines; mini-cart): active = what's being saved;
@@ -300,10 +301,10 @@ function rrgPackageCartNoticeHTML(cart = rrgCartGet(), { compact = false } = {})
   const open = `<button type="button" class="${compact ? 'link-btn' : 'btn btn-outline-red btn-sm'}" data-package-open data-package-step="racks" data-package-item="${rrgEsc(JSON.stringify(acc))}">Choose a rack</button>`;
   if (compact) return deal.active
     ? `<p class="mini-cart-package is-active">✓ ${RRG_PACKAGE_DEAL.name}: you're saving ${rrgMoney(deal.discount)}</p>`
-    : `<p class="mini-cart-package">${RRG_PACKAGE_DEAL.name}: add ${deal.hasRack ? 'a compatible' : 'a'} roof rack and save ${rrgMoney(deal.potential)} on your ${label}. ${open}</p>`;
+    : `<p class="mini-cart-package">${RRG_PACKAGE_DEAL.name}: add a roof rack and save ${rrgMoney(deal.potential)} on your ${label}. ${open}</p>`;
   return deal.active
     ? rrgNoticeCardHTML('fits', `${RRG_PACKAGE_DEAL.name} applied`, `You're saving <b>${rrgMoney(deal.discount)}</b> on your ${label} because there's a roof rack in this order.`, '', 'pkg-cart-notice')
-    : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `Add ${deal.hasRack ? 'a compatible' : 'any'} roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.<div class="actions">${open}</div>`, '', 'pkg-cart-notice');
+    : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `Add any roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.<div class="actions">${open}</div>`, '', 'pkg-cart-notice');
 }
 const rrgMoney = n => fmtAud(Math.round(n * 100) / 100);
 const rrgPath = rel => rel === '#' ? '#' : RRG_PROTO + rel;
@@ -352,7 +353,7 @@ function rrgCartLineHTML(line, { editable = true, compact = false } = {}) {
     </li>`;
 }
 // Package Deal marker on a qualifying accessory's line (phase 5): the saving once matched with a
-// compatible rack, else what a rack would save. Only for lines in the live cart.
+// rack (any rack — compatibility doesn't affect the discount), else what a rack would save. Only for lines in the live cart.
 function rrgPackageLineHTML(line) {
   if (rrgPackageRole(line) !== 'rmp') return '';
   const deal = rrgPackageDeal();
@@ -360,7 +361,7 @@ function rrgPackageLineHTML(line) {
   const save = rrgMoney(deal.lines[line.key]);
   return deal.matched.some(l => l.key === line.key)
     ? `<span class="cart-line-package is-active">${RRG_PACKAGE_DEAL.name} −${save}</span>`
-    : `<span class="cart-line-package">${RRG_PACKAGE_DEAL.name}: save ${save} with a ${deal.hasRack ? 'compatible ' : ''}roof rack</span>`;
+    : `<span class="cart-line-package">${RRG_PACKAGE_DEAL.name}: save ${save} with a roof rack</span>`;
 }
 // BNPL line per region (AU: Afterpay 4 payments, Zip from $10/week). NZ/UK have none on live.
 function rrgBnplHTML(total) {
@@ -542,13 +543,13 @@ function rrgRenderPackageTag() {
   let body, active = false;
   if (role === 'rmp') {
     const save = rrgMoney(rrgPackageSaving(item));
-    const rack = deal.racks.find(r => rrgPackageCompatible(item, r));
+    const rack = deal.racks.find(r => rrgPackageCompatible(item, r)) || deal.racks[0];
     active = !!rack;
     body = rack
       ? `You'll save <b>${save}</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} with the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart.`
       : `Save <b>${rrgPctLabel(rrgPackageRate(item))} (${save})</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} when you buy it with any roof rack.`;
   } else {
-    const acc = deal.accessories.filter(a => rrgPackageCompatible(a, item));
+    const acc = deal.accessories;
     const inCart = deal.racks.some(l => l.key === item.sku);
     active = acc.length > 0 && inCart;
     const accSave = rrgMoney(acc.reduce((n, l) => n + (deal.lines[l.key] || 0), 0));
@@ -665,7 +666,10 @@ function rrgRenderPackageDrawer() {
     const racks = (vehicle ? (RRG_PACKAGE_RACKS[rrgVehicleGet()] || []) : []).filter(r => rrgPackageCompatible(item, r));
     body.innerHTML = `
       <p class="pkg-added">✓ ${rrgEsc(rrgShortName(item.name))} is in your cart</p>
-      <h3 class="pkg-h3">${vehicle ? `Choose a roof rack for your ${vehicle.label}` : 'Which vehicle is it for?'}</h3>
+      <div class="pkg-h3-row">
+        <h3 class="pkg-h3">${vehicle ? `Choose a roof rack for your ${vehicle.label}` : 'Which vehicle is it for?'}</h3>
+        ${vehicle ? `<button type="button" class="link-btn pkg-change-vehicle" data-open-fit-finder>Change vehicle</button>` : ''}
+      </div>
       ${vehicle ? `
         ${racks.length ? '' : `<p>None of our suggested racks for your ${vehicle.label} suit this ${acc}. See the full range below, or contact us and we'll find one that does.</p>`}
         <ul class="pkg-racks">${racks.map(r => {
@@ -688,7 +692,7 @@ function rrgRenderPackageDrawer() {
   }
 
   // intro
-  const rackInCart = deal.racks.find(r => rrgPackageCompatible(item, r));
+  const rackInCart = deal.racks.find(r => rrgPackageCompatible(item, r)) || deal.racks[0];
   body.innerHTML = `${intro}${card}${rrgPackageSteps('rmp', item)}
     ${rackInCart ? `<p class="pkg-added">✓ You already have the <strong>${rrgEsc(rrgShortName(rackInCart.name))}</strong> in your cart, so the saving applies as soon as you add this ${acc}.</p>` : ''}`;
   foot.innerHTML = rackInCart

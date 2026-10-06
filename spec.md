@@ -1551,7 +1551,7 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - `RRG_PACKAGE_DEAL` config: name, 10% default, CRUZ 15%, and which RMP categories qualify (one flag each: `roof-box`, `roof-bike`, `rooftop-tent`, `awning`, `water-snow` — all on since phase 7).
    - Each cart line carries `pkgCategory` (`rack` / `roof-box` / … / `null`): from the PLP product (`plpCartItemAttr`), the PDP's `.cta-col[data-pkg-category]`, or the demo items. Lines without one fall back to a deliberately narrow name match (tub/ladder racks, tracks, brackets, spares, extensions are never racks or RMPs). Production: a Magento product attribute.
    - Tagged so far: all 35 Roof Boxes PLP products (`roof-box`); VPLP's 17 racks/bar sets/platforms (`rack`, `VPLP_RACK_IDS`), the rest `null`; the vehicle-specific PDP (Pioneer 6 platform kit, `rack`); the Config-Variant PDP (Pioneer platform 900 × 1430, `rack`, added 2026-10-07 — see 19.1).
-   - `rrgPackageDeal(cart)` → `{ racks, accessories, active, hasRack, discount, potential, lines }`; every unit of every qualifying accessory saves while at least one rack is in the cart (**assumption** — no one-accessory-per-rack cap was discussed).
+   - `rrgPackageDeal(cart)` → `{ racks, accessories, active, hasRack, discount, potential, lines }`; every unit of every qualifying accessory saves while at least one rack is in the cart — no one-accessory-per-rack cap (Brenton confirmed 2026-10-07).
    - `rrgCartTotals()` reports `packageDiscount` / `packagePotential` — taken off the total since phase 5.
    - Site Admin cart presets: "Roof box only (Package Deal)" (potential $74.85 on the CRUZ Easy 430) and "Rack + roof box (Package Deal)" (active, $74.85).
 3. ✅ **Rack-aware compatibility** — built 2026-10-06 (PDP brief 4.19 rewritten).
@@ -1565,10 +1565,10 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - Drawer: how it works (with-a-rack price lives here) → **Add to cart & choose your rack** → racks for the session vehicle, compatible first, each with its compatibility → "Package Deal applied". No vehicle → the Fit Finder opens over the drawer. Racks: real scraped listings for Hilux (5) and Ranger (3).
    - **Brenton, mid-build:** the PDP notes should match the "Fits your vehicle" fitment card, not a tinted box. The compatibility banner (phase 3) and the new tag now both reuse the `.fitment` card (`rrgNoticeCardHTML`): white, 3px coloured left edge, icon + uppercase label, grey body.
    - Also fixed: the gallery "Save N%" band hid only when there was no sale; it now also hides when the saving rounds to 0% (Motion 3 L Gloss Black is 95c off and showed "SAVE 0%").
-   - **Brenton, 2026-10-06 (answering the open question):** incompatible racks aren't suggested in the drawer, and the PDP tag isn't shown when the product is incompatible with something in the cart. Following on, an incompatible pair gets **no** discount (`rrgPackageDeal` only counts accessories with a compatible rack — "matched").
+   - **Brenton, 2026-10-06 (answering the open question):** incompatible racks aren't suggested in the drawer, and the PDP tag isn't shown when the product is incompatible with something in the cart. ~~Following on, an incompatible pair gets no discount~~ — **reversed by Brenton 2026-10-07:** an incompatible pair **still gets the discount**; the compatibility note still shows (PDP card, cart line). `rrgPackageDeal` now matches every accessory once any rack is in the cart. The drawer still suggests compatible racks only, and the PDP tag still gives way to the heads-up.
 5. ✅ **Cart / mini-cart / checkout / confirmation** — built 2026-10-06 (checkout-spec.md §11).
    - The discount comes off the total: Subtotal − savings − Package Deal + delivery = Total, its own green row (cart, checkout; "Package Deal saving" on the confirmation).
-   - No compatible rack yet: greyed "Package Deal available — save $X" row (not counted), a red fitment-card notice above the cart lines with **Choose a rack** (opens the drawer at the rack list), the same nudge in the mini-cart, and a marker on the accessory's line. Nothing blocks checkout.
+   - No rack yet: greyed "Package Deal available — save $X" row (not counted), a red fitment-card notice above the cart lines with **Choose a rack** (opens the drawer at the rack list), the same nudge in the mini-cart, and a marker on the accessory's line. Nothing blocks checkout.
    - Not built: visually grouping the rack + accessory lines — the notice, line markers and summary row carry it; flagged for review.
 6. ✅ **PLP strip** — built 2026-10-06 (PLP brief 4.6a). "Package Deal: Save 10% with a roof rack" (15% CRUZ) / "Save 10–15% on a roof box with this rack" along the bottom of the card, grid and list, opening the drawer for that product. Percentages only.
 7. ✅ **More category PLPs + Package Deal categories** — built 2026-10-06.
@@ -1580,7 +1580,7 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
 
 ### 19.1 Meeting to-do list (every point from the 2026-10-06 meeting)
 
-Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything except the Config-Variant page, now fixed.
+Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything except the Config-Variant page, now fixed. Same day: #18 built, #21–23 answered.
 
 **Done in the demo**
 
@@ -1602,32 +1602,32 @@ Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything 
 | 14 | Bike racks: roof-mounted only (never tow ball / hitch) | Phase 7 |
 | 15 | All RMPs, not just boxes: rooftop tents, awnings, water + snow carriers, new PLPs for them | Phase 7 |
 | 16 | Demo starts with roof boxes + racks | Phases 1–6 |
+| 18 | "Change vehicle" inside the drawer's rack step (the UK flow couldn't change vehicle mid-package) | 2026-10-07: a *Change vehicle* link beside "Choose a roof rack for your …" opens the Fit Finder; the rack list redraws for the new vehicle |
 | 17 | Config-Variant (Pioneer platform) PDP reads the cart as a rack (from Brenton's 2026-10-07 review) | 2026-10-07: `data-pkg-category="rack"`; the tag and compatibility card redraw on a build-option swap; the Flat Pack SKU (RH62112F) added to the demo exclusion |
 
 **Open — demo (raise with Brenton before building)**
 
 | # | Item | Notes |
 |---|---|---|
-| 18 | "Change vehicle" inside the drawer's rack step | The UK flow couldn't change vehicle mid-package (flagged in the meeting). Ours uses the session vehicle with no change link; the header still works. Small add. |
 | 19 | Group rack + accessory visually in the cart ("package includes …") | Raised in the meeting about the UK basket. Ours keeps separate lines (either can be removed); the notice, line markers and summary row carry the link. Only needed if review wants it. |
 | 20 | Roof-mounted fishing rod holders | Qualify in principle; no PLP in the demo yet. |
 
-**Open — decisions to confirm**
+**Decisions (answered by Brenton 2026-10-07)**
 
-| # | Item | Current assumption |
+| # | Item | Decision |
 |---|---|---|
-| 21 | One accessory per rack, or every qualifying accessory? | Every qualifying accessory unit saves while a compatible rack is in the cart (no cap). |
-| 22 | Incompatible pair: discount or not? | No discount (follows from Brenton's "don't suggest / don't show the tag" rule). |
-| 23 | The rates themselves (margin) | 10% / CRUZ 15% are the meeting's working numbers. Jake: the accessory must still sell above break-even after a sale price + Package Deal stack. Merchandising/finance to sign off per brand. |
+| 21 | One accessory per rack, or every qualifying accessory? | ✅ Every qualifying accessory saves while a rack is in the cart — no cap. (Already how the demo worked.) |
+| 22 | Incompatible pair: discount or not? | ✅ **Still gets the discount**; the compatibility notification still shows. Built 2026-10-07. Unchanged: the drawer only suggests compatible racks, and on the PDP the heads-up card replaces the Package Deal tag. |
+| 23 | The rates themselves (margin) | ✅ Brand-specific rates are set up in the inventory system, separate from the website design. The demo's 10% / CRUZ 15% are examples, which should cover most if not all brands anyway. |
 
 **Open — dev / Magento (AU/NZ first)**
 
 | # | Item |
 |---|---|
 | 24 | Product attribute for Package Deal role (`rack` / RMP category / none) on every product |
-| 25 | Per-brand rate config (the data behind `RRG_PACKAGE_DEAL.brandRates`) |
+| 25 | Per-brand rates come from the inventory system (not a website setting); the website reads each accessory's rate. The demo's 10% / CRUZ 15% are examples |
 | 26 | Real compatibility exclusions (rack ↔ accessory), maintained by merchandising; the Motion 3 L ↔ Pioneer one is demo-only and must not ship |
-| 27 | Cart rule: % off matched accessories at their current price, as its own total row; nothing blocks checkout |
+| 27 | Cart rule: % off every qualifying accessory at its current price once any rack is in the order (compatible or not), as its own total row; nothing blocks checkout |
 | 28 | Ship AU + NZ first, then the UK |
 
 **Open — not for the build**

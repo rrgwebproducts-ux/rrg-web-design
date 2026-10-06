@@ -901,7 +901,11 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 - Rack, nothing in cart: "Buy this rack with a roof box and save 10–15% on the roof box."
 - Rack, roof box in cart: "Add this rack and save $74.85 on the [roof box] in your cart." → once both are in: PACKAGE DEAL APPLIED.
 
-**Compatibility (Brenton, 2026-10-06):** the tag is **not shown** when this product is incompatible with something in the cart — the 4.19 heads-up shows instead — and an incompatible rack + accessory pair gets **no** Package Deal discount.
+**Compatibility (Brenton, 2026-10-06; discount rule updated 2026-10-07):** the tag is **not shown** when this product is incompatible with something in the cart — the 4.19 heads-up shows instead — and the drawer only suggests compatible racks. An incompatible rack + accessory pair **still gets** the Package Deal discount in the cart; the compatibility note stays on the line.
+
+**Change vehicle (2026-10-07):** the drawer's rack step has a *Change vehicle* link beside its heading. It opens the Fit Finder over the drawer, and the rack list redraws for the new vehicle (the UK flow couldn't do this mid-package).
+
+**Rates:** brand-specific rates are set up in the inventory system, not in the website design; the 10% / CRUZ 15% shown are examples.
 
 **Look:** the fitment-card style (same as 4.19): brand-red left edge, tag icon and "PACKAGE DEAL" label in brand red (UK region: blue, via the region's red token); green with a tick once applied. "How it works" is a text link that opens the drawer.
 

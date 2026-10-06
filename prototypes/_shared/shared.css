@@ -2485,6 +2485,9 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .pkg-steps{margin:0;padding-left:20px;font-size:14px;line-height:1.5;display:flex;flex-direction:column;gap:4px;}
 .pkg-added{margin:0;padding:10px 12px;border-radius:var(--radius);background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:14px;line-height:1.4;}
 .pkg-h3{margin:0;font-size:18px;}
+/* Rack step: change the vehicle without leaving the drawer (spec.md §19.1 #18) */
+.pkg-h3-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.pkg-change-vehicle{font-size:13px;white-space:nowrap;}
 .pkg-racks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
 .pkg-rack{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rrg-line);}
 .pkg-rack img{width:64px;height:64px;object-fit:contain;}
