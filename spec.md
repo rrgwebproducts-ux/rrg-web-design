@@ -1558,7 +1558,12 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - Cart lines (cart, mini-cart, checkout summary): the same note, on the accessory's line only.
    - **New Roof Box PDP** `prototypes/roof-box/` (Brenton's choice): the Sibling-Color template with the real Thule Motion 3 L, Gloss Black / Gloss Titan. The Roof Boxes PLP's two Motion 3 L cards link to it. Live attributes include "Roof Rack Compatibility: Thule" and a 555–930mm crossbar spread.
    - New demo cart presets: "Pioneer platform only", "Thule roof rack only" (a real Thule WingBar Evo listing, $499.85), "Platform + Motion 3 L (not compatible)".
-4. **PDP Package Deal tag + drawer:** tag near the price (no third price); drawer explains the deal; "Add to cart & choose your rack" leads into a rack finder that uses the saved vehicle and remembers the product.
+4. ✅ **PDP Package Deal tag + drawer** — built 2026-10-06 (PDP brief 4.19a).
+   - Tag under the price on rack and roof-box pages: "Save 10% ($199.90) on this roof box when you buy it with any roof rack", or "Package Deal applied" (green) once both are in the cart; rack pages: "save 10–15% on the roof box" / "Add this rack and save $74.85 on the [box] in your cart". No third price on the page.
+   - Drawer: how it works (with-a-rack price lives here) → **Add to cart & choose your rack** → racks for the session vehicle, compatible first, each with its compatibility → "Package Deal applied". No vehicle → the Fit Finder opens over the drawer. Racks: real scraped listings for Hilux (5) and Ranger (3).
+   - **Brenton, mid-build:** the PDP notes should match the "Fits your vehicle" fitment card, not a tinted box. The compatibility banner (phase 3) and the new tag now both reuse the `.fitment` card (`rrgNoticeCardHTML`): white, 3px coloured left edge, icon + uppercase label, grey body.
+   - Also fixed: the gallery "Save N%" band hid only when there was no sale; it now also hides when the saving rounds to 0% (Motion 3 L Gloss Black is 95c off and showed "SAVE 0%").
+   - **Open question:** the deal currently applies even when the rack and box are flagged not compatible (the demo exclusion shows "Package Deal applied" next to "Heads up: not compatible"). Should an incompatible pair still get the discount?
 5. **Cart / mini-cart / checkout:** "Package Deal" saving line when both are in the basket; before that, a "potential saving" line and a missing-item nudge like the UK's, **without blocking checkout**. Rack + accessory grouped visually, either removable.
 6. **PLP marker:** light "Package Deal available" strip on qualifying cards, leading to the drawer (not a generic page).
 7. Then repeat the PLP for Awnings, Rooftop Tents etc. on the same template.

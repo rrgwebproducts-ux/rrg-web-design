@@ -172,6 +172,22 @@ const RRG_COMPONENTS = [
       v('Demo State — compatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'compatible' }), sizes: ['d'] }),
       v('Demo State — incompatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'incompatible' }), sizes: ['d'] }),
     ] },
+  { id: 'package-deal-tag', group: 'product', name: 'Package Deal Tag', build: 'shared', usedOn: ['roof-box', 'vehicle-specific'],
+    source: 'rrgRenderPackageTag + rrgNoticeCardHTML (cart.js)',
+    // Under the price on rack / qualifying-accessory pages (.cta-col[data-pkg-category]); real cart.
+    variants: [
+      v('Roof box — no rack in cart', 'roof-box', '.decision-panel', { cart: 'empty', sizes: ['d'] }),
+      v('Roof box — rack in cart (applied)', 'roof-box', '.decision-panel', { cart: 'thuleRackOnly', sizes: ['d'] }),
+      v('Rack — roof box in cart', 'vehicle-specific', '.decision-panel', { cart: 'roofBox', sizes: ['d'] }),
+      v('Rack — nothing in cart', 'vehicle-specific', '.decision-panel', { cart: 'empty', sizes: ['d'] }),
+    ] },
+  { id: 'package-deal-drawer', group: 'product', name: 'Package Deal Drawer', build: 'shared', usedOn: ['roof-box', 'vehicle-specific'],
+    source: 'rrgOpenPackageDrawer / rrgRenderPackageDrawer (cart.js)',
+    variants: [
+      v('Roof box — how it works', 'roof-box', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer', h: 820 }),
+      v('Roof box — choose your rack', 'roof-box', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer,click:[data-pkg-add-choose]', h: 820 }),
+      v('Rack — how it works', 'vehicle-specific', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer', h: 820 }),
+    ] },
   { id: 'product-gallery', group: 'product', name: 'Product Gallery', build: 'mixed', usedOn: [...PDP5, 'store'],
     source: 'Static per page; initGalleryCarousels / applyVideoFlag (shared.js)',
     variants: [

@@ -1122,22 +1122,19 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    (background/border), only the yellow/orange text itself was hard to read. */
 .special-order-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-black);background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;}
 
-/* Compatibility banner — sits above Add to Cart, demo admin panel "Cart contents"
-   toggle (backlog item 24, 2026-09-11 backlog). Same amber informational tier as
-   .special-order-banner (never blocks purchase), not the red "not in stock" tier.
-   Deliberately NOT display:flex (2026-09-12 fix) — this banner's content is a text
-   run with an embedded <strong>, and flex turns each text/element chunk into its own
-   anonymous flex item/column instead of one wrapping paragraph, which read as broken
-   multi-column text. Plain block flow wraps it correctly as a single paragraph. */
-.cart-conflict-banner{font-size:13px;font-weight:700;color:var(--rrg-black);background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;line-height:1.4;}
-/* Package Deal compatibility (spec.md §19 phase 3, 2026-10-06): the banner now also shows when
-   things ARE compatible (green), not only the amber heads-up, each with an info tooltip. The
-   message is one <span> + the tip, so the flex row below has exactly two items and the text
-   still wraps as one paragraph (the 2026-09-12 note above). Same two looks on cart lines. */
-.cart-conflict-banner.is-ok,.cart-conflict-banner.is-warn{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font-weight:400;}
-.cart-conflict-banner.is-ok{color:var(--rrg-fits);background:var(--rrg-fits-bg);border-color:var(--rrg-fits);}
-.cart-conflict-banner.is-warn{color:var(--rrg-unknown-text);}
-.cart-conflict-banner strong{font-weight:900;}
+/* Compatibility banner — sits above Add to Cart (PDP brief 4.19); never blocks purchase. */
+.cart-conflict-banner{margin-bottom:10px;}
+/* Decision-panel notices (2026-10-06): the compatibility banner and the Package Deal tag are
+   .fitment cards (rrgNoticeCardHTML in cart.js) — the same look as "Fits your vehicle"
+   (Brenton: match it, not a tinted box). Before that the banner was an amber-tinted box, and the
+   phase-3 version added a green-tinted one; both retired. Extra state for the Package Deal:
+   .deal = brand red (blue in the UK region). The info tooltip sits in the label line. */
+.rrg-notice .rrg-notice-text{min-width:0;line-height:1.45;}
+.rrg-notice strong{display:flex;align-items:center;gap:6px;}
+.rrg-notice .link-btn{font-size:14px;}
+.rrg-notice .rrg-info-tip::after{right:auto;left:-6px;}
+.fitment.deal{border-left:3px solid var(--rrg-red);}
+.fitment.deal strong,.fitment.deal .dot{color:var(--rrg-red);}
 .cart-line-compat{display:flex;align-items:flex-start;gap:6px;font-size:12px;line-height:1.35;margin:2px 0;}
 .cart-line-compat.is-ok{color:var(--rrg-fits);}
 .cart-line-compat.is-warn{color:var(--rrg-unknown-text);}
@@ -2460,6 +2457,36 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .mini-cart-body{flex:1 1 auto;overflow-y:auto;padding:4px 22px 16px;}
 .mini-cart-foot{flex:0 0 auto;display:flex;flex-direction:column;gap:10px;padding:16px 22px 20px;border-top:1px solid var(--rrg-line);background:#fff;}
 .mini-cart-foot:empty{display:none;}
+
+/* Package Deal (spec.md §19 phase 4, 2026-10-06) — the tag under the PDP price (a .fitment notice,
+   see .rrg-notice above: red edge, green once the deal is active) and its drawer. No price is
+   added to the page itself. */
+.pkg-deal-tag{margin:0 0 14px;}
+.pkg-drawer-backdrop{z-index:450;}
+.pkg-drawer-body{flex:1 1 auto;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:14px;}
+.pkg-drawer-foot{flex:0 0 auto;display:flex;flex-direction:column;gap:10px;padding:16px 22px 20px;border-top:1px solid var(--rrg-line);background:#fff;}
+.pkg-drawer-foot:empty{display:none;}
+.pkg-lead{margin:0;font-size:15px;line-height:1.5;}
+.pkg-product{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:12px;border:1px solid var(--rrg-line);border-radius:var(--radius);}
+.pkg-product img{width:88px;height:88px;object-fit:contain;}
+.pkg-product-name{display:block;font-size:14px;line-height:1.35;margin:2px 0 8px;}
+.pkg-prices{display:grid;grid-template-columns:auto auto;justify-content:space-between;gap:2px 12px;margin:0;font-size:14px;}
+.pkg-prices dt{color:var(--rrg-grey-700);}
+.pkg-prices dd{margin:0;text-align:right;font-weight:700;}
+.pkg-price-deal{color:var(--rrg-fits);font-size:16px;}
+.pkg-save{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:var(--radius);background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:13px;font-weight:700;}
+.pkg-steps{margin:0;padding-left:20px;font-size:14px;line-height:1.5;display:flex;flex-direction:column;gap:4px;}
+.pkg-added{margin:0;padding:10px 12px;border-radius:var(--radius);background:var(--rrg-fits-bg);color:var(--rrg-fits);font-size:14px;line-height:1.4;}
+.pkg-h3{margin:0;font-size:18px;}
+.pkg-racks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;}
+.pkg-rack{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rrg-line);}
+.pkg-rack img{width:64px;height:64px;object-fit:contain;}
+.pkg-rack-info{display:flex;flex-direction:column;gap:2px;font-size:13px;min-width:0;}
+.pkg-rack-name{font-weight:700;line-height:1.3;}
+.pkg-shop-link{font-size:14px;font-weight:700;color:var(--rrg-red);}
+.pkg-done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0;}
+.pkg-done h3{margin:0;font-size:22px;}
+.pkg-done p{margin:0;font-size:15px;}
 .mini-cart-subtotal{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;}
 .mini-cart-subtotal strong{font-size:22px;font-family:'Barlow Condensed',Arial,sans-serif;}
 .mini-cart-savings{margin:-8px 0 0;font-size:13px;font-weight:700;color:var(--rrg-saving);}

@@ -489,7 +489,9 @@ function syncSaleTag(block) {
     main.appendChild(corner);
   }
   corner.querySelector('span').textContent = badge.textContent;
-  corner.hidden = wasEl.hidden || badge.hidden || !badge.textContent.trim();
+  // A saving that rounds to 0% (Thule Motion 3 L Gloss Black: 95c off) shows no band — same rule
+  // as the product cards (plp.js only draws the corner when pct > 0).
+  corner.hidden = wasEl.hidden || badge.hidden || !badge.textContent.trim() || /\b0%/.test(badge.textContent);
 }
 
 // Payment-plan badge provider set, per region (backlog items 31/31a, 2026-09-11): AU keeps
@@ -842,15 +844,17 @@ function applyCartConflict(state) {
     } else if (state === 'compatible' || state === 'incompatible') {
       const item = col.dataset.conflictItem || 'an item';
       const reason = col.dataset.conflictReason || 'it may not be fully compatible with this product';
-      const tip = typeof rrgInfoTipHTML === 'function'
-        ? rrgInfoTipHTML(state === 'compatible' ? RRG_COMPAT_TIP : `Why: ${reason}. You can still order both. If you're not sure, contact us and we'll check your setup.`) : '';
-      html = state === 'compatible'
-        ? `<div class="cart-conflict-banner is-ok"><span>✓ Compatible with <strong>${item}</strong> in your cart</span>${tip}</div>`
-        : `<div class="cart-conflict-banner is-warn"><span>Heads up: not compatible with <strong>${item}</strong> in your cart. Choose a different one, or contact us and we'll help.</span>${tip}</div>`;
+      // Same fitment-style card as the real-cart message (cart.js rrgNoticeCardHTML).
+      if (typeof rrgNoticeCardHTML === 'function') html = state === 'compatible'
+        ? rrgNoticeCardHTML('fits', 'Compatible', `Works with <b>${item}</b> in your cart.`, RRG_COMPAT_TIP, 'cart-conflict-banner')
+        : rrgNoticeCardHTML('unknown', 'Heads up: not compatible', `Not compatible with <b>${item}</b> in your cart. Choose a different one, or contact us and we'll help.`,
+          `Why: ${reason}. You can still order both. If you're not sure, contact us and we'll check your setup.`, 'cart-conflict-banner');
     }
     col.parentNode.querySelectorAll(':scope > .cart-conflict-banner').forEach(b => b.remove());
     if (html) col.insertAdjacentHTML('beforebegin', html);
   });
+  // The Package Deal tag (cart.js) redraws on the same triggers: load, cart change, colour swap.
+  if (typeof rrgRenderPackageTag === 'function') rrgRenderPackageTag();
 }
 // Real-cart pages: draw on load (cart.js has loaded by DOMContentLoaded) and on every cart change.
 ['DOMContentLoaded', 'rrg-cart-change'].forEach(evt => document.addEventListener(evt, () => {

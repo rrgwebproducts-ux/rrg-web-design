@@ -879,13 +879,41 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Prototype:** templates whose `.cta-col` carries `data-pkg-category` (Roof Box PDP, Vehicle-Specific) read the real demo cart — use Site Admin → Demo cart presets ("Thule roof rack only", "Pioneer platform only", "Roof box only", "Platform + Motion 3 L"). The other templates keep the Demo State "Cart already has" mock. Code: `applyCartConflict` (shared.js), `rrgPackageCompatHTML` (cart.js).
 
-**Typography:** 13px; the product name bold. Green = `--rrg-fits` on `--rrg-fits-bg`, amber = `--rrg-unknown` on `--rrg-unknown-bg`. Tooltip = the shared tooltip bubble.
+**Look:** the same card as the fitment message ("Fits your vehicle", 4.10 Fitment Status widget) — Brenton, 2026-10-06: match it, not a tinted box. White card, 1px grey border, 3px left edge in the state colour, state-coloured icon and uppercase Barlow Condensed label ("COMPATIBLE" green `--rrg-fits` / "HEADS UP: NOT COMPATIBLE" amber `--rrg-unknown`), grey 14px body with the product name in bold. The info tooltip sits beside the label (shared tooltip bubble). Built by `rrgNoticeCardHTML` (cart.js), which reuses the `.fitment` classes. Cart-line notes stay as small coloured text, no card.
 
 **Region differences:** none.
 
 **Links:** none.
 
 **States:** screenshot below predates the 2026-10-06 change (recapture at handover): ![Cart-Conflict banner + Ex-Demo link](dev-brief-assets/cart-conflict-and-exdemo.png)
+
+---
+
+### 4.19a Package Deal tag + drawer (2026-10-06, spec.md §19)
+
+**Location:** directly under the price block, above the compatibility card and Add to Cart — on rack pages and on pages for a qualifying roof-mounted accessory (roof boxes for now). Not shown on other products.
+
+**Purpose:** tells the shopper that a roof rack + roof box bought in the same order takes 10% off the roof box (15% for CRUZ), off its current price so it stacks on sales. **No third price is added to the page** — the tag gives a "Save $X" amount; the with-a-rack price only appears inside the drawer.
+
+**Tag copy (by cart state):**
+- Roof box, no rack in cart: PACKAGE DEAL — "Save 10% ($199.90) on this roof box when you buy it with any roof rack. How it works"
+- Roof box, rack in cart: PACKAGE DEAL APPLIED (green) — "You'll save $199.90 on this roof box with the [rack] in your cart."
+- Rack, nothing in cart: "Buy this rack with a roof box and save 10–15% on the roof box."
+- Rack, roof box in cart: "Add this rack and save $74.85 on the [roof box] in your cart." → once both are in: PACKAGE DEAL APPLIED.
+
+**Look:** the fitment-card style (same as 4.19): brand-red left edge, tag icon and "PACKAGE DEAL" label in brand red (UK region: blue, via the region's red token); green with a tick once applied. "How it works" is a text link that opens the drawer.
+
+**Drawer (shared drawer base, 420px):**
+1. *How it works* — the deal in one line, this product's card (Today $X / With a roof rack $Y / You save $Z), 3 steps. Buttons: **Add to cart & choose your rack** (primary) and **Add to cart only**. If a rack is already in the cart it says so and offers just **Add to cart**.
+2. *Choose your rack* — "✓ [product] added to your cart", then the roof racks for the session vehicle, each with its compatibility ("✓ Compatible with this roof box" / "Not compatible…"), compatible ones first, nothing hidden, an **Add** button each, and "See every roof rack for your [vehicle] ›". No vehicle set → "Set your vehicle" opens the Fit Finder drawer, and the list appears once a vehicle is chosen. Footer: "I'll choose a rack later".
+3. *Applied* — tick, "Package Deal applied — You're saving $X on your roof box in this order", the rack + box lines. Buttons: **View cart** (opens the mini-cart), **Keep shopping**.
+- Rack pages get a single explainer view (the deal, 3 steps, "Shop roof boxes ›", **Got it**).
+
+**Data (Magento):** product package category (rack / roof box / …, shared with 4.19), accessory rate (default 10%, brand overrides e.g. CRUZ 15%), and the vehicle's racks for step 2. The prototype's rack lists are real listings already scraped for the two demo vehicles (Hilux, Ranger).
+
+**Region differences:** none in behaviour; currency and the red token follow the region.
+
+**States:** screenshots at handover (Component Library: Package Deal Tag, Package Deal Drawer).
 
 ---
 
