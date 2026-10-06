@@ -22,6 +22,11 @@
   .cl-sizes{display:flex;border:1px solid rgba(255,255,255,.35);border-radius:var(--radius);overflow:hidden;}
   .cl-sizes button{background:none;border:0;color:#fff;font:inherit;font-size:13px;font-weight:700;padding:6px 12px;cursor:pointer;}
   .cl-sizes button[aria-pressed="true"]{background:#fff;color:var(--rrg-black);}
+  .cl-sale-toggle{background:none;border:1px solid rgba(255,255,255,.35);border-radius:var(--radius);color:#fff;font:inherit;font-size:13px;font-weight:700;padding:6px 12px;cursor:pointer;}
+  .cl-sale-toggle[aria-pressed="true"]{background:#fff;color:var(--rrg-black);}
+  /* Sale takeover variations (Rack Friday, Christmas) are hidden unless the toggle is on;
+     a widget opened on its own (?only=) always shows them. */
+  body.cl-hide-sale:not(.cl-only) [data-sale]{display:none;}
   .cl-search{padding:7px 10px;border-radius:var(--radius);border:0;font:inherit;font-size:14px;width:220px;}
   .cl-rule{background:var(--rrg-gold-bg);border-bottom:1px solid var(--rrg-gold);color:var(--rrg-gold-text, #6b4e00);font-size:14px;padding:10px 24px;}
   .cl-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:0;}
@@ -86,13 +91,14 @@
   }
 </style>
 </head>
-<body class="cl-size-both">
+<body class="cl-size-both cl-hide-sale">
 <header class="cl-top">
   <div class="cl-top-inner">
     <h1>Component Library</h1>
     <a href="../index.html">All pages</a>
     <span class="cl-top-spacer"></span>
     <input type="search" class="cl-search" placeholder="Find a widget…" aria-label="Find a widget">
+    <button type="button" class="cl-sale-toggle" aria-pressed="false">Sale takeovers</button>
     <div class="cl-sizes" role="group" aria-label="Sizes shown">
       <button type="button" data-size="both" aria-pressed="true">Both</button>
       <button type="button" data-size="d" aria-pressed="false">Desktop</button>
@@ -160,7 +166,9 @@
       </div>
     </div>`;
   };
-  const variantHTML = variant => `<div class="cl-variant">
+  const isSale = variant => !!(variant.ls && variant.ls.rrgSale);
+  const saleOnly = w => !!(w.variants && w.variants.length && w.variants.every(isSale));
+  const variantHTML = variant => `<div class="cl-variant"${isSale(variant) ? ' data-sale' : ''}>
       <p class="cl-variant-label">${esc(variant.label)}</p>
       <div class="cl-frames">${(variant.sizes || ['d', 'm']).map(s => frameHTML(variant, s)).join('')}</div>
     </div>`;
@@ -185,7 +193,7 @@
 
   const widgetHTML = w => {
     const multi = w.usedOn.length > 1 && w.build !== 'shared' && w.variants && w.variants.length;
-    return `<section class="cl-widget" id="${w.id}" data-name="${esc(w.name.toLowerCase())}">
+    return `<section class="cl-widget" id="${w.id}"${saleOnly(w) ? ' data-sale' : ''} data-name="${esc(w.name.toLowerCase())}">
       <div class="cl-widget-head">
         <h3>${esc(w.name)}</h3>
         <span class="cl-badge"><i class="cl-dot ${w.build}"></i>${BUILD[w.build]}</span>
@@ -205,7 +213,7 @@
   const main = document.querySelector('[data-cl-main]');
   const list = only ? RRG_COMPONENTS.filter(w => w.id === only) : RRG_COMPONENTS;
   if (only) document.body.classList.add('cl-only');
-  nav.innerHTML = RRG_GROUPS.map(g => `<h2>${esc(g.title)}</h2>` + RRG_COMPONENTS.filter(w => w.group === g.id).map(w => `<a href="#${w.id}" data-nav="${w.id}"><i class="cl-dot ${w.build}"></i>${esc(w.name)}</a>`).join('')).join('');
+  nav.innerHTML = RRG_GROUPS.map(g => `<h2>${esc(g.title)}</h2>` + RRG_COMPONENTS.filter(w => w.group === g.id).map(w => `<a href="#${w.id}" data-nav="${w.id}"${saleOnly(w) ? ' data-sale' : ''}><i class="cl-dot ${w.build}"></i>${esc(w.name)}</a>`).join('')).join('');
   main.innerHTML = RRG_GROUPS.map(g => {
     const ws = list.filter(w => w.group === g.id);
     return ws.length ? `<h2 class="cl-group-title">${esc(g.title)}</h2>` + ws.map(widgetHTML).join('') : '';
@@ -278,6 +286,19 @@
   };
   document.querySelectorAll('[data-size]').forEach(b => b.addEventListener('click', () => setSize(b.dataset.size)));
   try { const s = localStorage.getItem('rrgLibrarySize'); if (s) setSize(s); } catch (e) {}
+
+  // Sale takeovers shown (kept for next visit). Off by default — they double most of the
+  // header widgets and make the page a lot to scroll.
+  const saleBtn = document.querySelector('.cl-sale-toggle');
+  const setSale = on => {
+    document.body.classList.toggle('cl-hide-sale', !on);
+    saleBtn.setAttribute('aria-pressed', on);
+    try { localStorage.setItem('rrgLibrarySale', on ? '1' : '0'); } catch (e) {}
+    if (on) document.querySelectorAll('.cl-frame-box').forEach(fit);
+  };
+  saleBtn.addEventListener('click', () => setSale(saleBtn.getAttribute('aria-pressed') !== 'true'));
+  try { if (localStorage.getItem('rrgLibrarySale') === '1') setSale(true); } catch (e) {}
+  if (only) saleBtn.hidden = true;
 
   // Find a widget.
   document.querySelector('.cl-search').addEventListener('input', e => {
