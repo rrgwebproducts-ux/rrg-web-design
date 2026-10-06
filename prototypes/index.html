@@ -20,7 +20,8 @@
   /* Link list index (2026-10-01, Brenton): laid out exactly like the page list sent to the team on
      Slack. Each line is the page name, then its Vercel URL as a link. Three tabs: Pages (default),
      Priority (#priority) and Developer briefs (#briefs). Link hrefs stay relative so the page also
-     works locally. Priority (2026-10-07, Brenton): one line per unique design (duplicates like the
+     works locally. Priority (2026-10-07, Brenton): a table (page, design status, dev status, example
+     URL) with one row per unique design (duplicates like the
      other PLPs / stores / PDP types link to the first example) in build order; everything above the
      red line is the must-do for the developer's deadline. Order follows the global design plan (header +
      footer, VLP, VCLP, PDP, PLP, brands (Rhino-Rack template), cart + checkout, search), then
@@ -37,12 +38,27 @@
   .index-list li{padding:2px 0;font-size:15px;line-height:1.5;overflow-wrap:anywhere;}
   .index-list a{color:var(--rrg-red);text-decoration:underline;}
   .index-list a:hover{color:var(--rrg-red-dark);}
-  .priority-list{counter-reset:prio;}
-  .priority-list li:not(.priority-line){counter-increment:prio;}
-  .priority-list li:not(.priority-line)::before{content:counter(prio) ".";display:inline-block;min-width:28px;font-weight:900;}
-  .priority-line{display:flex;align-items:center;gap:10px;margin:10px 0;color:var(--rrg-red);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
-  .priority-line::before,.priority-line::after{content:"";flex:1;border-top:3px solid var(--rrg-red);}
-  .priority-line::before{flex:0 0 24px;}
+  /* Priority table: numbered by CSS counter; status pills are hand-edited here as work moves on.
+     Design: Ready for dev = has a developer brief; In review = built, awaiting sign-off. */
+  .priority-scroll{overflow-x:auto;margin-top:8px;}
+  .priority-table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.4;counter-reset:prio;}
+  .priority-table th,.priority-table td{padding:8px 12px 8px 0;text-align:left;vertical-align:middle;border-bottom:1px solid var(--rrg-line-soft);}
+  .priority-table thead th{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--rrg-grey-600);border-bottom:2px solid var(--rrg-line);}
+  .priority-table tbody th{font-weight:700;min-width:200px;}
+  .priority-table tbody tr:not(.priority-line){counter-increment:prio;}
+  .priority-table tbody tr:not(.priority-line) th::before{content:counter(prio) ".";display:inline-block;min-width:28px;font-weight:900;}
+  .priority-table td:last-child{overflow-wrap:anywhere;min-width:220px;}
+  .priority-table a{color:var(--rrg-red);text-decoration:underline;}
+  .priority-table a:hover{color:var(--rrg-red-dark);}
+  .status{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:900;white-space:nowrap;}
+  .status--ready{background:var(--rrg-fits-bg);color:var(--rrg-fits);}
+  .status--review{background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);}
+  .status--todo{background:var(--rrg-bg);color:var(--rrg-grey-700);}
+  /* The cut-off stays red in every region (UK swaps --rrg-red to blue). */
+  .priority-table .priority-line td{padding:14px 0;border:0;}
+  .priority-line span{display:flex;align-items:center;gap:10px;color:var(--rrg-nofit);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
+  .priority-line span::before,.priority-line span::after{content:"";flex:1;border-top:3px solid var(--rrg-nofit);}
+  .priority-line span::before{flex:0 0 24px;}
 </style>
 </head>
 <body>
@@ -198,28 +214,33 @@
   </div>
   <div class="index-panel" role="tabpanel" id="panel-priority" aria-labelledby="tab-priority" hidden>
     <h2>Build priority</h2>
-      <ol class="index-list priority-list">
-        <li>Header, Mega Menu &amp; Footer: <a href="header/index.html">https://rrg-web-design.vercel.app/prototypes/header/index.html</a></li>
-        <li>Vehicle Landing (VLP): <a href="vlp/index.html">https://rrg-web-design.vercel.app/prototypes/vlp/index.html</a></li>
-        <li>Vehicle Category Landing (VCLP) &mdash; Make &amp; Model / AEO: <a href="vehicle-category-landing/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-category-landing/index.html</a></li>
-        <li>Product Pages &amp; Siblings: <a href="config-variant/index.html">https://rrg-web-design.vercel.app/prototypes/config-variant/index.html</a></li>
-        <li>Vehicle-Specific Product: <a href="vehicle-specific/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-specific/index.html</a></li>
-        <li>PLP Pages: <a href="plp-camping/index.html">https://rrg-web-design.vercel.app/prototypes/plp-camping/index.html</a></li>
-        <li>VPLP Roof Racks: <a href="vplp/index.html">https://rrg-web-design.vercel.app/prototypes/vplp/index.html</a></li>
-        <li>Brand Pages (Rhino-Rack template): <a href="brand/index.html?brand=rhino-rack">https://rrg-web-design.vercel.app/prototypes/brand/index.html?brand=rhino-rack</a></li>
-        <li>Brands Hub: <a href="brands/index.html">https://rrg-web-design.vercel.app/prototypes/brands/index.html</a></li>
-        <li>Cart: <a href="cart/index.html">https://rrg-web-design.vercel.app/prototypes/cart/index.html</a></li>
-        <li>Checkout: <a href="checkout/index.html">https://rrg-web-design.vercel.app/prototypes/checkout/index.html</a></li>
-        <li>Order Confirmation: <a href="order-confirmation/index.html">https://rrg-web-design.vercel.app/prototypes/order-confirmation/index.html</a></li>
-        <li>Search Results: <a href="search-results/index.html">https://rrg-web-design.vercel.app/prototypes/search-results/index.html</a></li>
-        <li>Store Finder: <a href="store-finder/index.html">https://rrg-web-design.vercel.app/prototypes/store-finder/index.html</a></li>
-        <li>Store Pages: <a href="store/index.html">https://rrg-web-design.vercel.app/prototypes/store/index.html</a></li>
-        <li class="priority-line" aria-label="Priority cut-off"><span>Must be done above this line &middot; anything below is a bonus</span></li>
-        <li>Buying Guide: <a href="buying-guide/index.html">https://rrg-web-design.vercel.app/prototypes/buying-guide/index.html</a></li>
-        <li>Installation &amp; Booking: <a href="installation/index.html">https://rrg-web-design.vercel.app/prototypes/installation/index.html</a></li>
-        <li>Fit My Vehicle: <a href="fit-my-vehicle/index.html">https://rrg-web-design.vercel.app/prototypes/fit-my-vehicle/index.html</a></li>
-        <li>Home Page: <a href="home/index.html">https://rrg-web-design.vercel.app/prototypes/home/index.html</a></li>
-      </ol>
+      <div class="priority-scroll">
+      <table class="priority-table">
+        <thead><tr><th scope="col">Page</th><th scope="col">Design status</th><th scope="col">Dev status</th><th scope="col">Example</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Header, Mega Menu &amp; Footer</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="header/index.html">https://rrg-web-design.vercel.app/prototypes/header/index.html</a></td></tr>
+          <tr><th scope="row">Vehicle Landing (VLP)</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vlp/index.html">https://rrg-web-design.vercel.app/prototypes/vlp/index.html</a></td></tr>
+          <tr><th scope="row">Vehicle Category Landing (VCLP) &mdash; Make &amp; Model / AEO</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vehicle-category-landing/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-category-landing/index.html</a></td></tr>
+          <tr><th scope="row">Product Pages &amp; Siblings</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="config-variant/index.html">https://rrg-web-design.vercel.app/prototypes/config-variant/index.html</a></td></tr>
+          <tr><th scope="row">Vehicle-Specific Product</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vehicle-specific/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-specific/index.html</a></td></tr>
+          <tr><th scope="row">PLP Pages</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="plp-camping/index.html">https://rrg-web-design.vercel.app/prototypes/plp-camping/index.html</a></td></tr>
+          <tr><th scope="row">VPLP Roof Racks</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vplp/index.html">https://rrg-web-design.vercel.app/prototypes/vplp/index.html</a></td></tr>
+          <tr><th scope="row">Brand Pages (Rhino-Rack template)</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="brand/index.html?brand=rhino-rack">https://rrg-web-design.vercel.app/prototypes/brand/index.html?brand=rhino-rack</a></td></tr>
+          <tr><th scope="row">Brands Hub</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="brands/index.html">https://rrg-web-design.vercel.app/prototypes/brands/index.html</a></td></tr>
+          <tr><th scope="row">Cart</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="cart/index.html">https://rrg-web-design.vercel.app/prototypes/cart/index.html</a></td></tr>
+          <tr><th scope="row">Checkout</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="checkout/index.html">https://rrg-web-design.vercel.app/prototypes/checkout/index.html</a></td></tr>
+          <tr><th scope="row">Order Confirmation</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="order-confirmation/index.html">https://rrg-web-design.vercel.app/prototypes/order-confirmation/index.html</a></td></tr>
+          <tr><th scope="row">Search Results</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="search-results/index.html">https://rrg-web-design.vercel.app/prototypes/search-results/index.html</a></td></tr>
+          <tr><th scope="row">Store Finder</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="store-finder/index.html">https://rrg-web-design.vercel.app/prototypes/store-finder/index.html</a></td></tr>
+          <tr><th scope="row">Store Pages</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="store/index.html">https://rrg-web-design.vercel.app/prototypes/store/index.html</a></td></tr>
+          <tr class="priority-line"><td colspan="4"><span>Must be done above this line &middot; anything below is a bonus</span></td></tr>
+          <tr><th scope="row">Buying Guide</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="buying-guide/index.html">https://rrg-web-design.vercel.app/prototypes/buying-guide/index.html</a></td></tr>
+          <tr><th scope="row">Installation &amp; Booking</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="installation/index.html">https://rrg-web-design.vercel.app/prototypes/installation/index.html</a></td></tr>
+          <tr><th scope="row">Fit My Vehicle</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="fit-my-vehicle/index.html">https://rrg-web-design.vercel.app/prototypes/fit-my-vehicle/index.html</a></td></tr>
+          <tr><th scope="row">Home Page</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="home/index.html">https://rrg-web-design.vercel.app/prototypes/home/index.html</a></td></tr>
+        </tbody>
+      </table>
+      </div>
   </div>
   <div class="index-panel" role="tabpanel" id="panel-briefs" aria-labelledby="tab-briefs" hidden>
     <h2>Developer briefs</h2>
