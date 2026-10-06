@@ -1521,6 +1521,8 @@ When a big sale is on, the whole site takes on the campaign's colours, with no l
 
 ## 19. Package Deal + Roof Boxes PLP (Brenton, Jake & Graham, 2026-10-06)
 
+**Status (2026-10-07): all 7 build phases done and reviewed by Brenton on Vercel — approved.** The one fix from that review (the Config-Variant platform page wasn't a rack page) is done. What's left is in **19.1 Meeting to-do list** below.
+
 Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox.co.uk's package-deal journey; Claude then re-walked it with Playwright (screenshots in `.playwright-mcp/rb/`).
 
 **The concept (agreed in the meeting):** buy any roof rack and any qualifying roof-mounted product (RMP) in the same basket and the accessory gets a discount. We do **not** copy the UK's pre-built package SKUs or step flow.
@@ -1546,9 +1548,9 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - 35 real products scraped from roofracksgalore.com.au (price/stock from each PDP, USPs + specs from the listing), in the live default order. No ratings (the live pages have none). Each carries `maxCrossbarSpread` for step 3.
    - plp.js facets now accept an array value (a box listed under both X Large and Low Profile).
 2. ✅ **Package Deal data layer** — in `_shared/cart.js` (every page already loads it), built 2026-10-06.
-   - `RRG_PACKAGE_DEAL` config: name, 10% default, CRUZ 15%, and which RMP categories qualify (only `roof-box` on; `roof-bike`, `rooftop-tent`, `awning`, `water-snow` are one flag each).
+   - `RRG_PACKAGE_DEAL` config: name, 10% default, CRUZ 15%, and which RMP categories qualify (one flag each: `roof-box`, `roof-bike`, `rooftop-tent`, `awning`, `water-snow` — all on since phase 7).
    - Each cart line carries `pkgCategory` (`rack` / `roof-box` / … / `null`): from the PLP product (`plpCartItemAttr`), the PDP's `.cta-col[data-pkg-category]`, or the demo items. Lines without one fall back to a deliberately narrow name match (tub/ladder racks, tracks, brackets, spares, extensions are never racks or RMPs). Production: a Magento product attribute.
-   - Tagged so far: all 35 Roof Boxes PLP products (`roof-box`); VPLP's 17 racks/bar sets/platforms (`rack`, `VPLP_RACK_IDS`), the rest `null`; the vehicle-specific PDP (Pioneer 6 platform kit, `rack`).
+   - Tagged so far: all 35 Roof Boxes PLP products (`roof-box`); VPLP's 17 racks/bar sets/platforms (`rack`, `VPLP_RACK_IDS`), the rest `null`; the vehicle-specific PDP (Pioneer 6 platform kit, `rack`); the Config-Variant PDP (Pioneer platform 900 × 1430, `rack`, added 2026-10-07 — see 19.1).
    - `rrgPackageDeal(cart)` → `{ racks, accessories, active, hasRack, discount, potential, lines }`; every unit of every qualifying accessory saves while at least one rack is in the cart (**assumption** — no one-accessory-per-rack cap was discussed).
    - `rrgCartTotals()` reports `packageDiscount` / `packagePotential` — taken off the total since phase 5.
    - Site Admin cart presets: "Roof box only (Package Deal)" (potential $74.85 on the CRUZ Easy 430) and "Rack + roof box (Package Deal)" (active, $74.85).
@@ -1576,4 +1578,64 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - Copy now names the product's own category on an accessory ("this awning is 10% off") and lists them on a rack ("Save 10–15% on roof boxes, roof-mounted bike racks and more"); the rack drawer links to every qualifying PLP.
    - Not covered: roof-mounted fishing rod holders (no PLP yet).
 
-**Not for the build:** Vercel is near its free-tier size limit (upgrade may be needed); buying-guide analytics; package-vs-single sales data; the UK "stage one" split.
+### 19.1 Meeting to-do list (every point from the 2026-10-06 meeting)
+
+Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything except the Config-Variant page, now fixed.
+
+**Done in the demo**
+
+| # | Meeting point | Where |
+|---|---|---|
+| 1 | Roof Boxes PLP, shape tabs like roofbox.co.uk (but switchable in place, not a page per shape) | Phase 1 |
+| 2 | Our concept, not the UK's: any rack + any qualifying RMP, no pre-built package SKUs, either order, the basket works it out | Phases 2, 5 |
+| 3 | Flat % set by the accessory's brand (10% / CRUZ 15%), shown as "save", never a third price on PDP or PLP | Phases 2, 4, 6 |
+| 4 | Stacks on a sale: the % comes off the accessory's current price | Phase 2 |
+| 5 | Every product needs a marker saying it's a rack or a qualifying accessory | Phase 2 (`pkgCategory`; Magento attribute in dev) |
+| 6 | PDP graphic/word "save … Package Deal" that opens a side drawer explaining it, with the bundle price | Phase 4 |
+| 7 | Drawer: "Add to cart & select your rack" → rack finder; remembers the product clicked and the saved vehicle | Phase 4 |
+| 8 | Rack-aware compatibility both ways (accessory page ↔ rack in cart, rack page ↔ accessory in cart), shown when compatible **and** when not; simple line + generic tooltip; still addable | Phase 3 |
+| 9 | Compatibility also in the cart, the mini-cart drawer and the checkout order summary | Phases 3, 5 |
+| 10 | Everything compatible by default; merchandising adds exclusions | Phase 3 (one demo exclusion) |
+| 11 | Don't hide incompatible products from listings | Phase 3 (PLPs show everything; Brenton later chose to hide them only from the drawer's suggestions) |
+| 12 | Cart: big call-out at the top, a marker on the line, and a "save further" row under the subtotal | Phase 5 |
+| 13 | Maybe something on the PLP saying Package Deals are available | Phase 6 |
+| 14 | Bike racks: roof-mounted only (never tow ball / hitch) | Phase 7 |
+| 15 | All RMPs, not just boxes: rooftop tents, awnings, water + snow carriers, new PLPs for them | Phase 7 |
+| 16 | Demo starts with roof boxes + racks | Phases 1–6 |
+| 17 | Config-Variant (Pioneer platform) PDP reads the cart as a rack (from Brenton's 2026-10-07 review) | 2026-10-07: `data-pkg-category="rack"`; the tag and compatibility card redraw on a build-option swap; the Flat Pack SKU (RH62112F) added to the demo exclusion |
+
+**Open — demo (raise with Brenton before building)**
+
+| # | Item | Notes |
+|---|---|---|
+| 18 | "Change vehicle" inside the drawer's rack step | The UK flow couldn't change vehicle mid-package (flagged in the meeting). Ours uses the session vehicle with no change link; the header still works. Small add. |
+| 19 | Group rack + accessory visually in the cart ("package includes …") | Raised in the meeting about the UK basket. Ours keeps separate lines (either can be removed); the notice, line markers and summary row carry the link. Only needed if review wants it. |
+| 20 | Roof-mounted fishing rod holders | Qualify in principle; no PLP in the demo yet. |
+
+**Open — decisions to confirm**
+
+| # | Item | Current assumption |
+|---|---|---|
+| 21 | One accessory per rack, or every qualifying accessory? | Every qualifying accessory unit saves while a compatible rack is in the cart (no cap). |
+| 22 | Incompatible pair: discount or not? | No discount (follows from Brenton's "don't suggest / don't show the tag" rule). |
+| 23 | The rates themselves (margin) | 10% / CRUZ 15% are the meeting's working numbers. Jake: the accessory must still sell above break-even after a sale price + Package Deal stack. Merchandising/finance to sign off per brand. |
+
+**Open — dev / Magento (AU/NZ first)**
+
+| # | Item |
+|---|---|
+| 24 | Product attribute for Package Deal role (`rack` / RMP category / none) on every product |
+| 25 | Per-brand rate config (the data behind `RRG_PACKAGE_DEAL.brandRates`) |
+| 26 | Real compatibility exclusions (rack ↔ accessory), maintained by merchandising; the Motion 3 L ↔ Pioneer one is demo-only and must not ship |
+| 27 | Cart rule: % off matched accessories at their current price, as its own total row; nothing blocks checkout |
+| 28 | Ship AU + NZ first, then the UK |
+
+**Open — not for the build**
+
+| # | Item | Owner |
+|---|---|---|
+| 29 | Vercel is near its free-tier size limit; upgrade may be needed | Brenton |
+| 30 | Buying-guide analytics: how many people actually land on it | Brenton |
+| 31 | Package-vs-single sales data (UK thought ~50/50) | Graham / Jake |
+| 32 | Split out what the UK needs for "stage one" | Brenton |
+| 33 | Dev-brief screenshots for the new sections | Held until final handover |

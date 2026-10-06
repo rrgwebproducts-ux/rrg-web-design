@@ -877,7 +877,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Rules (Magento):** every roof-mounted accessory is compatible with every rack **until merchandising adds an exclusion** — a per-product exclusion list (accessory ↔ racks). Each product also needs a package category attribute (rack / roof box / roof bike / rooftop tent / awning / water-snow / none), shared with the Package Deal. The prototype's one exclusion (Thule Motion 3 L ↔ Rhino-Rack Pioneer platforms) is **demo only**, not a real fitment rule.
 
-**Prototype:** templates whose `.cta-col` carries `data-pkg-category` (Roof Box PDP, Vehicle-Specific) read the real demo cart — use Site Admin → Demo cart presets ("Thule roof rack only", "Pioneer platform only", "Roof box only", "Platform + Motion 3 L"). The other templates keep the Demo State "Cart already has" mock. Code: `applyCartConflict` (shared.js), `rrgPackageCompatHTML` (cart.js).
+**Prototype:** templates whose `.cta-col` carries `data-pkg-category` (Roof Box PDP, Vehicle-Specific, Config-Variant) read the real demo cart — use Site Admin → Demo cart presets ("Thule roof rack only", "Pioneer platform only", "Roof box only", "Platform + Motion 3 L"). The other templates keep the Demo State "Cart already has" mock. Code: `applyCartConflict` (shared.js), `rrgPackageCompatHTML` (cart.js).
 
 **Look:** the same card as the fitment message ("Fits your vehicle", 4.10 Fitment Status widget) — Brenton, 2026-10-06: match it, not a tinted box. White card, 1px grey border, 3px left edge in the state colour, state-coloured icon and uppercase Barlow Condensed label ("COMPATIBLE" green `--rrg-fits` / "HEADS UP: NOT COMPATIBLE" amber `--rrg-unknown`), grey 14px body with the product name in bold. The info tooltip sits beside the label (shared tooltip bubble). Built by `rrgNoticeCardHTML` (cart.js), which reuses the `.fitment` classes. Cart-line notes stay as small coloured text, no card.
 
@@ -891,7 +891,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.19a Package Deal tag + drawer (2026-10-06, spec.md §19)
 
-**Location:** directly under the price block, above the compatibility card and Add to Cart — on rack pages and on pages for a qualifying roof-mounted accessory (roof boxes for now). Not shown on other products.
+**Location:** directly under the price block, above the compatibility card and Add to Cart — on rack pages and on pages for a qualifying roof-mounted accessory (roof boxes, roof-mounted bike racks, rooftop tents, awnings, water and snow carriers). Not shown on other products. Redraw it, and the compatibility card (4.19), whenever the SKU changes (colour or build-option swap): compatibility and the saving are per SKU.
 
 **Purpose:** tells the shopper that a roof rack + roof box bought in the same order takes 10% off the roof box (15% for CRUZ), off its current price so it stacks on sales. **No third price is added to the page** — the tag gives a "Save $X" amount; the with-a-rack price only appears inside the drawer.
 

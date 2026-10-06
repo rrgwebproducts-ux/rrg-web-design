@@ -171,10 +171,11 @@ const RRG_COMPONENTS = [
       v('Roof box — compatible rack in cart', 'roof-box', '.decision-panel', { cart: 'thuleRackOnly', sizes: ['d'] }),
       v('Roof box — not compatible (demo exclusion)', 'roof-box', '.decision-panel', { cart: 'platformOnly', sizes: ['d'] }),
       v('Rack — roof box in cart', 'vehicle-specific', '.decision-panel', { cart: 'roofBox', sizes: ['d'] }),
+      v('Platform (Config Variant) — roof box in cart', 'config-variant', '.decision-panel', { cart: 'roofBox', sizes: ['d'] }),
       v('Demo State — compatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'compatible' }), sizes: ['d'] }),
       v('Demo State — incompatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'incompatible' }), sizes: ['d'] }),
     ] },
-  { id: 'package-deal-tag', group: 'product', name: 'Package Deal Tag', build: 'shared', usedOn: ['roof-box', 'vehicle-specific'],
+  { id: 'package-deal-tag', group: 'product', name: 'Package Deal Tag', build: 'shared', usedOn: ['roof-box', 'vehicle-specific', 'config-variant'],
     source: 'rrgRenderPackageTag + rrgNoticeCardHTML (cart.js)',
     // Under the price on rack / qualifying-accessory pages (.cta-col[data-pkg-category]); real cart.
     variants: [
@@ -182,8 +183,9 @@ const RRG_COMPONENTS = [
       v('Roof box — rack in cart (applied)', 'roof-box', '.decision-panel', { cart: 'thuleRackOnly', sizes: ['d'] }),
       v('Rack — roof box in cart', 'vehicle-specific', '.decision-panel', { cart: 'roofBox', sizes: ['d'] }),
       v('Rack — nothing in cart', 'vehicle-specific', '.decision-panel', { cart: 'empty', sizes: ['d'] }),
+      v('Platform (Config Variant) — roof box in cart', 'config-variant', '.decision-panel', { cart: 'roofBox', sizes: ['d'] }),
     ] },
-  { id: 'package-deal-drawer', group: 'product', name: 'Package Deal Drawer', build: 'shared', usedOn: ['roof-box', 'vehicle-specific'],
+  { id: 'package-deal-drawer', group: 'product', name: 'Package Deal Drawer', build: 'shared', usedOn: ['roof-box', 'vehicle-specific', 'config-variant'],
     source: 'rrgOpenPackageDrawer / rrgRenderPackageDrawer (cart.js)',
     variants: [
       v('Roof box — how it works', 'roof-box', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer', h: 820 }),

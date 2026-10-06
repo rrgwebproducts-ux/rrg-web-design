@@ -183,7 +183,7 @@ function rrgPackageDeal(cart = rrgCartGet()) {
 const RRG_PACKAGE_EXCLUSIONS = [
   // DEMO ONLY — not a real fitment rule. One exclusion so the "not compatible" message can be
   // reviewed: the Thule Motion 3 L (roof-box/) against the Rhino-Rack Pioneer platforms.
-  { demo: true, accessories: ['T639700', 'T639701'], racks: ['GP01M1TZZ', 'RH62109', 'RH62112', 'JC-02306'] }
+  { demo: true, accessories: ['T639700', 'T639701'], racks: ['GP01M1TZZ', 'RH62109', 'RH62112', 'RH62112F', 'JC-02306'] }
 ];
 const RRG_PACKAGE_CATEGORY_LABEL = { rack: 'roof rack', 'roof-box': 'roof box', 'roof-bike': 'bike rack', 'rooftop-tent': 'rooftop tent', awning: 'awning', 'water-snow': 'carrier' };
 const RRG_COMPAT_TIP = "Some roof racks and platforms don't suit some accessories because of the channel size or the way they mount. You can still order both. If you're not sure, contact us and we'll check your setup.";
