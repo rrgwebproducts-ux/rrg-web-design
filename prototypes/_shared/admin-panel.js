@@ -106,6 +106,8 @@ function buildSiteAdminPanel(currentKey) {
           <option value="empty">Empty</option>
           <option value="accessories">Accessories (2 items)</option>
           <option value="full">Rack, bike rack, bundle + tank</option>
+          <option value="roofBox">Roof box only (Package Deal)</option>
+          <option value="packageDeal">Rack + roof box (Package Deal)</option>
           <option value="custom" disabled>Your own items</option>
         </select>
       </label>

@@ -1545,7 +1545,13 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - Shape icons = roofbox.co.uk's silhouettes, recoloured RRG red; the UK region shows the original blue (it swaps the site red for blue).
    - 35 real products scraped from roofracksgalore.com.au (price/stock from each PDP, USPs + specs from the listing), in the live default order. No ratings (the live pages have none). Each carries `maxCrossbarSpread` for step 3.
    - plp.js facets now accept an array value (a box listed under both X Large and Low Profile).
-2. **Package Deal data layer** (`_shared`): rack / qualifying-RMP flags, discount % per brand, reads the real demo cart.
+2. ✅ **Package Deal data layer** — in `_shared/cart.js` (every page already loads it), built 2026-10-06.
+   - `RRG_PACKAGE_DEAL` config: name, 10% default, CRUZ 15%, and which RMP categories qualify (only `roof-box` on; `roof-bike`, `rooftop-tent`, `awning`, `water-snow` are one flag each).
+   - Each cart line carries `pkgCategory` (`rack` / `roof-box` / … / `null`): from the PLP product (`plpCartItemAttr`), the PDP's `.cta-col[data-pkg-category]`, or the demo items. Lines without one fall back to a deliberately narrow name match (tub/ladder racks, tracks, brackets, spares, extensions are never racks or RMPs). Production: a Magento product attribute.
+   - Tagged so far: all 35 Roof Boxes PLP products (`roof-box`); VPLP's 17 racks/bar sets/platforms (`rack`, `VPLP_RACK_IDS`), the rest `null`; the vehicle-specific PDP (Pioneer 6 platform kit, `rack`).
+   - `rrgPackageDeal(cart)` → `{ racks, accessories, active, hasRack, discount, potential, lines }`; every unit of every qualifying accessory saves while at least one rack is in the cart (**assumption** — no one-accessory-per-rack cap was discussed).
+   - `rrgCartTotals()` reports `packageDiscount` / `packagePotential` but does **not** take them off the total yet — phase 5 adds the summary line, so totals never stop adding up on the page.
+   - Site Admin cart presets: "Roof box only (Package Deal)" (potential $74.85 on the CRUZ Easy 430) and "Rack + roof box (Package Deal)" (active, $74.85).
 3. **Rack-aware compatibility:** extend the PDP cart-conflict banner (PDP brief 4.19) to show both "✓ Compatible with the [rack] in your cart" and "Heads up: not compatible…", each with a tooltip. Also on rack PDPs, cart, mini-cart and checkout. Never hide products.
 4. **PDP Package Deal tag + drawer:** tag near the price (no third price); drawer explains the deal; "Add to cart & choose your rack" leads into a rack finder that uses the saved vehicle and remembers the product.
 5. **Cart / mini-cart / checkout:** "Package Deal" saving line when both are in the basket; before that, a "potential saving" line and a missing-item nudge like the UK's, **without blocking checkout**. Rack + accessory grouped visually, either removable.

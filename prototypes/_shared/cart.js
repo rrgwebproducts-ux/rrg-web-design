@@ -47,7 +47,10 @@ function rrgRegionCheckout() {
 // ---- Demo products (real live products, prices as live 2026-09-29/30) ----
 const RRG_DEMO_CART_ITEMS = {
   platformKit: { sku: 'GP01M1TZZ', brand: 'Rhino-Rack', name: 'Rhino Rack Pioneer 6 Platform Kit — Toyota Hilux N80 (2015–2026), Bare Roof', price: 1893.09, wasPrice: 2137.00,
-    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_26.jpg', url: 'vehicle-specific/index.html', fitsVehicle: 'hilux' },
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_26.jpg', url: 'vehicle-specific/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
+  // Package Deal demo (2026-10-06): the real CRUZ Easy 430 from the Roof Boxes PLP — CRUZ, so 15%.
+  roofBox: { sku: 'C940-349U', brand: 'CRUZ', name: 'Cruz Easy Gloss Black 430 litre Roof Box - 940-349U', price: 499.00, wasPrice: 699.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/r/cruz-easy-gloss-black-430-litre-roof-box-940-349u-view-6.jpg', url: 'plp-roof-boxes/index.html', pkgCategory: 'roof-box' },
   bikeRack: { sku: '922020', brand: 'Thule', name: 'Thule EuroWay G2 3 Bike Tow Ball Mounted Carrier - 922020', price: 799.00, wasPrice: 1199.95,
     image: RRG_CART_IMG('t/h/thule-euroway-g2-3-bike-tow-ball-mounted-carrier-922020.webp'), url: '#' },
   showerBundle: { sku: '8004109PROMO', brand: 'Yakima', name: 'Yakima RoadShower 15L Complete Shower & Hose Bundle', price: 449.00, wasPrice: 846.00,
@@ -68,7 +71,9 @@ const RRG_DEMO_CROSS_SELLS = [
 const RRG_DEMO_CARTS = {
   empty: [],
   accessories: ['waterTank', 'wheelHolder'],
-  full: ['platformKit', 'bikeRack', 'showerBundle', 'waterTank']
+  full: ['platformKit', 'bikeRack', 'showerBundle', 'waterTank'],
+  roofBox: ['roofBox'],                  // Package Deal: accessory, no rack yet (potential saving)
+  packageDeal: ['platformKit', 'roofBox'] // Package Deal: rack + accessory (active)
 };
 
 // ---- Store ----
@@ -87,6 +92,68 @@ const rrgCartCount = (cart = rrgCartGet()) => cart.lines.reduce((n, l) => n + l.
 // Racks, bars, platforms, boxes, awnings, tents, bike carriers, shutters, ladder racks — what the
 // stores fit. Drives the confirmation page's "Book fitting" card (spec Section 5).
 const rrgIsFittable = line => /rack|bar\b|bars\b|platform|backbone|roof box|awning|tent|carrier|shutter|ladder|tray/i.test(line.name);
+
+// ---- Package Deal (spec.md §19, 2026-10-06 Roof Box meeting) ----
+// Buy any roof rack and any qualifying roof-mounted product (RMP) in the same order and the RMP
+// gets a set % off its current price (so it stacks on a sale price). Rack first or accessory
+// first, the basket works it out. No package SKUs (the UK store's way) — any rack + any RMP.
+// Production: two Magento product attributes — package category (below) and, on accessories, the
+// rate — with the brand rates as the defaults. The demo stores the category on each cart line.
+const RRG_PACKAGE_DEAL = {
+  name: 'Package Deal',     // customer-facing name (may change, Brenton 2026-10-06)
+  defaultRate: 0.10,
+  brandRates: { CRUZ: 0.15 },
+  // Which RMP categories qualify. Roof boxes first (Graham: start there, bike racks are more
+  // complex); the rest are switched on as each is demoed.
+  qualifying: { 'roof-box': true, 'roof-bike': false, 'rooftop-tent': false, 'awning': false, 'water-snow': false }
+};
+// Name fallback for lines that don't carry pkgCategory (older demo data, related-product cards).
+// Deliberately narrow: tracks, brackets, tub/ladder racks, spares and extensions are neither.
+const RRG_PACKAGE_NOT = /\b(tub|ladder|lid roller|bracket|tracks?|mounting system|spine|foot rails?|leg pack|fitting kit|spares?|extension|accessor(y|ies)|cover|bag|lock)\b/i;
+const RRG_PACKAGE_CATEGORY_RE = [
+  ['rack', /\b(roof racks?|platform|cross ?bars?|roof bars?|bar set|\d bar|rack (kit|system))\b/i],
+  ['roof-box', /\b(roof box|cargo box)\b/i],
+  ['roof-bike', /\broof[- ]mount(ed|ing)? bike|bike (carrier|rack)[^,]*roof[- ]mount/i],
+  ['rooftop-tent', /\b(roof ?top tent)\b/i],
+  ['awning', /\bawning\b/i],
+  ['water-snow', /\b(kayak|sup|ski|snowboard) (carrier|rack)\b/i]
+];
+function rrgPackageCategory(item) {
+  if (!item) return null;
+  if (item.pkgCategory !== undefined) return item.pkgCategory || null;
+  const name = item.name || '';
+  if (RRG_PACKAGE_NOT.test(name)) return null;
+  const hit = RRG_PACKAGE_CATEGORY_RE.find(([, re]) => re.test(name));
+  return hit ? hit[0] : null;
+}
+// 'rack' | 'rmp' (a qualifying accessory) | null
+function rrgPackageRole(item) {
+  const cat = rrgPackageCategory(item);
+  if (cat === 'rack') return 'rack';
+  return cat && RRG_PACKAGE_DEAL.qualifying[cat] ? 'rmp' : null;
+}
+function rrgPackageRate(item) {
+  if (rrgPackageRole(item) !== 'rmp') return 0;
+  const brand = Object.keys(RRG_PACKAGE_DEAL.brandRates).find(b => b.toLowerCase() === String(item.brand || '').toLowerCase());
+  return brand ? RRG_PACKAGE_DEAL.brandRates[brand] : RRG_PACKAGE_DEAL.defaultRate;
+}
+// Per-unit saving on a qualifying accessory, off its current price.
+const rrgPackageSaving = item => Math.round((item.price || 0) * rrgPackageRate(item) * 100) / 100;
+// The cart's Package Deal state. Every unit of every qualifying accessory saves while at least one
+// rack is in the cart (assumption — no one-accessory-per-rack cap was discussed).
+//   active     a rack and a qualifying accessory are both in the cart
+//   discount   what the order saves now (0 unless active)
+//   potential  what adding a rack would save (accessories in the cart, no rack yet)
+//   lines      { [line key]: saving for that line (all units) }
+function rrgPackageDeal(cart = rrgCartGet()) {
+  const racks = cart.lines.filter(l => rrgPackageRole(l) === 'rack');
+  const accessories = cart.lines.filter(l => rrgPackageRole(l) === 'rmp');
+  const lines = {};
+  accessories.forEach(l => { lines[l.key] = Math.round(rrgPackageSaving(l) * l.qty * 100) / 100; });
+  const sum = Object.values(lines).reduce((n, v) => n + v, 0);
+  const active = racks.length > 0 && accessories.length > 0;
+  return { racks, accessories, active, hasRack: racks.length > 0, discount: active ? sum : 0, potential: active ? 0 : sum, lines };
+}
 
 function rrgCartAdd(item, { open = true } = {}) {
   const cart = rrgCartGet();
@@ -123,7 +190,12 @@ function rrgCartTotals(cart = rrgCartGet(), method = null) {
   const opt = rc.delivery.find(d => d.key === method);
   const delivery = method === 'collect' ? 0 : opt ? opt.price : null;
   const total = subtotal + (delivery || 0);
-  return { count: rrgCartCount(cart), subtotal, fullSubtotal: Math.max(was, subtotal), savings: Math.max(0, was - subtotal), delivery, total, tax: total * rc.taxFraction, taxName: rc.taxName };
+  // Package Deal (2026-10-06): reported here, NOT yet taken off subtotal/total — the cart,
+  // mini-cart and checkout summaries get their "Package Deal" line in phase 5 (spec.md §19), and
+  // taking it off before then would show totals that don't add up on the page.
+  const deal = rrgPackageDeal(cart);
+  return { count: rrgCartCount(cart), subtotal, fullSubtotal: Math.max(was, subtotal), savings: Math.max(0, was - subtotal), delivery, total, tax: total * rc.taxFraction, taxName: rc.taxName,
+    packageDiscount: deal.discount, packagePotential: deal.potential };
 }
 const rrgMoney = n => fmtAud(Math.round(n * 100) / 100);
 const rrgPath = rel => rel === '#' ? '#' : RRG_PROTO + rel;
@@ -290,7 +362,9 @@ function rrgPdpCartItem() {
     image: img ? img.src : '',
     url: location.pathname.split('/prototypes/')[1] || '#',
     parts: parts.length ? parts : undefined,
-    fitsVehicle: document.querySelector('[data-fitment-slot]') ? 'hilux' : undefined
+    fitsVehicle: document.querySelector('[data-fitment-slot]') ? 'hilux' : undefined,
+    // Package Deal category, set per template on .cta-col (cart.js rrgPackageCategory); falls back to the name
+    pkgCategory: document.querySelector('.cta-col[data-pkg-category]')?.dataset.pkgCategory
   };
 }
 document.addEventListener('click', e => {

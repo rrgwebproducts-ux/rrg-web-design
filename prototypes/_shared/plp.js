@@ -1537,7 +1537,8 @@ function plpCartItemAttr(product) {
   const fitKey = product.fitsVehicle && typeof RRG_VEHICLES !== 'undefined'
     ? Object.keys(RRG_VEHICLES).find(k => RRG_VEHICLES[k].plpKey === product.fitsVehicle) : undefined;
   const item = { sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
-    wasPrice: product.wasPrice || null, image: product.image || '', url: '#', fitsVehicle: fitKey };
+    wasPrice: product.wasPrice || null, image: product.image || '', url: '#', fitsVehicle: fitKey,
+    pkgCategory: product.pkgCategory }; // Package Deal role (cart.js rrgPackageCategory), when the page sets one
   return JSON.stringify(item).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
