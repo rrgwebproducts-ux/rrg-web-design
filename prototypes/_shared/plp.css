@@ -614,3 +614,10 @@
   .plp-search-empty-featured.is-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;}
   .plp-search-empty-featured.is-grid .plp-card{flex:0 0 calc((100% - 2*18px)/3);}
 }
+
+/* Tabs with nothing under the current filters (2026-10-06, tab counts) — still clickable. */
+.plp-shopby-tile.is-zero{opacity:.55;}
+/* Plain PLP: no products under the current filters. */
+.plp-empty-filters{grid-column:1 / -1;padding:40px 24px;text-align:center;border:1px dashed var(--rrg-line-strong);border-radius:var(--radius);}
+.plp-empty-filters h3{margin:0 0 6px;font-size:24px;}
+.plp-empty-filters p{margin:0 0 16px;color:var(--rrg-grey-700);}

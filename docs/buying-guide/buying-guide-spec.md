@@ -158,3 +158,11 @@ The result always links to the PLP with the matching filters (attachment style +
   - `Article` + `BreadcrumbList` JSON-LD are in the `<head>`.
 - **Links:** shop links go to the prototype PLP with the filters in the query string (`?attachment=`, `?bikes=`, `?hold=`, `?type=`, `?brand=`). The prototype PLP ignores them, so production must map them to the real Magento filter URLs. The Roof Box and Awnings guide cards go to their live `-info` pages.
 - **Not done:** no link to the guide from the Bike Racks mega menu or the PLP yet (the live mega menu has one).
+
+### 9.1 Follow-up: Shop These Racks lands pre-filtered (2026-10-06, Brenton)
+
+- **The PLP now reads the Finder's URL.** It selects the tab, Level 3 card and filters. See `PLP-DEVELOPER-BRIEF.md` 4.3 for the key table.
+- **Tab counts:** PLP tabs and Level 3 cards show counts that follow the filters, and switching tabs keeps the filters (Brenton chose "like Search").
+- **Hold answer:** it ticks **Type of Carrier** (Brenton's choice over the Level 3 card), and only when every hold style in the answer is a wheel hold.
+- **Demo data fix (Bike Racks PLP):** the 4 hitch platform wheel-hold racks are now Wheel Support Carriers, and the 2 frame-hold roof carriers are now Hang-On. A 6 Bikes option was added (the live site has a 6 Bike Carriers category). The demo data has no 6-bike racks, so that lands on the empty state.
+- **Roof results:** a roof match no longer filters by bike count. Roof bike racks carry one bike each, so 2 bikes on the roof used to return 0. The result now says "You'll need N racks. One rack is required per bike."

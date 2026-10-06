@@ -133,7 +133,24 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 **Tile alignment (2026-09-29):** the icon is pinned to the top of each tile, and the label has a fixed two-line area (`.plp-shopby-label`, `min-height: 2.4em`). A two-line label ("Tow Ball Mounting", "Bike Rack Accessories") no longer pushes its icon higher than the one-line tiles, and every label starts on the same line. Together with the top-aligned hero (4.1), Shop By never moves when you switch tabs. Shop By keeps its compact spacing (not the 48px section rhythm) because it's navigation, not a content section.
 
-**Screenshot:** see Section 4.4's screenshot, which shows this row together with the Level 3 cards it can reveal.
+**Counts and filters (2026-10-06, Brenton):**
+- **Counts:** every tile shows a count of what it holds under the active filters, e.g. `SHOW ALL (4) | ROOF MOUNTING (0) | HITCH MOUNTING (4)`, the same way the Search page's tabs do. A tile with nothing under the current filters stays clickable but is faded (`.is-zero`).
+- **Switching tabs keeps the filters.** Production carries them over as filter parameters on the tab's URL, so the number on a tab is the number you land on. Until 2026-10-06, switching tabs cleared every filter.
+- **Empty state:** when no products match, the grid shows "No products match these filters" with a Clear Filters button instead of an empty grid.
+
+**Filters from the URL (2026-10-06):** a link can open the listing with its tab and filters already selected. The first user is the Buying Guide's Bike Rack Finder (`docs/buying-guide/buying-guide-spec.md`). Prototype keys (`plpApplyUrlFilters()` in `plp.js`); production maps them to the real Magento category and filter URLs:
+
+| Key | Selects |
+|---|---|
+| `attachment` | One Level 2 tab key selects that tab. Two keys (`tow-ball-mounting,hitch-mounting`) select Vehicle Fit Type: Tow Ball Mount + Hitch Mount on Show All instead. |
+| `type` | A Level 3 card under that tab (e.g. `ute-tub`). |
+| `bikes` | How many bikes. Roof racks are 1-bike carriers ("one rack per bike"), so the Finder leaves this out for roof results. |
+| `hold` | Type of Carrier: Wheel Support Carrier, only when every hold style given is a wheel hold. |
+| `ebike=1` | Type of Carrier: Bike Racks for E-Bikes. |
+| `brand` | Brand (case-insensitive; `rhino-rack` matches Rhino-Rack). |
+| any facet key | Direct, e.g. `colour=black`. |
+
+**Screenshot:** see Section 4.4's screenshot, which shows this row together with the Level 3 cards it can reveal. It predates the counts.
 
 ---
 
@@ -147,7 +164,7 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 **Contents:** a dedicated row of icon-card tiles, fixed at 5 columns on desktop regardless of how many children a tab has, sitting above the results grid rather than merged into it as leading grid cells (an earlier pass tried merging them into the grid; that stretched the icon cards to match a full product card's height, so they got their own row instead). Reuses the exact same `.plp-shopby-icon`/`.plp-shopby-label` styling as the Level 2 tabs, at the same size — deliberately "not shrunk."
 
-**Note — no result count on plain PLP/Camping.** This component is shared with the search-results page (`SEARCH-RESULTS-DEVELOPER-BRIEF.md` 4.2), which *does* show a live count on each card (e.g. "Thru Bars (5)") since it's genuinely filtering a query-matched pool there. On plain PLP/Camping, this is pure catalogue navigation against a fixed dataset, so no count is shown — don't expect the two usages to look identical if you're cross-referencing.
+**Counts (2026-10-06):** every card shows a live count under the active filters (e.g. "Ute Tub (3)"), on every PLP-family page. This matches the Level 2 tabs (4.3) and the search-results page (`SEARCH-RESULTS-DEVELOPER-BRIEF.md` 4.2). Until 2026-10-06, only the search page showed counts.
 
 **Screenshot (Level 2 tabs + Level 3 icon-cards, Camping "Camp Site" tab active):** ![SHOP BY + Level 3 icon-cards](plp-dev-brief-assets/camping-level3-closeup.png)
 

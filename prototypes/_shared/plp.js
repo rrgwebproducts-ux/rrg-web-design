@@ -158,14 +158,17 @@ function plpFilteredSortedProducts() {
 
 // ==== SHOP BY row ============================================================
 // Real build: each tile is its own fixed URL (plp-spec.md Section 5) — this demo simulates
-// that navigation in-page (reset filters/paging, swap the result set) rather than an
-// AJAX in-place filter, since there's no second real page to link to. "Show All" is always
-// the first tile in the row itself (not a separate link above it) so the whole row reads as
-// one tab strip with a permanent "all" tab, per the Figma reference.
+// that navigation in-page (swap the result set, reset paging) rather than an AJAX in-place
+// filter, since there's no second real page to link to. "Show All" is always the first tile in
+// the row itself (not a separate link above it) so the whole row reads as one tab strip with a
+// permanent "all" tab, per the Figma reference.
+// Since 2026-10-06 (Brenton, after the Buying Guide's "Shop These Racks" landed here with filters
+// in the URL) the tabs work like the Search page's: each shows a count that follows the active
+// filters, and switching tab KEEPS the filters (production: carry them over in the tab's URL), so
+// the number on a tab is the number you get. They used to clear every filter.
 function plpSelectSubcat(key) {
   plpState.activeSubcat = key;
   plpState.activeSubsubcat = null;
-  plpState.activeFilters = {};
   plpState.page = 1;
   plpState.visibleCount = PLP_PAGE_SIZE;
   plpRenderShopBy();
@@ -305,12 +308,17 @@ function plpRenderShopBy() {
   const track = document.getElementById('plpShopByTrack');
   if (!track) return;
   const tiles = [{ key: 'all', label: 'Show All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...cfg.shopBy];
-  track.innerHTML = tiles.map(t => `
-    <button type="button" class="plp-shopby-tile ${plpState.activeSubcat === t.key ? 'active' : ''}" data-shopby="${t.key}">
+  // Count per tab under the current filters (2026-10-06, see plpSelectSubcat).
+  const countFor = key => cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, key, null)).length;
+  track.innerHTML = tiles.map(t => {
+    const n = countFor(t.key);
+    return `
+    <button type="button" class="plp-shopby-tile ${plpState.activeSubcat === t.key ? 'active' : ''}${n === 0 ? ' is-zero' : ''}" data-shopby="${t.key}">
       <span class="plp-shopby-icon">${t.icon}</span>
-      <span class="plp-shopby-label">${t.label}</span>
+      <span class="plp-shopby-label">${t.label} (${n})</span>
     </button>
-  `).join('');
+  `;
+  }).join('');
   track.querySelectorAll('[data-shopby]').forEach(btn => {
     btn.addEventListener('click', () => plpSelectSubcat(btn.dataset.shopby));
   });
@@ -318,11 +326,9 @@ function plpRenderShopBy() {
 
 // Level 3 icon card — reuses .plp-shopby-icon/.plp-shopby-label so the icon renders at the
 // same size as the Level 2 tabs (spec: "explicitly not shrunk"), inside a .plp-icon-card
-// wrapper sized like a product card instead of a tab. `count` is only passed on the search
-// page (see call site below) — on plain PLP/plp-camping this is pure category navigation with
-// a fixed catalogue, so a result count doesn't apply there; on search it's filtering a
-// query-matched pool, same as the tabs above it and the sidebar's Category facet, so it gets
-// the same "(N)" treatment for consistency (Brenton, 2026-09-22).
+// wrapper sized like a product card instead of a tab. Shows "(N)" under the current filters on
+// every PLP-family page since 2026-10-06 (was search page only, 2026-09-22), to match the Level 2
+// tabs, which now keep filters too (see plpSelectSubcat).
 function plpIconCardHTML(child, count) {
   const active = plpState.activeSubsubcat === child.key ? ' active' : '';
   const countStr = count === undefined ? '' : ` (${count})`;
@@ -1639,8 +1645,23 @@ function plpRenderResults() {
     }
   }
 
+  if (!cfg.isSearch) plpRenderShopBy(); // tab counts follow the filters (2026-10-06)
   const all = plpFilteredSortedProducts();
   const total = all.length;
+
+  // Plain PLP with nothing left (possible now that tabs keep filters, or from a URL's filters):
+  // say so and offer Clear Filters, instead of an empty grid.
+  if (!cfg.isSearch && total === 0) {
+    wrap.className = 'plp-results plp-results-empty';
+    wrap.innerHTML = `<div class="plp-empty-filters"><h3>No products match these filters</h3><p>Try another tab, or clear the filters to see the full range.</p><button type="button" class="btn btn-outline btn-sm" data-plp-empty-clear>Clear Filters</button></div>`;
+    wrap.querySelector('[data-plp-empty-clear]').addEventListener('click', plpClearFilters);
+    if (countLabel) countLabel.textContent = '0 results';
+    if (mobileCountLabel) mobileCountLabel.textContent = '0 results';
+    const l3 = document.getElementById('plpLevel3Row');
+    if (l3) { l3.hidden = true; l3.innerHTML = ''; }
+    plpRenderPagination(0);
+    return;
+  }
 
   if (cfg.isSearch && total === 0) {
     wrap.className = 'plp-results plp-results-empty';
@@ -1690,7 +1711,7 @@ function plpRenderResults() {
     }
     level3Row.hidden = false;
     level3Row.innerHTML = activeTile.children.map(child => {
-      const count = cfg.isSearch ? cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, child.key)).length : undefined;
+      const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, child.key)).length;
       return plpIconCardHTML(child, count);
     }).join('');
   } else if (level3Row) {
@@ -2226,6 +2247,59 @@ function applyPlpHeroImageFlag(mode) {
   }
 }
 
+// ==== Filters from the URL (2026-10-06) ==========================================
+// A link can open the listing pre-filtered, e.g. the Buying Guide's Bike Rack Finder:
+//   ?attachment=roof-mounting&bikes=2&hold=wheel
+// Production: these become the real Magento category/filter URLs; the keys below are the
+// prototype's.
+//   attachment  a Level 2 tab key (roof-mounting…). Two keys (tow-ball-mounting,hitch-mounting)
+//               can't both be a tab, so they select the Vehicle Fit Type filter instead.
+//   type        a Level 3 key under that tab (spare-wheel, rear-door-boot, ute-tub)
+//   bikes       How many bikes (the highest option it can't exceed)
+//   hold        the Finder's hold styles; all wheel / pwheel → Type of Carrier: Wheel Support Carrier
+//   ebike=1     Type of Carrier: Bike Racks for E-Bikes
+//   brand       Brand (case-insensitive, e.g. rhino-rack → Rhino-Rack)
+//   any facet key (bikeCount=2, colour=black…) also works directly.
+const PLP_URL_HOLD_TO_CARRIER = { wheel: 'wheel-support', pwheel: 'wheel-support', 'wheel-hold': 'wheel-support', 'platform-wheel-hold': 'wheel-support' };
+const PLP_URL_ATTACHMENT_TO_FIT = { 'tow-ball-mounting': 'towball', 'hitch-mounting': 'hitch' };
+function plpApplyUrlFilters() {
+  const cfg = window.PLP_CONFIG;
+  if (!cfg || cfg.isSearch) return;
+  const q = new URLSearchParams(location.search);
+  const add = (key, value) => {
+    const def = plpFacetDefByKey(key);
+    if (!def.options) return;
+    const opt = def.options.find(o => String(o.value).toLowerCase() === String(value).toLowerCase().replace(/-/g, ' ') || String(o.value).toLowerCase() === String(value).toLowerCase());
+    if (!opt) return;
+    (plpState.activeFilters[key] = plpState.activeFilters[key] || new Set()).add(String(opt.value));
+  };
+  const tabs = cfg.shopBy || [];
+  const attachment = (q.get('attachment') || '').split(',').filter(Boolean);
+  if (attachment.length === 1 && tabs.some(t => t.key === attachment[0])) {
+    plpState.activeSubcat = attachment[0];
+    const tab = tabs.find(t => t.key === attachment[0]);
+    const type = q.get('type');
+    if (type && (tab.children || []).some(c => c.key === type)) plpState.activeSubsubcat = type;
+  } else if (attachment.length > 1) {
+    attachment.forEach(a => PLP_URL_ATTACHMENT_TO_FIT[a] && add('vehicleFitType', PLP_URL_ATTACHMENT_TO_FIT[a]));
+  }
+  if (q.get('bikes')) {
+    const def = plpFacetDefByKey('bikeCount');
+    const n = Number(q.get('bikes'));
+    // "Carry at least n": the option equal to n, or the highest one below it if the list stops short.
+    const opt = (def.options || []).filter(o => Number(o.value) <= n).pop();
+    if (opt) add('bikeCount', opt.value);
+  }
+  // Only when every hold style maps to the same carrier type: "fork, frame or wheel hold" is a
+  // choice, so ticking Wheel Support would hide the other two.
+  const holds = (q.get('hold') || '').split(',').filter(Boolean);
+  const carriers = new Set(holds.map(h => PLP_URL_HOLD_TO_CARRIER[h]));
+  if (holds.length && carriers.size === 1 && !carriers.has(undefined)) add('carrierType', [...carriers][0]);
+  if (q.get('ebike') === '1') add('carrierType', 'ebike');
+  if (q.get('brand')) add('brand', q.get('brand'));
+  [...(cfg.facets.priority || []), ...(cfg.facets.standard || [])].forEach(f => { if (q.get(f.key)) q.get(f.key).split(',').forEach(v => add(f.key, v)); });
+}
+
 // ==== Init ====================================================================
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
@@ -2237,6 +2311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlQuery = new URLSearchParams(window.location.search).get('q');
     plpState.searchQuery = (urlQuery !== null ? urlQuery : window.PLP_CONFIG.initialQuery) || '';
   }
+  plpApplyUrlFilters();
   plpRenderShopBy();
   if (window.PLP_CONFIG.isSearch) { plpInitSearchPage(); plpRenderSearchTabs(); }
   plpInitAvailabilityFacet();

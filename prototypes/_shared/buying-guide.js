@@ -15,7 +15,7 @@
 // `heavy`/`carbon`: true = live copy confirms it, false = not suitable, null = live copy is silent.
 const BRF_MOUNTS = {
   tow:      { name: 'Tow hitch or tow ball rack', max: 6, needs: 'towbar', heavy: true, carbon: true, cards: ['hitch', 'towball'], filter: 'tow-ball-mounting,hitch-mounting' },
-  roof:     { name: 'Roof mounted bike racks', max: 4, needs: 'roofbars', heavy: false, carbon: true, cards: ['roof'], filter: 'roof-mounting' },
+  roof:     { name: 'Roof mounted bike racks', max: 4, needs: 'roofbars', heavy: false, carbon: true, cards: ['roof'], filter: 'roof-mounting', perBike: true },
   ute:      { name: 'Ute tub bike rack', max: 5, needs: 'ute', heavy: null, carbon: null, cards: ['ute'], filter: 'rear-mounting', type: 'ute-tub' },
   spare:    { name: 'Spare wheel bike rack', max: 2, needs: 'spare', heavy: null, carbon: null, cards: ['spare'], filter: 'rear-mounting', type: 'spare-wheel' },
   reardoor: { name: 'Rear door / boot bike rack', max: 3, needs: null, heavy: null, carbon: null, cards: ['reardoor'], filter: 'rear-mounting', type: 'rear-door-boot' },
@@ -161,7 +161,10 @@ function initBikeRackFinder() {
   }
   function shopHref(mount, hold) {
     const m = BRF_MOUNTS[mount];
-    const p = new URLSearchParams({ attachment: m.filter, bikes: state.count });
+    // Roof bike racks carry one bike each ("One rack is required per bike"), so the listing isn't
+    // filtered by bike count for a roof match; the result tells the shopper how many to buy.
+    const p = new URLSearchParams({ attachment: m.filter });
+    if (!m.perBike) p.set('bikes', state.count);
     if (m.type) p.set('type', m.type);
     if (hold) p.set('hold', hold.cards.join(','));
     if (state.bikes.has('ebike')) p.set('ebike', '1');
@@ -180,6 +183,7 @@ function initBikeRackFinder() {
       const m = BRF_MOUNTS[rec.mount];
       const hold = brfHold(rec.mount, bikes);
       const why = [...bikeWhy.slice(0, 2), ...BRF_WHY[rec.mount]].slice(0, 3);
+      const perBikeNote = m.perBike && state.count > 1 ? `<p class="brf-note"><strong>You'll need ${state.count} racks.</strong> One rack is required per bike, so add ${state.count} to your cart.</p>` : '';
       const towNote = rec.mount === 'tow' ? `<p class="brf-note"><strong>Hitch or tow ball?</strong> A hitch rack slides into a 50mm square hitch receiver; a tow ball rack clamps onto your tow ball. Check which your tow bar has, and its rated capacity.</p>` : '';
       const also = rec.also.length ? `<p class="brf-also">Also works for you: ${rec.also.map(k => `<a href="#mount-${BRF_MOUNTS[k].cards[0]}" data-brf-why="mount-${BRF_MOUNTS[k].cards[0]}">${BRF_MOUNTS[k].name}</a>`).join(' · ')}</p>` : '';
       const href = shopHref(rec.mount, hold);
@@ -188,7 +192,7 @@ function initBikeRackFinder() {
         ${hold ? `<p class="brf-hold">Holds the bike by: <strong>${hold.label}</strong></p>` : ''}
         ${summary}
         <ul class="brf-why">${why.map(w => `<li>${w}</li>`).join('')}</ul>
-        ${towNote}
+        ${towNote}${perBikeNote}
         <div class="brf-actions"><a class="btn btn-primary" href="${href}">Shop These Racks</a><a class="brf-link" href="#mount-${m.cards[0]}" data-brf-why="mount-${m.cards[0]}">Show me why &darr;</a></div>
         ${also}${restart}`;
       markMatches(rec.mount, bikes, hold);
