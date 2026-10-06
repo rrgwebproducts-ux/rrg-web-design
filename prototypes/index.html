@@ -18,8 +18,11 @@
 <link rel="stylesheet" href="_shared/campaign.css">
 <style>
   /* Link list index (2026-10-01, Brenton): laid out exactly like the page list sent to the team on
-     Slack. Each line is the page name, then its Vercel URL as a link. Two tabs: Pages (default)
-     and Developer briefs (#briefs). Link hrefs stay relative so the page also works locally. */
+     Slack. Each line is the page name, then its Vercel URL as a link. Three tabs: Pages (default),
+     Priority (#priority) and Developer briefs (#briefs). Link hrefs stay relative so the page also
+     works locally. Priority (2026-10-07, Brenton): one line per unique design (duplicates like the
+     other PLPs / stores / PDP types link to the first example) in build order; everything above the
+     red line is the must-do for the developer's deadline. Order + line position still to be agreed. */
   .page-head{padding:28px 0 14px;}
   .page-head h1{font-size:30px;margin:0;}
   .index-tabs{display:flex;gap:4px;border-bottom:2px solid var(--rrg-line);margin:0 0 8px;}
@@ -32,6 +35,12 @@
   .index-list li{padding:2px 0;font-size:15px;line-height:1.5;overflow-wrap:anywhere;}
   .index-list a{color:var(--rrg-red);text-decoration:underline;}
   .index-list a:hover{color:var(--rrg-red-dark);}
+  .priority-list{counter-reset:prio;}
+  .priority-list li:not(.priority-line){counter-increment:prio;}
+  .priority-list li:not(.priority-line)::before{content:counter(prio) ".";display:inline-block;min-width:28px;font-weight:900;}
+  .priority-line{display:flex;align-items:center;gap:10px;margin:10px 0;color:var(--rrg-red);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
+  .priority-line::before,.priority-line::after{content:"";flex:1;border-top:3px solid var(--rrg-red);}
+  .priority-line::before{flex:0 0 24px;}
 </style>
 </head>
 <body>
@@ -133,6 +142,7 @@
   </div>
   <div class="index-tabs" role="tablist" aria-label="Index sections">
     <button type="button" class="index-tab" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="true" data-index-tab="pages">Pages</button>
+    <button type="button" class="index-tab" role="tab" id="tab-priority" aria-controls="panel-priority" aria-selected="false" tabindex="-1" data-index-tab="priority">Priority</button>
     <button type="button" class="index-tab" role="tab" id="tab-briefs" aria-controls="panel-briefs" aria-selected="false" tabindex="-1" data-index-tab="briefs">Developer briefs</button>
   </div>
   <div class="index-panel" role="tabpanel" id="panel-pages" aria-labelledby="tab-pages">
@@ -183,6 +193,31 @@
         <li>Header &amp; Footer: <a href="header/index.html">https://rrg-web-design.vercel.app/prototypes/header/index.html</a></li>
         <li>Component Library: <a href="components/index.html">https://rrg-web-design.vercel.app/prototypes/components/index.html</a></li>
       </ul>
+  </div>
+  <div class="index-panel" role="tabpanel" id="panel-priority" aria-labelledby="tab-priority" hidden>
+    <h2>Build priority</h2>
+      <ol class="index-list priority-list">
+        <li>Header &amp; Footer: <a href="header/index.html">https://rrg-web-design.vercel.app/prototypes/header/index.html</a></li>
+        <li>Home Page: <a href="home/index.html">https://rrg-web-design.vercel.app/prototypes/home/index.html</a></li>
+        <li>Product Pages &amp; Siblings: <a href="config-variant/index.html">https://rrg-web-design.vercel.app/prototypes/config-variant/index.html</a></li>
+        <li>Vehicle-Specific Product: <a href="vehicle-specific/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-specific/index.html</a></li>
+        <li>Cart: <a href="cart/index.html">https://rrg-web-design.vercel.app/prototypes/cart/index.html</a></li>
+        <li>Checkout: <a href="checkout/index.html">https://rrg-web-design.vercel.app/prototypes/checkout/index.html</a></li>
+        <li>Order Confirmation: <a href="order-confirmation/index.html">https://rrg-web-design.vercel.app/prototypes/order-confirmation/index.html</a></li>
+        <li>PLP Pages: <a href="plp-camping/index.html">https://rrg-web-design.vercel.app/prototypes/plp-camping/index.html</a></li>
+        <li>VPLP Roof Racks: <a href="vplp/index.html">https://rrg-web-design.vercel.app/prototypes/vplp/index.html</a></li>
+        <li>Vehicle Category Landing (VCLP): <a href="vehicle-category-landing/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-category-landing/index.html</a></li>
+        <li class="priority-line" aria-label="Priority cut-off"><span>Must be done above this line &middot; anything below is a bonus</span></li>
+        <li>Vehicle Landing (VLP): <a href="vlp/index.html">https://rrg-web-design.vercel.app/prototypes/vlp/index.html</a></li>
+        <li>Search Results: <a href="search-results/index.html">https://rrg-web-design.vercel.app/prototypes/search-results/index.html</a></li>
+        <li>Brand Pages: <a href="brand/index.html?brand=thule">https://rrg-web-design.vercel.app/prototypes/brand/index.html?brand=thule</a></li>
+        <li>Brands Hub: <a href="brands/index.html">https://rrg-web-design.vercel.app/prototypes/brands/index.html</a></li>
+        <li>Store Pages: <a href="store/index.html">https://rrg-web-design.vercel.app/prototypes/store/index.html</a></li>
+        <li>Store Finder: <a href="store-finder/index.html">https://rrg-web-design.vercel.app/prototypes/store-finder/index.html</a></li>
+        <li>Fit My Vehicle: <a href="fit-my-vehicle/index.html">https://rrg-web-design.vercel.app/prototypes/fit-my-vehicle/index.html</a></li>
+        <li>Installation &amp; Booking: <a href="installation/index.html">https://rrg-web-design.vercel.app/prototypes/installation/index.html</a></li>
+        <li>Buying Guide: <a href="buying-guide/index.html">https://rrg-web-design.vercel.app/prototypes/buying-guide/index.html</a></li>
+      </ol>
   </div>
   <div class="index-panel" role="tabpanel" id="panel-briefs" aria-labelledby="tab-briefs" hidden>
     <h2>Developer briefs</h2>
@@ -272,7 +307,7 @@
 <script src="_shared/shared.js"></script>
 <script src="_shared/cart.js"></script>
 <script>
-// Index tabs — arrow keys move between them; the open tab lives in the URL hash (#briefs).
+// Index tabs — arrow keys move between them; the open tab lives in the URL hash (#priority, #briefs).
 (() => {
   const tabs = [...document.querySelectorAll('[data-index-tab]')];
   const select = (name, focus) => {
@@ -292,7 +327,8 @@
       select(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length].dataset.indexTab, true);
     });
   });
-  if (location.hash === '#briefs') select('briefs');
+  const fromHash = tabs.find(t => '#' + t.dataset.indexTab === location.hash);
+  if (fromHash) select(fromHash.dataset.indexTab);
 })();
 </script>
 </body>
