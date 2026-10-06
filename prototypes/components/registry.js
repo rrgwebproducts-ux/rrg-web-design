@@ -22,7 +22,7 @@
 //            selM  a different selector for the mobile frame (when mobile uses another element)
 //            sizes ['d','m'] (default both): d = 1280px desktop, m = 390px mobile
 
-const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle'];
+const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box'];
 const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'vplp'];
 const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'header'];
 const NOT_CHECKOUT = ALL_PAGES.filter(p => p !== 'checkout');
@@ -162,11 +162,15 @@ const RRG_COMPONENTS = [
     variants: ['in_stock', 'low_stock', 'out_of_stock', 'special_order', 'discontinued'].map(s =>
       v({ in_stock: 'In Stock', low_stock: 'Low Stock', out_of_stock: 'Out of Stock', special_order: 'Special Order', discontinued: 'Discontinued' }[s], 'simple', '.decision-panel', { ls: demo('simple', { 'r:stockStatus': s }), sizes: ['d'] }))
       .concat([v('Phase 2 — stock at your store', 'simple', '.decision-panel', { ls: { ...S.phase2, ...demo('simple', { 'r:storeStock': 'nearby' }) }, sizes: ['d'] })]) },
-  { id: 'cart-conflict', group: 'product', name: 'Cart Conflict Banner', build: 'shared', usedOn: PDP5,
-    source: 'applyCartConflict (shared.js)',
+  { id: 'cart-conflict', group: 'product', name: 'Cart Compatibility Banner', build: 'shared', usedOn: PDP5,
+    source: 'applyCartConflict (shared.js) + rrgPackageCompatHTML (cart.js)',
+    // Rack / roof-accessory pages (data-pkg-category) read the real cart; the rest use Demo State.
     variants: [
-      v('Compatible item in cart', 'vehicle-specific', '.decision-panel', { ls: demo('vehicle-specific', { 'r:cartConflict': 'compatible' }), sizes: ['d'] }),
-      v('Incompatible item in cart', 'vehicle-specific', '.decision-panel', { ls: demo('vehicle-specific', { 'r:cartConflict': 'incompatible' }), sizes: ['d'] }),
+      v('Roof box — compatible rack in cart', 'roof-box', '.decision-panel', { cart: 'thuleRackOnly', sizes: ['d'] }),
+      v('Roof box — not compatible (demo exclusion)', 'roof-box', '.decision-panel', { cart: 'platformOnly', sizes: ['d'] }),
+      v('Rack — roof box in cart', 'vehicle-specific', '.decision-panel', { cart: 'roofBox', sizes: ['d'] }),
+      v('Demo State — compatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'compatible' }), sizes: ['d'] }),
+      v('Demo State — incompatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'incompatible' }), sizes: ['d'] }),
     ] },
   { id: 'product-gallery', group: 'product', name: 'Product Gallery', build: 'mixed', usedOn: [...PDP5, 'store'],
     source: 'Static per page; initGalleryCarousels / applyVideoFlag (shared.js)',
@@ -386,6 +390,8 @@ const RRG_COMPONENTS = [
     variants: [
       v('Cart (editable)', 'cart', '#cartLines', { cart: 'full' }),
       v('Checkout summary (compact)', 'checkout', '#coSummary', { selM: '#coSummaryMobile', do: 'click:#coSummaryMobile summary', cart: 'full' }),
+      v('Package Deal — compatible', 'cart', '#cartLines', { cart: 'packageDeal' }),
+      v('Package Deal — not compatible', 'cart', '#cartLines', { cart: 'notCompatible' }),
     ] },
   { id: 'cart-summary', group: 'cart', name: 'Cart Summary (Collect / Delivery, totals, express pay)', build: 'copied', usedOn: ['cart'],
     source: 'Inline in cart; rrgBnplHTML (cart.js)',

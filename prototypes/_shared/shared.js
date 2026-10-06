@@ -820,24 +820,42 @@ function rrgWrapStaticStorePills() {
 // hardcoded here, so this function stays generic across all 5 templates — in a real
 // Magento build this pair would come from a per-product compatibility rule the team sets,
 // not a hardcoded string. Never disables the CTA — informational only, per spec.
+// Compatibility banner above Add to Cart (PDP brief 4.19). Since the Package Deal (spec.md §19
+// phase 3, 2026-10-06) it shows both ways — green when what's in the cart IS compatible, amber
+// heads-up when it isn't — each with an info tooltip, and never disables the CTA.
+//   • A page whose .cta-col has data-pkg-category (a rack or roof accessory) reads the REAL cart
+//     (cart.js rrgPackageCompatHTML) and re-checks whenever the cart changes. Demo State's "Cart
+//     already has" control doesn't apply there; Site Admin's Demo cart presets drive it.
+//   • Every other PDP keeps the Demo State mock: "A compatible item" / "An incompatible item"
+//     name the template's own data-conflict-item, with its data-conflict-reason as the tooltip.
 function applyCartConflict(state) {
   adminState.cartConflict = state;
   document.querySelectorAll('.cta-col').forEach(col => {
-    const parent = col.parentNode;
-    const banner = parent.querySelector(':scope > .cart-conflict-banner');
-    const show = state === 'incompatible' && !col.hidden;
-    if (show && !banner) {
-      const el = document.createElement('div');
-      el.className = 'cart-conflict-banner';
+    // Build the message BEFORE clearing: reading the cart can itself fire rrg-cart-change (a
+    // lazily seeded cart in the Component Library), which re-enters this function — clearing
+    // first let both passes insert a banner.
+    let html = '';
+    if (col.hidden) {
+      // never alongside a hidden CTA
+    } else if (col.dataset.pkgCategory !== undefined) {
+      if (typeof rrgPackageCompatHTML === 'function') html = rrgPackageCompatHTML(rrgPdpCartItem(), 'banner');
+    } else if (state === 'compatible' || state === 'incompatible') {
       const item = col.dataset.conflictItem || 'an item';
-      const reason = col.dataset.conflictReason || 'may not be fully compatible with this product';
-      el.innerHTML = `Heads up — you also have <strong>${item}</strong> in your cart, which may not be compatible with this product (${reason}). You can still add this to your cart, just double-check compatibility before checkout.`;
-      parent.insertBefore(el, col);
-    } else if (!show && banner) {
-      banner.remove();
+      const reason = col.dataset.conflictReason || 'it may not be fully compatible with this product';
+      const tip = typeof rrgInfoTipHTML === 'function'
+        ? rrgInfoTipHTML(state === 'compatible' ? RRG_COMPAT_TIP : `Why: ${reason}. You can still order both. If you're not sure, contact us and we'll check your setup.`) : '';
+      html = state === 'compatible'
+        ? `<div class="cart-conflict-banner is-ok"><span>✓ Compatible with <strong>${item}</strong> in your cart</span>${tip}</div>`
+        : `<div class="cart-conflict-banner is-warn"><span>Heads up: not compatible with <strong>${item}</strong> in your cart. Choose a different one, or contact us and we'll help.</span>${tip}</div>`;
     }
+    col.parentNode.querySelectorAll(':scope > .cart-conflict-banner').forEach(b => b.remove());
+    if (html) col.insertAdjacentHTML('beforebegin', html);
   });
 }
+// Real-cart pages: draw on load (cart.js has loaded by DOMContentLoaded) and on every cart change.
+['DOMContentLoaded', 'rrg-cart-change'].forEach(evt => document.addEventListener(evt, () => {
+  if (document.querySelector('.cta-col[data-pkg-category]')) applyCartConflict(adminState.cartConflict);
+}));
 
 function applyAvailabilityFlags(shipping, collect) {
   adminState.shipping = shipping;
@@ -3471,7 +3489,10 @@ function buildAdminPanel() {
       toggle('collect', 'Click &amp; Collect available', initialCollect) +
       hint('delivery', 'Off while the product is Out of Stock or Discontinued.'));
     if (hasShowroom) html += section('In-store', toggle('showroom', 'On display in-store (Showroom Finder)', true));
-    html += section('Cart', choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
+    // Rack / roof-accessory pages read the real cart for compatibility (applyCartConflict).
+    html += section('Cart', document.querySelector('.cta-col[data-pkg-category]')
+      ? '<p class="admin-hint">Compatibility uses the real cart on this page. Load a cart in Site Admin → Demo cart.</p>'
+      : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
   }
   if (isVlp) {
     // VLP (docs/vlp/vlp-spec.md Sections 2 + 7.1). Neither control is saved (data-admin-nosave):

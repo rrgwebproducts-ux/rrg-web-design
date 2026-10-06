@@ -867,17 +867,25 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.19 Compatibility / Cart-Conflict banner
 
-**Location:** above Add to Cart in the Decision Panel — all 5 templates.
+**Location:** above Add to Cart in the Decision Panel — all PDP templates. The same message also appears, smaller, on cart lines (cart page, mini-cart, checkout order summary).
 
-**Purpose:** warns the shopper if something already in their cart is incompatible with this product — specifically a **platform-vs-accessory** relationship (a roof rack platform already in the cart flagged against an accessory being viewed, or vice versa). In a real Magento build this would be driven by a genuine per-product compatibility rule the merchandising team sets; the prototype just needs to surface the message correctly.
+**Purpose:** tells the shopper whether the **rack** and the **roof-mounted accessory** in their cart work together — both ways round. Viewing an accessory (roof box, roof bike rack, rooftop tent, awning…), it checks against the racks in the cart; viewing a rack, against the accessories in the cart. Updated 2026-10-06 for the Package Deal (spec.md §19): it now shows when things **are** compatible too, not only the warning.
+- Compatible: "✓ Compatible with the **[product]** in your cart" (green).
+- Not compatible: "Heads up: not compatible with the **[product]** in your cart. Choose a different [roof rack / roof box], or contact us and we'll help." (amber).
+- Each has an info tooltip: "Some roof racks and platforms don't suit some accessories because of the channel size or the way they mount. You can still order both. If you're not sure, contact us and we'll check your setup."
+- Never disables Add to Cart and never hides products. Nothing shows when the cart has nothing to compare against.
 
-**Typography:** amber accent, same visual tier as Special Order (4.17) — informational, never disables the CTA.
+**Rules (Magento):** every roof-mounted accessory is compatible with every rack **until merchandising adds an exclusion** — a per-product exclusion list (accessory ↔ racks). Each product also needs a package category attribute (rack / roof box / roof bike / rooftop tent / awning / water-snow / none), shared with the Package Deal. The prototype's one exclusion (Thule Motion 3 L ↔ Rhino-Rack Pioneer platforms) is **demo only**, not a real fitment rule.
+
+**Prototype:** templates whose `.cta-col` carries `data-pkg-category` (Roof Box PDP, Vehicle-Specific) read the real demo cart — use Site Admin → Demo cart presets ("Thule roof rack only", "Pioneer platform only", "Roof box only", "Platform + Motion 3 L"). The other templates keep the Demo State "Cart already has" mock. Code: `applyCartConflict` (shared.js), `rrgPackageCompatHTML` (cart.js).
+
+**Typography:** 13px; the product name bold. Green = `--rrg-fits` on `--rrg-fits-bg`, amber = `--rrg-unknown` on `--rrg-unknown-bg`. Tooltip = the shared tooltip bubble.
 
 **Region differences:** none.
 
 **Links:** none.
 
-**States:** shown here alongside the Ex-Demo/B-Stock CTA (4.20), both stacking correctly in the same panel: ![Cart-Conflict banner + Ex-Demo link](dev-brief-assets/cart-conflict-and-exdemo.png)
+**States:** screenshot below predates the 2026-10-06 change (recapture at handover): ![Cart-Conflict banner + Ex-Demo link](dev-brief-assets/cart-conflict-and-exdemo.png)
 
 ---
 

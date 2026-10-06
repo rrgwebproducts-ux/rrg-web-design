@@ -38,6 +38,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'vehicle-specific', label: 'Vehicle-Specific Kit' },
       { key: 'config-variant', label: 'Config-Variant' },
       { key: 'sibling-color', label: 'Sibling / Colour' },
+      { key: 'roof-box', label: 'Roof Box (Motion 3 L)' },
       { key: 'simple', label: 'Simple' },
       { key: 'grouped-bundle', label: 'Grouped / Bundle' },
     ] },
@@ -108,6 +109,9 @@ function buildSiteAdminPanel(currentKey) {
           <option value="full">Rack, bike rack, bundle + tank</option>
           <option value="roofBox">Roof box only (Package Deal)</option>
           <option value="packageDeal">Rack + roof box (Package Deal)</option>
+          <option value="platformOnly">Pioneer platform only</option>
+          <option value="thuleRackOnly">Thule roof rack only</option>
+          <option value="notCompatible">Platform + Motion 3 L (not compatible)</option>
           <option value="custom" disabled>Your own items</option>
         </select>
       </label>

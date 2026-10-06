@@ -51,6 +51,13 @@ const RRG_DEMO_CART_ITEMS = {
   // Package Deal demo (2026-10-06): the real CRUZ Easy 430 from the Roof Boxes PLP — CRUZ, so 15%.
   roofBox: { sku: 'C940-349U', brand: 'CRUZ', name: 'Cruz Easy Gloss Black 430 litre Roof Box - 940-349U', price: 499.00, wasPrice: 699.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/r/cruz-easy-gloss-black-430-litre-roof-box-940-349u-view-6.jpg', url: 'plp-roof-boxes/index.html', pkgCategory: 'roof-box' },
+  // A Thule bar rack (real live listing, 2026-10-06) — the Thule Motion 3 L shows as compatible
+  // with it, against the demo exclusion with the Pioneer platform above.
+  thuleRack: { sku: 'GP03U93PK', brand: 'Thule', name: 'Thule WingBar Evo Black 2 Bar Roof Rack for Ford Everest U704 5dr SUV with Raised Roof Rail (2022 onwards)', price: 499.85, wasPrice: 529.95,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-wingbar-evo-black-2-bar-roof-rack-for-ford-everest-u704-5dr-suv-with-raised-roof-rail-2022-onwards-roof-raised-rail-mount-view-1-90a2a18f9a6e.jpg', url: '#', pkgCategory: 'rack' },
+  // The Roof Box PDP's product (roof-box/), Gloss Black — Thule, so 10%.
+  motionBox: { sku: 'T639700', brand: 'Thule', name: 'Thule Motion 3 L Roof Box', variant: 'Gloss Black', price: 1999.00, wasPrice: 1999.95,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-motion-3-l-gloss-black-roof-box-639700-f854bc4c2831.jpg', url: 'roof-box/index.html', pkgCategory: 'roof-box' },
   bikeRack: { sku: '922020', brand: 'Thule', name: 'Thule EuroWay G2 3 Bike Tow Ball Mounted Carrier - 922020', price: 799.00, wasPrice: 1199.95,
     image: RRG_CART_IMG('t/h/thule-euroway-g2-3-bike-tow-ball-mounted-carrier-922020.webp'), url: '#' },
   showerBundle: { sku: '8004109PROMO', brand: 'Yakima', name: 'Yakima RoadShower 15L Complete Shower & Hose Bundle', price: 449.00, wasPrice: 846.00,
@@ -73,7 +80,11 @@ const RRG_DEMO_CARTS = {
   accessories: ['waterTank', 'wheelHolder'],
   full: ['platformKit', 'bikeRack', 'showerBundle', 'waterTank'],
   roofBox: ['roofBox'],                  // Package Deal: accessory, no rack yet (potential saving)
-  packageDeal: ['platformKit', 'roofBox'] // Package Deal: rack + accessory (active)
+  packageDeal: ['platformKit', 'roofBox'], // Package Deal: rack + accessory (active)
+  // Rack only — to view an accessory page against a rack (compatibility, phase 3):
+  platformOnly: ['platformKit'],         // Pioneer platform: the Motion 3 L shows "not compatible" (demo exclusion)
+  thuleRackOnly: ['thuleRack'],          // Thule bars: the Motion 3 L shows "compatible"
+  notCompatible: ['platformKit', 'motionBox'] // Package Deal active, but the pair is a demo exclusion
 };
 
 // ---- Store ----
@@ -155,6 +166,52 @@ function rrgPackageDeal(cart = rrgCartGet()) {
   return { racks, accessories, active, hasRack: racks.length > 0, discount: active ? sum : 0, potential: active ? 0 : sum, lines };
 }
 
+// ---- Package Deal: rack-aware compatibility (spec.md §19 phase 3) ----
+// Every roof-mounted accessory works with every rack until merchandising adds an exclusion (the
+// meeting: "by default everything's compatible with everything else until we put an exclusion
+// in"). Production: an exclusion list maintained per product. Compatibility applies to every
+// roof-mounted category, whether or not it qualifies for the Package Deal discount yet.
+// Messages show both ways: on an accessory, against the racks in the cart; on a rack, against the
+// accessories in the cart. Products are never hidden — the shopper can still add either.
+const RRG_PACKAGE_EXCLUSIONS = [
+  // DEMO ONLY — not a real fitment rule. One exclusion so the "not compatible" message can be
+  // reviewed: the Thule Motion 3 L (roof-box/) against the Rhino-Rack Pioneer platforms.
+  { demo: true, accessories: ['T639700', 'T639701'], racks: ['GP01M1TZZ', 'RH62109', 'RH62112', 'JC-02306'] }
+];
+const RRG_PACKAGE_CATEGORY_LABEL = { rack: 'roof rack', 'roof-box': 'roof box', 'roof-bike': 'bike rack', 'rooftop-tent': 'rooftop tent', awning: 'awning', 'water-snow': 'carrier' };
+const RRG_COMPAT_TIP = "Some roof racks and platforms don't suit some accessories because of the channel size or the way they mount. You can still order both. If you're not sure, contact us and we'll check your setup.";
+const rrgIsRoofAccessory = item => { const c = rrgPackageCategory(item); return !!c && c !== 'rack'; };
+function rrgPackageCompatible(accessory, rack) {
+  return !RRG_PACKAGE_EXCLUSIONS.some(x => x.accessories.includes(accessory.sku) && x.racks.includes(rack.sku));
+}
+// The item's compatibility with the other kind of product in the cart: [{ line, compatible }].
+// Empty when the item isn't a rack or roof accessory, or there's nothing to compare it with.
+function rrgPackageCompatInCart(item, cart = rrgCartGet()) {
+  const cat = rrgPackageCategory(item);
+  if (!cat) return [];
+  const self = item.key || item.sku;
+  const others = cart.lines.filter(l => l.key !== self && (cat === 'rack' ? rrgIsRoofAccessory(l) : rrgPackageCategory(l) === 'rack'));
+  return others.map(l => ({ line: l, compatible: cat === 'rack' ? rrgPackageCompatible(l, item) : rrgPackageCompatible(item, l) }));
+}
+// Product names run long ("… for Toyota Hilux N80 (2015–2026), Bare Roof"): the message names
+// the product up to its vehicle/SKU suffix.
+const rrgShortName = name => String(name || '').split(/ — | - | for /)[0].trim();
+const rrgInfoTipHTML = text => `<span class="rrg-info-tip" tabindex="0" role="img" aria-label="${rrgEsc(text)}" data-tooltip="${rrgEsc(text)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg></span>`;
+// One message per matching cart line. 'banner' = the PDP banner above Add to Cart (shared.js
+// applyCartConflict); 'line' = the small note on a cart line (rrgCartLineHTML).
+function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
+  const cat = rrgPackageCategory(item);
+  return rrgPackageCompatInCart(item, cart).map(({ line, compatible }) => {
+    const name = `<strong>${rrgEsc(rrgShortName(line.name))}</strong>`;
+    const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
+    const msg = compatible
+      ? `✓ Compatible with the ${name} in your cart`
+      : `Heads up: not compatible with the ${name} in your cart.${mode === 'banner' ? ` Choose a different ${swap}, or contact us and we'll help.` : ''}`;
+    const cls = mode === 'banner' ? 'cart-conflict-banner' : 'cart-line-compat';
+    return `<div class="${cls} ${compatible ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
+  }).join('');
+}
+
 function rrgCartAdd(item, { open = true } = {}) {
   const cart = rrgCartGet();
   const key = item.sku || item.name;
@@ -224,6 +281,7 @@ function rrgCartLineHTML(line, { editable = true, compact = false } = {}) {
         ${line.variant ? `<span class="cart-line-meta">${rrgEsc(line.variant)}</span>` : ''}
         ${line.parts ? `<ul class="cart-line-parts" aria-label="Included in this bundle">${line.parts.map(p => `<li>${rrgEsc(p)}</li>`).join('')}</ul>` : ''}
         ${fit}
+        ${rrgIsRoofAccessory(line) ? rrgPackageCompatHTML(line, 'line') : '' /* Package Deal compatibility — on the accessory's line only, so each pairing shows once */}
         ${compact ? '' : `<span class="cart-line-meta">SKU ${rrgEsc(line.sku || '')}</span>`}
         ${editable ? `
           <div class="cart-line-controls">

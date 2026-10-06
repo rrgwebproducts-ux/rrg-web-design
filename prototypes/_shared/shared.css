@@ -478,7 +478,7 @@ a.rrg-logo{display:block;}
    filter info icons (.plp-filter-tooltip::after) and the product-card fitment tooltip
    (.plp-fitment-tip) had drifted (8 vs 6px offset, z-index 5 vs 6, no visibility toggle).
    Each keeps only its own left/width; show with opacity:1 + visibility:visible. */
-.rrg-tooltip,.plp-filter-tooltip::after,.plp-fitment .plp-fitment-tip{position:absolute;top:calc(100% + 8px);z-index:6;background:var(--rrg-charcoal);color:#fff;font-family:'Lato',Arial,Helvetica,sans-serif;font-size:14px;font-weight:400;font-style:normal;text-transform:none;letter-spacing:normal;line-height:1.4;text-align:left;padding:8px 10px;border-radius:var(--radius);box-shadow:var(--shadow-pop);opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--t-fast),visibility var(--t-fast);}
+.rrg-tooltip,.plp-filter-tooltip::after,.plp-fitment .plp-fitment-tip,.rrg-info-tip::after{position:absolute;top:calc(100% + 8px);z-index:6;background:var(--rrg-charcoal);color:#fff;font-family:'Lato',Arial,Helvetica,sans-serif;font-size:14px;font-weight:400;font-style:normal;text-transform:none;letter-spacing:normal;line-height:1.4;text-align:left;padding:8px 10px;border-radius:var(--radius);box-shadow:var(--shadow-pop);opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--t-fast),visibility var(--t-fast);}
 
 /* buttons — one system (2026-09-29, spec.md §15 B1–B4). Colour: .btn-primary (red),
    .btn-cta (gold — every Add to Cart and primary purchase/vehicle action; turns UK green in
@@ -1130,6 +1130,25 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    anonymous flex item/column instead of one wrapping paragraph, which read as broken
    multi-column text. Plain block flow wraps it correctly as a single paragraph. */
 .cart-conflict-banner{font-size:13px;font-weight:700;color:var(--rrg-black);background:var(--rrg-unknown-bg);border:1px solid var(--rrg-unknown);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;line-height:1.4;}
+/* Package Deal compatibility (spec.md §19 phase 3, 2026-10-06): the banner now also shows when
+   things ARE compatible (green), not only the amber heads-up, each with an info tooltip. The
+   message is one <span> + the tip, so the flex row below has exactly two items and the text
+   still wraps as one paragraph (the 2026-09-12 note above). Same two looks on cart lines. */
+.cart-conflict-banner.is-ok,.cart-conflict-banner.is-warn{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font-weight:400;}
+.cart-conflict-banner.is-ok{color:var(--rrg-fits);background:var(--rrg-fits-bg);border-color:var(--rrg-fits);}
+.cart-conflict-banner.is-warn{color:var(--rrg-unknown-text);}
+.cart-conflict-banner strong{font-weight:900;}
+.cart-line-compat{display:flex;align-items:flex-start;gap:6px;font-size:12px;line-height:1.35;margin:2px 0;}
+.cart-line-compat.is-ok{color:var(--rrg-fits);}
+.cart-line-compat.is-warn{color:var(--rrg-unknown-text);}
+.cart-line-compat.is-warn > span:first-child::before{content:'⚠ ';color:var(--rrg-unknown);}
+/* Info tooltip — the shared bubble (.rrg-tooltip family above), on a small "i" icon. Opens
+   to the left so it stays on screen when the icon sits at the right edge of a banner. */
+.rrg-info-tip{position:relative;display:inline-flex;flex:0 0 auto;margin-top:1px;cursor:help;opacity:.8;}
+.rrg-info-tip svg{width:15px;height:15px;}
+.rrg-info-tip:hover,.rrg-info-tip:focus-visible{opacity:1;}
+.rrg-info-tip::after{content:attr(data-tooltip);right:-6px;width:min(260px,calc(100vw - 48px));}
+.rrg-info-tip:hover::after,.rrg-info-tip:focus-visible::after{opacity:1;visibility:visible;}
 
 /* Discontinued banner — sits above Add to Cart in place of the button/payment-badges
    (which are hidden via .cta-col[hidden] while this state is active), demo admin panel
