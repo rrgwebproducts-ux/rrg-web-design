@@ -1550,7 +1550,7 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - Each cart line carries `pkgCategory` (`rack` / `roof-box` / … / `null`): from the PLP product (`plpCartItemAttr`), the PDP's `.cta-col[data-pkg-category]`, or the demo items. Lines without one fall back to a deliberately narrow name match (tub/ladder racks, tracks, brackets, spares, extensions are never racks or RMPs). Production: a Magento product attribute.
    - Tagged so far: all 35 Roof Boxes PLP products (`roof-box`); VPLP's 17 racks/bar sets/platforms (`rack`, `VPLP_RACK_IDS`), the rest `null`; the vehicle-specific PDP (Pioneer 6 platform kit, `rack`).
    - `rrgPackageDeal(cart)` → `{ racks, accessories, active, hasRack, discount, potential, lines }`; every unit of every qualifying accessory saves while at least one rack is in the cart (**assumption** — no one-accessory-per-rack cap was discussed).
-   - `rrgCartTotals()` reports `packageDiscount` / `packagePotential` but does **not** take them off the total yet — phase 5 adds the summary line, so totals never stop adding up on the page.
+   - `rrgCartTotals()` reports `packageDiscount` / `packagePotential` — taken off the total since phase 5.
    - Site Admin cart presets: "Roof box only (Package Deal)" (potential $74.85 on the CRUZ Easy 430) and "Rack + roof box (Package Deal)" (active, $74.85).
 3. ✅ **Rack-aware compatibility** — built 2026-10-06 (PDP brief 4.19 rewritten).
    - Default: every roof-mounted accessory is compatible with every rack; merchandising adds exclusions. Brenton agreed one **clearly-flagged demo exclusion**: Thule Motion 3 L ↔ Rhino-Rack Pioneer platforms (`RRG_PACKAGE_EXCLUSIONS`, cart.js). Not a real fitment claim.
@@ -1563,9 +1563,12 @@ Source: `Meeting Title Roof Box Meet transcript.txt`. The meeting walked roofbox
    - Drawer: how it works (with-a-rack price lives here) → **Add to cart & choose your rack** → racks for the session vehicle, compatible first, each with its compatibility → "Package Deal applied". No vehicle → the Fit Finder opens over the drawer. Racks: real scraped listings for Hilux (5) and Ranger (3).
    - **Brenton, mid-build:** the PDP notes should match the "Fits your vehicle" fitment card, not a tinted box. The compatibility banner (phase 3) and the new tag now both reuse the `.fitment` card (`rrgNoticeCardHTML`): white, 3px coloured left edge, icon + uppercase label, grey body.
    - Also fixed: the gallery "Save N%" band hid only when there was no sale; it now also hides when the saving rounds to 0% (Motion 3 L Gloss Black is 95c off and showed "SAVE 0%").
-   - **Open question:** the deal currently applies even when the rack and box are flagged not compatible (the demo exclusion shows "Package Deal applied" next to "Heads up: not compatible"). Should an incompatible pair still get the discount?
-5. **Cart / mini-cart / checkout:** "Package Deal" saving line when both are in the basket; before that, a "potential saving" line and a missing-item nudge like the UK's, **without blocking checkout**. Rack + accessory grouped visually, either removable.
-6. **PLP marker:** light "Package Deal available" strip on qualifying cards, leading to the drawer (not a generic page).
+   - **Brenton, 2026-10-06 (answering the open question):** incompatible racks aren't suggested in the drawer, and the PDP tag isn't shown when the product is incompatible with something in the cart. Following on, an incompatible pair gets **no** discount (`rrgPackageDeal` only counts accessories with a compatible rack — "matched").
+5. ✅ **Cart / mini-cart / checkout / confirmation** — built 2026-10-06 (checkout-spec.md §11).
+   - The discount comes off the total: Subtotal − savings − Package Deal + delivery = Total, its own green row (cart, checkout; "Package Deal saving" on the confirmation).
+   - No compatible rack yet: greyed "Package Deal available — save $X" row (not counted), a red fitment-card notice above the cart lines with **Choose a rack** (opens the drawer at the rack list), the same nudge in the mini-cart, and a marker on the accessory's line. Nothing blocks checkout.
+   - Not built: visually grouping the rack + accessory lines — the notice, line markers and summary row carry it; flagged for review.
+6. ✅ **PLP strip** — built 2026-10-06 (PLP brief 4.6a). "Package Deal: Save 10% with a roof rack" (15% CRUZ) / "Save 10–15% on a roof box with this rack" along the bottom of the card, grid and list, opening the drawer for that product. Percentages only.
 7. Then repeat the PLP for Awnings, Rooftop Tents etc. on the same template.
 
 **Not for the build:** Vercel is near its free-tier size limit (upgrade may be needed); buying-guide analytics; package-vs-single sales data; the UK "stage one" split.

@@ -35,6 +35,7 @@
   <div id="cartFilled" hidden>
     <div class="cart-layout">
       <section class="cart-panel" aria-label="Items in your cart">
+        <div id="cartPackageNotice"></div>
         <ul class="cart-lines" id="cartLines"></ul>
         <a class="cart-continue" href="../home/index.html">‹ Continue shopping</a>
       </section>
@@ -157,6 +158,8 @@ function renderCart() {
   if (!filled) { document.getElementById('cartStickyBar').innerHTML = ''; return; }
 
   // Lines — full size, with the stock line under the name.
+  // Package Deal notice above the lines (spec.md §19 phase 5): saving applied, or add a rack.
+  document.getElementById('cartPackageNotice').innerHTML = rrgPackageCartNoticeHTML(cart);
   document.getElementById('cartLines').innerHTML = cart.lines.map(l => rrgCartLineHTML(l).replace('<span class="cart-line-meta">SKU', `${cartStockHTML(l)}<span class="cart-line-meta">SKU`)).join('');
 
   // How do you want it? (AU: Click & Collect or Delivery; NZ/UK: delivery only)
@@ -198,6 +201,7 @@ function renderCart() {
   document.getElementById('cartTotals').innerHTML = `
     <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
     ${t.savings > 0 ? `<div class="cart-totals-save"><dt>${typeof rrgSavingsLabel === 'function' ? rrgSavingsLabel() : "You're saving"}</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+    ${rrgPackageTotalsRowHTML(t)}
     <div><dt>${method === 'collect' ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery === null ? 'Calculated at checkout' : t.delivery === 0 ? 'Free' : rrgMoney(t.delivery)}</dd></div>
     <div class="cart-totals-total"><dt>Total</dt><dd>${rrgMoney(t.total)}</dd></div>
     <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>`;

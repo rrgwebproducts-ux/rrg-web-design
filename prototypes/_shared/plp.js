@@ -1542,6 +1542,24 @@ function plpCartItemAttr(product) {
   return JSON.stringify(item).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 }
 
+// Package Deal strip along the bottom of the card (spec.md §19 phase 6, 2026-10-06) — like the UK
+// store's "Package Deals Available" strip, but it opens our drawer for THIS product (the UK one led
+// to a generic page and lost the product). Percentages only: no deal price on the PLP (the meeting:
+// RRP + sale price are already there, a third price confuses). Racks and qualifying accessories only.
+function plpPackageStripHTML(product) {
+  if (typeof rrgPackageRole !== 'function') return '';
+  const item = { sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
+    wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory };
+  const role = rrgPackageRole(item);
+  if (!role) return '';
+  const acc = rrgPackageQualifyingLabel();
+  const text = role === 'rmp'
+    ? `Save ${rrgPctLabel(rrgPackageRate(item))} with a roof rack`
+    : `Save ${rrgPackageRateRange()} on a ${acc} with this rack`;
+  return `<button type="button" class="plp-card-pkg" data-package-open data-package-item="${String(JSON.stringify(item)).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">
+    ${RRG_PACKAGE_ICON}<span><b>${RRG_PACKAGE_DEAL.name}:</b> ${text}</span><span class="plp-card-pkg-go" aria-hidden="true">›</span></button>`;
+}
+
 function plpCardHTML(product, cfg) {
   const primaryBtn = plpPrimaryActionHTML(product, cfg.vrs ? '' : 'btn-block');
   const vrsRow = cfg.vrs ? `
@@ -1576,6 +1594,7 @@ function plpCardHTML(product, cfg) {
           ${plpCompareCheckHTML(product)}
         </div>
       </div>
+      ${plpPackageStripHTML(product)}
     </div>
   `;
 }
@@ -1623,6 +1642,7 @@ function plpListCardHTML(product, cfg) {
         ${plpPrimaryActionHTML(product)}
         ${plpCompareCheckHTML(product)}
       </div>
+      ${plpPackageStripHTML(product)}
     </div>
   `;
 }

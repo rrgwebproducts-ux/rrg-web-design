@@ -229,6 +229,20 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ---
 
+### 4.6a Package Deal strip (2026-10-06, spec.md §19)
+
+**Location:** full width along the bottom edge of a product card (grid and list), on any listing — only for roof racks and for qualifying roof-mounted accessories (roof boxes for now). First demoed on PLP Roof Boxes (`prototypes/plp-roof-boxes/`, the Bike Racks template with the four live shape categories as Shop By) and VPLP Roof Racks.
+
+**Copy:** tag icon + "**Package Deal:** Save 10% with a roof rack" (15% for CRUZ) on an accessory; "**Package Deal:** Save 10–15% on a roof box with this rack" on a rack. Percentages only — **no deal price on listings** (meeting 2026-10-06: RRP and sale price are already there; a third price confuses).
+
+**Behaviour:** the whole strip is a button that opens the Package Deal drawer (PDP brief 4.19a) for **that** product — unlike roofbox.co.uk, whose strip leads to a generic package page and loses the product. From an accessory card the drawer offers "Add to cart & choose your rack".
+
+**Look:** light grey strip, 1px top border, brand-red icon/label/chevron (blue in the UK), 13px.
+
+**Data:** the product's package category + rate (same attributes as PDP 4.19 / 4.19a).
+
+---
+
 ### 4.7 Fitment Gallery (VRS/VPLP only)
 
 **Name:** Fitment Gallery — page-level inline widget + per-row slide-out

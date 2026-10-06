@@ -901,12 +901,15 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 - Rack, nothing in cart: "Buy this rack with a roof box and save 10–15% on the roof box."
 - Rack, roof box in cart: "Add this rack and save $74.85 on the [roof box] in your cart." → once both are in: PACKAGE DEAL APPLIED.
 
+**Compatibility (Brenton, 2026-10-06):** the tag is **not shown** when this product is incompatible with something in the cart — the 4.19 heads-up shows instead — and an incompatible rack + accessory pair gets **no** Package Deal discount.
+
 **Look:** the fitment-card style (same as 4.19): brand-red left edge, tag icon and "PACKAGE DEAL" label in brand red (UK region: blue, via the region's red token); green with a tick once applied. "How it works" is a text link that opens the drawer.
 
 **Drawer (shared drawer base, 420px):**
 1. *How it works* — the deal in one line, this product's card (Today $X / With a roof rack $Y / You save $Z), 3 steps. Buttons: **Add to cart & choose your rack** (primary) and **Add to cart only**. If a rack is already in the cart it says so and offers just **Add to cart**.
-2. *Choose your rack* — "✓ [product] added to your cart", then the roof racks for the session vehicle, each with its compatibility ("✓ Compatible with this roof box" / "Not compatible…"), compatible ones first, nothing hidden, an **Add** button each, and "See every roof rack for your [vehicle] ›". No vehicle set → "Set your vehicle" opens the Fit Finder drawer, and the list appears once a vehicle is chosen. Footer: "I'll choose a rack later".
+2. *Choose your rack* — "✓ [product] added to your cart", then the roof racks for the session vehicle, **only racks compatible with this product** (Brenton, 2026-10-06 — incompatible ones aren't suggested; the full range is behind "See every roof rack"), each marked "✓ Compatible with this roof box", an **Add** button each, and "See every roof rack for your [vehicle] ›". No vehicle set → "Set your vehicle" opens the Fit Finder drawer, and the list appears once a vehicle is chosen. Footer: "I'll choose a rack later".
 3. *Applied* — tick, "Package Deal applied — You're saving $X on your roof box in this order", the rack + box lines. Buttons: **View cart** (opens the mini-cart), **Keep shopping**.
+- It can also be opened for any product from a cart nudge (straight at step 2) or a listing card's Package Deal strip (PLP brief 4.6a).
 - Rack pages get a single explainer view (the deal, 3 steps, "Shop roof boxes ›", **Got it**).
 
 **Data (Magento):** product package category (rack / roof box / …, shared with 4.19), accessory rate (default 10%, brand overrides e.g. CRUZ 15%), and the vehicle's racks for step 2. The prototype's rack lists are real listings already scraped for the two demo vehicles (Hilux, Ranger).

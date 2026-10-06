@@ -146,6 +146,7 @@ function renderSummary() {
     <dl class="cart-totals">
       <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
       ${t.savings > 0 ? `<div class="cart-totals-save"><dt>${typeof rrgSavingsLabel === 'function' ? rrgSavingsLabel() : "You're saving"}</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+      ${rrgPackageTotalsRowHTML(t)}
       <div><dt>${method === 'collect' ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery === null ? 'Choose an option' : t.delivery === 0 ? 'Free' : rrgMoney(t.delivery)}</dd></div>
       <div class="cart-totals-total"><dt>Total</dt><dd>${rrgMoney(t.total)}</dd></div>
       <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>

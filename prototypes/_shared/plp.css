@@ -621,3 +621,12 @@
 .plp-empty-filters{grid-column:1 / -1;padding:40px 24px;text-align:center;border:1px dashed var(--rrg-line-strong);border-radius:var(--radius);}
 .plp-empty-filters h3{margin:0 0 6px;font-size:24px;}
 .plp-empty-filters p{margin:0 0 16px;color:var(--rrg-grey-700);}
+
+/* Package Deal strip (spec.md §19 phase 6, 2026-10-06) — full width along the card's bottom edge,
+   opens the Package Deal drawer for this product (cart.js). Brand red text (blue in the UK). */
+.plp-card-pkg{display:flex;align-items:center;gap:8px;width:100%;margin-top:auto;padding:9px 14px;border:0;border-top:1px solid var(--rrg-line);background:var(--rrg-bg);font:inherit;font-size:13px;line-height:1.35;color:var(--rrg-text);text-align:left;cursor:pointer;transition:background var(--t-fast);}
+.plp-card-pkg:hover{background:var(--rrg-line);}
+.plp-card-pkg svg{width:16px;height:16px;flex:0 0 auto;color:var(--rrg-red);}
+.plp-card-pkg b{color:var(--rrg-red);}
+.plp-card-pkg-go{margin-left:auto;font-size:18px;line-height:1;color:var(--rrg-red);}
+.plp-results.is-list .plp-card-pkg{grid-column:1 / -1;margin:4px -16px -16px;width:auto;}

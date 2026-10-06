@@ -181,6 +181,7 @@ function render() {
     <dl class="cart-totals">
       <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
       ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You saved</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}
+      ${t.packageDiscount > 0 ? rrgPackageTotalsRowHTML(t, { paid: true }) : ''}
       <div><dt>${collect ? 'Click &amp; Collect' : 'Delivery'}</dt><dd>${t.delivery ? rrgMoney(t.delivery) : 'Free'}</dd></div>
       <div class="cart-totals-total"><dt>Total paid</dt><dd>${rrgMoney(t.total)}</dd></div>
       <p class="cart-totals-tax">Includes ${t.taxName} of ${rrgMoney(t.tax)}</p>
