@@ -140,6 +140,7 @@ const RRG_COMPONENTS = [
       v('Empty', 'header', '.mini-cart-backdrop', { do: 'call:rrgOpenMiniCart', h: 520 }),
       v('Package Deal applied', 'header', '.mini-cart-backdrop', { cart: 'packageDeal', do: 'call:rrgOpenMiniCart', h: 760 }),
       v('Package Deal available (no rack)', 'header', '.mini-cart-backdrop', { cart: 'roofBox', do: 'call:rrgOpenMiniCart', h: 760 }),
+      v('Package Deal available (rack, no accessory)', 'header', '.mini-cart-backdrop', { cart: 'thuleRackOnly', do: 'call:rrgOpenMiniCart|true', h: 760 }),
     ] },
   { id: 'fit-finder-drawer', group: 'global', name: 'Fit Finder Drawer', build: 'shared', usedOn: NOT_CHECKOUT,
     source: 'buildFitFinderDrawer / openFitFinderDrawer (shared.js), holding rrgWidgetVehicleFinderHTML (widgets.js) — always the no-vehicle cascade',
@@ -191,6 +192,7 @@ const RRG_COMPONENTS = [
       v('Roof box — how it works', 'roof-box', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer', h: 820 }),
       v('Roof box — choose your rack', 'roof-box', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer,click:[data-pkg-add-choose]', h: 820 }),
       v('Rack — how it works', 'vehicle-specific', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer', h: 820 }),
+      v('Rack — choose an accessory', 'vehicle-specific', '.pkg-drawer-backdrop', { cart: 'empty', do: 'call:rrgOpenPackageDrawer,click:[data-pkg-add-choose]', h: 820 }),
     ] },
   { id: 'product-gallery', group: 'product', name: 'Product Gallery', build: 'mixed', usedOn: [...PDP5, 'store'],
     source: 'Static per page; initGalleryCarousels / applyVideoFlag (shared.js)',
@@ -418,6 +420,7 @@ const RRG_COMPONENTS = [
     source: 'rrgPackageCartNoticeHTML (cart.js)',
     variants: [
       v('Available — add a rack', 'cart', '#cartPackageNotice', { cart: 'roofBox' }),
+      v('Available — add an accessory (rack only)', 'cart', '#cartPackageNotice', { cart: 'thuleRackOnly' }),
       v('Applied', 'cart', '#cartPackageNotice', { cart: 'packageDeal' }),
       v('Rack in cart is not compatible', 'cart', '#cartPackageNotice', { cart: 'notCompatible' }),
     ] },

@@ -211,7 +211,11 @@ A roof rack + a qualifying roof-mounted accessory (roof boxes, roof-mounted bike
 - **Totals:** the discount comes off the amount payable and shows as its own row after the sale savings: Subtotal − savings − **Package Deal** + delivery = Total. Cart, checkout summary and order confirmation ("Package Deal saving").
 - **Not yet qualified** (accessory, no rack): a greyed "Package Deal available — Add a roof rack to this order — save $X" row, **not counted** in the total.
 - **Cart page notice** above the lines, in the PDP fitment-card style: "PACKAGE DEAL — Add any roof rack to this order and save $X on your roof box [Choose a rack]" (red), or "PACKAGE DEAL APPLIED — You're saving $X…" (green). *Choose a rack* opens the Package Deal drawer straight at the rack list for that accessory (compatible racks only).
-- **Mini-cart:** one line under the savings — "✓ Package Deal: you're saving $X" or "Package Deal: add a roof rack and save $X on your roof box. Choose a rack".
+- **Mini-cart (2026-10-07, Brenton: the drawer needs a CTA both ways):** the same card as the cart page, directly under the cart lines (above "Goes well with"), replacing the old one-line footer note:
+  - Accessory, no rack → red PACKAGE DEAL card, "Add any roof rack to this order and save $X on your roof box." **Choose a rack** (drawer at the rack list).
+  - Rack, no accessory → red PACKAGE DEAL card, "Add a roof-mounted accessory to this order and save 10–15% on it. That covers roof boxes, roof-mounted bike racks and more." **Add an accessory** (drawer at the suggested accessories, PDP brief 4.19a).
+  - Both → green PACKAGE DEAL APPLIED card, "You're saving $X on your roof box because there's a roof rack in this order."
+- The cart page's notice has the same rack-only state (it showed nothing before).
 - **Cart lines:** the accessory's line shows "Package Deal −$X" (green) or "Package Deal: save $X with a roof rack" (red), plus the compatibility note (PDP brief 4.19).
 - **Unlike roofbox.co.uk:** no package SKUs, nothing blocks checkout, and either item can be removed on its own (the saving recalculates).
 - Demo presets (Site Admin → Demo cart): Roof box only · Rack + roof box · Platform + Motion 3 L (not compatible — still gets the discount, both lines carry the note).

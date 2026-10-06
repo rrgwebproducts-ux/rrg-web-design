@@ -2466,10 +2466,14 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 /* Cart side (phase 5): line marker, mini-cart line, cart-page notice (a .fitment card). */
 .cart-line-package{display:inline-block;align-self:flex-start;margin:2px 0;font-size:12px;font-weight:700;color:var(--rrg-red);}
 .cart-line-package.is-active{color:var(--rrg-fits);}
-.mini-cart-package{margin:0;font-size:13px;line-height:1.45;color:var(--rrg-grey-700);}
-.mini-cart-package.is-active{color:var(--rrg-fits);font-weight:700;}
-.mini-cart-package .link-btn{font-size:13px;}
 .pkg-cart-notice{margin-bottom:12px;}
+.mini-cart-body .pkg-cart-notice{margin:12px 0 0;}
+/* Accessories step (rack in cart): price with the rack, struck current price, the % */
+.pkg-acc-price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+.pkg-acc-price strong{color:var(--rrg-fits);font-size:14px;}
+.pkg-acc-price s{color:var(--rrg-grey-700);}
+.pkg-acc-save{font-weight:700;color:var(--rrg-fits);}
+.pkg-acc-note{margin:0;font-size:13px;color:var(--rrg-grey-700);}
 .pkg-drawer-body{flex:1 1 auto;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:14px;}
 .pkg-drawer-foot{flex:0 0 auto;display:flex;flex-direction:column;gap:10px;padding:16px 22px 20px;border-top:1px solid var(--rrg-line);background:#fff;}
 .pkg-drawer-foot:empty{display:none;}

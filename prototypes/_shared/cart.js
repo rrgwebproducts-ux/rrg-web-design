@@ -290,21 +290,24 @@ function rrgPackageTotalsRowHTML(t, { paid = false } = {}) {
   if (!paid && t.packagePotential > 0) return `<div class="cart-totals-package is-potential"><dt>${RRG_PACKAGE_DEAL.name} available<small>Add a roof rack to this order</small></dt><dd>save ${rrgMoney(t.packagePotential)}</dd></div>`;
   return '';
 }
-// The cart-level notice (cart page, above the lines; mini-cart): active = what's being saved;
-// potential = add a rack, with "Choose a rack" opening the drawer at its rack list for the first
-// qualifying accessory. compact = the mini-cart's one-line version.
-function rrgPackageCartNoticeHTML(cart = rrgCartGet(), { compact = false } = {}) {
+// The cart-level Package Deal card (cart page above the lines; mini-cart under the lines), in the
+// PDP fitment-card style. Three states (Brenton, 2026-10-07: the cart drawer needs a CTA both ways):
+//   applied     rack + accessory: green, what's being saved
+//   accessory   no rack yet: red, "Choose a rack" opens the drawer at the rack list for it
+//   rack        no accessory yet: red, "Add an accessory" opens the drawer at suggested accessories
+function rrgPackageCartNoticeHTML(cart = rrgCartGet()) {
   const deal = rrgPackageDeal(cart);
-  if (!deal.accessories.length) return '';
+  const btn = (label, step, item) => `<div class="actions"><button type="button" class="btn btn-outline-red btn-sm" data-package-open data-package-step="${step}" data-package-item="${rrgEsc(JSON.stringify(item))}">${label}</button></div>`;
+  if (!deal.accessories.length) {
+    if (!deal.racks.length) return '';
+    return rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name,
+      `Add a roof-mounted accessory to this order and save <b>${rrgPackageRateRange()}</b> on it. That covers ${rrgPackageQualifyingShort()}.${btn('Add an accessory', 'accessories', deal.racks[0])}`, '', 'pkg-cart-notice');
+  }
   const acc = deal.accessories.find(a => !deal.matched.includes(a)) || deal.accessories[0];
-  const label = RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(acc)];
-  const open = `<button type="button" class="${compact ? 'link-btn' : 'btn btn-outline-red btn-sm'}" data-package-open data-package-step="racks" data-package-item="${rrgEsc(JSON.stringify(acc))}">Choose a rack</button>`;
-  if (compact) return deal.active
-    ? `<p class="mini-cart-package is-active">✓ ${RRG_PACKAGE_DEAL.name}: you're saving ${rrgMoney(deal.discount)}</p>`
-    : `<p class="mini-cart-package">${RRG_PACKAGE_DEAL.name}: add a roof rack and save ${rrgMoney(deal.potential)} on your ${label}. ${open}</p>`;
+  const label = deal.active ? rrgPackageLinesLabel(deal.matched) : RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(acc)];
   return deal.active
     ? rrgNoticeCardHTML('fits', `${RRG_PACKAGE_DEAL.name} applied`, `You're saving <b>${rrgMoney(deal.discount)}</b> on your ${label} because there's a roof rack in this order.`, '', 'pkg-cart-notice')
-    : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `Add any roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.<div class="actions">${open}</div>`, '', 'pkg-cart-notice');
+    : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `Add any roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.${btn('Choose a rack', 'racks', acc)}`, '', 'pkg-cart-notice');
 }
 const rrgMoney = n => fmtAud(Math.round(n * 100) / 100);
 const rrgPath = rel => rel === '#' ? '#' : RRG_PROTO + rel;
@@ -422,6 +425,7 @@ function rrgRenderMiniCart() {
   const cross = RRG_DEMO_CROSS_SELLS.filter(p => !inCart.has(p.sku)).slice(0, 3);
   body.innerHTML = `
     <ul class="cart-lines">${cart.lines.map(l => rrgCartLineHTML(l, { compact: true })).join('')}</ul>
+    ${rrgPackageCartNoticeHTML(cart)}
     ${cross.length ? `
       <div class="mini-cart-cross">
         <h3>Goes well with</h3>
@@ -437,7 +441,6 @@ function rrgRenderMiniCart() {
   document.getElementById('miniCartFoot').innerHTML = `
     <div class="mini-cart-subtotal"><span>Subtotal (${t.count} item${t.count === 1 ? '' : 's'})</span><strong>${rrgMoney(t.subtotal)}</strong></div>
     ${t.savings > 0 ? `<p class="mini-cart-savings">${typeof rrgSavingsLabel === 'function' ? rrgSavingsLabel() : "You're saving"} ${rrgMoney(t.savings)}</p>` : ''}
-    ${rrgPackageCartNoticeHTML(cart, { compact: true })}
     ${fulfil}
     <a class="btn btn-cta btn-block" href="${RRG_PROTO}checkout/index.html">Checkout</a>
     <a class="btn btn-outline btn-block" href="${RRG_PROTO}cart/index.html">View cart</a>
@@ -494,6 +497,37 @@ const RRG_PACKAGE_RACKS = {
 };
 // The Ranger's Pioneer platform joins the demo exclusion with its Hilux siblings.
 RRG_PACKAGE_EXCLUSIONS[0].racks.push('JC-01605');
+
+// Accessories suggested once a rack is in the cart (drawer "accessories" step, opened from the
+// cart / mini-cart card or a rack PDP). The first compatible one per qualifying category is shown,
+// so each category lists a fallback (the Motion 3 L is a demo exclusion with the Pioneer platforms).
+// DEMO: real listings from the category PLPs (2026-10-06). Production: best sellers per category.
+const RRG_PACKAGE_ACCESSORIES = [
+  RRG_DEMO_CART_ITEMS.motionBox,
+  RRG_DEMO_CART_ITEMS.roofBox,
+  { sku: '532002', brand: 'Thule', name: 'Thule FreeRide 532 Silver Roof Mounted Bike Carrier x1', price: 218.45, wasPrice: 229.95,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg', url: 'plp/index.html?attachment=roof-mounting', pkgCategory: 'roof-bike' },
+  { sku: 'RH32141', brand: 'Rhino-Rack', name: 'Rhino Rack Dome 1300 Awning - 32141', price: 299.00, wasPrice: 427.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg', url: 'plp-awnings/index.html', pkgCategory: 'awning' },
+  { sku: 'RH61052', brand: 'Rhino-Rack', name: 'Rhino Rack Low Profile Roof Top Tent - 61052', price: 4300.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-low-profile-roof-top-tent-61052.jpg', url: 'plp-roof-top-tents/index.html', pkgCategory: 'rooftop-tent' },
+  { sku: 'Y8004052', brand: 'Yakima', name: 'Yakima Evenkeel Kayak Carrier - 8004052', price: 99.00, wasPrice: 199.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-evenkeel-kayak-carrier-8004052.jpg', url: 'plp-water-carriers/index.html', pkgCategory: 'water-snow', kind: 'kayak carrier' },
+  { sku: 'C940-222', brand: 'CRUZ', name: 'Cruz Ski Carrier Black / Fishing Rod Holder 4 Row - 940-222', price: 191.20, wasPrice: 239.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/C/R/CRUZ-940-222-Ski--Fishing-Rod-Holders._1_1.jpg', url: 'plp-snow-carriers/index.html', pkgCategory: 'water-snow', kind: 'ski carrier' }
+];
+// One suggestion per category for this rack: compatible only (as with racks), qualifying categories
+// only, nothing already in the cart. Kayak and ski carriers share 'water-snow', so key by PLP url.
+function rrgPackageAccessoriesFor(rack, cart = rrgCartGet()) {
+  const inCart = new Set(cart.lines.map(l => l.key));
+  const seen = new Set();
+  return RRG_PACKAGE_ACCESSORIES.filter(a => {
+    const group = a.pkgCategory === 'water-snow' ? a.url : a.pkgCategory;
+    if (!RRG_PACKAGE_DEAL.qualifying[a.pkgCategory] || inCart.has(a.sku) || seen.has(group) || !rrgPackageCompatible(a, rack)) return false;
+    seen.add(group);
+    return true;
+  });
+}
 
 const rrgPctLabel = r => `${Math.round(r * 100)}%`;
 // Words for the qualifying categories. On an accessory the copy names that product's own category
@@ -590,7 +624,13 @@ function rrgBuildPackageDrawer() {
   backdrop.querySelector('.store-slideout-close').addEventListener('click', rrgClosePackageDrawer);
   backdrop.addEventListener('click', e => {
     const item = rrgPackageDrawerItem();
-    if (e.target.closest('[data-pkg-add-choose]')) { rrgCartAdd(item, { open: false }); rrgPackageStep = 'racks'; rrgRenderPackageDrawer(); }
+    if (e.target.closest('[data-pkg-add-choose]')) { rrgCartAdd(item, { open: false }); rrgPackageStep = rrgPackageRole(item) === 'rack' ? 'accessories' : 'racks'; rrgRenderPackageDrawer(); }
+    if (e.target.closest('[data-pkg-choose-acc]')) { rrgPackageStep = 'accessories'; rrgRenderPackageDrawer(); }
+    const accBtn = e.target.closest('[data-pkg-add-acc]');
+    if (accBtn) {
+      const a = RRG_PACKAGE_ACCESSORIES.find(x => x.sku === accBtn.dataset.pkgAddAcc);
+      if (a) { rrgCartAdd(a, { open: false }); rrgPackageStep = 'done'; rrgRenderPackageDrawer(); }
+    }
     if (e.target.closest('[data-pkg-add-only]')) { rrgClosePackageDrawer(); rrgCartAdd(item); }
     const rack = e.target.closest('[data-pkg-add-rack]');
     if (rack) {
@@ -621,11 +661,54 @@ function rrgRenderPackageDrawer() {
     ? `<p class="pkg-lead">Buy any roof rack and this ${acc} in the same order and the ${acc} is <strong>${rrgPctLabel(rrgPackageRate(item))} off</strong>. It stacks on sale prices.</p>`
     : `<p class="pkg-lead">Buy this rack and a roof-mounted accessory in the same order and the accessory is <strong>${rrgPackageRateRange()} off</strong>. That covers ${rrgPackageQualifyingLabel()}. It stacks on sale prices.</p>`;
 
+  if (rrgPackageStep === 'done') {
+    const now = rrgPackageDeal();
+    body.innerHTML = `
+      <div class="pkg-done">
+        <span class="mini-cart-added">✓</span>
+        <h3>${RRG_PACKAGE_DEAL.name} applied</h3>
+        <p>You're saving <strong>${rrgMoney(now.discount)}</strong> on your ${rrgPackageLinesLabel(now.matched)} in this order.</p>
+      </div>
+      <ul class="cart-lines">${[...now.racks, ...now.accessories].map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>`;
+    foot.innerHTML = `<button type="button" class="btn btn-cta btn-block" data-pkg-view-cart>View cart</button>
+      <button type="button" class="btn btn-outline btn-block" data-pkg-close>Keep shopping</button>`;
+    return;
+  }
+
   if (role === 'rack') {
     const links = rrgPackageQualifyingKeys().flatMap(k => RRG_PACKAGE_CATEGORY_PLP[k] || []);
-    body.innerHTML = `${intro}${rrgPackageSteps('rack', item)}
-      <ul class="pkg-shop-links">${links.map(([label, href]) => `<li><a class="pkg-shop-link" href="${RRG_PROTO}${href}">Shop ${label.charAt(0).toLowerCase() + label.slice(1)} ›</a></li>`).join('')}</ul>`;
-    foot.innerHTML = `<button type="button" class="btn btn-outline btn-block" data-pkg-close>Got it</button>`;
+    const shopLinks = `<ul class="pkg-shop-links">${links.map(([label, href]) => `<li><a class="pkg-shop-link" href="${RRG_PROTO}${href}">Shop ${label.charAt(0).toLowerCase() + label.slice(1)} ›</a></li>`).join('')}</ul>`;
+    const rackInCart = rrgCartGet().lines.some(l => l.key === (item.key || item.sku));
+    if (rrgPackageStep === 'accessories') {
+      // Mirrors the racks step: one compatible suggestion per qualifying category, each with its
+      // saving, then the category links for the full range.
+      const accs = rrgPackageAccessoriesFor(item);
+      body.innerHTML = `
+        ${rackInCart ? `<p class="pkg-added">✓ ${rrgEsc(rrgShortName(item.name))} is in your cart</p>` : ''}
+        <h3 class="pkg-h3">Add an accessory and save</h3>
+        <ul class="pkg-racks">${accs.map(a => {
+          const aSave = rrgPackageSaving(a);
+          return `<li class="pkg-rack">
+            <img src="${a.image}" alt="" loading="lazy">
+            <div class="pkg-rack-info">
+              <span class="cart-line-brand">${rrgEsc(a.brand)} · ${rrgEsc(a.kind || RRG_PACKAGE_CATEGORY_LABEL[a.pkgCategory])}</span>
+              <span class="pkg-rack-name">${rrgEsc(rrgShortName(a.name))}</span>
+              <span class="cart-line-compat is-ok"><span>✓ Compatible with this roof rack</span></span>
+              <span class="pkg-acc-price"><strong>${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" data-pkg-add-acc="${rrgEsc(a.sku)}">Add</button>
+          </li>`;
+        }).join('')}</ul>
+        <p class="pkg-acc-note">Prices shown with your rack. Shop the full range:</p>
+        ${shopLinks}`;
+      foot.innerHTML = `<button type="button" class="btn btn-outline btn-block" data-pkg-close>I'll add one later</button>`;
+      return;
+    }
+    body.innerHTML = `${intro}${rrgPackageSteps('rack', item)}${shopLinks}`;
+    foot.innerHTML = rackInCart
+      ? `<button type="button" class="btn btn-cta btn-block" data-pkg-choose-acc>Choose an accessory</button>`
+      : `<button type="button" class="btn btn-cta btn-block" data-pkg-add-choose>Add to cart &amp; choose an accessory</button>
+         <button type="button" class="btn btn-outline btn-block" data-pkg-add-only>Add to cart only</button>`;
     return;
   }
 
@@ -645,20 +728,6 @@ function rrgRenderPackageDrawer() {
       </div>
     </div>`;
   const vehicle = rrgVehicle();
-
-  if (rrgPackageStep === 'done') {
-    const now = rrgPackageDeal();
-    body.innerHTML = `
-      <div class="pkg-done">
-        <span class="mini-cart-added">✓</span>
-        <h3>${RRG_PACKAGE_DEAL.name} applied</h3>
-        <p>You're saving <strong>${rrgMoney(now.discount)}</strong> on your ${rrgPackageLinesLabel(now.matched)} in this order.</p>
-      </div>
-      <ul class="cart-lines">${[...now.racks, ...now.accessories].map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>`;
-    foot.innerHTML = `<button type="button" class="btn btn-cta btn-block" data-pkg-view-cart>View cart</button>
-      <button type="button" class="btn btn-outline btn-block" data-pkg-close>Keep shopping</button>`;
-    return;
-  }
 
   if (rrgPackageStep === 'racks') {
     // Only racks that work with this product are suggested (Brenton, 2026-10-06). The full range,
@@ -700,11 +769,12 @@ function rrgRenderPackageDrawer() {
     : `<button type="button" class="btn btn-cta btn-block" data-pkg-add-choose>Add to cart &amp; choose your rack</button>
        <button type="button" class="btn btn-outline btn-block" data-pkg-add-only>Add to cart only</button>`;
 }
-// item: a cart-line-shaped product (default: this product page's); step: 'intro' | 'racks'.
+// item: a cart-line-shaped product (default: this product page's); step: 'intro' | 'racks' (for an
+// accessory) | 'accessories' (for a rack).
 function rrgOpenPackageDrawer(item = null, step = 'intro') {
   rrgBuildPackageDrawer();
   rrgPackageItem = item && typeof item === 'object' ? item : null;
-  rrgPackageStep = step === 'racks' ? 'racks' : 'intro';
+  rrgPackageStep = ['racks', 'accessories'].includes(step) ? step : 'intro';
   rrgCloseMiniCart(); // opened from the mini-cart's nudge: one drawer at a time
   rrgRenderPackageDrawer();
   const backdrop = document.getElementById('pkgDrawerBackdrop');

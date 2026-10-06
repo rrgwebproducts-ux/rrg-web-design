@@ -1602,6 +1602,7 @@ Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything 
 | 14 | Bike racks: roof-mounted only (never tow ball / hitch) | Phase 7 |
 | 15 | All RMPs, not just boxes: rooftop tents, awnings, water + snow carriers, new PLPs for them | Phase 7 |
 | 16 | Demo starts with roof boxes + racks | Phases 1–6 |
+| 34 | Cart drawer CTA both ways (Brenton, 2026-10-07: "the biggest missing part"): add a rack → prompt to add an accessory; add an accessory → prompt to add a rack | 2026-10-07: a Package Deal card under the cart lines in the mini-cart (and the cart page) in all three states. Rack only → **Add an accessory** opens a new drawer step with one compatible suggestion per qualifying category, each with its saving and an Add button. Rack PDPs' drawer gets the same step (**Add to cart & choose an accessory**). Checkout spec §11, PDP brief 4.19a |
 | 18 | "Change vehicle" inside the drawer's rack step (the UK flow couldn't change vehicle mid-package) | 2026-10-07: a *Change vehicle* link beside "Choose a roof rack for your …" opens the Fit Finder; the rack list redraws for the new vehicle |
 | 17 | Config-Variant (Pioneer platform) PDP reads the cart as a rack (from Brenton's 2026-10-07 review) | 2026-10-07: `data-pkg-category="rack"`; the tag and compatibility card redraw on a build-option swap; the Flat Pack SKU (RH62112F) added to the demo exclusion |
 
