@@ -39,7 +39,8 @@
   .index-list a{color:var(--rrg-red);text-decoration:underline;}
   .index-list a:hover{color:var(--rrg-red-dark);}
   /* Priority table: numbered by CSS counter; status pills are hand-edited here as work moves on.
-     Design: Ready for dev = has a developer brief; In review = built, awaiting sign-off. */
+     Design: Ready for dev = has a developer brief; In review = built, awaiting sign-off.
+     Dev: CMS page = no developer work; Brenton updates the existing Magento content page. */
   .priority-scroll{overflow-x:auto;margin-top:8px;}
   .priority-table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.4;counter-reset:prio;}
   .priority-table th,.priority-table td{padding:8px 12px 8px 0;text-align:left;vertical-align:middle;border-bottom:1px solid var(--rrg-line-soft);}
@@ -54,6 +55,8 @@
   .status--ready{background:var(--rrg-fits-bg);color:var(--rrg-fits);}
   .status--review{background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);}
   .status--todo{background:var(--rrg-bg);color:var(--rrg-grey-700);}
+  .status--progress{background:var(--rrg-unknown-bg);color:var(--rrg-unknown-text);}
+  .status--cms{background:transparent;color:var(--rrg-grey-700);box-shadow:inset 0 0 0 1px var(--rrg-line);}
   /* The cut-off stays red in every region (UK swaps --rrg-red to blue). */
   .priority-table .priority-line td{padding:14px 0;border:0;}
   .priority-line span{display:flex;align-items:center;gap:10px;color:var(--rrg-nofit);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;}
@@ -218,8 +221,8 @@
       <table class="priority-table">
         <thead><tr><th scope="col">Page</th><th scope="col">Design status</th><th scope="col">Dev status</th><th scope="col">Example</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Header, Mega Menu &amp; Footer</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="header/index.html">https://rrg-web-design.vercel.app/prototypes/header/index.html</a></td></tr>
-          <tr><th scope="row">Vehicle Landing (VLP)</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vlp/index.html">https://rrg-web-design.vercel.app/prototypes/vlp/index.html</a></td></tr>
+          <tr><th scope="row">Header, Mega Menu &amp; Footer</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--progress">In progress</span></td><td><a href="header/index.html">https://rrg-web-design.vercel.app/prototypes/header/index.html</a></td></tr>
+          <tr><th scope="row">Vehicle Landing (VLP)</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--progress">In progress</span></td><td><a href="vlp/index.html">https://rrg-web-design.vercel.app/prototypes/vlp/index.html</a></td></tr>
           <tr><th scope="row">Vehicle Category Landing (VCLP) &mdash; Make &amp; Model / AEO</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vehicle-category-landing/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-category-landing/index.html</a></td></tr>
           <tr><th scope="row">Product Pages &amp; Siblings</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="config-variant/index.html">https://rrg-web-design.vercel.app/prototypes/config-variant/index.html</a></td></tr>
           <tr><th scope="row">Vehicle-Specific Product</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="vehicle-specific/index.html">https://rrg-web-design.vercel.app/prototypes/vehicle-specific/index.html</a></td></tr>
@@ -234,10 +237,10 @@
           <tr><th scope="row">Store Finder</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="store-finder/index.html">https://rrg-web-design.vercel.app/prototypes/store-finder/index.html</a></td></tr>
           <tr><th scope="row">Store Pages</th><td><span class="status status--ready">Ready for dev</span></td><td><span class="status status--todo">Not started</span></td><td><a href="store/index.html">https://rrg-web-design.vercel.app/prototypes/store/index.html</a></td></tr>
           <tr class="priority-line"><td colspan="4"><span>Must be done above this line &middot; anything below is a bonus</span></td></tr>
-          <tr><th scope="row">Buying Guide</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="buying-guide/index.html">https://rrg-web-design.vercel.app/prototypes/buying-guide/index.html</a></td></tr>
-          <tr><th scope="row">Installation &amp; Booking</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="installation/index.html">https://rrg-web-design.vercel.app/prototypes/installation/index.html</a></td></tr>
-          <tr><th scope="row">Fit My Vehicle</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="fit-my-vehicle/index.html">https://rrg-web-design.vercel.app/prototypes/fit-my-vehicle/index.html</a></td></tr>
-          <tr><th scope="row">Home Page</th><td><span class="status status--review">In review</span></td><td><span class="status status--todo">Not started</span></td><td><a href="home/index.html">https://rrg-web-design.vercel.app/prototypes/home/index.html</a></td></tr>
+          <tr><th scope="row">Buying Guide</th><td><span class="status status--review">In review</span></td><td><span class="status status--cms">CMS page &middot; no dev</span></td><td><a href="buying-guide/index.html">https://rrg-web-design.vercel.app/prototypes/buying-guide/index.html</a></td></tr>
+          <tr><th scope="row">Installation &amp; Booking</th><td><span class="status status--review">In review</span></td><td><span class="status status--cms">CMS page &middot; no dev</span></td><td><a href="installation/index.html">https://rrg-web-design.vercel.app/prototypes/installation/index.html</a></td></tr>
+          <tr><th scope="row">Fit My Vehicle</th><td><span class="status status--review">In review</span></td><td><span class="status status--cms">CMS page &middot; no dev</span></td><td><a href="fit-my-vehicle/index.html">https://rrg-web-design.vercel.app/prototypes/fit-my-vehicle/index.html</a></td></tr>
+          <tr><th scope="row">Home Page</th><td><span class="status status--review">In review</span></td><td><span class="status status--progress">In progress</span></td><td><a href="home/index.html">https://rrg-web-design.vercel.app/prototypes/home/index.html</a></td></tr>
         </tbody>
       </table>
       </div>
