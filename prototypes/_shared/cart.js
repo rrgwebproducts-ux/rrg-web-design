@@ -544,11 +544,21 @@ const RRG_PACKAGE_CATEGORY_PLURAL = { 'roof-box': 'roof boxes', 'roof-bike': 'ro
 const RRG_PACKAGE_CATEGORY_ANY = { 'roof-box': 'roof box', 'roof-bike': 'roof-mounted bike rack', 'rooftop-tent': 'rooftop tent', awning: 'awning', 'water-snow': 'water/snow carrier' };
 const rrgPackageQualifyingAny = () => rrgListWords(rrgPackageQualifyingKeys().map(k => RRG_PACKAGE_CATEGORY_ANY[k]), 'or');
 // Where to shop each qualifying category in the demo (rack drawer links).
+// [label, listing page, lifestyle photo in _shared/category-tiles/ (the Shop by Category tiles')].
+// roof-bike uses bike-racks.webp, which shows a tow-bar rack — swap it for a roof-mounted shot.
 const RRG_PACKAGE_CATEGORY_PLP = {
-  'roof-box': [['Roof boxes', 'plp-roof-boxes/index.html']], awning: [['Awnings', 'plp-awnings/index.html']], 'rooftop-tent': [['Rooftop tents', 'plp-roof-top-tents/index.html']],
-  'water-snow': [['Kayak & SUP carriers', 'plp-water-carriers/index.html'], ['Ski & snowboard carriers', 'plp-snow-carriers/index.html']],
-  'roof-bike': [['Roof-mounted bike racks', 'plp/index.html?attachment=roof-mounting']]
+  'roof-box': [['Roof boxes', 'plp-roof-boxes/index.html', 'roof-boxes']], awning: [['Awnings', 'plp-awnings/index.html', 'awnings']], 'rooftop-tent': [['Rooftop tents', 'plp-roof-top-tents/index.html', 'roof-top-tents']],
+  'water-snow': [['Kayak & SUP carriers', 'plp-water-carriers/index.html', 'water-sports'], ['Ski & snowboard carriers', 'plp-snow-carriers/index.html', 'snow-sports']],
+  'roof-bike': [['Roof-mounted bike racks', 'plp/index.html?attachment=roof-mounting', 'bike-racks']]
 };
+// Category banners in the rack drawer (2026-10-07, Brenton: text links didn't sell the adventure):
+// short landscape lifestyle banners, title over a dark gradient like the Shop by Category tiles.
+function rrgPackageShopBannersHTML() {
+  const links = rrgPackageQualifyingKeys().flatMap(k => RRG_PACKAGE_CATEGORY_PLP[k] || []);
+  return `<ul class="pkg-shop-banners">${links.map(([label, href, img]) => `<li><a class="pkg-shop-banner" href="${RRG_PROTO}${href}">
+    <img src="${RRG_PROTO}_shared/category-tiles/${img}.webp" alt="" loading="lazy">
+    <span class="pkg-shop-banner-title">${label}</span><span class="pkg-shop-banner-cta">Shop ›</span></a></li>`).join('')}</ul>`;
+}
 const rrgPackageQualifyingKeys = () => Object.keys(RRG_PACKAGE_DEAL.qualifying).filter(k => RRG_PACKAGE_DEAL.qualifying[k]);
 const rrgListWords = (words, joiner = 'and') => words.length < 2 ? (words[0] || '') : `${words.slice(0, -1).join(', ')} ${joiner} ${words[words.length - 1]}`;
 // Every qualifying category, e.g. "roof boxes, awnings, rooftop tents, … and kayak, SUP and snow carriers".
@@ -690,8 +700,7 @@ function rrgRenderPackageDrawer() {
   }
 
   if (role === 'rack') {
-    const links = rrgPackageQualifyingKeys().flatMap(k => RRG_PACKAGE_CATEGORY_PLP[k] || []);
-    const shopLinks = `<ul class="pkg-shop-links">${links.map(([label, href]) => `<li><a class="pkg-shop-link" href="${RRG_PROTO}${href}">Shop ${label.charAt(0).toLowerCase() + label.slice(1)} ›</a></li>`).join('')}</ul>`;
+    const shopLinks = rrgPackageShopBannersHTML();
     const rackInCart = rrgCartGet().lines.some(l => l.key === (item.key || item.sku));
     if (rrgPackageStep === 'accessories') {
       // Mirrors the racks step: one compatible suggestion per qualifying category, each with its
@@ -718,7 +727,7 @@ function rrgRenderPackageDrawer() {
       foot.innerHTML = `<button type="button" class="btn btn-outline btn-block" data-pkg-close>I'll add one later</button>`;
       return;
     }
-    body.innerHTML = `${intro}${rrgPackageSteps('rack', item)}${shopLinks}`;
+    body.innerHTML = `${intro}${rrgPackageSteps('rack', item)}<h3 class="pkg-h3">Shop roof accessories</h3>${shopLinks}`;
     foot.innerHTML = rackInCart
       ? `<button type="button" class="btn btn-cta btn-block" data-pkg-choose-acc>Choose an accessory</button>`
       : `<button type="button" class="btn btn-cta btn-block" data-pkg-add-choose>Add to cart &amp; choose an accessory</button>
