@@ -1621,7 +1621,7 @@ Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything 
 | 22 | Incompatible pair: discount or not? | ✅ **Still gets the discount**; the compatibility notification still shows. Built 2026-10-07. Unchanged: the drawer only suggests compatible racks, and on the PDP the heads-up card replaces the Package Deal tag. |
 | 23 | The rates themselves (margin) | ✅ Brand-specific rates are set up in the inventory system, separate from the website design. The demo's 10% / CRUZ 15% are examples, which should cover most if not all brands anyway. |
 
-**Open — dev / Magento (AU/NZ first)**
+**Open — dev / Magento (AU, NZ and UK)**
 
 | # | Item |
 |---|---|
@@ -1629,7 +1629,7 @@ Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything 
 | 25 | Per-brand rates come from the inventory system (not a website setting); the website reads each accessory's rate. The demo's 10% / CRUZ 15% are examples |
 | 26 | Real compatibility exclusions (rack ↔ accessory), maintained by merchandising; the Motion 3 L ↔ Pioneer one is demo-only and must not ship |
 | 27 | Cart rule: % off every qualifying accessory at its current price once any rack is in the order (compatible or not), as its own total row; nothing blocks checkout |
-| 28 | Ship AU + NZ first, then the UK |
+| 28 | ~~Ship AU + NZ first, then the UK~~ → **AU, NZ and UK all in scope** (Graham, 2026-10-07: "We will need the Roof Box and Bike Rack flow we discussed for the UK"). Brenton put it **above the red line** (must-do by mid-December) on the index Priority tab, row 6 after PLP & VPLP Pages |
 
 **Open — not for the build**
 
@@ -1638,5 +1638,5 @@ Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything 
 | 29 | Vercel is near its free-tier size limit; upgrade may be needed | Brenton |
 | 30 | Buying-guide analytics: how many people actually land on it | Brenton |
 | 31 | Package-vs-single sales data (UK thought ~50/50) | Graham / Jake |
-| 32 | Split out what the UK needs for "stage one" | Brenton |
+| 32 | ~~Split out what the UK needs for "stage one"~~ ✅ Closed 2026-10-07: the UK gets the full Package Deal (roof boxes + roof-mounted bike racks and the other RMPs), same as AU/NZ | Brenton |
 | 33 | Dev-brief screenshots for the new sections | Held until final handover |
