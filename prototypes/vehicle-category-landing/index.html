@@ -82,14 +82,29 @@
      reusing .specs-table since that component is a 2-column key/value list (PDP spec
      sheet); this needs a real multi-column data table with a header row. */
   .vclp-gen-table-wrap{overflow-x:auto;margin-bottom:8px;}
-  .vclp-gen-table{width:100%;border-collapse:collapse;min-width:640px;}
+  .vclp-gen-table{width:100%;border-collapse:collapse;min-width:820px;}
   .vclp-gen-table caption{text-align:left;font-size:14px;color:var(--rrg-grey-500);padding-bottom:8px;}
   .vclp-gen-table th,.vclp-gen-table td{text-align:left;padding:12px 14px;font-size:14px;line-height:1.5;border-bottom:1px solid var(--rrg-line);vertical-align:top;}
   .vclp-gen-table thead th{background:var(--rrg-black);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:14px;}
   .vclp-gen-table tbody tr:nth-child(even){background:var(--rrg-bg);}
-  .vclp-gen-table td:first-child,.vclp-gen-table th:first-child{white-space:nowrap;}
+  .vclp-gen-table td:first-child,.vclp-gen-table th:first-child,.vclp-gen-table td:nth-child(2){white-space:nowrap;}
   .vclp-gen-table .gen-name{font-weight:700;color:var(--rrg-black);}
   .vclp-gen-table .gen-codes{color:var(--rrg-grey-600);font-size:14px;}
+  /* Clickable rows — 2026-10-07 per Graham/Tim: every row links to that generation's roof
+     rack VPLP (prototype: all rows go to the one N80 VPLP). One real <a> per row in the
+     "Shop" column, stretched over the whole row with ::after, so the row is clickable without
+     JS and screen readers get a single named link. Hover/focus tints the row and turns the
+     link red, matching the category tiles and store cards. */
+  .vclp-gen-table tbody tr{position:relative;cursor:pointer;transition:background .15s;}
+  .vclp-gen-table tbody tr:hover,.vclp-gen-table tbody tr:focus-within{background:var(--rrg-gold-bg);}
+  .vclp-gen-table tbody tr:focus-within{outline:2px solid var(--rrg-black);outline-offset:-2px;}
+  .vclp-gen-table td.gen-shop,.vclp-gen-table th.gen-shop{white-space:nowrap;text-align:right;}
+  .vclp-gen-shop-link{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--rrg-black);text-decoration:underline;text-underline-offset:3px;}
+  .vclp-gen-shop-link:focus{outline:none;}
+  .vclp-gen-shop-link::after{content:'';position:absolute;inset:0;}
+  .vclp-gen-shop-link svg{flex:0 0 auto;transition:transform .15s;}
+  .vclp-gen-table tbody tr:hover .vclp-gen-shop-link,.vclp-gen-table tbody tr:focus-within .vclp-gen-shop-link{color:var(--rrg-red);}
+  .vclp-gen-table tbody tr:hover .vclp-gen-shop-link svg{transform:translateX(3px);}
   .vclp-gen-table-note{font-size:14px;color:var(--rrg-grey-500);line-height:1.6;margin-top:10px;}
 
   /* Brand strip + trust banner moved to shared.css (2026-09-29) — now shared with the VLP. */
@@ -194,7 +209,7 @@
     <p>The single most common mistake we see with Hilux roof rack orders is buyers assuming the black sports bar along their tray or roofline is a load-rated roof rail — it isn't. Plenty of Rogue and Rugged X owners find this out the hard way. If you're not certain what's fitted to your roof, send us a photo before you order — it takes seconds to confirm and saves you the cost of returning the wrong rack.</p>
 
     <h3 id="genTable">Which Hilux Generation Do I Have?</h3>
-    <p>The Hilux has been in production since 1968, so "Hilux" alone doesn't tell us much — the model codes and generation names below will help you identify exactly which one you're driving. Not sure? Your compliance plate (driver's door jamb) lists the model code, or just use the Fit Finder above.</p>
+    <p>The Hilux has been in production since 1968, so "Hilux" alone doesn't tell us much — the model codes and generation names below will help you identify exactly which one you're driving. Not sure? Your compliance plate (driver's door jamb) lists the model code, or just use the Fit Finder above. Found yours? Click its row to shop roof racks for that generation.</p>
     <div class="vclp-gen-table-wrap">
       <table class="vclp-gen-table">
         <caption>Toyota Hilux generations, model years, common names, model codes and factory roof fitment, 1968 to present</caption>
@@ -205,6 +220,7 @@
             <th scope="col">Also Searched As</th>
             <th scope="col">Model Codes</th>
             <th scope="col">Roof Fitment</th>
+            <th scope="col" class="gen-shop">Shop</th>
           </tr>
         </thead>
         <tbody>
@@ -214,6 +230,7 @@
             <td>Hilux N90, 48V Hybrid Hilux</td>
             <td class="gen-codes">GUN125R/126R (updated)</td>
             <td>Bare roof (most); styling bar on Rogue/Rugged X</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop Hilux N90 racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">N80</span></td>
@@ -221,6 +238,7 @@
             <td>Hilux N80, "8th Gen" Hilux</td>
             <td class="gen-codes">GUN122R/123R/125R/126R, TGN121R</td>
             <td>Bare roof (most); styling bar on Rogue/Rugged X</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop Hilux N80 racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">N70</span></td>
@@ -228,6 +246,7 @@
             <td>Hilux N70, "7th Gen" Hilux</td>
             <td class="gen-codes">KUN16R/26R, GGN15R/25R, TGN16R</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop Hilux N70 racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">6th Gen</span></td>
@@ -235,6 +254,7 @@
             <td>Hilux D4D, "MK5"/"MK6" Hilux</td>
             <td class="gen-codes">RZN147/149/169/174, LN147/167/172, VZN167/172, KZN165</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 6th Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">5th Gen</span></td>
@@ -242,6 +262,7 @@
             <td>Square-body Hilux</td>
             <td class="gen-codes">RN/LN/YN 85–110 series</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 5th Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">4th Gen</span></td>
@@ -249,6 +270,7 @@
             <td>Hilux 4x4 (first mainstream 4WD ute)</td>
             <td class="gen-codes">RN/LN 55–70 series</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 4th Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">3rd Gen</span></td>
@@ -256,6 +278,7 @@
             <td>Hilux SR5</td>
             <td class="gen-codes">RN/LN 40–50 series</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 3rd Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">2nd Gen</span></td>
@@ -263,6 +286,7 @@
             <td>Hilux (early)</td>
             <td class="gen-codes">RN/LN 10–30 series</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 2nd Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
           <tr>
             <td><span class="gen-name">1st Gen</span></td>
@@ -270,6 +294,7 @@
             <td>Original Hilux</td>
             <td class="gen-codes">RN10/RN20 series</td>
             <td>Bare roof</td>
+            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 1st Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
           </tr>
         </tbody>
       </table>
