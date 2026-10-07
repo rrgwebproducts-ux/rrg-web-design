@@ -177,7 +177,7 @@ function render() {
   // Order summary.
   const t = order.totals;
   $('confirmSummary').innerHTML = `
-    <ul class="cart-lines">${order.lines.map(l => rrgCartLineHTML(l, { editable: false, compact: true })).join('')}</ul>
+    <ul class="cart-lines">${order.lines.map(l => rrgCartLineHTML(l, { editable: false, compact: true, deal: rrgPackageDeal(order), paid: true })).join('')}</ul>
     <dl class="cart-totals">
       <div><dt>Subtotal</dt><dd>${rrgMoney(t.fullSubtotal)}</dd></div>
       ${t.savings > 0 ? `<div class="cart-totals-save"><dt>You saved</dt><dd>−${rrgMoney(t.savings)}</dd></div>` : ''}

@@ -1144,7 +1144,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* Links inside Package Deal elements ("How it works", "Change vehicle") take the deal colour too. */
 .fitment.deal .link-btn,.pkg-drawer-backdrop .link-btn{color:var(--rrg-deal);}
 .fitment.deal .link-btn:hover,.pkg-drawer-backdrop .link-btn:hover{color:var(--rrg-deal);opacity:.8;}
-.cart-line-compat{display:flex;align-items:flex-start;gap:6px;font-size:12px;line-height:1.35;margin:2px 0;}
+.cart-line-compat{display:flex;align-items:flex-start;gap:6px;font-size:13px;line-height:1.35;margin:2px 0;}
 .cart-line-compat.is-ok{color:var(--rrg-fits);}
 .cart-line-compat.is-warn{color:var(--rrg-unknown-text);}
 .cart-line-compat.is-warn > span:first-child::before{content:'⚠ ';color:var(--rrg-unknown);}
@@ -2454,6 +2454,8 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .cart-line-remove{border:0;background:none;padding:0;font:inherit;font-size:13px;color:var(--rrg-grey-700);text-decoration:underline;cursor:pointer;}
 .cart-line-price{display:flex;flex-direction:column;align-items:flex-end;font-size:15px;white-space:nowrap;}
 .cart-line-price s{font-size:13px;color:var(--rrg-grey-500);}
+/* Package Deal applied: the price after the deal in sale red (like a sale price), full price struck. */
+.cart-line-price.is-deal strong{color:var(--rrg-red);}
 .cart-line.is-compact{grid-template-columns:64px minmax(0,1fr) auto;gap:12px;padding:14px 0;}
 .cart-line.is-compact .cart-line-img{width:64px;height:64px;}
 .cart-line.is-compact .cart-line-name{font-size:13px;}
@@ -2473,7 +2475,8 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .pkg-deal-tag{margin:0 0 14px;}
 .pkg-drawer-backdrop{z-index:450;}
 /* Cart side (phase 5): line marker, mini-cart line, cart-page notice (a .fitment card). */
-.cart-line-package{display:inline-block;align-self:flex-start;margin:2px 0;font-size:12px;font-weight:700;color:var(--rrg-deal);}
+/* Cart-line notes all 13px, same as the stock / fit lines (2026-10-07, Brenton: were 12px). */
+.cart-line-package{display:inline-block;align-self:flex-start;margin:2px 0;font-size:13px;font-weight:700;color:var(--rrg-deal);}
 .pkg-cart-notice{margin-bottom:12px;}
 .mini-cart-body .pkg-cart-notice{margin:12px 0 0;}
 /* Accessories step (rack in cart): "Now" price with the rack in sale red (same as the PDP's sale

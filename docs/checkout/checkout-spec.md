@@ -216,6 +216,6 @@ A roof rack + a qualifying roof-mounted accessory (roof boxes, roof-mounted bike
   - Rack, no accessory → PACKAGE DEAL card, "Add a roof-mounted accessory to this order and save 10–15% on it. That covers roof boxes, roof-mounted bike racks and more." **Add an accessory** (drawer at the suggested accessories, PDP brief 4.19a).
   - Both → PACKAGE DEAL APPLIED card (✓), "You're saving $X on your roof box because there's a roof rack in this order."
 - The cart page's notice has the same rack-only state (it showed nothing before).
-- **Cart lines:** the accessory's line shows "✓ Package Deal −$X" or "Package Deal: save $X with a roof rack", both in the Package Deal colour, plus the compatibility note (PDP brief 4.19).
+- **Cart lines:** the accessory's line shows "✓ Package Deal: you're saving $X (10% off)" ("you saved" on the order confirmation) or "Package Deal: save $X (10% off) with a roof rack", both in the Package Deal colour. Once applied, the line's **price column shows the price after the deal in sale red, over the full price struck through** (2026-10-07, Brenton: "Package Deal −$X" read like the price you pay). All cart-line notes (compatibility, Package Deal, fit, stock) are 13px, plus the compatibility note (PDP brief 4.19).
 - **Unlike roofbox.co.uk:** no package SKUs, nothing blocks checkout, and either item can be removed on its own (the saving recalculates).
 - Demo presets (Site Admin → Demo cart): Roof box only · Rack + roof box · Platform + Motion 3 L (not compatible — still gets the discount, both lines carry the note).
