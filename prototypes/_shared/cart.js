@@ -298,7 +298,7 @@ function rrgPackageTotalsRowHTML(t, { paid = false } = {}) {
 //   rack        no accessory yet: red, "Add an accessory" opens the drawer at suggested accessories
 function rrgPackageCartNoticeHTML(cart = rrgCartGet()) {
   const deal = rrgPackageDeal(cart);
-  const btn = (label, step, item) => `<div class="actions"><button type="button" class="btn btn-outline-red btn-sm" data-package-open data-package-step="${step}" data-package-item="${rrgEsc(JSON.stringify(item))}">${label}</button></div>`;
+  const btn = (label, step, item) => `<div class="actions"><button type="button" class="btn btn-outline-deal btn-sm" data-package-open data-package-step="${step}" data-package-item="${rrgEsc(JSON.stringify(item))}">${label}</button></div>`;
   if (!deal.accessories.length) {
     if (!deal.racks.length) return '';
     return rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name,

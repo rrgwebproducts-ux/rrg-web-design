@@ -521,6 +521,9 @@ a.rrg-logo{display:block;}
 .btn-outline:disabled,.btn-outline[disabled]{background:#fff;color:var(--rrg-grey-500);border-color:var(--rrg-line);cursor:not-allowed;}
 .btn-outline-red{background:#fff;border:1.5px solid var(--rrg-red);color:var(--rrg-red);}
 .btn-outline-red:hover{background:var(--rrg-red);color:#fff;}
+/* Package Deal buttons (cart notice "Choose a rack" / "Add an accessory") — same outline, deal colour. */
+.btn-outline-deal{background:#fff;border:1.5px solid var(--rrg-deal);color:var(--rrg-deal);}
+.btn-outline-deal:hover{background:var(--rrg-deal);color:#fff;}
 
 /* UK brand skin (Region Selector, 2026-09-11) — RRG trades in the UK as "The Roof Box
    Company" (roofbox.co.uk), a real sister brand. Scope confirmed with Brenton: logo + core
@@ -2479,6 +2482,10 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .cart-line-package{display:inline-block;align-self:flex-start;margin:2px 0;font-size:13px;font-weight:700;color:var(--rrg-deal);}
 .pkg-cart-notice{margin-bottom:12px;}
 .mini-cart-body .pkg-cart-notice{margin:12px 0 0;}
+/* Cart page: the notice is the panel's own top band, not a card inside the card (2026-10-07,
+   Brenton) — edge to edge (cancels .cart-panel's padding), Package Deal colour along the top
+   edge instead of the left, a divider above the first line. */
+.cart-panel .fitment.pkg-cart-notice{margin:-4px -22px 0;padding:14px 22px;border:0;border-top:3px solid var(--rrg-deal);border-bottom:1px solid var(--rrg-line);border-radius:var(--radius) var(--radius) 0 0;}
 /* Accessories step (rack in cart): "Now" price with the rack in sale red (same as the PDP's sale
    price), struck current price in grey, the % in green. Drawer suggestions show "Compatible" as a
    chip (.chip-fits) rather than green text, so the price line isn't one more green. */
@@ -2597,6 +2604,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 }
 @media (max-width:520px){
   .cart-panel{padding:4px 14px 14px;}
+  .cart-panel .fitment.pkg-cart-notice{margin:-4px -14px 0;padding:12px 14px;}
   .cart-panel .cart-line{grid-template-columns:72px minmax(0,1fr);}
   .cart-panel .cart-line-img{width:72px;height:72px;}
   .cart-panel .cart-line-price{grid-column:2;flex-direction:row;gap:8px;align-items:baseline;}
