@@ -208,7 +208,7 @@ const VLP_CATEGORIES = [
   { slug: 'awnings', label: 'Awnings', section: 'main' },
   { slug: 'roof-top-tents', label: 'Roof Top Tents', section: 'main' },
   { slug: 'roof-rack-accessories', label: 'Roof Rack Accessories', section: 'main', cta: 'Shop Accessories' },
-  { slug: 'vehicle-specific-accessories', label: 'Vehicle Specific Accessories', section: 'main', vehicleSpecific: true, cta: 'Shop Accessories' },
+  { slug: 'vehicle-specific-accessories', label: 'Vehicle Specific Accessories', section: 'main', vehicleSpecific: true, cta: 'Shop Accessories', href: '../vplp-accessories/index.html' },
   { slug: 'baskets', label: 'Baskets', section: 'adventure' },
   { slug: 'luggage-bags', label: 'Luggage Bags', section: 'adventure' },
   { slug: 'trade-work', label: 'Trade & Work Solutions', section: 'adventure', cta: 'Shop Trade & Work' },
@@ -221,12 +221,13 @@ const VLP_CATEGORIES = [
   { slug: 'camping', label: 'Camping', section: 'adventure', href: '../plp-camping/index.html' },
   { slug: 'fridge-slides', label: 'Fridge Slides', section: 'adventure' },
   { slug: 'other-accessories', label: 'Other Accessories', section: 'adventure', cta: 'Shop 4x4' },
-  { slug: 'towing-mirrors', label: 'Towing Mirrors', section: 'vehicle', vehicleSpecific: true },
-  { slug: 'roller-shutters', label: 'Roller Shutters', section: 'vehicle', vehicleSpecific: true },
-  { slug: 'underbody-protection', label: 'Underbody Protection', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Underbody' },
-  { slug: 'rear-drawers', label: 'Rear Drawers', section: 'vehicle', vehicleSpecific: true },
-  { slug: 'internal-storage', label: 'Internal Storage', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Storage' },
-  { slug: 'more-accessories', label: 'More Accessories', section: 'vehicle', vehicleSpecific: true, cta: 'Shop 4x4' }
+  // Vehicle-specific section (2026-10-07): the live site's own category names, each opening its
+  // tab on the Vehicle Specific Accessories VPLP. img = the tile photo when the slug has none.
+  { slug: 'towing-mirrors', label: 'Towing Mirrors', section: 'vehicle', vehicleSpecific: true, href: '../vplp-accessories/index.html?attachment=towing-mirrors' },
+  { slug: 'roller-shutters', label: 'Roller Shutters', section: 'vehicle', vehicleSpecific: true, href: '../vplp-accessories/index.html?attachment=roller-shutters' },
+  { slug: 'storage-drawers', img: 'rear-drawers', label: 'Storage & Drawers', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Storage', href: '../vplp-accessories/index.html?attachment=storage-drawers' },
+  { slug: 'protection-trim', img: 'underbody-protection', label: 'Protection & Trim', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Protection', href: '../vplp-accessories/index.html?attachment=protection-trim' },
+  { slug: 'misc-vehicle-accessories', img: 'more-accessories', label: 'Misc Vehicle Accessories', section: 'vehicle', vehicleSpecific: true, cta: 'Shop Accessories', href: '../vplp-accessories/index.html?attachment=misc-vehicle-accessories' }
 ];
 const VLP_ALL_VEHICLE_SPECIFIC = VLP_CATEGORIES.filter(c => c.vehicleSpecific).map(c => c.slug);
 
@@ -235,7 +236,7 @@ const VLP_ALL_VEHICLE_SPECIFIC = VLP_CATEGORIES.filter(c => c.vehicleSpecific).m
 // backend-owned); the session vehicle is whatever Site Admin / the shopper has saved. They
 // can differ (spec Section 4). vsCategories = the vehicle-specific categories with at least
 // one fitting product — backend data in production, demo data here: the Hilux has all of
-// them; the Ranger has no Vehicle Specific Accessories, Rear Drawers or Internal Storage, so
+// them; the Ranger has no Vehicle Specific Accessories, Storage & Drawers or Misc Vehicle Accessories, so
 // its Store Finder widens and its bottom section shows 3 tiles (Section 7.1 visible just by
 // switching vehicles). The Demo State Panel's checklist overrides this list.
 // FAQ copy is placeholder pending the real per-master-vehicle FAQ content (2026-09-18 review
@@ -270,7 +271,7 @@ const VLP_VEHICLES = {
     image: '../_shared/vehicle-ford-ranger.webp', badge: '../_shared/brand-ford-badge.png',
     vclpHref: '#', roofRacksHref: '#',
     intro: 'The Ford Ranger is one of the most popular vehicles we see at Roof Racks Galore. Its raised roof rails open up more mounting options than a bare roof, from rail-mount bars to full platforms. Everything on this page is filtered to fit a 2022-onwards Ranger 4dr Ute with raised roof rails.',
-    vsCategories: ['towing-mirrors', 'roller-shutters', 'underbody-protection'],
+    vsCategories: ['towing-mirrors', 'roller-shutters', 'protection-trim'],
     fitCount: 0,
     faqs: [
       { q: 'Can a roof rack mount to my Ranger’s raised roof rails?', a: 'Yes — raised rails sit clear of the roof, so rail-mount legs clamp around them without drilling. The rails don’t increase your roof load limit; check it in your owner’s manual.' },
@@ -367,7 +368,7 @@ function vlpTileHref(cat) {
 }
 function vlpTileHTML(cat, size) {
   const href = vlpTileHref(cat);
-  const img = `<img src="../_shared/category-tiles/${cat.slug}.webp" alt="" loading="lazy">`;
+  const img = `<img src="../_shared/category-tiles/${cat.img || cat.slug}.webp" alt="" loading="lazy">`;
   const cta = cat.cta || `Shop ${cat.label}`;
   if (cat.feature) {
     const v = VLP_VEHICLE;
