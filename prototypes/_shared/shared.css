@@ -2520,6 +2520,10 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .pkg-rack img{width:64px;height:64px;object-fit:contain;}
 .pkg-rack-info{display:flex;flex-direction:column;gap:2px;font-size:13px;min-width:0;}
 .pkg-rack-name{font-weight:700;line-height:1.3;}
+/* Suggestion rows link to the product page (image + name), like a product card. */
+a.pkg-rack-name{color:var(--rrg-text);text-decoration:none;}
+a.pkg-rack-name:hover{text-decoration:underline;}
+.pkg-rack-img{display:block;}
 .pkg-shop-link{font-size:14px;font-weight:700;color:var(--rrg-deal);}
 .pkg-shop-links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
 /* Rack drawer category banners (2026-10-07): short landscape lifestyle photos (the Shop by

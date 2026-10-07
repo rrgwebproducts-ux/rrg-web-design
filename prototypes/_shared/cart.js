@@ -49,7 +49,7 @@ const RRG_DEMO_CART_ITEMS = {
   platformKit: { sku: 'GP01M1TZZ', brand: 'Rhino-Rack', name: 'Rhino Rack Pioneer 6 Platform Kit — Toyota Hilux N80 (2015–2026), Bare Roof', price: 1893.09, wasPrice: 2137.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/e/7/e775e3debebdc8ba3b70b79f87a0a59466cb68e1b3800433f011a483b3fc2679_1_26.jpg', url: 'vehicle-specific/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
   // Package Deal demo (2026-10-06): the real CRUZ Easy 430 from the Roof Boxes PLP — CRUZ, so 15%.
-  roofBox: { sku: 'C940-349U', brand: 'CRUZ', name: 'Cruz Easy Gloss Black 430 litre Roof Box - 940-349U', price: 499.00, wasPrice: 699.00,
+  roofBox: { sku: 'C940-349U', brand: 'CRUZ', name: 'Cruz Easy Gloss Black 430 litre Roof Box - 940-349U', price: 499.00, wasPrice: 699.00, pdp: 'https://www.roofracksgalore.com.au/cruz-roof-box-easy-430n-anthracite-glossy-940-349u',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/c/r/cruz-easy-gloss-black-430-litre-roof-box-940-349u-view-6.jpg', url: 'plp-roof-boxes/index.html', pkgCategory: 'roof-box' },
   // A Thule bar rack (real live listing, 2026-10-06) — the Thule Motion 3 L shows as compatible
   // with it, against the demo exclusion with the Pioneer platform above.
@@ -512,19 +512,34 @@ RRG_PACKAGE_EXCLUSIONS[0].racks.push('JC-01605');
 const RRG_PACKAGE_ACCESSORIES = [
   RRG_DEMO_CART_ITEMS.motionBox,
   RRG_DEMO_CART_ITEMS.roofBox,
-  { sku: '532002', brand: 'Thule', name: 'Thule FreeRide 532 Silver Roof Mounted Bike Carrier x1', price: 218.45, wasPrice: 229.95,
+  { sku: '532002', pdp: 'https://www.roofracksgalore.com.au/thule-freeride-532002', brand: 'Thule', name: 'Thule FreeRide 532 Silver Roof Mounted Bike Carrier x1', price: 218.45, wasPrice: 229.95,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg', url: 'plp/index.html?attachment=roof-mounting', pkgCategory: 'roof-bike' },
-  { sku: 'RH32141', brand: 'Rhino-Rack', name: 'Rhino Rack Dome 1300 Awning - 32141', price: 299.00, wasPrice: 427.00,
+  { sku: 'RH32141', pdp: 'https://www.roofracksgalore.com.au/rhino-rack-dome-1300-awning-cpai-84-32141', brand: 'Rhino-Rack', name: 'Rhino Rack Dome 1300 Awning - 32141', price: 299.00, wasPrice: 427.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-32141-Awnings-6._1.jpg', url: 'plp-awnings/index.html', pkgCategory: 'awning' },
-  { sku: 'RH61052', brand: 'Rhino-Rack', name: 'Rhino Rack Low Profile Roof Top Tent - 61052', price: 4300.00,
+  { sku: 'RH61052', pdp: 'https://www.roofracksgalore.com.au/rhino-rack-low-profile-roof-top-tent-61052', brand: 'Rhino-Rack', name: 'Rhino Rack Low Profile Roof Top Tent - 61052', price: 4300.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-low-profile-roof-top-tent-61052.jpg', url: 'plp-roof-top-tents/index.html', pkgCategory: 'rooftop-tent' },
-  { sku: 'Y8004052', brand: 'Yakima', name: 'Yakima Evenkeel Kayak Carrier - 8004052', price: 99.00, wasPrice: 199.00,
+  { sku: 'Y8004052', pdp: 'https://www.roofracksgalore.com.au/evenkeel-8004052', brand: 'Yakima', name: 'Yakima Evenkeel Kayak Carrier - 8004052', price: 99.00, wasPrice: 199.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-evenkeel-kayak-carrier-8004052.jpg', url: 'plp-water-carriers/index.html', pkgCategory: 'water-snow', kind: 'kayak carrier' },
-  { sku: 'C940-222', brand: 'CRUZ', name: 'Cruz Ski Carrier Black / Fishing Rod Holder 4 Row - 940-222', price: 191.20, wasPrice: 239.00,
+  { sku: 'C940-222', pdp: 'https://www.roofracksgalore.com.au/cruz-ski-carrier-black-fishing-rod-holder-4-row-940-222', brand: 'CRUZ', name: 'Cruz Ski Carrier Black / Fishing Rod Holder 4 Row - 940-222', price: 191.20, wasPrice: 239.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/C/R/CRUZ-940-222-Ski--Fishing-Rod-Holders._1_1.jpg', url: 'plp-snow-carriers/index.html', pkgCategory: 'water-snow', kind: 'ski carrier' }
 ];
 // One suggestion per category for this rack: compatible only (as with racks), qualifying categories
 // only, nothing already in the cart. Kayak and ski carriers share 'water-snow', so key by PLP url.
+// The product page a drawer suggestion links to (2026-10-07, Brenton: shoppers need to open a $4,000
+// tent before adding it). pdp = the live product page (DEMO: the prototype has no page for most of
+// these, so it opens roofracksgalore.com.au in a new tab); else the prototype page in url.
+function rrgPackageProductLink(p) {
+  if (p.pdp) return { href: p.pdp, attrs: ' target="_blank" rel="noopener"' };
+  return p.url && p.url !== '#' ? { href: rrgPath(p.url), attrs: '' } : null;
+}
+// Image + name of a drawer suggestion row, linked to its product page when it has one.
+function rrgPackageRowLinkHTML(p, nameHTML) {
+  const link = rrgPackageProductLink(p);
+  const img = `<img src="${p.image}" alt="" loading="lazy">`;
+  if (!link) return { img, name: `<span class="pkg-rack-name">${nameHTML}</span>` };
+  return { img: `<a class="pkg-rack-img" href="${link.href}"${link.attrs} tabindex="-1" aria-hidden="true">${img}</a>`,
+    name: `<a class="pkg-rack-name" href="${link.href}"${link.attrs}>${nameHTML}</a>` };
+}
 function rrgPackageAccessoriesFor(rack, cart = rrgCartGet()) {
   const inCart = new Set(cart.lines.map(l => l.key));
   const seen = new Set();
@@ -711,11 +726,12 @@ function rrgRenderPackageDrawer() {
         <h3 class="pkg-h3">Add an accessory and save</h3>
         <ul class="pkg-racks">${accs.map(a => {
           const aSave = rrgPackageSaving(a);
+          const row = rrgPackageRowLinkHTML(a, rrgEsc(rrgShortName(a.name)));
           return `<li class="pkg-rack">
-            <img src="${a.image}" alt="" loading="lazy">
+            ${row.img}
             <div class="pkg-rack-info">
               <span class="cart-line-brand">${rrgEsc(a.brand)} · ${rrgEsc(a.kind || RRG_PACKAGE_CATEGORY_LABEL[a.pkgCategory])}</span>
-              <span class="pkg-rack-name">${rrgEsc(rrgShortName(a.name))}</span>
+              ${row.name}
               <span class="chip chip-fits">✓ Compatible</span>
               <span class="pkg-acc-price"><strong>Now ${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
             </div>
@@ -765,11 +781,12 @@ function rrgRenderPackageDrawer() {
       ${vehicle ? `
         ${racks.length ? '' : `<p>None of our suggested racks for your ${vehicle.label} suit this ${acc}. See the full range below, or contact us and we'll find one that does.</p>`}
         <ul class="pkg-racks">${racks.map(r => {
+          const row = rrgPackageRowLinkHTML(r, rrgEsc(rrgShortName(r.name)));
           return `<li class="pkg-rack">
-            <img src="${r.image}" alt="" loading="lazy">
+            ${row.img}
             <div class="pkg-rack-info">
               <span class="cart-line-brand">${rrgEsc(r.brand)}</span>
-              <span class="pkg-rack-name">${rrgEsc(rrgShortName(r.name))}</span>
+              ${row.name}
               <span class="chip chip-fits">✓ Compatible</span>
               <strong>${rrgMoney(r.price)}</strong>
             </div>
