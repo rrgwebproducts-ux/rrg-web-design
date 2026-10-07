@@ -18,7 +18,7 @@ Plus one shared demo cart that every Add to Cart on the site fills.
 
 **Out of scope:**
 - real payments, addresses, stock reservation or order creation (the backend)
-- the confirmation *email* (described in Section 6 for Mark, not built)
+- the confirmation *email* (described in Section 6 for Marc, not built)
 - account pages
 
 ## 1. The live flow today (checked 2026-09-30 with one item in the cart; no details entered, no order placed)
@@ -49,7 +49,7 @@ It's the site's standard right-edge drawer (420px, `role="dialog"`, Escape, back
 - **Subtotal:** "Subtotal (3 items) $1,247.00". Then one line for the saved store: "**Free Click & Collect** from North Lakes", or "Delivery calculated at checkout".
 - **Actions:** **Checkout** (gold, the one primary), then **View cart** (outline).
 - **BNPL line** per region: AU Afterpay and Zip. NZ and UK have none.
-- **"Goes well with":** up to 3 small cross-sells from the product's related items, each with a quick add. It's the live "Accessories to suit your cart". Whether a PLP quick-add still shows cross-sells is an open question for Mark (PLP brief item 11).
+- **"Goes well with":** up to 3 small cross-sells from the product's related items, each with a quick add. It's the live "Accessories to suit your cart". Whether a PLP quick-add still shows cross-sells is an open question for Marc (PLP brief item 11).
 - **No fitting promo** (decision 4: fitting is pushed on the confirmation page only).
 
 ## 3. Cart page (`/checkout/cart/`)
@@ -124,7 +124,7 @@ A **distraction-free shell**: logo, "Secure checkout", help phone number, **no m
 5. **Create an account** (guests only): a password field only, since the email is already known. "Track this order and check out faster next time."
 6. Help: the order-enquiries phone and email.
 
-**Confirmation email (for Mark, not built):** the same order summary, the same "what happens next" steps, and the same **Book fitting at {store}** card.
+**Confirmation email (for Marc, not built):** the same order summary, the same "what happens next" steps, and the same **Book fitting at {store}** card.
 
 ## 6. Regions (decision 5: follow the live sites)
 
@@ -159,8 +159,8 @@ A **distraction-free shell**: logo, "Secure checkout", help phone number, **no m
 | 4 | Fitting | **Confirmation page only.** Nothing in the mini-cart, cart or checkout. |
 | 5 | Regions | Follow the live sites (Section 6). |
 
-## 9. Open items (for sign-off, then Mark)
-- **Click & Collect before the address:** it needs a Magento checkout customisation. Confirm with Mark that it's feasible (the store-pickup module or custom layout).
+## 9. Open items (for sign-off, then Marc)
+- **Click & Collect before the address:** it needs a Magento checkout customisation. Confirm with Marc that it's feasible (the store-pickup module or custom layout).
 - **Address autocomplete provider** (e.g. Google Places, Loqate or AddressFinder): a cost and privacy decision.
 - **Ready times at checkout** need the per-store stock feed (spec.md §14.1 Phase 2); Phase 1 says "Ready within 2 business days".
 - **Cross-sells in the mini-cart:** the source (Magento related or cross-sell products) and the PLP quick-add behaviour.

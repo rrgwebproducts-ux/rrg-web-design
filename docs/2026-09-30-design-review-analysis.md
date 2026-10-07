@@ -87,7 +87,7 @@ Keep the form's destination one config value (store email today), so moving to A
   - **Change vehicle:** resets to Make with focus there and a "← Back to Hilux" undo, rather than wiping silently.
   - Add Repco's **"Shop without a vehicle"** link.
   - **Colour:** a light panel suits the vehicle photo. If you want the dark band, put the photo on a light inset card inside it.
-  - Build it once and reuse it on home, FMV, VCLP and blog (Mark question in item 33).
+  - Build it once and reuse it on home, FMV, VCLP and blog (Marc question in item 33).
 
 ### 8. Add Backbones/Spines, fix the line art —
 Four cards fit. Note the current section has **3** cards (Legs / Bars / Platforms & Trays), so this makes 4. Redraw the legs and platform art.
@@ -134,7 +134,7 @@ Photos are a good idea: staged is fine now, real UGC later. For the wording, "Fi
   - Demo one day as "Closed · Public holiday" in soft red.
   - Add a small **"Upcoming holiday hours"** line above the table for the next 2–3 holidays, including state ones like Ekka.
   - Emit `specialOpeningHoursSpecification`.
-  - Ask Mark (item 33) whether the cPanel hours can feed Google Business Profile too, so there's one source of truth.
+  - Ask Marc (item 33) whether the cPanel hours can feed Google Business Profile too, so there's one source of truth.
 
 ### 15. Google rating per store ✅ (two rules)
 - **Evidence:**
@@ -235,7 +235,7 @@ Split `prototypes/index.html` into **Page designs** and **Tools & briefs** tabs.
 
 ## 16.9 Actions outside the designs —
 - **32. Loom:** use chapters, one per page, so people can jump to their area. Record after items 1–3, 7, 21 and 22 land, so the video doesn't show the estimator.
-- **33. Mark:** scheduled go-lives are doable either with a scheduled merge (GitHub Actions cron) or date-driven content like the Sea Otter page. For a campaign swap, date-driven content is the safer option.
+- **33. Marc:** scheduled go-lives are doable either with a scheduled merge (GitHub Actions cron) or date-driven content like the Sea Otter page. For a campaign swap, date-driven content is the safer option.
 - **34–36:** no design work.
 
 ---

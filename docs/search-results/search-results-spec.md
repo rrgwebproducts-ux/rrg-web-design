@@ -145,9 +145,9 @@ Source: the design section of the 2026-09-24 meeting (full transcript in the rep
 ### 9.4 Header search dropdown (typing state) — rebuilt
 See `docs/header/HEADER-DEVELOPER-BRIEF.md` 4.9. In short: a "Search for '<query>'" row on top, then two columns — Popular searches / Looking for these brands? / Pages that might be interesting on the left, matching products on the right — all genuinely matched against what's typed, replacing the old rotating product batches. Trending Searches now uses the real Algolia top searches from the meeting (U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs). "Rhino Rack tie down" appeared in Algolia's *searches without results* report — worth fixing in Algolia itself.
 
-### 9.5 Left for Mark / later
-- How the category tabs are derived from a real search (which Level 1/2 tabs a query like "bracket" produces) — "a discussion for Mark," per the meeting.
-- Parsing vehicle/category intent out of the query itself (e.g. "Hilux roof racks" → set vehicle + category filters automatically, like Online Auto Parts' search) — floated in the meeting as a nice-to-have if Mark's search can do it; not prototyped.
+### 9.5 Left for Marc / later
+- How the category tabs are derived from a real search (which Level 1/2 tabs a query like "bracket" produces) — "a discussion for Marc," per the meeting.
+- Parsing vehicle/category intent out of the query itself (e.g. "Hilux roof racks" → set vehicle + category filters automatically, like Online Auto Parts' search) — floated in the meeting as a nice-to-have if Marc's search can do it; not prototyped.
 - Jack's reference predictive-search example hasn't been sent yet — revisit the dropdown when it arrives.
 
 ---

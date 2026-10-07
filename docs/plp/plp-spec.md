@@ -214,13 +214,13 @@ Full item-by-item detail of everything raised in this meeting is in memory (`pro
 ### C. Deeper conversation / blocked on someone outside this session — not actionable by building right now
 
 1. Backend content-assignment mechanism for Buyer's Guide/FAQ/Video (per master-vehicle) — Graham/Jake, Magento-side.
-2. Highest Rated sort — feasibility depends on Mark confirming reviews.io data is queryable; drop the option if not.
+2. Highest Rated sort — feasibility depends on Marc confirming reviews.io data is queryable; drop the option if not.
 3. Filter tooltip copy — needs Graham's master attribute→tooltip-text spreadsheet.
 4. Real icon set — needs Jake's Google Drive link.
 5. Ribbon backend flagging mechanism in Racket — Graham/Jake.
-6. Whether quick-add-to-cart from a PLP card still shows cross-sell products in the mini-cart — technical question for Mark.
+6. Whether quick-add-to-cart from a PLP card still shows cross-sell products in the mini-cart — technical question for Marc.
 7. Sibling-group card title/description pulling from the sibling "container" product, not a child SKU — Graham's Magento data-model problem to solve, not a prototype change.
 8. Wishlist/save-to-list feature — Brenton himself is unresolved on whether it's needed; treat as a future/separate feature, not this round.
 9. Store/inventory (delivery vs. local-store-stock indicator) — Graham explicitly kicked this to phase 2, needs a direct Tim conversation first (depends on a persistent-store feature that doesn't exist yet).
-10. Schema.org multi-`Offer` markup for sibling-group products — Mark's data-layer task.
-11. Whether VCLP and standard PLP merge into one dynamic Magento template — Mark's technical call.
+10. Schema.org multi-`Offer` markup for sibling-group products — Marc's data-layer task.
+11. Whether VCLP and standard PLP merge into one dynamic Magento template — Marc's technical call.

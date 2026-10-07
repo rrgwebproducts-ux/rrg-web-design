@@ -273,7 +273,7 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 - **Result count:** one style, `.plp-toolbar-count`, for both the toolbar count ("Showing 1-12 of N Results") and the mobile count above the grid ("Showing N of M Results").
 - **Pagination:** desktop has numbered pagination (not infinite scroll). Mobile has a manual "Load More (N)" button, where N is how many more will load (up to a page of 12). It isn't triggered by scrolling. It used to read "Show More Results".
 
-**Open item:** Highest Rated's real feasibility depends on Mark confirming reviews.io data is queryable at the catalogue level — drop the option if it isn't (Section 6).
+**Open item:** Highest Rated's real feasibility depends on Marc confirming reviews.io data is queryable at the catalogue level — drop the option if it isn't (Section 6).
 
 **Screenshot:** ![Pagination](plp-dev-brief-assets/pagination-closeup.png)
 
@@ -396,12 +396,12 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 8. **Real icon set for SHOP BY/Level 3 tiles** (4.3/4.4) — this prototype's icons are a mix of scraped-real and reused-approximate; a real, complete icon set is a separate asset-sourcing task.
 9. **Highest Rated sort's feasibility** (4.8) — depends on reviews.io data being queryable at catalogue scale, not just per-SKU the way the PDP's star-rating badge already proves it works.
 10. **Category Videos aggregation across subcategories** — the spec called for the bottom carousel to aggregate every video across a category *and all its subcategories*; the prototype only renders whatever's directly configured on the active tab, not a real aggregation.
-11. **Quick-add-to-cart cross-sell behaviour** — whether adding from a PLP card should still surface cross-sell products in the mini-cart is an open technical question for Mark, not something this prototype (which has no real cart) can demonstrate either way.
+11. **Quick-add-to-cart cross-sell behaviour** — whether adding from a PLP card should still surface cross-sell products in the mini-cart is an open technical question for Marc, not something this prototype (which has no real cart) can demonstrate either way.
 12. **Sibling-group card title/description sourcing** — pulling from the sibling "container" product rather than a child SKU is Graham's Magento data-model problem to solve, not something resolvable in this prototype.
-13. **Schema.org multi-`Offer` markup for sibling-group products** — Mark's data-layer task, not started.
+13. **Schema.org multi-`Offer` markup for sibling-group products** — Marc's data-layer task, not started.
 14. **Wishlist/save-to-list** — Brenton himself is unresolved on whether it's needed at all; treated as a future/separate feature, not part of this build.
 15. **Store/inventory (delivery vs. local-store-stock indicator)** — Phase 2. The wording and filter are now designed and previewable (Build Phase 2 + Nearest Store Set; 4.5, 4.6, PDP brief 4.37). The per-store inventory feed and store picker behind them still don't exist.
-16. **Whether VCLP and standard PLP eventually merge into one dynamic Magento template** — Mark's technical call, not a prototype-level decision.
+16. **Whether VCLP and standard PLP eventually merge into one dynamic Magento template** — Marc's technical call, not a prototype-level decision.
 17. **VPLP canonical URL** (Section 5) — no live vehicle-specific category URL exists yet, so the VPLP has no canonical/`og:url`. It needs one once the real URL structure for vehicle categories is decided.
 18. **Vehicle breadcrumb pattern is provisional** (4.2) — `Home > Vehicles > Toyota > Hilux > Roof Racks` was agreed 2026-09-29 but may change after team review.
 

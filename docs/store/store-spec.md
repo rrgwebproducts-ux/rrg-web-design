@@ -129,7 +129,7 @@ Six per store, all using that store's own facts: its hours, address, services, s
 ## 8. Open items
 
 - **Google rating + reviews** (§16 item 15): the ratings are **demo figures**. Production reads `rating` + `user_ratings_total` and the newest reviews from the Google Places API and caches only as Google's terms allow. No `AggregateRating` markup: since 2019 Google doesn't show stars for a business's reviews of itself.
-- **Public holidays** (§16 item 14): real 2026 dates by state in `RRG_PUBLIC_HOLIDAYS` (shared.js), emitted as `specialOpeningHoursSpecification` (closed = 00:00–00:00). Real hours and holidays are entered in cPanel/PHP. Ask Mark (§16 item 33) whether they can feed Google Business Profile too, so Google's "Open now" agrees.
+- **Public holidays** (§16 item 14): real 2026 dates by state in `RRG_PUBLIC_HOLIDAYS` (shared.js), emitted as `specialOpeningHoursSpecification` (closed = 00:00–00:00). Real hours and holidays are entered in cPanel/PHP. Ask Marc (§16 item 33) whether they can feed Google Business Profile too, so Google's "Open now" agrees.
 
 - ~~**Store locator page**~~ — built 2026-09-30 as the Store Finder (`docs/store-finder/store-finder-spec.md`); the breadcrumbs link to it.
 - **Email field:** confirm which Magento field holds it.
