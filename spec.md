@@ -1640,3 +1640,15 @@ Brenton reviewed the build on Vercel on 2026-10-07 and is happy with everything 
 | 31 | Package-vs-single sales data (UK thought ~50/50) | Graham / Jake |
 | 32 | ~~Split out what the UK needs for "stage one"~~ ✅ Closed 2026-10-07: the UK gets the full Package Deal (roof boxes + roof-mounted bike racks and the other RMPs), same as AU/NZ | Brenton |
 | 33 | Dev-brief screenshots for the new sections | Held until final handover |
+
+### 19.2 Package Deal restyle (Brenton, 2026-10-07)
+
+Brenton's review after the build: red Package Deal elements read like errors, and there's too much green. Done:
+
+1. **Own colour:** `--rrg-deal` (blue `#0A66C2`, plus `--rrg-deal-bg`) in `shared.css` `:root`. It's the same in every region (not tied to `--rrg-red`, which the UK swaps for its brand blue). Every Package Deal element uses it: the PDP tag, drawer accents and links, the PLP strip, the cart/mini-cart notice and the cart line marker. **Change the colour in that one place** while we trial colours.
+2. **Applied state stays blue** with a ✓ icon (it used to turn green). `rrgNoticeCardHTML` state `'deal-applied'`.
+3. **Drawer "in your cart" line:** was a green-tinted box. It's now the same Package Deal notice card as the PDP tag ("IN YOUR CART" + product name; "RACK IN YOUR CART" on the intro step).
+4. **Drawer suggestions:** "Compatible" is a green chip (the shared `.chip` family, same as "In Stock"), not green text. Price line: **Now $X** in sale red (same as the PDP sale price), the full price struck through in grey, **Save N%** in green. Intro card: the with-a-rack price is red, and "You save $X" is plain green text (no tinted box).
+5. **PLP strip:** white instead of grey, blue icon/label, no › chevron, never wraps. Copy: "**Package Deal:** Up to 15% off accessories" (rack) / "**Package Deal:** 10% off with a roof rack" (accessory). On cards narrower than 280px (phones, tablets, the 4-up brand grid) it stacks "Package Deal" over "Up to 15% off" / "10% off with a rack" (container query).
+6. **Grid alignment:** cards with no deal get an invisible copy of the strip when the grid has any real strip, so Add to Cart lines up across every row. Checked on 13 listing pages × 10 widths (320–1920px).
+7. Cart totals row: unchanged (green, like the other savings rows).

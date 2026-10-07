@@ -1551,12 +1551,15 @@ function plpPackageStripHTML(product) {
   const item = { sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
     wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory };
   const role = rrgPackageRole(item);
-  if (!role) return '';
+  // One line of full copy on wide cards; "Package Deal" over the short copy on narrow ones (plp.css).
+  const inner = (long, short) => `<span class="plp-card-pkg-in">${RRG_PACKAGE_ICON}<span class="plp-card-pkg-text"><b>${RRG_PACKAGE_DEAL.name}<span class="plp-card-pkg-long">:</span></b> <span class="plp-card-pkg-long">${long}</span><span class="plp-card-pkg-short">${short}</span></span></span>`;
+  // No deal: an invisible copy of the strip, so grid cards' buttons line up (plp.css).
+  if (!role) return `<span class="plp-card-pkg is-empty" aria-hidden="true">${inner('&nbsp;', '&nbsp;')}</span>`;
+  const pct = role === 'rmp' ? rrgPctLabel(rrgPackageRate(item)) : rrgPackageRateMax();
   const text = role === 'rmp'
-    ? `Save ${rrgPctLabel(rrgPackageRate(item))} with a roof rack`
-    : `Save ${rrgPackageRateRange()} on roof accessories with this rack`;
-  return `<button type="button" class="plp-card-pkg" data-package-open data-package-item="${String(JSON.stringify(item)).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">
-    ${RRG_PACKAGE_ICON}<span><b>${RRG_PACKAGE_DEAL.name}:</b> ${text}</span><span class="plp-card-pkg-go" aria-hidden="true">›</span></button>`;
+    ? inner(`${pct} off with a roof rack`, `${pct} off with a rack`)
+    : inner(`Up to ${pct} off accessories`, `Up to ${pct} off`);
+  return `<button type="button" class="plp-card-pkg" data-package-open data-package-item="${String(JSON.stringify(item)).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">${text}</button>`;
 }
 
 function plpCardHTML(product, cfg) {

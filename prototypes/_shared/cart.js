@@ -225,15 +225,16 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
 // Decision-panel notice in the PDP's fitment-card style (Brenton, 2026-10-06: the compatibility
 // note should match the "Fits your vehicle" message, not a tinted box) — it reuses the .fitment
 // classes: white card, 3px state-colour left edge, state-coloured icon + uppercase label, grey
-// body. state: 'fits' (green) | 'unknown' (amber) | 'deal' (brand red, the Package Deal tag).
+// body. state: 'fits' (green) | 'unknown' (amber) | 'deal' (--rrg-deal, the Package Deal tag) |
+// 'deal-applied' (the same Package Deal card with a ✓ icon: applied / in your cart).
 // Names in the body use <b>: .fitment strong is the label style.
 const RRG_NOTICE_ICONS = {
   fits: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.5 3 3 6-6.5"/></svg>',
   unknown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>'
 };
 function rrgNoticeCardHTML(state, label, body, tip, extraClass = '') {
-  const icon = RRG_NOTICE_ICONS[state] || (typeof RRG_PACKAGE_ICON !== 'undefined' ? RRG_PACKAGE_ICON : '');
-  return `<div class="fitment ${state} rrg-notice ${extraClass}">
+  const icon = RRG_NOTICE_ICONS[state === 'deal-applied' ? 'fits' : state] || (typeof RRG_PACKAGE_ICON !== 'undefined' ? RRG_PACKAGE_ICON : '');
+  return `<div class="fitment ${state === 'deal-applied' ? 'deal' : state} rrg-notice ${extraClass}">
     <span class="dot">${icon}</span>
     <div class="rrg-notice-text"><strong>${label}${tip ? ' ' + rrgInfoTipHTML(tip) : ''}</strong>${body}</div>
   </div>`;
@@ -306,7 +307,7 @@ function rrgPackageCartNoticeHTML(cart = rrgCartGet()) {
   const acc = deal.accessories.find(a => !deal.matched.includes(a)) || deal.accessories[0];
   const label = deal.active ? rrgPackageLinesLabel(deal.matched) : RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(acc)];
   return deal.active
-    ? rrgNoticeCardHTML('fits', `${RRG_PACKAGE_DEAL.name} applied`, `You're saving <b>${rrgMoney(deal.discount)}</b> on your ${label} because there's a roof rack in this order.`, '', 'pkg-cart-notice')
+    ? rrgNoticeCardHTML('deal-applied', `${RRG_PACKAGE_DEAL.name} applied`, `You're saving <b>${rrgMoney(deal.discount)}</b> on your ${label} because there's a roof rack in this order.`, '', 'pkg-cart-notice')
     : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `Add any roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.${btn('Choose a rack', 'racks', acc)}`, '', 'pkg-cart-notice');
 }
 const rrgMoney = n => fmtAud(Math.round(n * 100) / 100);
@@ -363,7 +364,7 @@ function rrgPackageLineHTML(line) {
   if (!(line.key in deal.lines)) return '';
   const save = rrgMoney(deal.lines[line.key]);
   return deal.matched.some(l => l.key === line.key)
-    ? `<span class="cart-line-package is-active">${RRG_PACKAGE_DEAL.name} −${save}</span>`
+    ? `<span class="cart-line-package is-active">✓ ${RRG_PACKAGE_DEAL.name} −${save}</span>`
     : `<span class="cart-line-package">${RRG_PACKAGE_DEAL.name}: save ${save} with a roof rack</span>`;
 }
 // BNPL line per region (AU: Afterpay 4 payments, Zip from $10/week). NZ/UK have none on live.
@@ -552,6 +553,10 @@ const rrgPackageQualifyingShort = () => { const w = rrgPackageQualifyingKeys().m
 const rrgPackageItemLabel = item => RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)] || 'accessory';
 const rrgPackageLinesLabel = lines => { const labels = [...new Set(lines.map(rrgPackageItemLabel))]; return labels.length === 1 && lines.length === 1 ? labels[0] : 'accessories'; };
 // The rate range across brands ("10–15%"), for a rack page where the accessory isn't known yet.
+// Highest rate on offer ("up to 15%"), for one-line copy like the PLP card strip.
+function rrgPackageRateMax() {
+  return rrgPctLabel(Math.max(RRG_PACKAGE_DEAL.defaultRate, ...Object.values(RRG_PACKAGE_DEAL.brandRates)));
+}
 function rrgPackageRateRange() {
   const rates = [RRG_PACKAGE_DEAL.defaultRate, ...Object.values(RRG_PACKAGE_DEAL.brandRates)];
   const lo = Math.min(...rates), hi = Math.max(...rates);
@@ -592,14 +597,17 @@ function rrgRenderPackageTag() {
         : `Add this rack and save <b>${accSave}</b> on the <b>${rrgEsc(rrgShortName(acc[0].name))}</b> in your cart.`)
       : `Save <b>${rrgPackageRateRange()}</b> on ${rrgPackageQualifyingShort()} when you buy them with this rack.`;
   }
-  // Same fitment-card style as the compatibility notice: red edge/label, green once active.
-  block.insertAdjacentHTML('afterend', rrgNoticeCardHTML(active ? 'fits' : 'deal',
+  // Same fitment-card style as the compatibility notice, in the Package Deal colour; ✓ once active.
+  block.insertAdjacentHTML('afterend', rrgNoticeCardHTML(active ? 'deal-applied' : 'deal',
     active ? `${RRG_PACKAGE_DEAL.name} applied` : RRG_PACKAGE_DEAL.name,
     `${body} <button type="button" class="link-btn" data-package-open>How it works</button>`, '', 'pkg-deal-tag'));
 }
 document.addEventListener('rrg-region-change', rrgRenderPackageTag);
 
 // ---- Drawer ----
+// "In your cart" confirmation at the top of a drawer step: the Package Deal notice card, same as the
+// PDP tag (Brenton, 2026-10-07: was a green-tinted box).
+const rrgPackageAddedHTML = item => rrgNoticeCardHTML('deal-applied', 'In your cart', rrgEsc(rrgShortName(item.name)), '', 'pkg-added');
 let rrgPackageStep = 'intro'; // 'intro' | 'racks' | 'done'
 // The product the drawer is about: set when opened from a cart nudge or a product card (phase 5/6),
 // otherwise (null) the product page's own product.
@@ -684,7 +692,7 @@ function rrgRenderPackageDrawer() {
       // saving, then the category links for the full range.
       const accs = rrgPackageAccessoriesFor(item);
       body.innerHTML = `
-        ${rackInCart ? `<p class="pkg-added">✓ ${rrgEsc(rrgShortName(item.name))} is in your cart</p>` : ''}
+        ${rackInCart ? rrgPackageAddedHTML(item) : ''}
         <h3 class="pkg-h3">Add an accessory and save</h3>
         <ul class="pkg-racks">${accs.map(a => {
           const aSave = rrgPackageSaving(a);
@@ -693,8 +701,8 @@ function rrgRenderPackageDrawer() {
             <div class="pkg-rack-info">
               <span class="cart-line-brand">${rrgEsc(a.brand)} · ${rrgEsc(a.kind || RRG_PACKAGE_CATEGORY_LABEL[a.pkgCategory])}</span>
               <span class="pkg-rack-name">${rrgEsc(rrgShortName(a.name))}</span>
-              <span class="cart-line-compat is-ok"><span>✓ Compatible with this roof rack</span></span>
-              <span class="pkg-acc-price"><strong>${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
+              <span class="chip chip-fits">✓ Compatible</span>
+              <span class="pkg-acc-price"><strong>Now ${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
             </div>
             <button type="button" class="btn btn-outline btn-sm" data-pkg-add-acc="${rrgEsc(a.sku)}">Add</button>
           </li>`;
@@ -734,7 +742,7 @@ function rrgRenderPackageDrawer() {
     // incompatible ones included, is still a click away in "See every roof rack".
     const racks = (vehicle ? (RRG_PACKAGE_RACKS[rrgVehicleGet()] || []) : []).filter(r => rrgPackageCompatible(item, r));
     body.innerHTML = `
-      <p class="pkg-added">✓ ${rrgEsc(rrgShortName(item.name))} is in your cart</p>
+      ${rrgPackageAddedHTML(item)}
       <div class="pkg-h3-row">
         <h3 class="pkg-h3">${vehicle ? `Choose a roof rack for your ${vehicle.label}` : 'Which vehicle is it for?'}</h3>
         ${vehicle ? `<button type="button" class="link-btn pkg-change-vehicle" data-open-fit-finder>Change vehicle</button>` : ''}
@@ -747,7 +755,7 @@ function rrgRenderPackageDrawer() {
             <div class="pkg-rack-info">
               <span class="cart-line-brand">${rrgEsc(r.brand)}</span>
               <span class="pkg-rack-name">${rrgEsc(rrgShortName(r.name))}</span>
-              <span class="cart-line-compat is-ok"><span>✓ Compatible with this ${acc}</span></span>
+              <span class="chip chip-fits">✓ Compatible</span>
               <strong>${rrgMoney(r.price)}</strong>
             </div>
             <button type="button" class="btn btn-outline btn-sm" data-pkg-add-rack="${rrgEsc(r.sku || r.name)}">Add</button>
@@ -763,7 +771,7 @@ function rrgRenderPackageDrawer() {
   // intro
   const rackInCart = deal.racks.find(r => rrgPackageCompatible(item, r)) || deal.racks[0];
   body.innerHTML = `${intro}${card}${rrgPackageSteps('rmp', item)}
-    ${rackInCart ? `<p class="pkg-added">✓ You already have the <strong>${rrgEsc(rrgShortName(rackInCart.name))}</strong> in your cart, so the saving applies as soon as you add this ${acc}.</p>` : ''}`;
+    ${rackInCart ? rrgNoticeCardHTML('deal-applied', 'Rack in your cart', `You already have the <b>${rrgEsc(rrgShortName(rackInCart.name))}</b> in your cart, so the saving applies as soon as you add this ${acc}.`, '', 'pkg-added') : ''}`;
   foot.innerHTML = rackInCart
     ? `<button type="button" class="btn btn-cta btn-block" data-pkg-add-only>Add to cart</button>`
     : `<button type="button" class="btn btn-cta btn-block" data-pkg-add-choose>Add to cart &amp; choose your rack</button>

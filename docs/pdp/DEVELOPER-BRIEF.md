@@ -897,7 +897,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Tag copy (by cart state):**
 - Roof box, no rack in cart: PACKAGE DEAL — "Save 10% ($199.90) on this roof box when you buy it with any roof rack. How it works"
-- Roof box, rack in cart: PACKAGE DEAL APPLIED (green) — "You'll save $199.90 on this roof box with the [rack] in your cart."
+- Roof box, rack in cart: PACKAGE DEAL APPLIED (✓ icon) — "You'll save $199.90 on this roof box with the [rack] in your cart."
 - Rack, nothing in cart: "Buy this rack with a roof box and save 10–15% on the roof box."
 - Rack, roof box in cart: "Add this rack and save $74.85 on the [roof box] in your cart." → once both are in: PACKAGE DEAL APPLIED.
 
@@ -907,19 +907,19 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Rates:** brand-specific rates are set up in the inventory system, not in the website design; the 10% / CRUZ 15% shown are examples.
 
-**Look:** the fitment-card style (same as 4.19): brand-red left edge, tag icon and "PACKAGE DEAL" label in brand red (UK region: blue, via the region's red token); green with a tick once applied. "How it works" is a text link that opens the drawer.
+**Look (restyled 2026-10-07, spec.md §19.2):** the fitment-card style (same as 4.19) in the **Package Deal colour**, `--rrg-deal` (blue `#0A66C2`, the same in every region; one token so the colour can be changed in one place): left edge, tag icon, "PACKAGE DEAL" label and the "How it works" link. Once applied it **stays blue** and the icon becomes a ✓ (it no longer turns green). "How it works" is a text link that opens the drawer.
 
 **Drawer (shared drawer base, 420px):**
 1. *How it works* — the deal in one line, this product's card (Today $X / With a roof rack $Y / You save $Z), 3 steps. Buttons: **Add to cart & choose your rack** (primary) and **Add to cart only**. If a rack is already in the cart it says so and offers just **Add to cart**.
-2. *Choose your rack* — "✓ [product] added to your cart", then the roof racks for the session vehicle, **only racks compatible with this product** (Brenton, 2026-10-06 — incompatible ones aren't suggested; the full range is behind "See every roof rack"), each marked "✓ Compatible with this roof box", an **Add** button each, and "See every roof rack for your [vehicle] ›". No vehicle set → "Set your vehicle" opens the Fit Finder drawer, and the list appears once a vehicle is chosen. Footer: "I'll choose a rack later".
-3. *Applied* — tick, "Package Deal applied — You're saving $X on your roof box in this order", the rack + box lines. Buttons: **View cart** (opens the mini-cart), **Keep shopping**.
+2. *Choose your rack* — an "IN YOUR CART" Package Deal notice card with the product name (not a green box), then the roof racks for the session vehicle, **only racks compatible with this product** (Brenton, 2026-10-06 — incompatible ones aren't suggested; the full range is behind "See every roof rack"), each with a green "✓ COMPATIBLE" chip (shared `.chip`), an **Add** button each, and "See every roof rack for your [vehicle] ›". No vehicle set → "Set your vehicle" opens the Fit Finder drawer, and the list appears once a vehicle is chosen. Footer: "I'll choose a rack later".
+3. *Applied* — blue tick, "Package Deal applied — You're saving $X on your roof box in this order", the rack + box lines. Buttons: **View cart** (opens the mini-cart), **Keep shopping**.
 - It can also be opened for any product from a cart nudge (straight at step 2) or a listing card's Package Deal strip (PLP brief 4.6a).
-- **Rack pages (2026-10-07, mirrors the accessory flow):** *How it works* (the deal, 3 steps, the "Shop roof boxes / awnings / … ›" links). Buttons: **Add to cart & choose an accessory** and **Add to cart only** (or **Choose an accessory** when the rack is already in the cart). → *Add an accessory and save* — "✓ [rack] is in your cart", then one suggested accessory per qualifying category (roof box, roof-mounted bike rack, awning, rooftop tent, kayak carrier, ski carrier), **compatible with this rack only** and not already in the cart. Each row: brand · category, name, "✓ Compatible with this roof rack", the price with the rack, the current price struck through, "Save 10%", and **Add**. Then the category links for the full range, and **I'll add one later**. Adding one → *Applied* (step 3).
+- **Rack pages (2026-10-07, mirrors the accessory flow):** *How it works* (the deal, 3 steps, the "Shop roof boxes / awnings / … ›" links). Buttons: **Add to cart & choose an accessory** and **Add to cart only** (or **Choose an accessory** when the rack is already in the cart). → *Add an accessory and save* — the "IN YOUR CART" notice card, then one suggested accessory per qualifying category (roof box, roof-mounted bike rack, awning, rooftop tent, kayak carrier, ski carrier), **compatible with this rack only** and not already in the cart. Each row: brand · category, name, a green "✓ COMPATIBLE" chip, "**Now** $X" (the price with the rack) in sale red, the current price struck through in grey, "Save 10%" in green, and **Add**. Drawer links ("Shop roof boxes ›", "Change vehicle") are in the Package Deal colour. Then the category links for the full range, and **I'll add one later**. Adding one → *Applied* (step 3).
 - Production: suggestions = each category's best sellers that are compatible with the rack. The prototype uses one real listing per category from the demo PLPs, with a second roof box as a fallback (`RRG_PACKAGE_ACCESSORIES`, `rrgPackageAccessoriesFor` in cart.js).
 
 **Data (Magento):** product package category (rack / roof box / …, shared with 4.19), accessory rate (from the inventory system; 10% / CRUZ 15% are examples), the vehicle's racks for step 2, and best-selling accessories per qualifying category for the rack flow. The prototype's rack lists are real listings already scraped for the two demo vehicles (Hilux, Ranger).
 
-**Region differences:** none in behaviour; currency and the red token follow the region.
+**Region differences:** none in behaviour; currency follows the region. The Package Deal colour is the same everywhere; the sale-red "Now" price follows the region's red token like every sale price.
 
 **States:** screenshots at handover (Component Library: Package Deal Tag, Package Deal Drawer).
 

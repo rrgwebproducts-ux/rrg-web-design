@@ -233,11 +233,13 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 **Location:** full width along the bottom edge of a product card (grid and list), on any listing — only for roof racks and for qualifying roof-mounted accessories: roof boxes, awnings, rooftop tents, kayak/SUP/ski/snowboard carriers and roof-mounted bike racks (2026-10-06). Category PLPs built on this template so far: Bike Racks, Roof Boxes, Awnings, Roof Top Tents, Water Carriers, Snow Carriers, Camping, VPLP Roof Racks. First demoed on PLP Roof Boxes (`prototypes/plp-roof-boxes/`, the Bike Racks template with the four live shape categories as Shop By) and VPLP Roof Racks.
 
-**Copy:** tag icon + "**Package Deal:** Save 10% with a roof rack" (15% for CRUZ) on an accessory; "**Package Deal:** Save 10–15% on roof accessories with this rack" on a rack. Percentages only — **no deal price on listings** (meeting 2026-10-06: RRP and sale price are already there; a third price confuses).
+**Copy (shortened 2026-10-07 so it never wraps):** tag icon + "**Package Deal:** 10% off with a roof rack" (15% for CRUZ) on an accessory; "**Package Deal:** Up to 15% off accessories" on a rack (the highest rate on offer). On cards narrower than 280px it stacks as two lines: "Package Deal" over "10% off with a rack" / "Up to 15% off" (a container query on the strip). Percentages only — **no deal price on listings** (meeting 2026-10-06: RRP and sale price are already there; a third price confuses).
 
 **Behaviour:** the whole strip is a button that opens the Package Deal drawer (PDP brief 4.19a) for **that** product — unlike roofbox.co.uk, whose strip leads to a generic package page and loses the product. From an accessory card the drawer offers "Add to cart & choose your rack".
 
-**Look:** light grey strip, 1px top border, brand-red icon/label/chevron (blue in the UK), 13px.
+**Look (restyled 2026-10-07, spec.md §19.2):** white strip, 1px top border, icon and label in the Package Deal colour `--rrg-deal` (blue, the same in every region), 13px, light blue tint on hover, no chevron.
+
+**Alignment:** in grid view, cards without a deal render an invisible copy of the strip (same height) whenever the grid has at least one real strip, so Add to Cart lines up across every row. List view doesn't need it.
 
 **Data:** the product's package category + rate (same attributes as PDP 4.19 / 4.19a).
 

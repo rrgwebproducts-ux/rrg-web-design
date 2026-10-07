@@ -340,6 +340,7 @@ const RRG_COMPONENTS = [
       v('Grid card', 'plp', '.plp-card'),
       v('Grid card — fitment chip', 'vplp', '.plp-card'),
       v('Package Deal strip — roof box', 'plp-roof-boxes', '.plp-card'),
+      v('Package Deal strip — rack (VPLP)', 'vplp', '.plp-results'),
       v('Phase 2 — ribbons + compare', 'plp', '.plp-card', { ls: { ...S.phase2, ...demo('plp', { 'c:plpRibbons': true, 'c:plpCompare': true }) } }),
       v('Sale on (Rack Friday) — campaign tag', 'plp', '.plp-card', { ls: S.sale }),
       v('Sale on (Christmas) — campaign tag', 'plp', '.plp-card', { ls: S.xmas }),
