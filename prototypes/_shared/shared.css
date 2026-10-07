@@ -2788,7 +2788,7 @@ a.pkg-rack-name:hover{text-decoration:underline;}
 /* 3.2 Brand banner, the Figma's layout: the brand's own lifestyle photo, contained, with the logo
    (the H1), tagline and product count over a dark scrim on its left. Phones: photo above an
    accent panel (see the 900px block). */
-.brand-hero{position:relative;display:flex;align-items:center;min-height:340px;border-radius:var(--radius);overflow:hidden;background:var(--brand-accent);color:#fff;margin:4px 0 0;isolation:isolate;}
+.brand-hero{position:relative;display:flex;align-items:center;min-height:340px;border-radius:var(--radius);overflow:hidden;background:var(--brand-accent,var(--rrg-charcoal));color:#fff;margin:4px 0 0;isolation:isolate;}
 .brand-hero-img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;}
 .brand-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.45) 38%,rgba(0,0,0,0) 68%);}
 .brand-hero-panel{display:flex;flex-direction:column;align-items:flex-start;gap:14px;max-width:560px;padding:36px 44px;}
@@ -2801,6 +2801,16 @@ a.pkg-rack-name:hover{text-decoration:underline;}
 .brand-hero-tagline{margin:0;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:30px;line-height:1.1;text-shadow:0 1px 3px rgba(0,0,0,.35);}
 .brand-hero-meta{margin:4px 0 0;font-size:15px;line-height:1.5;text-shadow:0 1px 2px rgba(0,0,0,.4);}
 .brand-hero-meta a{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+/* --end: text on the right, for a photo whose subject sits on the left (Buying Guide, 2026-10-07 —
+   Graham: guides need a lifestyle photo up top for people landing on them first). The H1 is the
+   page's text heading here, not a logo. Outside brand pages the panel falls back to charcoal. */
+.brand-hero--end{justify-content:flex-end;}
+.brand-hero--end::before{background:linear-gradient(270deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.5) 36%,rgba(0,0,0,0) 64%);}
+.brand-hero-eyebrow{margin:0;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#fff;}
+.brand-hero h1.brand-hero-title{color:#fff;font-size:44px;line-height:1.02;text-shadow:0 1px 3px rgba(0,0,0,.35);}
+.brand-hero .guide-meta{display:flex;flex-wrap:wrap;gap:6px 0;margin:2px 0 0;font-size:13px;color:rgba(255,255,255,.85);}
+.brand-hero .guide-meta span + span::before{background:rgba(255,255,255,.6);}
+.guide-banner{min-height:320px;}
 
 /* 3.3 Category tiles with real product photos (cutouts on white), not the lifestyle tiles. */
 .cat-tile-grid--brand{grid-template-columns:repeat(6,minmax(0,1fr));}
@@ -2887,6 +2897,9 @@ a.pkg-rack-name:hover{text-decoration:underline;}
   .brand-hero-img{position:static;display:block;aspect-ratio:16/9;height:auto;}
   .brand-hero::before{display:none;}
   .brand-hero-tagline{text-shadow:none;}
+  .brand-hero h1.brand-hero-title{font-size:32px;text-shadow:none;}
+  .brand-hero .guide-meta{column-gap:16px;}
+  .brand-hero .guide-meta span + span::before{display:none;}
   .brand-about{grid-template-columns:1fr;}
   .brand-hero-panel,.brand-about-body{padding:24px 20px;}
   .brand-about-media{min-height:0;aspect-ratio:16/9;}

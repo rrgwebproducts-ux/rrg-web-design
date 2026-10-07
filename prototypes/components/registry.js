@@ -519,9 +519,10 @@ const RRG_COMPONENTS = [
   { id: 'generation-table', group: 'stores', name: 'Vehicle Generation Table', build: 'copied', usedOn: ['vehicle-category-landing'],
     source: 'Static in vehicle-category-landing',
     variants: [v('Default', 'vehicle-category-landing', '.vclp-gen-table')] },
-  { id: 'brand-banner', group: 'stores', name: 'Brand Banner', build: 'copied', usedOn: ['brand'],
-    source: 'Inline renderBrandHero (brand)',
-    variants: ['thule', 'rhino-rack', 'front-runner'].map(b => v(b.replace('-', ' ').replace(/\b\w/g, c => c.toUpperCase()), 'brand', '#brandHero', { q: 'brand=' + b })) },
+  { id: 'brand-banner', group: 'stores', name: 'Brand Banner', build: 'copied', usedOn: ['brand', 'buying-guide'],
+    source: 'Inline renderBrandHero (brand); static .brand-hero--end in buying-guide (text on the right, H1 = page title)',
+    variants: ['thule', 'rhino-rack', 'front-runner'].map(b => v(b.replace('-', ' ').replace(/\b\w/g, c => c.toUpperCase()), 'brand', '#brandHero', { q: 'brand=' + b }))
+      .concat([v('Buying Guide (text right)', 'buying-guide', '.guide-banner')]) },
   { id: 'brand-about', group: 'stores', name: 'Brand About Band', build: 'copied', usedOn: ['brand'],
     source: 'Inline renderBrandAbout (brand)',
     variants: ['thule', 'rhino-rack'].map(b => v(b === 'thule' ? 'Thule' : 'Rhino Rack', 'brand', '#brandAbout', { q: 'brand=' + b })) },
