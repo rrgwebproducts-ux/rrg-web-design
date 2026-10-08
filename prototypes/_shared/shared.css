@@ -2457,8 +2457,20 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .cart-line-remove{border:0;background:none;padding:0;font:inherit;font-size:13px;color:var(--rrg-grey-700);text-decoration:underline;cursor:pointer;}
 .cart-line-price{display:flex;flex-direction:column;align-items:flex-end;font-size:15px;white-space:nowrap;}
 .cart-line-price s{font-size:13px;color:var(--rrg-grey-500);}
-/* Package Deal applied: the price after the deal in sale red (like a sale price), full price struck. */
-.cart-line-price.is-deal strong{color:var(--rrg-red);}
+/* Package Deal accessory line: the price column becomes a breakdown (2026-10-08) — RRP (on sale
+   only) → Our price → Package Deal (N%) → You pay, so the deal reads as off our price, not RRP.
+   Compact lines (mini-cart, checkout, confirmation) run it full width under the line's details. */
+.cart-line-breakdown{display:grid;grid-template-columns:auto auto;gap:2px 0;align-content:start;margin:0;font-size:13px;white-space:nowrap;}
+.cart-line-breakdown dt{color:var(--rrg-grey-700);}
+.cart-line-breakdown dd{margin:0;padding-left:14px;text-align:right;}
+.cart-line-breakdown s{color:var(--rrg-grey-500);}
+.cart-line-breakdown .is-deal{color:var(--rrg-deal);font-weight:700;}
+.cart-line-breakdown .is-total{font-size:15px;font-weight:700;color:var(--rrg-text);}
+.cart-line-breakdown.is-active .is-total{margin-top:2px;padding-top:4px;border-top:1px solid var(--rrg-line-soft);}
+.cart-line-breakdown.is-active dd.is-total{color:var(--rrg-red);}
+.cart-line-breakdown .is-potential{color:var(--rrg-grey-500);}
+.cart-line-breakdown .is-potential small{display:block;font-size:12px;}
+.cart-line.is-compact .cart-line-breakdown{grid-column:2 / -1;grid-template-columns:minmax(0,1fr) auto;}
 .cart-line.is-compact{grid-template-columns:64px minmax(0,1fr) auto;gap:12px;padding:14px 0;}
 .cart-line.is-compact .cart-line-img{width:64px;height:64px;}
 .cart-line.is-compact .cart-line-name{font-size:13px;}
@@ -2479,7 +2491,6 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .pkg-drawer-backdrop{z-index:450;}
 /* Cart side (phase 5): line marker, mini-cart line, cart-page notice (a .fitment card). */
 /* Cart-line notes all 13px, same as the stock / fit lines (2026-10-07, Brenton: were 12px). */
-.cart-line-package{display:inline-block;align-self:flex-start;margin:2px 0;font-size:13px;font-weight:700;color:var(--rrg-deal);}
 .pkg-cart-notice{margin-bottom:12px;}
 .mini-cart-body .pkg-cart-notice{margin:12px 0 0;}
 /* Cart page: the notice is the panel's own top band, not a card inside the card (2026-10-07,
@@ -2506,6 +2517,7 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .pkg-prices dt{color:var(--rrg-grey-700);}
 .pkg-prices dd{margin:0;text-align:right;font-weight:700;}
 .pkg-price-deal{color:var(--rrg-red);font-size:16px;}
+.pkg-prices .pkg-price-rrp{font-weight:400;color:var(--rrg-grey-500);}
 .pkg-save{display:inline-block;margin-top:6px;color:var(--rrg-saving);font-size:13px;font-weight:700;}
 .pkg-steps{margin:0;padding-left:20px;font-size:14px;line-height:1.5;display:flex;flex-direction:column;gap:4px;}
 /* "In your cart" confirmation: a .fitment.deal notice card (rrgNoticeCardHTML), same as the PDP tag
@@ -2625,6 +2637,7 @@ a.pkg-rack-name:hover{text-decoration:underline;}
   .cart-panel .cart-line{grid-template-columns:72px minmax(0,1fr);}
   .cart-panel .cart-line-img{width:72px;height:72px;}
   .cart-panel .cart-line-price{grid-column:2;flex-direction:row;gap:8px;align-items:baseline;}
+  .cart-panel .cart-line-breakdown{grid-column:2;grid-template-columns:minmax(0,1fr) auto;}
 }
 
 /* Checkout (spec Section 4) — distraction-free shell: no mega menu, search or promos. */

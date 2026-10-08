@@ -324,9 +324,6 @@ function rrgCartSyncBadges() {
 // deal / paid: the order's Package Deal (default: the live cart's) and past-tense wording, for the
 // order confirmation, whose lines aren't in the live cart any more.
 function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPackageDeal(), paid = false } = {}) {
-  // Package Deal applied to this line (2026-10-07, Brenton): the price column shows the price
-  // after the deal in sale red, over the full price struck through, like a sale price.
-  const pkgSave = deal.matched.some(l => l.key === line.key) ? deal.lines[line.key] || 0 : 0;
   const vehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const fit = line.fitsVehicle
     ? (vehicle && typeof rrgVehicleGet === 'function' && rrgVehicleGet() === line.fitsVehicle
@@ -343,7 +340,6 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
         ${line.parts ? `<ul class="cart-line-parts" aria-label="Included in this bundle">${line.parts.map(p => `<li>${rrgEsc(p)}</li>`).join('')}</ul>` : ''}
         ${fit}
         ${rrgIsRoofAccessory(line) ? rrgPackageCompatHTML(line, 'line') : '' /* Package Deal compatibility — on the accessory's line only, so each pairing shows once */}
-        ${rrgPackageLineHTML(line, deal, paid)}
         ${compact ? '' : `<span class="cart-line-meta">SKU ${rrgEsc(line.sku || '')}</span>`}
         ${editable ? `
           <div class="cart-line-controls">
@@ -355,23 +351,36 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
             <button type="button" class="cart-line-remove" data-cart-remove>Remove</button>
           </div>` : `<span class="cart-line-meta">Qty ${line.qty}</span>`}
       </div>
-      <div class="cart-line-price${pkgSave ? ' is-deal' : ''}">
-        <strong>${rrgMoney(line.price * line.qty - pkgSave)}</strong>
-        ${pkgSave || (line.wasPrice && line.wasPrice > line.price) ? `<s>${rrgMoney((line.wasPrice || line.price) * line.qty)}</s>` : ''}
-      </div>
+      ${rrgPackageLineHTML(line, deal, paid) || `
+      <div class="cart-line-price">
+        <strong>${rrgMoney(line.price * line.qty)}</strong>
+        ${line.wasPrice && line.wasPrice > line.price ? `<s>${rrgMoney(line.wasPrice * line.qty)}</s>` : ''}
+      </div>`}
     </li>`;
 }
-// Package Deal marker on a qualifying accessory's line (phase 5): the saving once matched with a
-// rack (any rack — compatibility doesn't affect the discount), else what a rack would save.
-// Worded as a saving with its % (2026-10-07, Brenton: "Package Deal −$199.90" read like the price).
+// Package Deal price breakdown on a qualifying accessory's line, in place of the price column
+// (2026-10-08, Brenton: with the sale and the deal folded into one struck-through gap, a near-RRP
+// sale price — Thule Motion 3 L, $1,999.00 vs $1,999.95 — read as "10% off RRP"). Each step on
+// its own row: RRP (only when on sale) → Our price → Package Deal (N%) → You pay. No rack yet:
+// the deal row is greyed "with a roof rack" and Our price is what they pay. Line totals (× qty).
+// Mini-cart, cart, checkout summary and order confirmation all draw lines here.
 function rrgPackageLineHTML(line, deal = rrgPackageDeal(), paid = false) {
   if (rrgPackageRole(line) !== 'rmp') return '';
   if (!(line.key in deal.lines)) return '';
-  const save = rrgMoney(deal.lines[line.key]);
+  const save = deal.lines[line.key];
   const pct = rrgPctLabel(rrgPackageRate(line));
-  return deal.matched.some(l => l.key === line.key)
-    ? `<span class="cart-line-package is-active">✓ ${RRG_PACKAGE_DEAL.name}: ${paid ? 'you saved' : "you're saving"} ${save} (${pct} off)</span>`
-    : `<span class="cart-line-package">${RRG_PACKAGE_DEAL.name}: save ${save} (${pct} off) with a roof rack</span>`;
+  const ours = line.price * line.qty;
+  const active = deal.matched.some(l => l.key === line.key);
+  if (paid && !active) return ''; // a placed order without a rack: the plain price, no "with a roof rack"
+  const rrp = line.wasPrice && line.wasPrice > line.price
+    ? `<dt>RRP</dt><dd><s>${rrgMoney(line.wasPrice * line.qty)}</s></dd>` : '';
+  const rows = active
+    ? `${rrp}<dt>Our price</dt><dd>${rrgMoney(ours)}</dd>
+       <dt class="is-deal">${RRG_PACKAGE_DEAL.name} (${pct})</dt><dd class="is-deal">−${rrgMoney(save)}</dd>
+       <dt class="is-total">${paid ? 'You paid' : 'You pay'}</dt><dd class="is-total">${rrgMoney(ours - save)}</dd>`
+    : `${rrp}<dt class="is-total">Our price</dt><dd class="is-total is-plain">${rrgMoney(ours)}</dd>
+       <dt class="is-potential">${RRG_PACKAGE_DEAL.name} (${pct})<small>with a roof rack</small></dt><dd class="is-potential">−${rrgMoney(save)}</dd>`;
+  return `<dl class="cart-line-breakdown${active ? ' is-active' : ''}" aria-label="${RRG_PACKAGE_DEAL.name} price breakdown">${rows}</dl>`;
 }
 // BNPL line per region (AU: Afterpay 4 payments, Zip from $10/week). NZ/UK have none on live.
 function rrgBnplHTML(total) {
@@ -760,10 +769,11 @@ function rrgRenderPackageDrawer() {
         <span class="cart-line-brand">${rrgEsc(item.brand || '')}</span>
         <strong class="pkg-product-name">${rrgEsc(item.name)}</strong>
         <dl class="pkg-prices">
-          <dt>Today</dt><dd>${rrgMoney(price)}</dd>
+          ${item.wasPrice && item.wasPrice > price ? `<dt>RRP</dt><dd class="pkg-price-rrp"><s>${rrgMoney(item.wasPrice)}</s></dd>` : '' /* on sale: the RRP too, so the deal reads as off our price (2026-10-08) */}
+          <dt>Our price</dt><dd>${rrgMoney(price)}</dd>
           <dt>With a roof rack</dt><dd class="pkg-price-deal">${rrgMoney(price - save)}</dd>
         </dl>
-        <span class="pkg-save">You save ${rrgMoney(save)}</span>
+        <span class="pkg-save">You save ${rrgMoney(save)} (${rrgPctLabel(rrgPackageRate(item))} off our price)</span>
       </div>
     </div>`;
   const vehicle = rrgVehicle();
