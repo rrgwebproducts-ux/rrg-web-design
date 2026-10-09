@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="../_shared/campaign.css">
 <link rel="stylesheet" href="../_shared/blog.css">
 <!-- ===== Blog archive (spec.md §20.4, 2026-10-09) =====
-     Replaces the live Mageplaza list at /blog.html. Newest post as a featured card, topic tabs (the
+     Replaces the live Mageplaza list at /blog.html. Newest post as a featured card, topic tabs (the PLP Shop By row; the
      live blog categories, merged and renamed — ?topic= keeps the choice in the URL), then a 3-up
      grid with Load more. Every card links to the post template (blog-post/index.html?post=<slug>). -->
 </head>
@@ -36,7 +36,13 @@
     <p>Guides, reviews and road trips from the Roof Racks Galore team.</p>
   </section>
 
-  <nav class="blog-topics" id="blogTopics" aria-label="Blog topics"></nav>
+  <!-- Topic tabs = the PLP's Shop By row (plp.css), same as every listing page (Brenton, 2026-10-09). -->
+  <nav class="plp-shopby blog-topics" aria-label="Blog topics">
+    <div class="plp-shopby-head">
+      <h2>Browse By Topic</h2>
+    </div>
+    <div class="plp-shopby-track" id="blogTopics"></div>
+  </nav>
 
   <section class="blog-featured" id="blogFeatured"></section>
 

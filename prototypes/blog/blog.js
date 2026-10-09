@@ -2,19 +2,24 @@
 // share this file: the archive (blog/index.html) and the post (blog-post/index.html?post=<slug>).
 // Data = RRG_BLOG_POSTS (blog-data.js, the live blog's 105 posts). Spec: spec.md §20.4.
 
+// Topic tab icons: the same icons as the matching PLP Shop By tabs (live site's own where they
+// exist); line icons for the three topics with no product category.
+const BLOG_LIVE_ICON = path => `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/${path}.webp" alt="">`;
+const BLOG_LOCAL_ICON = file => `<img src="${RRG_PROTO}_shared/${file}" alt="">`;
+const BLOG_SVG_ICON = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const BLOG_TOPICS = [
   // tile = the lifestyle photo (_shared/category-tiles/) used as a stand-in listing image — only 4
   // live posts have an image of their own. shop = where the post's "Shop" panel goes.
-  { label: 'Roof Racks', key: 'roof-racks', tile: 'roof-racks', shop: 'vplp/index.html' },
-  { label: 'Bike Racks', key: 'bike-racks', tile: 'bike-racks', shop: 'plp/index.html' },
-  { label: 'Platforms', key: 'platforms', tile: 'roof-rack-accessories', shop: 'vplp/index.html' },
-  { label: 'Roof Boxes & Cargo Bags', key: 'roof-boxes', tile: 'roof-boxes', shop: 'plp-roof-boxes/index.html' },
-  { label: 'Roof Top Tents', key: 'roof-top-tents', tile: 'roof-top-tents', shop: 'plp-roof-top-tents/index.html' },
-  { label: 'Awnings', key: 'awnings', tile: 'awnings', shop: 'plp-awnings/index.html' },
-  { label: 'Water Sports', key: 'water-sports', tile: 'water-sports', shop: 'plp-water-carriers/index.html' },
-  { label: 'Reviews', key: 'reviews', tile: 'roof-rack-accessories' },
-  { label: 'Tips & Guides', key: 'tips', tile: 'tie-downs' },
-  { label: 'Orders & Delivery', key: 'orders', tile: 'more-accessories' }
+  { label: 'Roof Racks', key: 'roof-racks', tile: 'roof-racks', shop: 'vplp/index.html', icon: BLOG_LOCAL_ICON('shopby-thru-bars.webp') },
+  { label: 'Bike Racks', key: 'bike-racks', tile: 'bike-racks', shop: 'plp/index.html', icon: BLOG_LIVE_ICON('category/tab/1742') },
+  { label: 'Platforms', key: 'platforms', tile: 'roof-rack-accessories', shop: 'vplp/index.html', icon: BLOG_LOCAL_ICON('shopby-platform-trays.webp') },
+  { label: 'Roof Boxes & Cargo Bags', key: 'roof-boxes', tile: 'roof-boxes', shop: 'plp-roof-boxes/index.html', icon: BLOG_LOCAL_ICON('shopby-roofbox-medium.png') },
+  { label: 'Roof Top Tents', key: 'roof-top-tents', tile: 'roof-top-tents', shop: 'plp-roof-top-tents/index.html', icon: BLOG_LIVE_ICON('attribute/roof_top_tent_opening/41270') },
+  { label: 'Awnings', key: 'awnings', tile: 'awnings', shop: 'plp-awnings/index.html', icon: BLOG_LIVE_ICON('category/tab/17643') },
+  { label: 'Water Sports', key: 'water-sports', tile: 'water-sports', shop: 'plp-water-carriers/index.html', icon: BLOG_LIVE_ICON('category/tab/17803') },
+  { label: 'Reviews', key: 'reviews', tile: 'roof-rack-accessories', icon: BLOG_SVG_ICON('<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>') },
+  { label: 'Tips & Guides', key: 'tips', tile: 'tie-downs', icon: BLOG_SVG_ICON('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9V16h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3z"/>') },
+  { label: 'Orders & Delivery', key: 'orders', tile: 'more-accessories', icon: BLOG_SVG_ICON('<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>') }
 ];
 const blogTopic = label => BLOG_TOPICS.find(t => t.label === label) || BLOG_TOPICS[BLOG_TOPICS.length - 1];
 const blogPostHref = p => `${RRG_PROTO}blog-post/index.html?post=${encodeURIComponent(p.slug)}`;
@@ -60,8 +65,12 @@ function initBlogArchive() {
     const topic = BLOG_TOPICS.find(t => t.key === state.topic);
     const list = topic ? RRG_BLOG_POSTS.filter(p => p.cats.includes(topic.label)) : RRG_BLOG_POSTS;
     const counts = Object.fromEntries(BLOG_TOPICS.map(t => [t.key, RRG_BLOG_POSTS.filter(p => p.cats.includes(t.label)).length]));
-    tabsEl.innerHTML = [{ key: '', label: 'All' }, ...BLOG_TOPICS].map(t => `
-      <a class="blog-topic${state.topic === t.key ? ' is-active' : ''}" href="${t.key ? blogTopicHref(t) : BLOG_HOME()}" data-topic="${t.key}"${state.topic === t.key ? ' aria-current="page"' : ''}>${t.label} <span>${t.key ? counts[t.key] : RRG_BLOG_POSTS.length}</span></a>`).join('');
+    // The PLP's Shop By tab row (plp.css .plp-shopby-*), so the archive matches every listing page.
+    tabsEl.innerHTML = [{ key: '', label: 'All', icon: BLOG_LOCAL_ICON('shopby-show-all.png') }, ...BLOG_TOPICS].map(t => `
+      <a class="plp-shopby-tile${state.topic === t.key ? ' active' : ''}" href="${t.key ? blogTopicHref(t) : BLOG_HOME()}" data-topic="${t.key}"${state.topic === t.key ? ' aria-current="page"' : ''}>
+        <span class="plp-shopby-icon">${t.icon}</span>
+        <span class="plp-shopby-label">${t.label} (${t.key ? counts[t.key] : RRG_BLOG_POSTS.length})</span>
+      </a>`).join('');
     tabsEl.querySelectorAll('[data-topic]').forEach(a => a.addEventListener('click', e => {
       e.preventDefault();
       state.topic = a.dataset.topic; state.shown = BLOG_PAGE_SIZE;

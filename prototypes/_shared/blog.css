@@ -7,14 +7,10 @@
 .blog-head h1{margin:0 0 6px;}
 .blog-head p{margin:0;font-size:16px;color:var(--rrg-grey-700);}
 
-/* Topic tabs */
-.blog-topics{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;margin-bottom:24px;scrollbar-width:none;}
-.blog-topics::-webkit-scrollbar{display:none;}
-.blog-topic{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--rrg-line);border-radius:999px;background:#fff;color:var(--rrg-text);font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;transition:border-color var(--t-fast) ease,background var(--t-fast) ease;}
-.blog-topic span{font-weight:400;color:var(--rrg-grey-600);font-size:13px;}
-.blog-topic:hover{border-color:var(--rrg-black);}
-.blog-topic.is-active{background:var(--rrg-black);border-color:var(--rrg-black);color:#fff;}
-.blog-topic.is-active span{color:rgba(255,255,255,.75);}
+/* Topic tabs = the PLP Shop By row (plp.css .plp-shopby-*). Tiles here are links, not buttons. */
+.blog-topics{margin:16px 0 28px;}
+.blog-topics .plp-shopby-tile{color:var(--rrg-text);text-decoration:none;}
+.blog-topics .plp-shopby-icon svg{width:44px;height:44px;}
 
 /* Meta line: date · author · read time */
 .blog-meta{display:flex;flex-wrap:wrap;margin:0;font-size:13px;color:var(--rrg-grey-600);}
