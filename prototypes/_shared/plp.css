@@ -656,8 +656,8 @@ html[data-tab-zoom="25"] :is(.plp-shopby-tile,.plp-icon-card):hover .plp-shopby-
 
 /* ==== Clearance page (2026-10-09, spec.md §20.3) =============================================
    Landing on top of the standard PLP grid: marketing's Overstock Clearance banner (the home page
-   slide) on its own yellow, the H1 + live stats, then Shop by Category tiles (shared.css .cat-tile)
-   that jump to the matching Shop By tab. Everything below is the normal PLP. */
+   slide) on its own yellow, the H1 + live stats, then what overstock clearance is (copy + the
+   shared Trust Row). Everything below is the normal PLP. */
 .clearance-banner{display:flex;justify-content:center;background:#F6C343 url(home-hero/overstock-clearance-bg.webp) center/cover;border-radius:var(--radius);overflow:hidden;margin:4px 0 0;}
 .clearance-banner-art{display:block;width:100%;max-width:720px;height:auto;}
 .clearance-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:24px 0 4px;}
@@ -667,15 +667,10 @@ html[data-tab-zoom="25"] :is(.plp-shopby-tile,.plp-icon-card):hover .plp-shopby-
 .clearance-stats li{padding:0 18px;border-left:1px solid var(--rrg-line);font-size:13px;color:var(--rrg-grey-600);text-align:center;line-height:1.2;}
 .clearance-stats li:first-child{border-left:none;padding-left:0;}
 .clearance-stats strong{display:block;font-family:'Barlow Condensed',Arial,sans-serif;font-size:28px;font-weight:700;color:var(--rrg-red);}
-.clearance-cats{margin-top:32px;}
-.clearance-cat-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
-.clearance-cat-grid .cat-tile-media{aspect-ratio:4/3;}
-.clearance-cat-grid .cat-tile-title{font-size:22px;}
-.clearance-tile-badge{position:absolute;z-index:1;left:10px;bottom:10px;background:var(--rrg-red);color:#fff;font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.03em;padding:5px 9px;border-radius:var(--radius);}
-@media (max-width:900px){
-  .clearance-cat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-  .clearance-cat-grid .cat-tile-title{font-size:19px;}
-}
+.clearance-about{margin-top:32px;max-width:900px;}
+.clearance-about h2{margin:0 0 10px;}
+.clearance-about p{margin:0 0 12px;font-size:15px;line-height:1.65;color:var(--rrg-grey-700);}
+.clearance-trust{margin:24px 0 36px;}
 @media (max-width:640px){
   .clearance-head{padding-top:18px;}
   .clearance-stats{width:100%;justify-content:space-between;}

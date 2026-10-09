@@ -8,8 +8,8 @@
 <meta name="description" content="Clearance roof rack accessories, platforms, bike racks and cargo carriers from Rhino-Rack, Yakima, Thule, Kuat and more. Limited stock at clearance prices.">
 <link rel="canonical" href="https://www.roofracksgalore.com.au/clearance">
 <!-- Clearance (2026-10-09, Graham: the header's Clearance link was the last one with no page).
-     Brenton chose "both": a sale landing (banner + category tiles) on top of the full PLP grid
-     and filters. The PLP template (plp/index.html) driven by PLP_CONFIG; products = the 36 real
+     A sale landing (banner, stats, what overstock clearance is) on top of the full PLP grid and
+     filters. The category tiles were dropped 2026-10-09 (they doubled up the Shop By tabs). The PLP template (plp/index.html) driven by PLP_CONFIG; products = the 36 real
      items on the live /clearance page, scraped 2026-10-09 (was/now prices, USPs, brand, image).
      Biggest Saving is the default sort. Spec: spec.md §20.3. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,18 +41,25 @@
   <section class="clearance-head">
     <div>
       <h1>Clearance</h1>
-      <p>End-of-line, discontinued and overstock gear from the brands we fit every day, at clearance prices. Stock is limited and clearance lines aren't restocked, so when it's gone, it's gone.</p>
+      <p>Shop clearance roof rack accessories, platforms, bike racks and cargo carriers at discounted prices, while stock lasts.</p>
     </div>
     <ul class="clearance-stats" id="clearanceStats"></ul>
   </section>
 
-  <!-- Category tiles: the Home page's Shop by Category tiles (shared.css .cat-tile), one per
-       clearance category, each with its count and best saving. A tile selects the matching
-       Shop By tab below and scrolls to the grid. -->
-  <section class="cat-tile-section clearance-cats">
-    <h2 class="related-heading">Shop Clearance by Category</h2>
-    <div class="cat-tile-grid clearance-cat-grid" id="clearanceCatGrid"></div>
+  <!-- What overstock clearance is (2026-10-09, Brenton: replaces the category tiles, which doubled
+       up the Shop By tabs). Explains the range for shoppers and search: brand-new, discounted,
+       limited, not restocked. Key points reuse the site's Trust Row (shared.css .trust-row). -->
+  <section class="clearance-about">
+    <h2>What Is Overstock Clearance?</h2>
+    <p>Overstock clearance is brand-new roof rack gear at discounted prices: end-of-line products, discontinued models and surplus stock from brands like Rhino-Rack, Yakima, Thule and Kuat. It's the same quality product we sell and fit every day, marked down to make room for new ranges.</p>
+    <p>Clearance lines are limited to the stock we have left and usually aren't reordered, so once a product sells out it's unlikely to come back. If you've had your eye on a platform accessory, bike rack or cargo carrier, now is the time to grab it at a lower price.</p>
   </section>
+  <div class="trust-row clearance-trust">
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><h4>Brand-New Stock</h4><p>No B-stock, seconds or ex-display</p></div>
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><h4>Full Warranty</h4><p>The same manufacturer's warranty as at full price</p></div>
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h4>Limited Quantities</h4><p>Not restocked once it's gone</p></div>
+    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg><h4>Fitting Available</h4><p><a href="#">Book a fitting</a> at your nearest store</p></div>
+  </div>
 
   <section class="plp-shopby" id="clearanceGrid">
     <div class="plp-shopby-head">
@@ -164,7 +171,7 @@ const LIVE_ICON = id => `<img src="https://www.roofracksgalore.com.au/pub/media/
 // Check the wording with the team before launch (spec.md §20.3).
 const CLEARANCE_FAQS = {
   all: [
-    { q: 'Are clearance products new?', a: 'Yes. Clearance stock is new end-of-line, discontinued or overstock product, not second-hand.' },
+    { q: 'Are clearance products new?', a: 'Yes. Clearance is brand-new end-of-line, discontinued or overstock product. There's no B-stock, seconds or ex-display in the clearance range.' },
     { q: 'Do clearance products come with a warranty?', a: 'Yes, the same manufacturer\'s warranty as at full price.' },
     { q: 'Can I return a clearance item?', a: 'Our standard Refund & Exchange policy applies. Check the product page for any item-specific conditions before you buy.' },
     { q: 'Will clearance lines come back in stock?', a: 'Usually not. Clearance lines aren\'t restocked, so what\'s listed is what\'s left.' },
@@ -180,17 +187,16 @@ window.PLP_CONFIG = {
   breadcrumbRoot: [ { label: 'Home', href: '../home/index.html' } ],
   // Tabs = this page's clearance categories (the live page is one flat list). Icons are the live
   // site's own category-tab icons; Bike Racks keeps its Level 3 (mount type) like the Bike Racks PLP.
-  // `tile` = the lifestyle photo (_shared/category-tiles/) for the landing tiles above.
   shopBy: [
-    { key: 'platforms-accessories', label: 'Platforms & Accessories', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">`, tile: 'roof-rack-accessories' },
-    { key: 'bike-racks', label: 'Bike Racks', icon: LIVE_ICON(1742), tile: 'bike-racks',
+    { key: 'platforms-accessories', label: 'Platforms & Accessories', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">` },
+    { key: 'bike-racks', label: 'Bike Racks', icon: LIVE_ICON(1742),
       children: [
         { key: 'hitch-mounting', label: 'Hitch Mounting', icon: LIVE_ICON(1830) },
         { key: 'roof-mounting', label: 'Roof Mounting', icon: LIVE_ICON(1742) },
         { key: 'bike-rack-accessories', label: 'Bike Rack Accessories', icon: LIVE_ICON(126) }
       ] },
-    { key: 'cargo-storage', label: 'Cargo Bags, Cases & Baskets', icon: `<img src="../_shared/shopby-roofbox-medium.png" alt="">`, tile: 'luggage-bags' },
-    { key: 'tie-downs-hardware', label: 'Tie Downs & Hardware', icon: LIVE_ICON(17808), tile: 'tie-downs' }
+    { key: 'cargo-storage', label: 'Cargo Bags, Cases & Baskets', icon: `<img src="../_shared/shopby-roofbox-medium.png" alt="">` },
+    { key: 'tie-downs-hardware', label: 'Tie Downs & Hardware', icon: LIVE_ICON(17808) }
   ],
   products: CLEARANCE_PRODUCTS,
   facets: {
@@ -210,28 +216,15 @@ window.PLP_CONFIG = {
   faqByCategory: CLEARANCE_FAQS
 };
 
-// ---- Landing: stats + category tiles -------------------------------------------------------
-function clearanceBestPct(list) { return Math.max(...list.map(plpSavePct)); }
-function renderClearanceLanding() {
+// ---- Landing stats ---------------------------------------------------------------------------
+function renderClearanceStats() {
   const all = CLEARANCE_PRODUCTS;
   document.getElementById('clearanceStats').innerHTML = `
     <li><strong>${all.length}</strong> products</li>
-    <li><strong>Up to ${clearanceBestPct(all)}%</strong> off</li>
+    <li><strong>Up to ${Math.max(...all.map(plpSavePct))}%</strong> off</li>
     <li><strong>${new Set(all.map(p => p.brand)).size}</strong> brands</li>`;
-  document.getElementById('clearanceCatGrid').innerHTML = PLP_CONFIG.shopBy.map(t => {
-    const list = all.filter(p => p.subcategories.includes(t.key));
-    return `<a class="cat-tile cat-tile--compact" href="#clearanceGrid" data-clearance-cat="${t.key}">
-      <span class="cat-tile-media"><img src="../_shared/category-tiles/${t.tile}.webp" alt="" loading="lazy"><span class="cat-tile-title">${t.label}</span><span class="clearance-tile-badge">Up to ${clearanceBestPct(list)}% off</span></span>
-      <span class="cat-tile-cta">${list.length} product${list.length === 1 ? '' : 's'} ›</span>
-    </a>`;
-  }).join('');
-  document.querySelectorAll('[data-clearance-cat]').forEach(a => a.addEventListener('click', e => {
-    e.preventDefault();
-    plpSelectSubcat(a.dataset.clearanceCat);
-    document.getElementById('clearanceGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }));
 }
-renderClearanceLanding();
+renderClearanceStats();
 </script>
 </body>
 </html>
