@@ -70,7 +70,7 @@ function rrgWidgetMainHeaderHTML() {
       <span class="sep">|</span>
       <a href="#">Store Finder</a>
       <a href="#">Fit My Vehicle</a>
-      <a href="#" class="rrg-nav-clearance">Clearance</a>
+      <a href="${RRG_PROTO}clearance/index.html" class="rrg-nav-clearance">Clearance</a>
       ${typeof rrgCampaignNavLinkHTML === 'function' ? rrgCampaignNavLinkHTML() : ''}
       <a href="../installation/index.html">Fitting</a>
     </nav>
@@ -156,6 +156,7 @@ function rrgWidgetFooterHTML() {
         <h4>Information</h4>
         <ul>
           <li><a href="#">About Us</a></li>
+          <li><a href="${RRG_PROTO}blog/index.html">Blog</a></li>
           <li><a href="#">Opening Hours</a></li>
           <li><a href="#">Wholesale Policy</a></li>
           <li><a href="#">Privacy Policy</a></li>

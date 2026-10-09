@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Blog | Roof Racks Galore</title>
+<meta name="description" content="Guides, reviews and road trips from the Roof Racks Galore team: roof racks, platforms, bike racks, roof boxes, rooftop tents and more.">
+<link rel="canonical" href="https://www.roofracksgalore.com.au/blog.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<link rel="stylesheet" href="../_shared/blog.css">
+<!-- ===== Blog archive (spec.md §20.4, 2026-10-09) =====
+     Replaces the live Mageplaza list at /blog.html. Newest post as a featured card, topic tabs (the
+     live blog categories, merged and renamed — ?topic= keeps the choice in the URL), then a 3-up
+     grid with Load more. Every card links to the post template (blog-post/index.html?post=<slug>). -->
+</head>
+<body data-blog-archive>
+
+<div data-widget="header"></div>
+
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="blogCrumbs"></div>
+</div>
+
+<main class="wrap blog-archive">
+  <section class="blog-head">
+    <h1 id="blogHeading">Blog</h1>
+    <p>Guides, reviews and road trips from the Roof Racks Galore team.</p>
+  </section>
+
+  <nav class="blog-topics" id="blogTopics" aria-label="Blog topics"></nav>
+
+  <section class="blog-featured" id="blogFeatured"></section>
+
+  <section>
+    <div class="blog-grid" id="blogGrid"></div>
+    <div class="blog-more">
+      <p class="blog-count" id="blogCount"></p>
+      <button type="button" class="btn btn-outline" id="blogMore">Load more posts</button>
+    </div>
+  </section>
+</main>
+
+<section class="vclp-trust-banner">
+  <img class="install-photo" src="../_shared/installer.png" alt="" width="740" height="420" loading="lazy">
+  <div class="wrap">
+    <div class="vclp-trust-inner">
+      <h2>Friendly + Trusted Nationwide Experts in Roof Rack Supply and Installation</h2>
+      <div class="vclp-trust-ctas">
+        <a href="#" class="btn btn-primary">Book An Installation</a>
+        <a href="#" class="btn btn-outline">See Fitting Costs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div data-widget="footer"></div>
+
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="blog-data.js"></script>
+<script src="blog.js"></script>
+<script>initBlogArchive();</script>
+</body>
+</html>

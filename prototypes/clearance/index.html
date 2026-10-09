@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Clearance | Roof Racks Galore</title>
+<meta name="description" content="Clearance roof rack accessories, platforms, bike racks and cargo carriers from Rhino-Rack, Yakima, Thule, Kuat and more. Limited stock at clearance prices.">
+<link rel="canonical" href="https://www.roofracksgalore.com.au/clearance">
+<!-- Clearance (2026-10-09, Graham: the header's Clearance link was the last one with no page).
+     Brenton chose "both": a sale landing (banner + category tiles) on top of the full PLP grid
+     and filters. The PLP template (plp/index.html) driven by PLP_CONFIG; products = the 36 real
+     items on the live /clearance page, scraped 2026-10-09 (was/now prices, USPs, brand, image).
+     Biggest Saving is the default sort. Spec: spec.md §20.3. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+</head>
+<body data-plp-page data-clearance-page>
+
+<div data-widget="header"></div>
+
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="plpCrumbTrail"></div>
+</div>
+
+<main class="wrap">
+
+  <!-- Landing banner: the live home page's Overstock Clearance slide (marketing's own art), so the
+       page matches the banner that sends people here. Swapped per campaign in production. -->
+  <section class="clearance-banner" aria-label="Overstock Clearance">
+    <img class="clearance-banner-art" src="../_shared/home-hero/overstock-clearance-art.webp" alt="Overstock Clearance: up to 60% off Yakima, Thule, Rhino-Rack, Dropracks, CRUZ, Front Runner and more" width="1400" height="820">
+  </section>
+
+  <section class="clearance-head">
+    <div>
+      <h1>Clearance</h1>
+      <p>End-of-line, discontinued and overstock gear from the brands we fit every day, at clearance prices. Stock is limited and clearance lines aren't restocked, so when it's gone, it's gone.</p>
+    </div>
+    <ul class="clearance-stats" id="clearanceStats"></ul>
+  </section>
+
+  <!-- Category tiles: the Home page's Shop by Category tiles (shared.css .cat-tile), one per
+       clearance category, each with its count and best saving. A tile selects the matching
+       Shop By tab below and scrolls to the grid. -->
+  <section class="cat-tile-section clearance-cats">
+    <h2 class="related-heading">Shop Clearance by Category</h2>
+    <div class="cat-tile-grid clearance-cat-grid" id="clearanceCatGrid"></div>
+  </section>
+
+  <section class="plp-shopby" id="clearanceGrid">
+    <div class="plp-shopby-head">
+      <h2>Shop By</h2>
+    </div>
+    <div class="plp-shopby-track" id="plpShopByTrack"></div>
+  </section>
+
+  <div class="plp-toolbar">
+    <div class="plp-toolbar-left">
+      <div class="plp-view-toggle">
+        <button type="button" id="plpViewGrid" aria-label="Grid view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+        <button type="button" id="plpViewList" aria-label="List view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+      </div>
+      <button type="button" class="btn btn-outline plp-refine-btn-mobile" id="plpRefineBtn">Refine Results</button>
+      <span class="plp-toolbar-count" id="plpResultCount"></span>
+    </div>
+    <div class="plp-toolbar-right">
+      <label for="plpSort">Sort By</label>
+      <select id="plpSort"></select>
+    </div>
+  </div>
+
+  <div class="plp-layout">
+    <aside class="plp-sidebar">
+      <div class="plp-filter-head">
+        <h3>Filters</h3>
+        <button type="button" class="plp-filter-clear" id="plpFilterClear">Clear Filters</button>
+      </div>
+      <div id="plpPriorityFilters"></div>
+      <div id="plpStandardFilters"></div>
+      <div class="plp-merch-sidebar" id="plpMerchSidebar"></div>
+    </aside>
+    <div class="plp-main">
+      <div class="plp-filter-chips" id="plpPriorityChips"></div>
+      <div id="plpResults" class="plp-results"></div>
+      <div class="plp-pagination" id="plpPaginationDesktop"></div>
+      <div class="plp-pagination-mobile">
+        <div class="plp-toolbar-count plp-result-count-mobile" id="plpResultCountMobile"></div>
+        <div id="plpPaginationMobile"></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq-section" id="faqSection">
+    <h2 class="faq-heading">Clearance FAQs</h2>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+</main>
+
+<div data-widget="footer"></div>
+
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="../_shared/plp.js"></script>
+<script>
+// Real roofracksgalore.com.au/clearance range, scraped 2026-10-09: name, SKU, brand + logo, image,
+// was/now price and the listing's 3 USPs, in the live order. All "In Stock" on the live listing.
+// facets.discount = % off (the Discount filter); subcategories = this page's own Shop By tabs.
+const CLEARANCE_PRODUCTS = [
+  {"id": "cl1", "sku": "Y9802701", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima LightMate - 9802701", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-lightmate-9802701-dc52719054ed.webp", "price": 118.15, "wasPrice": 139.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "bike-rack-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-lightmate-9802701", "facets": {"brand": "Yakima", "discount": 15}, "specs": [], "usps": ["Light board accessory restores rear lighting visibility behind loaded racks", "Combined light layout supports safer road travel use", "Rack-mounted board suits compatible Yakima carriers"], "relevanceRank": 100, "newnessRank": 100, "salesRank": 100},
+  {"id": "cl2", "sku": "Y8002443", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima HoldUp Black 2 Bike Hitch Mounted Carrier - 8002443", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-holdup-black-2-bike-hitch-mounted-carrier-8002443.webp", "price": 539.0, "wasPrice": 679.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-holdup-2-8002443", "facets": {"brand": "Yakima", "discount": 21}, "specs": [], "usps": ["Carries two bikes securely for everyday rides and longer adventures", "StrongArm wheel hooks with no frame contact", "Tilts down for convenient rear vehicle access without unloading bikes"], "relevanceRank": 99, "newnessRank": 99, "salesRank": 99},
+  {"id": "cl3", "sku": "Y8002741", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima StageTwo +2 Add-On Vapor (Silver) - 8002741", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8002741-Bike-Rack---Hitch-Platform--Vertical._1.webp", "price": 499.0, "wasPrice": 749.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-stagetwo-2-add-on-vapor-silver-8002741", "facets": {"brand": "Yakima", "discount": 33}, "specs": [], "usps": ["Extension add-on increases rack capacity by two", "Integrates with StageTwo platform rack systems", "Vapor finish matches silver rack setups"], "relevanceRank": 98, "newnessRank": 98, "salesRank": 98},
+  {"id": "cl4", "sku": "Y8000341", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima Platform E 1240 X 2130 mm 8000341 - 9820341", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-platform-e-1240-x-2130-mm-8000341-9820341-98c806ebf4e0_1.webp", "price": 977.5, "wasPrice": 1150.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-platform-e-1235-x-2130-mm-8000341", "facets": {"brand": "Yakima", "discount": 15}, "specs": [], "usps": ["Designed and tested in Australia for tough conditions, with Yakima’s durable e-coat powder finish.", "East-west slats and universal channels fit nearly any accessory, ensuring excellent load distribution.", "Ready for work, camping, kayaking, biking, or any off-road adventure — this rack handles it all ."], "relevanceRank": 97, "newnessRank": 97, "salesRank": 97},
+  {"id": "cl5", "sku": "FET2AOB", "brand": "Kuat", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/kuat.webp", "name": "Kuat Transfer v2 black 1 Bike add-on extension - T2AOB", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/k/u/kuat-transfer-v2-black-1-bike-add-on-extension-t2aob-a37e75334ca8.webp", "price": 179.0, "wasPrice": 259.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/kuat-transfer-v2-black-1-bike-add-on-extension-t2aob", "facets": {"brand": "Kuat", "discount": 31}, "specs": [], "usps": ["Extension add-on increases rack capacity by one", "Built to pair with Transfer V2 platform racks", "Tray-style layout keeps bike upright in transit"], "relevanceRank": 96, "newnessRank": 96, "salesRank": 96},
+  {"id": "cl6", "sku": "FENA21G", "brand": "Kuat", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/kuat.webp", "name": "Kuat NV 2.0 Grey 1 Bike Add-On Extension - NA21G", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/k/u/kuat-nv-2-0-grey-1-bike-add-on-extension-na21g-0af5ae6da238.webp", "price": 399.0, "wasPrice": 629.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/kuat-nv-2-0-grey-1-bike-add-on-extension-na21g", "facets": {"brand": "Kuat", "discount": 37}, "specs": [], "usps": ["Extension add-on increases rack capacity by one", "Built to attach to NV 2.0 platform racks", "Grey finish matches NV 2.0 grey rack setups"], "relevanceRank": 95, "newnessRank": 95, "salesRank": 95},
+  {"id": "cl7", "sku": "FENA21B", "brand": "Kuat", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/kuat.webp", "name": "Kuat NV 2.0 black 1 Bike add-on extension - NA21B", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/K/u/Kuat-NA21B-Bike-Rack---Hitch-Platform--Vertical._1.webp", "price": 399.0, "wasPrice": 629.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/kuat-nv-2-0-black-1-bike-add-on-extension-na21b", "facets": {"brand": "Kuat", "discount": 37}, "specs": [], "usps": ["Extension add-on increases rack capacity by one", "Connects directly to NV 2.0 platform rack systems", "Matching black finish keeps rack look consistent"], "relevanceRank": 94, "newnessRank": 94, "salesRank": 94},
+  {"id": "cl8", "sku": "FEBAO1B", "brand": "Kuat", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/kuat.webp", "name": "Kuat NV Base 2.0 Black 1 Bike Add-On Extension - BAO1B", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/k/u/kuat-nv-base-2-0-black-1-bike-add-on-extension-bao1b-0af5ae6da238.webp", "price": 399.0, "wasPrice": 625.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/kuat-nv-base-2-0-black-1-bike-add-on-extension-bao1b", "facets": {"brand": "Kuat", "discount": 36}, "specs": [], "usps": ["Extension add-on increases rack capacity by one", "Designed for NV Base 2.0 rack platforms", "Tray layout keeps loading style consistent"], "relevanceRank": 93, "newnessRank": 93, "salesRank": 93},
+  {"id": "cl9", "sku": "RHRTDH3", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Tie Down Strap with Hook - RTDH3", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-tie-down-strap-with-hook-rtdh3-079c2c0243c7.webp", "price": 41.4, "wasPrice": 46.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["tie-downs-hardware"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-tie-down-strap-with-hook-rtdh3", "facets": {"brand": "Rhino-Rack", "discount": 10}, "specs": [], "usps": [], "relevanceRank": 92, "newnessRank": 92, "salesRank": 92},
+  {"id": "cl10", "sku": "RHREB", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Eye Bolt Kit (x2) REB", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-REB-General-Accessories._1_1.webp", "price": 31.68, "wasPrice": 36.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["tie-downs-hardware"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-eye-bolt-kit-x2-reb", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": [], "relevanceRank": 91, "newnessRank": 91, "salesRank": 91},
+  {"id": "cl11", "sku": "RHS604", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Vortex Eye Bolt x2 S604", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-S604-General-Accessories._1_1.webp", "price": 35.2, "wasPrice": 40.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["tie-downs-hardware"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-vortex-eye-bolt-x2-s604", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": [], "relevanceRank": 90, "newnessRank": 90, "salesRank": 90},
+  {"id": "cl12", "sku": "RH43159", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Pioneer Recovery Track/Fishing Rod Holder Side Bracket 43159", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-pioneer-recovery-track-fishing-rod-holder-side-bracket-43159-13c7cb35330c.webp", "price": 113.6, "wasPrice": 142.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-pioneer-recovery-track-fishing-rod-holder-side-bracket-43159", "facets": {"brand": "Rhino-Rack", "discount": 20}, "specs": [], "usps": [], "relevanceRank": 89, "newnessRank": 89, "salesRank": 89},
+  {"id": "cl13", "sku": "RH61003", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Grab Handles - 61003", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-61003-Platforms--Trays---Accessories._1.webp", "price": 87.12, "wasPrice": 99.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-grab-handles-61003", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": [], "relevanceRank": 88, "newnessRank": 88, "salesRank": 88},
+  {"id": "cl14", "sku": "RH61005", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Pioneer Jerry Can Holder - Single - 61005", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-61005-Platforms--Trays---Accessories._1.webp", "price": 139.04, "wasPrice": 158.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-pioneer-jerry-can-holder-single-61005", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Maximise tray space: Secure one jerry can and free up room for the rest of your gear.", "Orientation freedom: Vertical or horizontal fit gives you flexibility for your load layout.", "Move it easily: Zwifloc channel nuts allow repositioning without disturbing other mounts."], "relevanceRank": 87, "newnessRank": 87, "salesRank": 87},
+  {"id": "cl15", "sku": "RH61001", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Pickup Kit - Cam Buckle - 61001", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-pickup-kit-cam-buckle-61001-1b2fbbabe547.webp", "price": 122.32, "wasPrice": 139.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-pickup-kit-cam-buckle-61001", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": [], "relevanceRank": 86, "newnessRank": 86, "salesRank": 86},
+  {"id": "cl16", "sku": "RH61007", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Gas Bottle Holder - 61007", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-61007-Platforms--Trays---Accessories._1.webp", "price": 148.72, "wasPrice": 169.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-gas-bottle-holder-61007", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Be ready anywhere: Mount your gas bottle securely with no compromise on space.", "Fast access: Single-buckle strap makes unsnapping your cylinder quick and easy.", "Reposition easy: Zwifloc nuts let you move holder without altering other gear."], "relevanceRank": 85, "newnessRank": 85, "salesRank": 85},
+  {"id": "cl17", "sku": "RHRSIT2", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack STOW iT Utility Holder - Regular - RSIT2", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RSIT2-Platforms--Trays---Accessories._1.webp", "price": 108.0, "wasPrice": 135.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-stow-it-utility-holder-regular-rsit2", "facets": {"brand": "Rhino-Rack", "discount": 20}, "specs": [], "usps": ["Secure your gear: Fits rods, shovels or paddles from 10mm-50mm for flexible use.", "Lock & load: Ratchet clamp and key-lock barrel keep your tools where they belong.", "Mount exactly where needed: Zwifloc drop-in nuts let you place it without rearranging gear."], "relevanceRank": 84, "newnessRank": 84, "salesRank": 84},
+  {"id": "cl18", "sku": "RHSSIT2", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack STOW iT Base Bracket - SSIT2", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-SSIT2-Platforms--Trays---Accessories._1.webp", "price": 59.0, "wasPrice": 69.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-stow-it-base-bracket-ssit2", "facets": {"brand": "Rhino-Rack", "discount": 14}, "specs": [], "usps": [], "relevanceRank": 83, "newnessRank": 83, "salesRank": 83},
+  {"id": "cl19", "sku": "Y8000335", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima Aceo Spades 8000335", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8000335-General-Accessories._1_1.webp", "price": 87.2, "wasPrice": 109.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["tie-downs-hardware"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-aceo-spades", "facets": {"brand": "Yakima", "discount": 20}, "specs": [], "usps": ["Load less fiddling: Pop open the holder, drop your tool in and you’re ready.", "Handle a range: Accepts 30-55 mm shafts—spades, shovels, paddles or axes.", "Free up space: Long-handled gear moved outside clears up the inside."], "relevanceRank": 82, "newnessRank": 82, "salesRank": 82},
+  {"id": "cl20", "sku": "RHPEB4", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack M6 Pioneer Eyebolt - PEB4", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-m6-pioneer-eyebolt-peb4.webp", "price": 63.2, "wasPrice": 79.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-m6-pioneer-eyebolt-peb", "facets": {"brand": "Rhino-Rack", "discount": 20}, "specs": [], "usps": ["Set your anchors: Add secure tie-points exactly where your load sits.", "Reposition fast: Zwifloc drop-in nuts make changes quick and easy.", "Gear ready: Strap down crates, jerries or recovery tools confidently."], "relevanceRank": 81, "newnessRank": 81, "salesRank": 81},
+  {"id": "cl21", "sku": "RHBSIT", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack STOW iT Awning Adaptor - BSIT", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-stow-it-awning-adaptor-bsit-02bdd9610008.webp", "price": 61.6, "wasPrice": 70.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-stow-it-awning-adaptor-bsit", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Slides into STOW iT base bracket for quick removal and storage", "Suits Rhino-Rack Batwing and Sunseeker awnings with adjustable height slots", "Includes 2 adaptors plus mounting hardware and Torx key in the box"], "relevanceRank": 80, "newnessRank": 80, "salesRank": 80},
+  {"id": "cl22", "sku": "Y8002739", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima StraightShot Hitch Extender 8002739", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8002739-Towballs--Hitches._1_1.webp", "price": 101.15, "wasPrice": 119.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "hitch-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-straightshot-hitch-extender-8002739", "facets": {"brand": "Yakima", "discount": 15}, "specs": [], "usps": [], "relevanceRank": 79, "newnessRank": 79, "salesRank": 79},
+  {"id": "cl23", "sku": "RH43157", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Pioneer High Lifting Jack & Shovel Bracket Kit 43157", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-43157-Platforms--Trays---Accessories._1_1.webp", "price": 196.24, "wasPrice": 223.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-pioneer-high-lifting-jack-shovel-bracket-kit-43157", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": [], "relevanceRank": 78, "newnessRank": 78, "salesRank": 78},
+  {"id": "cl24", "sku": "RH61020", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Cargo Corner Bracket Kit - 61020", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-61020-Platforms--Trays---Accessories._1.webp", "price": 193.6, "wasPrice": 220.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-cargo-corner-bracket-kit-61020", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Flexible anchoring: Corner brackets adapt to wide or narrow gear profiles.", "Quick reposition: Zwifloc nuts drop into channel without moving other gear.", "Ready strapped: Includes high-quality tie-down straps for immediate use."], "relevanceRank": 77, "newnessRank": 77, "salesRank": 77},
+  {"id": "cl25", "sku": "RH61006", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Pioneer Jerry Can Holder - Double - 61006", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-61006-Platforms--Trays---Accessories._1.webp", "price": 175.99, "wasPrice": 219.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-pioneer-jerry-can-holder-double-61006", "facets": {"brand": "Rhino-Rack", "discount": 20}, "specs": [], "usps": ["Dual can holder: Carries two jerry cans while preserving tray space for other gear.", "Smart positioning: Zwifloc nuts let you drop the holder without re-shuffling mounts.", "Light on load: Aluminium construction keeps additional roof weight low."], "relevanceRank": 76, "newnessRank": 76, "salesRank": 76},
+  {"id": "cl26", "sku": "RHRPBM", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Steel Mesh Platform Medium - RPBM", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RPBM-Baskets._1_1.webp", "price": 295.68, "wasPrice": 336.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-steel-mesh-platform-medium-1340-x-1070-rpbm", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Tough Steel Frame: Built to handle heavy loads securely", "Protective Finish: Zinc + powder coat resists rust and UV damage", "Flexible Tie-Downs: Secure gear anywhere on the mesh"], "relevanceRank": 75, "newnessRank": 75, "salesRank": 75},
+  {"id": "cl27", "sku": "RH61029", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Large Cargo Case - 61029", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-61029-General-Accessories._1.webp", "price": 324.72, "wasPrice": 369.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["cargo-storage"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-large-cargo-case-61029", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Pack More: 94 L case fits camping gear, tools, or travel essentials securely.", "Stay Dry: Waterproof and dust-tight seal shields your gear from elements.", "Easy Mount: Hardware and template simplify install on any roof platform."], "relevanceRank": 74, "newnessRank": 74, "salesRank": 74},
+  {"id": "cl28", "sku": "RH61028", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Small Cargo Case - 61028", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-small-cargo-case-61028-92c3f55b868a.webp", "price": 280.72, "wasPrice": 319.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["cargo-storage"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-small-cargo-case-61028", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Dry-kit ready: Built to keep your gear safe from rain, dust and impact.", "Custom interior: Foam inserts let you protect cameras, tools or your gear.", "Quick fit: Drilling template means fast, accurate install on your platform."], "relevanceRank": 73, "newnessRank": 73, "salesRank": 73},
+  {"id": "cl29", "sku": "RHRMTB1", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Backbone Spine 2 Base Mounting System - Mitsubishi Triton (RMTB1)", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RMTB1-Platform-Backbone._1.webp", "price": 335.2, "wasPrice": 419.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-backbone-2-base-mounting-system-mitsubishi-triton-rmtb1", "facets": {"brand": "Rhino-Rack", "discount": 20}, "specs": [], "usps": ["A stylish and incredibly strong mounting system - suits Mitsubishi Triton Gen 5 MQ MR", "Rhino Rack's famous Backbone spine spreads the weight of your rack more evenly than other leg systems", "Attaches to the vehicle roof using factory fitted fixed points"], "relevanceRank": 72, "newnessRank": 72, "salesRank": 72},
+  {"id": "cl30", "sku": "RHLB200", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack 200 litre Cargo Bag - LB200", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-LB200-Roof-Top-Bags._1_1.webp", "price": 268.4, "wasPrice": 305.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["cargo-storage"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-weatherproof-luggage-bag-200l-lb200", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Travel tough: Weather-proof bag shields your gear from the elements", "Built durable: 500D poly tarpaulin withstands tears, bumps and long journeys.", "Secure load: UV-resistant straps and heavy-duty buckles lock gear in place."], "relevanceRank": 71, "newnessRank": 71, "salesRank": 71},
+  {"id": "cl31", "sku": "Y8002104", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima FrontLoader Black Roof Mounted Bike Carrier x 1 - 8002104", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-frontloader-black-roof-mounted-bike-carrier-x-1-8002104-5a930e1591e7.webp", "price": 313.65, "wasPrice": 369.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "roof-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-frontloader-8002103", "facets": {"brand": "Yakima", "discount": 15}, "specs": [], "usps": ["Innovative wheel-mount system carries bike upright with no frame contact", "Universal crossbar fit works with most round, square, factory or aero bars", "Includes SKS locks so both rack and bike are secure on your trip"], "relevanceRank": 70, "newnessRank": 70, "salesRank": 70},
+  {"id": "cl32", "sku": "RHRLBM", "brand": "Rhino-Rack", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/rhinorack.webp", "name": "Rhino Rack Steel Mesh Basket Medium - RLBM", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RLBM-Baskets._1_1.webp", "price": 313.28, "wasPrice": 356.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["cargo-storage"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/rhino-rack-steel-mesh-basket-medium-1340x1070x125-rlbm", "facets": {"brand": "Rhino-Rack", "discount": 12}, "specs": [], "usps": ["Medium Size: 1340 × 1070 × 125 mm footprint", "Rust Resistant: Zinc-plated and powder-coated finish", "Raised Side Rails: Keep cargo secure and stable"], "relevanceRank": 69, "newnessRank": 69, "salesRank": 69},
+  {"id": "cl33", "sku": "T598001", "brand": "Thule", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/thule.webp", "name": "Thule ProRide 598 Silver Roof Mounted Bike Carrier x 1 - 598001", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-598001-Bike-Rack---Roof-Mount._1_1.webp", "price": 329.0, "wasPrice": 399.95, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "roof-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/thule-proride-silver-598001", "facets": {"brand": "Thule", "discount": 18}, "specs": [], "usps": ["A top quality upright roof bike carrier with fast secure loading", "Torque-limited frame clamp prevents overtightening and damage", "Soft claw pads adapt to frame shape and reduce damage risk"], "relevanceRank": 68, "newnessRank": 68, "salesRank": 68},
+  {"id": "cl34", "sku": "T598002", "brand": "Thule", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/thule.webp", "name": "Thule ProRide 598 Black Roof Mounted Bike Carrier x 1 - 598002", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-598002-Bike-Rack---Roof-Mount._1_7.webp", "price": 359.96, "wasPrice": 449.95, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "roof-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/thule-proride-black-598002", "facets": {"brand": "Thule", "discount": 20}, "specs": [], "usps": ["A top quality upright roof bike carrier with fast secure loading in sleek black finish", "Torque-limited frame clamp prevents overtightening and damage", "Soft claw pads adapt to frame shape and reduce damage risk"], "relevanceRank": 67, "newnessRank": 67, "salesRank": 67},
+  {"id": "cl35", "sku": "Y8002139", "brand": "Yakima", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/yakima.webp", "name": "Yakima HighRoad Roof Mounted Bike Carrier - 8002139", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/H/i/Highroad_G8R1IP_1.webp", "price": 364.65, "wasPrice": 429.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["bike-racks", "roof-mounting"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/yakima-highroad-8002139", "facets": {"brand": "Yakima", "discount": 15}, "specs": [], "usps": ["Wheel-on tray mount needs no frame contact", "Adjustable hoop fits many wheel sizes", "Tool-free bar mount system"], "relevanceRank": 66, "newnessRank": 66, "salesRank": 66},
+  {"id": "cl36", "sku": "TRWTM-FRT62-1412", "brand": "Wedgetail", "brandLogo": "https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/pos_brands/wedgetail.webp", "name": "Wedgetail Adventure Platform Mounting Kit for Ford Ranger P703 - WTM-FRT62-1412", "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/w/e/wedgetail-adventure-platform-mounting-kit-for-ford-ranger-p703-wtm-frt62-1412-19420189c5d1.webp", "price": 399.0, "wasPrice": 520.0, "rating": 0, "reviews": 0, "ribbon": null, "subcategories": ["platforms-accessories"], "stock": "in_stock", "pkgCategory": null, "url": "https://www.roofracksgalore.com.au/wedgetail-mount-kit-to-suit-ford-ranger-p703-wtm-frt62-1412", "facets": {"brand": "Wedgetail", "discount": 23}, "specs": [], "usps": ["Drilled rail mounting system for maximum strength and stability", "Wedge-wing spine design improves load distribution", "Vehicle-specific fit for Ford Ranger P703 (2022+)"], "relevanceRank": 65, "newnessRank": 65, "salesRank": 65}
+];
+const LIVE_ICON = id => `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/${id}.webp" alt="">`;
+
+// Clearance FAQs: general answers in line with the live site's policy pages, not new policy.
+// Check the wording with the team before launch (spec.md §20.3).
+const CLEARANCE_FAQS = {
+  all: [
+    { q: 'Are clearance products new?', a: 'Yes. Clearance stock is new end-of-line, discontinued or overstock product, not second-hand.' },
+    { q: 'Do clearance products come with a warranty?', a: 'Yes, the same manufacturer\'s warranty as at full price.' },
+    { q: 'Can I return a clearance item?', a: 'Our standard Refund & Exchange policy applies. Check the product page for any item-specific conditions before you buy.' },
+    { q: 'Will clearance lines come back in stock?', a: 'Usually not. Clearance lines aren\'t restocked, so what\'s listed is what\'s left.' },
+    { q: 'Can I get a clearance product fitted?', a: 'Yes. Book a fitting at any of our stores, the same as for any other product.' }
+  ]
+};
+
+window.PLP_CONFIG = {
+  categoryKey: 'clearance',
+  vrs: false,
+  shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  categoryRoot: { breadcrumbLabel: 'Clearance', heading: 'Clearance' },
+  breadcrumbRoot: [ { label: 'Home', href: '../home/index.html' } ],
+  // Tabs = this page's clearance categories (the live page is one flat list). Icons are the live
+  // site's own category-tab icons; Bike Racks keeps its Level 3 (mount type) like the Bike Racks PLP.
+  // `tile` = the lifestyle photo (_shared/category-tiles/) for the landing tiles above.
+  shopBy: [
+    { key: 'platforms-accessories', label: 'Platforms & Accessories', icon: `<img src="../_shared/shopby-platform-trays.webp" alt="">`, tile: 'roof-rack-accessories' },
+    { key: 'bike-racks', label: 'Bike Racks', icon: LIVE_ICON(1742), tile: 'bike-racks',
+      children: [
+        { key: 'hitch-mounting', label: 'Hitch Mounting', icon: LIVE_ICON(1830) },
+        { key: 'roof-mounting', label: 'Roof Mounting', icon: LIVE_ICON(1742) },
+        { key: 'bike-rack-accessories', label: 'Bike Rack Accessories', icon: LIVE_ICON(126) }
+      ] },
+    { key: 'cargo-storage', label: 'Cargo Bags, Cases & Baskets', icon: `<img src="../_shared/shopby-roofbox-medium.png" alt="">`, tile: 'luggage-bags' },
+    { key: 'tie-downs-hardware', label: 'Tie Downs & Hardware', icon: LIVE_ICON(17808), tile: 'tie-downs' }
+  ],
+  products: CLEARANCE_PRODUCTS,
+  facets: {
+    priority: [],
+    standard: [
+      { key: 'discount', label: 'Discount', mode: 'atleast', options: [
+        { value: 30, label: '30% off or more' }, { value: 20, label: '20% off or more' }, { value: 10, label: '10% off or more' } ] },
+      { key: 'brand', label: 'Brand', mode: 'eq', options: [...new Set(CLEARANCE_PRODUCTS.map(p => p.brand))].sort().map(b => ({ value: b, label: b })) }
+    ]
+  },
+  sortOptions: [['saving', 'Biggest Saving'], ['relevance', 'Relevance'], ['price_low', 'Price: Low to High'], ['price_high', 'Price: High to Low']],
+  defaultSort: 'saving',
+  videos: [],
+  merchPromos: [
+    { image: '../_shared/promo-merch-1.png', eyebrow: 'Package Deal', label: 'Save when you buy with a Roof Rack', href: '#' }
+  ],
+  faqByCategory: CLEARANCE_FAQS
+};
+
+// ---- Landing: stats + category tiles -------------------------------------------------------
+function clearanceBestPct(list) { return Math.max(...list.map(plpSavePct)); }
+function renderClearanceLanding() {
+  const all = CLEARANCE_PRODUCTS;
+  document.getElementById('clearanceStats').innerHTML = `
+    <li><strong>${all.length}</strong> products</li>
+    <li><strong>Up to ${clearanceBestPct(all)}%</strong> off</li>
+    <li><strong>${new Set(all.map(p => p.brand)).size}</strong> brands</li>`;
+  document.getElementById('clearanceCatGrid').innerHTML = PLP_CONFIG.shopBy.map(t => {
+    const list = all.filter(p => p.subcategories.includes(t.key));
+    return `<a class="cat-tile cat-tile--compact" href="#clearanceGrid" data-clearance-cat="${t.key}">
+      <span class="cat-tile-media"><img src="../_shared/category-tiles/${t.tile}.webp" alt="" loading="lazy"><span class="cat-tile-title">${t.label}</span><span class="clearance-tile-badge">Up to ${clearanceBestPct(list)}% off</span></span>
+      <span class="cat-tile-cta">${list.length} product${list.length === 1 ? '' : 's'} ›</span>
+    </a>`;
+  }).join('');
+  document.querySelectorAll('[data-clearance-cat]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    plpSelectSubcat(a.dataset.clearanceCat);
+    document.getElementById('clearanceGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+}
+renderClearanceLanding();
+</script>
+</body>
+</html>

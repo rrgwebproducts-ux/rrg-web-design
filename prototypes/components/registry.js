@@ -24,7 +24,7 @@
 
 const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box'];
 const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers', 'vplp'];
-const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'header'];
+const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'clearance', 'blog', 'blog-post', 'header'];
 const NOT_CHECKOUT = ALL_PAGES.filter(p => p !== 'checkout');
 
 // Storage presets — merged into a variant's `ls`.
@@ -322,9 +322,9 @@ const RRG_COMPONENTS = [
       v('VCLP', 'vehicle-category-landing', '.plp-hero'),
       v('VLP', 'vlp', '#vlpHero'),
     ] },
-  { id: 'shop-by', group: 'listing', name: 'Shop By Row', build: 'shared', usedOn: [...PLP3, 'search-results'],
+  { id: 'shop-by', group: 'listing', name: 'Shop By Row', build: 'shared', usedOn: [...PLP3, 'search-results', 'clearance'],
     source: 'plpRenderShopBy (plp.js)',
-    variants: [v('PLP Bike Racks', 'plp', '.plp-shopby'), v('PLP Roof Boxes', 'plp-roof-boxes', '.plp-shopby'), v('PLP Roof Boxes — UK', 'plp-roof-boxes', '.plp-shopby', { ls: S.uk }), v('PLP Awnings', 'plp-awnings', '.plp-shopby'), v('PLP Roof Top Tents', 'plp-roof-top-tents', '.plp-shopby'), v('PLP Camping', 'plp-camping', '.plp-shopby'), v('Search category tabs', 'search-results', '.plp-shopby')] },
+    variants: [v('PLP Bike Racks', 'plp', '.plp-shopby'), v('PLP Roof Boxes', 'plp-roof-boxes', '.plp-shopby'), v('PLP Roof Boxes — UK', 'plp-roof-boxes', '.plp-shopby', { ls: S.uk }), v('PLP Awnings', 'plp-awnings', '.plp-shopby'), v('PLP Roof Top Tents', 'plp-roof-top-tents', '.plp-shopby'), v('PLP Camping', 'plp-camping', '.plp-shopby'), v('Search category tabs', 'search-results', '.plp-shopby'), v('Clearance', 'clearance', '.plp-shopby')] },
   { id: 'listing-toolbar', group: 'listing', name: 'Listing Toolbar', build: 'copied', usedOn: [...PLP3, 'brand', 'search-results'],
     source: 'Static per page; wired by plp.js',
     variants: [v('PLP', 'plp', '.plp-toolbar'), v('Search', 'search-results', '.plp-toolbar')] },
@@ -554,9 +554,19 @@ const RRG_COMPONENTS = [
       v('Buying Guide', 'buying-guide', '.trust-row'),
       v('UK', 'simple', '.trust-row', { ls: S.uk }),
     ] },
-  { id: 'trust-banner', group: 'content', name: 'Trust Banner (install photo)', build: 'copied', usedOn: ['home', 'store-finder', 'vehicle-category-landing', 'vlp', 'brand', 'brands'],
+  { id: 'trust-banner', group: 'content', name: 'Trust Banner (install photo)', build: 'copied', usedOn: ['home', 'store-finder', 'vehicle-category-landing', 'vlp', 'brand', 'brands', 'blog', 'blog-post'],
     source: 'Static per page — the copy differs per page',
-    variants: [v('Home', 'home', '.vclp-trust-banner'), v('VCLP', 'vehicle-category-landing', '.vclp-trust-banner'), v('Store Finder', 'store-finder', '.vclp-trust-banner'), v('Brands hub', 'brands', '.vclp-trust-banner')] },
+    variants: [v('Home', 'home', '.vclp-trust-banner'), v('VCLP', 'vehicle-category-landing', '.vclp-trust-banner'), v('Store Finder', 'store-finder', '.vclp-trust-banner'), v('Brands hub', 'brands', '.vclp-trust-banner'), v('Blog', 'blog', '.vclp-trust-banner')] },
+  // Clearance + Blog (2026-10-09, spec.md §20.3–20.4)
+  { id: 'clearance-landing', group: 'content', name: 'Clearance Landing (banner, stats, category tiles)', build: 'copied', usedOn: ['clearance'],
+    source: 'Inline in clearance (renderClearanceLanding); CSS plp.css; tiles reuse .cat-tile',
+    variants: [v('Banner + stats', 'clearance', '.clearance-head'), v('Category tiles', 'clearance', '.clearance-cats')] },
+  { id: 'blog-cards', group: 'content', name: 'Blog Cards + Topic Tabs', build: 'shared', usedOn: ['blog', 'blog-post'],
+    source: 'blogCardHTML / initBlogArchive (blog/blog.js); CSS _shared/blog.css',
+    variants: [v('Topic tabs', 'blog', '#blogTopics'), v('Featured post', 'blog', '#blogFeatured'), v('Grid', 'blog', '#blogGrid'), v('Related posts', 'blog-post', '.blog-related')] },
+  { id: 'blog-post', group: 'content', name: 'Blog Post (header, body, side column)', build: 'shared', usedOn: ['blog-post'],
+    source: 'initBlogPost (blog/blog.js); CSS _shared/blog.css',
+    variants: [v('Long guide (On this page)', 'blog-post', '.blog-post', { q: 'post=how-to-choose-a-roof-rack-platform', h: 1400 }), v('Photo story', 'blog-post', '.blog-post', { q: 'post=road-to-sea-otter-maydena-bike-park', h: 1400 }), v('Short Q&A', 'blog-post', '.blog-post', { q: 'post=what-size-cargo-bag-do-i-need' })] },
   { id: 'brands-strip', group: 'content', name: 'Shop The Best Brands', build: 'copied', usedOn: ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'order-confirmation', 'vehicle-category-landing', 'vlp', 'brand', 'buying-guide'],
     source: 'Static, identical on 8 pages; VCLP differs; brand page uses renderOtherBrands',
     variants: [v('Home', 'home', '.brands-section'), v('Buying Guide (bike rack brands)', 'buying-guide', '.brands-section'), v('VCLP', 'vehicle-category-landing', '.brands-section'), v('Brand page (other brands)', 'brand', '.brands-section')] },

@@ -13,7 +13,7 @@ const MM_CLOSE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor
 const MM_MOBILE_UTILITY_LINKS = [
   { label: 'Store Finder', href: '#' },
   { label: 'Fit My Vehicle', href: '#' },
-  { label: 'Clearance', href: '#' },
+  { label: 'Clearance', href: RRG_PROTO + 'clearance/index.html' },
   // "Services" renamed "Fitting" and linked to the Installation page (Brenton, 2026-09-30).
   { label: 'Fitting', href: RRG_PROTO + 'installation/index.html' },
 ];

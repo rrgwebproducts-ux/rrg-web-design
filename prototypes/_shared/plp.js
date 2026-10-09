@@ -142,7 +142,9 @@ function plpFilteredSortedProducts() {
     price_high: (a, b) => b.price - a.price,
     newest: (a, b) => (b.newnessRank || 0) - (a.newnessRank || 0),
     bestselling: (a, b) => (b.salesRank || 0) - (a.salesRank || 0),
-    rating: (a, b) => b.rating - a.rating
+    rating: (a, b) => b.rating - a.rating,
+    // Clearance (2026-10-09): biggest % off first — offered via PLP_CONFIG.sortOptions.
+    saving: (a, b) => plpSavePct(b) - plpSavePct(a)
   };
   const sorter = sorters[plpState.sort] || sorters.relevance;
   // Search page, Relevance sort, vehicle set (2026-09-24 meeting): products that fit the session
@@ -1863,7 +1865,9 @@ function plpInitToolbar() {
   const sortSelect = document.getElementById('plpSort');
   // Options come from the one list (PLP_PRODUCT_SORT_OPTIONS) instead of being repeated in every
   // page's markup (spec.md §15 L6).
-  if (sortSelect && !sortSelect.options.length) sortSelect.innerHTML = PLP_PRODUCT_SORT_OPTIONS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+  // A page can add its own (PLP_CONFIG.sortOptions — Clearance adds Biggest Saving, its default).
+  if (sortSelect && !sortSelect.options.length) sortSelect.innerHTML = (window.PLP_CONFIG.sortOptions || PLP_PRODUCT_SORT_OPTIONS).map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+  if (sortSelect) sortSelect.value = plpState.sort;
   if (sortSelect) sortSelect.addEventListener('change', () => {
     if (window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products') {
       plpState.scopeSort = sortSelect.value;
@@ -2339,6 +2343,7 @@ function plpApplyUrlFilters() {
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
+  if (window.PLP_CONFIG.defaultSort) plpState.sort = window.PLP_CONFIG.defaultSort;
   plpState.heroImageMode = 'vehicle';
   // ?q= (set by the header search dropdown's "View All Results" link, 2026-09-22) takes
   // priority over the page's own demo default so a real typed query actually lands here.

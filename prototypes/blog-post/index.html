@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Blog | Roof Racks Galore</title>
+<meta name="description" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<link rel="stylesheet" href="../_shared/blog.css">
+<!-- ===== Blog post template (spec.md §20.4, 2026-10-09) =====
+     One template for every post: ?post=<slug> picks it from blog-data.js (no slug = the platform
+     guide). Topic links, H1, date / author / read time, the post's own image when it has one, the
+     body in a reading column, a sticky side column (On this page for long posts + a Shop panel for
+     the post's topic), related posts, then the fitting banner. -->
+</head>
+<body data-blog-post>
+
+<div data-widget="header"></div>
+
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="blogCrumbs"></div>
+</div>
+
+<main class="wrap">
+  <article class="blog-post">
+    <header class="blog-post-head">
+      <div class="blog-post-topics" id="postTopics"></div>
+      <h1 id="postTitle"></h1>
+      <p class="blog-meta" id="postMeta"></p>
+    </header>
+    <figure class="blog-post-hero" id="postHero" hidden></figure>
+    <div class="blog-post-layout">
+      <div class="blog-prose" id="postBody"></div>
+      <aside class="blog-post-side">
+        <nav class="blog-toc" id="postToc" hidden aria-label="On this page">
+          <p class="blog-side-eyebrow">On this page</p>
+          <ol></ol>
+        </nav>
+        <div class="blog-shop" id="postShop"></div>
+      </aside>
+    </div>
+  </article>
+
+  <section class="blog-related">
+    <div class="blog-related-head">
+      <h2 class="related-heading">Related Posts</h2>
+      <a href="../blog/index.html" id="postRelatedMore"></a>
+    </div>
+    <div class="blog-grid" id="postRelated"></div>
+  </section>
+</main>
+
+<section class="vclp-trust-banner">
+  <img class="install-photo" src="../_shared/installer.png" alt="" width="740" height="420" loading="lazy">
+  <div class="wrap">
+    <div class="vclp-trust-inner">
+      <h2>Friendly + Trusted Nationwide Experts in Roof Rack Supply and Installation</h2>
+      <div class="vclp-trust-ctas">
+        <a href="#" class="btn btn-primary">Book An Installation</a>
+        <a href="#" class="btn btn-outline">See Fitting Costs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div data-widget="footer"></div>
+
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script src="../blog/blog-data.js"></script>
+<script src="../blog/blog.js"></script>
+<script type="application/ld+json" id="postLd">{}</script>
+<script>initBlogPost();</script>
+</body>
+</html>
