@@ -1131,21 +1131,30 @@ function plpRenderFilters() {
 }
 
 // Reset/Clear Filters (2026-09-18 design review — Graham/Tim: no way to clear an active
-// selection today, on this prototype or the live site). Leaves the active SHOP BY subcategory
-// alone — only clears facet filters, same scope as the mobile drawer's own filter state.
+// selection today, on this prototype or the live site). Since 2026-10-09 (Graham: picked Hitch
+// Mounting → Frame Hold, hit Clear, only the sidebar cleared) it also resets the SHOP BY tabs
+// and Level 3 cards back to Show All — a full reset to the page's starting state.
 function plpClearFilters() {
   if (window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products') {
     plpState.scopeFilters = {};
+    plpState.scopeTab = '';
+    plpRenderScopeTabs();
     plpRenderScopeFilters();
     plpRenderScopeResults();
     plpSyncFilterDrawerFromMain();
     return;
   }
   plpState.activeFilters = {};
+  plpState.activeSubcat = 'all';
+  plpState.activeSubsubcat = null;
   plpState.page = 1;
   plpState.visibleCount = PLP_PAGE_SIZE;
+  plpRenderShopBy();
+  if (window.PLP_CONFIG.isSearch) plpRenderSearchTabs();
   plpRenderFilters();
   plpRenderResults();
+  plpRenderFAQ();
+  plpRenderCategoryContent();
   plpSyncFilterDrawerFromMain();
 }
 

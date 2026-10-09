@@ -1423,6 +1423,19 @@ function rrgVehicleSpecSave(key, root) {
     localStorage.setItem(RRG_VEHICLE_SPEC_KEY, JSON.stringify(all));
   } catch (e) {}
 }
+// Shop By tab hover zoom (2026-10-09, Graham: test a zoom on hover across every tab row —
+// PLP, VPLP, Camping, Search). Site Admin picks the size so a few can be compared; the value
+// is set on <html> as data-tab-zoom and plp.css scales the tab's icon on hover.
+const RRG_TAB_ZOOM_KEY = 'rrgTabZoom';
+const RRG_TAB_ZOOM_OPTIONS = ['off', '10', '15', '25'];
+function rrgTabZoom() {
+  try { const v = localStorage.getItem(RRG_TAB_ZOOM_KEY); return RRG_TAB_ZOOM_OPTIONS.includes(v) ? v : '15'; } catch (e) { return '15'; }
+}
+window.rrgSetTabZoom = v => {
+  try { localStorage.setItem(RRG_TAB_ZOOM_KEY, v); } catch (e) {}
+  document.documentElement.dataset.tabZoom = rrgTabZoom();
+};
+document.documentElement.dataset.tabZoom = rrgTabZoom();
 function rrgVehicleFinderStyle() {
   try { return localStorage.getItem(RRG_VF_STYLE_KEY) === 'dark' ? 'dark' : 'light'; } catch (e) { return 'light'; }
 }

@@ -140,6 +140,15 @@ function buildSiteAdminPanel(currentKey) {
           <option value="dark">Dark</option>
         </select>
       </label>
+      <label class="site-admin-select" title="Shop By tabs and Level 3 cards: how much the icon grows on hover (PLP, VPLP, Camping, Search)">
+        <span>Tab hover zoom</span>
+        <select data-admin-tab-zoom>
+          <option value="off">Off</option>
+          <option value="10">10%</option>
+          <option value="15">15%</option>
+          <option value="25">25%</option>
+        </select>
+      </label>
       <label class="site-admin-toggle" title="Demo placeholders in the UK and NZ Store Finder">
         <span>"Opening soon" stores (UK/NZ)</span>
         <input type="checkbox" data-admin-coming-soon>
@@ -266,6 +275,11 @@ function buildSiteAdminPanel(currentKey) {
   const vfStyleSelect = panel.querySelector('[data-admin-vf-style]');
   vfStyleSelect.value = typeof rrgVehicleFinderStyle === 'function' ? rrgVehicleFinderStyle() : 'light';
   vfStyleSelect.addEventListener('change', () => { if (window.rrgSetVehicleFinderStyle) window.rrgSetVehicleFinderStyle(vfStyleSelect.value); });
+
+  // Tab hover zoom (shared.js rrgTabZoom / rrgSetTabZoom).
+  const tabZoomSelect = panel.querySelector('[data-admin-tab-zoom]');
+  tabZoomSelect.value = typeof rrgTabZoom === 'function' ? rrgTabZoom() : 'off';
+  tabZoomSelect.addEventListener('change', () => { if (window.rrgSetTabZoom) window.rrgSetTabZoom(tabZoomSelect.value); });
 
   const comingSoonToggle = panel.querySelector('[data-admin-coming-soon]');
   comingSoonToggle.checked = typeof rrgShowComingSoon === 'function' ? rrgShowComingSoon() : true;

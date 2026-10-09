@@ -51,6 +51,15 @@
 .plp-shopby-icon svg{width:100%;height:100%;}
 .plp-shopby-icon img{width:100%;height:100%;object-fit:contain;}
 .plp-shopby-label{min-height:2.4em;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;}
+/* Hover zoom (2026-10-09, Graham test) — only the icon grows, so the tab row doesn't shift and
+   the track's overflow doesn't clip it; size comes from Site Admin → Tab hover zoom
+   (html[data-tab-zoom], shared.js). Also applies to the Level 3 icon cards. */
+.plp-shopby-icon img,.plp-shopby-icon svg{transition:transform .2s ease;}
+html[data-tab-zoom="10"] :is(.plp-shopby-tile,.plp-icon-card):hover .plp-shopby-icon :is(img,svg){transform:scale(1.1);}
+html[data-tab-zoom="15"] :is(.plp-shopby-tile,.plp-icon-card):hover .plp-shopby-icon :is(img,svg){transform:scale(1.15);}
+html[data-tab-zoom="25"] :is(.plp-shopby-tile,.plp-icon-card):hover .plp-shopby-icon :is(img,svg){transform:scale(1.25);}
+@media (hover:none){.plp-shopby-icon :is(img,svg){transform:none !important;}}
+@media (prefers-reduced-motion:reduce){.plp-shopby-icon :is(img,svg){transition:none;}}
 
 /* ---- Toolbar (result count / view toggle / sort, spec Sections 7-8) ---- */
 .plp-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rrg-line);margin-bottom:20px;}
