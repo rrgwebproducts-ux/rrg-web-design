@@ -57,8 +57,15 @@ const RRG_SALE_KEY = 'rrgSale';
 
 // The running campaign's id, or '' for none. (rrgSaleOn = 'true' is the 2026-10-02 on/off switch,
 // when Rack Friday was the only campaign — still honoured so saved demo state carries over.)
+// A ?sale=<id> link (or ?sale=none) sets it too and is saved, so a shared link keeps the takeover
+// while the viewer clicks around.
 function rrgSaleId() {
   try {
+    const fromUrl = new URLSearchParams(window.location.search).get('sale');
+    if (fromUrl !== null) {
+      localStorage.setItem(RRG_SALE_KEY, RRG_CAMPAIGNS[fromUrl] ? fromUrl : '');
+      localStorage.removeItem('rrgSaleOn');
+    }
     const id = localStorage.getItem(RRG_SALE_KEY);
     if (id !== null) return RRG_CAMPAIGNS[id] ? id : '';
     return localStorage.getItem('rrgSaleOn') === 'true' ? 'rack-friday' : '';
