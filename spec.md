@@ -1676,3 +1676,45 @@ Brenton's review after the build: red Package Deal elements read like errors, an
     - **Archive:** H1 + one-line intro, topic tabs with counts (**the PLP Shop By tab row**, "Browse By Topic", Brenton 2026-10-09: keeps the design uniform; icons = the matching PLP tab icons, line icons for Reviews / Tips & Guides / Orders & Delivery; scrolls sideways like Camping's long row) (`?topic=` in the URL, the H1 and breadcrumb follow), the newest post as a large featured card, then a 3-up grid (2 on tablet, 1 on phone) with **Load more** (12 at a time). Cards: image, topic, title, 3-line excerpt, date · read time.
     - **Post:** breadcrumb Home › Blog › Topic › Title, topic links, H1, date · Roof Racks Galore Team · read time, the post's own image (uncropped, column width), the body in a 760px reading column (tables scroll sideways, FAQ toggles, captioned photos, YouTube), and a sticky side column: **On this page** (posts with 3+ H2s) and a **Shop the range** panel for the post's topic (→ the matching PLP; Fit My Vehicle if none). Then 3 related posts (same topic) and the fitting banner. BlogPosting + BreadcrumbList JSON-LD.
     - **Open:** only **4 of 105** live posts have an image, so the rest show their topic's lifestyle photo as a stand-in. Every post needs a listing image (same rule as the Search Results brief). The live meta descriptions are one shared site-wide line, so excerpts use each post's opening text; each post needs its own meta description. Many Q&A posts duplicate the Help Centre: decide whether they stay on the blog. URLs keep the live `/blog.html` + `/blog/post/<slug>.html` in the JSON-LD; the final URL scheme is Marc's call.
+
+## 21. Page Debugger (Brenton & Graham, 2026-10-13)
+
+**Why:** Marc is delivering in this order for Black Friday: week 1 header + new search, week 2 PDP, week 3 PLP. Before he builds, Graham and Brenton want to sit down with those three page families on Vercel and see every dynamic value: where it comes from (Rackit / Magento / other), and what shows when it's missing. Hovering a widget also shows which shared component it is, so Marc builds one component instead of copies.
+
+**Turn it on:** Site Admin → Prototype → **Page debugger**, or add **`?debug=1`** to any template link (`?debug=0` turns it off). The choice is saved like `?sale=`, so it stays on while you click around.
+
+**What it shows:** a panel pinned top-left (minimise to a pill; × turns it off):
+- **Page info:** title (with length), meta description (with length), canonical, robots, H1 (flags anything other than exactly one), structured data types, Open Graph. Each gets a ✓ / ! / × marker.
+- **Show on page:** three checkboxes:
+    - **Dynamic fields:** a dashed outline on every field, coloured by source (Rackit, Magento, Algolia, REVIEWS.io, shopper session, CMS/config, calculated; unknown is striped red). Hover one for its source, the attribute it reads, the fallback rule as numbered steps, the value showing now, an example and notes. Draft fields carry a yellow **Draft** tag.
+    - **Components on hover:** hover any widget for its Component Library name, its green shared / orange mixed / red copied build, how many pages use it, where its code lives, and what it sits inside.
+    - **Outline all components:** draws every widget in its build colour.
+- **Fields on this page:** the fields grouped by source; click one to scroll to it. Fields that only appear in another state (drawer open, item in cart, a Demo State choice) are greyed under "Not on the page in this state".
+- **Components on this page:** grouped shared / mixed / copied; click to scroll, ↗ opens it in the Component Library.
+
+**Files:**
+- `prototypes/_shared/page-debugger.js` + `.css`: the tool. `admin-panel.js` loads them on demand, so pages don't change while it's off, and never inside Component Library frames.
+- `prototypes/_shared/dynamic-fields.js`: the field list (173 fields: 43 global, 24 search, 59 PDP, 47 PLP/VPLP).
+- `components/registry.js`: gained an optional `hover` selector for 10 widgets whose library selector is shared with other widgets.
+- `docs/page-debugger/DYNAMIC-FIELDS.md`: the same list as tables for Marc, with an "open questions" list at the top. Generated from `dynamic-fields.js` by `node docs/page-debugger/build-fields-doc.js`; re-run it after any change.
+
+**Status of the field list:** every entry is a **Draft**, drafted by Claude from the prototype code and the PDP/PLP/Search/Header developer briefs. Brenton reviews it, then each checked entry changes to `status: 'confirmed'` (its Draft tag disappears). Fallback rules marked "(recommendation)" in their notes are suggestions, not built behaviour.
+
+### 21.1 Decisions Claude made (Brenton away, 2026-10-13); review these
+1. **Name and placement:** "Page debugger" in Site Admin → Prototype, plus `?debug=1`. The panel sits top-left and moves over Site Admin's panel when that opens.
+2. **Page info is always shown;** only the overlays are checkboxes. Dynamic fields and Components on hover are on by default; Outline all components is off.
+3. **Field data lives in one central list** (`dynamic-fields.js`, located by CSS selector), not as `data-` attributes in every page's markup. No template HTML was changed, and a broken selector shows up as "not on the page".
+4. **Added an "Algolia" source:** the search typeahead and Search Results facets/counts read Algolia, not Magento directly (7 fields).
+5. **Search Results product cards** are listed under `search.card.*` and PLP cards under `plp.card*`, even though it's the same shared card. That way each page's list is complete on its own. Merge them if you'd rather have one entry.
+6. **PLP fields are scoped to the 9 listing templates** (including VPLP Accessories). Brand, Clearance and Blog use the same engine but aren't covered yet.
+7. **VPLP Accessories borrows VPLP's widgets** for the component hover, because the library doesn't list it on its own.
+8. **Only fields you can actually see are outlined:** a field that's empty, clipped by a closed drawer, or covered by a dropdown gets no outline.
+9. **Phones:** the panel starts minimised. Hover needs a mouse, so treat this as a desktop review tool.
+
+### 21.2 Fields that need an answer (18): the review list for Brenton / Graham / Marc
+Unknown source (11): vehicle photo (vehicle finder + PLP hero), Search category tab icons, product ribbons (Search + PLP), the vehicle ID copied from the fitment icon, the build option note, Ex-Demo link + drawer options, the On Display pill, the PLP card stock popover, and the PLP Related Products strip. Flagged in notes (7): the VPLP vehicle breadcrumb (prototype still shows year/body/roof, which the brief dropped 2026-09-29), PLP hero intro copy (the category description is long SEO copy, so it probably needs its own short field), hero Buyer's Guide/Fitting links (how they're assigned), Level 3 icons (attribute option vs real child category), card name for sibling groups, and Show Specs (Magento attributes or Rackit). Details and wording are in `DYNAMIC-FIELDS.md` → "Needs an answer".
+
+### 21.3 Next
+- Brenton reviews the drafts on Vercel and marks them confirmed.
+- A review session with Graham on the three page families.
+- Extend to the other templates (Home, VCLP/VLP, Brand, Clearance, Cart/Checkout, Store pages) when wanted.

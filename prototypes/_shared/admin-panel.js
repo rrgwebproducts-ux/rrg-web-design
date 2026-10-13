@@ -154,6 +154,10 @@ function buildSiteAdminPanel(currentKey) {
         <input type="checkbox" data-admin-coming-soon>
       </label>
       <div class="site-admin-heading">Prototype</div>
+      <label class="site-admin-toggle" title="Page info, dynamic fields and components, drawn over the page (?debug=1 link)">
+        <span>Page debugger</span>
+        <input type="checkbox" data-admin-debug>
+      </label>
       ${hasDemoPanel ? `<label class="site-admin-toggle">
         <span>Show Demo State panel</span>
         <input type="checkbox" data-admin-flag="showDemoPanel">
@@ -293,6 +297,13 @@ function buildSiteAdminPanel(currentKey) {
     });
   });
 
+  // Page debugger (page-debugger.js, loaded on demand by rrgLoadDebugger below).
+  const debugToggle = panel.querySelector('[data-admin-debug]');
+  debugToggle.checked = rrgDebugOn();
+  debugToggle.addEventListener('change', () => rrgSetDebug(debugToggle.checked));
+  document.addEventListener('rrg-debug-change', () => { debugToggle.checked = rrgDebugOn(); });
+  if (debugToggle.checked) rrgLoadDebugger();
+
   // Show/hide the Demo State Panel's button (only offered on pages that have one).
   const demoPanelToggle = panel.querySelector('[data-admin-flag="showDemoPanel"]');
   if (demoPanelToggle) {
@@ -324,4 +335,54 @@ function buildSiteAdminPanel(currentKey) {
     Object.keys(localStorage).filter(k => /^rrg/.test(k)).forEach(k => localStorage.removeItem(k));
     window.location.reload();
   });
+}
+
+// ---------------------------------------------------------------- Page debugger
+// On/off is saved like the sale takeover: a ?debug=1 link turns it on (?debug=0 off) and the choice
+// sticks while the viewer clicks around, so a Vercel link can open straight into it.
+const RRG_DEBUG_KEY = 'rrgDebug';
+function rrgDebugOn() {
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('debug');
+    if (fromUrl !== null) localStorage.setItem(RRG_DEBUG_KEY, /^(1|true|on)$/i.test(fromUrl) ? 'true' : 'false');
+    return localStorage.getItem(RRG_DEBUG_KEY) === 'true';
+  } catch (e) { return false; }
+}
+function rrgSetDebug(on) {
+  try { localStorage.setItem(RRG_DEBUG_KEY, on ? 'true' : 'false'); } catch (e) {}
+  // Drop ?debug= from the address bar so it can't switch the choice back on the next load.
+  const url = new URL(window.location.href);
+  if (url.searchParams.has('debug')) { url.searchParams.delete('debug'); history.replaceState(null, '', url); }
+  if (on) rrgLoadDebugger();
+  else if (window.rrgPageDebugger) { window.rrgPageDebugger.destroy(); window.rrgPageDebugger = null; }
+  document.dispatchEvent(new CustomEvent('rrg-debug-change'));
+}
+// Loads dynamic-fields.js then page-debugger.js (+ its CSS) the first time it's needed.
+function rrgLoadDebugger() {
+  if (document.documentElement.classList.contains('rrg-component-mode')) return;
+  if (window.rrgPageDebugger) return;
+  const base = RRG_PROTO + '_shared/';
+  if (!document.querySelector('link[data-rrg-debug]')) {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = base + 'page-debugger.css';
+    css.dataset.rrgDebug = '';
+    document.head.appendChild(css);
+  }
+  const load = src => new Promise((ok, fail) => {
+    if (document.querySelector(`script[data-rrg-debug="${src}"]`)) return ok();
+    const s = document.createElement('script');
+    s.src = base + src;
+    s.dataset.rrgDebug = src;
+    s.onload = ok; s.onerror = fail;
+    document.body.appendChild(s);
+  });
+  if (rrgLoadDebugger.pending) return;
+  rrgLoadDebugger.pending = true;
+  load('dynamic-fields.js').then(() => {
+    // Re-running page-debugger.js after a turn-off rebuilds it; the script tag is reused otherwise.
+    const old = document.querySelector('script[data-rrg-debug="page-debugger.js"]');
+    if (old) old.remove();
+    return load('page-debugger.js');
+  }).catch(() => {}).then(() => { rrgLoadDebugger.pending = false; });
 }

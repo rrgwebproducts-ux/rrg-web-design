@@ -13,6 +13,8 @@
 //            'mixed'   a copied shell that shared JS fills in (update the shell on every page)
 //   source   where the code lives
 //   usedOn   template folders (from a crawl of every page, 2026-10-01)
+//   hover    (optional) the selector the Page Debugger uses to find this widget on a page, when
+//            the variants' `sel` is a bigger element shared with other widgets
 //   variants one row each: { label, page, sel, ls, cart, order, do, keep, q, h, sizes }
 //            ls    storage seeded for that frame only (see S below)
 //            do    actions after load (component-mode.js): click:, focus:, type:, addclass:, call:
@@ -73,12 +75,12 @@ const RRG_COMPONENTS = [
       v('Sale on (Rack Friday)', 'header', '.rrg-utility-bar', { ls: S.sale }),
       v('Sale on (Christmas)', 'header', '.rrg-utility-bar', { ls: S.xmas }),
     ] },
-  { id: 'region-selector', group: 'global', name: 'Region Selector', build: 'shared', usedOn: NOT_CHECKOUT,
+  { id: 'region-selector', group: 'global', name: 'Region Selector', build: 'shared', hover: '.region-switcher', usedOn: NOT_CHECKOUT,
     source: 'Menu in rrgWidgetUtilityBarHTML (widgets.js); initRegionSwitcher (shared.js)',
     variants: [
       v('Open', 'header', '.rrg-utility-bar', { do: 'click:.region-switcher-toggle', sizes: ['d'], keep: '.region-switcher-menu' }),
     ] },
-  { id: 'main-header', group: 'global', name: 'Main Header & Nav', build: 'shared', usedOn: NOT_CHECKOUT,
+  { id: 'main-header', group: 'global', name: 'Main Header & Nav', build: 'shared', hover: '.rrg-main-header', usedOn: NOT_CHECKOUT,
     source: 'rrgWidgetMainHeaderHTML, inside .rrg-header-shell from rrgWidgetHeaderHTML (widgets.js); cart badge from cart.js',
     variants: [
       v('AU', 'header', '.rrg-header-shell'),
@@ -87,14 +89,14 @@ const RRG_COMPONENTS = [
       v('Sale on (Rack Friday) — sale button replaces Clearance', 'header', '.rrg-header-shell', { ls: S.sale, sizes: ['d'] }),
       v('Sale on (Christmas) — Santa-hat logo, sale button replaces Clearance', 'header', '.rrg-header-shell', { ls: S.xmas, sizes: ['d'] }),
     ] },
-  { id: 'mega-menu', group: 'global', name: 'Mega Menu (desktop)', build: 'shared', usedOn: NOT_CHECKOUT,
+  { id: 'mega-menu', group: 'global', name: 'Mega Menu (desktop)', build: 'shared', hover: '.mega-menu', usedOn: NOT_CHECKOUT,
     source: 'Shell in rrgWidgetMainHeaderHTML (widgets.js); buildMegaMenuDesktop + mmPromoTileHTML (mega-menu.js)',
     variants: [
       v('Open, sale on (Rack Friday banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.sale, sizes: ['d'], h: 760 }),
       v('Open, sale on (Christmas banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.xmas, sizes: ['d'], h: 760 }),
       v('Open, no sale (Store Finder banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', sizes: ['d'], h: 760 }),
     ] },
-  { id: 'search-typeahead', group: 'global', name: 'Header Search & Typeahead', build: 'shared', usedOn: NOT_CHECKOUT,
+  { id: 'search-typeahead', group: 'global', name: 'Header Search & Typeahead', build: 'shared', hover: '.rrg-search, .rrg-search-suggest', usedOn: NOT_CHECKOUT,
     source: 'Search box in rrgWidgetMainHeaderHTML (widgets.js); headerSearchFocusHTML / headerSearchTypingHTML (shared.js)',
     variants: [
       v('Focused (recent + popular + suggested products)', 'header', '.rrg-header-shell', { do: 'focus:.rrg-main-header .rrg-search input', keep: '.rrg-search-suggest', sizes: ['d'] }),
@@ -160,12 +162,12 @@ const RRG_COMPONENTS = [
       v('Sibling / Colour', 'sibling-color', '.decision-panel'),
       v('Grouped / Bundle', 'grouped-bundle', '.decision-panel'),
     ] },
-  { id: 'stock-status', group: 'product', name: 'Stock Status (price, stock line, Add to Cart)', build: 'shared', usedOn: PDP5,
+  { id: 'stock-status', group: 'product', name: 'Stock Status (price, stock line, Add to Cart)', build: 'shared', hover: '.stock-status-line, .stock-subline', usedOn: PDP5,
     source: 'applyStockStatus / renderStockLine (shared.js), STOCK_STATUS',
     variants: ['in_stock', 'low_stock', 'out_of_stock', 'special_order', 'discontinued'].map(s =>
       v({ in_stock: 'In Stock', low_stock: 'Low Stock', out_of_stock: 'Out of Stock', special_order: 'Special Order', discontinued: 'Discontinued' }[s], 'simple', '.decision-panel', { ls: demo('simple', { 'r:stockStatus': s }), sizes: ['d'] }))
       .concat([v('Phase 2 — stock at your store', 'simple', '.decision-panel', { ls: { ...S.phase2, ...demo('simple', { 'r:storeStock': 'nearby' }) }, sizes: ['d'] })]) },
-  { id: 'cart-conflict', group: 'product', name: 'Cart Compatibility Banner', build: 'shared', usedOn: PDP5,
+  { id: 'cart-conflict', group: 'product', name: 'Cart Compatibility Banner', build: 'shared', hover: '.cart-conflict-banner', usedOn: PDP5,
     source: 'applyCartConflict (shared.js) + rrgPackageCompatHTML (cart.js)',
     // Rack / roof-accessory pages (data-pkg-category) read the real cart; the rest use Demo State.
     variants: [
@@ -176,7 +178,7 @@ const RRG_COMPONENTS = [
       v('Demo State — compatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'compatible' }), sizes: ['d'] }),
       v('Demo State — incompatible item', 'simple', '.decision-panel', { ls: demo('simple', { 'r:cartConflict': 'incompatible' }), sizes: ['d'] }),
     ] },
-  { id: 'package-deal-tag', group: 'product', name: 'Package Deal Tag', build: 'shared', usedOn: ['roof-box', 'vehicle-specific', 'config-variant'],
+  { id: 'package-deal-tag', group: 'product', name: 'Package Deal Tag', build: 'shared', hover: '.pkg-deal-tag', usedOn: ['roof-box', 'vehicle-specific', 'config-variant'],
     source: 'rrgRenderPackageTag + rrgNoticeCardHTML (cart.js)',
     // Under the price on rack / qualifying-accessory pages (.cta-col[data-pkg-category]); real cart.
     variants: [
@@ -222,7 +224,7 @@ const RRG_COMPONENTS = [
   { id: 'vehicle-fit-notes', group: 'product', name: 'Vehicle Fit Notes', build: 'copied', usedOn: ['vehicle-specific'],
     source: 'Static; applyVehicleFitNotesFlag (shared.js)',
     variants: [v('Shown', 'vehicle-specific', '#vehicleFitNotes', { ls: demo('vehicle-specific', { 'c:vehicleFitNotes': true }) })] },
-  { id: 'variant-picker', group: 'product', name: 'Variant Picker (+ Get It Fitted)', build: 'copied', usedOn: ['config-variant', 'vehicle-specific'],
+  { id: 'variant-picker', group: 'product', name: 'Variant Picker (+ Get It Fitted)', build: 'copied', hover: '.variant-picker', usedOn: ['config-variant', 'vehicle-specific'],
     source: 'Inline per page (renderVariantPicker / renderVehicleVariantPicker); buildFittedCard (shared.js)',
     variants: [
       v('Config-Variant', 'config-variant', '.variant-picker'),
@@ -252,7 +254,7 @@ const RRG_COMPONENTS = [
       v('Sale on (Rack Friday)', 'simple', '.cta-col', { ls: S.sale }),
       v('Sale on (Christmas)', 'simple', '.cta-col', { ls: S.xmas }),
     ] },
-  { id: 'exdemo', group: 'product', name: 'Ex-Demo / B-Stock Link + Drawer', build: 'shared', usedOn: PDP5,
+  { id: 'exdemo', group: 'product', name: 'Ex-Demo / B-Stock Link + Drawer', build: 'shared', hover: '.exdemo-inline-link, .exdemo-slideout', usedOn: PDP5,
     source: 'applyExdemoFlag / buildExdemoSlideout (shared.js)',
     variants: [
       v('Link under the price', 'simple', '.decision-panel', { ls: demo('simple', { 'c:exdemo': true }), sizes: ['d'] }),
@@ -537,7 +539,7 @@ const RRG_COMPONENTS = [
   { id: 'offer-tiles', group: 'content', name: 'Promo Row (Category Tiles + Offers Carousel)', build: 'mixed', usedOn: ['home'],
     source: 'Static; initOfferCarousel (shared.js)',
     variants: [v('Default', 'home', '.home-promo-row')] },
-  { id: 'reviews-row', group: 'content', name: 'Customer Reviews Row', build: 'copied', usedOn: ['home', 'store'],
+  { id: 'reviews-row', group: 'content', name: 'Customer Reviews Row', build: 'copied', hover: '.home-reviews', usedOn: ['home', 'store'],
     source: 'Static per page',
     variants: [v('Home', 'home', '.home-reviews'), v('Store', 'store', '#storeReviews')] },
   { id: 'help-row', group: 'content', name: 'Help Row', build: 'copied', usedOn: ['home'],
