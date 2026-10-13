@@ -10,8 +10,9 @@
   --dbg-src-rackit:#7C3AED;
   --dbg-src-magento:#1A56DB;
   --dbg-src-reviews:#C2410C;
-  --dbg-src-session:#0E7C66;
+  --dbg-src-session:#4D7C0F;
   --dbg-src-cms:#C026D3;
+  --dbg-src-algolia:#0891B2;
   --dbg-src-calc:#4B5563;
   --dbg-src-unknown:#DC2626;
   --dbg-shared:var(--rrg-fits, #1E7A34);
@@ -38,6 +39,7 @@
 .rrg-dbg .src-reviews{--c:var(--dbg-src-reviews);}
 .rrg-dbg .src-session{--c:var(--dbg-src-session);}
 .rrg-dbg .src-cms{--c:var(--dbg-src-cms);}
+.rrg-dbg .src-algolia{--c:var(--dbg-src-algolia);}
 .rrg-dbg .src-calc{--c:var(--dbg-src-calc);}
 .rrg-dbg .src-unknown{--c:var(--dbg-src-unknown);}
 .rrg-dbg-box.field.src-unknown{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 14%,transparent) 0 4px,transparent 4px 8px);}
@@ -115,3 +117,17 @@ body:has(.site-admin-panel.open) .rrg-dbg-panel{visibility:hidden;}
   .rrg-dbg-panel{left:8px;right:8px;top:8px;width:auto;max-height:55vh;}
   .rrg-dbg-pill{left:8px;top:8px;}
 }
+
+/* Show field names: tokens written into the page (.rrg-dbg-tokens sits inside the page's own
+   element, so it keeps that element's font and size) and labels over images / inputs. */
+.rrg-dbg-tok{--c:var(--dbg-src-unknown);display:inline;font-family:Consolas,Menlo,monospace;font-weight:700;font-style:normal;font-size:.82em;letter-spacing:0;text-transform:none;color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);border:1px solid color-mix(in srgb,var(--c) 40%,#fff);border-radius:4px;padding:0 .3em;white-space:nowrap;word-break:normal;}
+.rrg-dbg-tok.src-rackit{--c:var(--dbg-src-rackit);}
+.rrg-dbg-tok.src-magento{--c:var(--dbg-src-magento);}
+.rrg-dbg-tok.src-algolia{--c:var(--dbg-src-algolia);}
+.rrg-dbg-tok.src-reviews{--c:var(--dbg-src-reviews);}
+.rrg-dbg-tok.src-session{--c:var(--dbg-src-session);}
+.rrg-dbg-tok.src-cms{--c:var(--dbg-src-cms);}
+.rrg-dbg-tok.src-calc{--c:var(--dbg-src-calc);}
+.rrg-dbg-tokchip{position:absolute;padding:2px;font-size:12px;line-height:1.5;white-space:nowrap;pointer-events:none;}
+.rrg-dbg-tokchip .rrg-dbg-tok{display:inline-block;font-size:11.5px;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.rrg-dbg-tip-tok .rrg-dbg-tok{font-size:11.5px;}

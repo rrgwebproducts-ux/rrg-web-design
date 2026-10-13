@@ -1685,7 +1685,7 @@ Brenton's review after the build: red Package Deal elements read like errors, an
 
 **What it shows:** a panel pinned top-left (minimise to a pill; × turns it off):
 - **Page info:** title (with length), meta description (with length), canonical, robots, H1 (flags anything other than exactly one), structured data types, Open Graph. Each gets a ✓ / ! / × marker.
-- **Show on page:** three checkboxes:
+- **Show on page:** checkboxes (a 4th, Show field names, added in 21.4):
     - **Dynamic fields:** a dashed outline on every field, coloured by source (Rackit, Magento, Algolia, REVIEWS.io, shopper session, CMS/config, calculated; unknown is striped red). Hover one for its source, the attribute it reads, the fallback rule as numbered steps, the value showing now, an example and notes. Draft fields carry a yellow **Draft** tag.
     - **Components on hover:** hover any widget for its Component Library name, its green shared / orange mixed / red copied build, how many pages use it, where its code lives, and what it sits inside.
     - **Outline all components:** draws every widget in its build colour.
@@ -1718,3 +1718,16 @@ Unknown source (11): vehicle photo (vehicle finder + PLP hero), Search category 
 - Brenton reviews the drafts on Vercel and marks them confirmed.
 - A review session with Graham on the three page families.
 - Extend to the other templates (Home, VCLP/VLP, Brand, Clearance, Cart/Checkout, Store pages) when wanted.
+
+### 21.4 Show field names (Brenton, 2026-10-13)
+A 4th checkbox, **Show field names**, writes each field's token in place of its value, keeping the fixed copy around it. For example "Shop Bike Racks for your Toyota Hilux" becomes "Shop `{category.name}` for your `{vehicle.make}` `{vehicle.model}`". Each token is a pill in its source colour. Images, inputs and icon-only elements get the token as a label on top. Only text nodes are blanked and restored, so turning the checkbox off puts the page back exactly as it was. The hover tooltip also shows the token.
+- **Data:** every field's `token` in `dynamic-fields.js` (172 of 173 fields). 45 of them are `{ selector: template }` maps, because one field's selector matches different kinds of element (a heading vs the breadcrumb, desktop vs mobile count, the stars vs the review count). `DYNAMIC-FIELDS.md` has a new **Shows as** column.
+- **Decisions (Claude):**
+    - Token format is `{entity.attribute_code}`, with real Magento attribute codes where they exist (`product.name`, `product.special_price`, `product.final_price`, `category.name`, `customer.firstname`). Other entities: `vehicle.*` / `rackit.*`, `review.*`, `config.*`, `cms_block.*`, `campaign.*`, `calc.*`, `unknown.*`. Related and child products use their own prefixes (`related_product.*`, `child_product.*`), so they don't read as the page's own product. Anything not a standard Magento code is a guess, so it's Draft like the rest.
+    - When a field holds another field, the inner one shows its token and the outer one is left alone.
+    - The Buyers Guide/Fitting hero buttons have no token: their text is fixed and only the link is dynamic.
+    - Templates follow the prototype's default state (vehicle set, AU, logged in).
+- **Known gaps:**
+    - The PLP card Package Deal button reads differently on rack cards, but nothing in the markup tells the two apart, so it's left as is.
+    - The PDP breadcrumb uses the generic form, not Vehicle-Specific's longer trail.
+    - Fitting instruction link names vary from product to product.

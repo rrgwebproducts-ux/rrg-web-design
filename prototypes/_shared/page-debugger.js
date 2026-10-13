@@ -9,6 +9,10 @@
 //                        source; hover one for its source, attribute and fallback rule
 //   Components on hover  hover any widget for its Component Library entry (components/registry.js):
 //                        name, green shared / orange mixed / red copied, pages it's used on
+//   Show field names     swaps each field's value for its token, e.g. "Shop {category.name} for
+//                        your {vehicle.make} {vehicle.model}" (the entry's `token`); images and
+//                        inputs get the token as a label on top. Only the text nodes change (no
+//                        element is rebuilt) and turning it off puts the real text back.
 //   Outline components   draws every widget on the page in its build colour
 //
 // The outlines are drawn in a fixed layer above the page (never on the elements themselves), so
@@ -38,7 +42,7 @@
   const allFields = typeof RRG_DYN_FIELDS === 'object' ? RRG_DYN_FIELDS : [];
   const fields = allFields.filter(f => f.sel && (!f.pages || f.pages.includes(pageKey)));
 
-  let layers = read(LAYERS_KEY, { fields: true, hover: true, outline: false });
+  let layers = read(LAYERS_KEY, { fields: true, names: false, hover: true, outline: false });
   // Starts minimised on phones, where the open panel would cover most of the page.
   let ui = read(UI_KEY, { min: innerWidth < 900, open: { meta: true, fields: false, comps: false } });
   let components = null;      // registry entries used on this page (null until loaded)
@@ -72,6 +76,7 @@
         <div class="rrg-dbg-checks">
           <div class="rrg-dbg-h">Show on page</div>
           <label><input type="checkbox" data-layer="fields"> <span>Dynamic fields</span> <em data-count="fields"></em></label>
+          <label><input type="checkbox" data-layer="names"> <span>Show field names</span></label>
           <label><input type="checkbox" data-layer="hover"> <span>Components on hover</span> <em data-count="comps"></em></label>
           <label><input type="checkbox" data-layer="outline"> <span>Outline all components</span></label>
         </div>
@@ -198,11 +203,74 @@
       all.forEach(el => addTo(compEls, el, c));
       compHits.set(c.id, { total: all.length, visible: vis });
     });
+    if (layers.names) applyNames();
     renderLists();
     draw();
   }
   let scanTimer = null;
   function scheduleScan() { clearTimeout(scanTimer); scanTimer = setTimeout(scan, 120); }
+
+  // ---------------------------------------------------------------- Field names
+  // el → { wrap, stash: [[textNode, realText]] }. The real text nodes are blanked (never removed)
+  // and a <span class="rrg-dbg-tokens"> is put in front of the first one, so the page's own
+  // elements and listeners are untouched.
+  const swapped = new Map();
+  const tokenHTML = (tpl, source) => esc(tpl).replace(/\{[^}]+\}/g, t => `<span class="rrg-dbg-tok src-${esc(source)}">${t}</span>`);
+  const textNodes = el => {
+    const out = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => n.parentElement.closest('svg, script, style, .rrg-dbg-tokens') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
+    });
+    for (let n = w.nextNode(); n; n = w.nextNode()) out.push(n);
+    return out;
+  };
+  // Elements that hold another field: the inner field shows its own token instead.
+  function outerFieldEls() {
+    const outer = new Set();
+    fieldEls.forEach((list, el) => {
+      if (!list.some(f => tokenFor(f, el))) return;
+      for (let n = el.parentElement; n && n !== document.body; n = n.parentElement) if (fieldEls.has(n)) outer.add(n);
+    });
+    return outer;
+  }
+  // Where a token can't be written in (image, input, icon-only): a label on top instead.
+  // `token` is a template, or { selector: template } when one field's selector matches different
+  // kinds of element ('*' = any other).
+  const tokenFor = (f, el) => {
+    if (!f.token || typeof f.token === 'string') return f.token || '';
+    for (const [k, t] of Object.entries(f.token)) { try { if (k === '*' || el.matches(k)) return t; } catch (e) {} }
+    return '';
+  };
+  const chipOnly = el => MEDIA.test(el.tagName) || !textNodes(el).some(n => n.nodeValue.trim());
+  function applyNames() {
+    const outer = outerFieldEls();
+    fieldEls.forEach((list, el) => {
+      const f = list.find(x => tokenFor(x, el));
+      if (!f || outer.has(el)) return;
+      const done = swapped.get(el);
+      if (done && done.wrap.isConnected && el.contains(done.wrap)) {
+        // The page rewrote a blanked node (a countdown tick, a price update): keep it blank.
+        done.stash.forEach(pair => { if (pair[0].nodeValue) { pair[1] = pair[0].nodeValue; pair[0].nodeValue = ''; } });
+        return;
+      }
+      if (chipOnly(el)) return;
+      const nodes = textNodes(el).filter(n => n.nodeValue.trim());
+      const wrap = document.createElement('span');
+      wrap.className = 'rrg-dbg-tokens';
+      wrap.innerHTML = tokenHTML(tokenFor(f, el), f.source);
+      nodes[0].parentNode.insertBefore(wrap, nodes[0]);
+      const stash = nodes.map(n => { const pair = [n, n.nodeValue]; n.nodeValue = ''; return pair; });
+      swapped.set(el, { wrap, stash });
+    });
+  }
+  function restoreNames() {
+    swapped.forEach(({ wrap, stash }, el) => {
+      if (!el.contains(wrap)) return;
+      wrap.remove();
+      stash.forEach(([n, v]) => { n.nodeValue = v; });
+    });
+    swapped.clear();
+  }
 
   // ---------------------------------------------------------------- Drawing
   let raf = 0;
@@ -218,6 +286,19 @@
         const f = fields.find(x => x.id === id);
         h.visible.forEach(el => boxes.push(box(el, `rrg-dbg-box field src-${f.source}${f.status === 'confirmed' ? '' : ' draft'}`)));
       });
+      if (layers.names) {
+        const outer = outerFieldEls();
+        fieldHits.forEach((h, id) => {
+          const f = fields.find(x => x.id === id);
+          if (!f.token) return;
+          h.visible.forEach(el => {
+            if (outer.has(el) || swapped.has(el) || !chipOnly(el) || !tokenFor(f, el)) return;
+            const r = el.getBoundingClientRect();
+            if (r.bottom < 0 || r.top > innerHeight || !onTop(el, r)) return;
+            boxes.push(`<div class="rrg-dbg-tokchip" style="left:${r.left}px;top:${r.top}px">${tokenHTML(tokenFor(f, el), f.source)}</div>`);
+          });
+        });
+      }
       layerEl.innerHTML = boxes.filter(Boolean).join('');
       if (hovered) showHover(hovered.el, hovered.x, hovered.y);
     });
@@ -265,7 +346,8 @@
       ${f.attr ? `<div class="rrg-dbg-tip-attr">${esc(f.attr)}</div>` : ''}
       ${rule.length ? `<ol class="rrg-dbg-tip-rule">${rule.map(r => `<li>${esc(r)}</li>`).join('')}</ol>` : ''}
       <dl class="rrg-dbg-tip-dl">
-        <dt>Showing</dt><dd>${esc(valueOf(el)) || '<span class="rrg-dbg-muted">(empty)</span>'}</dd>
+        ${tokenFor(f, el) ? `<dt>Field</dt><dd class="rrg-dbg-tip-tok">${tokenHTML(tokenFor(f, el), f.source)}</dd>` : ''}
+        <dt>Showing</dt><dd>${esc(swapped.has(el) ? clip(swapped.get(el).stash.map(p => p[1]).join(''), 120) : valueOf(el)) || '<span class="rrg-dbg-muted">(empty)</span>'}</dd>
         ${f.example ? `<dt>Example</dt><dd>${esc(f.example)}</dd>` : ''}
         ${f.notes ? `<dt>Notes</dt><dd>${esc(f.notes)}</dd>` : ''}
       </dl>
@@ -385,6 +467,7 @@
       layers = { ...layers, [cb.dataset.layer]: cb.checked };
       write(LAYERS_KEY, layers);
       if (!cb.checked) hideHover();
+      if (cb.dataset.layer === 'names') { if (cb.checked) applyNames(); else restoreNames(); }
       draw();
     });
   });
@@ -405,6 +488,7 @@
   const onResize = () => scheduleScan();
   addEventListener('scroll', draw, { passive: true, capture: true });
   addEventListener('resize', onResize);
+  // Our own token swaps cause one extra rescan, which finds nothing new to change, so it settles.
   const bodyObs = new MutationObserver(muts => {
     if (muts.every(m => inUi(m.target))) return;
     scheduleScan();
@@ -427,6 +511,7 @@
       document.removeEventListener('mouseleave', hideHover);
       removeEventListener('scroll', draw, { capture: true });
       removeEventListener('resize', onResize);
+      restoreNames();
       root.remove();
     },
   };

@@ -14,6 +14,8 @@ const AREAS = [
   { prefix: 'plp.', title: 'Listing pages (PLP / VPLP)', pages: 'plp, plp-camping, plp-roof-boxes, plp-awnings, plp-roof-top-tents, plp-water-carriers, plp-snow-carriers, vplp, vplp-accessories' },
 ];
 const cell = s => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+const tokenCell = t => !t ? '' : typeof t === 'string' ? '`' + cell(t) + '`'
+  : Object.entries(t).map(([k, v]) => `${k === '*' ? 'other' : '<sub>' + cell(k) + '</sub>'} \`${cell(v)}\``).join('<br>');
 const srcLabel = k => (RRG_DYN_SOURCES[k] || { label: k }).label;
 
 let md = `# Dynamic fields — Header, PDP, PLP
@@ -22,7 +24,7 @@ Every piece of text or media on these pages that comes from data rather than bei
 where it comes from, the field it reads, and what to show when the value is missing.
 
 - **Generated** from \`prototypes/_shared/dynamic-fields.js\` by \`docs/page-debugger/build-fields-doc.js\`, so don't edit this file by hand.
-- **See it on the page:** open any template on Vercel with \`?debug=1\` (or Site Admin → Prototype → Page debugger), tick **Dynamic fields** and hover an outlined field.
+- **See it on the page:** open any template on Vercel with \`?debug=1\` (or Site Admin → Prototype → Page debugger), tick **Dynamic fields** and hover an outlined field. Tick **Show field names** to see every value replaced by its token ("Shows as" below).
 - **Status:** *Draft* means Claude's best guess from the prototype and the developer briefs, not yet checked. *Confirmed* means Brenton has checked it.
 
 ## Sources
@@ -51,9 +53,9 @@ AREAS.forEach(a => {
 
 Templates: ${a.pages}
 
-| Field | Source | Reads | Rule (in order) | Example | Status |
-|---|---|---|---|---|---|
-${list.map(f => `| **${cell(f.label)}**<br>\`${f.id}\`${f.pages ? `<br><sub>${cell(f.pages.join(', '))}</sub>` : ''} | ${srcLabel(f.source)} | ${cell(f.attr)} | ${[].concat(f.rule || []).map((r, i) => `${i + 1}. ${cell(r)}`).join('<br>')} | ${cell(f.example)} | ${f.status === 'confirmed' ? 'Confirmed' : 'Draft'} |`).join('\n')}
+| Field | Shows as | Source | Reads | Rule (in order) | Example | Status |
+|---|---|---|---|---|---|---|
+${list.map(f => `| **${cell(f.label)}**<br>\`${f.id}\`${f.pages ? `<br><sub>${cell(f.pages.join(', '))}</sub>` : ''} | ${tokenCell(f.token)} | ${srcLabel(f.source)} | ${cell(f.attr)} | ${[].concat(f.rule || []).map((r, i) => `${i + 1}. ${cell(r)}`).join('<br>')} | ${cell(f.example)} | ${f.status === 'confirmed' ? 'Confirmed' : 'Draft'} |`).join('\n')}
 
 `;
   const withNotes = list.filter(f => f.notes);
