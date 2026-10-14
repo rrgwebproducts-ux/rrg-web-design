@@ -1878,10 +1878,10 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .brands-section h2{text-align:center;margin-bottom:24px;}
 /* The grey brands band is the last thing in <main> — the footer sits flush against it. */
 main:has(> .brands-section:last-child) + .rrg-footer{margin-top:0;}
-/* brands-strip widget (widgets.js). Desktop: one row, spread evenly (9 logos fit the 1232px
-   wrap at 120px each). Tablet: wraps, centred. Mobile: 3 to a row. */
+/* brands-strip widget (widgets.js). Desktop: 6 to a row (Brenton, 2026-10-14: one row of 9
+   read too thin), a short last row centred. Tablet: wraps, centred. Mobile: 3 to a row. */
 .brands-track{display:flex;align-items:center;justify-content:center;gap:32px 40px;flex-wrap:wrap;}
-@media (min-width:1100px){.brands-track{flex-wrap:nowrap;justify-content:space-evenly;gap:20px;}}
+@media (min-width:1100px){.brands-track > a{flex:0 0 calc((100% - 5 * 40px) / 6);justify-content:center;}}
 @media (max-width:699px){.brands-track{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 16px;justify-items:center;}}
 /* Bounding-box sizing, not a fixed height — MAXTRAX/Front Runner's source canvas has much
    more built-in clear-space than Rhino Rack/Yakima's, so a fixed height renders MAXTRAX

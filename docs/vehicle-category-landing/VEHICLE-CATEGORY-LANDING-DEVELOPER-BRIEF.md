@@ -146,7 +146,7 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 
 **Purpose:** brand-trust logo strip, same pattern as elsewhere on the site.
 
-**Contents:** "Shop The Best Brands" heading (`.related-heading`, the standard black section heading) + grayscale, opacity-reduced linked logos for the brands we promote, the same shared widget as every other page (`<div data-widget="brands-strip">`, `rrgWidgetBrandsStripHTML()` in widgets.js): Rhino-Rack, Yakima, Thule, Front Runner, CRUZ, MAXTRAX, Darche, KAON and Rocky Mounts. No Rola (Tim, 2026-10-09). Logos are sized against a bounding box (`max-width:120px; max-height:32px`), not a fixed height. One row on desktop, 3 to a row on phones. Brands a region doesn't sell are hidden.
+**Contents:** "Shop The Best Brands" heading (`.related-heading`, the standard black section heading) + grayscale, opacity-reduced linked logos for the brands we promote, the same shared widget as every other page (`<div data-widget="brands-strip">`, `rrgWidgetBrandsStripHTML()` in widgets.js): Rhino-Rack, Yakima, Thule, Front Runner, CRUZ, MAXTRAX, Darche, KAON and Rocky Mounts. No Rola (Tim, 2026-10-09). Logos are sized against a bounding box (`max-width:120px; max-height:32px`), not a fixed height. 6 to a row on desktop (two rows, the last centred), 3 to a row on phones. Brands a region doesn't sell are hidden.
 
 **Known asset issue, not introduced by this page:** the MAXTRAX logo renders visibly smaller/blurrier than the others at any size — `brand-maxtrax.webp` itself is low-resolution (confirmed by opening the raw file). Pre-existing project-wide asset limitation, also present wherever else this logo is used.
 
