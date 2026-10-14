@@ -1878,11 +1878,18 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .brands-section h2{text-align:center;margin-bottom:24px;}
 /* The grey brands band is the last thing in <main> — the footer sits flush against it. */
 main:has(> .brands-section:last-child) + .rrg-footer{margin-top:0;}
-.brands-track{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;}
+/* brands-strip widget (widgets.js). Desktop: one row, spread evenly (9 logos fit the 1232px
+   wrap at 120px each). Tablet: wraps, centred. Mobile: 3 to a row. */
+.brands-track{display:flex;align-items:center;justify-content:center;gap:32px 40px;flex-wrap:wrap;}
+@media (min-width:1100px){.brands-track{flex-wrap:nowrap;justify-content:space-evenly;gap:20px;}}
+@media (max-width:699px){.brands-track{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 16px;justify-items:center;}}
 /* Bounding-box sizing, not a fixed height — MAXTRAX/Front Runner's source canvas has much
    more built-in clear-space than Rhino Rack/Yakima's, so a fixed height renders MAXTRAX
    visibly smaller (see feedback_pdp_design_review.md's brand-logo gotcha). */
-.brands-track img{max-width:150px;max-height:32px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.75;}
+.brands-track img{max-width:120px;max-height:32px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.75;}
+/* Long, light wordmark (Darche): more width, darker grey, so it carries the same weight. */
+.brands-track img.brand-logo--thin{max-width:140px;filter:grayscale(1) brightness(.55);}
+@media (max-width:699px){.brands-track img{max-width:min(100%,92px);max-height:26px;}.brands-track img.brand-logo--thin{max-width:min(100%,104px);}}
 
 /* ==== VLP — Vehicle Landing Page components (docs/vlp/vlp-spec.md, 2026-09-29) ============
    Generic names on purpose: the category tiles and product carousel are reusable on any page. */

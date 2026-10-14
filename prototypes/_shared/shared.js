@@ -1157,22 +1157,14 @@ function rrgLinkInstallation(root = document) {
 }
 document.addEventListener('DOMContentLoaded', () => rrgLinkInstallation());
 
-// "Shop The Best Brands" strip (every template): each logo links to its brand page
-// (docs/brand/brand-spec.md 0), matched by the logo's alt text. Logos already inside a link
-// (the brand page's own "Shop more brands" strip) are left alone.
-function rrgLinkBrandStrip(root = document) {
-  if (typeof RRG_BUILT_BRANDS === 'undefined') return;
-  root.querySelectorAll('.brands-track > img').forEach(img => {
-    const slug = RRG_BUILT_BRANDS[img.alt];
-    if (!slug) return;
-    const a = document.createElement('a');
-    a.href = rrgBrandPageUrl(slug);
-    a.setAttribute('aria-label', `Shop ${img.alt}`);
-    img.replaceWith(a);
-    a.appendChild(img);
+// "Shop The Best Brands" strip (brands-strip widget, widgets.js): hide the logos of brands this
+// region doesn't sell (e.g. Front Runner, MAXTRAX, Darche, KAON on the UK site).
+function applyRegionBrandsStrip(region) {
+  document.querySelectorAll('.brands-track [data-brand-regions]').forEach(a => {
+    a.hidden = !a.dataset.brandRegions.split(' ').includes(region);
   });
 }
-document.addEventListener('DOMContentLoaded', () => rrgLinkBrandStrip());
+document.addEventListener('rrg-region-change', e => applyRegionBrandsStrip(e.detail));
 
 // ---- Store hours + open now (store page and Store Finder) ----
 // Structured hours per day, worked out in the store's own time zone so a Sydney store reads

@@ -130,13 +130,8 @@
   </div>
 </main>
 
-<!-- 3.10 — the logo strip, the other brands, linked. -->
-<section class="brands-section">
-  <div class="wrap">
-    <h2 class="related-heading">Shop More Brands</h2>
-    <div class="brands-track" id="brandOtherBrands"></div>
-  </div>
-</section>
+<!-- 3.10 — the shared brands strip, minus this brand (renderOtherBrands). -->
+<div id="brandOtherBrands"></div>
 
 <section class="vclp-trust-banner">
   <img class="install-photo" src="../_shared/installer.png" alt="" width="740" height="420" loading="lazy">
@@ -332,11 +327,9 @@ function renderBrandVehicles() {
 
 // ---- 3.10 Other brands --------------------------------------------------------------------------
 function renderOtherBrands() {
-  const region = BRAND_REGION();
-  document.getElementById('brandOtherBrands').innerHTML = Object.values(RRG_BRAND_PAGES)
-    .filter(b => b.slug !== BRAND_SLUG && b.regions.includes(region))
-    .map(b => `<a href="${rrgBrandPageUrl(b.slug)}" aria-label="Shop ${b.name}"><img src="../_shared/${b.logo}" alt="${b.name}" loading="lazy"></a>`).join('')
-    + `<a class="product-carousel-viewall" href="../brands/index.html">All brands ›</a>`;
+  document.getElementById('brandOtherBrands').innerHTML =
+    rrgWidgetBrandsStripHTML({ heading: 'Shop More Brands', exclude: BRAND_SLUG, viewAll: true });
+  applyRegionBrandsStrip(BRAND_REGION());
 }
 
 // ---- Section 6: a brand this region doesn't sell --------------------------------------------

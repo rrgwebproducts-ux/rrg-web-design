@@ -431,7 +431,7 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 
 **Brands hub:** the live H1 and intro (Read more), a card per built brand (logo, lead line, what it makes, live product count in AU, Shop {brand}), then an A–Z of every brand the region sells (AU: the live Brands menu; NZ: the NZ site's list; UK: roofbox.co.uk). Built brands link to their page (bold); the rest keep their live URL. `BreadcrumbList` + `ItemList` JSON-LD.
 
-**Linking:** the header Brands panel (the L1 and "View All Product Brands" → hub, the 8 brands → their pages; `RRG_BUILT_BRANDS` in nav-data.js), every template's "Shop The Best Brands" strip (`rrgLinkBrandStrip()`), and Search Results' brand cards (`rrgBrandUrl()`).
+**Linking:** the header Brands panel (the L1 and "View All Product Brands" → hub, the 8 brands → their pages; `RRG_BUILT_BRANDS` in nav-data.js), every template's "Shop The Best Brands" strip (the `brands-strip` widget, `rrgWidgetBrandsStripHTML()` in widgets.js), and Search Results' brand cards (`rrgBrandUrl()`).
 
 **SEO:** indexed. `<title>` and description as live, canonical = the live brand URL (the vehicle filter never changes the URL), `BreadcrumbList` + `CollectionPage` about a `Brand` + `FAQPage`.
 

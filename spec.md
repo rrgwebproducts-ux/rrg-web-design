@@ -1731,3 +1731,14 @@ A 4th checkbox, **Show field names**, writes each field's token in place of its 
     - The PLP card Package Deal button reads differently on rack cards, but nothing in the markup tells the two apart, so it's left as is.
     - The PDP breadcrumb uses the generic form, not Vehicle-Specific's longer trail.
     - Fitting instruction link names vary from product to product.
+
+## 22. Brands strip: the brands we promote (Tim, Scott & Marc, 2026-10-09)
+
+**Why:** the brand blocks are leverage in supplier negotiations: they say which brands we push. Tim (Director) decided by email on 2026-10-09: **no Rola; add KAON and Darche.** Stedi, Wedgetail, Tracklander and Shingleback get added only once they start paying rebates. Marc asked for every brand block to be fixed, because the Home and Buying Guide versions had drifted apart, and for the list to hold for all future updates.
+
+**Built (2026-10-14):** one shared widget, `<div data-widget="brands-strip">` (widgets.js `rrgWidgetBrandsStripHTML`), on all 11 pages that have the block. It draws only from `RRG_PROMOTED_BRANDS`: Rhino-Rack, Yakima, Thule, Front Runner, CRUZ, MAXTRAX, Darche, KAON, Rocky Mounts. Per-page options cover what Marc offered to make dynamic: the Buying Guide shows bike rack brands only (`filter="bike"`) with its own heading, intro and links into the bike rack listing; a brand page leaves out its own brand and adds All brands. Brands not sold in a region are hidden; the UK shows Rhino-Rack, Yakima, Thule and CRUZ. Full details: docs/widgets/widgets-spec.md §9.
+
+### 22.1 Open
+- **Rola elsewhere:** Brenton to ask Tim whether Rola is still a priority brand. Until then, Rola keeps its brand page, its /brands hub card and its mega-menu A–Z entry. It is only out of the brand strips.
+- **Logos:** the Darche (SVG) and KAON (PNG) logos were taken from the brands' own websites. Swap in official brand-pack files when we get them.
+- **Marc:** confirm the list, then rebuild the block on staging.

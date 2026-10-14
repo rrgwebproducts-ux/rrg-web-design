@@ -7,6 +7,7 @@
 //   <div data-widget="vehicle-finder"></div>   the Fit Finder / vehicle bar (options below)
 //   <div data-widget="bike-rack-finder"></div> the Buying Guide's 3-question finder (logic in
 //                                        buying-guide.js, which the page must also load)
+//   <div data-widget="brands-strip"></div>     "Shop The Best Brands" logo band (options below)
 //
 // rrgMountWidgets() swaps each placeholder for the widget's markup (the placeholder itself is
 // replaced, not filled, so the page's element order is exactly what it was — e.g. the footer stays
@@ -293,11 +294,61 @@ function rrgWidgetBikeRackFinderHTML(opts = {}) {
 </section>`;
 }
 
+// ---------------------------------------------------------------- Brands strip
+
+// The brands we promote (Tim, 2026-10-09): every brand strip on the site draws from this list
+// and nothing else — it's a statement to suppliers about who we push, not a design choice. No
+// Rola; Stedi, Wedgetail, Tracklander and Shingleback only once they pay rebates. List order is
+// display order. `page` = the prototype brand page (RRG_BUILT_BRANDS slug), otherwise `live` is
+// the live brand page. `bike` = sells bike racks (the Buying Guide's filter="bike"). `cls`
+// "brand-logo--thin" = a long, light wordmark given more width and a darker grey (shared.css).
+const RRG_PROMOTED_BRANDS = [
+  { name: 'Rhino-Rack', page: 'rhino-rack', logo: 'brand-rhino-rack.webp', w: 145, h: 23, regions: ['AU', 'NZ', 'UK'], bike: true },
+  { name: 'Yakima', page: 'yakima', logo: 'brand-yakima.webp', w: 148, h: 23, regions: ['AU', 'NZ', 'UK'], bike: true },
+  { name: 'Thule', page: 'thule', logo: 'brand-thule.webp', w: 148, h: 38, regions: ['AU', 'NZ', 'UK'], bike: true },
+  { name: 'Front Runner', page: 'front-runner', logo: 'brand-front-runner.webp', w: 148, h: 39, regions: ['AU', 'NZ'] },
+  { name: 'CRUZ', page: 'cruz', logo: 'brand-cruz.webp', w: 148, h: 68, regions: ['AU', 'NZ', 'UK'], bike: true },
+  { name: 'MAXTRAX', page: 'maxtrax', logo: 'brand-maxtrax.webp', w: 148, h: 39, regions: ['AU', 'NZ'] },
+  { name: 'Darche', live: 'darche', logo: 'brand-darche.svg', w: 353, h: 34, regions: ['AU', 'NZ'], cls: 'brand-logo--thin' },
+  { name: 'KAON', live: 'kaon', logo: 'brand-kaon.png', w: 300, h: 71, regions: ['AU', 'NZ'] },
+  { name: 'Rocky Mounts', page: 'rockymounts', logo: 'brand-rocky-mounts.png', w: 282, h: 49, regions: ['AU', 'NZ'], bike: true },
+];
+
+// "Shop The Best Brands" (2026-10-14, Brenton — one widget everywhere): the grey logo band above
+// the footer. Logos for brands not sold in the current region are hidden by applyRegionBrandsStrip
+// (shared.js). Options (placeholder data-* attributes):
+//   heading    default "Shop The Best Brands"
+//   intro      a line under the heading
+//   filter     "bike" = only brands that sell bike racks
+//   exclude    a brand's page slug to leave out (the brand page's own brand)
+//   link       href pattern for every logo, {brand} = the name as a slug ("rocky-mounts", what
+//              plp.js's ?brand= matches), e.g. "../plp/index.html?brand={brand}";
+//              default = the brand page, or the live brand page while ours isn't built
+//   viewAll    "true" = an "All brands ›" link to the brands hub at the end
+function rrgWidgetBrandsStripHTML(opts = {}) {
+  const proto = typeof RRG_PROTO === 'undefined' ? '../' : RRG_PROTO;
+  const slugOf = b => b.page || b.live;
+  const hrefOf = b => opts.link ? opts.link.replace('{brand}', b.name.toLowerCase().replace(/\s+/g, '-'))
+    : b.page ? rrgBrandPageUrl(b.page) : `https://www.roofracksgalore.com.au/brands/brands/${b.live}`;
+  const logos = RRG_PROMOTED_BRANDS
+    .filter(b => (opts.filter !== 'bike' || b.bike) && slugOf(b) !== opts.exclude)
+    .map(b => `<a href="${hrefOf(b)}"${!opts.link && !b.page ? ' target="_blank" rel="noopener"' : ''} aria-label="Shop ${b.name}" data-brand-regions="${b.regions.join(' ')}"><img${b.cls ? ` class="${b.cls}"` : ''} src="${proto}_shared/${b.logo}" alt="${b.name}" width="${b.w}" height="${b.h}" loading="lazy"></a>`)
+    .join('');
+  return `<section class="brands-section">
+  <div class="wrap">
+    <h2 class="related-heading">${opts.heading || 'Shop The Best Brands'}</h2>${opts.intro ? `
+    <p class="brands-intro">${opts.intro}</p>` : ''}
+    <div class="brands-track">${logos}${opts.viewAll === 'true' || opts.viewAll === true ? `<a class="product-carousel-viewall" href="${proto}brands/index.html">All brands ›</a>` : ''}</div>
+  </div>
+</section>`;
+}
+
 const RRG_WIDGETS = {
   header: rrgWidgetHeaderHTML,
   footer: rrgWidgetFooterHTML,
   'vehicle-finder': rrgWidgetVehicleFinderHTML,
   'bike-rack-finder': rrgWidgetBikeRackFinderHTML,
+  'brands-strip': rrgWidgetBrandsStripHTML,
 };
 
 // Replaces every [data-widget] placeholder under `root` with its widget. The placeholder's data-*
