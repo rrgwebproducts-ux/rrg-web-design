@@ -23,7 +23,7 @@
 |---|---|---|---|
 | Nearest store | "Your Nearest Store: **North Lakes**" | `/locations?store=north-lakes`: the locations page with that store picked | **No store saved:** reads "**Find A Store**" → `/locations` |
 | Vehicle | "Your Vehicle: **Toyota Hilux**" (mobile: just "Toyota Hilux") | Opens the **Fit Finder drawer** (A8) | **No vehicle:** "Select Your Vehicle" |
-| Call Us | phone icon + "Call Us" | `tel:` link. AU `1300 071 264`, NZ `09 481 1910` | Region |
+| Phone | phone icon + **the number** (not "Call Us": most desktop shoppers can't tap to call) | `tel:` link. AU `1300 071 264`, NZ `09 481 1910` | Region |
 | Region | flag + "Australia" ▾ | Menu: Australia / New Zealand. Picking the other region opens **the same page on the other domain** (`.com.au` ↔ `.co.nz`), reusing the live site's "you're on the wrong region" logic | — |
 | Account | Customer's **first name** | `/customer/account` | **Logged out:** "Log In" → `/customer/account/login` |
 
