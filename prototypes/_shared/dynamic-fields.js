@@ -838,7 +838,7 @@ const RRG_DYN_FIELDS = [
     attr: 'Calculated: final price ÷ 4 (Afterpay, PayPal), Zip weekly; providers per region (CMS / config)',
     sel: '.payment-badges .pb-text, .payment-badges .pb-logo',
     pages: ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box'],
-    rule: ['AU: Afterpay + PayPal "4 payments of $X", Zip "From $X a week"', 'NZ / UK → no badges (no pay-later on those sites)'],
+    rule: ['AU: Afterpay + PayPal "4 payments of $X", Zip "From $X a week"', 'NZ: Afterpay "4 payments of $X" (since 2026-10-15; PayPal when NZ switches it on)', 'UK → no badges'],
     example: '4 payments of $473.27',
     notes: 'Zip weekly is approximated as price ÷ 10, min $10; use the provider\'s own widget or formula in production.',
     status: 'draft' },

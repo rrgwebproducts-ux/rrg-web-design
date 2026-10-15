@@ -1,5 +1,292 @@
-# Developer Brief — PDP Rebuild Handover
+# Product Page (PDP) — Developer Brief
 
+**For Marc.** Part A is the build sheet for **Rack Friday Phase 1** (written 2026-10-15): every section of the product page, what it shows, where its data comes from, and what changes it. Part B (Sections 1–5) is the original full reference. If the two disagree, **Part A wins**.
+
+**Prototype:** open a product page and keep **Site Admin → Build Phase = Phase 1**. Everything you can see is in scope; Phase 2 features hide themselves. Use the **Demo State** panel (bottom right) to flip stock levels, sale on/off, video on/off and so on.
+
+---
+
+## A1. Ground rules
+
+1. **Staging first.** Everything goes to staging for us to QA before it goes live.
+2. **Phase 1 = today's live product page, reskinned.** Same data, same behaviour, new layout. Nothing below needs new Magento data.
+3. **Header and footer** are in their own briefs (`docs/header/`, `docs/footer/`).
+4. **Typography, colours, buttons:** use the shared tokens and classes in `prototypes/_shared/shared.css` (the `:root` variables, `.btn` + `.btn-cta` / `.btn-outline`, etc.). Add to Cart is always the gold `.btn-cta`.
+
+---
+
+## A2. Which templates
+
+| Product type | Prototype | Phase 1? |
+|---|---|---|
+| Simple product (most accessories; roof boxes too) | `prototypes/simple/` (also `prototypes/roof-box/`) | **Yes** |
+| Vehicle-specific kit (rack for one vehicle) | `prototypes/vehicle-specific/` | **Yes**, without the Build Option picker |
+| Grouped / bundle (several products sold as one) | `prototypes/grouped-bundle/` | **Yes** |
+| Build options (e.g. Assembled vs Flat Pack) | `prototypes/config-variant/` | No, Phase 2 |
+| Colour siblings (e.g. MAXTRAX colours) | `prototypes/sibling-color/` | No, Phase 2 |
+
+All three Phase 1 templates are one layout. Vehicle-specific and grouped just add one or two blocks to the right-hand panel (A4).
+
+---
+
+## A3. Page order (top to bottom)
+
+1. Breadcrumbs
+2. **Hero:** gallery on the left, decision panel on the right (A4)
+3. Fitment Gallery (vehicle-specific only, when it has photos)
+4. Trust bar (thin, one line)
+5. USP bullets (when the product has them)
+6. Tabs: Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions · Reviews
+7. Related Products
+8. Sticky bars: mobile bottom bar / desktop top bar
+
+**Desktop hero:** two columns (gallery a little wider). **Whichever column is shorter sticks** as you scroll, so there's never a blank gap beside the longer one. **Mobile:** one column; the decision panel comes straight after the photos, before the video / Get It Installed row.
+
+---
+
+## A4. Hero
+
+### Gallery (left)
+
+| Element | Shows | Data | Changes with |
+|---|---|---|---|
+| Main photo | The product's base image | Magento gallery | Click a thumbnail to swap it |
+| "Save N%" corner band | Red diagonal band, top-left of the photo | Calculated: price vs RRP | Hidden when not on sale, or the saving rounds to 0% |
+| Sale tag image | The running sale's tag (e.g. Rack Friday) | Sale campaign | Only while a sale runs **and** the product is on sale |
+| Thumbnails | Every gallery image, scrollable strip with arrows | Magento gallery | Hidden with only one image |
+| Video + Get It Installed | **32px below the thumbnails.** Video on the left, Get It Installed panel on the right | Magento video | **No video:** Get It Installed goes full width |
+
+Get It Installed: dark panel with an installer photo, two ticks ("Over 200,000 roof racks fitted", "Nationwide network of trained fitters") and an outline button. **Simple / grouped:** "See Fitting Options" → `/roof-rack-installation-and-fitting-costs/`. **Vehicle-specific:** follows the fitment count: 5+ → "We've fitted this N times — view the gallery" (opens the Fitment Gallery), 1–4 → "See real fitments", 0 → "Get It Installed" (fitting costs page).
+
+### Decision panel (right), top to bottom
+
+| Element | Shows | Data | Changes with |
+|---|---|---|---|
+| Brand logo | Manufacturer logo | Brand | No logo: brand name as text |
+| SKU | "SKU: FRWTAN063" | SKU | **Click to copy** (for staff) |
+| Title (H1) | Product name | Magento | — |
+| Short description | 2 lines, then "Read more" inline | Rackit short description | Hidden if empty |
+| Star rating | Stars + "4.5 (12 Reviews)", links to the Reviews tab | Reviews.io (product reviews only) | **Hidden with 0 product reviews** (never shows the company rating) |
+| Price | Now price, large. When on sale: "Now" label in red + "RRP $X" struck through below | Magento price / special price | Not on sale: one black price, no labels |
+| Stock line | See A5 | Magento stock status | — |
+| **Fitment card** *(vehicle-specific only)* | A5 | Session vehicle vs the kit's vehicle | — |
+| Rack Fit Guarantee badge *(vehicle-specific only)* | Badge beside the fitment card | — | Only when it **fits** |
+| Product Notes *(vehicle-specific only)* | "⚠ Product Notes" box | Rackit vehicle fit notes | Hidden if empty |
+| **What's Included** *(vehicle-specific + grouped)* | One row per component: quantity first ("1x"), name, SKU | Rackit kit components / Magento bundle children | **Click a SKU to copy it** |
+| Add to Cart | Gold button | — | See A5 for out of stock / discontinued |
+| Pay-later badges | Instalment amounts under the button | Calculated from price | **AU:** Afterpay + PayPal "4 payments of $X", Zip "From $X a week". **NZ:** Afterpay only |
+| Delivery / Click & Collect | Two tabs + postcode box; **same function as the live page today**, reskinned | Live delivery rates / store stock | AU opens on Click & Collect, NZ on Delivery |
+
+---
+
+## A5. Stock, fitment and the states that change the panel
+
+### Stock line (Phase 1)
+
+| Status | Line | Second line | Add to Cart |
+|---|---|---|---|
+| In stock | ✓ **In Stock Online** (green) | Dispatched next business day · Click & Collect ready in-store within 2 business days | Normal |
+| Low stock | ⚠ **Low Stock Online — order soon** (amber) | same | Normal |
+| Special order | ⏱ **Special Order** (amber) | Ordered in for you — ready in 5–7 business days | Normal |
+| Out of stock | ✕ **Out of Stock** (grey, never red) | "Contact our team for availability" | Disabled, reads "Out Of Stock" |
+| Discontinued | (line hidden) | — | Replaced by the banner "⛔ This product has been discontinued and is no longer available for purchase." **Keep the page live**: people still search old part numbers |
+
+- **No warehouse name** in Phase 1 (no "Ships from our Brisbane warehouse").
+- **Coming before launch:** the rules for **To Be Discontinued / Clearance Line / Overstock Clearance** stock (Click & Collect only in the customer's state, a postcode check on Add to Cart, cart warnings). Scott's rules are in `spec.md` §23.6; the full rule set follows once we have the export of every stock status.
+
+### Fitment card (vehicle-specific only)
+
+| Session vehicle | Card | Action |
+|---|---|---|
+| Matches the kit | Green **"Fits your vehicle"** + the kit's vehicle in full | — |
+| Doesn't match | Red **"Doesn't fit your vehicle"**, naming both vehicles in full | **Find the right fit** → opens the Fit Finder drawer → the vehicle's roof rack results |
+| None set | Amber **"Confirm your vehicle"** + the kit's vehicle | **Select your vehicle** → Fit Finder drawer |
+
+- **Click the vehicle icon** in the card to copy the kit's vehicle ID (for staff); it shows "Vehicle ID copied".
+- **Add to Cart never changes** with the fitment state: same text, same colour, always clickable.
+
+---
+
+## A6. Below the hero
+
+| Section | Shows | Data | Notes |
+|---|---|---|---|
+| Fitment Gallery *(vehicle-specific)* | Customer install photos, "View All In-store Fitments (N)" | Rackit fitments (as live) | Hidden with no photos. Reskin of the live gallery |
+| Trust bar | One line, 4 items, each a link: Over 200,000 Racks Fitted · store rating ("4.3★ from 1,935 Reviews", Reviews.io company score) · Price Guarantee · 90 Day Exchange | Reviews.io for the rating | Same bar as the top of the Home page |
+| USP bullets | Red-tick list | Rackit USPs | Left out of the page when there are none |
+| **Tabs** | Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions · Reviews | below | Same content as the live tabs |
+| Related Products | Product cards carousel | Magento related products | Hidden when none |
+
+**Tabs:**
+
+| Tab | Content |
+|---|---|
+| Details | Long description (as live) |
+| Specifications | One row per attribute with a value |
+| Gold Guarantee | The shared CMS block (as live) |
+| Shipping Info | The **same Delivery / Click & Collect component** as the decision panel (build it once, responsive), then the live shipping copy |
+| Fitting Instructions | One **download card** per PDF (icon, title, note, "Download"). Hidden with no PDFs |
+| Reviews | The Reviews.io widget, A9. Feed it the product's SKU |
+
+**Sticky bars:** mobile, a bottom bar (thumbnail, short name, price, Add to Cart) once the real button scrolls away; desktop, a top bar (thumbnail, name, price, Add to Cart; vehicle-specific adds a compact fitment box). Same price and fitment as the panel.
+
+---
+
+## A7. Not in Phase 1
+
+Hidden in the prototype while Build Phase = 1:
+
+- Showroom Finder ("See it in person") and anything using per-store "on display" stock
+- Store-aware stock lines ("In stock at Kedron, collect today…")
+- B-Stock / Ex-Demo link and drawer
+- FAQs (Phase 2: category-level questions, max 8, the product's own first)
+- Build Option picker and colour swatches (the config-variant and sibling-colour templates)
+- Package Deal (tag, drawer, cart discount) and rack/accessory compatibility notes
+- "Discontinued, here are the alternatives" (Phase 2: Magento's superseded/successor product)
+- Vehicle compatibility list for non-vehicle-specific products
+
+## A8. Breadcrumbs
+
+Same as the live product page today. (Magento has no "primary category", so a trail built from the shopper's journey is a later option.)
+
+---
+
+## A9. Reviews.io widget (copy-paste)
+
+Drop this into the Reviews tab. **Only `product_review.sku` and `questions.grouping` change per product** (a semicolon-separated list when a product has sibling SKUs). No API key needed.
+
+```html
+<script src="https://widget.reviews.io/polaris/build.js"></script>
+<div id="ReviewsWidget"></div>
+<script>
+new ReviewsWidget('#ReviewsWidget', {
+  store: 'roof-racks-galore',
+  widget: 'polaris',
+  options: {
+    types: 'product_review,store_review',
+    enable_sentiment_analysis: true,
+    lang: 'en',
+    layout: '',
+    per_page: 15,
+    store_review: { hide_if_no_results: false },
+    third_party_review: { hide_if_no_results: false },
+    product_review: { sku: 'FRWTAN063', hide_if_no_results: false },
+    questions: {
+      hide_if_no_results: true,
+      enable_ask_question: true,
+      enable_ask_question_button_style: false,
+      show_dates: true,
+      include_qna_structured_data: true,
+      grouping: 'FRWTAN063'
+    },
+    header: {
+      enable_summary: true,
+      enable_ratings: true,
+      enable_attributes: true,
+      enable_image_gallery: true,
+      enable_percent_recommended: false,
+      enable_write_review: true,
+      enable_ask_question: true,
+      enable_sub_header: true,
+      rating_decimal_places: 2,
+      use_write_review_button: false,
+      enable_if_no_results: false,
+      show_review_title_field: false
+    },
+    sentiment: { badge_text: 'Our Customers Say', enable_rating_breakdown: false },
+    filtering: {
+      enable: true,
+      enable_text_search: true,
+      enable_sorting: true,
+      enable_product_filter: false,
+      enable_media_filter: true,
+      enable_overall_rating_filter: true,
+      enable_language_filter: false,
+      enable_language_filter_language_change: false,
+      enable_ratings_filters: true,
+      enable_attributes_filters: true,
+      enable_expanded_filters: false
+    },
+    reviews: {
+      enable_avatar: true,
+      enable_reviewer_name: true,
+      enable_reviewer_address: true,
+      reviewer_address_format: 'city, country',
+      enable_verified_badge: true,
+      verified_badge_position: '',
+      enable_subscriber_badge: true,
+      review_content_filter: 'all',
+      enable_reviewer_recommends: true,
+      enable_attributes: true,
+      enable_product_name: true,
+      enable_link_product: true,
+      enable_review_title: true,
+      enable_replies: true,
+      enable_images: true,
+      enable_ratings: true,
+      enable_share: true,
+      enable_helpful_vote: true,
+      enable_helpful_display: true,
+      enable_report: true,
+      enable_date: true,
+      date_format: undefined,
+      date_location: undefined,
+      enable_third_party_source: true,
+      enable_duplicate_reviews: undefined,
+      combine_title_stars: true,
+      show_untranslated: false
+    }
+  },
+  translations: { 'Verified Customer': 'Verified Customer' },
+  styles: {
+    '--base-font-size': '16px',
+    '--common-button-font-family': 'inherit',
+    '--common-button-font-size': '16px',
+    '--common-button-font-weight': '700',
+    '--common-button-letter-spacing': '0',
+    '--common-button-text-transform': 'none',
+    '--common-button-vertical-padding': '10px',
+    '--common-button-horizontal-padding': '20px',
+    '--common-button-border-width': '2px',
+    '--common-button-border-radius': '4px',
+    '--primary-button-bg-color': '#BB0220',
+    '--primary-button-border-color': '#BB0220',
+    '--primary-button-text-color': '#ffffff',
+    '--secondary-button-bg-color': 'transparent',
+    '--secondary-button-border-color': '#0E1311',
+    '--secondary-button-text-color': '#0E1311',
+    '--common-star-color': '#E8A83C',
+    '--common-star-disabled-color': 'rgba(0,0,0,0.2)',
+    '--medium-star-size': '22px',
+    '--small-star-size': '19px',
+    '--heading-text-color': '#0E1311',
+    '--heading-text-font-weight': '700',
+    '--heading-text-font-family': "'Barlow Condensed', sans-serif",
+    '--heading-text-line-height': '1.3',
+    '--heading-text-letter-spacing': '0',
+    '--heading-text-transform': 'none',
+    '--body-text-color': '#0E1311',
+    '--body-text-font-weight': '400',
+    '--body-text-font-family': 'inherit',
+    '--body-text-line-height': '1.4',
+    '--body-text-letter-spacing': '0',
+    '--body-text-transform': 'none',
+    '--pagination-tab-active-border-color': '#BB0220',
+    '--pagination-tab-active-text-color': '#BB0220',
+    '--sentiment-pagination-tab-active-border-color': '#BB0220',
+    '--sentiment-pagination-tab-active-text-color': '#BB0220',
+    '--sentiment-common-star-color': '#E8A83C'
+  }
+});
+</script>
+```
+
+---
+
+# Part B — Full reference
+
+> Kept for the detail behind Part A. Where Part B still describes something Part A changed (Phase 2 features, the warehouse line, the sticky column), Part A is current.
+>
 > **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15). Text only: design tokens, type scale, the button/drawer/chip/tooltip systems, PDP layout CSS, sticky/persistent bar prices, the Low Stock box, the Save band on the main photo, breadcrumbs, the Fitment Gallery builder, the Demo State and Site Admin panels, and page `<head>` meta. Screenshots are still held until final handover, so some of them show the older look. Where a screenshot and the text disagree, the text is correct.
 
 ## 1. Project context

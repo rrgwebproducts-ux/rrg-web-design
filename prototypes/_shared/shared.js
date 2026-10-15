@@ -745,7 +745,8 @@ function applyStockStatus(status) {
     if (cfg.discontinued && !discBanner) {
       const el = document.createElement('div');
       el.className = 'discontinued-banner';
-      el.innerHTML = '⛔ This product has been discontinued and is no longer available for purchase — see similar alternatives below.';
+      // Alternatives are Phase 2 (spec.md §23 item 23), so Phase 1 doesn't point to them.
+      el.innerHTML = '⛔ This product has been discontinued and is no longer available for purchase' + (typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2 ? ' — see similar alternatives below.' : '.');
       parent.insertBefore(el, col);
     } else if (!cfg.discontinued && discBanner) {
       discBanner.remove();
