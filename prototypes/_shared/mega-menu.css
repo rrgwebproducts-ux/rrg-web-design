@@ -222,6 +222,9 @@ body.mm-mobile-locked{overflow:hidden;}
 /* Banner has no JS-measured height on mobile (there's no equivalent "row" to pin to, unlike
    desktop's syncRowHeight()) — just a sensible fixed height for the image to object-fit into. */
 .mega-menu-mobile .mega-menu-banner{height:64px;margin:0 -16px;width:calc(100% + 32px);}
+/* Default Overstock Clearance banner (4.5:1) in the wider mobile strip: show it whole, not cropped. */
+.mega-menu-mobile .mega-menu-banner.is-default{background:#0b0b0b;}
+.mega-menu-mobile .mega-menu-banner.is-default img{object-fit:contain;}
 
 /* Levels 1/2 (Shop X list, leaf links) hide the root screen's topbar/search entirely — the
    Figma's own Level 2/3 mobile screens show only the back+title bar, not the utility row. */

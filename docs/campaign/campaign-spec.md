@@ -30,7 +30,7 @@ Shown for Rack Friday (lime/black). Every campaign changes the same surfaces in 
 | **Campaign strip** (new) | — | Black bar above the header on every page except checkout. Shows the campaign title (italic, lime), the offer and terms, a **live countdown** to the end of the sale, and "Shop the sale →". The whole strip is a link. It scrolls away and is never sticky. On mobile it's just the title + countdown. |
 | **Utility bar** | Red, white text | **Lime, black text** |
 | **Main nav** | "Clearance" | **The sale replaces Clearance** in the same slot, because a sale takes priority over clearance (Brenton, 2026-10-02). The button uses the Figma toolbar-button style (lime italic on black) and a short label (`navLabel`: "Rack Friday", or just "Sale"). It's sized so the nav stays as wide as with Clearance, and the search box never drops to a second row: the header is a single row at the same widths with the sale on or off. |
-| **Mega-menu banner** | Store Finder promo (fallback) | The campaign banner (Figma node 3072-3886) |
+| **Mega-menu banner** | Overstock Clearance banner → Clearance page (fallback, since 2026-10-15; was a Store Finder promo) | The campaign banner (Figma node 3072-3886) |
 | **Add to Cart / primary buttons** (`.btn-cta`) | Gold | **Lime, black text** |
 | **PDP sale tag** | **None.** With no sale event there's no seasonal tag, just the Save band on the photo. | The campaign tag (Figma node 3075-641), beside the price on desktop and over the photo on mobile. It only shows when the product is actually discounted. |
 | **Product cards** (every card type, every page) | Red "SAVE X%" corner band | The Save band turns lime, and the campaign tag sits in the photo's top-right. **Discounted products only:** a full-price card never gets a tag. |
@@ -106,7 +106,7 @@ Every item the takeover touches, what a new sale needs to supply for it, and whe
    - Click through Home, a PLP, a product page, the cart and checkout at desktop and phone width.
    - Make sure the header stays on one row between about 1150px and 1300px wide, and (with a campaign logo) that the logo doesn't move the wordmark or make the header taller.
    - Switch the region to UK: there should be no takeover.
-8. **On the day:** pick the campaign. **After the sale:** set it back to Off. Clearance returns to the nav, the Store Finder banner returns to the mega menu, the campaign slide disappears and tags disappear from product pages.
+8. **On the day:** pick the campaign. **After the sale:** set it back to Off. Clearance returns to the nav, the Overstock Clearance banner returns to the mega menu, the campaign slide disappears and tags disappear from product pages.
 
 **Ready-made in Figma for Cyber Monday** (Electric Cyan `#00E5FF` + black): cyan "SALE" favicon burst, Cyber Monday tag, "Cyber Monday Sale On Now" banner and hero art. Items 4, 10 and 12 are still marked WIP there.
 

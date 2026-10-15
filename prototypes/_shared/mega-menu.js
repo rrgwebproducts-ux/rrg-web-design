@@ -68,21 +68,26 @@ function mmPromoTileHTML(promoTile) {
 
 // Sale banner (Level 1's top strip) swaps between two real creatives rather than a single banner
 // that just disappears when off (Brenton, 2026-09-13): the current sale campaign's banner while a
-// sale is on, a fallback evergreen creative (e.g. Store Finder promo) the rest of the time — never
+// sale is on, a fallback evergreen creative (Overstock Clearance since 2026-10-15) the rest of the time — never
 // blank. Since 2026-10-02 the switch is the sale takeover's own "Sale takeover" (campaign.js —
 // rrgCampaignActive, RRG_CAMPAIGN.megaMenuBanner), so the banner always matches the rest of the
 // takeover (and the UK, which never gets the takeover, keeps the fallback).
-const MM_SALE_BANNER_FALLBACK_SRC = RRG_PROTO + '_shared/sale-banner-fallback.png';
+// Default (no sale) banner = Overstock Clearance, linking to the Clearance page (Brenton,
+// 2026-10-15; the live site's own banner, wysiwyg/navigation-website-trust-main-default/
+// overstock-clearance.png). Was a Store Finder promo (sale-banner-fallback.png).
+const MM_SALE_BANNER_FALLBACK_SRC = RRG_PROTO + '_shared/mega-banner-clearance.png';
+const MM_SALE_BANNER_FALLBACK_HREF = RRG_PROTO + 'clearance/index.html';
 // `src` is set by mmApplySaleBannerVisibility() right after this markup is inserted (both
 // desktop and mobile) — kept out of this string so there's one place deciding which image.
 const MM_BANNER_HTML = '<a class="mega-menu-banner" href="#"><img alt="Sale"></a>';
 function mmApplySaleBannerVisibility() {
   const on = typeof rrgCampaignActive === 'function' && rrgCampaignActive();
   document.querySelectorAll('.mega-menu-banner').forEach(a => {
-    a.href = on ? RRG_CAMPAIGN.href : '#';
+    a.href = on ? RRG_CAMPAIGN.href : MM_SALE_BANNER_FALLBACK_HREF;
+    a.classList.toggle('is-default', !on);
     const img = a.querySelector('img');
     img.src = on ? RRG_PROTO + RRG_CAMPAIGN.megaMenuBanner : MM_SALE_BANNER_FALLBACK_SRC;
-    img.alt = on ? RRG_CAMPAIGN.title : 'Store Finder — 35+ locations nationwide';
+    img.alt = on ? RRG_CAMPAIGN.title : 'Overstock Clearance';
   });
 }
 
