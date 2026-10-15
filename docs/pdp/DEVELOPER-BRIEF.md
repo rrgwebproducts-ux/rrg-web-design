@@ -429,6 +429,8 @@ Three separate places on the page show a phone number and/or store name that cha
 Both sets of coordinates in the code block above are suburb/town-centre approximations for map-pin placement — same demo-precision convention as the rest of this prototype's store data, not geocoded to the exact street address.
 
 > **Corrected 2026-09-30 (docs/checkout/checkout-spec.md Section 6).** The live sites were checked during the checkout work: **NZ** offers cards and PayPal only (no Afterpay or any buy-now-pay-later), and the **UK** (roofbox.co.uk) shows Google Pay, Visa, Mastercard, Amex and PayPal, with no Clearpay or Klarna. No site shows Apple Pay. The prototype now follows that: **PDP instalment badges show in AU only** (Afterpay, PayPal, Zip) and are hidden in NZ and the UK; the footer marks are AU PayPal · Visa · Mastercard · Zip · Afterpay · Google Pay, NZ PayPal · Visa · Mastercard, UK Google Pay · Visa · Mastercard · Amex · PayPal (`REGION_FOOTER_PAYMENTS`, shared.js). The Clearpay/Klarna notes below are kept as history.
+>
+> **Updated 2026-10-15 (spec.md §23 item 24):** NZ now offers **Afterpay**, so the NZ PDP shows the Afterpay badge ("4 payments of $X"); PayPal Pay in 4 follows when NZ switches it on. UK unchanged (no instalment badges; the UK region is also out of Rack Friday Phase 1).
 
 #### UK payment provider differences
 
@@ -709,6 +711,10 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 **Add to Cart must stay identical in every fitment state** — same "Add To Cart" text, same primary button style, always enabled/clickable — regardless of whether the fitment verdict is Fits, Doesn't Fit, or Confirm Your Vehicle. Purchase must never hard-stop or visually change based on fitment status; only the fitment card itself (and the Rack Fit Guarantee badge, 4.11) communicates the verdict. This applies to the main Decision Panel button and both condensed instances (Sticky Mobile Bar, Persistent Bar).
 
 **Action buttons** inside the card (e.g. changing the vehicle) use `.btn-outline-red .btn-sm` (Section 2) — was a third, one-off outline style.
+- **Confirm your vehicle:** *Select your vehicle* → opens the Fit Finder drawer, sets the vehicle in place.
+- **Doesn't fit:** one button, *Find the right fit* → opens the Fit Finder drawer; *View results* sets the vehicle and goes to the Roof Racks results for it (the Vehicle PLP). *Change vehicle* was dropped (2026-10-15, spec.md §23 item 37). Phase 2 may send it to the VLP.
+- **Fits your vehicle:** no buttons.
+- **Vehicle icon (every state):** click to copy the product's vehicle ID (staff use it), in the card and in both condensed bars; shows "Vehicle ID copied" for a moment. Package Components SKUs copy their own SKU (2026-10-15, spec.md §23 item 39).
 
 **States** (driven by the **Site Admin panel's "Vehicle" select** — None → Confirm your vehicle, Toyota Hilux → Fits, Ford Ranger → Doesn't fit. This is the one session vehicle for the whole prototype, the same one the header shows, so the header and the fitment card can no longer contradict each other. It replaced the Demo State Panel's old "Session Vehicle" buttons on 2026-09-29, `spec.md` §15 P4. In Magento this is the customer's real saved vehicle):
 - Location (full page, red arrow): ![Fitment Status — location](dev-brief-assets/fitment-status-location.png)
@@ -1576,7 +1582,7 @@ Phase 2 with no store set adds **"Set your store to see local stock"** after the
 | `nearby` | ✓ In Stock at Kedron | Collect today from Kedron, or from North Lakes within 2 business days · Kedron is about 18km from North Lakes · also in stock at Rocklea |
 | `warehouse` | ✓ In Stock Online | Collect at North Lakes within 2 business days · delivery dispatched next business day · Ships from our Brisbane warehouse |
 
-2026-09-30 (spec.md §16 items 18–19): no distance in the line (it was measured from the saved store, not the shopper). The PDP second line now also names the other stores that have it, or the warehouse it ships from; Phase 1 adds "Ships from our Brisbane warehouse". Cards carry the same detail in an ⓘ popover (PLP brief). Warehouse and "also in stock" stores are demo data until the inventory feed exists.
+2026-09-30 (spec.md §16 items 18–19): no distance in the line (it was measured from the saved store, not the shopper). The PDP second line now also names the other stores that have it, or the warehouse it ships from; Phase 1 has no warehouse line (2026-10-15, spec.md §23 item 21: dropped "Ships from our Brisbane warehouse" until the inventory feed can say which warehouse); Phase 2 names it. Cards carry the same detail in an ⓘ popover (PLP brief). Warehouse and "also in stock" stores are demo data until the inventory feed exists.
 
 **Availability filter:** on every product-listing page; details in the PLP brief.
 

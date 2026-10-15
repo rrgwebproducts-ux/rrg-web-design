@@ -8,6 +8,7 @@
 //   <div data-widget="bike-rack-finder"></div> the Buying Guide's 3-question finder (logic in
 //                                        buying-guide.js, which the page must also load)
 //   <div data-widget="brands-strip"></div>     "Shop The Best Brands" logo band (options below)
+//   <div data-widget="trust-bar"></div>        thin one-line trust bar (Home top, product pages)
 //
 // rrgMountWidgets() swaps each placeholder for the widget's markup (the placeholder itself is
 // replaced, not filled, so the page's element order is exactly what it was — e.g. the footer stays
@@ -49,6 +50,17 @@ function rrgWidgetUtilityBarHTML() {
 </div>`;
 }
 
+// "Services" dropdown in the main nav (spec.md §23 item 8, a test): replaced the plain Fitting link.
+// Opens on hover/focus, or on click (initServicesMenu, shared.js). Links: RRG_SERVICES_MENU.
+function rrgWidgetServicesMenuHTML() {
+  const items = (typeof RRG_SERVICES_MENU !== 'undefined' ? RRG_SERVICES_MENU : [])
+    .map(l => `<a href="${l.href}"${l.kind ? ` data-services-${l.kind}` : ''}>${l.label}</a>`).join('');
+  return `<div class="rrg-nav-dd" data-services-menu>
+        <button type="button" class="rrg-nav-dd-toggle" aria-haspopup="true" aria-expanded="false">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="rrg-nav-dd-menu">${items}</div>
+      </div>`;
+}
+
 // Main header: logo, Products mega menu (shell only — buildMegaMenuDesktop, mega-menu.js, fills
 // .mega-menu-drawer-inner), nav links, search + typeahead (initHeaderSearchSuggest, shared.js), cart
 // count (cart.js).
@@ -73,7 +85,7 @@ function rrgWidgetMainHeaderHTML() {
       <a href="#">Fit My Vehicle</a>
       <a href="${RRG_PROTO}clearance/index.html" class="rrg-nav-clearance">Clearance</a>
       ${typeof rrgCampaignNavLinkHTML === 'function' ? rrgCampaignNavLinkHTML() : ''}
-      <a href="../installation/index.html">Fitting</a>
+      ${rrgWidgetServicesMenuHTML()}
     </nav>
     <div class="rrg-search">
       <input type="text" placeholder="Search Roof Racks or Accessories">
@@ -343,7 +355,30 @@ function rrgWidgetBrandsStripHTML(opts = {}) {
 </section>`;
 }
 
+// Thin trust bar (spec.md §23 items 16 + 28, 2026-10-15): replaces the 4-column Trust Row on the
+// Home page (top of the page, straight under the header, full-width background) and the product
+// pages (where the Trust Row was). One line per item, icon + heading, the whole item is the link.
+// The trust signals are out of the header on purpose. The store rating is read live from
+// Reviews.io (initTrustBarReviews, shared.js); until then / if it fails it reads "Rated Excellent".
+//   data-placement="top"   the Home page version (no outer margin, sits under the header)
+function rrgWidgetTrustBarHTML(opts = {}) {
+  const proto = typeof RRG_PROTO === 'undefined' ? '../' : RRG_PROTO;
+  const icon = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  const items = [
+    { href: `${proto}installation/index.html`, icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>', text: 'Over 200,000 Racks Fitted' },
+    { href: 'https://www.reviews.io/company-reviews/store/roof-racks-galore', icon: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>', text: '<span data-trust-reviews>Rated Excellent on Reviews.io</span>', ext: true },
+    { href: '#', icon: '<path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>', text: 'Price Guarantee' },
+    { href: '#', icon: '<path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/>', text: '90 Day Exchange' },
+  ];
+  return `<div class="rrg-trust-bar${opts.placement === 'top' ? ' rrg-trust-bar--top' : ''}">
+  <div class="wrap rrg-trust-bar-inner">${items.map(i => `
+    <a href="${i.href}"${i.ext ? ' target="_blank" rel="noopener"' : ''}>${icon(i.icon)}<span>${i.text}</span></a>`).join('')}
+  </div>
+</div>`;
+}
+
 const RRG_WIDGETS = {
+  'trust-bar': rrgWidgetTrustBarHTML,
   header: rrgWidgetHeaderHTML,
   footer: rrgWidgetFooterHTML,
   'vehicle-finder': rrgWidgetVehicleFinderHTML,

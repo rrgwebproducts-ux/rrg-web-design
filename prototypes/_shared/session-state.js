@@ -92,8 +92,16 @@ function rrgPhaseGet() {
 
 window.rrgSetPhase = (phase) => {
   localStorage.setItem(RRG_BUILD_PHASE_KEY, String(phase));
+  rrgApplyPhaseAttr();
   document.dispatchEvent(new CustomEvent('rrg-session-change'));
 };
+
+// <html data-build-phase="1|2"> (spec.md §23, 2026-10-15) so CSS can hide what isn't in the
+// launch build: anything marked .rrg-phase2 (Showroom Finder, FAQs…) and the UK region option.
+function rrgApplyPhaseAttr() {
+  document.documentElement.dataset.buildPhase = rrgPhaseGet();
+}
+rrgApplyPhaseAttr();
 
 // ---- Stock status (spec.md §14.1, agreed with Brenton 2026-09-29) ----------------------
 // One status model for every surface that shows stock — PDP stock line, PLP-family cards,
@@ -191,10 +199,14 @@ function rrgStockStatus(stock, storeStock, ctx = rrgStoreContext()) {
     subline: where === 'warehouse'
       ? `Collect at ${ctx.store} within 2 business days · delivery dispatched next business day`
       : 'Dispatched next business day · Click & Collect ready in-store within 2 business days',
-    detail: ships,
+    // Phase 1 doesn't name the warehouse (spec.md §23 item 21, 2026-10-15): we can't be sure
+    // which one holds it until the inventory feed exists.
+    detail: ctx.phase === 2 ? ships : '',
     tip: where === 'warehouse'
       ? `${ships}. Not on the shelf at ${rrgStoreLinkHTML(ctx.store)} yet: we can have it there within 2 business days.`
-      : `Stock shown is our online warehouse (${ctx.warehouse}). ${contact} to check shelf stock.`,
+      : ctx.phase === 2
+        ? `Stock shown is our online warehouse (${ctx.warehouse}). ${contact} to check shelf stock.`
+        : `Stock shown is our online stock. ${contact} to check shelf stock.`,
     setStore: ctx.phase === 2 && !ctx.storeSet,
     collectEta: 'Ready within 2 business days'
   };

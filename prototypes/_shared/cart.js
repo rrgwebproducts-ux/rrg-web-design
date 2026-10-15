@@ -61,7 +61,7 @@ const RRG_DEMO_CART_ITEMS = {
   bikeRack: { sku: '922020', brand: 'Thule', name: 'Thule EuroWay G2 3 Bike Tow Ball Mounted Carrier - 922020', price: 799.00, wasPrice: 1199.95,
     image: RRG_CART_IMG('t/h/thule-euroway-g2-3-bike-tow-ball-mounted-carrier-922020.webp'), url: '#' },
   showerBundle: { sku: '8004109PROMO', brand: 'Yakima', name: 'Yakima RoadShower 15L Complete Shower & Hose Bundle', price: 449.00, wasPrice: 846.00,
-    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004109-camping_1.jpg', url: 'grouped-bundle/index.html',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/y/a/yakima-8004109-camping-0920c1f78b0b.jpg', url: 'grouped-bundle/index.html',
     parts: ['1× Yakima RoadShower SM 15L (8004109)', '1× Yakima RoadShower On-Off Elbow (8004103)', '1× Yakima RoadShower Extra Long Hose 214cm (8881251)', '1× Yakima RoadShower FlexHead Shower LG 76cm (8004106)'] },
   waterTank: { sku: 'FRWTAN063', brand: 'Front Runner', name: 'Front Runner Pro Water Tank With Strap 42L', price: 299.00, wasPrice: 350.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories._1_1.jpg', url: 'simple/index.html' },

@@ -312,6 +312,10 @@ button{font-family:inherit;cursor:pointer;}
 .region-switcher-menu a{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--radius);font-size:14px;font-weight:700;color:var(--rrg-black);text-decoration:none;}
 .region-switcher-menu a:hover{background:var(--rrg-bg);color:var(--rrg-red);}
 .region-switcher-menu a.current{color:var(--rrg-red);background:var(--rrg-red-bg);}
+/* Rack Friday Phase 1 = AU + NZ only (spec.md §23 item 14); UK comes back in Phase 2. */
+html[data-build-phase="1"] .region-switcher-menu a[data-region="UK"]{display:none;}
+/* Phase 2 features on a Phase 1 page (spec.md §23): kept in the prototype, hidden at launch. */
+html[data-build-phase="1"] .rrg-phase2{display:none!important;}
 
 .rrg-main-header{background:#fff;border-bottom:1px solid var(--rrg-line);padding:16px 0;}
 .rrg-main-inner{display:flex;align-items:center;gap:32px;padding:0 24px;flex-wrap:wrap;}
@@ -324,6 +328,19 @@ a.rrg-logo{display:block;}
 .rrg-nav a{color:var(--rrg-black);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
 .rrg-nav a:hover{color:var(--rrg-red);}
 .rrg-nav .sep{color:var(--rrg-line);}
+/* Services dropdown (spec.md §23 item 8): the nav link's look, with the region menu's panel. */
+.rrg-nav-dd{position:relative;}
+.rrg-nav-dd-toggle{display:inline-flex;align-items:center;gap:4px;background:none;border:none;padding:0;font:inherit;color:var(--rrg-black);cursor:pointer;}
+.rrg-nav-dd-toggle svg{width:14px;height:14px;transition:transform .15s;}
+.rrg-nav-dd:hover .rrg-nav-dd-toggle,.rrg-nav-dd.open .rrg-nav-dd-toggle{color:var(--rrg-red);}
+.rrg-nav-dd.open .rrg-nav-dd-toggle svg{transform:rotate(180deg);}
+/* padding-top bridges the gap to the toggle so hover doesn't drop on the way down */
+.rrg-nav-dd-menu{position:absolute;top:100%;left:-10px;padding-top:10px;display:none;z-index:85;}
+.rrg-nav-dd-menu::before{content:'';position:absolute;inset:10px 0 0;background:#fff;border:1px solid var(--rrg-line);border-radius:var(--radius);box-shadow:var(--shadow);z-index:-1;}
+.rrg-nav-dd.open .rrg-nav-dd-menu{display:flex;flex-direction:column;min-width:220px;padding:18px 8px 8px;}
+@media (hover:hover){.rrg-nav-dd:hover .rrg-nav-dd-menu{display:flex;flex-direction:column;min-width:220px;padding:18px 8px 8px;}}
+.rrg-nav .rrg-nav-dd-menu a{display:block;padding:9px 10px;border-radius:var(--radius);font-size:14px;font-weight:700;white-space:nowrap;}
+.rrg-nav .rrg-nav-dd-menu a:hover{background:var(--rrg-bg);color:var(--rrg-red);}
 
 .rrg-search{flex:1 1 260px;max-width:420px;display:flex;align-items:center;border:1.5px solid var(--rrg-line);border-radius:var(--radius);overflow:hidden;margin-left:auto;}
 .rrg-search input{flex:1;border:none;padding:11px 14px;font-size:14px;font-family:inherit;outline:none;min-width:0;}
@@ -648,6 +665,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    of the icon's current fitment-state colour. */
 .dot-copy{cursor:pointer;}
 .dot-copy.copied{color:var(--rrg-fits)!important;}
+/* "Copied" confirmation — the main card's icon is already green, so colour alone shows nothing. */
+.dot-copy{position:relative;}
+.dot-copy.copied::after{content:'Vehicle ID copied';position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);background:var(--rrg-black);color:#fff;font-size:12px;font-weight:700;line-height:1;padding:6px 8px;border-radius:4px;white-space:nowrap;pointer-events:none;z-index:5;}
 .fitment strong{display:block;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:16px;letter-spacing:.02em;margin-bottom:2px;}
 .fitment.fits{border-left:3px solid var(--rrg-fits);}
 .fitment.fits strong{color:var(--rrg-fits);}
@@ -794,6 +814,21 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .pb-text{font-size:12px;color:var(--rrg-grey-600);line-height:1.3;}
 
 /* trust icons */
+/* Thin trust bar (spec.md §23 items 16 + 28; widgets.js rrgWidgetTrustBarHTML): one line, icon +
+   heading, each item a link. Home: full-width grey band straight under the header. Product pages:
+   a ruled strip where the 4-column Trust Row used to be. */
+.rrg-trust-bar{border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);margin:32px 0;}
+.rrg-trust-bar:not(.rrg-trust-bar--top) .wrap{padding-left:0;padding-right:0;max-width:none;}
+.rrg-trust-bar--top{background:var(--rrg-bg);border-top:0;margin:0;}
+.rrg-trust-bar-inner{display:flex;justify-content:space-between;align-items:center;gap:8px 24px;padding-top:9px;padding-bottom:9px;}
+.rrg-trust-bar a{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--rrg-black);text-decoration:none;white-space:nowrap;}
+.rrg-trust-bar a:hover{color:var(--rrg-red);}
+.rrg-trust-bar svg{width:20px;height:20px;flex:0 0 auto;color:var(--rrg-red);}
+@media (max-width:760px){
+  .rrg-trust-bar-inner{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;}
+  .rrg-trust-bar a{font-size:12.5px;gap:6px;white-space:normal;line-height:1.25;}
+  .rrg-trust-bar svg{width:17px;height:17px;}
+}
 .trust-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rrg-line);border-bottom:1px solid var(--rrg-line);margin:32px 0;}
 .trust-row .item{padding:20px 18px;border-left:1px solid var(--rrg-line);}
 .trust-row .item:first-child{border-left:0;}
@@ -861,6 +896,16 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* PDF icon on Fitting Instructions links (2026-09-11) — wraps each link's existing text,
    no markup restructuring beyond adding the icon + this class. */
 .pdf-link{display:inline-flex;align-items:center;gap:6px;}
+/* Fitting Instructions download cards (spec.md §23 item 30, 2026-10-15) — were .pdf-link text links. */
+.doc-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px;}
+.doc-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--rrg-line);border-radius:var(--radius);background:#fff;color:var(--rrg-black);text-decoration:none;transition:border-color var(--t-fast),box-shadow var(--t-fast);}
+.doc-card:hover{border-color:var(--rrg-red);box-shadow:var(--shadow);}
+.doc-card-icon{flex:0 0 40px;height:40px;border-radius:var(--radius);background:var(--rrg-red-bg);color:var(--rrg-red);display:flex;align-items:center;justify-content:center;}
+.doc-card-icon svg{width:20px;height:20px;}
+.doc-card-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.doc-card-text strong{font-size:15px;line-height:1.3;}
+.doc-card-text span{font-size:13px;color:var(--rrg-grey-600);}
+.doc-card-cta{flex:0 0 auto;font-size:13px;font-weight:900;color:var(--rrg-red);text-transform:uppercase;letter-spacing:.03em;}
 .pdf-link svg{width:14px;height:14px;flex:0 0 auto;color:var(--rrg-red);}
 
 /* SKU moved to the decision panel's top-right (2026-09-11) — sits beside the brand logo
@@ -917,8 +962,12 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    Relies on .hero's align-items:start (PDP hero layout, below) to leave room in the
    grid row to stick into — a no-op if the gallery column happens to be the taller side,
    so it's safe to apply unconditionally. */
+/* Both ways since 2026-10-15 (spec.md §23 item 27): when the gallery column is the taller one
+   (video + Get It Installed), the decision panel sticks instead. Only the shorter side has room
+   to stick, so applying both is safe. */
 @media (min-width:901px){
-  .hero > .gallery-col{position:sticky;top:calc(var(--sticky-offset,0px) + 20px);transition:top var(--t-slide) ease;}
+  .hero > .gallery-col,
+  .hero > .decision-panel{position:sticky;top:calc(var(--sticky-offset,0px) + 20px);transition:top var(--t-slide) ease;}
 }
 
 /* gallery */
@@ -986,7 +1035,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    the .no-video card's text stuck at the top instead of vertically centred. Switched to
    position:absolute;inset:0 (same reliable stretch technique .install-photo already used)
    so centring now works in both states regardless of how the card's height is established. */
-.install-media-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;align-items:start;}
+/* margin-top 12px → 32px (spec.md §23 item 26, 2026-10-15): the row sat too close under the thumbnails. */
+.install-media-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px;align-items:start;}
 .install-media-row.no-video{grid-template-columns:1fr;}
 .install-media-row.no-video .video-placeholder{display:none!important;}
 .install-cta-panel{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;background:var(--rrg-charcoal);}

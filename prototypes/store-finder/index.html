@@ -301,7 +301,16 @@ $('sfLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@typ
   const state = abbr && Object.keys(RRG_STATE_ABBR).find(k => RRG_STATE_ABBR[k] === abbr.toUpperCase());
   if (state && SF_STATE_ORDER.includes(state)) sf.tab = state;
   sfRender();
-  if (params.get('postcode')) { $('sfPostcode').value = params.get('postcode'); sfSearchPostcode(params.get('postcode')); }
+  // ?store=North Lakes (the header's "Your Nearest Store" link, spec.md §23 item 12): that store
+  // first and picked, the rest sorted by distance from it.
+  const picked = params.get('store') && SF_STORES.find(st => st.name.toLowerCase() === params.get('store').toLowerCase());
+  if (picked) {
+    sf.origin = { lat: picked.lat, lng: picked.lng, anchor: true };
+    sf.tab = 'ALL'; sf.active = picked.name;
+    sfSetStatus(`Stores nearest <strong>${picked.name}</strong>, your saved store<button type="button" data-sf-clear>Clear</button>`);
+    sfRender(); sfFitMap(); sfFocusStore(picked.name, false);
+  }
+  else if (params.get('postcode')) { $('sfPostcode').value = params.get('postcode'); sfSearchPostcode(params.get('postcode')); }
   else sfFitMap();
 })();
 </script>

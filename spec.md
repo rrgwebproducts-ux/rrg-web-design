@@ -1759,46 +1759,67 @@ Status key: 🔨 prototype change · 📄 dev-brief change · ❓ needs a decisi
 
 ### 23.2 Header + mega menu
 5. 📄 **Mega menu = reskin only.** Same Level 1/2/3 categories as live, nothing moved. Restructuring happens after Christmas. Say this plainly in the brief.
-6. 🔨📄 **Merch promo tile: add a background colour field.** Per category (an L1's tile shows under its L2s, an L2's under its L3s): image (transparent PNG, anchored bottom-left, overlapping), heading, subheading, **colour** (default RRG red; e.g. Rhino-Rack blue for a Rhino launch). Text is live text, not baked into the image. Flat colour only, no background image (page load). Whole tile is the link. Editable by anyone in Magento category admin, no code. Optional at launch: no tile set = nothing renders (already built).
+6. ✅ **Built 2026-10-15** (`promoTile.color`, Rhino-Rack blue on Roof Rack Accessories as the demo; dynamic field now Magento category attributes). 📄 brief still to write. **Merch promo tile: add a background colour field.** Per category (an L1's tile shows under its L2s, an L2's under its L3s): image (transparent PNG, anchored bottom-left, overlapping), heading, subheading, **colour** (default RRG red; e.g. Rhino-Rack blue for a Rhino launch). Text is live text, not baked into the image. Flat colour only, no background image (page load). Whole tile is the link. Editable by anyone in Magento category admin, no code. Optional at launch: no tile set = nothing renders (already built).
 7. 📄 **Bulk upload goal:** Brenton wants to set every category's tile from one spreadsheet upload before a sale like Rack Friday, so the brief asks for plain category attributes (not an HTML block).
-8. 🔨📄 **Nav: Fitting → "Services" dropdown (a test).** Items: Fitting (→ Installation), Call Us, Email Us, Delivery Information, Payment Options, and possibly the trust items (price match, 90-day exchange). Graham and Brenton both like Fitting standing out on its own, so build it and see before committing.
+8. ✅ **Built 2026-10-15** (desktop hover/click dropdown + mobile drill-down; `RRG_SERVICES_MENU`, nav-data.js). **Nav: Fitting → "Services" dropdown (a test).** Items: Fitting (→ Installation), Call Us, Email Us, Delivery Information, Payment Options, and possibly the trust items (price match, 90-day exchange). Graham and Brenton both like Fitting standing out on its own, so build it and see before committing.
 9. ✅ **Nav links, no change:** Store Finder → the Store Finder page. Fit My Vehicle → the FMV page; in Phase 1, View results behaves exactly like live; in Phase 2 it goes to the VLP (copy may become "Find the right product for your vehicle"). Clearance → the clearance category; hidden where there's no clearance (NZ), so the other links shift over; replaced by the sale link (Rack Friday / Christmas) during a takeover.
 10. ✅ **Dropped from the live header on purpose:** the review count above the logo, the "200,000+ fitted!" line, the trust-signal row. The brief should say they're intentionally gone (trust moves to the home page and PDP, items 16 and 28).
 11. ✅ **Support button dropped.** Clarity: 4 clicks in 3 days (0.08% of clicks) vs Find a Store 38, Search 314. Support lives in the footer and chat. Call Us stays (big on mobile).
-12. 🔨📄 **Nearest-store link:** store set → "Your Nearest Store: North Lakes" links to the **Store Finder with that store pre-selected** (query param), not the store page. No store → "Find a store" → Store Finder. Marc connects the saved store (already tracked from the PDP Click & Collect widget) to the header. Phase 2: a "Set as my store" button on the Store Finder.
+12. ✅ **Built 2026-10-15** (Store Finder `?store=`). **Nearest-store link:** store set → "Your Nearest Store: North Lakes" links to the **Store Finder with that store pre-selected** (query param), not the store page. No store → "Find a store" → Store Finder. Marc connects the saved store (already tracked from the PDP Click & Collect widget) to the header. Phase 2: a "Set as my store" button on the Store Finder.
 13. ✅ **Account:** shows the customer's first name when logged in (built). Brief: confirm Magento exposes it.
-14. ❓🔨 **Region selector:** keep AU + NZ; Brenton "probably wouldn't put UK in yet". Switching keeps the same URL and swaps the domain (.com.au ↔ .co.nz), reusing the live "wrong region" pop-up logic. Decide: drop UK from the dropdown for Phase 1?
-15. ❓ **Wrong image** spotted at the start of the meeting ("a 5 series / 6 series image"). Which page/product?
+14. ✅ **Built 2026-10-15** (`html[data-build-phase="1"]` hides UK). **Region selector:** keep AU + NZ; Brenton "probably wouldn't put UK in yet". Switching keeps the same URL and swaps the domain (.com.au ↔ .co.nz), reusing the live "wrong region" pop-up logic. **Decided (Brenton, 2026-10-15): UK is hidden from the dropdown while Build Phase 1 is selected.**
+15. ✅ **Wrong image** ("a 5 series / 6 series image"): a live-site issue, Scott's to look at. Nothing to do here.
 
 ### 23.3 Home page (not Phase 1, but decided here)
-16. 🔨 **Thin trust bar at the very top of the home page** (not the header): full-width background, content contained, no gap under the header, scrolls away under the sticky header. One line per item, icon + heading only, each item one link (e.g. "90 Day Exchange", no "Read our exchange policy"). Items: fitted count, reviews, price match, 90-day exchange. Replaces today's bigger confidence bar. Launch with it so nothing Tim expects goes missing, then A/B test it off.
+16. ✅ **Built 2026-10-15** (shared widget `trust-bar`; rating read live from Reviews.io, 4.3★ / 1,935 today). **Thin trust bar at the very top of the home page** (not the header): full-width background, content contained, no gap under the header, scrolls away under the sticky header. One line per item, icon + heading only, each item one link (e.g. "90 Day Exchange", no "Read our exchange policy"). Items: fitted count, reviews, price match, 90-day exchange. Replaces today's bigger confidence bar. Launch with it so nothing Tim expects goes missing, then A/B test it off.
 17. ❓ **Full-width heroes** (Scott): background full width, content contained (like Supercheap). Parked until there's design time to make the assets work at every width.
 
 ### 23.4 PDP (simple product)
 18. ⏭ **B-stock / ex-demo:** Phase 2.
-19. ⏭ **Store-level stock:** "On display", the store-aware stock lines ("In stock at Kedron, collect today…") and the whole **Showroom Finder** section are Phase 2. Drop the Showroom Finder from Phase 1.
+19. ✅ **Built 2026-10-15** (Showroom Finder + B-Stock hidden in Build Phase 1 via `.rrg-phase2`). ⏭ **Store-level stock:** "On display", the store-aware stock lines ("In stock at Kedron, collect today…") and the whole **Showroom Finder** section are Phase 2. Drop the Showroom Finder from Phase 1.
 20. ⏭ **Vehicle compatibility list** (fits / doesn't fit on non-vehicle-specific products): Phase 2, no data yet.
-21. 🔨 **Phase 1 stock lines:** "In Stock Online" + dispatch next business day + Click & Collect ready in store within 2 business days. **Remove "Ships from our Brisbane warehouse"** in Phase 1.
+21. ✅ **Built 2026-10-15.** **Phase 1 stock lines:** "In Stock Online" + dispatch next business day + Click & Collect ready in store within 2 business days. **Remove "Ships from our Brisbane warehouse"** in Phase 1.
 22. ⏳❓ **Stock + delivery rules (Phase 1, blocking):** the lines under the stock status must match what delivery and Click & Collect actually allow. Region-locked items (e.g. held only in WA): no 2-day C&C promise; delivery-only or C&C-only messaging; add to cart may need a postcode first. **Scott is sending the rule list and an export of every stock status.** Then: a spreadsheet of every live status (in stock, low stock, out of stock, special order, discontinued, clearance, used…), when each shows, and what it changes (price, shipping, buttons) → Claude drafts the rule set → the team tweaks it. Phase 1 must at least reproduce live (out of stock = "Special order, contact us"). Special order should really mean pre-order.
 23. ⏭ **Discontinued products:** keep the page live (people search old part numbers), and add "This is discontinued, here are the alternatives" in the decision panel from Magento's superseded/successor product. Probably Phase 2.
-24. 🔨 **Buy now, pay later by region:** AU = all three; NZ = Afterpay now, PayPal soon; **UK Klarna/Clearpay isn't showing**, find out why.
+24. ✅ **Done 2026-10-15:** NZ/UK badges were switched off on purpose on 2026-09-30 (live sites had none). NZ has Afterpay again (badge restored); live UK still shows none, so UK stays off. **Buy now, pay later by region:** AU = all three; NZ = Afterpay now, PayPal soon; **UK Klarna/Clearpay isn't showing**, find out why.
 25. ⏭ **Package Deal:** out of Phase 1 (Magento can't show the discounted price at product level yet).
-26. 🔨 **Gallery:** add about 20px between the thumbnails and the video / Get It Installed row.
-27. 🔨 **Sticky columns both ways:** the gallery column also sticks when the decision panel is the longer one.
-28. 🔨 **PDP trust banner:** reuse the new thin home-page trust bar (item 16).
+26. ✅ **Built 2026-10-15** (12px → 32px). **Gallery:** add about 20px between the thumbnails and the video / Get It Installed row.
+27. ✅ **Built 2026-10-15.** **Sticky columns both ways:** the gallery column also sticks when the decision panel is the longer one.
+28. ✅ **Built 2026-10-15** (all 6 product pages). **PDP trust banner:** reuse the new thin home-page trust bar (item 16).
 29. ✅ **Tabs:** Details, Specs, Gold Guarantee, Shipping Info. Shipping Info = the same Delivery / Click & Collect component as the decision panel; Marc builds it once, responsive. Phase 1 if possible.
-30. 🔨 **Fitting instructions:** replace the text links with the styled download cards.
+30. ✅ **Built 2026-10-15** (`.doc-card`). **Fitting instructions:** replace the text links with the styled download cards.
 31. ✅ **Reviews tab:** reviews.io embed, already in the brief; Marc feeds it the SKU.
-32. ⏭ **FAQs: drop the section in Phase 1.** Phase 2: Q&As set at category level and inherited by its products, max 8; a product's own Q&As take the first slots and the category's fill the rest.
+32. ✅ **Built 2026-10-15** (hidden in Build Phase 1). ⏭ **FAQs: drop the section in Phase 1.** Phase 2: Q&As set at category level and inherited by its products, max 8; a product's own Q&As take the first slots and the category's fill the rest.
 33. ✅ **Related products:** unchanged.
 34. ⏭ **Siblings / variant picker** (sibling-color, config-variant templates): Phase 2, for time only.
 35. 🔨📄 **Breadcrumbs:** Magento has no primary category, so Phase 1 matches live. Breadcrumbs built from the shopper's journey are a later option.
 
 ### 23.5 PDP (vehicle-specific + grouped)
 36. ✅ **"Fits your vehicle" card is Phase 1** (session vehicle vs the product's vehicle ID; both exist today).
-37. 🔨 **Doesn't fit:** drop "Change vehicle", keep **Find the right fit** → opens the fit-finder drawer → View results → the PLP results for that vehicle (VLP later).
+37. ✅ **Built 2026-10-15** (drawer mode `results` → VPLP). **Doesn't fit:** drop "Change vehicle", keep **Find the right fit** → opens the fit-finder drawer → View results → the PLP results for that vehicle (VLP later).
 38. ⏭ **Build option picker** (a variant picker): Phase 2.
-39. 🔨 **Copy for staff:** in Package Components, clicking a SKU copies the SKU; clicking the green vehicle icon in the "Fits your vehicle" card copies the **vehicle ID**. Check both work that way.
+39. ✅ **Checked + built 2026-10-15:** SKUs already copied; the main card's vehicle icon now copies too (it only worked in the condensed bars), with a "Vehicle ID copied" tip. **Copy for staff:** in Package Components, clicking a SKU copies the SKU; clicking the green vehicle icon in the "Fits your vehicle" card copies the **vehicle ID**. Check both work that way.
 40. 📄 **Grouped stock = worst component:** if any component (at the quantity needed) isn't available at that store or warehouse, the whole package takes the worst status. Goes into the rule set (item 22).
-41. 🔨 **Fitment Gallery:** in Phase 1 (a reskin of live). Tone down the bright red.
-42. 🔨 **Broken product images:** some image URLs copied from the live site have since broken. Re-check them.
+41. ✅ **Fitment Gallery:** in Phase 1 (a reskin of live). The new template already tones down the red (Brenton, 2026-10-15).
+42. ✅ **Fixed 2026-10-15:** 24 URLs were returning the RRG-logo placeholder (the live images were renamed). Swapped for the current live files on Simple, Vehicle-Specific, Grouped, Sibling-Colour and the demo cart. **Broken product images:** some image URLs copied from the live site have since broken. Re-check them.
+
+**Still open from this list:** 1–3 + 6–7 (brief rewrite; header brief next), 22 (stock rules), 25 (Package Deal still shows in Phase 1: it runs through the cart, PLP cards and drawer, so hiding it needs its own change), 35 (breadcrumbs, brief note), 40 (rule set).
+
+### 23.6 Scott's caution-stock rules (received 2026-10-15, input to item 22)
+
+Applies to the three **caution statuses: To Be Discontinued, Clearance Line, Overstock Clearance.** "State stock" = stock in the customer's state.
+
+**The bug today:** Click & Collect is restricted on the PDP for some SKUs, but the shopper can still pick it at checkout.
+
+1. **Hard rule:** caution status + **no stock in the customer's state** → Click & Collect can't be picked on the PDP or switched to at checkout. Shipping + freight is mandatory.
+2. **PDP message:** the green stock line already changes between the 3 statuses. Add something like "Shipping available Australia-wide, confirm state stock for Click & Collect".
+3. **Add to cart must check state stock first:** today you can add without it. Add to cart opens a pop-up to confirm the postcode/state, then warns: Click & Collect available, or shipping only, depending on state stock.
+4. **Cart warning:** a caution item with no state stock shows "Shipping Only On This Order" (or similar). Caution item *with* state stock: no message.
+5. **Cart estimated-shipping drop-down:** today it lists every AU store for Click & Collect. Show only stores in the customer's state, and only if they have stock; no stock → no Click & Collect stores at all.
+6. **Quantity above stock, To Be Discontinued:** today (1 left, ask for 2) it says "We don't have as many quantity as you requested, but we'll back order the remaining 1" and lets them pay for both. Change the message to say it's discontinued and no more are available, and possibly drop the quantity back to what's in stock.
+7. **Quantity above stock, Clearance Line / Overstock Clearance:** never offer to back-order at the clearance price. Even if the supplier has more, the clearance price only covers stock on hand.
+    - Stock split across states (e.g. 1 in QLD, 1 in WA, customer in QLD): split the cart into 2 lines of the same SKU; the second line gets the shipping-only warning.
+    - More than we hold: split into e.g. 1× at the clearance price + 1× at full RRP, with a warning like "we don't have the stock but can order it — the promotional price only applies to current stock on hand".
+8. **Checkout:** Click & Collect store options currently show every state. For the 3 caution statuses, only show stores in the customer's state that have stock.
+
+**Still needed for the full rule set:** the export of every live stock status (item 22).

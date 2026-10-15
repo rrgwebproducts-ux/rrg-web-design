@@ -55,7 +55,9 @@ const FITMENT_COPY = {
     // customer's full saved vehicle spec (body style, roof type, year), not just its name,
     // since two vehicles can share a make/model/generation but differ by roof/rail type.
     detail: (vehicle) => `This product is built for ${PRODUCT_FITMENT.vehicle_make} ${PRODUCT_FITMENT.vehicle_model} ${PRODUCT_FITMENT.vehicle_generation} — not your ${vehicle.make} ${vehicle.model} ${vehicle.generation} (${vehicle.body_style}, ${vehicle.roof_type}, ${vehicle.year}).`,
-    actions: ["Change vehicle", "Find the right fit"]
+    // "Change vehicle" dropped (spec.md §23 item 37, 2026-10-15): Find the right fit opens the Fit
+    // Finder drawer, which changes the vehicle and lands on that vehicle's results.
+    actions: ["Find the right fit"]
   }
 };
 
@@ -83,10 +85,11 @@ function renderFitmentHTML(state, vehicle, mode) {
   }
   const detail = typeof c.detail === 'function' ? c.detail(vehicle) : c.detail;
   const actions = c.actions.length
-    ? `<div class="actions">${c.actions.map(a => `<button type="button" class="btn btn-outline-red btn-sm"${/vehicle/i.test(a) ? ' data-open-fit-finder' : ''}>${a}</button>`).join("")}</div>`
+    ? `<div class="actions">${c.actions.map(a => `<button type="button" class="btn btn-outline-red btn-sm"${/vehicle/i.test(a) ? ' data-open-fit-finder' : /right fit/i.test(a) ? ' data-open-fit-finder="results"' : ''}>${a}</button>`).join("")}</div>`
     : "";
+  // The main card's icon copies the vehicle ID too (spec.md §23 item 39, 2026-10-15) — staff use it.
   return `
-    <span class="dot">${icon}</span>
+    <span class="dot dot-copy" data-vehicle-copy="${VEHICLE_SLUG}" role="button" tabindex="0" title="Click to copy vehicle ID">${icon}</span>
     <div>
       <strong>${c.label}</strong>
       ${detail}
@@ -507,9 +510,11 @@ function paymentBadgeSet(region) {
   const payIn4 = price => `4 payments of ${fmtAud(price / 4)}`;
   const zipWeekly = price => `From ${regionCurrencySymbol()}${Math.max(10, Math.ceil(price / 10))} a week`;
 
-  // NZ and UK offer no buy-now-pay-later on their live sites (2026-09-30), so no instalment
-  // badges there — was Afterpay (NZ) and Clearpay/PayPal/Klarna (UK).
-  if (region === 'UK' || region === 'NZ') return [];
+  // UK offers no buy-now-pay-later on its live site (2026-09-30, still none 2026-10-15), so no
+  // instalment badges — was Clearpay/PayPal/Klarna. NZ has Afterpay again (spec.md §23 item 24,
+  // 2026-10-15); PayPal Pay in 4 joins it when NZ switches it on.
+  if (region === 'UK') return [];
+  if (region === 'NZ') return [{ src: 'afterpay.svg', alt: 'Afterpay', text: payIn4 }];
   return [
     { src: 'afterpay.svg', alt: 'Afterpay', text: payIn4 },
     { src: 'paypal.svg', alt: 'PayPal', text: payIn4 },
@@ -1327,6 +1332,9 @@ function buildFitFinderDrawer() {
     if (window.rrgSetVehicle) window.rrgSetVehicle(key);
     closeFitFinderDrawer();
     if (backdrop.dataset.mode === 'navigate') window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+    // PDP "Doesn't fit" → Find the right fit: the Roof Racks results for that vehicle (the VPLP,
+    // which reads the session vehicle). Phase 2 may send it to the VLP instead.
+    if (backdrop.dataset.mode === 'results') window.location.href = `${RRG_PROTO}vplp/index.html`;
   });
 }
 
@@ -1624,11 +1632,12 @@ function ffOptions(pairs, placeholder) {
   return `<option value="" selected disabled>${placeholder}</option>` + pairs.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
 }
 
-// mode 'navigate' = header trigger (lands on the VLP on submit); anything else stays in place.
+// mode 'navigate' = header trigger (lands on the VLP on submit); 'results' = PDP "Find the right
+// fit" (lands on the vehicle's results); anything else stays in place.
 function openFitFinderDrawer(mode) {
   buildFitFinderDrawer();
   const backdrop = document.getElementById('fitFinderDrawerBackdrop');
-  backdrop.dataset.mode = mode === 'navigate' ? 'navigate' : '';
+  backdrop.dataset.mode = mode === 'navigate' || mode === 'results' ? mode : '';
   backdrop.classList.add('open');
 }
 
@@ -2029,6 +2038,9 @@ function applyRegionFooter(region) {
     a.textContent = REGION_FOOTER_EMAIL[region];
     a.href = `mailto:${REGION_FOOTER_EMAIL[region]}`;
   });
+  // Header Services dropdown's Call Us / Email Us (desktop nav + mobile menu).
+  document.querySelectorAll('[data-services-email]').forEach(a => { a.href = `mailto:${REGION_FOOTER_EMAIL[region]}`; });
+  document.querySelectorAll('[data-services-call]').forEach(a => { a.href = `tel:${REGION_PHONE[region].replace(/[^0-9+]/g, '')}`; });
   document.querySelectorAll('[data-footer-store-copy]').forEach(el => {
     el.innerHTML = regionFooterStoreCopy(region);
   });
@@ -2108,8 +2120,10 @@ function applyStoreSessionDisplay() {
   const on = rrgSessionGet('storeSet');
   if (label) label.hidden = !on;
   link.textContent = on ? link.dataset.currentStoreName : 'Find A Store';
-  const storeHref = on ? rrgStorePageHref(link.dataset.currentStoreName) : RRG_STORE_FINDER_HREF();
-  link.setAttribute('href', storeHref || '#');
+  // Saved store → the Store Finder with that store picked (spec.md §23 item 12, 2026-10-15; was
+  // the store's own page). None saved → "Find A Store" → the Store Finder.
+  const storeHref = on ? `${RRG_STORE_FINDER_HREF()}?store=${encodeURIComponent(link.dataset.currentStoreName)}` : RRG_STORE_FINDER_HREF();
+  link.setAttribute('href', storeHref);
   // VLP Store Finder tile's "Your Nearest Store" line mirrors the header's.
   document.querySelectorAll('[data-sft-nearest]').forEach(a => {
     a.textContent = link.textContent;
@@ -2284,6 +2298,22 @@ function applyRegionBrand(region) {
   });
   // The sale takeover is AU/NZ only (campaign.js) — re-check it whenever the region changes.
   if (typeof rrgApplyCampaign === 'function') rrgApplyCampaign();
+}
+
+// Header Services dropdown (spec.md §23 item 8): hover opens it on desktop (CSS); a click
+// toggles it for touch and keyboard, same click-outside-to-close as the region menu.
+function initServicesMenu() {
+  document.querySelectorAll('[data-services-menu]').forEach(wrap => {
+    const toggle = wrap.querySelector('.rrg-nav-dd-toggle');
+    const close = () => { wrap.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); };
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      toggle.setAttribute('aria-expanded', wrap.classList.toggle('open'));
+    });
+    wrap.addEventListener('click', e => e.stopPropagation());
+    wrap.addEventListener('keydown', e => { if (e.key === 'Escape') { close(); toggle.focus(); } });
+    document.addEventListener('click', close);
+  });
 }
 
 function initRegionSwitcher() {
@@ -2752,6 +2782,20 @@ function initCopyButtons() {
 // company-wide figure next to that specific product reads as a real per-product rating and
 // is misleading, even if technically sourced from real data. So: no product reviews yet =
 // hide the whole strip, same as a fetch failure or the account having no data at all.
+// Trust bar's store rating (widgets.js rrgWidgetTrustBarHTML): the Reviews.io company score, e.g.
+// "4.3★ from 1,935 Reviews". Keeps the "Rated Excellent" fallback if the call fails.
+async function initTrustBarReviews() {
+  const els = document.querySelectorAll('[data-trust-reviews]');
+  if (!els.length) return;
+  try {
+    const res = await fetch('https://api.reviews.io/merchant/latest?store=roof-racks-galore&per_page=1');
+    const stats = (await res.json()).stats || {};
+    const avg = parseFloat(stats.average_rating || '0'), count = stats.total_reviews || 0;
+    if (!count) return;
+    els.forEach(el => { el.textContent = `${avg.toFixed(1)}★ from ${count.toLocaleString()} Reviews`; });
+  } catch (e) {}
+}
+
 function initReviewSummary(root = document) {
   root.querySelectorAll('.reviews-strip[data-review-sku]').forEach(async strip => {
     const sku = strip.dataset.reviewSku;
@@ -3308,6 +3352,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopyButtons();
   initFitGalleryCarousel();
   initProductCarousels();
+  initServicesMenu();
   initRegionSwitcher();
   layoutShortDesc();
   window.addEventListener('resize', () => {
@@ -3316,6 +3361,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   initTabJumpLinks();
   initReviewSummary();
+  initTrustBarReviews();
   initMobileNav();
   initSearchClear();
   initHeaderSearchSuggest();
@@ -3496,7 +3542,8 @@ function buildAdminPanel() {
       choice('stockStatus', 'Stock level', stockOpts, hasSwatches ? 'per_colour' : 'in_stock') +
       choice('storeStock', 'Stock at your store', [['here', 'At your store'], ['nearby', 'Nearby store only'], ['warehouse', 'Warehouse only']], 'here') +
       hint('storeStock', 'Needs Build Phase 2 and a nearest store — both in Site Admin.') +
-      toggle('exdemo', 'B-Stock / Ex-Demo available', false));
+      toggle('exdemo', 'B-Stock / Ex-Demo available', false) +
+      hint('pdpPhase2', 'B-Stock, the Showroom Finder and FAQs are Phase 2 — switch Site Admin to Build Phase 2.'));
     html += section('Delivery',
       toggle('shipping', 'Delivery available', initialShipping) +
       toggle('collect', 'Click &amp; Collect available', initialCollect) +
@@ -3588,6 +3635,13 @@ function buildAdminPanel() {
     const phase2 = typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2;
     setDisabled('select[name="storeStock"]', !(phase2 && rrgSessionGet('storeSet')), 'storeStock');
     setDisabled('[data-admin-flag="plpCompare"], [data-admin-flag="plpRibbons"]', !phase2, 'phase2');
+    // PDP Phase 2 features (spec.md §23 items 18-19): B-Stock and the Showroom Finder's on-display
+    // state. Phase 1 switches B-Stock off (remembering the choice for Phase 2).
+    panel.querySelectorAll('[data-admin-flag="exdemo"]').forEach(i => {
+      if (!phase2 && !i.disabled) { i.dataset.prev = i.checked; if (i.checked) { i.checked = false; applyExdemoFlag(false); } }
+      if (phase2 && i.disabled && i.dataset.prev === 'true') { i.checked = true; applyExdemoFlag(true); }
+    });
+    setDisabled('[data-admin-flag="exdemo"], [data-admin-flag="showroom"]', !phase2, 'pdpPhase2');
     setDisabled('select[name="plpHeroImage"]', !rrgSessionGet('vehicleSet'), 'heroImage');
     const stock = STOCK_STATUS[adminState.stockStatus];
     const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);

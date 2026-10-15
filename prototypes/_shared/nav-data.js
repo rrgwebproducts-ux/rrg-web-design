@@ -4,6 +4,19 @@
 // root template index one level up. nav-data.js is the first shared script every page loads.
 const RRG_PROTO = new URL('../', document.currentScript.src).href;
 
+// Header "Services" dropdown (spec.md §23 item 8, 2026-10-15 meeting — a test): replaces the plain
+// Fitting link. Drawn by widgets.js (desktop) and mega-menu.js (mobile). `call` / `email` links
+// follow the region (applyRegion, shared.js); the rest are Magento CMS pages ("#" until wired).
+const RRG_SERVICES_MENU = [
+  { label: 'Fitting &amp; Installation', href: RRG_PROTO + 'installation/index.html' },
+  { label: 'Shipping &amp; Delivery', href: '#' },
+  { label: 'Payment Options', href: '#' },
+  { label: 'Price Guarantee', href: '#' },
+  { label: '90 Day Exchange', href: '#' },
+  { label: 'Call Us', href: 'tel:1300071264', kind: 'call' },
+  { label: 'Email Us', href: 'mailto:help@roofracksgalore.com.au', kind: 'email' },
+];
+
 // Header & Mega Menu — real navigation content, crawled live from roofracksgalore.com.au
 // via Playwright (2026-09-13) and restructured to the Figma cascade (header-spec.md
 // Section 3.6): Level 1 = category, Level 2 = "Shop " + each real column heading (+ a
@@ -37,7 +50,9 @@ const HEADER_NAV = [
         // Column-level promoTile, deliberately different copy from the category's above —
         // proves Level 3's tile is independently configurable, not just inherited from
         // Level 2's.
-        promoTile: { image: RRG_PROTO + '_shared/promo-merch-1.png', eyebrow: 'Now In Stock', label: 'Rhino Rack Low Profile Roof Top Tent', href: '#' },
+        // `color` = the tile's background (spec.md §23 item 6); none set = RRG red. Blue here to
+        // show a brand colour (Rhino-Rack).
+        promoTile: { image: RRG_PROTO + '_shared/promo-merch-1.png', eyebrow: 'Now In Stock', label: 'Rhino Rack Low Profile Roof Top Tent', href: '#', color: '#0a4c97' },
         links: ['Bike Roof Racks', 'Kayak Roof Racks', 'Snowboard Roof Racks', 'SUP Roof Racks', 'Ski Roof Racks', 'Surfboard Roof Racks', 'Roof Baskets & Bags', 'Roof Top Tents', 'Awnings', 'Fishing Rod Holders', 'Wind Fairings', 'Trade and Work Solutions', 'Other Accessories', 'Tie Downs', 'Cargo Nets', 'Spare Parts', 'Keys and Locks'].map(mkLink),
       },
     ],

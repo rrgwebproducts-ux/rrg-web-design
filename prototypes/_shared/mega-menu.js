@@ -14,9 +14,20 @@ const MM_MOBILE_UTILITY_LINKS = [
   { label: 'Store Finder', href: '#' },
   { label: 'Fit My Vehicle', href: '#' },
   { label: 'Clearance', href: RRG_PROTO + 'clearance/index.html' },
-  // "Services" renamed "Fitting" and linked to the Installation page (Brenton, 2026-09-30).
-  { label: 'Fitting', href: RRG_PROTO + 'installation/index.html' },
+  // "Services" renamed "Fitting" and linked to the Installation page (Brenton, 2026-09-30), then
+  // back to a Services drop-down holding Fitting and the help links (spec.md §23 item 8,
+  // 2026-10-15) — a drill-down screen here, RRG_SERVICES_MENU (nav-data.js).
+  { label: 'Services', services: true },
 ];
+// Services links with Call Us / Email Us set for the current region.
+function mmServicesLinks() {
+  const region = typeof currentRegion !== 'undefined' ? currentRegion : 'AU';
+  return RRG_SERVICES_MENU.map(l => {
+    if (l.kind === 'call' && typeof REGION_PHONE !== 'undefined') return { ...l, href: `tel:${REGION_PHONE[region].replace(/[^0-9+]/g, '')}` };
+    if (l.kind === 'email' && typeof REGION_FOOTER_EMAIL !== 'undefined') return { ...l, href: `mailto:${REGION_FOOTER_EMAIL[region]}` };
+    return l;
+  });
+}
 // Level-1 category icons (header-spec.md Section 8, build-order item 4) — Brenton supplied a
 // real set 2026-09-13, but not one per category yet: only 5 of the 7 icon-bearing categories
 // (Brands gets no icon, yellow bar only) have a specific asset so far. Missing ones fall back
@@ -44,10 +55,12 @@ function mmCategoryIconSrc(label) {
 // heading + a CTA link field on both the category and the column/grouping entities). If an
 // entity has no promoTile configured, the whole bar doesn't render for it at all — no
 // fallback image/copy, matching how it'll behave once real Magento data drives this.
+// Background colour (spec.md §23 item 6, 2026-10-15): a per-category field, default RRG red;
+// flat colour only, never a background image (page load).
 function mmPromoTileHTML(promoTile) {
   if (!promoTile) return '';
   const p = promoTile;
-  return `<a class="mega-menu-promo" href="${p.href || '#'}">
+  return `<a class="mega-menu-promo" href="${p.href || '#'}"${p.color ? ` style="background:${p.color}"` : ''}>
     <span class="mega-menu-promo-img">${p.image ? `<img src="${p.image}" alt="">` : 'Image<br>pending'}</span>
     <span class="mega-menu-promo-text"><span class="mega-menu-promo-eyebrow">${p.eyebrow || 'New Product Release'}</span><strong>${p.label || ''}</strong></span>
   </a>`;
@@ -241,6 +254,7 @@ function buildMegaMenuMobile(mobileEl) {
       }).join('')}
       <div class="mm-mobile-utility-links">
         ${MM_MOBILE_UTILITY_LINKS.map(l => {
+          if (l.services) return `<div class="mm-mobile-row" data-services-open><span>${l.label}</span>${MM_CHEVRON}</div>`;
           // Store Finder follows the region's open-store count (rrgStoreNavLink(), shared.js).
           const link = l.label === 'Store Finder' && typeof rrgStoreNavLink === 'function' ? rrgStoreNavLink() : l;
           // A running sale takes Clearance's place, same as the desktop nav (campaign.js / campaign.css).
@@ -254,7 +268,24 @@ function buildMegaMenuMobile(mobileEl) {
     mobileEl.querySelectorAll('[data-cat]').forEach(row => {
       row.addEventListener('click', () => { state.catIndex = Number(row.dataset.cat); renderLevel1(); });
     });
+    mobileEl.querySelector('[data-services-open]')?.addEventListener('click', renderServices);
     mmApplySaleBannerVisibility();
+  }
+
+  // Services (spec.md §23 item 8) — same back+title screen as a category's Level 1.
+  function renderServices() {
+    setScreen(1);
+    mobileEl.classList.remove('has-promo');
+    mobileEl.innerHTML = `
+      <div class="mm-mobile-head">
+        <button type="button" class="mm-mobile-back" data-back="1">${MM_BACK_ICON}</button>
+        <span class="mm-mobile-title">Services</span>
+        ${closeBtnHTML()}
+      </div>
+      ${mmServicesLinks().map(l => `<a class="mm-mobile-leaf" href="${l.href}">${l.label}</a>`).join('')}
+    `;
+    mobileEl.querySelector('[data-back]').addEventListener('click', renderLevel0);
+    wireClose();
   }
 
   function renderLevel1() {
