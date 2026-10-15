@@ -177,7 +177,7 @@ const RRG_DYN_FIELDS = [
     status: 'draft' },
   { id: 'global.menu.promoTile', label: 'Mega menu: merchandising promo tile', source: 'magento',
     token: { 'img': '{category.menu_promo_image}', '.mega-menu-promo-eyebrow': '{category.menu_promo_subheading}', 'strong': '{category.menu_promo_heading}' },
-    attr: 'Magento category attributes: promo image, heading, subheading, link, background colour (default RRG red). Set per category (L2) and per column (L3); plain fields so a spreadsheet can set them all before a sale (spec.md §23 items 6-7)',
+    attr: 'Phase 1: one HTML block per category that the team edits in admin (image, heading, subheading, link, background colour; default RRG red). Phase 2: the same as category attributes, so a spreadsheet can set them all before a sale (spec.md §23 items 6-7). Set per category (L2) and per column (L3)',
     sel: '.mega-menu-promo-img img, .mega-menu-promo-eyebrow, .mega-menu-promo-text strong',
     rule: ['Promo set on that top-level category (shown under Level 2) or that column (shown under Level 3)', 'Eyebrow left blank: "New Product Release"', 'Colour left blank: RRG red', 'No promo set: no tile at all (no fallback)'],
     example: 'Rhino Rack Roof Top Tent',

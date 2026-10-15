@@ -13,7 +13,7 @@
 3. **The mega menu is a reskin.** Same Level 1 / 2 / 3 categories as the live site, nothing moved or renamed. We restructure after Christmas.
 4. **No trust signals in the header.** The live header's review count above the logo, the "200,000+ fitted!" line, the USP row and the **Support** button are all dropped on purpose. Trust now sits in a thin bar at the top of the Home page and on the product pages (not part of this brief).
 5. **Regions in Phase 1: AU and NZ.** The UK isn't in the region menu yet.
-6. **One new piece of Magento data:** the mega menu promo tile fields (A5). Everything else uses data the site already has.
+6. **No new Magento data in Phase 1.** The mega menu promo tiles are HTML blocks we fill in ourselves (A5). Everything else uses data the site already has.
 
 ---
 
@@ -78,24 +78,32 @@ NZ: the same items, linking to the NZ site's equivalent pages. Marc, please flag
 
 ---
 
-## A5. Promo tile: new Magento category fields
+## A5. Promo tile: an HTML block we edit ourselves
 
-A red (or brand-coloured) tile pinned to the bottom of a Level 2 or Level 3 column. **The whole tile is one link.** The product photo is a transparent PNG anchored bottom-left that pokes up above the tile. The text is live text, never baked into the image.
+A red (or brand-coloured) tile pinned to the bottom of a Level 2 or Level 3 column. **The whole tile is one link.** The product photo is a transparent PNG anchored bottom-left that pokes up above the tile. The heading and subheading are live text, never baked into the image.
 
-**Add these fields to the category entity**, all optional:
+**Phase 1 (build this):** each category gets **one HTML block** that we fill in ourselves in Magento admin, with no code change. Marc only has to:
 
-| Field | Example | If empty |
-|---|---|---|
-| Promo image | transparent PNG | **No tile at all** (no placeholder, nothing inherited) |
-| Promo heading | Rhino Rack Low Profile Roof Top Tent | — |
-| Promo subheading | Now In Stock | "New Product Release" |
-| Promo link | product or category URL | — |
-| Promo colour | `#0a4c97` (Rhino-Rack blue) | RRG red |
+1. Give every category somewhere to hold its block (e.g. a CMS block named `mega-promo-{category_id}`, or an HTML field on the category; Marc's choice, as long as we can edit it in admin).
+2. Output that block at the bottom of the column: a **Level 1** category's block under its **Level 2** list, a **Level 2** grouping's block under its **Level 3** list. Level 3 never inherits Level 2's.
+3. **Empty or missing block = no tile**, no placeholder.
+4. Ship the tile's CSS (`.mega-menu-promo` in `prototypes/_shared/mega-menu.css`), including the reserved space so the photo doesn't cover the "View All" row.
 
-- **Where it shows:** a Level 1 category's tile shows under its **Level 2** list. A Level 2 grouping's own tile shows under its **Level 3** list. They're set separately; Level 3 never inherits Level 2's.
-- **Flat colour only**, no background image (page weight).
-- **Plain category attributes, not an HTML block**, so Brenton can set every category's tile from one spreadsheet import before a sale like Rack Friday.
-- Optional at launch: with no images set, no tiles show.
+What we'll paste into a block (change the link, colour, image, subheading and heading):
+
+```html
+<a class="mega-menu-promo" href="/rhino-rack-low-profile-roof-top-tent" style="background:#0a4c97">
+  <span class="mega-menu-promo-img"><img src="/media/wysiwyg/menu/rhino-rtt.png" alt=""></span>
+  <span class="mega-menu-promo-text">
+    <span class="mega-menu-promo-eyebrow">Now In Stock</span>
+    <strong>Rhino Rack Low Profile Roof Top Tent</strong>
+  </span>
+</a>
+```
+
+Leave out `style="background:…"` for the standard RRG red. Flat colour only, no background images (page weight).
+
+**Phase 2 (not now):** the same tile becomes structured category fields (image, heading, subheading, link, colour) so Brenton can set every category's tile from one spreadsheet import before a sale.
 
 ---
 
@@ -131,6 +139,7 @@ Slides in from the right whenever "Your Vehicle / Select Your Vehicle" is clicke
 - Sending vehicle results to the VLP (A8)
 - "Set as my store" on the locations page
 - Restructuring the mega menu categories (after Christmas)
+- Promo tile as structured category fields + spreadsheet import (A5; Phase 1 uses an HTML block)
 
 ## A10. Open questions
 
@@ -299,7 +308,9 @@ Proven in the prototype on Roof Racks: the category's Level 2 tile reads "New Pr
 
 If a category or column has no `promoTile` configured, **the entire red bar does not render at all** for that level — no default image, no "coming soon" placeholder, no inherited content from the level above. Confirmed on Bike Racks (no category tile, no column tiles anywhere in it — neither Level 2 nor Level 3 shows a bar) and on every column of Roof Racks except "Roof Rack Accessories" (Level 3 shows no bar for those, even though the category above it has one).
 
-**Magento build note:** this means the admin needs an image + eyebrow + name + link field on **both** the Level 1 category entity and the Level 2 column/grouping entity, each independently optional — not a single "featured product" field per category that Level 3 just inherits.
+**Phase 1 (2026-10-15): an HTML block per category that we edit ourselves, see Part A, A5.** The fields below are the Phase 2 version.
+
+**Magento build note (Phase 2):** this means the admin needs an image + eyebrow + name + link field on **both** the Level 1 category entity and the Level 2 column/grouping entity, each independently optional — not a single "featured product" field per category that Level 3 just inherits.
 
 #### The image bleed effect
 
