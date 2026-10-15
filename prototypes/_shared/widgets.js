@@ -54,7 +54,7 @@ function rrgWidgetUtilityBarHTML() {
 // Opens on hover/focus, or on click (initServicesMenu, shared.js). Links: RRG_SERVICES_MENU.
 function rrgWidgetServicesMenuHTML() {
   const items = (typeof RRG_SERVICES_MENU !== 'undefined' ? RRG_SERVICES_MENU : [])
-    .map(l => `<a href="${l.href}"${l.kind ? ` data-services-${l.kind}` : ''}>${l.label}</a>`).join('');
+    .map(l => `<a href="${l.href}"${l.ext ? ' target="_blank" rel="noopener"' : ''}>${l.label}</a>`).join('');
   return `<div class="rrg-nav-dd" data-services-menu>
         <button type="button" class="rrg-nav-dd-toggle" aria-haspopup="true" aria-expanded="false">Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="rrg-nav-dd-menu">${items}</div>

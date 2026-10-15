@@ -19,15 +19,6 @@ const MM_MOBILE_UTILITY_LINKS = [
   // 2026-10-15) — a drill-down screen here, RRG_SERVICES_MENU (nav-data.js).
   { label: 'Services', services: true },
 ];
-// Services links with Call Us / Email Us set for the current region.
-function mmServicesLinks() {
-  const region = typeof currentRegion !== 'undefined' ? currentRegion : 'AU';
-  return RRG_SERVICES_MENU.map(l => {
-    if (l.kind === 'call' && typeof REGION_PHONE !== 'undefined') return { ...l, href: `tel:${REGION_PHONE[region].replace(/[^0-9+]/g, '')}` };
-    if (l.kind === 'email' && typeof REGION_FOOTER_EMAIL !== 'undefined') return { ...l, href: `mailto:${REGION_FOOTER_EMAIL[region]}` };
-    return l;
-  });
-}
 // Level-1 category icons (header-spec.md Section 8, build-order item 4) — Brenton supplied a
 // real set 2026-09-13, but not one per category yet: only 5 of the 7 icon-bearing categories
 // (Brands gets no icon, yellow bar only) have a specific asset so far. Missing ones fall back
@@ -277,6 +268,8 @@ function buildMegaMenuMobile(mobileEl) {
           if (l.label === 'Clearance' && typeof rrgCampaignActive === 'function' && rrgCampaignActive()) {
             return `<a class="mm-mobile-row mm-mobile-row--campaign" href="${RRG_CAMPAIGN.href}">${RRG_CAMPAIGN.title}</a>`;
           }
+          // Clearance is AU only (NZ/UK have none, 2026-10-15).
+          if (l.label === 'Clearance' && typeof currentRegion !== 'undefined' && currentRegion !== 'AU') return '';
           return `<a class="mm-mobile-row" href="${link.href}"${l.label === 'Store Finder' ? ' data-store-nav="true"' : ''}>${link.label}</a>`;
         }).join('')}
       </div>
@@ -298,7 +291,7 @@ function buildMegaMenuMobile(mobileEl) {
         <span class="mm-mobile-title">Services</span>
         ${closeBtnHTML()}
       </div>
-      ${mmServicesLinks().map(l => `<a class="mm-mobile-leaf" href="${l.href}">${l.label}</a>`).join('')}
+      ${RRG_SERVICES_MENU.map(l => `<a class="mm-mobile-leaf" href="${l.href}"${l.ext ? ' target="_blank" rel="noopener"' : ''}>${l.label}</a>`).join('')}
     `;
     mobileEl.querySelector('[data-back]').addEventListener('click', renderLevel0);
     wireClose();

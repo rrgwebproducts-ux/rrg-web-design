@@ -5,16 +5,15 @@
 const RRG_PROTO = new URL('../', document.currentScript.src).href;
 
 // Header "Services" dropdown (spec.md §23 item 8, 2026-10-15 meeting — a test): replaces the plain
-// Fitting link. Drawn by widgets.js (desktop) and mega-menu.js (mobile). `call` / `email` links
-// follow the region (applyRegion, shared.js); the rest are Magento CMS pages ("#" until wired).
+// Fitting link. Drawn by widgets.js (desktop) and mega-menu.js (mobile). Items set by Brenton
+// 2026-10-15 (Payment Options and 90 Day Exchange dropped; Call Us + Email Us became Contact Us).
+// Live-site pages in production; `ext` opens in a new tab (the Crisp help centre).
 const RRG_SERVICES_MENU = [
   { label: 'Fitting &amp; Installation', href: RRG_PROTO + 'installation/index.html' },
   { label: 'Shipping &amp; Delivery', href: '#' },
-  { label: 'Payment Options', href: '#' },
   { label: 'Price Guarantee', href: '#' },
-  { label: '90 Day Exchange', href: '#' },
-  { label: 'Call Us', href: 'tel:1300071264', kind: 'call' },
-  { label: 'Email Us', href: 'mailto:help@roofracksgalore.com.au', kind: 'email' },
+  { label: 'Support', href: 'https://roofracksgalore.crisp.help/en/', ext: true },
+  { label: 'Contact Us', href: '#' },
 ];
 
 // Header & Mega Menu — real navigation content, crawled live from roofracksgalore.com.au

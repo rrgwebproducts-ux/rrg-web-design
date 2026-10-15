@@ -328,6 +328,7 @@ a.rrg-logo{display:block;}
 .rrg-nav a{color:var(--rrg-black);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
 .rrg-nav a:hover{color:var(--rrg-red);}
 .rrg-nav .sep{color:var(--rrg-line);}
+body.region-no-clearance .rrg-nav .rrg-nav-clearance{display:none;}
 /* Services dropdown (spec.md §23 item 8): the nav link's look, with the region menu's panel. */
 .rrg-nav-dd{position:relative;}
 .rrg-nav-dd-toggle{display:inline-flex;align-items:center;gap:4px;background:none;border:none;padding:0;font:inherit;color:var(--rrg-black);cursor:pointer;}

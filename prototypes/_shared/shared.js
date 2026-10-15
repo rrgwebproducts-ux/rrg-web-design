@@ -2038,9 +2038,6 @@ function applyRegionFooter(region) {
     a.textContent = REGION_FOOTER_EMAIL[region];
     a.href = `mailto:${REGION_FOOTER_EMAIL[region]}`;
   });
-  // Header Services dropdown's Call Us / Email Us (desktop nav + mobile menu).
-  document.querySelectorAll('[data-services-email]').forEach(a => { a.href = `mailto:${REGION_FOOTER_EMAIL[region]}`; });
-  document.querySelectorAll('[data-services-call]').forEach(a => { a.href = `tel:${REGION_PHONE[region].replace(/[^0-9+]/g, '')}`; });
   document.querySelectorAll('[data-footer-store-copy]').forEach(el => {
     el.innerHTML = regionFooterStoreCopy(region);
   });
@@ -2285,6 +2282,9 @@ function rrgBrandName(region = typeof currentRegion === 'undefined' ? 'AU' : cur
 
 function applyRegionBrand(region) {
   document.body.classList.toggle('region-uk', region === 'UK');
+  // Clearance is AU only (2026-10-15 meeting): NZ and the UK have none, so the nav link drops out
+  // and the links after it shift over. A running sale still adds its own link (campaign.css).
+  document.body.classList.toggle('region-no-clearance', region !== 'AU');
   const logo = region === 'UK' ? UK_LOGO : RRG_LOGO;
   document.querySelectorAll('.rrg-logo img').forEach(img => {
     if (img.closest('.rrg-footer')) return;
