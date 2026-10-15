@@ -18,6 +18,8 @@ const MM_MOBILE_UTILITY_LINKS = [
   // back to a Services drop-down holding Fitting and the help links (spec.md §23 item 8,
   // 2026-10-15) — a drill-down screen here, RRG_SERVICES_MENU (nav-data.js).
   { label: 'Services', services: true },
+  // Backup to the header's phone icon (2026-10-15); number follows the region.
+  { label: 'Call Us', call: true },
 ];
 // Level-1 category icons (header-spec.md Section 8, build-order item 4) — Brenton supplied a
 // real set 2026-09-13, but not one per category yet: only 5 of the 7 icon-bearing categories
@@ -262,6 +264,10 @@ function buildMegaMenuMobile(mobileEl) {
       <div class="mm-mobile-utility-links">
         ${MM_MOBILE_UTILITY_LINKS.map(l => {
           if (l.services) return `<div class="mm-mobile-row" data-services-open><span>${l.label}</span>${MM_CHEVRON}</div>`;
+          if (l.call) {
+            const phone = typeof REGION_PHONE !== 'undefined' ? REGION_PHONE[typeof currentRegion !== 'undefined' ? currentRegion : 'AU'] : '1300 071 264';
+            return `<a class="mm-mobile-row" href="tel:${phone.replace(/[^0-9+]/g, '')}">${l.label}<span class="mm-mobile-row-note">${phone}</span></a>`;
+          }
           // Store Finder follows the region's open-store count (rrgStoreNavLink(), shared.js).
           const link = l.label === 'Store Finder' && typeof rrgStoreNavLink === 'function' ? rrgStoreNavLink() : l;
           // A running sale takes Clearance's place, same as the desktop nav (campaign.js / campaign.css).

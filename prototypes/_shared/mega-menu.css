@@ -273,3 +273,6 @@ a.mega-menu-promo{display:flex;}
 a.mega-menu-l2-row{display:flex;}
 a.mm-mobile-row{display:flex;}
 a.mm-mobile-leaf{display:block;}
+
+/* Call Us row in the mobile menu (2026-10-15): the number sits on the right in grey. */
+.mm-mobile-row-note{margin-left:auto;font-weight:400;color:var(--rrg-grey-600);}

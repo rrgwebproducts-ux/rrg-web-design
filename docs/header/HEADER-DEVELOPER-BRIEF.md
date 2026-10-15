@@ -28,7 +28,7 @@
 | Account | Customer's **first name** | `/customer/account` | **Logged out:** "Log In" → `/customer/account/login` |
 
 - **The saved store** is the one the shopper picks in the PDP's Click & Collect widget. The site already remembers it; it just needs connecting to the header. If `/locations` can't pre-select a store from the URL for launch, link to plain `/locations`.
-- **Mobile:** the bar shows the store and vehicle only.
+- **Mobile:** the bar shows the store and vehicle only. Call Us moves into the header as a phone icon (A6).
 
 ---
 
@@ -44,6 +44,7 @@
 | **Services ▾** | Dropdown, A3.1 | New. Replaces the old "Fitting" link. |
 | Search box | Typeahead, A7. Enter → search results | |
 | Cart | Mini cart / `/checkout/cart` | Badge = item count |
+| Phone icon (mobile only) | `tel:` the region's number | Left of the cart, in the main header and the sticky header. Hidden on desktop. |
 
 ### A3.1 Services dropdown
 
@@ -111,11 +112,13 @@ Leave out `style="background:…"` for the standard RRG red. Flat colour only, n
 
 The hamburger opens a full-screen menu with its own logo, account, vehicle, close button and search box.
 
-1. **Root screen:** the banner (same rules as A4), the categories, then Store Finder, Fit My Vehicle, Clearance (AU only; the sale link during a sale) and **Services ›**.
+1. **Root screen:** the banner (same rules as A4), the categories, then Store Finder, Fit My Vehicle, Clearance (AU only; the sale link during a sale), **Services ›** and **Call Us** (the region's number on the right, `tel:` link).
 2. Tap a category → its "Shop {name}" rows + View All + its promo tile. Tap a row → its links + View All + that row's promo tile.
 3. Every inner screen has a back arrow and a close button. Close works from any depth.
 
-**Sticky header:** once the page scrolls past the search box, a slim bar (hamburger, logo, cart) sticks to the top.
+**Header on mobile:** hamburger left, logo centred, then a **phone icon** and the cart on the right. Call Us is one of the most-used mobile header links on the live site (Clarity), so it stays one tap away; the menu's Call Us row is a backup. Keep the logo centred (it shrinks a little on small phones).
+
+**Sticky header:** once the page scrolls past the search box, a slim bar (hamburger, logo, phone icon, cart) sticks to the top.
 
 ---
 
@@ -143,4 +146,4 @@ Slides in from the right whenever "Your Vehicle / Select Your Vehicle" is clicke
 
 ## A10. Open questions
 
-1. **Call Us on mobile.** It's one of the most-used header links on mobile (Clarity), but the new mobile header and menu don't include it. **Brenton to decide** where it goes (e.g. a phone icon next to the cart).
+None right now.

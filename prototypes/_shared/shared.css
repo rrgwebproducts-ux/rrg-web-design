@@ -399,6 +399,11 @@ body.region-no-clearance .rrg-nav .rrg-nav-clearance{display:none;}
 .rrg-search-suggest-clear{background:none;border:none;color:var(--rrg-red);font-size:12px;font-weight:700;cursor:pointer;padding:0;}
 .rrg-search-suggest-clear:hover{text-decoration:underline;}
 .rrg-cart{position:relative;flex:0 0 auto;color:var(--rrg-black);cursor:pointer;}
+/* Call + cart wrapper (2026-10-15): invisible on desktop (display:contents keeps the cart a plain
+   flex item); on mobile it holds the phone icon beside the cart. Call Us is one of the most-used
+   mobile header links on the live site (Clarity), so it stays one tap away. */
+.rrg-header-actions{display:contents;}
+.rrg-call-mobile{display:none;}
 .rrg-cart svg{width:24px;height:24px;}
 .cart-badge{position:absolute;top:-6px;right:-8px;background:var(--rrg-red);color:#fff;font-size:10px;font-weight:900;border-radius:999px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;}
 
@@ -417,10 +422,15 @@ body.region-no-clearance .rrg-nav .rrg-nav-clearance{display:none;}
    flex `order` tricks that would also disturb the hamburger/logo/cart row. */
 @media (max-width:900px){
   .mobile-nav-toggle{display:flex;align-items:center;justify-content:center;}
-  .rrg-main-inner{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;column-gap:12px;row-gap:10px;}
-  .mobile-nav-toggle{grid-row:1;grid-column:1;}
+  .rrg-main-inner{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-rows:auto auto;align-items:center;column-gap:12px;row-gap:10px;}
+  .mobile-nav-toggle{grid-row:1;grid-column:1;justify-self:start;}
   .rrg-main-inner .rrg-logo{grid-row:1;grid-column:2;justify-self:center;}
-  .rrg-cart{grid-row:1;grid-column:3;justify-self:end;}
+  /* 34px → 30px (2026-10-15) so the logo stays centred with the phone icon beside the cart. */
+  body:not(.region-uk) .rrg-main-inner .rrg-logo img{height:30px;max-width:calc(100vw - 200px);object-fit:contain;}
+  .rrg-header-actions{gap:16px;}
+  .rrg-header-actions{grid-row:1;grid-column:3;justify-self:end;display:flex;align-items:center;gap:18px;}
+  .rrg-call-mobile{display:flex;align-items:center;color:var(--rrg-black);}
+  .rrg-call-mobile svg{width:22px;height:22px;}
   .rrg-search{grid-row:2;grid-column:1/-1;margin-left:0;max-width:none;}
   .rrg-nav{display:none;}
 }
@@ -445,7 +455,9 @@ body.region-no-clearance .rrg-nav .rrg-nav-clearance{display:none;}
   }
   .rrg-sticky-header.visible{transform:translateY(0);}
   .rrg-sticky-header .rrg-logo img{height:26px;}
-  .rrg-sticky-header .mobile-nav-toggle{display:flex;}
+  .rrg-sticky-header .mobile-nav-toggle{display:flex;justify-self:start;}
+  /* Grid, not space-between, so the logo stays centred with two icons on the right. */
+  .rrg-sticky-header{display:grid;grid-template-columns:1fr auto 1fr;}
 }
 /* Mobile utility bar (2026-09-11, matched to client-supplied Figma exports "Navbar -
    Logged In - Final.png" / "Mob Navbar - Final - Sticky.png") — condenses to just
