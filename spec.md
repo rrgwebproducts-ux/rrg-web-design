@@ -1742,3 +1742,63 @@ A 4th checkbox, **Show field names**, writes each field's token in place of its 
 - **Rola elsewhere:** Brenton to ask Tim whether Rola is still a priority brand. Until then, Rola keeps its brand page, its /brands hub card and its mega-menu A–Z entry. It is only out of the brand strips.
 - **Logos:** the Darche (SVG) and KAON (PNG) logos were taken from the brands' own websites. Swap in official brand-pack files when we get them.
 - **Marc:** confirm the list, then rebuild the block on staging.
+
+## 23. Rack Friday Phase 1 review: header/footer/mega menu + PDP (Brenton, Graham, Scott & Jake, 2026-10-15)
+
+Two meetings this morning (one speaker recorded). Transcripts: `Meeting Title Header and footer des.txt`, `Meeting Title PDP design review sto.txt`.
+
+**Scope agreed:** "Rack Friday Phase 1" = **header (incl. mega menu), footer, PDP, PLP**. Everything else waits until after the sale. Marc has about 15 days. Phase 1 matches what the live site does today, reskinned. New behaviour is Phase 2 unless it's cheap and the data already exists ("if the clues are there already, do it").
+
+Status key: 🔨 prototype change · 📄 dev-brief change · ❓ needs a decision · ⏳ waiting on someone · ⏭ Phase 2 (keep it, flag it out of Phase 1) · ✅ confirmed as built, brief note only
+
+### 23.1 Process / Marc handover
+1. 📄 **Simplify the dev briefs** (header first, then PDP, then PLP). Marc deferred the walkthrough ("leave it with me"), so he works from the briefs alone. Each brief should point at every element, say where every link goes, and list the variations. Today's are too dense.
+2. 📄 **Staging QA rule:** everything Marc releases goes to staging for us to QA first, then live. Put it at the top of every brief.
+3. 📄 **Phase 1 vs Phase 2 marking:** every brief section says whether it's in Rack Friday Phase 1, and the Site Admin Build Phase switch shows exactly Phase 1.
+4. ✅ **Footer:** already live (Marc's version: no Blog link, square payment icons). No changes agreed.
+
+### 23.2 Header + mega menu
+5. 📄 **Mega menu = reskin only.** Same Level 1/2/3 categories as live, nothing moved. Restructuring happens after Christmas. Say this plainly in the brief.
+6. 🔨📄 **Merch promo tile: add a background colour field.** Per category (an L1's tile shows under its L2s, an L2's under its L3s): image (transparent PNG, anchored bottom-left, overlapping), heading, subheading, **colour** (default RRG red; e.g. Rhino-Rack blue for a Rhino launch). Text is live text, not baked into the image. Flat colour only, no background image (page load). Whole tile is the link. Editable by anyone in Magento category admin, no code. Optional at launch: no tile set = nothing renders (already built).
+7. 📄 **Bulk upload goal:** Brenton wants to set every category's tile from one spreadsheet upload before a sale like Rack Friday, so the brief asks for plain category attributes (not an HTML block).
+8. 🔨📄 **Nav: Fitting → "Services" dropdown (a test).** Items: Fitting (→ Installation), Call Us, Email Us, Delivery Information, Payment Options, and possibly the trust items (price match, 90-day exchange). Graham and Brenton both like Fitting standing out on its own, so build it and see before committing.
+9. ✅ **Nav links, no change:** Store Finder → the Store Finder page. Fit My Vehicle → the FMV page; in Phase 1, View results behaves exactly like live; in Phase 2 it goes to the VLP (copy may become "Find the right product for your vehicle"). Clearance → the clearance category; hidden where there's no clearance (NZ), so the other links shift over; replaced by the sale link (Rack Friday / Christmas) during a takeover.
+10. ✅ **Dropped from the live header on purpose:** the review count above the logo, the "200,000+ fitted!" line, the trust-signal row. The brief should say they're intentionally gone (trust moves to the home page and PDP, items 16 and 28).
+11. ✅ **Support button dropped.** Clarity: 4 clicks in 3 days (0.08% of clicks) vs Find a Store 38, Search 314. Support lives in the footer and chat. Call Us stays (big on mobile).
+12. 🔨📄 **Nearest-store link:** store set → "Your Nearest Store: North Lakes" links to the **Store Finder with that store pre-selected** (query param), not the store page. No store → "Find a store" → Store Finder. Marc connects the saved store (already tracked from the PDP Click & Collect widget) to the header. Phase 2: a "Set as my store" button on the Store Finder.
+13. ✅ **Account:** shows the customer's first name when logged in (built). Brief: confirm Magento exposes it.
+14. ❓🔨 **Region selector:** keep AU + NZ; Brenton "probably wouldn't put UK in yet". Switching keeps the same URL and swaps the domain (.com.au ↔ .co.nz), reusing the live "wrong region" pop-up logic. Decide: drop UK from the dropdown for Phase 1?
+15. ❓ **Wrong image** spotted at the start of the meeting ("a 5 series / 6 series image"). Which page/product?
+
+### 23.3 Home page (not Phase 1, but decided here)
+16. 🔨 **Thin trust bar at the very top of the home page** (not the header): full-width background, content contained, no gap under the header, scrolls away under the sticky header. One line per item, icon + heading only, each item one link (e.g. "90 Day Exchange", no "Read our exchange policy"). Items: fitted count, reviews, price match, 90-day exchange. Replaces today's bigger confidence bar. Launch with it so nothing Tim expects goes missing, then A/B test it off.
+17. ❓ **Full-width heroes** (Scott): background full width, content contained (like Supercheap). Parked until there's design time to make the assets work at every width.
+
+### 23.4 PDP (simple product)
+18. ⏭ **B-stock / ex-demo:** Phase 2.
+19. ⏭ **Store-level stock:** "On display", the store-aware stock lines ("In stock at Kedron, collect today…") and the whole **Showroom Finder** section are Phase 2. Drop the Showroom Finder from Phase 1.
+20. ⏭ **Vehicle compatibility list** (fits / doesn't fit on non-vehicle-specific products): Phase 2, no data yet.
+21. 🔨 **Phase 1 stock lines:** "In Stock Online" + dispatch next business day + Click & Collect ready in store within 2 business days. **Remove "Ships from our Brisbane warehouse"** in Phase 1.
+22. ⏳❓ **Stock + delivery rules (Phase 1, blocking):** the lines under the stock status must match what delivery and Click & Collect actually allow. Region-locked items (e.g. held only in WA): no 2-day C&C promise; delivery-only or C&C-only messaging; add to cart may need a postcode first. **Scott is sending the rule list and an export of every stock status.** Then: a spreadsheet of every live status (in stock, low stock, out of stock, special order, discontinued, clearance, used…), when each shows, and what it changes (price, shipping, buttons) → Claude drafts the rule set → the team tweaks it. Phase 1 must at least reproduce live (out of stock = "Special order, contact us"). Special order should really mean pre-order.
+23. ⏭ **Discontinued products:** keep the page live (people search old part numbers), and add "This is discontinued, here are the alternatives" in the decision panel from Magento's superseded/successor product. Probably Phase 2.
+24. 🔨 **Buy now, pay later by region:** AU = all three; NZ = Afterpay now, PayPal soon; **UK Klarna/Clearpay isn't showing**, find out why.
+25. ⏭ **Package Deal:** out of Phase 1 (Magento can't show the discounted price at product level yet).
+26. 🔨 **Gallery:** add about 20px between the thumbnails and the video / Get It Installed row.
+27. 🔨 **Sticky columns both ways:** the gallery column also sticks when the decision panel is the longer one.
+28. 🔨 **PDP trust banner:** reuse the new thin home-page trust bar (item 16).
+29. ✅ **Tabs:** Details, Specs, Gold Guarantee, Shipping Info. Shipping Info = the same Delivery / Click & Collect component as the decision panel; Marc builds it once, responsive. Phase 1 if possible.
+30. 🔨 **Fitting instructions:** replace the text links with the styled download cards.
+31. ✅ **Reviews tab:** reviews.io embed, already in the brief; Marc feeds it the SKU.
+32. ⏭ **FAQs: drop the section in Phase 1.** Phase 2: Q&As set at category level and inherited by its products, max 8; a product's own Q&As take the first slots and the category's fill the rest.
+33. ✅ **Related products:** unchanged.
+34. ⏭ **Siblings / variant picker** (sibling-color, config-variant templates): Phase 2, for time only.
+35. 🔨📄 **Breadcrumbs:** Magento has no primary category, so Phase 1 matches live. Breadcrumbs built from the shopper's journey are a later option.
+
+### 23.5 PDP (vehicle-specific + grouped)
+36. ✅ **"Fits your vehicle" card is Phase 1** (session vehicle vs the product's vehicle ID; both exist today).
+37. 🔨 **Doesn't fit:** drop "Change vehicle", keep **Find the right fit** → opens the fit-finder drawer → View results → the PLP results for that vehicle (VLP later).
+38. ⏭ **Build option picker** (a variant picker): Phase 2.
+39. 🔨 **Copy for staff:** in Package Components, clicking a SKU copies the SKU; clicking the green vehicle icon in the "Fits your vehicle" card copies the **vehicle ID**. Check both work that way.
+40. 📄 **Grouped stock = worst component:** if any component (at the quantity needed) isn't available at that store or warehouse, the whole package takes the worst status. Goes into the rule set (item 22).
+41. 🔨 **Fitment Gallery:** in Phase 1 (a reskin of live). Tone down the bright red.
+42. 🔨 **Broken product images:** some image URLs copied from the live site have since broken. Re-check them.
