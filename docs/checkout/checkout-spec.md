@@ -206,6 +206,8 @@ The PLP's "different vehicle" notice still wins: the item is added, but the mini
 
 ## 11. Package Deal in the cart (2026-10-06, spec.md §19 phase 5)
 
+> **Phase 2 — not in Rack Friday Phase 1** (Brenton, 2026-10-15, spec.md §23 item 25). Hidden in the prototype while Site Admin's Build Phase is 1: no tag, drawer, card strip, cart notice, line saving, totals row or Package Deal sidebar promo. Rack/accessory compatibility notes are separate and still show.
+
 A roof rack + a qualifying roof-mounted accessory (roof boxes, roof-mounted bike racks, rooftop tents, awnings, water and snow carriers) in the same order takes 10% off the accessory (15% CRUZ — example rates; the real ones come from the inventory system), off its current price. **Compatible or not** — an incompatible pair still gets it and keeps the compatibility note (Brenton, 2026-10-07; this replaced the 2026-10-06 compatible-only rule). Code: `rrgPackageDeal`, `rrgCartTotals`, `rrgPackageTotalsRowHTML`, `rrgPackageCartNoticeHTML`, `rrgPackageLineHTML` (cart.js).
 
 - **Totals:** the discount comes off the amount payable and shows as its own row after the sale savings: Subtotal − savings − **Package Deal** + delivery = Total. Cart, checkout summary and order confirmation ("Package Deal saving").

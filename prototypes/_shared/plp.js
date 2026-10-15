@@ -1558,7 +1558,8 @@ function plpCartItemAttr(product) {
 // to a generic page and lost the product). Percentages only: no deal price on the PLP (the meeting:
 // RRP + sale price are already there, a third price confuses). Racks and qualifying accessories only.
 function plpPackageStripHTML(product) {
-  if (typeof rrgPackageRole !== 'function') return '';
+  // Build Phase 1: no Package Deal, so no strip and no spacer either (spec.md §23 item 25).
+  if (typeof rrgPackageRole !== 'function' || (typeof rrgPackageOn === 'function' && !rrgPackageOn())) return '';
   const item = { sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
     wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory };
   const role = rrgPackageRole(item);
@@ -2023,7 +2024,8 @@ function plpRenderMerchSidebar() {
   const cfg = window.PLP_CONFIG;
   const wrap = document.getElementById('plpMerchSidebar');
   if (!wrap) return;
-  const promos = cfg.merchPromos || [];
+  // Promos flagged phase2 (the Package Deal ones, spec.md §23 item 25) only show in Build Phase 2.
+  const promos = (cfg.merchPromos || []).filter(p => !p.phase2 || (typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2));
   const featured = cfg.featuredProduct;
   let html = '';
   if (promos.length) {

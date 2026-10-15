@@ -897,6 +897,8 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.19a Package Deal tag + drawer (2026-10-06, spec.md §19)
 
+> **Phase 2 — not in Rack Friday Phase 1** (Brenton, 2026-10-15, spec.md §23 item 25). Hidden in the prototype while Site Admin's Build Phase is 1: no tag, drawer, card strip, cart notice, line saving, totals row or Package Deal sidebar promo. Rack/accessory compatibility notes are separate and still show.
+
 **Location:** directly under the price block, above the compatibility card and Add to Cart — on rack pages and on pages for a qualifying roof-mounted accessory (roof boxes, roof-mounted bike racks, rooftop tents, awnings, water and snow carriers). Not shown on other products. Redraw it, and the compatibility card (4.19), whenever the SKU changes (colour or build-option swap): compatibility and the saving are per SKU.
 
 **Purpose:** tells the shopper that a roof rack + roof box bought in the same order takes 10% off the roof box (15% for CRUZ), off its current price so it stacks on sales. **No third price is added to the page** — the tag gives a "Save $X" amount; the with-a-rack price only appears inside the drawer.

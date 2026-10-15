@@ -1782,7 +1782,7 @@ Status key: 🔨 prototype change · 📄 dev-brief change · ❓ needs a decisi
 22. ⏳❓ **Stock + delivery rules (Phase 1, blocking):** the lines under the stock status must match what delivery and Click & Collect actually allow. Region-locked items (e.g. held only in WA): no 2-day C&C promise; delivery-only or C&C-only messaging; add to cart may need a postcode first. **Scott is sending the rule list and an export of every stock status.** Then: a spreadsheet of every live status (in stock, low stock, out of stock, special order, discontinued, clearance, used…), when each shows, and what it changes (price, shipping, buttons) → Claude drafts the rule set → the team tweaks it. Phase 1 must at least reproduce live (out of stock = "Special order, contact us"). Special order should really mean pre-order.
 23. ⏭ **Discontinued products:** keep the page live (people search old part numbers), and add "This is discontinued, here are the alternatives" in the decision panel from Magento's superseded/successor product. Probably Phase 2.
 24. ✅ **Done 2026-10-15:** NZ/UK badges were switched off on purpose on 2026-09-30 (live sites had none). NZ has Afterpay again (badge restored); live UK still shows none, so UK stays off. **Buy now, pay later by region:** AU = all three; NZ = Afterpay now, PayPal soon; **UK Klarna/Clearpay isn't showing**, find out why.
-25. ⏭ **Package Deal:** out of Phase 1 (Magento can't show the discounted price at product level yet).
+25. ✅ **Built 2026-10-15:** hidden in Build Phase 1 from one switch (`rrgPackageOn()`, cart.js: nothing counts as a rack/qualifying accessory), so the PDP tag + drawer, card strips (and their spacers), cart notice, line savings and totals row all go; the 6 "Package Deal" sidebar promos carry `phase2: true`. Rack/accessory compatibility notes stay. Switching Build Phase now reloads the page. ⏭ **Package Deal:** out of Phase 1 (Magento can't show the discounted price at product level yet).
 26. ✅ **Built 2026-10-15** (12px → 32px). **Gallery:** add about 20px between the thumbnails and the video / Get It Installed row.
 27. ✅ **Built 2026-10-15.** **Sticky columns both ways:** the gallery column also sticks when the decision panel is the longer one.
 28. ✅ **Built 2026-10-15** (all 6 product pages). **PDP trust banner:** reuse the new thin home-page trust bar (item 16).
@@ -1803,7 +1803,7 @@ Status key: 🔨 prototype change · 📄 dev-brief change · ❓ needs a decisi
 41. ✅ **Fitment Gallery:** in Phase 1 (a reskin of live). The new template already tones down the red (Brenton, 2026-10-15).
 42. ✅ **Fixed 2026-10-15:** 24 URLs were returning the RRG-logo placeholder (the live images were renamed). Swapped for the current live files on Simple, Vehicle-Specific, Grouped, Sibling-Colour and the demo cart. **Broken product images:** some image URLs copied from the live site have since broken. Re-check them.
 
-**Still open from this list:** 1–3 + 6–7 (brief rewrite; header brief next), 22 (stock rules), 25 (Package Deal still shows in Phase 1: it runs through the cart, PLP cards and drawer, so hiding it needs its own change), 35 (breadcrumbs, brief note), 40 (rule set).
+**Still open from this list:** 1–3 (PDP then PLP brief rewrites; header done), 22 + 40 (stock rule set, waiting on the stock-status export), 35 (breadcrumbs, PDP brief note).
 
 ### 23.6 Scott's caution-stock rules (received 2026-10-15, input to item 22)
 

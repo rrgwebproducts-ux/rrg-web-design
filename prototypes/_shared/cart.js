@@ -140,8 +140,14 @@ function rrgPackageCategory(item) {
   const hit = RRG_PACKAGE_CATEGORY_RE.find(([, re, not]) => re.test(name) && !(not && not.test(name)));
   return hit ? hit[0] : null;
 }
+// Package Deal is Phase 2 (spec.md §23 item 25, 2026-10-15). In Build Phase 1 nothing counts as a
+// rack or a qualifying accessory, so every Package Deal surface switches off from this one place:
+// the PDP tag + drawer, product-card strips, the cart notice, line savings and the totals row.
+// Rack/accessory compatibility notes (rrgPackageCategory) are separate and unaffected.
+const rrgPackageOn = () => typeof rrgPhaseGet !== 'function' || rrgPhaseGet() === 2;
 // 'rack' | 'rmp' (a qualifying accessory) | null
 function rrgPackageRole(item) {
+  if (!rrgPackageOn()) return null;
   const cat = rrgPackageCategory(item);
   if (cat === 'rack') return 'rack';
   return cat && RRG_PACKAGE_DEAL.qualifying[cat] ? 'rmp' : null;

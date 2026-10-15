@@ -233,6 +233,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ### 4.6a Package Deal strip (2026-10-06, spec.md §19)
 
+> **Phase 2 — not in Rack Friday Phase 1** (Brenton, 2026-10-15, spec.md §23 item 25). Hidden in the prototype while Site Admin's Build Phase is 1: no tag, drawer, card strip, cart notice, line saving, totals row or Package Deal sidebar promo. Rack/accessory compatibility notes are separate and still show.
+
 **Location:** full width along the bottom edge of a product card (grid and list), on any listing — only for roof racks and for qualifying roof-mounted accessories: roof boxes, awnings, rooftop tents, kayak/SUP/ski/snowboard carriers and roof-mounted bike racks (2026-10-06). Category PLPs built on this template so far: Bike Racks, Roof Boxes, Awnings, Roof Top Tents, Water Carriers, Snow Carriers, Camping, VPLP Roof Racks. First demoed on PLP Roof Boxes (`prototypes/plp-roof-boxes/`, the Bike Racks template with the four live shape categories as Shop By) and VPLP Roof Racks.
 
 **Copy (shortened 2026-10-07 so it never wraps):** tag icon + "**Package Deal:** 10% off with a roof rack" (15% for CRUZ) on an accessory; "**Package Deal:** Up to 15% off accessories" on a rack (the highest rate on offer). On cards narrower than 280px it stacks as two lines: "Package Deal" over "10% off with a rack" / "Up to 15% off" (a container query on the strip). Percentages only — **no deal price on listings** (meeting 2026-10-06: RRP and sale price are already there; a third price confuses).

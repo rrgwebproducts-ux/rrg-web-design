@@ -90,10 +90,11 @@ function rrgPhaseGet() {
   return localStorage.getItem(RRG_BUILD_PHASE_KEY) === '2' ? 2 : 1;
 }
 
+// Reloads (2026-10-15), like the sale takeover: the phase now decides whole features (Package Deal
+// in the cart and on every product card), which is simpler to apply from a clean page load.
 window.rrgSetPhase = (phase) => {
   localStorage.setItem(RRG_BUILD_PHASE_KEY, String(phase));
-  rrgApplyPhaseAttr();
-  document.dispatchEvent(new CustomEvent('rrg-session-change'));
+  location.reload();
 };
 
 // <html data-build-phase="1|2"> (spec.md §23, 2026-10-15) so CSS can hide what isn't in the
