@@ -186,7 +186,7 @@ const RRG_DYN_FIELDS = [
     token: '{campaign.mega_menu_banner}',
     attr: 'CMS: sale campaign mega-menu banner / evergreen fallback banner',
     sel: '.mega-menu-banner img',
-    rule: ['Sale running (AU/NZ): that campaign\'s mega-menu banner, linking to the sale', 'Otherwise the evergreen fallback banner: Overstock Clearance, linking to the Clearance page. Never blank'],
+    rule: ['Sale running (AU/NZ): that campaign\'s mega-menu banner, linking to the sale', 'Otherwise the evergreen fallback banner: AU = Overstock Clearance (to the Clearance page); NZ/UK = Store Finder promo (no clearance there). Never blank'],
     example: 'rack-friday-mega-menu.webp',
     status: 'draft' },
   { id: 'global.campaign.title', label: 'Sale strip: campaign title', source: 'cms',

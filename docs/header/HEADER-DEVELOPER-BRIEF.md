@@ -183,7 +183,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 **How it works:** a real image, not styled text — swapped between two creatives, never blank. Since 2026-10-02 it follows the **sale takeover** (Site Admin → "Sale takeover", Section 4.7; full spec in `docs/campaign/campaign-spec.md`) rather than its own toggle, so it always matches the rest of the takeover:
 
 - **A sale running** (AU/NZ): that campaign's banner (Rack Friday Sale or Christmas Sale), set per campaign alongside its colours, tag and favicon.
-- **No sale** (default, and always in the UK): the **Overstock Clearance** banner (the live site's `wysiwyg/navigation-website-trust-main-default/overstock-clearance.png`), linking to the Clearance page. Was a Store Finder promo until 2026-10-15. On mobile it's shown whole (`object-fit: contain` on a black strip) because the mobile slot is wider than the image.
+- **No sale** (default, and always in the UK): **AU** shows the **Overstock Clearance** banner (the live site's `wysiwyg/navigation-website-trust-main-default/overstock-clearance.png`), linking to the Clearance page. **NZ and the UK** (no clearance) keep the Store Finder promo, linking to the Store Finder. AU's was a Store Finder promo until 2026-10-15. On mobile it's shown whole (`object-fit: contain` on a black strip) because the mobile slot is wider than the image.
 
 **States:**
 - On: ![Sale banner on](header-dev-brief-assets/mega-menu-level1-open.png)

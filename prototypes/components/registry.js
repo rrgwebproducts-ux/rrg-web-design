@@ -97,6 +97,7 @@ const RRG_COMPONENTS = [
       v('Open, sale on (Rack Friday banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.sale, sizes: ['d'], h: 760 }),
       v('Open, sale on (Christmas banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.xmas, sizes: ['d'], h: 760 }),
       v('Open, no sale (Overstock Clearance banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', sizes: ['d'], h: 760 }),
+      v('Open, no sale, NZ (Store Finder banner)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle', ls: S.nz, sizes: ['d'], h: 760 }),
       v('Promo tile in a brand colour (Level 3)', 'header', '.rrg-header-shell', { do: 'click:.mega-menu-toggle,focus:.mega-menu-l2-row[data-col="4"]', sizes: ['d'], h: 760 }),
     ] },
   { id: 'search-typeahead', group: 'global', name: 'Header Search & Typeahead', build: 'shared', hover: '.rrg-search, .rrg-search-suggest', usedOn: NOT_CHECKOUT,

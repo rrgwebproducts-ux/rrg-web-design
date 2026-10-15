@@ -75,21 +75,32 @@ function mmPromoTileHTML(promoTile) {
 // Default (no sale) banner = Overstock Clearance, linking to the Clearance page (Brenton,
 // 2026-10-15; the live site's own banner, wysiwyg/navigation-website-trust-main-default/
 // overstock-clearance.png). Was a Store Finder promo (sale-banner-fallback.png).
-const MM_SALE_BANNER_FALLBACK_SRC = RRG_PROTO + '_shared/mega-banner-clearance.png';
-const MM_SALE_BANNER_FALLBACK_HREF = RRG_PROTO + 'clearance/index.html';
+// AU only: NZ and the UK have no clearance, so they keep the Store Finder promo (Brenton, 2026-10-15).
+const MM_BANNER_DEFAULTS = {
+  clearance: { src: RRG_PROTO + '_shared/mega-banner-clearance.png', href: RRG_PROTO + 'clearance/index.html', alt: 'Overstock Clearance' },
+  storeFinder: { src: RRG_PROTO + '_shared/sale-banner-fallback.png', href: RRG_PROTO + 'store-finder/index.html', alt: 'Store Finder — find your nearest store' },
+};
+function mmDefaultBanner() {
+  const region = typeof currentRegion !== 'undefined' ? currentRegion : 'AU';
+  return region === 'AU' ? MM_BANNER_DEFAULTS.clearance : MM_BANNER_DEFAULTS.storeFinder;
+}
 // `src` is set by mmApplySaleBannerVisibility() right after this markup is inserted (both
 // desktop and mobile) — kept out of this string so there's one place deciding which image.
 const MM_BANNER_HTML = '<a class="mega-menu-banner" href="#"><img alt="Sale"></a>';
 function mmApplySaleBannerVisibility() {
   const on = typeof rrgCampaignActive === 'function' && rrgCampaignActive();
+  const def = mmDefaultBanner();
   document.querySelectorAll('.mega-menu-banner').forEach(a => {
-    a.href = on ? RRG_CAMPAIGN.href : MM_SALE_BANNER_FALLBACK_HREF;
-    a.classList.toggle('is-default', !on);
+    a.href = on ? RRG_CAMPAIGN.href : def.href;
+    // Only the Clearance art (4.5:1) needs the uncropped mobile treatment (mega-menu.css).
+    a.classList.toggle('is-default', !on && def === MM_BANNER_DEFAULTS.clearance);
     const img = a.querySelector('img');
-    img.src = on ? RRG_PROTO + RRG_CAMPAIGN.megaMenuBanner : MM_SALE_BANNER_FALLBACK_SRC;
-    img.alt = on ? RRG_CAMPAIGN.title : 'Overstock Clearance';
+    img.src = on ? RRG_PROTO + RRG_CAMPAIGN.megaMenuBanner : def.src;
+    img.alt = on ? RRG_CAMPAIGN.title : def.alt;
   });
 }
+// Region switch → the right default banner (applyRegion, shared.js, fires this).
+document.addEventListener('rrg-region-change', mmApplySaleBannerVisibility);
 
 // Desktop — one shared full-width drawer (header-spec.md Section 3.6, restructured
 // 2026-09-13 per Brenton's direction): Level 1 is a static sidebar; Level 2 and Level 3 are
