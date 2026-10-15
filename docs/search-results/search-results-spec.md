@@ -143,7 +143,7 @@ Source: the design section of the 2026-09-24 meeting (full transcript in the rep
 - Sibling/grouped products keep "View Options" (no quick add), per the meeting.
 
 ### 9.4 Header search dropdown (typing state) — rebuilt
-See `docs/header/HEADER-DEVELOPER-BRIEF.md` 4.9. In short: a "Search for '<query>'" row on top, then two columns — Popular searches / Looking for these brands? / Pages that might be interesting on the left, matching products on the right — all genuinely matched against what's typed, replacing the old rotating product batches. Trending Searches now uses the real Algolia top searches from the meeting (U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs). "Rhino Rack tie down" appeared in Algolia's *searches without results* report — worth fixing in Algolia itself.
+See `docs/header/HEADER-DEVELOPER-BRIEF.md` A7. In short: a "Search for '<query>'" row on top, then two columns — Popular searches / Looking for these brands? / Pages that might be interesting on the left, matching products on the right — all genuinely matched against what's typed, replacing the old rotating product batches. Trending Searches now uses the real Algolia top searches from the meeting (U-Bolts, Roof Boxes, Light Bars, Rhino Rack Tie Downs). "Rhino Rack tie down" appeared in Algolia's *searches without results* report — worth fixing in Algolia itself.
 
 ### 9.5 Left for Marc / later
 - How the category tabs are derived from a real search (which Level 1/2 tabs a query like "bracket" produces) — "a discussion for Marc," per the meeting.
