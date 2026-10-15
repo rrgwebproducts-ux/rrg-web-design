@@ -2038,6 +2038,8 @@ function applyRegionFooter(region) {
     a.textContent = REGION_FOOTER_EMAIL[region];
     a.href = `mailto:${REGION_FOOTER_EMAIL[region]}`;
   });
+  // Utility bar "Call Us" is a phone link for the region (was plain text, 2026-10-15).
+  document.querySelectorAll('[data-utility-call]').forEach(a => { a.href = `tel:${REGION_PHONE[region].replace(/[^0-9+]/g, '')}`; });
   document.querySelectorAll('[data-footer-store-copy]').forEach(el => {
     el.innerHTML = regionFooterStoreCopy(region);
   });

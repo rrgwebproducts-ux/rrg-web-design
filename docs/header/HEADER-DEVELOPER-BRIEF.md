@@ -1,6 +1,146 @@
 # Header & Mega Menu — Developer Brief
 
-> **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15). Text only — screenshots are deliberately held until final handover, so some images below may predate this pass (e.g. the Site Admin Panel).
+**For Marc.** Part A is the build sheet for **Rack Friday Phase 1** (written 2026-10-15): every element, where every link goes, and what changes it. Part B (Sections 1–7) is the original full reference, kept for the detail behind Part A. If the two disagree, **Part A wins**.
+
+**Prototype:** `prototypes/header/index.html` (header + footer only). In **Site Admin**, keep **Build Phase = Phase 1**: everything you can see is in scope. Phase 2 features hide themselves.
+
+---
+
+## A1. Ground rules
+
+1. **Staging first.** Everything goes to staging for us to QA before it goes live.
+2. **Phase 1 only.** If Site Admin's Build Phase 1 doesn't show it, don't build it yet.
+3. **The mega menu is a reskin.** Same Level 1 / 2 / 3 categories as the live site, nothing moved or renamed. We restructure after Christmas.
+4. **No trust signals in the header.** The live header's review count above the logo, the "200,000+ fitted!" line, the USP row and the **Support** button are all dropped on purpose. Trust now sits in a thin bar at the top of the Home page and on the product pages (not part of this brief).
+5. **Regions in Phase 1: AU and NZ.** The UK isn't in the region menu yet.
+6. **One new piece of Magento data:** the mega menu promo tile fields (A5). Everything else uses data the site already has.
+
+---
+
+## A2. Utility bar (top strip)
+
+| Element | Shows | Link / action | Changes with |
+|---|---|---|---|
+| Nearest store | "Your Nearest Store: **North Lakes**" | `/locations?store=north-lakes`: the locations page with that store picked | **No store saved:** reads "**Find A Store**" → `/locations` |
+| Vehicle | "Your Vehicle: **Toyota Hilux**" (mobile: just "Toyota Hilux") | Opens the **Fit Finder drawer** (A8) | **No vehicle:** "Select Your Vehicle" |
+| Call Us | phone icon + "Call Us" | `tel:` link. AU `1300 071 264`, NZ `09 481 1910` | Region |
+| Region | flag + "Australia" ▾ | Menu: Australia / New Zealand. Picking the other region opens **the same page on the other domain** (`.com.au` ↔ `.co.nz`), reusing the live site's "you're on the wrong region" logic | — |
+| Account | Customer's **first name** | `/customer/account` | **Logged out:** "Log In" → `/customer/account/login` |
+
+- **The saved store** is the one the shopper picks in the PDP's Click & Collect widget. The site already remembers it; it just needs connecting to the header. If `/locations` can't pre-select a store from the URL for launch, link to plain `/locations`.
+- **Mobile:** the bar shows the store and vehicle only.
+
+---
+
+## A3. Main header
+
+| Element | Link / action | Notes |
+|---|---|---|
+| Logo | `/` | |
+| **Products** | Opens the mega menu (A4), **on click**, not hover | Desktop only. On mobile the hamburger opens the menu (A6). |
+| Store Finder | `/locations` | NZ (one store): reads "Visit Our Auckland Store" → that store |
+| Fit My Vehicle | `/fit-my-vehicle` | The live page, unchanged. Its "View results" works exactly as it does today. |
+| Clearance | `/overstock-clearance` | **AU only:** hidden in NZ, and the links after it shift left. **During a sale** the sale's button takes its place (see `docs/campaign/campaign-spec.md`). |
+| **Services ▾** | Dropdown, A3.1 | New. Replaces the old "Fitting" link. |
+| Search box | Typeahead, A7. Enter → search results | |
+| Cart | Mini cart / `/checkout/cart` | Badge = item count |
+
+### A3.1 Services dropdown
+
+Desktop: opens on hover, or on click/tap (keyboard: Enter opens, Esc closes). Mobile: a "Services ›" row in the menu that opens its own screen with a back arrow.
+
+| Item | Link |
+|---|---|
+| Fitting & Installation | `/roof-rack-installation-and-fitting-costs/` |
+| Shipping & Delivery | `/delivery` |
+| Price Guarantee | `/price-guarantee` |
+| Support | `https://roofracksgalore.crisp.help/en/` (new tab) |
+| Contact Us | `/contact-us` |
+
+NZ: the same items, linking to the NZ site's equivalent pages. Marc, please flag any that don't exist on `.co.nz`.
+
+---
+
+## A4. Mega menu (desktop)
+
+- **Click "Products"** to open; click it again, click outside or click the dark backdrop to close.
+- **Level 1** (left column): the live site's categories, each with its icon; "Shop By Brand" last, in yellow.
+- **Level 2:** hovering a Level 1 row shows its groupings as "Shop {name}" rows + "View All". **Level 3:** hovering a Level 2 row shows its links in 2 columns + "View All {name}".
+- **Banner** (top of Level 1), never blank:
+
+| Situation | Banner | Link |
+|---|---|---|
+| Sale running (AU/NZ) | That sale's banner | The sale page |
+| No sale, **AU** | Overstock Clearance (the live `wysiwyg/navigation-website-trust-main-default/overstock-clearance.png`) | `/overstock-clearance` |
+| No sale, **NZ** | Store Finder promo | `/locations` |
+
+- **Promo tile** at the bottom of Level 2 and Level 3: see A5.
+
+---
+
+## A5. Promo tile: new Magento category fields
+
+A red (or brand-coloured) tile pinned to the bottom of a Level 2 or Level 3 column. **The whole tile is one link.** The product photo is a transparent PNG anchored bottom-left that pokes up above the tile. The text is live text, never baked into the image.
+
+**Add these fields to the category entity**, all optional:
+
+| Field | Example | If empty |
+|---|---|---|
+| Promo image | transparent PNG | **No tile at all** (no placeholder, nothing inherited) |
+| Promo heading | Rhino Rack Low Profile Roof Top Tent | — |
+| Promo subheading | Now In Stock | "New Product Release" |
+| Promo link | product or category URL | — |
+| Promo colour | `#0a4c97` (Rhino-Rack blue) | RRG red |
+
+- **Where it shows:** a Level 1 category's tile shows under its **Level 2** list. A Level 2 grouping's own tile shows under its **Level 3** list. They're set separately; Level 3 never inherits Level 2's.
+- **Flat colour only**, no background image (page weight).
+- **Plain category attributes, not an HTML block**, so Brenton can set every category's tile from one spreadsheet import before a sale like Rack Friday.
+- Optional at launch: with no images set, no tiles show.
+
+---
+
+## A6. Mobile menu (≤900px)
+
+The hamburger opens a full-screen menu with its own logo, account, vehicle, close button and search box.
+
+1. **Root screen:** the banner (same rules as A4), the categories, then Store Finder, Fit My Vehicle, Clearance (AU only; the sale link during a sale) and **Services ›**.
+2. Tap a category → its "Shop {name}" rows + View All + its promo tile. Tap a row → its links + View All + that row's promo tile.
+3. Every inner screen has a back arrow and a close button. Close works from any depth.
+
+**Sticky header:** once the page scrolls past the search box, a slim bar (hamburger, logo, cart) sticks to the top.
+
+---
+
+## A7. Search typeahead
+
+Same component as Part B 4.9. **Empty box, focused:** recent searches (per shopper), popular searches, useful pages, suggested products. **Typing:** "Search for '{query}'", matching searches, brands and pages on the left, matching products on the right, View All Results. **Enter** → search results for the query. In production all of it comes from Algolia (query suggestions + product, page and brand indexes), not hand-kept lists.
+
+---
+
+## A8. Fit Finder drawer
+
+Slides in from the right whenever "Your Vehicle / Select Your Vehicle" is clicked. Make → Model → Year → Body → Roof, then **Set My Vehicle** saves the session vehicle and closes the drawer; the header and every fitment message on the page update.
+
+**Phase 1:** after setting the vehicle from the header, do what the live site does today. Sending the shopper to the new vehicle landing page (VLP) is **Phase 2**; the prototype already shows that, so ignore that part.
+
+---
+
+## A9. Not in Phase 1
+
+- UK region (and its green/UK skin)
+- Sending vehicle results to the VLP (A8)
+- "Set as my store" on the locations page
+- Restructuring the mega menu categories (after Christmas)
+
+## A10. Open questions
+
+1. **Call Us on mobile.** It's one of the most-used header links on mobile (Clarity), but the new mobile header and menu don't include it. **Brenton to decide** where it goes (e.g. a phone icon next to the cart).
+
+---
+
+# Part B — Full reference
+
+> Kept for the detail behind Part A. **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15). Text only — screenshots are deliberately held until final handover, so some images below may predate this pass (e.g. the Site Admin Panel). Where Part B still describes something Part A changed (the Fitting link, the store link, the promo tile fields), Part A is current.
 
 ## 1. Project context
 
@@ -56,7 +196,7 @@ Three stacked pieces, top to bottom, present on every page that includes this he
 
 | Item | Default | Other states |
 |---|---|---|
-| Nearest Store | "Your Nearest Store: North Lakes" (or the current region's store — see the Region Selector cascade in `DEVELOPER-BRIEF.md` 4.1) | Off: "Find A Store" |
+| Nearest Store | "Your Nearest Store: North Lakes" (or the current region's store — see the Region Selector cascade in `DEVELOPER-BRIEF.md` 4.1) → the Store Finder with that store picked (`?store=`, 2026-10-15) | Off: "Find A Store" → the Store Finder |
 | Vehicle | "Your Vehicle: Toyota Hilux" (mobile: just "Toyota Hilux") | "Your Vehicle: Ford Ranger"; None: "Select Your Vehicle" |
 | Account | "Graham" | Off: "Log In" |
 
@@ -84,7 +224,7 @@ The "off" state isn't a separate designed component — it's the same link, same
 - **Hamburger** (mobile only, ≤900px) — opens the mobile takeover (Section 4.6), not a slide-down drawer.
 - **Logo** — links home. In the prototype the main-header, sticky-header and mobile-takeover logos all link to the Home Page template (`prototypes/home/`, since 2026-09-29; `docs/home/home-spec.md`). The template index is still reachable from Site Admin → "All templates".
 - **"Products"** — opens the mega menu (Section 4.3) on desktop. **Hidden entirely below 900px** (`display:none`) — on mobile, the category list is the takeover's own root screen, not a separate tappable item (see Section 4.6's note on why).
-- **Store Finder / Fit My Vehicle / Clearance / Fitting** — plain links. Store Finder → the Store Finder page. **Its label follows the region's open-store count** (2026-09-30, spec.md §16 item 13): with one open store it reads "Visit Our {Bolton|Auckland} Store" and goes to that store's page; with two or more it reads "Store Finder". Opening-soon stores don't count. Same rule in the mobile takeover. Fit My Vehicle → the Fit My Vehicle page, **Fitting** → the Installation page (renamed from "Services", Brenton 2026-09-30); Clearance `href="#"`, URL pending (Section 6). Stay as flat links on desktop; render again inside the mobile takeover's root screen, below the categories (Section 4.6) — not duplicated in the main header on mobile, since the header itself is reduced to hamburger/logo/cart there.
+- **Store Finder / Fit My Vehicle / Clearance / Services** — plain links, except **Services**, a dropdown since 2026-10-15 (Part A, A3.1) that replaced **Fitting**. Clearance is hidden in NZ/UK (2026-10-15). Store Finder → the Store Finder page. **Its label follows the region's open-store count** (2026-09-30, spec.md §16 item 13): with one open store it reads "Visit Our {Bolton|Auckland} Store" and goes to that store's page; with two or more it reads "Store Finder". Opening-soon stores don't count. Same rule in the mobile takeover. Fit My Vehicle → the Fit My Vehicle page, **Fitting** → the Installation page (renamed from "Services", Brenton 2026-09-30); Clearance `href="#"`, URL pending (Section 6). Stay as flat links on desktop; render again inside the mobile takeover's root screen, below the categories (Section 4.6) — not duplicated in the main header on mobile, since the header itself is reduced to hamburger/logo/cart there.
 - **Search bar** — has a clear button that appears once text is entered, plus a typeahead/focus-state dropdown (Section 4.9) — mostly cosmetic, but its "View All Results" link is real navigation.
 - **Cart icon** — visual only, static `0` badge.
 
@@ -141,7 +281,7 @@ The "off" state isn't a separate designed component — it's the same link, same
 #### Data shape
 
 ```js
-promoTile: { image: '...', eyebrow: 'New Product Release', label: 'Rhino Rack Roof Top Tent', href: '#' }
+promoTile: { image: '...', eyebrow: 'New Product Release', label: 'Rhino Rack Roof Top Tent', href: '#', color: '#0a4c97' /* optional, default RRG red (2026-10-15) */ }
 ```
 
 Four fields: a product photo, a short eyebrow label (defaults to "New Product Release" if omitted), the product name, and a link. **The entire tile — photo and text together — is one clickable link** (`href`); there's no separate "Shop Now" button inside it.
@@ -208,7 +348,7 @@ The photo itself uses `object-fit:contain` (never crops, regardless of a future 
 - Search bar (same typeahead/focus-state dropdown as desktop's — Section 4.9).
 - Sale banner (Section 4.5).
 - The 8 categories, Brands styled as a yellow bar (same treatment as desktop).
-- The 4 plain nav links (Store Finder etc.) below the categories, in their own section.
+- The nav links below the categories, in their own section: Store Finder, Fit My Vehicle, Clearance (AU only), and **Services ›**, which opens its own screen (2026-10-15).
 
 **Screen 2 — Level 1 (tap a category):** replaces the whole screen — a back+title bar (category name, back arrow to Level 0, a close button), that category's real "Shop X" rows, its promo tile if one's configured.
 

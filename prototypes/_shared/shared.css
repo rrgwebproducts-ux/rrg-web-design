@@ -297,6 +297,8 @@ button{font-family:inherit;cursor:pointer;}
 .u-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
 .u-item svg{flex:0 0 auto;width:14px;height:14px;}
 .u-item a{color:#fff;text-decoration:underline;font-weight:700;}
+a.u-item{color:inherit;text-decoration:none;}
+a.u-item:hover{text-decoration:underline;}
 .flag-icon{width:20px;height:15px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.12);vertical-align:middle;flex:0 0 auto;}
 
 /* Region Selector (2026-09-11, backlog item 21) — the utility bar's country item, previously
