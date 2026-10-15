@@ -873,6 +873,8 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.19 Compatibility / Cart-Conflict banner
 
+> **Phase 2 — not in Rack Friday Phase 1** (Brenton, 2026-10-15, spec.md §23 item 25). Hidden in the prototype while Site Admin's Build Phase is 1: the PDP banner, the cart-line notes and the Demo State "Cart already has" mock.
+
 **Location:** above Add to Cart in the Decision Panel — all PDP templates. The same message also appears, smaller, on cart lines (cart page, mini-cart, checkout order summary).
 
 **Purpose:** tells the shopper whether the **rack** and the **roof-mounted accessory** in their cart work together — both ways round. Viewing an accessory (roof box, roof bike rack, rooftop tent, awning…), it checks against the racks in the cart; viewing a rack, against the accessories in the cart. Updated 2026-10-06 for the Package Deal (spec.md §19): it now shows when things **are** compatible too, not only the warning.
@@ -897,7 +899,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 ### 4.19a Package Deal tag + drawer (2026-10-06, spec.md §19)
 
-> **Phase 2 — not in Rack Friday Phase 1** (Brenton, 2026-10-15, spec.md §23 item 25). Hidden in the prototype while Site Admin's Build Phase is 1: no tag, drawer, card strip, cart notice, line saving, totals row or Package Deal sidebar promo. Rack/accessory compatibility notes are separate and still show.
+> **Phase 2 — not in Rack Friday Phase 1** (Brenton, 2026-10-15, spec.md §23 item 25). Hidden in the prototype while Site Admin's Build Phase is 1: no tag, drawer, card strip, cart notice, line saving, totals row or Package Deal sidebar promo. Rack/accessory compatibility notes (4.19) are hidden in Phase 1 too.
 
 **Location:** directly under the price block, above the compatibility card and Add to Cart — on rack pages and on pages for a qualifying roof-mounted accessory (roof boxes, roof-mounted bike racks, rooftop tents, awnings, water and snow carriers). Not shown on other products. Redraw it, and the compatibility card (4.19), whenever the SKU changes (colour or build-option swap): compatibility and the saving are per SKU.
 

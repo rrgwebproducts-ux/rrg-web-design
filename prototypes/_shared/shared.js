@@ -846,7 +846,8 @@ function applyCartConflict(state) {
       // never alongside a hidden CTA
     } else if (col.dataset.pkgCategory !== undefined) {
       if (typeof rrgPackageCompatHTML === 'function') html = rrgPackageCompatHTML(rrgPdpCartItem(), 'banner');
-    } else if (state === 'compatible' || state === 'incompatible') {
+    } else if ((state === 'compatible' || state === 'incompatible') && typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2) {
+      // Compatibility notes are Phase 2 (Brenton, 2026-10-15), the Demo State mock included.
       const item = col.dataset.conflictItem || 'an item';
       const reason = col.dataset.conflictReason || 'it may not be fully compatible with this product';
       // Same fitment-style card as the real-cart message (cart.js rrgNoticeCardHTML).
@@ -3556,7 +3557,8 @@ function buildAdminPanel() {
     // Rack / roof-accessory pages read the real cart for compatibility (applyCartConflict).
     html += section('Cart', document.querySelector('.cta-col[data-pkg-category]')
       ? '<p class="admin-hint">Compatibility uses the real cart on this page. Load a cart in Site Admin → Demo cart.</p>'
-      : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none'));
+      : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none') +
+        hint('cartPhase2', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.'));
   }
   if (isVlp) {
     // VLP (docs/vlp/vlp-spec.md Sections 2 + 7.1). Neither control is saved (data-admin-nosave):
@@ -3646,6 +3648,7 @@ function buildAdminPanel() {
       if (phase2 && i.disabled && i.dataset.prev === 'true') { i.checked = true; applyExdemoFlag(true); }
     });
     setDisabled('[data-admin-flag="exdemo"], [data-admin-flag="showroom"]', !phase2, 'pdpPhase2');
+    setDisabled('select[name="cartConflict"]', !phase2, 'cartPhase2');
     setDisabled('select[name="plpHeroImage"]', !rrgSessionGet('vehicleSet'), 'heroImage');
     const stock = STOCK_STATUS[adminState.stockStatus];
     const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);

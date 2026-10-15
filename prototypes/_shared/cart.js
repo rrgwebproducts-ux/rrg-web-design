@@ -143,7 +143,8 @@ function rrgPackageCategory(item) {
 // Package Deal is Phase 2 (spec.md §23 item 25, 2026-10-15). In Build Phase 1 nothing counts as a
 // rack or a qualifying accessory, so every Package Deal surface switches off from this one place:
 // the PDP tag + drawer, product-card strips, the cart notice, line savings and the totals row.
-// Rack/accessory compatibility notes (rrgPackageCategory) are separate and unaffected.
+// Rack/accessory compatibility notes are Phase 2 too (Brenton, 2026-10-15): rrgPackageCompatInCart
+// returns nothing in Phase 1, which clears the PDP banner and the cart-line notes.
 const rrgPackageOn = () => typeof rrgPhaseGet !== 'function' || rrgPhaseGet() === 2;
 // 'rack' | 'rmp' (a qualifying accessory) | null
 function rrgPackageRole(item) {
@@ -201,6 +202,7 @@ function rrgPackageCompatible(accessory, rack) {
 // The item's compatibility with the other kind of product in the cart: [{ line, compatible }].
 // Empty when the item isn't a rack or roof accessory, or there's nothing to compare it with.
 function rrgPackageCompatInCart(item, cart = rrgCartGet()) {
+  if (!rrgPackageOn()) return [];
   const cat = rrgPackageCategory(item);
   if (!cat) return [];
   const self = item.key || item.sku;
