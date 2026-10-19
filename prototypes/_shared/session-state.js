@@ -86,6 +86,13 @@ window.rrgSetSession = (field, on) => {
 // toggles above so every page re-renders through its existing listener.
 const RRG_BUILD_PHASE_KEY = 'rrgBuildPhase';
 
+// ?phase=1 / ?phase=2 (2026-10-19) saves the phase, so a link sent to Marc always opens on the
+// right build, whatever his browser had saved before.
+(() => {
+  const fromUrl = new URLSearchParams(window.location.search).get('phase');
+  if (fromUrl === '1' || fromUrl === '2') localStorage.setItem(RRG_BUILD_PHASE_KEY, fromUrl);
+})();
+
 function rrgPhaseGet() {
   return localStorage.getItem(RRG_BUILD_PHASE_KEY) === '2' ? 2 : 1;
 }
