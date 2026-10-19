@@ -274,7 +274,7 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 **Location:** toolbar row ("Sort By" on the right; the Grid/List toggle, Refine Results and result count are on the left, Section 3); bottom of the results (Pagination).
 
 **Purpose/contents:**
-- **Sort set:** Relevance (default), Newest, Best Selling, Highest Rated, then Price: Low to High, Price: High to Low. This exact order and labelling, including "Relevance" not "Default", was a 2026-09-18 fix.
+- **Sort set:** Relevance (default), Newest, Best Selling, Highest Rated, then Price: Low to High, Price: High to Low. This exact order and labelling, including "Relevance" not "Default", was a 2026-09-18 fix. **Highest Rated is Phase 2, not in Rack Friday Phase 1** (Graham, 2026-10-19, spec.md §23.7): left out of the list while Build Phase is 1, along with the card stars.
 - **One option list (2026-09-29):** the options are built from one list, `PLP_PRODUCT_SORT_OPTIONS` in `plp.js`, and each page's `<select id="plpSort">` is left empty in the markup. The list used to be repeated in 5 places. The select uses the one shared select style (16px on phones so iOS doesn't zoom in).
 - **Result count:** one style, `.plp-toolbar-count`, for both the toolbar count ("Showing 1-12 of N Results") and the mobile count above the grid ("Showing N of M Results").
 - **Pagination:** desktop has numbered pagination (not infinite scroll). Mobile has a manual "Load More (N)" button, where N is how many more will load (up to a page of 12). It isn't triggered by scrolling. It used to read "Show More Results".

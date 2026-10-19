@@ -376,7 +376,7 @@ window.PLP_CONFIG = {
       { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value: 'Rhino-Rack', label: 'Rhino-Rack' }, { value: 'Front Runner', label: 'Front Runner' }, { value: 'Thule', label: 'Thule' }, { value: 'Yakima', label: 'Yakima' }, { value: 'ROLA', label: 'ROLA' }, { value: 'Wedgetail', label: 'Wedgetail' } ] },
       { key: 'priceRange', label: 'Price', mode: 'range', options: [ { value: '0-200', label: 'Under $200' }, { value: '200-500', label: '$200 - $500' }, { value: '500-1000', label: '$500 - $1,000' }, { value: '1000-999999', label: '$1,000+' } ] },
       { key: 'availability' }, // placeholder for position — options/tooltip built by plp.js plpInitAvailabilityFacet() (spec.md §14.1)
-      { key: 'rating', label: 'Customer Rating', mode: 'atleast', options: [ { value: 4.5, label: '4.5 Stars & Up' }, { value: 4, label: '4 Stars & Up' }, { value: 3, label: '3 Stars & Up' } ] }
+      { key: 'rating', label: 'Customer Rating', mode: 'atleast', phase2: true, options: [ { value: 4.5, label: '4.5 Stars & Up' }, { value: 4, label: '4 Stars & Up' }, { value: 3, label: '3 Stars & Up' } ] }
     ]
   },
   // Zero-results state (spec Section 5) — try searching for something not in the dataset above

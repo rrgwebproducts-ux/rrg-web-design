@@ -749,7 +749,10 @@ function plpRenderScopeResults() {
 
 // Toolbar/strip bits that belong to Products only — hidden in the other views, and the Sort
 // dropdown's options swapped to that view's own set.
-const PLP_PRODUCT_SORT_OPTIONS = [['relevance', 'Relevance'], ['newest', 'Newest'], ['bestselling', 'Best Selling'], ['rating', 'Highest Rated'], ['price_low', 'Price: Low to High'], ['price_high', 'Price: High to Low']];
+// Highest Rated is Phase 2 with the card stars (Graham, 2026-10-19, spec.md §23.7). Switching Build
+// Phase reloads the page, so working this out once at load is enough.
+const PLP_PRODUCT_SORT_OPTIONS = [['relevance', 'Relevance'], ['newest', 'Newest'], ['bestselling', 'Best Selling'], ['rating', 'Highest Rated'], ['price_low', 'Price: Low to High'], ['price_high', 'Price: High to Low']]
+  .filter(([v]) => v !== 'rating' || plpBuildPhase() === 2);
 
 function plpApplyScopeChrome() {
   const isProducts = plpState.searchScope === 'products';
@@ -2346,6 +2349,10 @@ function plpApplyUrlFilters() {
 // ==== Init ====================================================================
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
+  // Facets flagged phase2 (search's Customer Rating, spec.md §23.7) only exist in Build Phase 2.
+  if (plpBuildPhase() !== 2) ['priority', 'standard'].forEach(k => {
+    if (window.PLP_CONFIG.facets?.[k]) window.PLP_CONFIG.facets[k] = window.PLP_CONFIG.facets[k].filter(f => !f.phase2);
+  });
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
   if (window.PLP_CONFIG.defaultSort) plpState.sort = window.PLP_CONFIG.defaultSort;
   plpState.heroImageMode = 'vehicle';
