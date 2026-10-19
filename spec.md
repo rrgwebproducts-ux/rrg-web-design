@@ -1823,3 +1823,11 @@ Applies to the three **caution statuses: To Be Discontinued, Clearance Line, Ove
 8. **Checkout:** Click & Collect store options currently show every state. For the 3 caution statuses, only show stores in the customer's state that have stock.
 
 **Still needed for the full rule set:** the export of every live stock status (item 22).
+
+### 23.7 Graham check-in (Brenton & Graham, 2026-10-19)
+
+Granola: "Product reviews strategy and cleanup with Graham Sowerby".
+
+1. ✅ **Built 2026-10-19:** ⏭ **Reviews out of Phase 1.** Some products have a single 1-star review (e.g. RH K420 "appalling rust after one week", YKY012 "key didn't fit the barrel"). Rather than let it hold Marc up, the **Reviews tab and the star-rating strip above the price** are Phase 2 on all 6 product pages (`.rrg-phase2`, hidden while Build Phase = 1). **Product-card stars on every listing (PLPs, VPLPs, search, clearance…) are hidden in Phase 1 too** (Brenton, same day; `plpRatingHTML`, plp.js). The company rating in the trust bar stays. When it comes back, a zero-review product still shows the widget's own "be the first to review" state.
+2. ⏳ **Reviews clean-up before Phase 2 (Brenton):** audit the bad reviews on Reviews.io and reply to, or get removed, any that are wrong or don't apply.
+3. **Scope rule from Tim:** keep everything the live site does today, with the better design. Anything new that becomes a blocker moves to Phase 2 rather than holding anyone up. Added to PDP brief A1.

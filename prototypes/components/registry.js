@@ -216,7 +216,7 @@ const RRG_COMPONENTS = [
     variants: [v('Default', 'simple', '.short-desc')] },
   { id: 'reviews-strip', group: 'product', name: 'Reviews Strip', build: 'mixed', usedOn: PDP5,
     source: 'Static per page; initReviewSummary (shared.js) — live rating from reviews.io',
-    note: 'Hidden when the product has no reviews yet (e.g. Simple).',
+    note: 'Hidden when the product has no reviews yet (e.g. Simple). Phase 2 (2026-10-19): hidden in Build Phase 1 with the Reviews tab.',
     variants: [v('With reviews', 'vehicle-specific', '.reviews-strip')] },
   { id: 'fitment-status', group: 'product', name: 'Fitment Status', build: 'shared', usedOn: ['vehicle-specific'],
     source: 'renderFitmentHTML / applyFitmentState (shared.js)',

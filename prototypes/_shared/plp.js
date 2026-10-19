@@ -1357,8 +1357,10 @@ function plpFmtMoney(n) {
 // render a star/review widget at all (not zero reviews, just not part of that page's markup),
 // so scraped Camping products carry no rating field. Hide the row rather than fabricate stars,
 // same pattern as plpSpecsHTML's existing "no specs" guard below.
+// Card stars are Phase 2 with the PDP Reviews tab (Graham, 2026-10-19, spec.md §23.7): Build Phase 1
+// leaves the row out on every listing that uses these cards.
 function plpRatingHTML(product) {
-  if (!product.rating) return '';
+  if (!product.rating || plpBuildPhase() !== 2) return '';
   const full = Math.round(product.rating);
   return `
     <div class="plp-rating">

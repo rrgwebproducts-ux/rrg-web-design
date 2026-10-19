@@ -10,6 +10,7 @@
 
 1. **Staging first.** Everything goes to staging for us to QA before it goes live.
 2. **Phase 1 = today's live product page, reskinned.** Same data, same behaviour, new layout. Nothing below needs new Magento data.
+   **If anything new turns into a blocker, don't let it hold you up:** flag it and it moves to Phase 2 (Tim, 2026-10-19). Keep what the live page has; everything else is a bonus.
 3. **Header and footer** are in their own briefs (`docs/header/`, `docs/footer/`).
 4. **Typography, colours, buttons:** use the shared tokens and classes in `prototypes/_shared/shared.css` (the `:root` variables, `.btn` + `.btn-cta` / `.btn-outline`, etc.). Add to Cart is always the gold `.btn-cta`.
 
@@ -36,7 +37,7 @@ All three Phase 1 templates are one layout. Vehicle-specific and grouped just ad
 3. Fitment Gallery (vehicle-specific only, when it has photos)
 4. Trust bar (thin, one line)
 5. USP bullets (when the product has them)
-6. Tabs: Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions · Reviews
+6. Tabs: Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions (Reviews is Phase 2, A7)
 7. Related Products
 8. Sticky bars: mobile bottom bar / desktop top bar
 
@@ -66,7 +67,7 @@ Get It Installed: dark panel with an installer photo, two ticks ("Over 200,000 r
 | SKU | "SKU: FRWTAN063" | SKU | **Click to copy** (for staff) |
 | Title (H1) | Product name | Magento | — |
 | Short description | 2 lines, then "Read more" inline | Rackit short description | Hidden if empty |
-| Star rating | Stars + "4.5 (12 Reviews)", links to the Reviews tab | Reviews.io (product reviews only) | **Hidden with 0 product reviews** (never shows the company rating) |
+| Star rating | **Phase 2, not built in Phase 1** (A7). Stars + "4.5 (12 Reviews)", links to the Reviews tab | Reviews.io (product reviews only) | **Hidden with 0 product reviews** (never shows the company rating) |
 | Price | Now price, large. When on sale: "Now" label in red + "RRP $X" struck through below | Magento price / special price | Not on sale: one black price, no labels |
 | Stock line | See A5 | Magento stock status | — |
 | **Fitment card** *(vehicle-specific only)* | A5 | Session vehicle vs the kit's vehicle | — |
@@ -114,7 +115,7 @@ Get It Installed: dark panel with an installer photo, two ticks ("Over 200,000 r
 | Fitment Gallery *(vehicle-specific)* | Customer install photos, "View All In-store Fitments (N)" | Rackit fitments (as live) | Hidden with no photos. Reskin of the live gallery |
 | Trust bar | One line, 4 items, each a link: Over 200,000 Racks Fitted · store rating ("4.3★ from 1,935 Reviews", Reviews.io company score) · Price Guarantee · 90 Day Exchange | Reviews.io for the rating | Same bar as the top of the Home page |
 | USP bullets | Red-tick list | Rackit USPs | Left out of the page when there are none |
-| **Tabs** | Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions · Reviews | below | Same content as the live tabs |
+| **Tabs** | Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions | below | Same content as the live tabs. Reviews tab is Phase 2 |
 | Related Products | Product cards carousel | Magento related products | Hidden when none |
 
 **Tabs:**
@@ -126,7 +127,7 @@ Get It Installed: dark panel with an installer photo, two ticks ("Over 200,000 r
 | Gold Guarantee | The shared CMS block (as live) |
 | Shipping Info | The **same Delivery / Click & Collect component** as the decision panel (build it once, responsive), then the live shipping copy |
 | Fitting Instructions | One **download card** per PDF (icon, title, note, "Download"). Hidden with no PDFs |
-| Reviews | The Reviews.io widget, A9. Feed it the product's SKU |
+| Reviews | **Phase 2, not built in Phase 1** (A7). The Reviews.io widget, A9. Feed it the product's SKU |
 
 **Sticky bars:** mobile, a bottom bar (thumbnail, short name, price, Add to Cart) once the real button scrolls away; desktop, a top bar (thumbnail, name, price, Add to Cart; vehicle-specific adds a compact fitment box). Same price and fitment as the panel.
 
@@ -144,6 +145,7 @@ Hidden in the prototype while Build Phase = 1:
 - Package Deal (tag, drawer, cart discount) and rack/accessory compatibility notes
 - "Discontinued, here are the alternatives" (Phase 2: Magento's superseded/successor product)
 - Vehicle compatibility list for non-vehicle-specific products
+- **Reviews:** the Reviews tab and the star rating above the price (Graham, 2026-10-19; spec.md §23.7). We're cleaning up the Reviews.io listings first. Product-card stars on listings are hidden too (PLP brief). The trust bar's company rating stays
 
 ## A8. Breadcrumbs
 
@@ -152,6 +154,8 @@ Same as the live product page today. (Magento has no "primary category", so a tr
 ---
 
 ## A9. Reviews.io widget (copy-paste)
+
+> **Phase 2 — not in Rack Friday Phase 1** (Graham, 2026-10-19). Kept here for when the Reviews tab comes back.
 
 Drop this into the Reviews tab. **Only `product_review.sku` and `questions.grouping` change per product** (a semicolon-separated list when a product has sibling SKUs). No API key needed.
 
@@ -890,6 +894,8 @@ When this gets built, follow the existing `.payment-badge`/`.pb-logo`/`.pb-text`
 
 ### 4.9 Decision Panel star-rating badge (custom-built)
 
+> **Phase 2 — not in Rack Friday Phase 1** (Graham, 2026-10-19, spec.md §23.7). Hidden in the prototype while Site Admin's Build Phase is 1, along with the Reviews tab (4.31).
+
 **Name:** Decision Panel star-rating badge
 
 **Location:** directly under the Short description line, above the Fitment Status widget/price — on all 5 templates.
@@ -1545,6 +1551,8 @@ The black block's own heading (`<h3>` above the map, e.g. "See It In Person — 
 ---
 
 ### 4.31 Reviews tab (REVIEWS.io Polaris widget)
+
+> **Phase 2 — not in Rack Friday Phase 1** (Graham, 2026-10-19, spec.md §23.7). Hidden in the prototype while Site Admin's Build Phase is 1, along with the star-rating badge (4.9).
 
 > 📷 Screenshots below are real captures, taken in the final screenshot pass, same as the rest of this document.
 
