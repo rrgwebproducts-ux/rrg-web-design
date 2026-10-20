@@ -1382,6 +1382,35 @@ function plpRatingHTML(product) {
   `;
 }
 
+// Show Specs icons (2026-10-20) — the RRG icon set (PLP Icons zip), never emoji. Keyed by spec label,
+// so the emoji still sitting in each page's demo data is ignored. Bike-rack and roof-box rows use
+// the same files the live product cards use (byte-identical); the rest are the closest match in the
+// set. Labels with no fitting icon (Bar Profile, Material, Carrier Type, Watercraft Type, Number of
+// Skis/Snowboards…) keep an empty slot so values still line up. Real build: icon per attribute,
+// the way live serves /pub/media/wysiwyg/attribute/<code>/icon.webp.
+const PLP_SPEC_ICONS = {
+  'Product Weight': 'product-weight',
+  'Max Total Weight': 'load-rating', 'Max Weight': 'load-rating', 'Load Rating': 'load-rating',
+  'Carrier Load Limit': 'load-rating', 'Tow Ball Rating': 'load-rating',
+  'Volume': 'volume',
+  'External Dimensions': 'external-dims', 'Platform Size (L x W)': 'external-dims', 'Rack Size': 'external-dims',
+  'Plank Direction': 'internal-dims',
+  'Head Height': 'dims', 'Cross Bar Qty': 'dims', 'Number of Platform Planks': 'dims',
+  'Warranty': 'warranty',
+  'Colour': 'colour',
+  'Wheel Size': 'wheel-size',
+  'Wheel Base': 'wheel-base',
+  'Mounting Style': 'install', 'Hitch Size': 'install',
+  'Coverage': 'coverage',
+  'Mount Type': 'awning-mount',
+  'Sleeping Capacity': 'sleeping-capacity',
+};
+function plpSpecIconHTML(spec) {
+  let key = PLP_SPEC_ICONS[spec.label];
+  if (spec.label === 'Tent Type') key = /soft/i.test(spec.value) ? 'tent-soft-shell' : 'tent-hard-shell';
+  return `<span class="plp-spec-icon">${key ? `<img src="${RRG_PROTO}_shared/spec-icons/${key}.webp" alt="" loading="lazy">` : ''}</span>`;
+}
+
 // On phones, Show Specs goes to the PDP's Specifications tab instead (Graham, 2026-10-15, spec.md
 // §24 item 9): two cards a row leave the spec rows one word wide. plpRenderResults() re-runs on
 // resize, so the switch follows the window. Demo products have no PDP URL, so they use Simple's.
@@ -1395,7 +1424,7 @@ function plpSpecsHTML(product) {
     <details class="plp-specs">
       <summary class="plp-specs-toggle"><span class="plp-specs-toggle-show">Show Specs</span><span class="plp-specs-toggle-hide">Hide Specs</span></summary>
       <div class="plp-specs-panel">
-        ${product.specs.map(s => `<div class="plp-spec-row"><span class="plp-spec-icon">${s.icon}</span><span class="plp-spec-label">${s.label}</span><span class="plp-spec-value">${s.value}</span></div>`).join('')}
+        ${product.specs.map(s => `<div class="plp-spec-row">${plpSpecIconHTML(s)}<span class="plp-spec-label">${s.label}</span><span class="plp-spec-value">${s.value}</span></div>`).join('')}
       </div>
     </details>
   `;
@@ -2295,6 +2324,7 @@ function plpRenderHero() {
 // (2026-09-18 resolution: don't keep the empty second column).
 function applyPlpHeroImageFlag(mode) {
   plpState.heroImageMode = mode;
+  plpApplySimpleHeroImage();
   const cfg = window.PLP_CONFIG;
   const heroSet = document.getElementById('plpHeroVehicleSet');
   if (!heroSet) return;
@@ -2324,7 +2354,6 @@ function applyPlpHeroImageFlag(mode) {
     if (img) { img.src = v ? RRG_PROTO + '_shared/' + v.image : cfg.vehicleImage; img.alt = v ? v.label : img.alt; }
     if (badge) {
       badge.hidden = v ? !v.badge : false;
-  plpApplySimpleHeroImage();
       const badgeImg = badge.querySelector('img');
       if (badgeImg && v && v.badge) badgeImg.src = RRG_PROTO + '_shared/' + v.badge;
     }

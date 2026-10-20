@@ -407,7 +407,8 @@
 .plp-specs[open] .plp-specs-toggle-hide{display:inline;}
 .plp-specs-panel{margin-top:8px;display:flex;flex-direction:column;gap:6px;background:var(--rrg-bg-warm);border-radius:var(--radius);padding:10px 12px;}
 .plp-spec-row{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--rrg-grey-700);}
-.plp-spec-icon{flex:0 0 auto;}
+.plp-spec-icon{flex:0 0 22px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
+.plp-spec-icon img{width:22px;height:22px;object-fit:contain;display:block;}
 .plp-spec-label{color:var(--rrg-grey-500);}
 .plp-spec-value{margin-left:auto;font-weight:700;}
 
