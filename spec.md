@@ -1885,9 +1885,9 @@ Marc went through the Phase 1 PLP against live `/bike-racks`. Graham's rule for 
 3. ✅ **Shop By icons:** the existing category icons. No icon: show the RRG placeholder.
 4. ✅ **Built 2026-10-20.** **Category description in the hero:** the SEO text at the bottom of live pages *is* the category description, and it moves up under the H1 (nothing at the bottom). Clamped to **4 lines on desktop**, 3 on phones, with Read more; expanding pushes the page down.
 5. ✅ **Built 2026-10-20.** **Hero image defaults to No image** on every PLP/VPLP (Demo State "Hero image"), since Phase 1 has no category or vehicle images loaded yet. It now applies to the no-vehicle hero too.
-6. ❓ **Shop By Level 3 row:** live tabs go straight to each subcategory page; the new design opens a second row of icon cards. Graham suggested hiding the Level 3 row in Phase 1 and linking as live.
-7. ❓ **Availability (stock) filter:** not on live. Marc: would anyone filter by Out of Stock? Suggested: Phase 2.
-8. ❓ **Filter icons:** live's "Number of Bikes" filter has icons (1 to 6 bikes); ours has none. Suggested: keep them where Magento already has them.
-9. ❓ **Grid vs list + spec icons:** live is a list with the spec lines always showing; ours defaults to grid with specs behind Show Specs. Long values (e.g. Thule's warranty) don't fit a grid card. Options: grid with values cut at ~30 characters and the full text on hover (Graham), or List as the Phase 1 default with specs open.
-10. ❓ **"Now" price prefix:** live shows two bare prices. Marc flagged that "Now" implies the struck price was our own previous price, when it's RRP. Suggested: drop "Now" on cards.
-11. ❓ **Vehicle prompt on Bike Racks:** live has no vehicle on the page, and not every bike rack fits every vehicle. Suggested: `vehiclePrompt` off in Phase 1 (compatibility is new functionality).
+6. ✅ **Decided (Brenton):** **Shop By Level 3 row stays in Phase 1.** Live tabs go straight to each subcategory page; the new design shows the subcategories as a second row of icons above the product cards, which is a big UX upgrade. Only if Marc finds it a major job does it drop to Phase 2 (Graham's fallback: tabs link through as live).
+7. ⏳ **Availability (stock) filter:** not on live. Marc: would anyone filter by Out of Stock? Phase 2.
+8. ⏳ **Filter icons:** live's "Number of Bikes" filter has icons (1 to 6 bikes); ours has none. Keep them where Magento already has them.
+9. ⏳ **Decided (Brenton): Grid stays the default** (the new layout), List is the toggle. Long spec values (e.g. Thule's warranty) are cut at ~30 characters in Grid with the full text on hover (Graham). Jake's icons go into Show Specs.
+10. ✅ **Decided internally: "Now" stays** on anything on sale. Marc flagged that "Now" implies the struck price was our own previous price; already discussed and settled by the team, no change.
+11. ✅ **Already agreed (§24 item 13, 15 Oct review): vehicle prompt stays** on Bike Racks, Roof Boxes and Rooftop Tents, off elsewhere. The heading is make + model ("Shop Bike Racks for your Toyota Hilux"), not the full vehicle. It only changes the hero (heading + vehicle photo); it doesn't filter the results.
