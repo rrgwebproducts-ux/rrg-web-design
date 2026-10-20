@@ -1934,6 +1934,9 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .vclp-trust-banner img.install-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;}
 .vclp-trust-inner{position:relative;max-width:760px;text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px;}
 .vclp-trust-inner h2{margin:0;color:#fff;line-height:1.15;}
+.vclp-trust-inner p{margin:0;color:#eee;font-size:16px;line-height:1.5;}
+/* "{Category} Fitting" on PLPs (fitting-banner widget, spec.md §24 item 8): the hero's Fitting button lands here. */
+.plp-fitting{scroll-margin-top:calc(var(--sticky-offset,0px) + 16px);}
 .vclp-reviews-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:#eee;}
 /* The real Reviews.io score (4.3 from 1,914, reviews.io 30 Sep 2026; was a hard-coded 4.8): four stars and a dimmed fifth. Production reads it from the Reviews.io API. */
 .vclp-reviews-badge .star-dim{opacity:.35;}

@@ -1,5 +1,59 @@
 # PLP / VPLP — Developer Brief
 
+## A. Rack Friday Phase 1 — build sheet (2026-10-20)
+
+**For Marc.** This applies to every listing on the PLP template: the standard PLPs (Bike Racks, Camping, Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers) **and** the VPLPs (Roof Racks, Vehicle Specific Accessories). Open any of them with **Site Admin → Build Phase = Phase 1** (or add `?phase=1` to the URL): everything you can see is in scope and Phase 2 hides itself. If this sheet and the long reference below disagree, **this sheet wins**. Decided with Graham on 2026-10-15 (`spec.md` §24).
+
+**Staging first:** everything goes to staging for us to QA before it goes live. **Phase 1 = today's live category page, reskinned.** If something new turns into a blocker, flag it and it moves to Phase 2.
+
+### Page order (top to bottom)
+
+1. Breadcrumbs (+ Change Vehicle on the right, when the category has the vehicle prompt and a vehicle is set)
+2. Hero: "Shop {category}" heading, description, buttons **Buyers Guide · Fitting** (+ **Set Your Vehicle** on vehicle-prompt categories). No FAQs or Videos buttons
+3. Shop By tabs (Level 2) and Level 3 cards. Icon grows **25%** on hover (fixed; the Site Admin test dropdown is gone)
+4. Toolbar: grid/list, result count, **Sort: Relevance (default) · Price: Low to High · Price: High to Low**
+5. Filters (left) + results (right), 12 per page. VPLP: the Fitment Gallery row after the first row of results, **only with 6+ fitments**
+6. **"{Category} Fitting" section** (new): installer-photo banner, "Get your {product} fitted at Roof Racks Galore. Our trained installers have fitted over 200,000.", **Book a Fitting** + **See Fitting Costs**. Standard wording on every category; only the heading and product word change. The hero's Fitting button scrolls down to it
+7. Footer
+
+### Product cards
+
+| Element | Phase 1 |
+|---|---|
+| Button | **"View Details"** (gold), goes to the PDP. The whole card links to the PDP. No Add to Cart, no View Options |
+| Price | Now / RRP as built. No "From $X" (that's siblings) |
+| Stock line | Online wording only (4.6) |
+| Show Specs | Desktop: opens the spec rows in the card. **Phones (≤640px): a link to the PDP's Specifications tab** (`{pdp-url}#specs`) |
+| VPLP | "Fits your {vehicle}" line + **Fitment Gallery (N)** button beside View Details |
+| Not shown | Star ratings, ribbons, Compare, Package Deal strip, siblings |
+
+### Category settings Marc needs to add
+
+| Setting | What it does | Default |
+|---|---|---|
+| **Vehicle prompt** (e.g. a tickbox on the category) | On: "Set Your Vehicle" button, then "Shop {category} for your {vehicle}" with the vehicle photo once a vehicle is set. Off: the plain "Shop {category}" hero, vehicle or not | **Off.** On for Bike Racks, Roof Boxes, Rooftop Tents and both VPLPs |
+| **Buyers Guide link** | Phase 1 has no category-to-guide link, so the button comes from a field or the category description (like the store pages' buttons). Hidden when not set | Your call how |
+| **Category image** | Hero image. None set (and no vehicle photo): the text runs full width, no empty box | Check Magento can already assign one |
+
+### Not in Phase 1 (hidden while Build Phase = 1)
+
+- Merchandising carousel + Featured Product (left sidebar)
+- Category videos ("Bike Rack Videos") and the hero's Videos button
+- FAQs and the hero's FAQs button
+- Related Products (Phase 2 may bring it back as Related Categories)
+- Sort options Newest, Best Selling, Highest Rated
+- Siblings on cards ("View Options", "From $X"), star ratings, ribbons, Compare, Package Deal
+- Store-aware stock wording ("In Stock at North Lakes")
+
+### Still to come
+
+- Show Specs icons: the emojis get swapped for Jake's icons
+- Clearer priority-filter labels on mobile (e.g. "Choose your brand")
+
+---
+
+# Part B — full reference
+
 > **Updated 2026-09-29 for the cross-template consistency pass** (`spec.md` §15, steps 1–5). The text now matches the current code. Screenshots are deliberately held until final handover, so some of them may still show the pre-pass look.
 
 ## 1. Project context
@@ -71,6 +125,8 @@ One shared section order, top to bottom, across all three templates (VRS-only ro
 ## 4. Component Library
 
 ### 4.1 Hero (Simple / Vehicle-Set states)
+
+> **Rack Friday Phase 1** (spec.md §24 items 8, 13): only categories with the **vehicle prompt** setting show "Set Your Vehicle" and the Vehicle-Set state (`PLP_CONFIG.vehiclePrompt`; on for Bike Racks, Roof Boxes, Rooftop Tents and the VPLPs). The **Fitting** button scrolls to the "{Category} Fitting" section (`#plpFitting`). The FAQs and Videos buttons are Phase 2.
 
 **Name:** PLP Hero
 
@@ -203,6 +259,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ### 4.6 Product Grid / List / Cards
 
+> **Rack Friday Phase 1** (spec.md §24 items 6, 7, 9): the card button is **View Details** to the PDP (no quick Add to Cart, no View Options / "From"), and on phones Show Specs links to the PDP's Specifications tab (`#specs`). Part A has the full list.
+
 **Name:** PLP Product Card
 
 **Location:** main content column, below the toolbar/Level 3 row.
@@ -251,6 +309,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ### 4.7 Fitment Gallery (VRS/VPLP only)
 
+> **Rack Friday Phase 1** (spec.md §24 item 16): the in-results row only shows with **6 or more fitments** (`PLP_FIT_GALLERY_MIN`, plp.js).
+
 **Name:** Fitment Gallery — page-level inline widget + per-row slide-out
 
 **Location:** page-level instance sits at position 2 in the results (the 2nd row in list view, or directly after the first full row in grid view); per-row instance is the "Fitment Gallery (N)" button under each VRS product's thumbnail (4.6).
@@ -268,6 +328,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 ---
 
 ### 4.8 Sort & Pagination
+
+> **Rack Friday Phase 1** (spec.md §24 item 5): Relevance · Price: Low to High · Price: High to Low only. Newest, Best Selling and Highest Rated are Phase 2 (`PLP_PHASE2_SORTS`, plp.js).
 
 **Name:** Sort dropdown / Pagination
 
@@ -287,6 +349,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ### 4.9 Merchandising Sidebar
 
+> **Phase 2 — not in Rack Friday Phase 1** (Graham, 2026-10-15, spec.md §24 item 1). Hidden while Build Phase is 1 (`plpMarkPhase2Sections`, plp.js).
+
 **Name:** Merchandising Sidebar (promo carousel + Featured Product)
 
 **Location:** directly below the Filters panel, same column.
@@ -303,6 +367,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 ### 4.10 Category Videos
 
+> **Phase 2 — not in Rack Friday Phase 1** (spec.md §24 item 3), with the hero's Videos button. Phase 2 links the videos to the category and shows them on the Buying Guide too.
+
 **Name:** Category Videos carousel
 
 **Location:** bottom of page, above the FAQ.
@@ -316,6 +382,8 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 ---
 
 ### 4.11 FAQ
+
+> **Phase 2 — not in Rack Friday Phase 1** (spec.md §24 item 2), with the hero's FAQs button. Managed at category level later.
 
 **Name:** Category FAQ accordion
 
@@ -360,6 +428,8 @@ Mentioned here only so a developer who notices these panels in the prototype's s
 ---
 
 ### 4.14 Related Products
+
+> **Dropped from Rack Friday Phase 1** (spec.md §24 item 4). Phase 2 may bring it back as Related Categories. In its place, every PLP and VPLP closes with the "{Category} Fitting" section (Part A, `fitting-banner` widget in widgets.js).
 
 **Name:** Related Products
 

@@ -1663,7 +1663,7 @@ Brenton's review after the build: red Package Deal elements read like errors, an
 
 ## 20. Graham's requests (Brenton, 2026-10-09)
 
-1. 🧪 **Shop By tab hover zoom (testing):** Graham wants to test the tabs growing on hover, starting at 25%. On every tab row (PLP, VPLP, Camping, Search) and the Level 3 icon cards, only the **icon** grows, so the row doesn't shift and the track doesn't cut it off. **Site Admin → Tab hover zoom** sets it to Off / 10% / 15% / 25% (default 15%) for comparing. At 25% the icon reaches the top edge of the tab. Touch screens never zoom. `rrgTabZoom` (shared.js) → `html[data-tab-zoom]` → plp.css. **Open:** pick a size, then remove the dropdown.
+1. 🧪 **Shop By tab hover zoom (testing):** Graham wants to test the tabs growing on hover, starting at 25%. On every tab row (PLP, VPLP, Camping, Search) and the Level 3 icon cards, only the **icon** grows, so the row doesn't shift and the track doesn't cut it off. **Site Admin → Tab hover zoom** sets it to Off / 10% / 15% / 25% (default 15%) for comparing. At 25% the icon reaches the top edge of the tab. Touch screens never zoom. `rrgTabZoom` (shared.js) → `html[data-tab-zoom]` → plp.css. **Closed 2026-10-15/20:** Graham picked **25%**; locked in and the dropdown removed (§24 item 11).
 2. ✅ **Clear Filters resets the tabs too:** Graham picked Hitch Mounting → Frame Hold, pressed Clear, and only the sidebar cleared. `plpClearFilters` (plp.js) now goes back to **Show All** with no Level 3 card, and on Search to the **All** tab, as well as clearing the filters (desktop sidebar, mobile drawer and the empty-results button). Brand pages have no tab row, so they only clear filters, as before.
 3. ✅ **Clearance page** (`prototypes/clearance/`): the header's Clearance link (desktop nav and mobile menu) now goes here. Brenton picked **both**: a sale landing on top of the full PLP.
     - **Landing:** the home page's *Overstock Clearance* banner (marketing's art, on its yellow), then an H1 + one-line intro and 3 live stats (products · up to N% off · brands), then **What Is Overstock Clearance?** (2 SEO paragraphs: brand-new discounted end-of-line/discontinued/surplus stock, limited and not reordered) and a Trust Row of 4 key points: Brand-New Stock (no B-stock, seconds or ex-display) · Full Warranty · Limited Quantities · Fitting Available (→ Installation booking).
@@ -1831,3 +1831,47 @@ Granola: "Product reviews strategy and cleanup with Graham Sowerby".
 1. ✅ **Built 2026-10-19:** ⏭ **Reviews out of Phase 1.** Some products have a single 1-star review (e.g. RH K420 "appalling rust after one week", YKY012 "key didn't fit the barrel"). Rather than let it hold Marc up, the **Reviews tab and the star-rating strip above the price** are Phase 2 on all 6 product pages (`.rrg-phase2`, hidden while Build Phase = 1). **Product-card stars on every listing (PLPs, VPLPs, search, clearance…) are hidden in Phase 1 too** (Brenton, same day; `plpRatingHTML`, plp.js). So are the **Highest Rated** sort option (every listing, `PLP_PRODUCT_SORT_OPTIONS`) and the search page's **Customer Rating** filter (`phase2: true` on the facet). The company rating in the trust bar stays. When it comes back, a zero-review product still shows the widget's own "be the first to review" state.
 2. ⏳ **Reviews clean-up before Phase 2 (Brenton):** audit the bad reviews on Reviews.io and reply to, or get removed, any that are wrong or don't apply.
 3. **Scope rule from Tim:** keep everything the live site does today, with the better design. Anything new that becomes a blocker moves to Phase 2 rather than holding anyone up. Added to PDP brief A1.
+
+## 24. PLP Phase 1 review (Brenton & Graham, 2026-10-15; written up 2026-10-20)
+
+Granola: "PLP design review and template standardization with Graham" (`Meeting Title PLP design review.txt`). Held the same day as §23 but **missed from the spec until Marc spotted the leftovers on 2026-10-20**. "PLP" here means every listing built on the PLP template: the standard PLPs (Bike Racks, Camping, Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers) **and** the VPLPs (Roof Racks, Accessories). Same status key as §23.
+
+### 24.1 Hidden or dropped in Phase 1
+1. ✅ **Built 2026-10-20.** ⏭ **Merchandising carousel + Featured Product** (left sidebar, under the filters): Phase 2.
+2. ✅ **Built 2026-10-20.** ⏭ **FAQs:** Phase 2 (managed at category level later). The hero's FAQs button goes with it.
+3. ✅ **Built 2026-10-20.** ⏭ **Category videos** ("Bike Rack Videos"): Phase 2, linked to the category and shown on both the PLP and the Buying Guide. The hero's Videos button goes with it.
+4. ✅ **Built 2026-10-20.** ⏭ **Related Products:** dropped. Phase 2 may bring it back as **Related Categories**. Phase 1 is "results, then straight to the footer" (plus the fitting section, item 8).
+5. ✅ **Built 2026-10-20.** ⏭ **Sort:** Phase 1 = **Relevance** (default) · Price: Low to High · Price: High to Low. **Newest, Best Selling and Highest Rated are Phase 2.**
+6. ✅ **Built 2026-10-20.** ⏭ **Siblings on cards:** no "View Options" and no "From $X" in Phase 1.
+
+### 24.2 Phase 1 changes
+7. ✅ **Built 2026-10-20.** **Card button = "View Details"** (as live), not Add to Cart. The whole card links to the PDP. Applies to every PLP and VPLP card.
+8. ✅ **Built 2026-10-20.** (shared `fitting-banner` widget, widgets.js; Component Library entry) **"{Category} Fitting" section** near the bottom of every PLP (and VPLP): standard template wording on every category ("Get your … fitted at Roof Racks Galore", over 200,000 fitted) and a button to the fitting page. The hero's **Fitting** button scrolls down to it.
+9. ✅ **Built 2026-10-20.** (≤640px; the PDP opens the Specifications tab for `#specs`) **Show Specs on mobile** goes to the PDP, anchored at the Specifications tab (the card columns are too narrow for the spec rows).
+10. ⏳ **Show Specs icons:** swap the emojis for the icons Jake sent. Waiting on the icon files (not in the repo).
+11. ✅ **Built 2026-10-20.** **Shop By tab hover zoom: locked at 25%**, and the Site Admin "Tab hover zoom" test dropdown comes out (closes §20 item 1).
+12. ❓ **Priority filter labels on mobile** need clearer names, e.g. "Choose your brand" rather than "Brand".
+13. ✅ **Built 2026-10-20.** (`PLP_CONFIG.vehiclePrompt`; on for Bike Racks, Roof Boxes, Rooftop Tents and both VPLPs; Awnings, Water Carriers and Snow Carriers left off, to confirm) **Vehicle prompt per category:** a category flag (e.g. a tickbox; Marc's choice) turns on the vehicle treatment: "Set Your Vehicle" in the hero, then "Shop {category} for your {vehicle}" with the vehicle photo once set. **Off by default** (the no-vehicle hero). On for the big vehicle-fitted categories: Roof Boxes, Bike Racks, Rooftop Tents. Off for e.g. Camping (a gazebo doesn't fit a vehicle).
+14. 📄 In the PLP brief (Part A). **Buyer's Guide button:** Phase 1 has no category-to-guide link, so it comes from a field or the category description (like the store pages' buttons) and shows only when set. Marc works out how.
+15. ✅ Already built (no image = full-width text); in the PLP brief. **Category hero image stays in Phase 1.** No category image and no vehicle image: the text runs full width (no empty box). Check Magento can already assign category images.
+16. ✅ **Built 2026-10-20.** (`PLP_FIT_GALLERY_MIN`) **VPLP Fitment Gallery row** (in the results) only shows with **6 or more fitments**; fewer, and it's left out.
+
+### 24.3 Phase 2 / later
+17. ⏭ Hero: the vehicle photo with a transparent category image overlaid (e.g. the Hilux with an awning).
+18. ⏭ Search: switch the results between products, pages, articles and brands.
+
+### 24.4 Timing and actions
+19. **Search results page is not in Rack Friday:** December delivery. The header search bar *is* Phase 1; its typeahead should suggest popular searches, brands and relevant pages as you type (Marc is on it).
+20. **Brands hub + brand pages:** a priority before mid-December, straight after Rack Friday. Every brand gets a page; featured brands first, then A–Z, then vehicle makes A–Z.
+21. ⏳ **Vehicle images:** stock images for the top 20 vehicles (a couple of hundred dollars is fine).
+22. ⏳ **Roof box info page** (Brenton): it says Australia throughout. Make it AU-only and add an NZ version if there isn't one.
+23. ✅ Stock messages: Marc felt they'd changed a lot. They're meant to be today's data, reworded. Validate against the stock-status export with Scott's rules (§23 item 22).
+
+### 24.5 PDP Phase 1 re-check (2026-10-20)
+
+Every product template re-checked in Build Phase 1 against §23.4–23.5 (Playwright, desktop + 390px). Two misses fixed:
+
+1. ✅ **Fixed 2026-10-20:** the **colour swatches** (Sibling-Colour) and the **Build Option picker** (Config-Variant) still showed in Phase 1, although §23 item 34 and PDP brief A7 said they were hidden. Now `.rrg-phase2`.
+2. ✅ **Fixed 2026-10-20:** the **Roof Box** template's colour swatches (siblings) also showed. Hidden in Phase 1; PDP brief A2/A7 updated.
+
+Confirmed correct, no change: reviews strip + Reviews tab, Showroom Finder, B-Stock link (Demo State control off and disabled), On Display, FAQs, discontinued alternatives, Package Deal, store-aware stock lines (Phase 1 reads "In Stock Online" + "Dispatched next business day · Click & Collect ready in-store within 2 business days", no warehouse), tabs (Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions where there are PDFs), Related Products, trust bar, and the vehicle-specific fitment card (fits / doesn't fit with **Find the right fit** only / confirm your vehicle). Phase 2 still shows everything it should.

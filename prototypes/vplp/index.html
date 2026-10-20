@@ -58,7 +58,7 @@
            .plp-crumbs-cta above, shown whenever Site Admin has a Vehicle set. -->
       <div class="plp-hero-cta-row">
         <a href="#" class="btn btn-primary">Buyers Guide</a>
-        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#plpFitting" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
         <a href="#plpVideoCarousel" class="btn btn-outline">Videos</a>
       </div>
@@ -82,7 +82,7 @@
       <div class="plp-hero-cta-row">
         <a href="#" class="btn btn-cta" data-vclp-cta="set-vehicle">Set Your Vehicle</a>
         <a href="#" class="btn btn-primary">Buyers Guide</a>
-        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#plpFitting" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
       </div>
     </div>
@@ -178,6 +178,9 @@
   </section>
 
 </main>
+
+<!-- "{Category} Fitting" (spec.md §24 item 8): the hero's Fitting button scrolls here. -->
+<div data-widget="fitting-banner" data-heading="Roof Rack Fitting" data-noun="roof rack"></div>
 
 <div data-widget="footer"></div>
 
@@ -536,6 +539,8 @@ const VPLP_RACK_IDS = ['v1', 'v2', 'v3', 'v4', 'v5', 'v10', 'v12', 'v13', 'v14',
 VPLP_PRODUCTS.forEach(p => { p.pkgCategory = VPLP_RACK_IDS.includes(p.id) ? 'rack' : null; });
 
 window.PLP_CONFIG = {
+  // Vehicle prompt on: "Set Your Vehicle" + "Shop … for your {vehicle}" hero (spec.md §24 item 13).
+  vehiclePrompt: true,
   categoryKey: 'roof-racks', vrs: true, defaultView: 'grid',
   // Every product on this Vehicle PLP is a Toyota Hilux N80 rack set — drives the fitment status
   // on each card (plpFitStatusHTML in plp.js, 2026-09-29).

@@ -20,7 +20,7 @@
 
 | Product type | Prototype | Phase 1? |
 |---|---|---|
-| Simple product (most accessories; roof boxes too) | `prototypes/simple/` (also `prototypes/roof-box/`) | **Yes** |
+| Simple product (most accessories; roof boxes too) | `prototypes/simple/` (also `prototypes/roof-box/`) | **Yes**, without the roof box's colour swatches |
 | Vehicle-specific kit (rack for one vehicle) | `prototypes/vehicle-specific/` | **Yes**, without the Build Option picker |
 | Grouped / bundle (several products sold as one) | `prototypes/grouped-bundle/` | **Yes** |
 | Build options (e.g. Assembled vs Flat Pack) | `prototypes/config-variant/` | No, Phase 2 |
@@ -141,7 +141,7 @@ Hidden in the prototype while Build Phase = 1:
 - Store-aware stock lines ("In stock at Kedron, collect today…")
 - B-Stock / Ex-Demo link and drawer
 - FAQs (Phase 2: category-level questions, max 8, the product's own first)
-- Build Option picker and colour swatches (the config-variant and sibling-colour templates)
+- Build Option picker and colour swatches (the config-variant and sibling-colour templates, and the roof box's colour swatches): each option or colour is its own product page in Phase 1
 - Package Deal (tag, drawer, cart discount) and rack/accessory compatibility notes
 - "Discontinued, here are the alternatives" (Phase 2: Magento's superseded/successor product)
 - Vehicle compatibility list for non-vehicle-specific products

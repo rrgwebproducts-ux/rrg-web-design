@@ -9,6 +9,7 @@
 //                                        buying-guide.js, which the page must also load)
 //   <div data-widget="brands-strip"></div>     "Shop The Best Brands" logo band (options below)
 //   <div data-widget="trust-bar"></div>        thin one-line trust bar (Home top, product pages)
+//   <div data-widget="fitting-banner"></div>   "{Category} Fitting" section closing PLPs/VPLPs
 //
 // rrgMountWidgets() swaps each placeholder for the widget's markup (the placeholder itself is
 // replaced, not filled, so the page's element order is exactly what it was — e.g. the footer stays
@@ -383,7 +384,29 @@ function rrgWidgetTrustBarHTML(opts = {}) {
 </div>`;
 }
 
+// "{Category} Fitting" section (Graham, 2026-10-15, spec.md §24 item 8): closes every PLP and VPLP,
+// the same install-photo banner as the Trust Banner. Standard wording on every category; only the
+// heading and the product word change. The hero's Fitting button scrolls down to it (#plpFitting).
+//   data-heading="Bike Rack Fitting"   data-noun="bike rack"
+function rrgWidgetFittingBannerHTML(opts = {}) {
+  const proto = typeof RRG_PROTO === 'undefined' ? '../' : RRG_PROTO;
+  return `<section class="vclp-trust-banner plp-fitting" id="plpFitting">
+  <img class="install-photo" src="${proto}_shared/installer.png" alt="" width="740" height="420" loading="lazy">
+  <div class="wrap">
+    <div class="vclp-trust-inner">
+      <h2>${opts.heading || 'Professional Fitting'}</h2>
+      <p>Get your ${opts.noun || 'gear'} fitted at Roof Racks Galore. Our trained installers have fitted over 200,000.</p>
+      <div class="vclp-trust-ctas">
+        <a href="#" class="btn btn-primary">Book a Fitting</a>
+        <a href="#" class="btn btn-outline">See Fitting Costs</a>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
 const RRG_WIDGETS = {
+  'fitting-banner': rrgWidgetFittingBannerHTML,
   'trust-bar': rrgWidgetTrustBarHTML,
   header: rrgWidgetHeaderHTML,
   footer: rrgWidgetFooterHTML,

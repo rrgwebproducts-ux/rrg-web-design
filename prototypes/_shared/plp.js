@@ -749,10 +749,12 @@ function plpRenderScopeResults() {
 
 // Toolbar/strip bits that belong to Products only — hidden in the other views, and the Sort
 // dropdown's options swapped to that view's own set.
-// Highest Rated is Phase 2 with the card stars (Graham, 2026-10-19, spec.md §23.7). Switching Build
-// Phase reloads the page, so working this out once at load is enough.
+// Phase 1 sorts are Relevance and the two price sorts only: Newest, Best Selling and Highest Rated
+// are Phase 2 (Graham, 2026-10-15, spec.md §24 item 5; Highest Rated also goes with the card stars,
+// §23.7). Switching Build Phase reloads the page, so working this out once at load is enough.
+const PLP_PHASE2_SORTS = ['newest', 'bestselling', 'rating'];
 const PLP_PRODUCT_SORT_OPTIONS = [['relevance', 'Relevance'], ['newest', 'Newest'], ['bestselling', 'Best Selling'], ['rating', 'Highest Rated'], ['price_low', 'Price: Low to High'], ['price_high', 'Price: High to Low']]
-  .filter(([v]) => v !== 'rating' || plpBuildPhase() === 2);
+  .filter(([v]) => !PLP_PHASE2_SORTS.includes(v) || plpBuildPhase() === 2);
 
 function plpApplyScopeChrome() {
   const isProducts = plpState.searchScope === 'products';
@@ -1330,7 +1332,9 @@ function plpPriceHTML(product) {
     return `<div class="plp-price plp-price-v2"><div class="plp-price-v2-row"><span class="plp-price-poa">Price on Application</span></div></div>`;
   }
   const now = plpFmtMoney(product.price);
-  const from = product.hasOptions ? `<span class="plp-price-label">From</span>` : '';
+  // No siblings in Phase 1 (spec.md §24 item 6), so no "From" either.
+  const hasOptions = product.hasOptions && plpBuildPhase() === 2;
+  const from = hasOptions ? `<span class="plp-price-label">From</span>` : '';
   if (!product.wasPrice) {
     return `<div class="plp-price plp-price-v2"><div class="plp-price-v2-row"><span class="plp-price-v2-now">${from}<span class="plp-price-now">${now}</span></span></div></div>`;
   }
@@ -1338,7 +1342,7 @@ function plpPriceHTML(product) {
   // "From $X", with the RRP beside it. The "RRP" prefix is dropped on cards (2026-09-30, spec.md
   // §16 item 21; the PDP keeps it). Flagged for Graham: the ACCC treats an unlabelled strikethrough
   // as the business's own previous price — see docs/2026-09-30-design-review-analysis.md #21.
-  const nowLabel = product.hasOptions ? '' : `<span class="plp-price-label">Now</span>`;
+  const nowLabel = hasOptions ? '' : `<span class="plp-price-label">Now</span>`;
   return `
     <div class="plp-price plp-price-v2 plp-price-on-sale-v2">
       <div class="plp-price-v2-row">
@@ -1374,8 +1378,15 @@ function plpRatingHTML(product) {
   `;
 }
 
+// On phones, Show Specs goes to the PDP's Specifications tab instead (Graham, 2026-10-15, spec.md
+// §24 item 9): two cards a row leave the spec rows one word wide. plpRenderResults() re-runs on
+// resize, so the switch follows the window. Demo products have no PDP URL, so they use Simple's.
 function plpSpecsHTML(product) {
   if (!product.specs || !product.specs.length) return '';
+  if (window.matchMedia('(max-width: 640px)').matches) {
+    const pdp = product.url && product.url !== '#' ? product.url : RRG_PROTO + 'simple/index.html';
+    return `<a class="plp-specs plp-specs-toggle plp-specs-link" href="${pdp}#specs">Show Specs</a>`;
+  }
   return `
     <details class="plp-specs">
       <summary class="plp-specs-toggle"><span class="plp-specs-toggle-show">Show Specs</span><span class="plp-specs-toggle-hide">Hide Specs</span></summary>
@@ -1538,6 +1549,11 @@ function plpPrimaryActionHTML(product, blockClass) {
   }
   if (!product.price) {
     return `<a href="${product.url || '#'}" class="btn btn-outline plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Details</a>`;
+  }
+  // Rack Friday Phase 1 (Graham, 2026-10-15, spec.md §24 items 6-7): every card says "View Details"
+  // and goes to the PDP, as the live site does. No quick Add to Cart, and no siblings (View Options).
+  if (plpBuildPhase() === 1) {
+    return `<a href="${product.url || '#'}" class="btn btn-cta plp-view-details-btn${blockClass ? ' ' + blockClass : ''}">View Details</a>`;
   }
   if (product.hasOptions) {
     return `<a href="#" class="btn btn-cta plp-view-options-btn${blockClass ? ' ' + blockClass : ''}">View Options</a>`;
@@ -1768,8 +1784,9 @@ function plpRenderResults() {
   // full row" without measuring live responsive reflow, same simplification this prototype
   // set already applies elsewhere to "row"-based rules that only truly hold at one
   // breakpoint). Only on VRS categories with a vehicle set — never standard PLPs, never
-  // Simple state.
-  if (cfg.vrs && plpVehicleIsSet() && total > 0) {
+  // Simple state. Needs at least PLP_FIT_GALLERY_MIN fitments to fill the row; fewer and it's left
+  // out (Graham, 2026-10-15, spec.md §24 item 16).
+  if (cfg.vrs && plpVehicleIsSet() && total > 0 && plpFitGalleryCount() >= PLP_FIT_GALLERY_MIN) {
     const insertAt = Math.min(plpState.view === 'list' ? 2 : plpState.gridCols, cardsArr.length);
     cardsArr.splice(insertAt, 0, plpFitGallerySectionHTML());
   }
@@ -1788,7 +1805,7 @@ function plpRenderResults() {
   plpRenderPagination(total);
   plpBindCardEvents();
   if (cfg.isSearch) plpRenderSearchVehicleStrip();
-  if (cfg.vrs && plpVehicleIsSet()) {
+  if (cfg.vrs && plpVehicleIsSet() && plpFitGalleryCount() >= PLP_FIT_GALLERY_MIN) {
     plpInitFitGalleryWidget();
   }
 }
@@ -1872,7 +1889,9 @@ function plpInitToolbar() {
   // Options come from the one list (PLP_PRODUCT_SORT_OPTIONS) instead of being repeated in every
   // page's markup (spec.md §15 L6).
   // A page can add its own (PLP_CONFIG.sortOptions — Clearance adds Biggest Saving, its default).
-  if (sortSelect && !sortSelect.options.length) sortSelect.innerHTML = (window.PLP_CONFIG.sortOptions || PLP_PRODUCT_SORT_OPTIONS).map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+  if (sortSelect && !sortSelect.options.length) sortSelect.innerHTML = (window.PLP_CONFIG.sortOptions || PLP_PRODUCT_SORT_OPTIONS)
+    .filter(([v]) => !PLP_PHASE2_SORTS.includes(v) || plpBuildPhase() === 2)
+    .map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
   if (sortSelect) sortSelect.value = plpState.sort;
   if (sortSelect) sortSelect.addEventListener('change', () => {
     if (window.PLP_CONFIG.isSearch && plpState.searchScope !== 'products') {
@@ -2091,9 +2110,13 @@ function plpInitMerchCarousel() {
 }
 
 // ==== Fitment Gallery (page-level, VPLP only) — reuses shared.js's PDP widget as-is =======
+const PLP_FIT_GALLERY_MIN = 6;
+function plpFitGalleryCount() {
+  return window.PLP_CONFIG.fitGalleryCount ?? 300;
+}
 function plpFitGallerySectionHTML() {
   return `
-  <section class="fit-gallery-section plp-fitgallery-inline" id="fitGallerySection" data-count="${window.PLP_CONFIG.fitGalleryCount || 300}">${fitGalleryPanelHTML(window.PLP_CONFIG.fitGalleryCount || 300)}</section>`;
+  <section class="fit-gallery-section plp-fitgallery-inline" id="fitGallerySection" data-count="${plpFitGalleryCount()}">${fitGalleryPanelHTML(plpFitGalleryCount())}</section>`;
 }
 
 // Re-run on every plpRenderResults() call (filters/sort/paging all re-insert this section
@@ -2231,13 +2254,23 @@ function plpVehicleIsSet() {
   return typeof rrgSessionGet === 'function' ? rrgSessionGet('vehicleSet') : true;
 }
 
+// Vehicle prompt per category (Graham, 2026-10-15, spec.md §24 item 13): only categories flagged
+// cfg.vehiclePrompt get "Set Your Vehicle" and the "Shop {category} for your {vehicle}" hero; the
+// rest always show the plain hero, vehicle or not (a gazebo doesn't fit a Hilux). Off by default.
+// Production: a category attribute (e.g. a tickbox) that Marc adds.
+function plpVehiclePromptOn() {
+  return !!window.PLP_CONFIG.vehiclePrompt;
+}
+
 function plpRenderHero() {
   const cfg = window.PLP_CONFIG;
   const heroSet = document.getElementById('plpHeroVehicleSet');
   const heroSimple = document.getElementById('plpHeroSimple');
-  const isSet = plpVehicleIsSet();
+  const prompt = plpVehiclePromptOn();
+  const isSet = plpVehicleIsSet() && prompt;
   if (heroSet) heroSet.hidden = !isSet;
   if (heroSimple) heroSimple.hidden = isSet;
+  heroSimple?.querySelectorAll('[data-vclp-cta="set-vehicle"]').forEach(b => { b.hidden = !prompt; });
   // VRS categories: no vehicle set still shows the real, unfiltered catalogue (spec Section
   // 2's live-site finding) plus this CTA banner — never gated/empty.
   const vrsBanner = document.getElementById('plpVrsNoVehicleBanner');
@@ -2346,9 +2379,19 @@ function plpApplyUrlFilters() {
   [...(cfg.facets.priority || []), ...(cfg.facets.standard || [])].forEach(f => { if (q.get(f.key)) q.get(f.key).split(',').forEach(v => add(f.key, v)); });
 }
 
+// ==== Rack Friday Phase 1 (Graham, 2026-10-15, spec.md §24 items 1-4) ==========================
+// The merch carousel + Featured Product sidebar, category videos, FAQs and Related Products are
+// Phase 2 on every PLP-family page, and so are the hero buttons that jump to them. Marked here once
+// instead of in every page's markup; the .rrg-phase2 rule (shared.css) hides them in Build Phase 1.
+function plpMarkPhase2Sections() {
+  document.querySelectorAll('#plpMerchSidebar, #plpVideoCarousel, #faqSection, .plp-layout ~ .related-section, .plp-hero-cta-row a[href="#faqSection"], .plp-hero-cta-row a[href="#plpVideoCarousel"]')
+    .forEach(el => el.classList.add('rrg-phase2'));
+}
+
 // ==== Init ====================================================================
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
+  plpMarkPhase2Sections();
   // Facets flagged phase2 (search's Customer Rating, spec.md §23.7) only exist in Build Phase 2.
   if (plpBuildPhase() !== 2) ['priority', 'standard'].forEach(k => {
     if (window.PLP_CONFIG.facets?.[k]) window.PLP_CONFIG.facets[k] = window.PLP_CONFIG.facets[k].filter(f => !f.phase2);

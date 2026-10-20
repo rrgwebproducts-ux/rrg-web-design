@@ -53,7 +53,7 @@
            .plp-crumbs-cta above, shown whenever Site Admin has a Vehicle set. -->
       <div class="plp-hero-cta-row">
         <a href="#" class="btn btn-primary">Buyers Guide</a>
-        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#plpFitting" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
       </div>
     </div>
@@ -76,7 +76,7 @@
       <div class="plp-hero-cta-row">
         <a href="#" class="btn btn-cta" data-vclp-cta="set-vehicle">Set Your Vehicle</a>
         <a href="#" class="btn btn-primary">Buyers Guide</a>
-        <a href="#" class="btn btn-outline">Fitting</a>
+        <a href="#plpFitting" class="btn btn-outline">Fitting</a>
         <a href="#faqSection" class="btn btn-outline">FAQs</a>
       </div>
     </div>
@@ -144,6 +144,9 @@
   </section>
 
 </main>
+
+<!-- "{Category} Fitting" (spec.md §24 item 8): the hero's Fitting button scrolls here. -->
+<div data-widget="fitting-banner" data-heading="Accessory Fitting" data-noun="accessories"></div>
 
 <div data-widget="footer"></div>
 
@@ -231,6 +234,8 @@ const VPLP_ACC_FAQS = {
 };
 
 window.PLP_CONFIG = {
+  // Vehicle prompt on: "Set Your Vehicle" + "Shop … for your {vehicle}" hero (spec.md §24 item 13).
+  vehiclePrompt: true,
   categoryKey: 'vehicle-specific-accessories', vrs: false, defaultView: 'grid',
   // Every product here is made for the Toyota Hilux N80 — drives the fitment status on each card.
   allProductsFitVehicle: 'toyota-hilux-n80',
