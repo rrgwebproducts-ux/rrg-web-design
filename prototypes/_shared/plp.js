@@ -1059,7 +1059,7 @@ function plpFilterGroupHTML(facetDef, isPriority) {
     return `
       <label class="plp-filter-option ${count === 0 && !checked ? 'is-zero' : ''}">
         <input type="checkbox" data-facet="${facetDef.key}" value="${opt.value}" ${checked ? 'checked' : ''}>
-        <span>${opt.label}</span>
+        ${opt.icon ? `<img class="plp-filter-option-icon" src="${opt.icon}" alt="" loading="lazy">` : ''}<span>${opt.label}</span>
         <span class="plp-filter-count">${count}</span>
       </label>
     `;
@@ -1177,6 +1177,12 @@ function plpClearFilters() {
 // the store is unset.
 function plpInitAvailabilityFacet() {
   const standard = window.PLP_CONFIG.facets.standard;
+  // Phase 2 only (Marc, 2026-10-20, spec.md §24.6 item 7): live has no stock filter.
+  if (plpBuildPhase() !== 2) {
+    const at = standard.findIndex(f => f.key === 'availability');
+    if (at >= 0) standard.splice(at, 1);
+    return;
+  }
   const def = {
     key: 'availability', label: 'Availability', mode: 'stock',
     get options() { return rrgAvailabilityOptions(); },
@@ -1414,6 +1420,18 @@ function plpSpecIconHTML(spec) {
 // On phones, Show Specs goes to the PDP's Specifications tab instead (Graham, 2026-10-15, spec.md
 // §24 item 9): two cards a row leave the spec rows one word wide. plpRenderResults() re-runs on
 // resize, so the switch follows the window. Demo products have no PDP URL, so they use Simple's.
+// Grid cards are too narrow for long values like Thule's warranty ("2 Years plus an extra 3 Years
+// when registered on Thule's website after purchase"), so Grid cuts them at 30 characters and
+// shows the full value on hover (Graham, 2026-10-20, spec.md §24.6 item 9). List view shows USPs, not specs.
+const PLP_SPEC_VALUE_MAX = 30;
+function plpSpecValueHTML(value) {
+  const full = String(value);
+  if (plpState.view !== 'grid' || full.length <= PLP_SPEC_VALUE_MAX) return `<span class="plp-spec-value">${full}</span>`;
+  const cut = full.slice(0, PLP_SPEC_VALUE_MAX).replace(/[\s,.;:-]+\S*$/, '').trimEnd() + '…';
+  const attr = full.replace(/"/g, '&quot;');
+  return `<span class="plp-spec-value is-cut" title="${attr}" aria-label="${attr}" tabindex="0">${cut}</span>`;
+}
+
 function plpSpecsHTML(product) {
   if (!product.specs || !product.specs.length) return '';
   if (window.matchMedia('(max-width: 640px)').matches) {
@@ -1424,7 +1442,7 @@ function plpSpecsHTML(product) {
     <details class="plp-specs">
       <summary class="plp-specs-toggle"><span class="plp-specs-toggle-show">Show Specs</span><span class="plp-specs-toggle-hide">Hide Specs</span></summary>
       <div class="plp-specs-panel">
-        ${product.specs.map(s => `<div class="plp-spec-row">${plpSpecIconHTML(s)}<span class="plp-spec-label">${s.label}</span><span class="plp-spec-value">${s.value}</span></div>`).join('')}
+        ${product.specs.map(s => `<div class="plp-spec-row">${plpSpecIconHTML(s)}<span class="plp-spec-label">${s.label}</span>${plpSpecValueHTML(s.value)}</div>`).join('')}
       </div>
     </details>
   `;

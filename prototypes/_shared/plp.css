@@ -130,6 +130,9 @@
 .plp-filter-option{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:14px;color:var(--rrg-grey-700);cursor:pointer;}
 .plp-filter-option input{accent-color:var(--rrg-red);width:16px;height:16px;flex:0 0 auto;}
 .plp-filter-option span:nth-child(2){flex:1;}
+/* Option icons where Magento has them, e.g. live's bike-count icons (spec.md §24.6 item 8). */
+.plp-filter-option-icon{width:28px;height:28px;object-fit:contain;flex:0 0 auto;}
+.plp-filter-option-icon + span{flex:1;}
 .plp-filter-option.is-zero{opacity:.4;}
 .plp-filter-count{color:var(--rrg-grey-400);font-size:12px;}
 
@@ -410,7 +413,8 @@
 .plp-spec-icon{flex:0 0 22px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
 .plp-spec-icon img{width:22px;height:22px;object-fit:contain;display:block;}
 .plp-spec-label{color:var(--rrg-grey-500);}
-.plp-spec-value{margin-left:auto;font-weight:700;}
+.plp-spec-value{margin-left:auto;font-weight:700;text-align:right;}
+.plp-spec-value.is-cut{cursor:help;}
 
 .plp-card-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
 /* Non-VRS grid card's single primary action ("Add to Cart" or "View Options" — plp.js
