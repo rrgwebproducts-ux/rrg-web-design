@@ -33,7 +33,8 @@
 |---|---|---|
 | **Vehicle prompt** (e.g. a tickbox on the category) | On: "Set Your Vehicle" button, then "Shop {category} for your {vehicle}" with the vehicle photo once a vehicle is set. Off: the plain "Shop {category}" hero, vehicle or not | **Off.** On for Bike Racks, Roof Boxes, Rooftop Tents and both VPLPs |
 | **Buyers Guide link** | Phase 1 has no category-to-guide link, so the button comes from a field or the category description (like the store pages' buttons). Hidden when not set | Your call how |
-| **Category image** | Hero image. None set (and no vehicle photo): the text runs full width, no empty box | Check Magento can already assign one |
+| **Category image** | Hero image. None set (and no vehicle photo): the text runs full width, no empty box. **Phase 1 launches with none loaded**, so the prototype's Demo State "Hero image" defaults to No image | Check Magento can already assign one |
+| **Category description** | The hero text under the H1. This is the existing category description, the SEO copy that sits at the bottom of the live pages today. It moves up, and nothing stays at the bottom. Clamped to 4 lines on desktop / 3 on phones with Read more (4.1) | Existing description, no new field |
 
 ### Not in Phase 1 (hidden while Build Phase = 1)
 
@@ -139,6 +140,7 @@ One shared section order, top to bottom, across all three templates (VRS-only ro
 **Layout:**
 - **Desktop:** two columns, text (1.3fr) and photo (1fr). The text is **top-aligned**, not centred against the photo. Centring made the H1 jump by up to 38px between Shop By tabs as the description length changed. Now the H1, description and buttons always start at the same spot.
 - **Desktop photo box:** a fixed **250px** tall, `object-fit: cover`. It used to be a 3:2 box (about 346px), which left about 180px of empty space above Shop By. 250px sits just above the tallest heading + description + buttons across every tab, so the hero keeps one height and Shop By never moves.
+- **Description clamp (desktop, 2026-10-20):** the description is the category's SEO description, so it can be long. Above 900px it's **clamped to 4 lines** with the same Read more / Read less link. Expanding pushes the page down.
 - **Mobile (900px and below):** one column, photo first. The description is **clamped to 3 lines** with a "Read more" / "Read less" link (`.link-btn.plp-hero-readmore`, `plpApplyHeroReadMore()`), shown only when the text is actually cut off. The H1 keeps a 2-line minimum height and the description a 3-line minimum. The Read more link keeps its space even when it's hidden (`visibility`, not `display`). Together these mean Shop By and the toolbar don't move under your thumb as you tap through tabs.
 
 **Contents:**
@@ -148,7 +150,7 @@ One shared section order, top to bottom, across all three templates (VRS-only ro
 - **Simple:** no vehicle photo — a 3-state image fallback applies instead (vehicle photo → category image, if one's configured → no image at all, collapsing to full width rather than leaving an empty column, 2026-09-18 resolution). H1 reverts to the category on its own ("Shop Bike Racks"). **Every hero H1 starts "Shop"** (2026-10-02, Brenton): "Shop {category} for your {vehicle}" with a vehicle, "Shop {category}" without, including every Shop By tab's heading ("Shop Roof Mounted Bike Racks for your Toyota Hilux"). A gold "Set Your Vehicle" CTA (`.btn-cta`) leads the CTA row and opens the site-wide Fit Finder drawer (not a new component).
 - **VRS with no vehicle set, specifically:** never gated or empty — shows the real, unfiltered catalogue across every vehicle plus a CTA banner to open the vehicle drawer (matches a live-site reality check done 2026-09-17, replacing the live site's inline 5-field widget with the existing drawer).
 
-**Toggle (dev/demo only):** the Vehicle-Set/Simple state isn't a PLP-specific control. It follows the Site Admin Panel's **Vehicle** select (None / Toyota Hilux / Ford Ranger; `rrgVehicle()` in `session-state.js`), the one session vehicle the header, PDPs, VCLP and search all read. It replaced the old "Vehicle Set" checkbox on 2026-09-29. The 3-state hero image fallback (vehicle/category/none) has its own "Hero image" preview in the Demo State Panel. It is independent of the vehicle, so a reviewer can see all 3 image states without changing the session vehicle. It is disabled, with a hint, when no vehicle is set.
+**Toggle (dev/demo only):** the Vehicle-Set/Simple state isn't a PLP-specific control. It follows the Site Admin Panel's **Vehicle** select (None / Toyota Hilux / Ford Ranger; `rrgVehicle()` in `session-state.js`), the one session vehicle the header, PDPs, VCLP and search all read. It replaced the old "Vehicle Set" checkbox on 2026-09-29. The 3-state hero image fallback (vehicle/category/none) has its own "Hero image" preview in the Demo State Panel. It is independent of the vehicle, so a reviewer can see all 3 image states without changing the session vehicle. **Defaults to No image** (2026-10-20, Phase 1 has no category or vehicle images loaded yet) and applies to both heroes; with no vehicle set, "Vehicle photo" shows the category image.
 
 **Screenshots:**
 - Vehicle-Set: ![Hero — Vehicle-Set](plp-dev-brief-assets/hero-vehicleset.png)
@@ -416,7 +418,7 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 ### 4.13 Demo State Panel
 
 **Not part of the actual design — used to demo different states across this page family only, do not build this in Magento.** It is the same floating "Demo State" panel as the PDP templates (`DEVELOPER-BRIEF.md` 4.36). Since the 2026-09-29 pass it shows **only the controls that work on the page you're on**. On PLP, Camping and VPLP that means two sections:
-- **Hero image:** Vehicle photo / Category image / No image, the 3-state fallback preview (4.1). It is disabled, with a hint, when no vehicle is set.
+- **Hero image:** No image (default since 2026-10-20) / Vehicle photo / Category image, the 3-state fallback preview (4.1). Works with or without a vehicle set.
 - **Phase 2 previews:** Compare Products (4.12) and Product ribbons (Bestseller, Staff Pick; 4.6). Both are off by default and disabled, with a hint, until Site Admin is on Build Phase 2.
 
 The PDP-only product-state controls no longer appear here. The old "Default view" and "Grid columns" (3 or 4 per row) controls were **removed**: 3 per row is locked, and the page has its own Grid/List toggle. Choices are saved per template (`rrgDemo:<template>`) and cleared by Site Admin → "Reset all demo settings".

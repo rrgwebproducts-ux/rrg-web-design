@@ -1875,3 +1875,19 @@ Every product template re-checked in Build Phase 1 against §23.4–23.5 (Playwr
 2. ✅ **Fixed 2026-10-20:** the **Roof Box** template's colour swatches (siblings) also showed. Hidden in Phase 1; PDP brief A2/A7 updated.
 
 Confirmed correct, no change: reviews strip + Reviews tab, Showroom Finder, B-Stock link (Demo State control off and disabled), On Display, FAQs, discontinued alternatives, Package Deal, store-aware stock lines (Phase 1 reads "In Stock Online" + "Dispatched next business day · Click & Collect ready in-store within 2 business days", no warehouse), tabs (Details · Specifications · Gold Guarantee · Shipping Info · Fitting Instructions where there are PDFs), Related Products, trust bar, and the vehicle-specific fitment card (fits / doesn't fit with **Find the right fit** only / confirm your vehicle). Phase 2 still shows everything it should.
+
+### 24.6 Marc's PLP questions (Slack group DM, 2026-10-20)
+
+Marc went through the Phase 1 PLP against live `/bike-racks`. Graham's rule for all of these: Phase 1 does what live does today, in the new design; anything new doesn't block (§23.7).
+
+1. ✅ **Infinite scroll:** goes. Numbered pagination stays so people can reach the content and footer below the results (Graham).
+2. ✅ **Book a Fitting:** links to the current `/roof-rack-installation-and-fitting-costs` page. The booking page is a later phase.
+3. ✅ **Shop By icons:** the existing category icons. No icon: show the RRG placeholder.
+4. ✅ **Built 2026-10-20.** **Category description in the hero:** the SEO text at the bottom of live pages *is* the category description, and it moves up under the H1 (nothing at the bottom). Clamped to **4 lines on desktop**, 3 on phones, with Read more; expanding pushes the page down.
+5. ✅ **Built 2026-10-20.** **Hero image defaults to No image** on every PLP/VPLP (Demo State "Hero image"), since Phase 1 has no category or vehicle images loaded yet. It now applies to the no-vehicle hero too.
+6. ❓ **Shop By Level 3 row:** live tabs go straight to each subcategory page; the new design opens a second row of icon cards. Graham suggested hiding the Level 3 row in Phase 1 and linking as live.
+7. ❓ **Availability (stock) filter:** not on live. Marc: would anyone filter by Out of Stock? Suggested: Phase 2.
+8. ❓ **Filter icons:** live's "Number of Bikes" filter has icons (1 to 6 bikes); ours has none. Suggested: keep them where Magento already has them.
+9. ❓ **Grid vs list + spec icons:** live is a list with the spec lines always showing; ours defaults to grid with specs behind Show Specs. Long values (e.g. Thule's warranty) don't fit a grid card. Options: grid with values cut at ~30 characters and the full text on hover (Graham), or List as the Phase 1 default with specs open.
+10. ❓ **"Now" price prefix:** live shows two bare prices. Marc flagged that "Now" implies the struck price was our own previous price, when it's RRP. Suggested: drop "Now" on cards.
+11. ❓ **Vehicle prompt on Bike Racks:** live has no vehicle on the page, and not every bike rack fits every vehicle. Suggested: `vehiclePrompt` off in Phase 1 (compatibility is new functionality).

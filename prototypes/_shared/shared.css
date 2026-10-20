@@ -159,8 +159,13 @@ h1,h2,h3,h4{
   [data-plp-page] .plp-hero>div>p{min-height:calc(1.6em * 3);margin-bottom:4px;}
   [data-plp-page] .plp-hero>div>p:not(.is-expanded){display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 }
+/* Desktop: 4 lines with Read more (2026-10-20). The hero text is now the category description,
+   which is the long SEO copy from the bottom of the live pages. Expanding pushes the page down. */
+@media (min-width:901px){
+  [data-plp-page] .plp-hero>div>p{margin-bottom:4px;}
+  [data-plp-page] .plp-hero>div>p:not(.is-expanded){display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+}
 .plp-hero-readmore{margin-bottom:12px;}
-@media (min-width:901px){.plp-hero-readmore{display:none!important;}}
 
 /* Breadcrumb row + Change Vehicle CTA (2026-09-18 design review — Graham: the button barely
    gets used once a vehicle is set, so it should sit out of the way up by the breadcrumbs

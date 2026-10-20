@@ -322,7 +322,8 @@ const RRG_COMPONENTS = [
   { id: 'category-hero', group: 'listing', name: 'Category Hero', build: 'mixed', usedOn: ['vehicle-category-landing', 'vlp', ...PLP3],
     source: 'Static (both states in the page); plpRenderHero / applyPlpHeroImageFlag (plp.js)',
     variants: [
-      v('PLP — vehicle set', 'plp', '#plpHeroVehicleSet'),
+      v('PLP — vehicle set', 'plp', '#plpHeroVehicleSet', { ls: demo('plp', { 'r:plpHeroImage': 'vehicle' }) }),
+      v('PLP — no image (Phase 1 default)', 'plp', '#plpHeroVehicleSet'),
       v('PLP — category image', 'plp', '#plpHeroVehicleSet', { ls: demo('plp', { 'r:plpHeroImage': 'category' }) }),
       v('PLP — no vehicle', 'plp', '.plp-hero:not(#plpHeroVehicleSet)', { ls: S.noVehicle }),
       v('VPLP', 'vplp', '.plp-hero'),

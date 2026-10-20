@@ -290,17 +290,21 @@ document.addEventListener('rrg-session-change', () => setTimeout(plpApplyHeroRea
 
 // Simple (no-vehicle) hero's image follows the same vehicle → category → none fallback as the
 // Vehicle-Set hero's Demo State Panel preview (see applyPlpHeroImageFlag()) — no vehicle photo
-// applies here (there's no vehicle), so it's just category → none.
-function plpApplyCategoryImage() {
+// applies here (there's no vehicle), so it's just category → none. Demo State "No image" (the
+// default since 2026-10-20: Phase 1 has no category or vehicle images loaded yet) hides it too.
+function plpApplySimpleHeroImage() {
   const heroSimple = document.getElementById('plpHeroSimple');
   if (heroSimple) {
-    const img = plpActiveCategoryImage();
+    const img = plpState.heroImageMode === 'none' ? null : plpActiveCategoryImage();
     const mediaWrap = heroSimple.querySelector('.plp-hero-media');
     const imgEl = mediaWrap ? mediaWrap.querySelector('img') : null;
     heroSimple.classList.toggle('no-media', !img);
     if (mediaWrap) mediaWrap.hidden = !img;
     if (imgEl && img) imgEl.src = img;
   }
+}
+function plpApplyCategoryImage() {
+  plpApplySimpleHeroImage();
   // Re-apply the Vehicle-Set hero's own image only if the Demo State Panel is currently
   // previewing the "category" state — "vehicle" mode is untouched by tab changes.
   if (plpState.heroImageMode === 'category') applyPlpHeroImageFlag('category');
@@ -2320,6 +2324,7 @@ function applyPlpHeroImageFlag(mode) {
     if (img) { img.src = v ? RRG_PROTO + '_shared/' + v.image : cfg.vehicleImage; img.alt = v ? v.label : img.alt; }
     if (badge) {
       badge.hidden = v ? !v.badge : false;
+  plpApplySimpleHeroImage();
       const badgeImg = badge.querySelector('img');
       if (badgeImg && v && v.badge) badgeImg.src = RRG_PROTO + '_shared/' + v.badge;
     }
@@ -2398,7 +2403,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
   if (window.PLP_CONFIG.defaultSort) plpState.sort = window.PLP_CONFIG.defaultSort;
-  plpState.heroImageMode = 'vehicle';
+  plpState.heroImageMode = 'none';
   // ?q= (set by the header search dropdown's "View All Results" link, 2026-09-22) takes
   // priority over the page's own demo default so a real typed query actually lands here.
   if (window.PLP_CONFIG.isSearch) {
@@ -2426,7 +2431,7 @@ document.addEventListener('DOMContentLoaded', () => {
   plpRenderCategoryContent();
   window.addEventListener('resize', () => plpRenderResults());
   document.addEventListener('rrg-session-change', plpRenderHero);
-  document.addEventListener('rrg-session-change', () => { plpRenderCategoryContent(); if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(plpState.heroImageMode || 'vehicle'); });
+  document.addEventListener('rrg-session-change', () => { plpRenderCategoryContent(); if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(plpState.heroImageMode || 'none'); });
   document.addEventListener('rrg-session-change', plpApplyCategoryImage);
   // A new vehicle turns the brand page's "Fits your {vehicle}" filter back on (brand-spec.md §4).
   document.addEventListener('rrg-session-change', () => { plpState.vehicleFilterOff = false; plpState.page = 1; if (window.PLP_CONFIG.vehicleFilter) plpRenderFilters(); });

@@ -3584,8 +3584,9 @@ function buildAdminPanel() {
   }
   if (isPlpPage && !isSearchPage) {
     html += section('Hero image',
-      choice('plpHeroImage', 'Show', [['vehicle', 'Vehicle photo'], ['category', 'Category image'], ['none', 'No image']], 'vehicle') +
-      hint('heroImage', 'Needs a vehicle — set one in Site Admin.'));
+      // No image by default (2026-10-20): Phase 1 launches before any category or vehicle images
+      // are loaded. Applies to both heroes; with no vehicle set, "Vehicle photo" shows the category image.
+      choice('plpHeroImage', 'Show', [['none', 'No image'], ['vehicle', 'Vehicle photo'], ['category', 'Category image']], 'none'));
   }
   if (isPlpPage) {
     html += section('Phase 2 previews',
@@ -3647,7 +3648,6 @@ function buildAdminPanel() {
     });
     setDisabled('[data-admin-flag="exdemo"], [data-admin-flag="showroom"]', !phase2, 'pdpPhase2');
     setDisabled('select[name="cartConflict"]', !phase2, 'cartPhase2');
-    setDisabled('select[name="plpHeroImage"]', !rrgSessionGet('vehicleSet'), 'heroImage');
     const stock = STOCK_STATUS[adminState.stockStatus];
     const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);
     panel.querySelectorAll('[data-admin-flag="shipping"], [data-admin-flag="collect"]').forEach(i => {
