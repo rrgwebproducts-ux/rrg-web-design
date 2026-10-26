@@ -552,7 +552,8 @@ function syncPaymentBadges(block) {
 // own renderAll()/renderPrice() loop should call this at the end of it, since that's the
 // only state a re-render can clobber (video/stock/availability use class or attribute
 // toggles that a re-render never touches).
-// "Now"/"Was" labels + the stacked price-line layout (spec.md Section 12 item 23) only
+// "RRP" label + the stacked price-line layout (the "Now" label was dropped 2026-10-27, spec.md §25;
+// labelNow below is a no-op now but harmless) (spec.md Section 12 item 23) only
 // make sense when there's a real was-price to contrast against — this mirrors .price-was's
 // own hidden state rather than tracking the demo sale toggle directly, so it stays correct
 // for a per-variant/colour discount too (e.g. sibling-color's Titanium Grey, which has no

@@ -1348,15 +1348,14 @@ function plpPriceHTML(product) {
   if (!product.wasPrice) {
     return `<div class="plp-price plp-price-v2"><div class="plp-price-v2-row"><span class="plp-price-v2-now">${from}<span class="plp-price-now">${now}</span></span></div></div>`;
   }
-  // "Now" is dropped for sibling/variant products (2026-09-19) — on sale they still just read
-  // "From $X", with the RRP beside it. The "RRP" prefix is dropped on cards (2026-09-30, spec.md
+  // No "Now" label on sale prices (team decision, 2026-10-27, spec.md §25) — the red price beside
+  // the struck-through one carries it. The "RRP" prefix is dropped on cards (2026-09-30, spec.md
   // §16 item 21; the PDP keeps it). Flagged for Graham: the ACCC treats an unlabelled strikethrough
   // as the business's own previous price — see docs/2026-09-30-design-review-analysis.md #21.
-  const nowLabel = hasOptions ? '' : `<span class="plp-price-label">Now</span>`;
   return `
     <div class="plp-price plp-price-v2 plp-price-on-sale-v2">
       <div class="plp-price-v2-row">
-        <span class="plp-price-v2-now">${nowLabel}${from}<span class="plp-price-now">${now}</span></span>
+        <span class="plp-price-v2-now">${from}<span class="plp-price-now">${now}</span></span>
         <span class="plp-price-v2-was"><span class="plp-price-was">${plpFmtMoney(product.wasPrice)}</span></span>
       </div>
     </div>
@@ -1422,7 +1421,7 @@ function plpSpecIconHTML(spec) {
 // resize, so the switch follows the window. Demo products have no PDP URL, so they use Simple's.
 // Grid cards are too narrow for long values like Thule's warranty ("2 Years plus an extra 3 Years
 // when registered on Thule's website after purchase"), so Grid cuts them at 30 characters and
-// shows the full value on hover (Graham, 2026-10-20, spec.md §24.6 item 9). List view shows USPs, not specs.
+// shows the full value on hover (Graham, 2026-10-20, spec.md §24.6 item 9). List view shows USPs + specs, values in full.
 const PLP_SPEC_VALUE_MAX = 30;
 function plpSpecValueHTML(value) {
   const full = String(value);
@@ -1446,6 +1445,13 @@ function plpSpecsHTML(product) {
       </div>
     </details>
   `;
+}
+
+// List view shows the specs open, under the USPs (2026-10-27, spec.md §25) — the middle column has the
+// room grid cards don't, so nothing hides behind Show Specs. Same rows and RRG icons as grid's panel.
+function plpListSpecsHTML(product) {
+  if (!product.specs || !product.specs.length) return '';
+  return `<div class="plp-specs-panel plp-list-specs">${product.specs.map(s => `<div class="plp-spec-row">${plpSpecIconHTML(s)}<span class="plp-spec-label">${s.label}</span>${plpSpecValueHTML(s.value)}</div>`).join('')}</div>`;
 }
 
 function applyPlpRibbonsFlag(on) {
@@ -1686,7 +1692,7 @@ function plpCardHTML(product, cfg) {
 }
 
 // List view's own 3-column layout (image | info | actions, 1:2:1) — different enough from
-// the grid card (USPs instead of specs, Fitment Gallery under the photo instead of paired with
+// the grid card (USPs + always-open specs, Fitment Gallery under the photo instead of paired with
 // View Options) that reusing plpCardHTML with view-conditional bits would be harder to follow
 // than a dedicated function. The info column follows the grid card's order — brand, name,
 // fitment, rating (2026-09-29, Brenton; brand used to overlay the photo, fitment sat above the
@@ -1720,6 +1726,7 @@ function plpListCardHTML(product, cfg) {
         ${plpFitStatusHTML(product)}
         ${plpRatingHTML(product)}
         ${usps}
+        ${plpListSpecsHTML(product)}
       </div>
       <div class="plp-list-col-actions">
         ${plpRibbonHTML(product)}
@@ -2441,6 +2448,10 @@ function plpMarkPhase2Sections() {
 }
 
 // ==== Init ====================================================================
+// PLPs + VPLPs launch in List view and switch to Grid a few weeks later (Tim, 2026-10-27, spec.md §25):
+// changing the layout and the default view at once would hide which one moved the numbers. Flip this
+// to 'grid' for step 2. Search results stays Grid; a page can still pin its own PLP_CONFIG.defaultView.
+const PLP_DEFAULT_VIEW = 'list';
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.PLP_CONFIG) return;
   plpMarkPhase2Sections();
@@ -2448,7 +2459,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (plpBuildPhase() !== 2) ['priority', 'standard'].forEach(k => {
     if (window.PLP_CONFIG.facets?.[k]) window.PLP_CONFIG.facets[k] = window.PLP_CONFIG.facets[k].filter(f => !f.phase2);
   });
-  plpState.view = window.PLP_CONFIG.defaultView === 'list' ? 'list' : 'grid';
+  plpState.view = window.PLP_CONFIG.defaultView || (window.PLP_CONFIG.isSearch ? 'grid' : PLP_DEFAULT_VIEW);
   if (window.PLP_CONFIG.defaultSort) plpState.sort = window.PLP_CONFIG.defaultSort;
   plpState.heroImageMode = 'none';
   // ?q= (set by the header search dropdown's "View All Results" link, 2026-09-22) takes

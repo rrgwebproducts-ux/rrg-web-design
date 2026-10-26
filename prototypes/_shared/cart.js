@@ -750,7 +750,7 @@ function rrgRenderPackageDrawer() {
               <span class="cart-line-brand">${rrgEsc(a.brand)} · ${rrgEsc(a.kind || RRG_PACKAGE_CATEGORY_LABEL[a.pkgCategory])}</span>
               ${row.name}
               <span class="chip chip-fits">✓ Compatible</span>
-              <span class="pkg-acc-price"><strong>Now ${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
+              <span class="pkg-acc-price"><strong>${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
             </div>
             <button type="button" class="btn btn-outline btn-sm" data-pkg-add-acc="${rrgEsc(a.sku)}">Add</button>
           </li>`;

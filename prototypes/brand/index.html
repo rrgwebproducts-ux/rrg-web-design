@@ -276,6 +276,7 @@ document.getElementById('brandDemoNote').textContent =
 window.PLP_CONFIG = {
   categoryKey: 'brand-' + BRAND_SLUG,
   vrs: false,
+  defaultView: 'grid',  // brand pages aren't part of the PLP List-first test (spec.md §25)
   vehicleFilter: BRAND.hasFitment,  // "Fits your {vehicle}" chip (plp.js plpRenderVehicleChip)
   brandName: BRAND.name,
   shopBy: [],

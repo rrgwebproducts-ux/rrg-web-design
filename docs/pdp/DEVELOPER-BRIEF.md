@@ -68,7 +68,7 @@ Get It Installed: dark panel with an installer photo, two ticks ("Over 200,000 r
 | Title (H1) | Product name | Magento | — |
 | Short description | 2 lines, then "Read more" inline | Rackit short description | Hidden if empty |
 | Star rating | **Phase 2, not built in Phase 1** (A7). Stars + "4.5 (12 Reviews)", links to the Reviews tab | Reviews.io (product reviews only) | **Hidden with 0 product reviews** (never shows the company rating) |
-| Price | Now price, large. When on sale: "Now" label in red + "RRP $X" struck through below | Magento price / special price | Not on sale: one black price, no labels |
+| Price | Price, large. When on sale: the price in red (no "Now" label since 2026-10-27) + "RRP $X" struck through below | Magento price / special price | Not on sale: one black price, no labels |
 | Stock line | See A5 | Magento stock status | — |
 | **Fitment card** *(vehicle-specific only)* | A5 | Session vehicle vs the kit's vehicle | — |
 | Rack Fit Guarantee badge *(vehicle-specific only)* | Badge beside the fitment card | — | Only when it **fits** |
@@ -1091,9 +1091,9 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Location:** Decision Panel, directly below the title/short description — all 5 templates.
 
-**Purpose:** the price + stock-status area (`.price-block`) — redesigned 2026-09-12 off a client-supplied Figma reference to a stacked two-line layout that reads clearly at a glance: "Now" price on top, struck-through "RRP" below.
+**Purpose:** the price + stock-status area (`.price-block`) — redesigned 2026-09-12 off a client-supplied Figma reference to a stacked two-line layout that reads clearly at a glance: the price on top, struck-through "RRP" below. **No "Now" label** (team decision 2026-10-27, spec.md §25): the sale price stays red and the same size.
 
-**Typography:** `.price-line-now` ("Now" label + `.price-now`, both red when on sale, `line-height:1`) above `.price-line-was` ("RRP" label + struck-through `.price-was`, both sharing identical `--rrg-grey-600`/Lato-400 styling so the whole "RRP $X" reads as one continuous struck-through phrase). Off-sale, both labels and the whole RRP line disappear entirely, leaving a plain black price (red is reserved for the sale contrast, not every regular price). The block has 16px top/bottom padding and a 16px bottom margin on every template (was 14px on two).
+**Typography:** `.price-line-now` (`.price-now` only, red when on sale, `line-height:1`; the "Now" label was removed 2026-10-27) above `.price-line-was` ("RRP" label + struck-through `.price-was`, both sharing identical `--rrg-grey-600`/Lato-400 styling so the whole "RRP $X" reads as one continuous struck-through phrase). Off-sale, the RRP line disappears entirely, leaving a plain black price (red is reserved for the sale contrast, not every regular price). The block has 16px top/bottom padding and a 16px bottom margin on every template (was 14px on two).
 
 **Save % (changed 2026-09-29, `spec.md` §15 L9):** the PDP now shows its saving the same way as every product card: the red diagonal **"Save N%" corner band** (`.plp-save-corner`) across the top-left of the main product photo, plus the existing sale-tag image (4.16). The old red Save pill beside the RRP (`.badge-save`) is **no longer shown** (`.price-block .badge-save{display:none!important}`). It stays in the markup only as the value source: `syncSaleTag()` copies its text into the photo's corner band and hides the band whenever the product isn't on sale. In Magento, render the corner band directly from the real saving and drop the hidden pill. Every template uses "Save N%" wording (Grouped-Bundle's "$397 Off RRP" is now "Save 47%").
 
@@ -1223,7 +1223,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Data (Magento):** product package category (rack / roof box / …, shared with 4.19), accessory rate (from the inventory system; 10% / CRUZ 15% are examples), the vehicle's racks for step 2, and best-selling accessories per qualifying category for the rack flow. The prototype's rack lists are real listings already scraped for the two demo vehicles (Hilux, Ranger).
 
-**Region differences:** none in behaviour; currency follows the region. The Package Deal colour is the same everywhere; the sale-red "Now" price follows the region's red token like every sale price.
+**Region differences:** none in behaviour; currency follows the region. The Package Deal colour is the same everywhere; the sale-red price follows the region's red token like every sale price.
 
 **States:** screenshots at handover (Component Library: Package Deal Tag, Package Deal Drawer).
 
