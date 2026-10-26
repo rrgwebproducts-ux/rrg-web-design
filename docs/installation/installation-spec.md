@@ -83,7 +83,7 @@ The internal fit-charge codes never show on the page. **Staff shortcut (Brenton,
 | Drill-fit roof racks | 4 bars | `FIT_4BAR_DRILL` |
 | Platforms | Platform, no drilling required | `FIT_PLATFORM_NO_DRILL` |
 | Platforms | Platform, drilling required | `FIT_PLATFORM_DRILL` |
-| Platforms | Assemble platform | `FIT_SURCHARGE_PLATFORM_ASSEMBLY` |
+| Platforms | Assemble platform | `FIT_SURCHARGE_ PLATFORM_ASSEMBLY` |
 | Platforms | Assemble and fit a universal platform to existing bars | `FIT_PLATFORM_ON_BARS` |
 | Platforms | Fit of a product not listed as a manufacturer’s standard | `FIT_CUSTOM` |
 | Vehicle surcharges | Rail removal, standard (e.g. Prado 100/200, D-Max, Colorado, MU-X) | `FIT_SURCHARGE_RAIL_REMOVAL` |
@@ -94,10 +94,10 @@ The internal fit-charge codes never show on the page. **Staff shortcut (Brenton,
 | Vehicle surcharges | Heavy duty internal canopy system, 1 bar | `FIT_INTERNAL_CANOPY_1BAR` |
 | Vehicle surcharges | Heavy duty internal canopy system, 2 bars | `FIT_INTERNAL_CANOPY_2BAR` |
 | Accessories & add-ons | Basic accessory not sold with a rack or platform (e.g. bike carrier, awning, basket) | `FIT_ACCESSORY` |
-| Accessories & add-ons | Assemble and fit a vertical bike rack | `FIT_VERTICAL_BIKE_RACK_ASSEMBLY` |
+| Accessories & add-ons | Assemble and fit a vertical bike rack | `FIT_VERTICAL_BIKE _RACK _ASSEMBLY` |
 | Accessories & add-ons | Ladder slide, MSL & CSL (per slide) | `FIT_LADDERSLIDE` |
 | Accessories & add-ons | Roof top tent onto standard bars | `FIT_TENT_TO_BARS` |
-| Accessories & add-ons | Roof top tent onto a platform | `FIT_TENT_TO_PLATFORM` |
+| Accessories & add-ons | Roof top tent onto a platform | `Fit_TENT_TO_PLATFORM` |
 | Accessories & add-ons | Budget ladder rack | `FIT_BUDGET_BAR` |
 | Accessories & add-ons | Manual roller shutter, standard vehicles (excludes bracing and racks if required) | `FIT_MANUAL_ROLLER_SHUTTER` |
 | Accessories & add-ons | Electric roller shutter, standard vehicles (excludes bracing, racks and electrical wiring) | `FIT_ELECTRIC_ROLLER_SHUTTER` |
