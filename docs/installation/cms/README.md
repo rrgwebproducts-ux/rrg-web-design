@@ -101,7 +101,7 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 **Same as AU:** the design, the styles, the What We Fit tiles and How It Works. The images come from the shared media library, so there's nothing to upload for NZ.
 
 **NZ-specific:**
-- **No prices anywhere.** The AU feature tile's "$120 / $280" line is replaced, and its button goes to the cost section instead of a price list.
+- **No prices anywhere.** The AU feature tile's "$120 / $280" line is replaced.
 - **The live NZ copy is kept word for word:**
   - H1 "Roof Rack Installation & Fitting Services NZ";
   - subtitle and intro;
