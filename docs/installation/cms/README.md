@@ -72,7 +72,7 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 
 **Cloudflare caches images for a year, placeholder included.** If an image URL is requested before the file exists, Cloudflare and browsers keep the placeholder. That happened to all three here on 2026-10-26, which is why the links carry `?v=2`. When you replace an image, or a URL was hit too early, bump the `?v=` number in the `src` (or purge that URL in Cloudflare).
 
-**Optional:** `bike-racks.webp` (157 KB). The live `bg-bike-rack.png` is 2 MB, a heavy download for a small tile. If you upload this one, change the Bike Racks tile's `src` to `/pub/media/wysiwyg/installation/bike-racks.webp`.
+**Also uploaded:** `bike-racks.webp` (157 KB) replaces the live 2 MB `bg-bike-rack.png` on the Bike Racks tile.
 
 ---
 
