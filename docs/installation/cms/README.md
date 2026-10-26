@@ -19,7 +19,7 @@ Replaces the content of the live page **https://www.roofracksgalore.com.au/roof-
    - All 9 tiles show a photo, not the RRG placeholder logo.
    - Run the page through Google's Rich Results Test. It should find **Service** and **FAQ**.
 
-**Rollback:** before you paste, copy the current Content and Content Heading into a text file. Pasting them back restores the old page.
+**Rollback:** the old Content is saved in [live-backup-2026-10-26.html](live-backup-2026-10-26.html). Paste it back with the editor hidden, and put **Roof Rack Installation, Fitting, Service and Repairs** back in Content Heading.
 
 ---
 
