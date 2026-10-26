@@ -2503,6 +2503,10 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .info-cards + .section-intro{margin-top:16px;}
 /* The live hero (rack-fitting-roof-racks-galore-hero.jpg) has old logos baked into its left third; centring the 16:9 crop leaves them out. */
 .page-hero-media--install img{object-position:50% center;}
+/* Installation price rows: the name copies the fit-charge SKU (staff shortcut, Brenton 2026-10-26). */
+.price-table tr[data-sku] > td:first-child{cursor:copy;}
+.sku-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,12px);z-index:2147483000;background:var(--rrg-charcoal);color:#fff;font-size:13px;font-weight:700;padding:10px 16px;border-radius:var(--radius);box-shadow:var(--shadow-pop);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;}
+.sku-toast.is-on{opacity:1;transform:translate(-50%,0);}
 .booking-sent-meta{margin:10px 0 0;font-size:13px;color:var(--rrg-grey-700);}
 /* Four-across category tiles (Installation "What we fit"). */
 /* "Something else?" tile — fills the spare space beside the feature tile (Installation's What We

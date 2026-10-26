@@ -68,7 +68,7 @@ Every price is the live table's, verbatim, regrouped for customers:
 | Accessories & add-ons | Accessory $50; vertical bike rack $95; ladder slide $100 each; tent onto bars $250 / platform $500; budget ladder rack $180; roller shutter manual $700 / electric $900; custom $150/hour |
 | Products bought elsewhere | $100; tents $350 |
 
-The internal fit-charge codes never show on the page. Now that the table is static CMS HTML they aren't in the page source either, so this is the mapping (for Phase 2, if the prices are ever pulled from the fit-charge products):
+The internal fit-charge codes never show on the page. **Staff shortcut (Brenton, 2026-10-26):** each row carries its code as `data-sku`, and clicking the item name copies it, with a "Copied FIT_…" confirmation. Now that the table is static CMS HTML they aren't in the page source either, so this is the mapping (for Phase 2, if the prices are ever pulled from the fit-charge products):
 
 | Group | Row | Fit-charge code |
 |---|---|---|

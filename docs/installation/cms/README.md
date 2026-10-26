@@ -43,6 +43,8 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 | Internal links | `/warranty`, `/locations/` | Those two, plus `/fit-my-vehicle`, 8 category pages, `/price-guarantee` and `/returns`. |
 | Content | About 250 words + table | About 900 words + table + 6 FAQs. |
 
+**Staff SKU copy (2026-10-26):** each price row carries its fit-charge code (`data-sku`). Clicking the item name copies it and shows "Copied FIT_…" at the bottom of the screen. Customers never see the codes unless they click. Three codes were mistyped in the old live table, and the clean versions are used: `FIT_SURCHARGE_PLATFORM_ASSEMBLY`, `FIT_VERTICAL_BIKE_RACK_ASSEMBLY` and `FIT_TENT_TO_PLATFORM`.
+
 **Keep in mind:**
 - **Collapsed prices:** the price list now starts collapsed (team decision, spec.md §16 item 2). Google indexes collapsed content and gives it full weight on mobile-first indexing. If rankings for "installation cost" terms dip after launch, opening it by default is a one-word change: add `open` to `<details class="price-accordion" id="costs">`.
 - **Editing FAQs or prices:** the structured data copies the FAQ text and every price. If you change either on the page, ask Claude to rebuild the file so the schema matches, or edit the JSON-LD block at the bottom by hand.
