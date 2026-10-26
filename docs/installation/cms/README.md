@@ -56,16 +56,16 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 | Where | Live file |
 |---|---|
 | Hero | `/pub/media/wysiwyg/rack-fitting-roof-racks-galore-hero.jpg` |
-| Roof Racks & Platforms tile | `/pub/media/wysiwyg/fit-my-vehicle-page/Rack_Accessories_Category_Image.jpg` |
 | Bike Racks tile | `/pub/media/wysiwyg/category/general/bg-bike-rack.png` |
 | Kayak & SUP Carriers tile | `/pub/media/wysiwyg/category/general/bg-kayak.jpg` |
 | Awnings & Roof Top Tents tile | `/pub/media/wysiwyg/category/general/bg-rooftop-tent.jpg` |
 | Accessories tile | `/pub/media/wysiwyg/category/general/bg-basket.jpg` |
 
-**You need to upload (no usable live image):** from [upload/](upload/) to `pub/media/wysiwyg/installation/`. The live `bg-roof-box.webp` is only 176×176px, and the live site has no roller shutter or van/ladder photo apart from a sale banner with text on it.
+**You need to upload (no usable live image), 4 files:** from [upload/](upload/) to `pub/media/wysiwyg/installation/`. The live `bg-roof-box.webp` is only 176×176px, and the live site has no roller shutter or van/ladder photo apart from a sale banner with text on it.
 
 | File | Tile |
 |---|---|
+| `roof-racks.webp` | Roof Racks & Platforms (Brenton, 2026-10-26: the live platform photo only shows accessories) |
 | `roof-boxes.webp` | Roof Boxes |
 | `roller-shutters.webp` | Roller Shutters |
 | `trade-work.webp` | Van Fit-Outs & Ladder Racks |
