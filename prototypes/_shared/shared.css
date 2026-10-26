@@ -2501,7 +2501,8 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 }
 
 .info-cards + .section-intro{margin-top:16px;}
-.page-hero-media--install img{object-position:8% center;}
+/* The live hero (rack-fitting-roof-racks-galore-hero.jpg) has old logos baked into its left third; centring the 16:9 crop leaves them out. */
+.page-hero-media--install img{object-position:50% center;}
 .booking-sent-meta{margin:10px 0 0;font-size:13px;color:var(--rrg-grey-700);}
 /* Four-across category tiles (Installation "What we fit"). */
 /* "Something else?" tile — fills the spare space beside the feature tile (Installation's What We

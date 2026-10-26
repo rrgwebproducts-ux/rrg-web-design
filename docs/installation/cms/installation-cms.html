@@ -1,0 +1,401 @@
+<!-- Roof Rack Installation — CMS content for /roof-rack-installation-and-fitting-costs
+     Source: prototypes/installation/index.html. Paste the whole file into the page's Content
+     field with the editor hidden (Show / Hide Editor), and clear the Content Heading field: the
+     H1 is in the hero below. See docs/installation/cms/README.md. -->
+<style>
+#rrg-install{--rrg-black:#000;--rrg-red:#BB0220;--rrg-red-dark:#8f0119;--rrg-gold:#BEA98A;--rrg-gold-bg:#FFF9E8;--rrg-line:#D8D8D8;--rrg-bg:#F5F5F5;--rrg-fits:#1E7A34;--rrg-fits-bg:#EAF7EE;--rrg-saving:var(--rrg-fits);--rrg-unknown:#B36B00;--rrg-unknown-bg:#FFF4E5;--rrg-nofit:#A6192E;--rrg-nofit-bg:#FDEAEC;--rrg-stock-out:var(--rrg-grey-500);--rrg-display:#1A56DB;--rrg-display-bg:#EAF1FD;--rrg-deal:#0A66C2;--rrg-deal-bg:#EBF3FB;--radius:6px;--shadow:0 8px 22px rgba(0,0,0,.06);--maxw:1280px;--rrg-text:#232323;--rrg-grey-700:#333;--rrg-grey-600:#666;--rrg-grey-500:#767676;--rrg-grey-400:#999;--rrg-on-dark-muted:#ccc;--rrg-line-strong:#B8B8B8;--rrg-line-soft:#EEEEEE;--rrg-bg-warm:#FAF9F7;--rrg-charcoal:#211E20;--rrg-red-bg:#FAF0EF;--rrg-cta:#FFCA48;--rrg-cta-hover:#E6B53F;--rrg-uk-green:#26B226;--rrg-uk-green-hover:#1E8F1E;--rrg-gold-text:#5C4D34;--rrg-unknown-text:#5A3A00;--rrg-display-hover:#123F9E;--rrg-star:#E8A83C;--shadow-pop:0 10px 28px rgba(0,0,0,.16);--shadow-modal:0 16px 40px rgba(0,0,0,.28);--shadow-drawer:-16px 0 40px rgba(0,0,0,.25);--shadow-bar:0 4px 14px rgba(0,0,0,.08);--shadow-bar-up:0 -6px 16px rgba(0,0,0,.08);--overlay:rgba(0,0,0,.45);--t-fast:.15s;--t-fade:.2s;--t-slide:.25s;--space-section:48px;font-family:Lato, Arial, Helvetica, sans-serif;color:#232323;font-size:16px;line-height:1.45;}
+#rrg-install :where(h1, h2, h3, p, li, summary, td){line-height:inherit;color:inherit;text-align:left;letter-spacing:normal;}
+#rrg-install :where(p, li, td){font-size:inherit;}
+#rrg-install :where(li){margin:0;}
+#rrg-install :where(h1){font-size:2em;}
+#rrg-install :where(h2){font-size:1.5em;}
+#rrg-install :where(h3){font-size:1.17em;}
+#rrg-install .rrg-trust-bar-inner{padding:0 24px;}
+#rrg-install *{box-sizing: border-box;}
+#rrg-install h1, #rrg-install h2, #rrg-install h3{font-family: "Barlow Condensed", Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin: 0px 0px 0.4em; color: var(--rrg-black);}
+#rrg-install p{margin: 0px 0px 1em;}
+#rrg-install img{max-width: 100%; display: block;}
+#rrg-install a{color: inherit;}
+#rrg-install .btn{display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; border-radius: var(--radius); padding: 15px 28px; font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 0.03em; text-decoration: none; text-align: center; transition: transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast), color var(--t-fast);}
+#rrg-install .btn-cta:active{transform: scale(0.98);}
+#rrg-install .btn-block{width: 100%;}
+#rrg-install .btn-cta{background: var(--rrg-cta); color: var(--rrg-black);}
+#rrg-install .btn-cta:hover{background: var(--rrg-cta-hover);}
+#rrg-install .btn-outline{background: rgb(255, 255, 255); border: 1.5px solid var(--rrg-black); color: var(--rrg-black);}
+#rrg-install .btn-outline:hover{background: var(--rrg-black); color: rgb(255, 255, 255);}
+#rrg-install .rrg-trust-bar{border-top: 1px solid var(--rrg-line); border-bottom: 1px solid var(--rrg-line); margin: 32px 0px;}
+#rrg-install .rrg-trust-bar--top{background: var(--rrg-bg); border-top: 0px; margin: 0px;}
+#rrg-install .rrg-trust-bar-inner{display: flex; justify-content: space-between; align-items: center; gap: 8px 24px; padding-top: 9px; padding-bottom: 9px;}
+#rrg-install .rrg-trust-bar .rrg-trust-item{display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--rrg-black); text-decoration: none; white-space: nowrap;}
+#rrg-install .rrg-trust-bar .rrg-trust-item:hover{color: var(--rrg-red);}
+#rrg-install .rrg-trust-bar svg{width: 20px; height: 20px; flex: 0 0 auto; color: var(--rrg-red);}
+#rrg-install .related-heading{margin-bottom: 16px;}
+#rrg-install .related-heading, #rrg-install .faq-heading{font-family: "Barlow Condensed", Arial, sans-serif; font-weight: 700; font-style: italic; text-transform: uppercase; font-size: 40px; letter-spacing: 0.02em; line-height: 1.15;}
+#rrg-install .faq-section{margin: var(--space-section) 0;}
+#rrg-install .faq-heading{margin-bottom: 16px;}
+#rrg-install .faq-list{display: flex; flex-direction: column; gap: 10px;}
+#rrg-install .faq-item{border: 1px solid var(--rrg-line); border-radius: var(--radius); padding: 0px 16px; background: rgb(255, 255, 255);}
+#rrg-install .faq-item summary{list-style: none; cursor: pointer; padding: 14px 26px 14px 0px; font-weight: 700; font-size: 14px; position: relative;}
+#rrg-install .faq-item summary::-webkit-details-marker{display: none;}
+#rrg-install .faq-item summary::after{content: "+"; position: absolute; right: 2px; top: 12px; font-size: 18px; color: var(--rrg-grey-500);}
+#rrg-install .faq-item[open] summary::after{content: "−";}
+#rrg-install .faq-answer{padding: 0px 0px 16px; font-size: 14px; color: var(--rrg-grey-700);}
+#rrg-install .faq-answer p{margin: 0px;}
+#rrg-install .cat-tile-section{margin: var(--space-section) 0;}
+#rrg-install .cat-tile-grid{display: grid; gap: 20px;}
+#rrg-install .cat-tile-grid--main{grid-template-columns: repeat(6, minmax(0px, 1fr));}
+#rrg-install .cat-tile{position: relative; display: flex; flex-direction: column; background: rgb(255, 255, 255); border: 1px solid var(--rrg-line); border-radius: var(--radius); overflow: hidden; color: var(--rrg-text); text-decoration: none; transition: box-shadow var(--t-fast) ease,transform var(--t-fast) ease,border-color var(--t-fast) ease;}
+#rrg-install a.cat-tile:hover, #rrg-install .cat-tile--feature:hover{box-shadow: var(--shadow); border-color: var(--rrg-line-strong); transform: translateY(-2px);}
+#rrg-install .cat-tile-media{position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--rrg-charcoal);}
+#rrg-install .cat-tile-media img{position: absolute; inset: 0px; width: 100%; height: 100%; object-fit: cover; transition: transform var(--t-slide) ease;}
+#rrg-install .cat-tile:hover .cat-tile-media img{transform: scale(1.04);}
+#rrg-install .cat-tile-media::after{content: ""; position: absolute; inset: 0px 0px auto; height: 60%; background: linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0)); pointer-events: none;}
+#rrg-install .cat-tile-title{position: absolute; z-index: 1; top: 12px; left: 10px; right: 10px; text-align: center; font-family: "Barlow Condensed", Arial, sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; color: rgb(255, 255, 255); font-size: 26px; line-height: 1.05; text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 3px;}
+#rrg-install .cat-tile-cta{display: flex; align-items: center; justify-content: center; gap: 2px; padding: 12px 10px; font-weight: 700; font-size: 14px; text-align: center; border-top: 1px solid var(--rrg-line-soft); margin-top: auto;}
+#rrg-install a.cat-tile:hover .cat-tile-cta{color: var(--rrg-red);}
+#rrg-install .cat-tile--standard .cat-tile-media{aspect-ratio: auto; flex: 1 1 auto; min-height: 170px;}
+#rrg-install .cat-tile--feature{grid-area: span 2 / 1 / auto / span 2;}
+#rrg-install .cat-tile--feature .cat-tile-media{aspect-ratio: auto; height: 220px; flex: 0 0 auto;}
+#rrg-install .cat-tile--feature .cat-tile-title{font-size: 40px; top: 18px;}
+#rrg-install .cat-tile-body{display: flex; flex-direction: column; gap: 12px; padding: 18px 20px 20px; flex: 1 1 0%;}
+#rrg-install .cat-tile-body p{margin: 0px; font-size: 15px; line-height: 1.6; color: var(--rrg-grey-700);}
+#rrg-install .cat-tile-body .btn{margin-top: auto;}
+#rrg-install .page-hero{display: grid; grid-template-columns: minmax(0px, 1.05fr) minmax(0px, 1fr); gap: 40px; align-items: center; padding: 28px 0px 8px;}
+#rrg-install .page-hero h1{margin-bottom: 12px;}
+#rrg-install .page-hero-intro p{margin: 0px 0px 14px; font-size: 16px; line-height: 1.6; color: var(--rrg-grey-700);}
+#rrg-install .page-hero-ctas{display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;}
+#rrg-install .page-hero-media{border-radius: var(--radius); overflow: hidden; aspect-ratio: 16 / 9; max-height: 360px; background: var(--rrg-bg);}
+#rrg-install .page-hero-media img{width: 100%; height: 100%; object-fit: cover;}
+#rrg-install .callout{border-left: 4px solid var(--rrg-red); background: var(--rrg-bg-warm); border-radius: var(--radius); padding: 18px 22px; margin: 20px 0px 0px; font-size: 15px; line-height: 1.6; color: var(--rrg-grey-700);}
+#rrg-install .callout strong{color: var(--rrg-text);}
+#rrg-install .steps{display: grid; grid-template-columns: repeat(3, minmax(0px, 1fr)); gap: 16px; counter-reset: step 0; margin: 0px 0px 20px; padding: 0px; list-style: none;}
+#rrg-install .steps li{position: relative; border: 1px solid var(--rrg-line); border-radius: var(--radius); padding: 20px 20px 20px 70px; background: rgb(255, 255, 255);}
+#rrg-install .steps li::before{counter-increment: step 1; content: counter(step); position: absolute; left: 20px; top: 18px; width: 36px; height: 36px; border-radius: 50%; background: var(--rrg-red); color: rgb(255, 255, 255); font-weight: 900; display: flex; align-items: center; justify-content: center;}
+#rrg-install .steps h3{margin: 0px 0px 4px; font-size: 20px;}
+#rrg-install .steps p{margin: 0px; font-size: 14px; line-height: 1.6; color: var(--rrg-grey-700);}
+#rrg-install .price-groups{display: grid; grid-template-columns: repeat(2, minmax(0px, 1fr)); gap: 16px; align-items: start;}
+#rrg-install .price-group{border: 1px solid var(--rrg-line); border-radius: var(--radius); background: rgb(255, 255, 255); padding: 18px 20px 8px;}
+#rrg-install .price-group h3{margin: 0px 0px 4px; font-size: 22px;}
+#rrg-install .price-group-note{margin: 0px 0px 8px; font-size: 13px; color: var(--rrg-grey-600);}
+#rrg-install .price-table{width: 100%; border-collapse: collapse; font-size: 14px;}
+#rrg-install .price-table td{padding: 9px 0px; border-top: 1px solid var(--rrg-line-soft); vertical-align: top; color: var(--rrg-grey-700);}
+#rrg-install .price-table td:last-child{text-align: right; font-weight: 900; color: var(--rrg-text); white-space: nowrap; padding-left: 12px;}
+#rrg-install .price-common{display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: var(--radius); background: var(--rrg-fits-bg); color: var(--rrg-fits); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;}
+#rrg-install .price-accordion{border: 1px solid var(--rrg-line); border-radius: var(--radius); background: rgb(255, 255, 255);}
+#rrg-install .price-accordion > summary{list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 22px;}
+#rrg-install .price-accordion > summary::-webkit-details-marker{display: none;}
+#rrg-install .price-accordion > summary h2{margin: 0px; font-size: 28px;}
+#rrg-install .price-accordion > summary span{font-size: 14px; font-weight: 700; color: var(--rrg-text); text-decoration: underline; white-space: nowrap;}
+#rrg-install .price-accordion[open] > summary span .when-closed{display: none;}
+#rrg-install .price-accordion-body{padding: 0px 22px 22px;}
+#rrg-install .price-accordion-body > p{margin: 0px 0px 16px; font-size: 14px; line-height: 1.6; color: var(--rrg-grey-700); max-width: 900px;}
+#rrg-install .page-hero-textlink{align-self: center; font-weight: 700; color: var(--rrg-text); text-decoration: underline; font-size: 15px;}
+#rrg-install .page-hero-media--install img{object-position: 50% center;}
+#rrg-install .cat-tile--ask{justify-content: center; gap: 8px; padding: 20px; background: var(--rrg-charcoal); border-color: var(--rrg-charcoal); color: var(--rrg-on-dark-muted); font-size: 14px; line-height: 1.5;}
+#rrg-install .cat-tile--ask strong{font-family: "Barlow Condensed", Arial, sans-serif; font-size: 24px; text-transform: uppercase; color: rgb(255, 255, 255); line-height: 1.1;}
+#rrg-install .cat-tile-ask-cta{margin-top: 4px; font-weight: 700; color: var(--rrg-cta);}
+#rrg-install a.cat-tile--ask:hover{border-color: var(--rrg-charcoal);}
+#rrg-install .rrg-trust-bar--top{margin-bottom:24px;}
+#rrg-install .price-accordion:not([open]) > summary span .when-open{display:none;}
+@media (max-width: 760px){
+#rrg-install .rrg-trust-bar-inner{display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;}
+#rrg-install .rrg-trust-bar .rrg-trust-item{font-size: 12.5px; gap: 6px; white-space: normal; line-height: 1.25;}
+#rrg-install .rrg-trust-bar svg{width: 17px; height: 17px;}
+}
+@media (max-width: 640px){
+#rrg-install .related-heading, #rrg-install .faq-heading{font-size: 32px;}
+#rrg-install .cat-tile-title{font-size: 20px; top: 8px;}
+#rrg-install .cat-tile--feature .cat-tile-title{font-size: 32px;}
+#rrg-install .cat-tile-cta{font-size: 13px; padding: 10px 6px;}
+}
+@media (max-width: 1100px){
+#rrg-install .cat-tile-title{font-size: 22px;}
+}
+@media (max-width: 900px){
+#rrg-install .cat-tile-grid{gap: 12px;}
+#rrg-install .cat-tile-grid--main{grid-template-columns: repeat(2, minmax(0px, 1fr));}
+#rrg-install .cat-tile--feature{grid-area: auto / 1 / auto / -1;}
+#rrg-install .cat-tile--standard .cat-tile-media{aspect-ratio: 1 / 1; flex: 0 0 auto; min-height: 0px;}
+#rrg-install .page-hero{grid-template-columns: 1fr; gap: 24px;}
+#rrg-install .page-hero-media{aspect-ratio: 16 / 9;}
+#rrg-install .price-groups, #rrg-install .steps{grid-template-columns: 1fr;}
+}
+</style>
+<div id="rrg-install">
+<div class="rrg-trust-bar rrg-trust-bar--top">
+  <div class="rrg-trust-bar-inner">
+    <span class="rrg-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span>Over 200,000 Racks Fitted</span></span>
+    <a class="rrg-trust-item" href="https://www.reviews.io/company-reviews/store/roof-racks-galore" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Rated Excellent on Reviews.io</span></a>
+    <a class="rrg-trust-item" href="/price-guarantee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span>Price Guarantee</span></a>
+    <a class="rrg-trust-item" href="/returns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg><span>90 Day Exchange</span></a>
+  </div>
+</div>
+  <section class="page-hero">
+    <div class="page-hero-intro">
+      <h1>Roof Rack Installation, Fitting, Service and Repairs</h1>
+      <p>Roof rack installation has become more complicated, and it's easy to cause damage, leaks or rust without the right know-how. Vehicle roofs are thinner and weaker than they used to be, and harder to hold onto because of their shapes.</p>
+      <p>With over 30 years of experience, Roof Racks Galore are the industry-leading experts in roof racks and bike racks, and the best choice for your roof rack install. Our installers fit roof racks, roof trays and platforms, bike racks, kayak carriers, luggage boxes, commercial van fit-outs, rear door ladders, van ladder racks and accessories every day, and every installation is covered by our <a href="/warranty" title="Warranty">warranty</a>.</p>
+      <div class="page-hero-ctas">
+        <a href="/locations" class="btn btn-cta">Book a Fitting</a>
+        <a href="#costs" class="page-hero-textlink">See fitting charges</a>
+      </div>
+    </div>
+    <div class="page-hero-media page-hero-media--install">
+      <img src="/pub/media/wysiwyg/rack-fitting-roof-racks-galore-hero.jpg" alt="Roof Racks Galore Fitting Service" width="1918" height="498" fetchpriority="high">
+    </div>
+  </section>
+  <section class="cat-tile-section">
+    <h2 class="related-heading">What We Fit</h2>
+    <div class="cat-tile-grid cat-tile-grid--main">
+      <div class="cat-tile cat-tile--feature">
+        <a class="cat-tile-media" href="/roof-racks"><img src="/pub/media/wysiwyg/fit-my-vehicle-page/Rack_Accessories_Category_Image.jpg" alt="Roof rack platform with a jerry can and gas bottle" loading="lazy"><span class="cat-tile-title">Roof Racks &amp; Platforms</span></a>
+        <div class="cat-tile-body">
+          <p>Our most common fit, from a 2 bar removable rack ($120) to a full platform with no drilling ($280). Every rack is torqued to spec and load-tested before you drive away.</p>
+          <a class="btn btn-outline btn-block" href="#costs">See Roof Rack Fitting Charges</a>
+        </div>
+      </div>
+      <a class="cat-tile cat-tile--standard" href="/bike-racks">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/category/general/bg-bike-rack.png" alt="Bike rack fitted to the back of a car" loading="lazy"><span class="cat-tile-title">Bike Racks</span></span>
+        <span class="cat-tile-cta">Shop Bike Racks<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="/water-snow-sports/water-carriers">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/category/general/bg-kayak.jpg" alt="Kayak on a roof rack" loading="lazy"><span class="cat-tile-title">Kayak &amp; SUP Carriers</span></span>
+        <span class="cat-tile-cta">Shop Kayak &amp; SUP<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="/roof-boxes">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/installation/roof-boxes.webp" alt="Roof box fitted to a roof rack" loading="lazy"><span class="cat-tile-title">Roof Boxes</span></span>
+        <span class="cat-tile-cta">Shop Roof Boxes<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="/awnings-roof-top-tents">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/category/general/bg-rooftop-tent.jpg" alt="Roof top tent on a vehicle" loading="lazy"><span class="cat-tile-title">Awnings &amp; Roof Top Tents</span></span>
+        <span class="cat-tile-cta">Shop Awnings &amp; RTTs<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="/camping-offroad/vehicle-accessories/roller-shutters">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/installation/roller-shutters.webp" alt="Ute with a roller shutter" loading="lazy"><span class="cat-tile-title">Roller Shutters</span></span>
+        <span class="cat-tile-cta">Shop Roller Shutters<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="/roof-racks/roof-rack-accessories/trade-and-work-solutions">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/installation/trade-work.webp" alt="Van with a ladder rack" loading="lazy"><span class="cat-tile-title">Van Fit-Outs &amp; Ladder Racks</span></span>
+        <span class="cat-tile-cta">Shop Trade &amp; Work<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="/roof-rack-accessories">
+        <span class="cat-tile-media"><img src="/pub/media/wysiwyg/category/general/bg-basket.jpg" alt="Roof basket on a roof rack" loading="lazy"><span class="cat-tile-title">Accessories</span></span>
+        <span class="cat-tile-cta">Shop Accessories<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--ask" href="/locations">
+        <strong>Something else?</strong>
+        <span>We fit most things. Ask your nearest store and they'll quote it.</span>
+        <span class="cat-tile-ask-cta">Book a Fitting ›</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="cat-tile-section">
+    <h2 class="related-heading">How It Works</h2>
+    <ol class="steps">
+      <li><h3>Choose Your Setup</h3><p>Buy online or in store. Use <a href="/fit-my-vehicle">Fit My Vehicle</a> to find exactly what fits.</p></li>
+      <li><h3>Book a Fitting</h3><p>Contact your <a href="/locations">nearest store</a> and they'll book you in, or just drop by.</p></li>
+      <li><h3>Fitted &amp; Checked</h3><p>We fit it, load-check it and show you how it all works before you drive off.</p></li>
+    </ol>
+    <div class="callout"><strong>How long does it take?</strong> Anything from 30 minutes for a basic removable rack to 8 hours for an extremely complicated fit-out. It depends on the products and your vehicle, so check with <a href="/locations">your local store</a> for advice on your fitment. Most fittings are done while you wait.</div>
+  </section>
+  <section class="cat-tile-section">
+    <details class="price-accordion" id="costs">
+      <summary><h2 class="related-heading">Roof Rack and Accessory Installation &amp; Fitting Rates</h2><span><span class="when-closed">Click to view</span><span class="when-open">Hide</span></span></summary>
+      <div class="price-accordion-body">
+        <p>Prices include GST. Your store confirms the final price when they book you in, after checking your vehicle. Complex or custom fits are $150 per hour.</p>
+        <div class="price-groups">
+          <div class="price-group">
+            <h3>Removable roof racks</h3>
+            <p class="price-group-note">No drilling — pad & clamp, fixed points or rails</p>
+            <table class="price-table"><tbody>
+              <tr><td>1 bar</td><td>$100</td></tr>
+              <tr><td>2 bars<span class="price-common">Most common</span></td><td>$120</td></tr>
+              <tr><td>2 bars, streamline style (e.g. Streamline)</td><td>$200</td></tr>
+              <tr><td>3 bars</td><td>$170</td></tr>
+              <tr><td>4 bars</td><td>$250</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Drill-fit roof racks</h3>
+            <p class="price-group-note">Permanent — track or gutter mount</p>
+            <table class="price-table"><tbody>
+              <tr><td>1 bar</td><td>$200</td></tr>
+              <tr><td>2 bars<span class="price-common">Most common</span></td><td>$280</td></tr>
+              <tr><td>3 bars</td><td>$375</td></tr>
+              <tr><td>4 bars</td><td>$400</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Platforms</h3>
+            <p class="price-group-note">Including backbone</p>
+            <table class="price-table"><tbody>
+              <tr><td>Platform, no drilling required<span class="price-common">Most common</span></td><td>$280</td></tr>
+              <tr><td>Platform, drilling required</td><td>$380</td></tr>
+              <tr><td>Assemble platform</td><td>$100</td></tr>
+              <tr><td>Assemble and fit a universal platform to existing bars</td><td>$200</td></tr>
+              <tr><td>Fit of a product not listed as a manufacturer’s standard</td><td>POA</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Vehicle surcharges</h3>
+            <p class="price-group-note">On top of the base rack fit</p>
+            <table class="price-table"><tbody>
+              <tr><td>Rail removal, standard (e.g. Prado 100/200, D-Max, Colorado, MU-X)</td><td>$150</td></tr>
+              <tr><td>Rail removal including hood lining drop (e.g. Everest, Wildtrak, Fortuner, Pajero)</td><td>$450</td></tr>
+              <tr><td>Jeep Wrangler backbone (2 or 4 door)</td><td>$350</td></tr>
+              <tr><td>Complex fits (including SX D-Max, MU-X and Dodge RAM)</td><td>$200</td></tr>
+              <tr><td>Front Runner platform fit charge</td><td>$250</td></tr>
+              <tr><td>Heavy duty internal canopy system, 1 bar</td><td>$250</td></tr>
+              <tr><td>Heavy duty internal canopy system, 2 bars</td><td>$450</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Accessories &amp; add-ons</h3>
+            <p class="price-group-note">Fitted on their own or with a rack</p>
+            <table class="price-table"><tbody>
+              <tr><td>Basic accessory not sold with a rack or platform (e.g. bike carrier, awning, basket)</td><td>$50</td></tr>
+              <tr><td>Assemble and fit a vertical bike rack</td><td>$95</td></tr>
+              <tr><td>Ladder slide, MSL &amp; CSL (per slide)</td><td>$100</td></tr>
+              <tr><td>Roof top tent onto standard bars</td><td>$250</td></tr>
+              <tr><td>Roof top tent onto a platform</td><td>$500</td></tr>
+              <tr><td>Budget ladder rack</td><td>$180</td></tr>
+              <tr><td>Manual roller shutter, standard vehicles (excludes bracing and racks if required)</td><td>$700</td></tr>
+              <tr><td>Electric roller shutter, standard vehicles (excludes bracing, racks and electrical wiring)</td><td>$900</td></tr>
+              <tr><td>Non-listed, custom or special fitting requests</td><td>$150 per hour</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Products bought elsewhere</h3>
+            <p class="price-group-note">Happy to fit it — there’s a surcharge</p>
+            <table class="price-table"><tbody>
+              <tr><td>Fit surcharge for products not bought from Roof Racks Galore</td><td>$100</td></tr>
+              <tr><td>Fit surcharge for any tent not bought from Roof Racks Galore</td><td>$350</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="faq-section">
+    <h2 class="faq-heading">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>How long does a fitting take?</summary>
+        <div class="faq-answer"><p>Anything from 30 minutes for a basic removable rack to 8 hours for a complicated fit-out. It depends on the products and your vehicle, so your store will give you a time when they confirm your booking.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I wait in store while it’s fitted?</summary>
+        <div class="faq-answer"><p>Yes. Most fittings are done while you wait, and you’re welcome to look around the showroom in the meantime. If you’d like to see how it goes on, just ask the team.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need to leave my car with you?</summary>
+        <div class="faq-answer"><p>Usually not. Bigger jobs like platforms, roller shutters or van fit-outs can take longer, and your store will let you know if it’s easier to drop the car off.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Can you fit a rack I bought somewhere else?</summary>
+        <div class="faq-answer"><p>Yes, we’re happy to fit it. There’s a surcharge for products not bought from Roof Racks Galore, and your store will confirm it when they book you in.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you fit accessories as well as roof racks?</summary>
+        <div class="faq-answer"><p>Yes. Bike racks, roof boxes, awnings, roof top tents, roller shutters, ladder racks and more. If it’s not on the list, ask your nearest store and they’ll let you know.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>What if my vehicle needs extra work?</summary>
+        <div class="faq-answer"><p>Some vehicles need roof rails removed or extra parts before a rack can go on. Your store checks your vehicle and tells you before any extra work starts.</p></div>
+      </details>
+    </div>
+  </section>
+</div>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": "Roof rack installation and fitting",
+      "provider": {
+        "@type": "Organization",
+        "name": "Roof Racks Galore",
+        "url": "https://www.roofracksgalore.com.au/"
+      },
+      "areaServed": "AU"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long does a fitting take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Anything from 30 minutes for a basic removable rack to 8 hours for a complicated fit-out. It depends on the products and your vehicle, so your store will give you a time when they confirm your booking."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I wait in store while it’s fitted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Most fittings are done while you wait, and you’re welcome to look around the showroom in the meantime. If you’d like to see how it goes on, just ask the team."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to leave my car with you?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually not. Bigger jobs like platforms, roller shutters or van fit-outs can take longer, and your store will let you know if it’s easier to drop the car off."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you fit a rack I bought somewhere else?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, we’re happy to fit it. There’s a surcharge for products not bought from Roof Racks Galore, and your store will confirm it when they book you in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you fit accessories as well as roof racks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Bike racks, roof boxes, awnings, roof top tents, roller shutters, ladder racks and more. If it’s not on the list, ask your nearest store and they’ll let you know."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if my vehicle needs extra work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some vehicles need roof rails removed or extra parts before a rack can go on. Your store checks your vehicle and tells you before any extra work starts."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>
+(function () {
+  // Opens the collapsed fitting rates on arrival at #costs, or from any "#costs" link on the page.
+  function openCosts() {
+    var costs = document.getElementById('costs');
+    if (!costs) return;
+    costs.open = true;
+    costs.scrollIntoView({ block: 'start' });
+  }
+  if (location.hash === '#costs') document.addEventListener('DOMContentLoaded', function () { setTimeout(openCosts, 0); });
+  window.addEventListener('hashchange', function () { if (location.hash === '#costs') openCosts(); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href="#costs"]');
+    if (!a) return;
+    e.preventDefault();
+    openCosts();
+    // The URL update is a nice-to-have: never let it stop the list opening.
+    try { history.replaceState(null, '', location.pathname + location.search + '#costs'); } catch (err) {}
+  });
+})();
+</script>

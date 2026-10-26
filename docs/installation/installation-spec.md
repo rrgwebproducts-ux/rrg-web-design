@@ -22,6 +22,11 @@ The live page is a photo with old logos baked in, a pipe-separated list of what'
 
 The page is a Magento CMS page that Brenton maintains. The prototype marks the CMS content with `<!-- ===== CMS content … ===== -->` comments.
 
+**Paste-ready file for the current live site:** `docs/installation/cms/installation-cms.html`, generated from the prototype. Its README has the steps, the SEO comparison with the live page, the image upload list and the live-site compatibility notes. Tested 2026-10-26 inside a saved copy of the live page with the live marcwatts theme CSS. The SEO decisions (2026-10-26):
+- the live H1, the price heading and the hero image + alt text are kept word for word;
+- the live keyword H2 is written into the hero copy;
+- the live meta title and description are left as they are.
+
 | Part | Where it lives |
 |---|---|
 | Hero, What We Fit tiles, How It Works + callout, Current Fitting Charges, FAQs | **CMS.** Static HTML inside `<main>`; no page script builds any of it. |
