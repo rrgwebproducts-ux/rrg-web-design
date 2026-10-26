@@ -92,7 +92,34 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 
 ---
 
-## 5. Rebuilding this file
+## 5. NZ version (roofracksgalore.co.nz)
+
+- **The file to paste:** [installation-cms-nz.html](installation-cms-nz.html), into the NZ store view's page `/roof-rack-installation-and-fitting-costs`.
+- **Rollback copy:** [live-backup-nz-2026-10-26.html](live-backup-nz-2026-10-26.html).
+- **Testing:** done 2026-10-26 inside a saved copy of the live NZ page. One H1, no prices, all 9 images load, nothing overflows at 390px.
+
+**Same as AU:** the design, the styles, the What We Fit tiles and How It Works. The images come from the shared media library, so there's nothing to upload for NZ.
+
+**NZ-specific:**
+- **No prices anywhere.** The AU feature tile's "$120 / $280" line is replaced, and its button goes to the cost section instead of a price list.
+- **The live NZ copy is kept word for word:**
+  - H1 "Roof Rack Installation & Fitting Services NZ";
+  - subtitle and intro;
+  - "Why Choose…" and "Important Information" cards;
+  - "Roof Rack Installation Cost NZ" with its Simple / Standard / Complex tiers;
+  - the "Book Your Roof Rack Installation Today" CTA;
+  - all 5 FAQs (incl. Auckland) and their FAQPage schema.
+- **One new H2:** "Professional Roof Rack Fitting" sits above the rest of the intro copy.
+- **Trust bar:** NZ has no `/price-guarantee` (its page is `/price-guarentee`) and no Reviews.io link, so the items are:
+  - Over 30 Years of Fitting Experience;
+  - Auckland Fitting Centre (→ `/locations`);
+  - Price Guarantee (→ `/price-guarentee`);
+  - 90 Day Exchange (→ `/returns`).
+- **Links:** Book a Fitting and every store link go to the NZ Store Locator, `/locations`.
+- **Page settings:** NZ's Content Heading is already empty; leave it empty. Also leave its meta title and description ("Roof Rack Installation NZ | Roof Rack Fitting & Costs Auckland…") as they are.
+- **No script:** the cost section isn't collapsed, so it's not needed.
+
+## 6. Rebuilding this file
 
 `installation-cms.html` is generated from the prototype. If the prototype changes, rebuild it rather than editing both by hand. Ask Claude to "rebuild the Installation CMS file". It:
 1. extracts the prototype's `<main>`;
