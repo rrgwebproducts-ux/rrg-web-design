@@ -322,17 +322,199 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Service",
-      "name": "Roof rack installation and fitting",
-      "provider": {
-        "@type": "Organization",
-        "name": "Roof Racks Galore",
-        "url": "https://roofracksgalore.co.nz/"
+      "@type": "Organization",
+      "@id": "https://roofracksgalore.co.nz/#organization",
+      "name": "Roof Racks Galore",
+      "url": "https://roofracksgalore.co.nz/",
+      "logo": "https://roofracksgalore.co.nz/pub/media/wysiwyg/logos/logo-main-roof-racks-galore.svg",
+      "telephone": "+64 9 481 1910"
+    },
+    {
+      "@type": "AutoPartsStore",
+      "@id": "https://roofracksgalore.co.nz/locations#store",
+      "name": "Roof Racks Galore Auckland",
+      "url": "https://roofracksgalore.co.nz/locations",
+      "image": "https://roofracksgalore.co.nz/pub/media/wysiwyg/rack-fitting-roof-racks-galore-hero.jpg",
+      "telephone": "+64 9 481 1910",
+      "parentOrganization": {
+        "@id": "https://roofracksgalore.co.nz/#organization"
       },
-      "areaServed": "NZ"
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "195A Wairau Road, Wairau Valley",
+        "addressLocality": "Auckland",
+        "addressRegion": "Auckland",
+        "postalCode": "0627",
+        "addressCountry": "NZ"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -36.7747,
+        "longitude": 174.7381
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:30",
+          "closes": "17:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "08:30",
+          "closes": "12:30"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#webpage",
+      "url": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs",
+      "name": "Roof Rack Installation NZ | Roof Rack Fitting & Costs Auckland | Roof Racks Galore",
+      "description": "Need roof rack installation in NZ? Roof Racks Galore offers professional roof rack fitting, bike rack, kayak carrier and roof box installation in Auckland. View fitting costs and book expert installation today.",
+      "inLanguage": "en-NZ",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://roofracksgalore.co.nz/pub/media/wysiwyg/rack-fitting-roof-racks-galore-hero.jpg",
+        "caption": "Roof Rack Installation New Zealand - Roof Racks Galore"
+      },
+      "breadcrumb": {
+        "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#breadcrumb"
+      },
+      "about": {
+        "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#service"
+      },
+      "mainEntity": {
+        "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#faq"
+      },
+      "publisher": {
+        "@id": "https://roofracksgalore.co.nz/#organization"
+      },
+      "dateModified": "2026-10-26"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://roofracksgalore.co.nz/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Roof Rack Installation & Fitting Services NZ",
+          "item": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#service",
+      "name": "Roof Rack Installation & Fitting Services NZ",
+      "serviceType": "Roof rack installation",
+      "url": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs",
+      "description": "Professional roof rack installation in New Zealand for roof racks, bike racks, kayak carriers, roof boxes, platforms, trays, van fitouts and accessories.",
+      "image": "https://roofracksgalore.co.nz/pub/media/wysiwyg/rack-fitting-roof-racks-galore-hero.jpg",
+      "provider": {
+        "@id": "https://roofracksgalore.co.nz/locations#store"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "New Zealand"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Roof rack installation and fitting",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "What we fit",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Roof Racks & Platforms fitting",
+                  "url": "https://roofracksgalore.co.nz/roof-racks"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Bike Racks fitting",
+                  "url": "https://roofracksgalore.co.nz/bike-racks"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Kayak & SUP Carriers fitting",
+                  "url": "https://roofracksgalore.co.nz/water-snow-sports/water-carriers"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Roof Boxes fitting",
+                  "url": "https://roofracksgalore.co.nz/roof-boxes"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Awnings & Roof Top Tents fitting",
+                  "url": "https://roofracksgalore.co.nz/awnings-roof-top-tents"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Roller Shutters fitting",
+                  "url": "https://roofracksgalore.co.nz/camping-offroad/vehicle-accessories/roller-shutters"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Van Fit-Outs & Ladder Racks fitting",
+                  "url": "https://roofracksgalore.co.nz/roof-racks/roof-rack-accessories/trade-and-work-solutions"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Accessories fitting",
+                  "url": "https://roofracksgalore.co.nz/roof-rack-accessories"
+                }
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "@type": "FAQPage",
+      "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#faq",
+      "isPartOf": {
+        "@id": "https://roofracksgalore.co.nz/roof-rack-installation-and-fitting-costs#webpage"
+      },
       "mainEntity": [
         {
           "@type": "Question",

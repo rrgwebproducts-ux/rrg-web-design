@@ -39,13 +39,13 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 | Price heading | Roof Rack and Accessory Installation & Fitting Rates (H3) | **Same words**, now an H2. |
 | Price table | 32 rows, visible | **All 32 prices kept, unchanged.** Grouped, and inside a collapsed `<details>`. It is still in the HTML, so Google indexes it. The internal SKU column is gone; nobody searches for those codes. |
 | Hero image | `rack-fitting-roof-racks-galore-hero.jpg`, alt "Roof Racks Galore Fitting Service" | **The same file and the same alt text.** It's cropped with CSS to hide the old logos, so there's no new upload. |
-| Structured data | Organization only (site-wide, from the theme) | **Added:** `Service` + `FAQPage` (6 questions), inside the CMS content. |
+| Structured data | Organization only (site-wide, from the theme) | **Added (2026-10-26):** Organization, WebPage, BreadcrumbList, Service (all 31 priced rates as Offers in AUD, plus the 8 "What we fit" services with their category links) and FAQPage (7 questions, incl. "How much does roof rack installation cost?" with real prices). All linked by `@id`. 0 errors / 0 warnings on validator.schema.org. |
 | Internal links | `/warranty`, `/locations/` | Those two, plus `/fit-my-vehicle`, 8 category pages, `/price-guarantee` and `/returns`. |
 | Content | About 250 words + table | About 900 words + table + 6 FAQs. |
 
 **Keep in mind:**
 - **Collapsed prices:** the price list now starts collapsed (team decision, spec.md §16 item 2). Google indexes collapsed content and gives it full weight on mobile-first indexing. If rankings for "installation cost" terms dip after launch, opening it by default is a one-word change: add `open` to `<details class="price-accordion" id="costs">`.
-- **Editing FAQs:** the FAQ structured data copies the FAQ text. Edit an FAQ and you must edit its JSON-LD copy at the bottom of the file to match.
+- **Editing FAQs or prices:** the structured data copies the FAQ text and every price. If you change either on the page, ask Claude to rebuild the file so the schema matches, or edit the JSON-LD block at the bottom by hand.
 
 ---
 
@@ -118,6 +118,7 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 - **Links:** Book a Fitting and every store link go to the NZ Store Locator, `/locations`.
 - **Page settings:** NZ's Content Heading is already empty; leave it empty. Also leave its meta title and description ("Roof Rack Installation NZ | Roof Rack Fitting & Costs Auckland…") as they are.
 - **No script:** the cost section isn't collapsed, so it's not needed.
+- **Structured data (2026-10-26):** Organization (the NZ site had none), the Auckland store as an AutoPartsStore (195A Wairau Road, Wairau Valley, Auckland 0627, +64 9 481 1910, Mon–Fri 8:30–5, Sat 8:30–12:30, map coordinates), WebPage, BreadcrumbList, Service (provided by the Auckland store, area New Zealand, the 8 "What we fit" services; no prices) and FAQPage (the 5 NZ FAQs). 0 errors / 0 warnings on validator.schema.org.
 
 ## 6. Rebuilding this file
 
