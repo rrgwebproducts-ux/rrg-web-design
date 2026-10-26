@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="../_shared/favicon.ico">
 <title>Roof Rack Installation Costs | Expert Fitting Services - Roof Racks Galore</title>
-<meta name="description" content="Affordable roof rack installation at Roof Racks Galore. Expert fitting with our Rack Fit Guarantee at 35+ stores across Australia. Book your fitting online and your local store will confirm a time.">
+<meta name="description" content="Affordable roof rack installation at Roof Racks Galore. Expert fitting with our Rack Fit Guarantee at 35+ stores across Australia. Find your nearest store to book a fitting.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
@@ -15,34 +15,33 @@
 <link rel="stylesheet" href="../_shared/admin-panel.css">
 <link rel="stylesheet" href="../_shared/footer.css">
 <link rel="stylesheet" href="../_shared/campaign.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
-<!-- ===== Installation (docs/installation/installation-spec.md, 2026-09-30) =====
-     Replaces /roof-rack-installation-and-fitting-costs. The live price table regrouped (no
-     internal fit-charge codes) and a fitting request form sent to the chosen store.
-     2026-09-30 design review (spec.md §16 items 1–4): the estimator is gone, the form comes
-     first with the chosen store as a card beside it, and the price list is a public collapsed
-     accordion below the form (#costs). Every "Book a Fitting" / "Book An Installation" button
-     on the site lands on #book. Contained hero. No page-local CSS. -->
+<!-- ===== Installation (docs/installation/installation-spec.md) =====
+     Replaces /roof-rack-installation-and-fitting-costs. A Magento CMS page (Brenton, 2026-10-26):
+     everything inside <main> is static HTML that goes into the CMS editor as is, no page script
+     builds any of it. The fitting request form is out of Phase 1, so every "Book a Fitting" /
+     "Book An Installation" button on the site goes to the Store Finder (/locations) instead
+     (rrgLinkInstallation(), shared.js). The thin trust bar under the header is the Home page's
+     shared widget (theme, not CMS). Contained hero. No page-local CSS. -->
 </head>
 <body>
 
 <div data-widget="header"></div>
+<!-- Thin trust bar, straight under the header — the Home page's (data-placement="top"). Theme widget. -->
+<div data-widget="trust-bar" data-placement="top"></div>
 
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs"><a href="../home/index.html">Home</a> &gt; <span>Roof Rack Installation</span></div>
 </div>
 
+<!-- ===== CMS content: everything inside <main> is the page's CMS content. ===== -->
 <main class="wrap" data-install-page>
-  <!-- Hero (spec 3.1) — contained (Brenton, 2026-09-30). Book a Fitting is the one action; the
-       prices are a quiet text link (spec.md §16 item 2). -->
   <section class="page-hero">
     <div class="page-hero-intro">
       <h1>Roof Rack Installation &amp; Fitting</h1>
       <p>Roof rack installation has become more complicated, and it's easy to cause damage, leaks or rust without the right know-how. Vehicle roofs are thinner and weaker than they used to be, and harder to hold onto because of their shapes.</p>
       <p>With over 30 years of experience, our installers fit roof racks, bike racks, roof boxes, platforms and more every day, and every installation is covered by our warranty.</p>
       <div class="page-hero-ctas">
-        <a href="#book" class="btn btn-cta">Book a Fitting</a>
+        <a href="../store-finder/index.html" class="btn btn-cta">Book a Fitting</a>
         <a href="#costs" class="page-hero-textlink" data-region-prices>See fitting charges</a>
       </div>
     </div>
@@ -51,60 +50,176 @@
     </div>
   </section>
 
-  <div class="trust-row">
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><h4>Covered by Our Warranty</h4><p>Every installation, <a href="#">see our warranty</a></p></div>
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><h4>Rack Fit Guarantee</h4><p>Free nationwide rack guarantee</p></div>
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg><h4>Over 200,000 Racks Fitted</h4><p>30+ years of fitting experience</p></div>
-    <div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><h4>35+ Fitting Centres</h4><p><a href="#" data-store-finder-link>Find your nearest store</a></p></div>
-  </div>
-
-  <!-- 3.3 — what we fit (the live page's list, as category tiles). -->
+  <!-- What we fit — the VLP's tile grid: Roof Racks & Platforms as the large feature tile in its
+       own column, the rest in two rows beside it, the spare space filled by "Something else?". -->
   <section class="cat-tile-section">
     <h2 class="related-heading">What We Fit</h2>
-    <div class="cat-tile-grid cat-tile-grid--main" id="installFitGrid"></div>
+    <div class="cat-tile-grid cat-tile-grid--main">
+      <div class="cat-tile cat-tile--feature">
+        <a class="cat-tile-media" href="#"><img src="../_shared/category-tiles/roof-racks.webp" alt="" loading="lazy"><span class="cat-tile-title">Roof Racks &amp; Platforms</span></a>
+        <div class="cat-tile-body">
+          <p>Our most common fit, from a 2 bar removable rack ($120) to a full platform with no drilling ($280). Every rack is torqued to spec and load-tested before you drive away.</p>
+          <a class="btn btn-outline btn-block" href="#costs" data-region-prices>See Roof Rack Fitting Charges</a>
+        </div>
+      </div>
+      <a class="cat-tile cat-tile--standard" href="../plp/index.html">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/bike-racks.webp" alt="" loading="lazy"><span class="cat-tile-title">Bike Racks</span></span>
+        <span class="cat-tile-cta">Shop Bike Racks<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="#">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/water-sports.webp" alt="" loading="lazy"><span class="cat-tile-title">Kayak &amp; SUP Carriers</span></span>
+        <span class="cat-tile-cta">Shop Kayak &amp; SUP<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="#">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/roof-boxes.webp" alt="" loading="lazy"><span class="cat-tile-title">Roof Boxes</span></span>
+        <span class="cat-tile-cta">Shop Roof Boxes<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="#">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/roof-top-tents.webp" alt="" loading="lazy"><span class="cat-tile-title">Awnings &amp; Roof Top Tents</span></span>
+        <span class="cat-tile-cta">Shop Awnings &amp; RTTs<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="#">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/roller-shutters.webp" alt="" loading="lazy"><span class="cat-tile-title">Roller Shutters</span></span>
+        <span class="cat-tile-cta">Shop Roller Shutters<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="#">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/trade-work.webp" alt="" loading="lazy"><span class="cat-tile-title">Van Fit-Outs &amp; Ladder Racks</span></span>
+        <span class="cat-tile-cta">Shop Trade &amp; Work<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--standard" href="#">
+        <span class="cat-tile-media"><img src="../_shared/category-tiles/other-accessories.webp" alt="" loading="lazy"><span class="cat-tile-title">Accessories</span></span>
+        <span class="cat-tile-cta">Shop Accessories<span aria-hidden="true"> ›</span></span>
+      </a>
+      <a class="cat-tile cat-tile--ask" href="../store-finder/index.html">
+        <strong>Something else?</strong>
+        <span>We fit most things. Ask your nearest store and they'll quote it.</span>
+        <span class="cat-tile-ask-cta">Book a Fitting ›</span>
+      </a>
+    </div>
   </section>
 
-  <!-- 3.4 — how it works. -->
   <section class="cat-tile-section">
     <h2 class="related-heading">How It Works</h2>
     <ol class="steps">
       <li><h3>Choose Your Setup</h3><p>Buy online or in store. Use <a href="../fit-my-vehicle/index.html">Fit My Vehicle</a> to find exactly what fits.</p></li>
-      <li><h3>Book a Fitting</h3><p>Send a request below and your store will confirm a time, or just drop by.</p></li>
+      <li><h3>Book a Fitting</h3><p>Contact your <a href="../store-finder/index.html">nearest store</a> and they'll book you in, or just drop by.</p></li>
       <li><h3>Fitted &amp; Checked</h3><p>We fit it, load-check it and show you how it all works before you drive off.</p></li>
     </ol>
     <div class="callout"><strong>How long does it take?</strong> Anything from 30 minutes for a basic removable rack to 8 hours for an extremely complicated fit-out. It depends on the products and your vehicle, so check with <a href="#" data-store-finder-link>your local store</a> for advice on your fitment. Most fittings are done while you wait.</div>
   </section>
 
-  <!-- 3.6 — fitting request (#book), first (spec.md §16 item 2). Goes to the chosen store;
-       prefilled from ?store= or the saved store, and the session vehicle. The store card beside
-       it (item 3) gives the two ways in: send the request, or ring the store now. -->
-  <section class="cat-tile-section" id="book">
-    <h2 class="related-heading">Book a Fitting</h2>
-    <p class="section-intro">Tell us what you need fitted and when suits. Your request goes straight to the store you choose, and they'll contact you to confirm a time.</p>
-    <p class="booking-from" id="bookFrom"></p>
-    <div class="booking">
-      <div id="bookingWrap"></div>
-      <aside class="booking-aside" id="bookingAside" aria-label="Your store"></aside>
-    </div>
-  </section>
-
-  <!-- 3.5 — current fitting charges (#costs): public and indexable, collapsed below the form
-       (spec.md §16 item 2). AU only until regional prices exist (item 35). -->
+  <!-- Current fitting charges (#costs): public and indexable, collapsed. AU prices only, so
+       NZ/UK store views leave this section out (data-region-prices hides it in the prototype). -->
   <section class="cat-tile-section" data-region-prices>
     <details class="price-accordion" id="costs">
       <summary><h2 class="related-heading">Current Fitting Charges</h2><span><span class="when-closed">Click to view</span><span class="when-open">Hide</span></span></summary>
       <div class="price-accordion-body">
         <p>Prices include GST. Your store confirms the final price when they book you in, after checking your vehicle. Complex or custom fits are $150 per hour.</p>
-        <div class="price-groups" id="priceGroups"></div>
+        <div class="price-groups">
+          <div class="price-group">
+            <h3>Removable roof racks</h3>
+            <p class="price-group-note">No drilling — pad & clamp, fixed points or rails</p>
+            <table class="price-table"><tbody>
+              <tr><td>1 bar</td><td>$100</td></tr>
+              <tr><td>2 bars<span class="price-common">Most common</span></td><td>$120</td></tr>
+              <tr><td>2 bars, streamline style (e.g. Streamline)</td><td>$200</td></tr>
+              <tr><td>3 bars</td><td>$170</td></tr>
+              <tr><td>4 bars</td><td>$250</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Drill-fit roof racks</h3>
+            <p class="price-group-note">Permanent — track or gutter mount</p>
+            <table class="price-table"><tbody>
+              <tr><td>1 bar</td><td>$200</td></tr>
+              <tr><td>2 bars<span class="price-common">Most common</span></td><td>$280</td></tr>
+              <tr><td>3 bars</td><td>$375</td></tr>
+              <tr><td>4 bars</td><td>$400</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Platforms</h3>
+            <p class="price-group-note">Including backbone</p>
+            <table class="price-table"><tbody>
+              <tr><td>Platform, no drilling required<span class="price-common">Most common</span></td><td>$280</td></tr>
+              <tr><td>Platform, drilling required</td><td>$380</td></tr>
+              <tr><td>Assemble platform</td><td>$100</td></tr>
+              <tr><td>Assemble and fit a universal platform to existing bars</td><td>$200</td></tr>
+              <tr><td>Fit of a product not listed as a manufacturer’s standard</td><td>POA</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Vehicle surcharges</h3>
+            <p class="price-group-note">On top of the base rack fit</p>
+            <table class="price-table"><tbody>
+              <tr><td>Rail removal, standard (e.g. Prado 100/200, D-Max, Colorado, MU-X)</td><td>$150</td></tr>
+              <tr><td>Rail removal including hood lining drop (e.g. Everest, Wildtrak, Fortuner, Pajero)</td><td>$450</td></tr>
+              <tr><td>Jeep Wrangler backbone (2 or 4 door)</td><td>$350</td></tr>
+              <tr><td>Complex fits (including SX D-Max, MU-X and Dodge RAM)</td><td>$200</td></tr>
+              <tr><td>Front Runner platform fit charge</td><td>$250</td></tr>
+              <tr><td>Heavy duty internal canopy system, 1 bar</td><td>$250</td></tr>
+              <tr><td>Heavy duty internal canopy system, 2 bars</td><td>$450</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Accessories &amp; add-ons</h3>
+            <p class="price-group-note">Fitted on their own or with a rack</p>
+            <table class="price-table"><tbody>
+              <tr><td>Basic accessory not sold with a rack or platform (e.g. bike carrier, awning, basket)</td><td>$50</td></tr>
+              <tr><td>Assemble and fit a vertical bike rack</td><td>$95</td></tr>
+              <tr><td>Ladder slide, MSL &amp; CSL (per slide)</td><td>$100</td></tr>
+              <tr><td>Roof top tent onto standard bars</td><td>$250</td></tr>
+              <tr><td>Roof top tent onto a platform</td><td>$500</td></tr>
+              <tr><td>Budget ladder rack</td><td>$180</td></tr>
+              <tr><td>Manual roller shutter, standard vehicles (excludes bracing and racks if required)</td><td>$700</td></tr>
+              <tr><td>Electric roller shutter, standard vehicles (excludes bracing, racks and electrical wiring)</td><td>$900</td></tr>
+              <tr><td>Non-listed, custom or special fitting requests</td><td>$150 per hour</td></tr>
+            </tbody></table>
+          </div>
+          <div class="price-group">
+            <h3>Products bought elsewhere</h3>
+            <p class="price-group-note">Happy to fit it — there’s a surcharge</p>
+            <table class="price-table"><tbody>
+              <tr><td>Fit surcharge for products not bought from Roof Racks Galore</td><td>$100</td></tr>
+              <tr><td>Fit surcharge for any tent not bought from Roof Racks Galore</td><td>$350</td></tr>
+            </tbody></table>
+          </div>
+        </div>
       </div>
     </details>
   </section>
 
   <section class="faq-section">
     <h2 class="faq-heading">Frequently Asked Questions</h2>
-    <div class="faq-list" id="installFaqList"></div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>How long does a fitting take?</summary>
+        <div class="faq-answer"><p>Anything from 30 minutes for a basic removable rack to 8 hours for a complicated fit-out. It depends on the products and your vehicle, so your store will give you a time when they confirm your booking.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I wait in store while it’s fitted?</summary>
+        <div class="faq-answer"><p>Yes. Most fittings are done while you wait, and you’re welcome to look around the showroom in the meantime. If you’d like to see how it goes on, just ask the team.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need to leave my car with you?</summary>
+        <div class="faq-answer"><p>Usually not. Bigger jobs like platforms, roller shutters or van fit-outs can take longer, and your store will let you know if it’s easier to drop the car off.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Can you fit a rack I bought somewhere else?</summary>
+        <div class="faq-answer"><p>Yes, we’re happy to fit it. There’s a surcharge for products not bought from Roof Racks Galore, and your store will confirm it when they book you in.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you fit accessories as well as roof racks?</summary>
+        <div class="faq-answer"><p>Yes. Bike racks, roof boxes, awnings, roof top tents, roller shutters, ladder racks and more. If it’s not on the list, ask your nearest store and they’ll let you know.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>What if my vehicle needs extra work?</summary>
+        <div class="faq-answer"><p>Some vehicles need roof rails removed or extra parts before a rack can go on. Your store checks your vehicle and tells you before any extra work starts.</p></div>
+      </details>
+    </div>
   </section>
 </main>
+<!-- ===== End CMS content ===== -->
 
 <div data-widget="brands-strip"></div>
 
@@ -120,99 +235,82 @@
 <script src="../_shared/shared.js"></script>
 <script src="../_shared/cart.js"></script>
 <script src="../_shared/plp.js"></script>
-<script type="application/ld+json" id="installLd">{}</script>
+<!-- Structured data — static, part of the CMS content (no priced Offers: the prices sit in a
+     collapsed list, not the headline). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": "Roof rack installation and fitting",
+      "provider": {
+        "@type": "Organization",
+        "name": "Roof Racks Galore",
+        "url": "https://www.roofracksgalore.com.au/"
+      },
+      "areaServed": "AU"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long does a fitting take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Anything from 30 minutes for a basic removable rack to 8 hours for a complicated fit-out. It depends on the products and your vehicle, so your store will give you a time when they confirm your booking."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I wait in store while it’s fitted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Most fittings are done while you wait, and you’re welcome to look around the showroom in the meantime. If you’d like to see how it goes on, just ask the team."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to leave my car with you?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually not. Bigger jobs like platforms, roller shutters or van fit-outs can take longer, and your store will let you know if it’s easier to drop the car off."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you fit a rack I bought somewhere else?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, we’re happy to fit it. There’s a surcharge for products not bought from Roof Racks Galore, and your store will confirm it when they book you in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you fit accessories as well as roof racks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Bike racks, roof boxes, awnings, roof top tents, roller shutters, ladder racks and more. If it’s not on the list, ask your nearest store and they’ll let you know."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if my vehicle needs extra work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some vehicles need roof rails removed or extra parts before a rack can go on. Your store checks your vehicle and tells you before any extra work starts."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <script>
-// ==== What we fit (spec 3.3) ========================================================
-// The VLP's tile grid (Brenton, 2026-09-30): Roof Racks & Platforms as the large feature tile in
-// its own column, the rest in two rows beside it. Seven categories leave one space in those two
-// rows, filled by a "something else?" booking tile — the same idea as the VLP's Store Finder
-// tile. Figma tile images, _shared/category-tiles/.
-const INSTALL_FITS = [
-  { slug: 'bike-racks', label: 'Bike Racks', href: '../plp/index.html' },
-  { slug: 'water-sports', label: 'Kayak & SUP Carriers', cta: 'Shop Kayak & SUP' },
-  { slug: 'roof-boxes', label: 'Roof Boxes' },
-  { slug: 'roof-top-tents', label: 'Awnings & Roof Top Tents', cta: 'Shop Awnings & RTTs' },
-  { slug: 'roller-shutters', label: 'Roller Shutters' },
-  { slug: 'trade-work', label: 'Van Fit-Outs & Ladder Racks', cta: 'Shop Trade & Work' },
-  { slug: 'other-accessories', label: 'Accessories' }
-];
-document.getElementById('installFitGrid').innerHTML = `
-  <div class="cat-tile cat-tile--feature">
-    <a class="cat-tile-media" href="#"><img src="../_shared/category-tiles/roof-racks.webp" alt="" loading="lazy"><span class="cat-tile-title">Roof Racks &amp; Platforms</span></a>
-    <div class="cat-tile-body">
-      <p>Our most common fit, from a 2 bar removable rack ($120) to a full platform with no drilling ($280). Every rack is torqued to spec and load-tested before you drive away.</p>
-      <a class="btn btn-outline btn-block" href="#costs" data-region-prices>See Roof Rack Fitting Charges</a>
-    </div>
-  </div>
-  ${INSTALL_FITS.map(c => `
-  <a class="cat-tile cat-tile--standard" href="${c.href || '#'}">
-    <span class="cat-tile-media"><img src="../_shared/category-tiles/${c.slug}.webp" alt="" loading="lazy"><span class="cat-tile-title">${c.label}</span></span>
-    <span class="cat-tile-cta">${c.cta || `Shop ${c.label}`}<span aria-hidden="true"> ›</span></span>
-  </a>`).join('')}
-  <a class="cat-tile cat-tile--ask" href="#book">
-    <strong>Something else?</strong>
-    <span>We fit most things. Tell us what you've got and your store will quote it.</span>
-    <span class="cat-tile-ask-cta">Book a fitting ›</span>
-  </a>`;
-
-// ==== Fitting prices (spec Section 4) ===============================================
-// The live price table, verbatim prices, regrouped for customers. The internal fit-charge SKU
-// codes (FIT_2BAR_NO_DRILL…) stay out of the page — `sku` keeps them for the developer brief
-// and the Magento fit-charge products.
-const FIT_PRICES = [
-  { group: 'Removable roof racks', note: 'No drilling — pad & clamp, fixed points or rails', rows: [
-    { sku: 'FIT_1BAR_NO_DRILL', label: '1 bar', price: 100 },
-    { sku: 'FIT_2BAR_NO_DRILL', label: '2 bars', price: 120, common: true },
-    { sku: 'FIT_2BAR_NO_DRILL_STREAMLINE', label: '2 bars, streamline style (e.g. Streamline)', price: 200 },
-    { sku: 'FIT_3BAR_NO_DRILL', label: '3 bars', price: 170 },
-    { sku: 'FIT_4BAR_NO_DRILL', label: '4 bars', price: 250 } ] },
-  { group: 'Drill-fit roof racks', note: 'Permanent — track or gutter mount', rows: [
-    { sku: 'FIT_1BAR_DRILL', label: '1 bar', price: 200 },
-    { sku: 'FIT_2BAR_DRILL', label: '2 bars', price: 280, common: true },
-    { sku: 'FIT_3BAR_DRILL', label: '3 bars', price: 375 },
-    { sku: 'FIT_4BAR_DRILL', label: '4 bars', price: 400 } ] },
-  { group: 'Platforms', note: 'Including backbone', rows: [
-    { sku: 'FIT_PLATFORM_NO_DRILL', label: 'Platform, no drilling required', price: 280, common: true },
-    { sku: 'FIT_PLATFORM_DRILL', label: 'Platform, drilling required', price: 380 },
-    { sku: 'FIT_SURCHARGE_PLATFORM_ASSEMBLY', label: 'Assemble platform', price: 100 },
-    { sku: 'FIT_PLATFORM_ON_BARS', label: 'Assemble and fit a universal platform to existing bars', price: 200 },
-    { sku: 'FIT_CUSTOM', label: 'Fit of a product not listed as a manufacturer’s standard', price: null, text: 'POA' } ] },
-  { group: 'Vehicle surcharges', note: 'On top of the base rack fit', rows: [
-    { sku: 'FIT_SURCHARGE_RAIL_REMOVAL', label: 'Rail removal, standard (e.g. Prado 100/200, D-Max, Colorado, MU-X)', price: 150 },
-    { sku: 'FIT_SURCHARGE_HOOD_LINE_DROP', label: 'Rail removal including hood lining drop (e.g. Everest, Wildtrak, Fortuner, Pajero)', price: 450 },
-    { sku: 'FIT_SURCHARGE_WRANGLER', label: 'Jeep Wrangler backbone (2 or 4 door)', price: 350 },
-    { sku: 'FIT_SURCHARGE_SPECIAL_VEHICLE', label: 'Complex fits (including SX D-Max, MU-X and Dodge RAM)', price: 200 },
-    { sku: 'FIT_SURCHARGE_FRONT_RUNNER', label: 'Front Runner platform fit charge', price: 250 },
-    { sku: 'FIT_INTERNAL_CANOPY_1BAR', label: 'Heavy duty internal canopy system, 1 bar', price: 250 },
-    { sku: 'FIT_INTERNAL_CANOPY_2BAR', label: 'Heavy duty internal canopy system, 2 bars', price: 450 } ] },
-  { group: 'Accessories & add-ons', note: 'Fitted on their own or with a rack', rows: [
-    { sku: 'FIT_ACCESSORY', label: 'Basic accessory not sold with a rack or platform (e.g. bike carrier, awning, basket)', price: 50 },
-    { sku: 'FIT_VERTICAL_BIKE_RACK_ASSEMBLY', label: 'Assemble and fit a vertical bike rack', price: 95 },
-    { sku: 'FIT_LADDERSLIDE', label: 'Ladder slide, MSL & CSL (per slide)', price: 100 },
-    { sku: 'FIT_TENT_TO_BARS', label: 'Roof top tent onto standard bars', price: 250 },
-    { sku: 'FIT_TENT_TO_PLATFORM', label: 'Roof top tent onto a platform', price: 500 },
-    { sku: 'FIT_BUDGET_BAR', label: 'Budget ladder rack', price: 180 },
-    { sku: 'FIT_MANUAL_ROLLER_SHUTTER', label: 'Manual roller shutter, standard vehicles (excludes bracing and racks if required)', price: 700 },
-    { sku: 'FIT_ELECTRIC_ROLLER_SHUTTER', label: 'Electric roller shutter, standard vehicles (excludes bracing, racks and electrical wiring)', price: 900 },
-    { sku: 'FIT_OTHER', label: 'Non-listed, custom or special fitting requests', price: null, text: '$150 per hour' } ] },
-  { group: 'Products bought elsewhere', note: 'Happy to fit it — there’s a surcharge', rows: [
-    { sku: 'FIT_SURCHARGE_NOT_SOLD_PRODUCT', label: 'Fit surcharge for products not bought from Roof Racks Galore', price: 100 },
-    { sku: 'FIT_SURCHARGE_NOT_SOLD_TENT', label: 'Fit surcharge for any tent not bought from Roof Racks Galore', price: 350 } ] }
-];
-const FIT_BY_SKU = Object.fromEntries(FIT_PRICES.flatMap(g => g.rows.map(r => [r.sku, r])));
-const money = n => `$${n.toLocaleString('en-AU')}`;
-document.getElementById('priceGroups').innerHTML = FIT_PRICES.map(g => `
-  <div class="price-group">
-    <h3>${g.group}</h3>
-    <p class="price-group-note">${g.note}</p>
-    <table class="price-table"><tbody>
-      ${g.rows.map(r => `<tr><td>${r.label}${r.common ? '<span class="price-common">Most common</span>' : ''}</td><td>${r.price == null ? r.text : money(r.price)}</td></tr>`).join('')}
-    </tbody></table>
-  </div>`).join('');
-
-// ==== Current fitting charges (#costs) — spec.md §16 item 2 ============================
-// Collapsed below the form. Every "See Fitting Costs" link on the site lands on #costs
-// (rrgLinkInstallation(), shared.js), so arriving there, or following one on this page, opens it.
+// ==== Theme JS (not CMS) ==============================================================
+// Every "See Fitting Costs" link on the site lands on #costs (rrgLinkInstallation(), shared.js),
+// so arriving there, or following one on this page, opens the collapsed list.
 function openCosts() {
   const costs = document.getElementById('costs');
   if (!costs || costs.closest('[hidden]')) return;
@@ -229,203 +327,15 @@ document.addEventListener('click', e => {
   openCosts();
 });
 
-// Prices are AU's (the live table). NZ/UK have no regional list yet (spec.md §16 item 35), so
-// there the "from" line becomes "call your store" and the list and hero link are hidden.
+// Prototype only: the prices are AU's (the live table) and NZ/UK have no regional list yet
+// (spec.md §16 item 35), so the region switcher hides them. In Magento the NZ/UK store views'
+// CMS content simply leaves them out.
 function applyInstallRegion() {
   const au = (typeof currentRegion === 'undefined' ? 'AU' : currentRegion) === 'AU';
   document.querySelectorAll('[data-region-prices]').forEach(el => { el.hidden = !au; });
-  document.getElementById('bookFrom').innerHTML = au
-    ? `<strong>Most roof rack fits start from ${money(FIT_BY_SKU.FIT_2BAR_NO_DRILL.price)}.</strong> Your store confirms the final price after checking your vehicle. <a href="#costs">See current fitting charges</a>`
-    : '<strong>Call your store for a fitting price.</strong> It depends on what you’re fitting and your vehicle, and your store confirms it when they book you in.';
 }
 applyInstallRegion();
 document.addEventListener('rrg-region-change', applyInstallRegion);
-
-// ==== Booking form (spec Section 5) ==================================================
-// Sends the request to the chosen store's inbox (rrgStoreEmail()). The store is prefilled from
-// ?store= (a store page's Book a Fitting), else the visitor's saved store; the vehicle from the
-// session vehicle. Prototype: validates, then shows what would be sent and where.
-const BOOK_STORES = RRG_STORE_NETWORK.flatMap(g => g.stores.map(st => ({ ...st, state: g.state })));
-const BOOK_FITS = ['Roof racks', 'Platform or tray', 'Bike rack', 'Roof box', 'Awning or roof top tent', 'Roller shutter', 'Ladder rack', 'Something else'];
-function bookPrefillStore() {
-  const fromUrl = new URLSearchParams(location.search).get('store');
-  if (fromUrl && BOOK_STORES.some(st => st.name === fromUrl)) return fromUrl;
-  const link = document.querySelector('[data-region-nearest-store]');
-  const saved = rrgSessionGet('storeSet') && link && (link.dataset.currentStoreName || link.dataset.auStore || link.textContent.trim());
-  return BOOK_STORES.some(st => st.name === saved) ? saved : '';
-}
-// Tomorrow as a local YYYY-MM-DD (toISOString() is UTC, a day behind in Australia before 10am).
-function bookMinDate() { const d = new Date(); d.setDate(d.getDate() + 1); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
-function bookRenderForm(values = {}) {
-  const store = values.store ?? bookPrefillStore();
-  const vehicle = values.vehicle ?? (rrgVehicle() ? rrgVehicle().label : '');
-  // From the order confirmation's "Book a Fitting" (?order=): the order's fittable items go in the notes.
-  const orderNo = new URLSearchParams(location.search).get('order');
-  if (values.notes == null && orderNo) {
-    let last = null;
-    try { last = JSON.parse(localStorage.getItem('rrgLastOrder') || 'null'); } catch (e) {}
-    const items = last && last.number === orderNo ? last.lines.filter(l => typeof rrgIsFittable === 'function' && rrgIsFittable(l)).map(l => l.name) : [];
-    values = { ...values, notes: `Order #${orderNo}${items.length ? `: ${items.join('; ')}` : ''}. Bought from you, please fit.`, bought: 'Yes, online' };
-    // The order already has the contact details, so don't ask again.
-    if (last && last.number === orderNo) {
-      values = { ...values, name: values.name || [last.first, last.last].filter(Boolean).join(' '), phone: values.phone || last.phone || '', email: values.email || last.email || '' };
-    }
-  }
-  document.getElementById('bookingWrap').innerHTML = `
-    <form class="booking-form" id="bookForm" novalidate data-track="fitting_request">
-      <div class="booking-grid">
-        <label class="booking-field booking-field--full" data-field="store">Store
-          <select name="store" required>
-            <option value="">Choose a store</option>
-            ${RRG_STORE_NETWORK.map(g => `<optgroup label="${g.state}">${g.stores.map(st => `<option value="${st.name}"${st.name === store ? ' selected' : ''}>${st.name}</option>`).join('')}</optgroup>`).join('')}
-          </select>
-          <span class="booking-store-note" id="bookStoreNote"></span>
-        </label>
-        <label class="booking-field" data-field="name">Your name<input name="name" autocomplete="name" required value="${values.name || ''}"></label>
-        <label class="booking-field" data-field="phone">Phone<input name="phone" type="tel" autocomplete="tel" required value="${values.phone || ''}"></label>
-        <label class="booking-field" data-field="email">Email<input name="email" type="email" autocomplete="email" required value="${values.email || ''}"></label>
-        <label class="booking-field" data-field="vehicle">Vehicle<input name="vehicle" placeholder="Make, model and year" required value="${vehicle}"></label>
-        <label class="booking-field" data-field="fit">What needs fitting?
-          <select name="fit" required><option value="">Choose one</option>${BOOK_FITS.map(x => `<option${x === values.fit ? ' selected' : ''}>${x}</option>`).join('')}</select>
-        </label>
-        <label class="booking-field" data-field="bought">Did you buy it from us?
-          <select name="bought">${['Yes, online', 'Yes, in store', 'Not yet — I’ll buy in store', 'No, I bought it elsewhere'].map(x => `<option${x === values.bought ? ' selected' : ''}>${x}</option>`).join('')}</select>
-        </label>
-        <label class="booking-field" data-field="date">Preferred date<input name="date" type="date" min="${bookMinDate()}" required value="${values.date || ''}"><small>Stores are closed on Sundays.</small></label>
-        <label class="booking-field" data-field="time">Preferred time
-          <select name="time">${['Morning', 'Afternoon (weekdays)'].map(x => `<option${x === values.time ? ' selected' : ''}>${x}</option>`).join('')}</select>
-        </label>
-        <label class="booking-field booking-field--full" data-field="notes">Anything else we should know?<textarea name="notes" placeholder="E.g. the rack you're fitting">${values.notes || ''}</textarea></label>
-      </div>
-      <div class="booking-actions">
-        <button type="submit" class="btn btn-cta">Send Fitting Request</button>
-        <p>This is a request, not a confirmed booking. The store will contact you to confirm a time.</p>
-      </div>
-    </form>`;
-  bookStoreChanged();
-}
-// The chosen store as a card (spec.md §16 item 3) — the Store Finder's .sf-card, a small map,
-// and the two ways in. Analytics (for the brief): data-track="fitting_call" on the call links and
-// "fitting_request" on the form, each tagged with the store.
-function bookStoreChanged() {
-  const name = document.querySelector('#bookForm [name=store]').value;
-  const st = BOOK_STORES.find(x => x.name === name);
-  document.getElementById('bookStoreNote').textContent = st ? `Goes straight to our ${st.name} team (${rrgStoreEmail(st.name)}).` : '';
-  const aside = document.getElementById('bookingAside');
-  if (!st) {
-    aside.innerHTML = `
-      <div class="booking-aside-empty">
-        <strong>Choose your store</strong>
-        Pick the store you'd like to visit and its details show here, with the option to call them straight away.
-        <p><a href="${RRG_STORE_FINDER_HREF()}">Not sure which store? Find your nearest ›</a></p>
-      </div>`;
-    return;
-  }
-  const tz = RRG_STATE_TZ[st.state];
-  const status = rrgStoreOpenStatus(RRG_STANDARD_HOURS, tz, rrgStoreHolidays(RRG_STATE_ABBR[st.state]));
-  const today = RRG_STANDARD_HOURS[rrgStoreNow(tz).day];
-  const href = rrgStorePageHref(st.name);
-  const tel = `tel:${st.phone.replace(/[^0-9]/g, '')}`;
-  aside.innerHTML = `
-    <p class="booking-aside-label">Your store</p>
-    <article class="sf-card">
-      <div class="sf-card-top"><h3 class="sf-card-name">${href ? `<a href="${href}">${st.name}</a>` : st.name}</h3></div>
-      <div class="store-open${status.open ? ' is-open' : ''}">${status.open ? 'Open now' : 'Closed'} <span>· ${status.text}</span></div>
-      <span>${st.street}, ${st.city} ${RRG_STATE_ABBR[st.state]} ${st.postcode}</span>
-      <span>${today ? `Today ${rrgFmtTime(today[0])} – ${rrgFmtTime(today[1])}` : 'Closed today'}</span>
-      <div class="booking-store-map" id="bookStoreMap" aria-label="Map of the ${st.name} store"></div>
-      <div class="sf-card-actions">
-        <a class="btn btn-outline btn-sm" href="${tel}" data-track="fitting_call" data-track-store="${st.name}">Call ${st.name}</a>
-        ${st.mapLink ? `<a href="${st.mapLink}" target="_blank" rel="noopener noreferrer">Directions</a>` : ''}
-        ${href ? `<a href="${href}">View store</a>` : ''}
-      </div>
-    </article>
-    <ol class="booking-paths">
-      <li><span class="booking-path-num">1</span><span><strong>Send a request.</strong> ${st.name} will call you to confirm a time. Most fittings are done while you wait.</span></li>
-      <li><span class="booking-path-num">2</span><span><strong>Prefer to talk?</strong> Ring ${st.name} on <a href="${tel}" data-track="fitting_call" data-track-store="${st.name}">${st.phone}</a>${status.open ? '. They’re open now.' : '.'}</span></li>
-    </ol>`;
-  bookDrawMap(st);
-}
-// A small Leaflet map of the chosen store (Leaflet loads deferred, so wait for it).
-function bookDrawMap(st) {
-  const el = document.getElementById('bookStoreMap');
-  if (!el) return;
-  if (typeof L === 'undefined') { window.addEventListener('load', () => bookDrawMap(st), { once: true }); return; }
-  if (el._leaflet_id) return;
-  const map = L.map(el, { zoomControl: false, scrollWheelZoom: false }).setView([st.lat, st.lng], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 18 }).addTo(map);
-  L.marker([st.lat, st.lng], { icon: rrgPinIcon(ON_DISPLAY_STORES.has(st.name)) }).addTo(map);
-}
-function bookValidate(form) {
-  const v = Object.fromEntries(new FormData(form));
-  const errors = {};
-  if (!v.store) errors.store = 'Choose the store you’d like to visit.';
-  if (!v.name.trim()) errors.name = 'Enter your name.';
-  if (!/^[0-9 +()-]{8,}$/.test(v.phone.trim())) errors.phone = 'Enter a phone number the store can call.';
-  if (!/^\S+@\S+\.\S+$/.test(v.email.trim())) errors.email = 'Enter a valid email address.';
-  if (!v.vehicle.trim()) errors.vehicle = 'Tell us your vehicle.';
-  if (!v.fit) errors.fit = 'Choose what needs fitting.';
-  if (!v.date) errors.date = 'Choose a preferred date.';
-  else if (new Date(v.date + 'T00:00').getDay() === 0) errors.date = 'Stores are closed on Sundays — choose another day.';
-  else if (new Date(v.date + 'T00:00').getDay() === 6 && v.time.startsWith('Afternoon')) errors.date = 'Stores close at 12:30pm on Saturdays — choose a morning.';
-  else {
-    // Public holidays close the store (spec.md §16 item 14).
-    const pick = BOOK_STORES.find(x => x.name === v.store);
-    const hol = pick && rrgStoreHolidays(RRG_STATE_ABBR[pick.state]).find(h => h.date === v.date);
-    if (hol) errors.date = `${pick.name} is closed that day (${hol.name}). Choose another day.`;
-  }
-  form.querySelectorAll('.booking-field').forEach(f => { f.classList.remove('is-invalid'); f.querySelector('.booking-error')?.remove(); });
-  Object.entries(errors).forEach(([k, msg]) => {
-    const f = form.querySelector(`[data-field="${k}"]`);
-    f.classList.add('is-invalid');
-    f.insertAdjacentHTML('beforeend', `<span class="booking-error">${msg}</span>`);
-  });
-  return { v, ok: !Object.keys(errors).length, first: Object.keys(errors)[0] };
-}
-document.addEventListener('change', e => { if (e.target.matches('#bookForm [name=store]')) bookStoreChanged(); });
-document.addEventListener('submit', e => {
-  if (e.target.id !== 'bookForm') return;
-  e.preventDefault();
-  const { v, ok, first } = bookValidate(e.target);
-  if (!ok) { e.target.querySelector(`[data-field="${first}"] input, [data-field="${first}"] select`)?.focus(); return; }
-  const st = BOOK_STORES.find(x => x.name === v.store);
-  const date = new Date(v.date + 'T00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
-  document.getElementById('bookingWrap').innerHTML = `
-    <div class="booking-sent" role="status" tabindex="-1" id="bookSent">
-      <h3>Request sent to ${st.name}</h3>
-      <p>Thanks, ${v.name.trim().split(' ')[0]}. Our ${st.name} team has your request for a ${v.fit.toLowerCase()} fitting on your ${v.vehicle}, ${date} (${v.time.toLowerCase().replace(' (weekdays)', '')}). They'll call you on ${v.phone} to confirm a time.</p>
-      <p class="booking-sent-meta">Sent to ${rrgStoreEmail(st.name)} · ${st.street}, ${st.city} ${st.postcode} · ${st.phone}</p>
-    </div>`;
-  document.getElementById('bookSent').focus();
-});
-bookRenderForm();
-// The saved store is only known once shared.js has applied the region (DOMContentLoaded).
-document.addEventListener('DOMContentLoaded', () => {
-  const sel = document.querySelector('#bookForm [name=store]');
-  if (sel && !sel.value) { sel.value = bookPrefillStore(); bookStoreChanged(); }
-});
-
-// ==== FAQ (spec Section 6) — rewritten 2026-09-30 (spec.md §16 item 4) ================
-// The old six were built around prices. These answer what customers ask about the visit itself.
-// DRAFT: to be checked against Crisp chat transcripts and Graham's NZ questions before launch.
-const INSTALL_FAQS = [
-  { q: 'How long does a fitting take?', a: 'Anything from 30 minutes for a basic removable rack to 8 hours for a complicated fit-out. It depends on the products and your vehicle, so your store will give you a time when they confirm your booking.' },
-  { q: 'Can I wait in store while it’s fitted?', a: 'Yes. Most fittings are done while you wait, and you’re welcome to look around the showroom in the meantime. If you’d like to see how it goes on, just ask the team.' },
-  { q: 'Do I need to leave my car with you?', a: 'Usually not. Bigger jobs like platforms, roller shutters or van fit-outs can take longer, and your store will let you know if it’s easier to drop the car off.' },
-  { q: 'Can you fit a rack I bought somewhere else?', a: 'Yes, we’re happy to fit it. There’s a surcharge for products not bought from Roof Racks Galore, and your store will confirm it when they book you in.' },
-  { q: 'Do you fit accessories as well as roof racks?', a: 'Yes. Bike racks, roof boxes, awnings, roof top tents, roller shutters, ladder racks and more. If it’s not on the list, send a request anyway and your store will let you know.' },
-  { q: 'What if my vehicle needs extra work?', a: 'Some vehicles need roof rails removed or extra parts before a rack can go on. Your store checks your vehicle and tells you before any extra work starts.' }
-];
-document.getElementById('installFaqList').innerHTML = INSTALL_FAQS.map((f, i) => `
-  <details class="faq-item"${i === 0 ? ' open' : ''}>
-    <summary>${f.q}</summary>
-    <div class="faq-answer"><p>${f.a}</p></div>
-  </details>`).join('');
-document.getElementById('installLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
-  // No priced Offers (spec.md §16 item 4): the prices sit in a collapsed list, not the headline.
-  { '@type': 'Service', name: 'Roof rack installation and fitting', provider: { '@type': 'Organization', name: 'Roof Racks Galore', url: 'https://www.roofracksgalore.com.au/' }, areaServed: 'AU' },
-  { '@type': 'FAQPage', mainEntity: INSTALL_FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
-] });
 </script>
 </body>
 </html>

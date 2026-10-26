@@ -294,10 +294,11 @@ function renderStore() {
       </div>`;
   }).join('');
 
-  // Every booking link on this page opens the Installation page's form with this store picked.
+  // Every booking link on this page opens the Store Finder with this store picked (the fitting
+  // request form is out of Phase 1, Brenton 2026-10-26).
   document.querySelectorAll('a').forEach(link => {
     const t = link.textContent.trim().toLowerCase();
-    if (t === 'book a fitting' || t === 'book an installation') link.href = `${RRG_INSTALL_HREF()}?store=${encodeURIComponent(s.name)}#book`;
+    if (t === 'book a fitting' || t === 'book an installation') link.href = `${RRG_STORE_FINDER_HREF()}?store=${encodeURIComponent(s.name)}`;
   });
 
   // Structured data (spec Section 6) — this store as a LocalBusiness, plus breadcrumbs + FAQ.

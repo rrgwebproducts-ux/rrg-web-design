@@ -117,7 +117,7 @@ A **distraction-free shell**: logo, "Secure checkout", help phone number, **no m
      - **Anything else:** optional
 
      Send turns the card into "Fitting request sent to Kedron…" with the order number and the store's inbox. Cancel collapses it again. NZ books by phone (the form lists AU stores only).
-   - The Installation page still accepts `?store=&order=#book`, and now also fills in the order's **name, phone and email**.
+   - ~~The Installation page still accepts `?store=&order=#book`, and now also fills in the order's **name, phone and email**.~~ The Installation page's form is out of Phase 1 (2026-10-26, `docs/installation/installation-spec.md` Section 5). This inline card needs the same backend, so it is also a Phase 2 question.
    - It only shows when the order contains something fittable (racks, bike racks, boxes, awnings and so on). The store is the Click & Collect store, or the saved or nearest store for a delivery.
    - No fitting prices (stores confirm them).
 4. **Order summary** (lines, delivery, payment method, total with GST noted).

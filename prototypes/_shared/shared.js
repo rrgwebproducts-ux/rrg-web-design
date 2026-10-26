@@ -1147,8 +1147,9 @@ const RRG_INSTALL_HREF = () => `${RRG_PROTO}installation/index.html`;
 const rrgStoreEmail = name => `${name.toLowerCase().replace(/[^a-z]/g, '')}@roofracksgalore.com.au`;
 
 // Installation links (docs/installation/installation-spec.md Section 5) — every "Book An
-// Installation" / "Book a Fitting" button goes to the booking form on the Installation page,
-// "See Fitting Costs" to its price list, and the PDP's "See Fitting Options" (which pointed at
+// Installation" / "Book a Fitting" button goes to the Store Finder (/locations): the fitting
+// request form is out of Phase 1 (Brenton, 2026-10-26). "See Fitting Costs" goes to the
+// Installation page's price list, and the PDP's "See Fitting Options" (which pointed at
 // the live /roof-rack-installation-and-fitting-costs URL) to the page itself. Matched by text
 // (like the Store Finder and Fit My Vehicle links) so no template needs a markup change; links
 // that already point somewhere real are left alone.
@@ -1158,7 +1159,7 @@ function rrgLinkInstallation(root = document) {
     const text = a.textContent.trim().toLowerCase();
     if (href === '/roof-rack-installation-and-fitting-costs') { a.href = RRG_INSTALL_HREF(); a.removeAttribute('target'); return; }
     if (href !== '#') return;
-    if (text === 'book an installation' || text === 'book a fitting') a.href = RRG_INSTALL_HREF() + '#book';
+    if (text === 'book an installation' || text === 'book a fitting') a.href = RRG_STORE_FINDER_HREF();
     else if (text === 'see fitting costs') a.href = RRG_INSTALL_HREF() + '#costs';
   });
 }
