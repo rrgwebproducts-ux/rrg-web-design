@@ -1375,7 +1375,7 @@ const RRG_DYN_FIELDS = [
     attr: 'Magento: key spec attributes per category (weight, max load, wheel base, wheel size…)',
     sel: '#plpResults .plp-spec-row',
     pages: ['plp', 'plp-camping', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers', 'vplp', 'vplp-accessories'],
-    rule: ['Category-appropriate spec attributes that have a value', 'Grid: inside Show Specs; List: always open under the USPs, values in full, in aligned columns (3 where the card is wide enough, else 2; one per row on phones); a value over 22 characters takes a full row, after the short ones', 'No specs: Show Specs toggle / list panel hidden'],
+    rule: ['Category-appropriate spec attributes that have a value', 'Grid: inside Show Specs; List: always open under the USPs, values in full, 13px like the USPs, label + value on one line, two to a row; a spec over 22 characters (label + value) takes a full row, after the short ones; max 3 rows, the rest behind "Show more specs (+N)"; one per row on phones', 'No specs: Show Specs toggle / list panel hidden'],
     example: 'Max Total Weight: 17kg',
     notes: 'REVIEW: confirm whether these specs come from Magento attributes or Rackit, and which attributes each category shows.',
     status: 'draft' },

@@ -1449,16 +1449,43 @@ function plpSpecsHTML(product) {
 
 // List view shows the specs open, under the USPs (2026-10-27, spec.md §25) — the middle column has the
 // room grid cards don't, so nothing hides behind Show Specs. Same rows and RRG icons as grid's panel.
-// List view lays the specs out in aligned columns (3 where the card is wide enough, else 2), like a table (Graham, 2026-10-27,
-// spec.md §26 item 3): short specs sit side by side, a long value (a warranty, a long fit list) takes
-// a full row of its own, after the short ones so the columns stay filled. Phones: one per row.
-const PLP_LIST_SPEC_WIDE = 22;
+// List view specs (Graham, 2026-10-27; Brenton, 2026-10-28, spec.md §26 item 3): same 13px as the USPs,
+// label and value on one line, two to a row. A spec whose label + value is too long for half a row (a
+// warranty, "Number of Platform Planks 4") takes a full row, after the short ones. At most 3 rows show;
+// the rest sit behind "Show more specs (+N)" (all short specs: 5-6 fit). Phones: one per row.
+const PLP_LIST_SPEC_HALF = 22; // characters of "Label value" that fit half a row at 13px
+const PLP_LIST_SPEC_ROWS = 3;
+const plpListSpecsOpen = new Set(); // product ids expanded, kept across re-renders (resize, filters)
 function plpListSpecsHTML(product) {
   if (!product.specs || !product.specs.length) return '';
-  const isWide = s => String(s.value).length > PLP_LIST_SPEC_WIDE;
-  const ordered = [...product.specs.filter(s => !isWide(s)), ...product.specs.filter(isWide)];
-  return `<div class="plp-specs-panel plp-list-specs">${ordered.map(s => `<div class="plp-spec-row${isWide(s) ? ' is-wide' : ''}">${plpSpecIconHTML(s)}<span class="plp-spec-text"><span class="plp-spec-label">${s.label}</span>${plpSpecValueHTML(s.value)}</span></div>`).join('')}</div>`;
+  const isWide = s => (s.label.length + 1 + String(s.value).length) > PLP_LIST_SPEC_HALF;
+  const short = product.specs.filter(s => !isWide(s)), wide = product.specs.filter(isWide);
+  const ordered = [...short, ...wide];
+  // How many fit in the row budget: short specs pair up, each wide spec is a row of its own.
+  let shown = 0, rows = 0;
+  for (const s of ordered) {
+    const startsRow = isWide(s) || shown >= short.length || shown % 2 === 0;
+    if (startsRow && rows === PLP_LIST_SPEC_ROWS) break;
+    if (startsRow) rows++;
+    shown++;
+  }
+  const extra = ordered.length - shown;
+  const open = plpListSpecsOpen.has(String(product.id));
+  const cells = ordered.map((s, i) => `<div class="plp-spec-row${isWide(s) ? ' is-wide' : ''}${i >= shown ? ' is-extra' : ''}">${plpSpecIconHTML(s)}<span class="plp-spec-text"><span class="plp-spec-label">${s.label}</span> ${plpSpecValueHTML(s.value)}</span></div>`).join('');
+  const more = extra ? `<button type="button" class="plp-list-specs-more" data-list-specs-more="${product.id}" aria-expanded="${open}">${open ? 'Show fewer specs' : `Show more specs (+${extra})`}</button>` : '';
+  return `<div class="plp-specs-panel plp-list-specs${open ? ' is-open' : ''}">${cells}${more}</div>`;
 }
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-list-specs-more]');
+  if (!btn) return;
+  const id = btn.dataset.listSpecsMore;
+  const open = !plpListSpecsOpen.has(id);
+  open ? plpListSpecsOpen.add(id) : plpListSpecsOpen.delete(id);
+  const panel = btn.closest('.plp-list-specs');
+  panel.classList.toggle('is-open', open);
+  btn.setAttribute('aria-expanded', open);
+  btn.textContent = open ? 'Show fewer specs' : `Show more specs (+${panel.querySelectorAll('.is-extra').length})`;
+});
 
 function applyPlpRibbonsFlag(on) {
   plpState.ribbonsEnabled = on;

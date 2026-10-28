@@ -415,22 +415,25 @@
 .plp-spec-label{color:var(--rrg-grey-500);}
 .plp-spec-value{margin-left:auto;font-weight:700;text-align:right;}
 .plp-spec-value.is-cut{cursor:help;}
-/* List view: specs always open under the USPs (spec.md §25), in aligned columns (3 where the card is wide enough, else 2)
-   (spec.md §26 item 3): label over value in each cell; a long value (.is-wide) takes a whole row
-   with label and value side by side. Phones fall back to one spec per row. */
-.plp-list-specs{margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 16px;}
-.plp-list-specs .plp-spec-row{align-items:flex-start;min-width:0;}
-.plp-list-specs .plp-spec-text{display:flex;flex-direction:column;min-width:0;line-height:1.35;}
-.plp-list-specs .plp-spec-value{margin-left:0;text-align:left;overflow-wrap:anywhere;}
-.plp-list-specs .plp-spec-row.is-wide{grid-column:1/-1;align-items:center;}
-.plp-list-specs .plp-spec-row.is-wide .plp-spec-text{display:block;}
-.plp-list-specs .plp-spec-row.is-wide .plp-spec-label{margin-right:8px;}
+/* List view: specs always open under the USPs (spec.md §25), streamlined 2026-10-28 (spec.md §26
+   item 3): USP-sized text, label + value on one line, two to a row; a spec too long for half a row
+   (.is-wide) takes a whole row; past 3 rows the rest (.is-extra) sit behind "Show more specs". Phones: one per row. */
+.plp-list-specs{margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;padding:8px 12px;}
+.plp-list-specs .plp-spec-row{font-size:13px;line-height:1.4;align-items:flex-start;gap:6px;min-width:0;}
+.plp-list-specs .plp-spec-icon{flex-basis:18px;width:18px;height:18px;}
+.plp-list-specs .plp-spec-icon img{width:18px;height:18px;}
+.plp-list-specs .plp-spec-text{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.plp-list-specs .plp-spec-row.is-wide .plp-spec-text{white-space:normal;}
+.plp-list-specs .plp-spec-value{margin-left:0;text-align:left;}
+.plp-list-specs .plp-spec-row.is-wide{grid-column:1/-1;}
+.plp-list-specs .plp-spec-row.is-extra{display:none;}
+.plp-list-specs.is-open .plp-spec-row.is-extra{display:flex;}
+.plp-list-specs-more{grid-column:1/-1;justify-self:start;background:none;border:0;padding:2px 0 0;font:inherit;font-size:13px;font-weight:700;color:var(--rrg-black);text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+.plp-list-specs-more:hover{color:var(--rrg-red);}
 @media (max-width:640px){
-  .plp-list-specs{grid-template-columns:1fr;gap:6px;}
-  .plp-list-specs .plp-spec-row{align-items:center;}
-  .plp-list-specs .plp-spec-text{flex-direction:row;flex:1;gap:8px;}
-  .plp-list-specs .plp-spec-value{margin-left:auto;text-align:right;}
+  .plp-list-specs{grid-template-columns:1fr;}
 }
+
 
 .plp-card-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
 /* Non-VRS grid card's single primary action ("Add to Cart" or "View Options" — plp.js
