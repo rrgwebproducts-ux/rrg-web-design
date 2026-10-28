@@ -1942,6 +1942,11 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .vclp-trust-inner p{margin:0;color:#eee;font-size:16px;line-height:1.5;}
 /* "{Category} Fitting" on PLPs (fitting-banner widget, spec.md §24 item 8): the hero's Fitting button lands here. */
 .plp-fitting{scroll-margin-top:calc(var(--sticky-offset,0px) + 16px);}
+/* It's the last band before the footer, so it sits flush against it; the space above it gives the
+   pagination room in Phase 1, when the videos/FAQs/Related Products under the results are hidden
+   (in Phase 2 it collapses into the Related Products section's own bottom margin). */
+.vclp-trust-banner.plp-fitting{margin-top:var(--space-section);margin-bottom:0;}
+.plp-fitting + .rrg-footer{margin-top:0;}
 .vclp-reviews-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:#eee;}
 /* The real Reviews.io score (4.3 from 1,914, reviews.io 30 Sep 2026; was a hard-coded 4.8): four stars and a dimmed fifth. Production reads it from the Reviews.io API. */
 .vclp-reviews-badge .star-dim{opacity:.35;}
