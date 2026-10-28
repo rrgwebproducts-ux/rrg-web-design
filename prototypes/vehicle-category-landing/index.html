@@ -82,11 +82,16 @@
      reusing .specs-table since that component is a 2-column key/value list (PDP spec
      sheet); this needs a real multi-column data table with a header row. */
   .vclp-gen-table-wrap{overflow-x:auto;margin-bottom:8px;}
-  .vclp-gen-table{width:100%;border-collapse:collapse;min-width:820px;}
+  .vclp-gen-table{width:100%;border-collapse:collapse;min-width:560px;}
   .vclp-gen-table caption{text-align:left;font-size:14px;color:var(--rrg-grey-500);padding-bottom:8px;}
   .vclp-gen-table th,.vclp-gen-table td{text-align:left;padding:12px 14px;font-size:14px;line-height:1.5;border-bottom:1px solid var(--rrg-line);vertical-align:top;}
   .vclp-gen-table thead th{background:var(--rrg-black);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:14px;}
-  .vclp-gen-table tbody tr:nth-child(even){background:var(--rrg-bg);}
+  .vclp-gen-table tbody tr:nth-child(odd):not(.gen-group){background:var(--rrg-bg);}
+  /* Body-style groups (2026-10-27): one table, one <tbody> per Rackit Body, a gap between them so it
+     reads as separate small tables while the columns stay aligned. */
+  .vclp-gen-table tbody + tbody tr.gen-group th{padding-top:28px;}
+  .vclp-gen-table tr.gen-group th{background:#fff;border-bottom:2px solid var(--rrg-black);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.02em;color:var(--rrg-black);padding:14px 14px 8px;}
+  .vclp-gen-table tr.gen-group th .gen-group-count{font-family:inherit;font-weight:500;font-size:14px;color:var(--rrg-grey-500);text-transform:none;letter-spacing:0;margin-left:8px;}
   .vclp-gen-table td:first-child,.vclp-gen-table th:first-child,.vclp-gen-table td:nth-child(2){white-space:nowrap;}
   .vclp-gen-table .gen-name{font-weight:700;color:var(--rrg-black);}
   .vclp-gen-table .gen-codes{color:var(--rrg-grey-600);font-size:14px;}
@@ -95,8 +100,8 @@
      "Shop" column, stretched over the whole row with ::after, so the row is clickable without
      JS and screen readers get a single named link. Hover/focus tints the row and turns the
      link red, matching the category tiles and store cards. */
-  .vclp-gen-table tbody tr{position:relative;cursor:pointer;transition:background .15s;}
-  .vclp-gen-table tbody tr:hover,.vclp-gen-table tbody tr:focus-within{background:var(--rrg-gold-bg);}
+  .vclp-gen-table tbody tr:not(.gen-group){position:relative;cursor:pointer;transition:background .15s;}
+  .vclp-gen-table tbody tr:not(.gen-group):hover,.vclp-gen-table tbody tr:focus-within{background:var(--rrg-gold-bg);}
   .vclp-gen-table tbody tr:focus-within{outline:2px solid var(--rrg-black);outline-offset:-2px;}
   .vclp-gen-table td.gen-shop,.vclp-gen-table th.gen-shop{white-space:nowrap;text-align:right;}
   .vclp-gen-shop-link{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--rrg-black);text-decoration:underline;text-underline-offset:3px;}
@@ -140,7 +145,8 @@
 }
 </script>
 
-<!-- Vehicle entity data — one entry per row of the generation table below (#genTable),
+<!-- Vehicle entity data — one entry per row of the generation table below (#genTable), filled
+     by vclpRenderGenTable() from the same Rackit rows (2026-10-27),
      giving answer engines/search an unambiguous, structured version of the same facts
      rather than only prose + an HTML table. Conservative choice: plain schema.org/Vehicle
      entities in an ItemList, not a VehicleListing (that type/its rich-result eligibility is
@@ -149,31 +155,14 @@
      hands off to the vehicle's roof rack listing, the VPLP). Worth a second look from an SEO specialist
      before real launch since Vehicle structured data is unusual territory for a roof-rack
      accessories site, not a used-car one. -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Toyota Hilux generations and model codes",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "item": { "@type": "Vehicle", "name": "Toyota Hilux N90", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "2024", "vehicleConfiguration": "GUN125R/126R (updated)", "description": "2024–present. Bare roof (most); styling bar on Rogue/Rugged X." } },
-    { "@type": "ListItem", "position": 2, "item": { "@type": "Vehicle", "name": "Toyota Hilux N80", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "2015", "vehicleConfiguration": "GUN122R/123R/125R/126R, TGN121R", "description": "2015–2023. Bare roof (most); styling bar on Rogue/Rugged X." } },
-    { "@type": "ListItem", "position": 3, "item": { "@type": "Vehicle", "name": "Toyota Hilux N70", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "2005", "vehicleConfiguration": "KUN16R/26R, GGN15R/25R, TGN16R", "description": "2005–2015. Bare roof." } },
-    { "@type": "ListItem", "position": 4, "item": { "@type": "Vehicle", "name": "Toyota Hilux (6th Gen / D4D)", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "1997", "vehicleConfiguration": "RZN147/149/169/174, LN147/167/172, VZN167/172, KZN165", "description": "1997–2005. Bare roof." } },
-    { "@type": "ListItem", "position": 5, "item": { "@type": "Vehicle", "name": "Toyota Hilux (5th Gen)", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "1988", "vehicleConfiguration": "RN/LN/YN 85-110 series", "description": "1988–1997. Bare roof." } },
-    { "@type": "ListItem", "position": 6, "item": { "@type": "Vehicle", "name": "Toyota Hilux (4th Gen)", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "1983", "vehicleConfiguration": "RN/LN 55-70 series", "description": "1983–1988. Bare roof." } },
-    { "@type": "ListItem", "position": 7, "item": { "@type": "Vehicle", "name": "Toyota Hilux (3rd Gen)", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "1978", "vehicleConfiguration": "RN/LN 40-50 series", "description": "1978–1983. Bare roof." } },
-    { "@type": "ListItem", "position": 8, "item": { "@type": "Vehicle", "name": "Toyota Hilux (2nd Gen)", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "1972", "vehicleConfiguration": "RN/LN 10-30 series", "description": "1972–1978. Bare roof." } },
-    { "@type": "ListItem", "position": 9, "item": { "@type": "Vehicle", "name": "Toyota Hilux (1st Gen)", "brand": "Toyota", "model": "Hilux", "vehicleModelDate": "1968", "vehicleConfiguration": "RN10/RN20 series", "description": "1968–1972. Bare roof." } }
-  ]
-}
-</script>
+<script type="application/ld+json" id="vclpGenJsonLd"></script>
 
 <main>
 <div class="wrap">
   <section class="plp-hero">
     <div>
       <h1>Shop Toyota Hilux Roof Racks</h1>
-      <p>The Toyota Hilux has been Australia's best-selling ute for years running, but almost every Hilux leaves the factory with a bare roof — no rails at all. What fits yours depends on which generation you're driving (N70, N80, N90 or an earlier model — see the <a href="#genTable">generation table below</a>), whether you've got a Single, Xtra or Double Cab, and — the detail most buyers miss — whether your Hilux has genuine roof rails, a non-load-rated styling bar, or nothing fitted at all. Rather than guess, select your vehicle below and we'll show you exactly what fits.</p>
+      <p>The Toyota Hilux has been Australia's best-selling ute for years running, but almost every Hilux leaves the factory with a bare roof — no rails at all. What fits yours depends on which generation you're driving (N70, N80, the new 9th Gen or an earlier model — see the <a href="#genTable">generation table below</a>), whether you've got a Single, Xtra or Double Cab, and — the detail most buyers miss — whether your Hilux has genuine roof rails, a non-load-rated styling bar, or nothing fitted at all. Rather than guess, select your vehicle below and we'll show you exactly what fits.</p>
     </div>
     <div class="plp-hero-media is-cutout">
       <img src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="956" height="556" fetchpriority="high">
@@ -208,98 +197,17 @@
     <h3>What we always tell customers</h3>
     <p>The single most common mistake we see with Hilux roof rack orders is buyers assuming the black sports bar along their tray or roofline is a load-rated roof rail — it isn't. Plenty of Rogue and Rugged X owners find this out the hard way. If you're not certain what's fitted to your roof, send us a photo before you order — it takes seconds to confirm and saves you the cost of returning the wrong rack.</p>
 
-    <h3 id="genTable">Which Hilux Generation Do I Have?</h3>
-    <p>The Hilux has been in production since 1968, so "Hilux" alone doesn't tell us much — the model codes and generation names below will help you identify exactly which one you're driving. Not sure? Your compliance plate (driver's door jamb) lists the model code, or just use the Fit Finder above.</p>
+    <h3 id="genTable">Which Hilux Do I Have?</h3>
+    <p>The Hilux has been in production since 1968 in several body styles, so "Hilux" alone doesn't tell us much. Find your body style below, then your series and years. Not sure? Your compliance plate (driver's door jamb) lists the build date, or just use the Fit Finder above.</p>
+    <!-- Built from Rackit master vehicles (Graham, 2026-10-27, spec.md §26 item 1): every master
+         vehicle whose Make + Model match this page, so it never needs hand-editing and stays in step
+         with Rackit (a changed End Year updates the row). Rendered by vclpRenderGenTable() below. -->
     <div class="vclp-gen-table-wrap">
-      <table class="vclp-gen-table">
-        <caption>Toyota Hilux generations, model years, common names, model codes and factory roof fitment, 1968 to present</caption>
-        <thead>
-          <tr>
-            <th scope="col">Generation</th>
-            <th scope="col">Years</th>
-            <th scope="col">Also Searched As</th>
-            <th scope="col">Model Codes</th>
-            <th scope="col">Roof Fitment</th>
-            <th scope="col" class="gen-shop">Shop</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="gen-name">N90</span> <span class="gen-codes">(current)</span></td>
-            <td>2024–present</td>
-            <td>Hilux N90, 48V Hybrid Hilux</td>
-            <td class="gen-codes">GUN125R/126R (updated)</td>
-            <td>Bare roof (most); styling bar on Rogue/Rugged X</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop Hilux N90 racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">N80</span></td>
-            <td>2015–2023</td>
-            <td>Hilux N80, "8th Gen" Hilux</td>
-            <td class="gen-codes">GUN122R/123R/125R/126R, TGN121R</td>
-            <td>Bare roof (most); styling bar on Rogue/Rugged X</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop Hilux N80 racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">N70</span></td>
-            <td>2005–2015</td>
-            <td>Hilux N70, "7th Gen" Hilux</td>
-            <td class="gen-codes">KUN16R/26R, GGN15R/25R, TGN16R</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop Hilux N70 racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">6th Gen</span></td>
-            <td>1997–2005</td>
-            <td>Hilux D4D, "MK5"/"MK6" Hilux</td>
-            <td class="gen-codes">RZN147/149/169/174, LN147/167/172, VZN167/172, KZN165</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 6th Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">5th Gen</span></td>
-            <td>1988–1997</td>
-            <td>Square-body Hilux</td>
-            <td class="gen-codes">RN/LN/YN 85–110 series</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 5th Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">4th Gen</span></td>
-            <td>1983–1988</td>
-            <td>Hilux 4x4 (first mainstream 4WD ute)</td>
-            <td class="gen-codes">RN/LN 55–70 series</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 4th Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">3rd Gen</span></td>
-            <td>1978–1983</td>
-            <td>Hilux SR5</td>
-            <td class="gen-codes">RN/LN 40–50 series</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 3rd Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">2nd Gen</span></td>
-            <td>1972–1978</td>
-            <td>Hilux (early)</td>
-            <td class="gen-codes">RN/LN 10–30 series</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 2nd Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-          <tr>
-            <td><span class="gen-name">1st Gen</span></td>
-            <td>1968–1972</td>
-            <td>Original Hilux</td>
-            <td class="gen-codes">RN10/RN20 series</td>
-            <td>Bare roof</td>
-            <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html">Shop 1st Gen Hilux racks <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></td>
-          </tr>
-        </tbody>
+      <table class="vclp-gen-table" id="vclpGenTable">
+        <caption>Toyota Hilux models by body style, series, years and roof type</caption>
       </table>
     </div>
-    <p class="vclp-gen-table-note">"N70", "N80" and "N90" are widely used aftermarket/enthusiast shorthand for these model-code families, not official Toyota generation names — Toyota Australia doesn't badge or advertise the Hilux by these codes. Model codes and years are a guide to help you identify your vehicle; if in doubt, check your compliance plate or send us a photo of your roof and we'll confirm fitment before you order. Some early/rare model codes above may not be stocked for aftermarket roof rack fitment — contact our team to check availability for pre-2005 Hilux.</p>
+    <p class="vclp-gen-table-note">"N70" and "N80" are widely used shorthand for these Hilux series, not official Toyota generation names. Years are a guide to help you identify your vehicle; if in doubt, check your compliance plate or send us a photo of your roof and we'll confirm fitment before you order.</p>
   </section>
 </div>
 
@@ -318,7 +226,10 @@
 </section>
 
 <div class="wrap">
-  <section class="faq-section">
+  <!-- Phase 2 (Brenton, 2026-10-28, spec.md §26 item 2): no VCLP FAQs written yet, so the section
+       (and its FAQPage JSON-LD) stays off the launch build. Real build: render neither when the
+       page has no FAQs. -->
+  <section class="faq-section rrg-phase2">
     <h2 class="faq-heading">Frequently Asked Questions</h2>
     <div class="faq-intro">
       <p>Straight answers to the common questions our team hears everyday regarding Roof Racks for the Toyota Hilux.</p>
@@ -411,12 +322,84 @@ const FIT_GALLERY_PHOTOS = [
 // Shared builders in shared.js — see mountFitGallery()/renderFitGalleryTrack() there.
 mountFitGallery();
 renderFitGalleryTrack("Roof rack fitted to a customer's Toyota Hilux");
+// ==== Hilux table from Rackit master vehicles (Graham, 2026-10-27, spec.md §26 item 1) ==============
+// Real build: every Rackit master vehicle where Make + Model match this page (here Toyota + Hilux,
+// all body types, the Surf included). These are the real 19 rows from the Rackit export
+// (vehicles_20261027_003426.csv), fields named as Rackit names them.
+const VCLP_MASTER_VEHICLES = [
+  {"id": "bb2e83eb-07e8-4d23-8d58-61d7c8ee0dae", "name": "Toyota Hilux 9th Gen 2dr Extra Cab Ute with Bare Roof (2026 onwards)", "series": "9th Gen", "body": "2dr Extra Cab Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2026, "endYear": null, "important": false},
+  {"id": "6de0374e-cab7-4995-a990-a10fc7e88e2a", "name": "Toyota Hilux 9th Gen 4dr Ute with Bare Roof (2026 onwards)", "series": "9th Gen", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2026, "endYear": null, "important": false},
+  {"id": "5afa751e-c9dd-4efb-a747-8f9cb8304a9c", "name": "Toyota Hilux 9th Gen 2dr Ute with Bare Roof (2026 onwards)", "series": "9th Gen", "body": "2dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2026, "endYear": null, "important": false},
+  {"id": "d314a980-a67a-4f84-b1d4-6033440d68a8", "name": "Toyota Hilux N80 2dr Ute with Bare Roof (2015 to 2026)", "series": "N80", "body": "2dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2015, "endYear": 2026, "important": false},
+  {"id": "85dd2792-f5fa-4879-9620-8ecf49c8a09c", "name": "Toyota Hilux N80 2dr Extra Cab Ute with Bare Roof (2015 to 2026)", "series": "N80", "body": "2dr Extra Cab Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2015, "endYear": 2026, "important": true},
+  {"id": "273c86e7-53ba-46a6-a732-890d4359bc72", "name": "Toyota Hilux N80 4dr Ute with Bare Roof (2015 to 2026)", "series": "N80", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2015, "endYear": 2026, "important": true},
+  {"id": "e42c6acd-ae87-40c9-a746-0bc035d16e02", "name": "Toyota Hilux N70 4dr Ute with Bare Roof (2005 - 2015)", "series": "N70", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2005, "endYear": 2015, "important": true},
+  {"id": "dbe799e4-ede9-4312-abf8-901878ed1470", "name": "Toyota Hilux N70 SR5 4dr Ute with Bare Roof (2005 - 2015)", "series": "N70 SR5", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2005, "endYear": 2015, "important": false},
+  {"id": "9b364b61-e4d9-49c4-8d64-0c7ad767c12e", "name": "Toyota Hilux N70 2dr Ute with Bare Roof (2005 - 2015)", "series": "N70", "body": "2dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2005, "endYear": 2015, "important": false},
+  {"id": "7625b12b-84ea-4f83-89dd-d3b252e1eadb", "name": "Toyota Hilux N70 2dr Extra Cab Ute with Bare Roof (2005 - 2015)", "series": "N70", "body": "2dr Extra Cab Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 2005, "endYear": 2015, "important": false},
+  {"id": "4d63ba80-ef17-4d1a-9c7e-e807762a4ca6", "name": "Toyota Hilux 5dr SUV with Raised Roof Rail (2005 - 2015)", "series": "", "body": "5dr SUV", "type": "SUV", "roofType": "Raised Roof Rail", "startYear": 2005, "endYear": 2015, "important": false},
+  {"id": "d549b68e-0495-4b40-b227-8b9df5935b9f", "name": "Toyota Hilux N60 4dr Ute with Bare Roof (1997 - 2005)", "series": "N60", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 1997, "endYear": 2005, "important": false},
+  {"id": "cd41590b-a9a4-478a-b21b-c6c4664e54fc", "name": "Toyota Hilux N60 2dr Ute with Bare Roof (1997 - 2005)", "series": "N60", "body": "2dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 1997, "endYear": 2005, "important": false},
+  {"id": "98ff3e3c-20ab-4a97-a853-ed390254f98d", "name": "Toyota Hilux N60 SR5 4dr Ute with Bare Roof (1997 - 2005)", "series": "N60 SR5", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 1997, "endYear": 2005, "important": false},
+  {"id": "31cdfc12-56fe-4f66-af08-34a8c9fcb145", "name": "Toyota Hilux N60 2dr Extra Cab Ute with Bare Roof (1997 - 2005)", "series": "N60", "body": "2dr Extra Cab Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 1997, "endYear": 2005, "important": false},
+  {"id": "21cb5e2e-35e9-48cf-bef6-b3199a982a74", "name": "Toyota Hilux N180 (Surf) 5dr SUV with Bare Roof (1996 - 2003)", "series": "N180 (Surf)", "body": "5dr SUV", "type": "SUV", "roofType": "Bare Roof", "startYear": 1996, "endYear": 2003, "important": false},
+  {"id": "db4f0f77-5c1e-4bfe-a46e-6ebbff0e842e", "name": "Toyota Hilux N130 (Surf) 4dr SUV with Bare Roof (1989 - 1996)", "series": "N130 (Surf)", "body": "4dr SUV", "type": "SUV", "roofType": "Bare Roof", "startYear": 1989, "endYear": 1996, "important": false},
+  {"id": "b9fc118b-ae50-4e91-9d0c-fded96d5d9d7", "name": "Toyota Hilux N50 4dr Ute with Bare Roof (1988 - 1997)", "series": "N50", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 1988, "endYear": 1997, "important": false},
+  {"id": "5b4a7bcc-698d-42da-8d8c-61be07aa27db", "name": "Toyota Hilux 4dr Ute with Bare Roof (1979 to 1988)", "series": "", "body": "4dr Ute", "type": "Ute", "roofType": "Bare Roof", "startYear": 1979, "endYear": 1988, "important": false}
+];
+// How common each Body is across all of Rackit (same export): only used to break a tie in group order.
+const VCLP_BODY_SITEWIDE = { '4dr Ute': 218, '2dr Ute': 77, '2dr Extra Cab Ute': 8, '5dr SUV': 1102, '4dr SUV': 5 };
+
+// Group order: the Body with the most master vehicles for this make/model first, ties to the Body
+// that's more common across Rackit. Rows inside a group: newest Start Year first, then Important = Yes,
+// then Name. No hand-ranked list, so it works for every make/model (Rackit has ~190 Body values).
+function vclpGenGroups(rows) {
+  const groups = {};
+  rows.forEach(v => (groups[v.body] = groups[v.body] || []).push(v));
+  return Object.entries(groups)
+    .sort(([a, ra], [b, rb]) => rb.length - ra.length || (VCLP_BODY_SITEWIDE[b] || 0) - (VCLP_BODY_SITEWIDE[a] || 0) || a.localeCompare(b))
+    .map(([body, list]) => [body, list.sort((x, y) => y.startYear - x.startYear || (y.important - x.important) || x.name.localeCompare(y.name))]);
+}
+function vclpGenYears(v) { return v.endYear ? `${v.startYear}–${v.endYear}` : `${v.startYear}–present`; }
+
+function vclpRenderGenTable() {
+  const table = document.getElementById('vclpGenTable');
+  if (!table) return;
+  const arrow = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const groups = vclpGenGroups(VCLP_MASTER_VEHICLES.slice());
+  table.insertAdjacentHTML('beforeend', `
+    <thead><tr>
+      <th scope="col">Series</th><th scope="col">Years</th><th scope="col">Roof Type</th><th scope="col" class="gen-shop">Shop</th>
+    </tr></thead>
+    ${groups.map(([body, list]) => `<tbody>
+      <tr class="gen-group"><th colspan="4" scope="colgroup"><span class="gen-body">${body}</span><span class="gen-group-count">${list.length} ${list.length === 1 ? 'model' : 'models'}</span></th></tr>
+      ${list.map(v => `<tr>
+        <td class="gen-series"><span class="gen-name">${v.series || 'Hilux'}</span></td>
+        <td class="gen-years">${vclpGenYears(v)}</td>
+        <td class="gen-roof">${v.roofType}</td>
+        <td class="gen-shop"><a class="vclp-gen-shop-link" href="../vplp/index.html?vehicle=${v.id}">Shop ${v.series ? v.series + ' ' : ''}${body} racks ${arrow}</a></td>
+      </tr>`).join('')}
+    </tbody>`).join('')}`);
+  // Same rows as schema.org Vehicle entities, so the structured data never drifts from the table.
+  const ld = document.getElementById('vclpGenJsonLd');
+  if (ld) ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'ItemList', name: 'Toyota Hilux models by body style',
+    itemListElement: groups.flatMap(([, list]) => list).map((v, i) => ({ '@type': 'ListItem', position: i + 1,
+      item: { '@type': 'Vehicle', name: v.name, brand: 'Toyota', model: 'Hilux', bodyType: v.body, vehicleModelDate: String(v.startYear), description: `${vclpGenYears(v)}. ${v.roofType}.` } }))
+  }, null, 2);
+}
+vclpRenderGenTable();
+
+// Phase 1 has no VCLP FAQs (spec.md §26 item 2): drop the FAQPage JSON-LD too, not just the section.
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.documentElement.dataset.buildPhase === '1') document.getElementById('vclpFaqJsonLd')?.remove();
+});
 </script>
 
 <!-- FAQPage JSON-LD — text mirrors the visible .faq-item accordion above verbatim (minus the
      <strong> tags), so the answers Google/AI answer engines see structured never drift from
      what a visitor actually reads on the page. Keep these two in sync if the FAQ copy changes. -->
-<script type="application/ld+json">
+<script type="application/ld+json" id="vclpFaqJsonLd">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",

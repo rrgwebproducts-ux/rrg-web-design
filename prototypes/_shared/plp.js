@@ -1449,9 +1449,15 @@ function plpSpecsHTML(product) {
 
 // List view shows the specs open, under the USPs (2026-10-27, spec.md §25) — the middle column has the
 // room grid cards don't, so nothing hides behind Show Specs. Same rows and RRG icons as grid's panel.
+// List view lays the specs out in aligned columns (3 where the card is wide enough, else 2), like a table (Graham, 2026-10-27,
+// spec.md §26 item 3): short specs sit side by side, a long value (a warranty, a long fit list) takes
+// a full row of its own, after the short ones so the columns stay filled. Phones: one per row.
+const PLP_LIST_SPEC_WIDE = 22;
 function plpListSpecsHTML(product) {
   if (!product.specs || !product.specs.length) return '';
-  return `<div class="plp-specs-panel plp-list-specs">${product.specs.map(s => `<div class="plp-spec-row">${plpSpecIconHTML(s)}<span class="plp-spec-label">${s.label}</span>${plpSpecValueHTML(s.value)}</div>`).join('')}</div>`;
+  const isWide = s => String(s.value).length > PLP_LIST_SPEC_WIDE;
+  const ordered = [...product.specs.filter(s => !isWide(s)), ...product.specs.filter(isWide)];
+  return `<div class="plp-specs-panel plp-list-specs">${ordered.map(s => `<div class="plp-spec-row${isWide(s) ? ' is-wide' : ''}">${plpSpecIconHTML(s)}<span class="plp-spec-text"><span class="plp-spec-label">${s.label}</span>${plpSpecValueHTML(s.value)}</span></div>`).join('')}</div>`;
 }
 
 function applyPlpRibbonsFlag(on) {

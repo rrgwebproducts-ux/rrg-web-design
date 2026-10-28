@@ -523,7 +523,7 @@ const RRG_COMPONENTS = [
     source: 'Static in fit-my-vehicle',
     variants: [v('4-up', 'fit-my-vehicle', '.info-cards--4'), v('Default', 'fit-my-vehicle', '.info-cards:not(.info-cards--4)')] },
   { id: 'generation-table', group: 'stores', name: 'Vehicle Generation Table', build: 'copied', usedOn: ['vehicle-category-landing'],
-    source: 'Static in vehicle-category-landing',
+    source: 'Rendered from Rackit master vehicles (Make + Model) by vclpRenderGenTable(), inline in vehicle-category-landing; grouped by Body (spec.md §26)',
     variants: [v('Default', 'vehicle-category-landing', '.vclp-gen-table')] },
   { id: 'brand-banner', group: 'stores', name: 'Brand Banner', build: 'copied', usedOn: ['brand', 'buying-guide'],
     source: 'Inline renderBrandHero (brand); static .brand-hero--end in buying-guide (text on the right, H1 = page title)',

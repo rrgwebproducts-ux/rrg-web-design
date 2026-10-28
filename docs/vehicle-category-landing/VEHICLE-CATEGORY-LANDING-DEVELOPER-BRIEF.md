@@ -41,7 +41,7 @@ One page, section order top to bottom:
 4. Fitment Gallery (reused PDP widget, see `DEVELOPER-BRIEF.md`). The page only carries an empty `<section class="fit-gallery-section" data-fit-gallery data-count="16">` plus its `FIT_GALLERY_PHOTOS` array; the panel markup is built by the one shared builder in `shared.js` that Vehicle-Specific and VPLP also use — `fitGalleryPanelHTML()` / `mountFitGallery()` for the panel, `renderFitGalleryTrack()` for the photo track (alt text "Roof rack fitted to a customer's Toyota Hilux — view fitment detail", lazy-loaded). Photos are 4:3. Carousel dots are round grey with a red active dot, arrows 32px, and the "View All" slide-out is the shared 600px drawer.
 5. Fitment education content, ending in the Generation Table (Section 4.2)
 6. Trust/install banner (Section 4.3)
-7. FAQ — the standard single-column `.faq-section` used on every other page (heading, then the list), with this page's two-paragraph intro copy kept directly under the heading (`.faq-intro`). Was the site's only 2-column FAQ until 2026-09-29 (`spec.md` §15 V7).
+7. FAQ (**Phase 2**, hidden in the launch build until VCLP FAQs exist, `spec.md` §26 item 2) — the standard single-column `.faq-section` used on every other page (heading, then the list), with this page's two-paragraph intro copy kept directly under the heading (`.faq-intro`). Was the site's only 2-column FAQ until 2026-09-29 (`spec.md` §15 V7).
 8. Shop The Best Brands logo strip (Section 4.4)
 9. Global Footer — sits flush against the grey brands band (no white gap); every other page has the standard 48px gap above the footer.
 
@@ -103,20 +103,32 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 
 ### 4.2 Generation Table
 
-**Name:** Generation Table ("Which Hilux Generation Do I Have?")
+**Name:** Generation Table ("Which Hilux Do I Have?")
 
 **Location:** bottom of the fitment-education content section, directly above the Trust Banner.
 
-**Purpose:** the Hilux has been sold in Australia since 1968, so "Hilux" alone doesn't identify what a visitor's roof rack needs to fit — this table lets a visitor confirm their exact generation from whatever they already know (a year, a nickname, a model code off their compliance plate), which is also exactly the ambiguity a search like "N80 Roof Racks" is trying to resolve. Added 2026-09-15 specifically to give that kind of query a real, structured answer on-page rather than only the Fit Finder's Year dropdown.
+**Purpose:** "Hilux" alone doesn't identify what a visitor's roof rack needs to fit. This table lets them find their exact vehicle from what they already know (body style, a series name, a year), which is also what a search like "N80 roof racks" is trying to pin down.
 
-**Contents:** a 6-column, 9-row data table — Generation, Years, Also Searched As, Model Codes, Roof Fitment, Shop — covering 1st Gen (1968–1972) through the current N90 (2024–present). A `<caption>` states the table's full scope for assistive tech and crawlers; every `<th>` has `scope="col"`.
+**Built from Rackit, never typed (Graham, 2026-10-27, `spec.md` §26 item 1).** The table is every Rackit **master vehicle** whose **Make + Model** match the page (Toyota + Hilux = 19 rows, the Hilux Surf SUVs included, every Body / Type / Roof Type). Because it reads Rackit, it stays current on its own: Rackit builds the master vehicle Name from its fields, so a changed End Year updates the row. The prototype holds the real 19 rows from the Rackit master-vehicle export (`VCLP_MASTER_VEHICLES` in the page's inline script, rendered by `vclpRenderGenTable()`).
 
-**Click action (added 2026-10-07, Graham/Tim):** every row links to the roof rack VPLP for **that generation** of the vehicle (e.g. N70 row → Toyota Hilux N70 roof racks) — not back to a category picker, since the visitor is already on the roof racks page for this vehicle. The last column holds one real link per row ("Shop Hilux N80 racks →", `.vclp-gen-shop-link`), stretched over the whole row with a `::after` overlay, so the entire row is clickable with no JavaScript and screen readers hear one named link per row. Hover/keyboard focus tints the row gold (`--rrg-gold-bg`), turns the link red and nudges the arrow — so it's obvious the rows are clickable. In the prototype every row goes to the same demo VPLP (`../vplp/index.html`, preset to Hilux N80); in production each row's `href` is that generation's own VPLP URL, with the vehicle pre-set. Rows for generations we don't stock racks for (see the pre-2005 note in the footnote) should either link to the VPLP's empty/"contact us" state or drop the link — confirm with the team before launch.
+| Column | Rackit field | Rule |
+|---|---|---|
+| Group heading | Body | As written, plus a count ("4 models") |
+| Series | Series | Blank Series shows the model name ("Hilux") |
+| Years | Start Year, End Year | `Start–End`; blank End Year shows `Start–present` |
+| Roof Type | Roof Type | As written |
+| Shop | Master Vehicle ID (link), Series + Body (text) | "Shop N80 4dr Ute racks →" |
 
-**Data notes for whoever owns this content going forward:**
-- **"N70"/"N80"/"N90" are aftermarket/enthusiast shorthand, not official Toyota generation names** — Toyota Australia doesn't badge or advertise the Hilux by these codes. Footnoted directly under the table rather than presented as Toyota's own terminology, since asserting that confidently and wrongly is worse for trust (with visitors and with AI answer engines reading this page) than not having the table at all.
-- Model codes and years are a **guide**, not a warranted-accurate parts-fitment reference — the footnote also tells visitors to check their compliance plate or send a roof photo if unsure, and flags that pre-2005 codes may not be stocked for aftermarket fitment at all.
-- **This table should be reviewed by someone with real Toyota model-code references before launch.** It was compiled from general automotive knowledge, not from Toyota's own documentation or this project's existing fitment data — treat it as a strong first draft, not a verified source.
+**Grouping and order:** one `<table>`, one `<tbody>` per **Body**, with a gap between groups, so it reads as several small tables while the columns stay aligned.
+- **Group order:** the Body with the most master vehicles for this make/model first. Ties go to the Body that's more common across all of Rackit. Rackit has about 190 Body values, so there's no hand-ranked list; this rule works for every make/model. For the Hilux it gives 4dr Ute (7), 2dr Ute (4), 2dr Extra Cab Ute (4), 5dr SUV (2), 4dr SUV (1).
+- **Rows inside a group:** newest Start Year first, then Important = Yes, then Name.
+- **No master vehicles** for the make/model: hide the heading, intro, table and note.
+
+**Click action (2026-10-07, Graham/Tim):** every row links to the roof rack VPLP for **that master vehicle**, with the vehicle set. The last column holds one real link per row (`.vclp-gen-shop-link`), stretched over the whole row with a `::after` overlay, so the entire row is clickable with no JavaScript and screen readers hear one named link per row. Hover/keyboard focus tints the row gold (`--rrg-gold-bg`), turns the link red and nudges the arrow. Prototype link: `../vplp/index.html?vehicle={Master Vehicle ID}`. The VPLP is query-string driven and not indexed.
+
+**Dropped 2026-10-27:** the old hand-written Generation / Also Searched As / Model Codes / Roof Fitment columns. Rackit doesn't hold model codes or search aliases, and a typed table goes stale. Rackit calls the current Hilux **"9th Gen"**, so the copy now uses that. The page `<title>` and meta tags still say "N90" (the search term), which is an SEO decision still to be made.
+
+**Page Debugger:** all six fields are registered (`vclp.genTable`, `vclp.genBody`, `vclp.genSeries`, `vclp.genYears`, `vclp.genRoof`, `vclp.genShop`). Open the page with `?debug=1`, tick Dynamic fields and hover a cell to see its Rackit field. Show field names swaps each value for its token, e.g. `{rackit.series}`.
 
 **Screenshot:** ![Generation Table](vclp-dev-brief-assets/vclp-gen-table-closeup.png)
 
@@ -166,8 +178,8 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 2. **Meta description:** written, keyword-targeted, ~155 characters.
 3. **Canonical URL, Open Graph, Twitter Card tags** — all present. **The exact URL (`https://www.roofracksgalore.com.au/toyota-hilux-roof-racks`) is this prototype's best-guess slug, not confirmed against the real Magento URL structure — check with Marc before launch.** The `og:image`/`twitter:image` currently reuse the hero vehicle cutout as a stand-in; that's a transparent-background product photo, not a proper 1200×630 social share image, so social link previews will look poor until a real one is supplied (Section 6).
 4. **`BreadcrumbList` structured data**, mirroring the visible breadcrumb trail exactly (Home › Vehicles › Toyota › Hilux — position 2 is "Vehicles", matching the vehicle breadcrumb family in Section 3). The trail's `#` link placeholders are carried into the JSON-LD's `item` URLs too, for the same reason every other link on this page is a placeholder (Section 6) — swap for real URLs together.
-5. **`FAQPage` structured data**, mirroring all 9 visible FAQ answers verbatim. **Keep these two in sync** if the FAQ copy ever changes — nothing generates one from the other.
-6. **`Vehicle` entity data (`ItemList` of `Vehicle`)** — one entry per row of the Generation Table (Section 4.2), giving the same generation/years/model-code facts to search/AI answer engines in a structured form, not just as prose + an HTML table.
+5. **`FAQPage` structured data**, mirroring all 9 visible FAQ answers verbatim. **Keep these two in sync** if the FAQ copy ever changes — nothing generates one from the other. **Phase 2 (2026-10-28, `spec.md` §26 item 2):** no VCLP FAQs are written yet, so the FAQ section and this JSON-LD are both off the launch build. Real build: a VCLP with no FAQs renders neither.
+6. **`Vehicle` entity data (`ItemList` of `Vehicle`)**: one entry per row of the Generation Table (Section 4.2), generated from the same Rackit rows (Name, Body, Start Year, years + Roof Type), so the structured data can never drift from the table.
    - **Deliberately conservative schema choice:** plain `schema.org/Vehicle` entities, not `VehicleListing` (that type — and its rich-result eligibility — is for an actual vehicle-for-sale listing, which this isn't) and not wrapped in `Product`/`isAccessoryOrSparePartFor` (premature — this page has no single roof-rack SKU; it hands off to the vehicle's listing page, the VPLP).
    - **Worth a second look from whoever owns SEO before real launch** — Vehicle structured data is unusual territory for a roof-rack accessories site rather than a used-car one, and this wasn't reviewed by an SEO specialist, only built to be technically valid and reasonably conservative.
 7. **Table semantics:** the Generation Table has a `<caption>` and `scope="col"` on every header cell (Section 4.2) — both help screen readers and give crawlers/AI answer engines an explicit, unambiguous read of the table's structure.
@@ -185,6 +197,6 @@ Everything from the hero to the brands band sits inside **one `<main>`** element
 1. **Almost every link on this page is a placeholder** (`href="#"`) — header/footer nav (documented separately), breadcrumbs, and both Trust Banner CTAs. The exceptions are the Fit Finder's "View Results" (and, since 2026-10-02, its "Shop without a vehicle ›" link and the vehicle-known "Shop Hilux roof racks" button), which goes to the prototype VPLP (`../vplp/index.html`), and Change Vehicle, which opens the Fit Finder drawer. **This is the single hard blocker on this page having real SEO/AEO value**, not just a content gap: a page with no real internal links in or out is effectively orphaned regardless of how solid its on-page content and structured data are. In production, "View Results" must point at the real vehicle listing URL (there's no live vehicle-category URL yet, which is also why the VPLP has no canonical), and the breadcrumb/JSON-LD `#` items need real URLs.
 2. **Canonical/OG/Twitter URL slug** (Section 5, item 3) is an educated guess, not confirmed against the real Magento URL structure.
 3. **Social share image** (Section 5, item 3) — the hero vehicle cutout is standing in for a proper 1200×630 `og:image`/`twitter:image` asset.
-4. **Generation Table content** (Section 4.2) needs review against real Toyota model-code references, and the `Vehicle` structured data built from it (Section 5, item 6) needs a second look from whoever owns this project's SEO before launch.
+4. **Generation Table** (Section 4.2) now comes straight from Rackit, so its facts are only as good as the master-vehicle data. The `Vehicle` structured data built from it (Section 5, item 6) still needs a second look from whoever owns this project's SEO before launch.
 5. **Fitment Gallery photos** are real Toyota Hilux N80 fitment-centre photos (genuine content for this page, not a placeholder mismatch) — same asset/data gaps as documented for this widget in `DEVELOPER-BRIEF.md` otherwise apply identically here.
 6. **MAXTRAX logo** (Section 4.4) is a pre-existing low-resolution asset, not something introduced by this page.

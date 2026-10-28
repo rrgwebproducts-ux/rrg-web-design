@@ -12,6 +12,7 @@ const AREAS = [
   { prefix: 'search.', title: 'Search Results', pages: 'search-results' },
   { prefix: 'pdp.', title: 'Product pages (PDP)', pages: 'vehicle-specific, config-variant, sibling-color, simple, grouped-bundle, roof-box' },
   { prefix: 'plp.', title: 'Listing pages (PLP / VPLP)', pages: 'plp, plp-camping, plp-roof-boxes, plp-awnings, plp-roof-top-tents, plp-water-carriers, plp-snow-carriers, vplp, vplp-accessories' },
+  { prefix: 'vclp.', title: 'Vehicle Category Landing Page (VCLP)', pages: 'vehicle-category-landing' },
 ];
 const cell = s => String(s == null ? '' : s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 const tokenCell = t => !t ? '' : typeof t === 'string' ? '`' + cell(t) + '`'
