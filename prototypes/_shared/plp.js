@@ -298,7 +298,7 @@ function plpRenderPackageBanner() {
     ? `<span class="plp-pkg-banner-item"><img src="${RRG_PROTO}_shared/icons/${PLP_PKG_ICONS[key]}" alt=""><span>${RRG_PACKAGE_CATEGORY_LABEL[key]}</span></span>`
     : `<span class="plp-pkg-banner-item is-text"><span>${label}</span></span>`;
   shopBy.insertAdjacentHTML('afterend', `
-    <aside class="plp-pkg-banner" id="plpPkgBanner" aria-label="${RRG_PACKAGE_DEAL.name}">
+    <aside class="plp-pkg-banner" id="plpPkgBanner" role="button" tabindex="0" aria-label="${RRG_PACKAGE_DEAL.name}: save ${upTo}${pct} on any ${label} bought with a roof rack" data-pkg-cat="${cat}" data-pkg-label="${label}">
       ${photo ? `<span class="plp-pkg-banner-photo" style="background-image:url('${RRG_PROTO}_shared/${photo}')"></span>` : ''}
       <div class="plp-pkg-banner-copy">
         <span class="plp-pkg-banner-eyebrow">Roof rack + ${label}</span>
@@ -311,6 +311,19 @@ function plpRenderPackageBanner() {
       <span class="plp-pkg-banner-save"><small>Save${upTo ? ' up to' : ''}</small>${pct}</span>
     </aside>`);
 }
+// Banner click (2026-10-29, Brenton): the Package Deal drawer, step 1 = choose one of this tab's
+// qualifying products (in the grid's current filter + sort order), step 2 = choose a roof rack.
+function plpOpenPackageBanner(banner) {
+  const cat = banner.dataset.pkgCat;
+  const tabItems = plpFilteredSortedProducts().filter(p => p.pkgCategory === cat);
+  const items = (tabItems.length ? tabItems : window.PLP_CONFIG.products.filter(p => p.pkgCategory === cat)).map(plpPackageItem);
+  rrgOpenPackageDrawer(null, 'pick', { label: banner.dataset.pkgLabel, items });
+}
+document.addEventListener('click', e => { const b = e.target.closest('#plpPkgBanner'); if (b) plpOpenPackageBanner(b); });
+document.addEventListener('keydown', e => {
+  const b = e.target.closest && e.target.closest('#plpPkgBanner');
+  if (b && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); plpOpenPackageBanner(b); }
+});
 
 // Mobile "Read more" on the hero description (2026-09-29, spec.md §15 S4) — the description is
 // clamped to 3 lines on phones (plp.css) so the Shop By tabs don't move between tabs; this adds
@@ -1717,11 +1730,13 @@ function plpCartItemAttr(product) {
 // store's "Package Deals Available" strip, but it opens our drawer for THIS product (the UK one led
 // to a generic page and lost the product). Percentages only: no deal price on the PLP (the meeting:
 // RRP + sale price are already there, a third price confuses). Racks and qualifying accessories only.
+// A listing product as a cart line, for the Package Deal drawer (card strip + banner).
+const plpPackageItem = product => ({ sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
+  wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory });
 function plpPackageStripHTML(product) {
   // Build Phase 1: no Package Deal, so no strip and no spacer either (spec.md §23 item 25).
   if (typeof rrgPackageRole !== 'function' || (typeof rrgPackageOn === 'function' && !rrgPackageOn())) return '';
-  const item = { sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
-    wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory };
+  const item = plpPackageItem(product);
   const role = rrgPackageRole(item);
   // One line of full copy on wide cards; "Package Deal" over the short copy on narrow ones (plp.css).
   const inner = (long, short) => `<span class="plp-card-pkg-in">${RRG_PACKAGE_ICON}<span class="plp-card-pkg-text"><b>${RRG_PACKAGE_DEAL.name}<span class="plp-card-pkg-long">:</span></b> <span class="plp-card-pkg-long">${long}</span><span class="plp-card-pkg-short">${short}</span></span></span>`;

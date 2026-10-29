@@ -2614,6 +2614,8 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
    (was a green-tinted box, retired 2026-10-07). */
 .pkg-added{margin:0;}
 .pkg-h3{margin:0;font-size:18px;}
+/* "Step 1 of 2" over the heading (listing banner flow, 2026-10-29). */
+.pkg-step-num{display:block;margin-bottom:2px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--rrg-deal);}
 /* Rack step: change the vehicle without leaving the drawer (spec.md §19.1 #18) */
 .pkg-h3-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
 .pkg-change-vehicle{font-size:13px;white-space:nowrap;}

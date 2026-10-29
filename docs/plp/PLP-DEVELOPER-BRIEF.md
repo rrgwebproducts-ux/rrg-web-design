@@ -313,7 +313,9 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 > **Phase 2**, like the strip above.
 
-A thin full-width banner (about 100px tall) under the Shop By tabs, above the results toolbar, on categories where the deal applies. Left to right: lifestyle photo with an angled edge · blue `--rrg-deal` panel (yellow eyebrow "Roof rack + bike rack", "PACKAGE DEALS" in Barlow Condensed, "Save up to 15% on any bike rack bought with a roof rack") · white panel with the roof rack and accessory icons joined by + and = · yellow `--rrg-cta` saving ("Save up to 15%"). Under 1100px the photo drops; on phones the icons drop too (copy + saving only). Not a link.
+A thin full-width banner (about 100px tall) under the Shop By tabs, above the results toolbar, on categories where the deal applies. Left to right: lifestyle photo with an angled edge · blue `--rrg-deal` panel (yellow eyebrow "Roof rack + bike rack", "PACKAGE DEALS" in Barlow Condensed, "Save up to 15% on any bike rack bought with a roof rack") · white panel with the roof rack and accessory icons joined by + and = · yellow `--rrg-cta` saving ("Save up to 15%"). Under 1100px the photo drops; on phones the icons drop too (copy + saving only).
+
+**Click (2026-10-29, spec.md §27 item 3):** the whole banner opens the Package Deal drawer (PDP brief 4.19a) as two steps. **Step 1 of 2 — Choose your {bike rack}:** this category's qualifying products, in the listing's current filter and sort order, each showing price with a rack, the struck current price, "Save N%" and a **Choose** button. Choose adds the product to the cart, then **Step 2 of 2 — Choose a roof rack for your {vehicle}** (the drawer's existing racks step), then "Package Deal applied". If a roof rack is already in the cart, step 1 shows a "Rack in your cart" notice card with no step numbers, and Choose goes straight to "applied".
 
 **Saving:** the highest Package Deal rate among the category's products; "up to" only when the rates differ (e.g. CRUZ 15% alongside 10% brands).
 

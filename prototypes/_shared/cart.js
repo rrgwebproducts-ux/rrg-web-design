@@ -656,7 +656,10 @@ document.addEventListener('rrg-region-change', rrgRenderPackageTag);
 // "In your cart" confirmation at the top of a drawer step: the Package Deal notice card, same as the
 // PDP tag (Brenton, 2026-10-07: was a green-tinted box).
 const rrgPackageAddedHTML = item => rrgNoticeCardHTML('deal-applied', 'In your cart', rrgEsc(rrgShortName(item.name)), '', 'pkg-added');
-let rrgPackageStep = 'intro'; // 'intro' | 'racks' | 'done'
+let rrgPackageStep = 'intro'; // 'pick' | 'intro' | 'racks' | 'accessories' | 'done'
+// Opened from a listing's Package Deal banner (2026-10-29, Brenton): step 1 picks one of the
+// category's accessories, step 2 is the usual racks step. { label: 'bike rack', items: [cart lines] }.
+let rrgPackagePick = null;
 // The product the drawer is about: set when opened from a cart nudge or a product card (phase 5/6),
 // otherwise (null) the product page's own product.
 let rrgPackageItem = null;
@@ -682,6 +685,17 @@ function rrgBuildPackageDrawer() {
     const item = rrgPackageDrawerItem();
     if (e.target.closest('[data-pkg-add-choose]')) { rrgCartAdd(item, { open: false }); rrgPackageStep = rrgPackageRole(item) === 'rack' ? 'accessories' : 'racks'; rrgRenderPackageDrawer(); }
     if (e.target.closest('[data-pkg-choose-acc]')) { rrgPackageStep = 'accessories'; rrgRenderPackageDrawer(); }
+    const pickBtn = e.target.closest('[data-pkg-pick]');
+    if (pickBtn && rrgPackagePick) {
+      const p = rrgPackagePick.items.find(x => x.sku === pickBtn.dataset.pkgPick);
+      if (p) {
+        rrgPackageItem = p;
+        rrgCartAdd(p, { open: false });
+        // A rack already in the cart: the deal is done; otherwise step 2, choose a rack.
+        rrgPackageStep = rrgPackageDeal().racks.length ? 'done' : 'racks';
+        rrgRenderPackageDrawer();
+      }
+    }
     const accBtn = e.target.closest('[data-pkg-add-acc]');
     if (accBtn) {
       const a = RRG_PACKAGE_ACCESSORIES.find(x => x.sku === accBtn.dataset.pkgAddAcc);
@@ -708,6 +722,33 @@ function rrgRenderPackageDrawer() {
   const body = document.getElementById('pkgDrawerBody');
   const foot = document.getElementById('pkgDrawerFoot');
   if (!body) return;
+  if (rrgPackageStep === 'pick' && rrgPackagePick) {
+    const { label, items } = rrgPackagePick;
+    const rates = items.map(rrgPackageRate);
+    const hi = Math.max(...rates);
+    // A rack already in the cart: one step only, the saving applies as soon as they pick.
+    const rack = rrgPackageDeal().racks[0];
+    body.innerHTML = `
+      ${rack ? rrgNoticeCardHTML('deal-applied', 'Rack in your cart', `You already have the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart, so the saving applies as soon as you add a ${label}.`, '', 'pkg-added') : ''}
+      <p class="pkg-lead">Buy any ${label} here with any roof rack in the same order and the ${label} is <strong>${Math.min(...rates) < hi ? 'up to ' : ''}${rrgPctLabel(hi)} off</strong>. It stacks on sale prices.</p>
+      <h3 class="pkg-h3">${rack ? '' : '<span class="pkg-step-num">Step 1 of 2</span>'}Choose your ${label}</h3>
+      <ul class="pkg-racks">${items.map(p => {
+        const save = rrgPackageSaving(p);
+        const row = rrgPackageRowLinkHTML(p, rrgEsc(rrgShortName(p.name)));
+        return `<li class="pkg-rack">
+          ${row.img}
+          <div class="pkg-rack-info">
+            <span class="cart-line-brand">${rrgEsc(p.brand)}</span>
+            ${row.name}
+            <span class="pkg-acc-price"><strong>${rrgMoney(p.price - save)}</strong> <s>${rrgMoney(p.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(p))}</span></span>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" data-pkg-pick="${rrgEsc(p.sku)}">Choose</button>
+        </li>`;
+      }).join('')}</ul>
+      <p class="pkg-acc-note">Prices shown with a roof rack.</p>`;
+    foot.innerHTML = `<button type="button" class="btn btn-outline btn-block" data-pkg-close>Keep browsing</button>`;
+    return;
+  }
   const item = rrgPackageDrawerItem();
   const role = item && rrgPackageRole(item);
   if (!role) { body.innerHTML = ''; foot.innerHTML = ''; return; }
@@ -793,7 +834,7 @@ function rrgRenderPackageDrawer() {
     body.innerHTML = `
       ${rrgPackageAddedHTML(item)}
       <div class="pkg-h3-row">
-        <h3 class="pkg-h3">${vehicle ? `Choose a roof rack for your ${vehicle.label}` : 'Which vehicle is it for?'}</h3>
+        <h3 class="pkg-h3">${rrgPackagePick ? '<span class="pkg-step-num">Step 2 of 2</span>' : ''}${vehicle ? `Choose a roof rack for your ${vehicle.label}` : 'Which vehicle is it for?'}</h3>
         ${vehicle ? `<button type="button" class="link-btn pkg-change-vehicle" data-open-fit-finder>Change vehicle</button>` : ''}
       </div>
       ${vehicle ? `
@@ -829,10 +870,12 @@ function rrgRenderPackageDrawer() {
 }
 // item: a cart-line-shaped product (default: this product page's); step: 'intro' | 'racks' (for an
 // accessory) | 'accessories' (for a rack).
-function rrgOpenPackageDrawer(item = null, step = 'intro') {
+// 'pick' (with pick = { label, items }) starts from a listing banner: choose the accessory first.
+function rrgOpenPackageDrawer(item = null, step = 'intro', pick = null) {
   rrgBuildPackageDrawer();
   rrgPackageItem = item && typeof item === 'object' ? item : null;
-  rrgPackageStep = ['racks', 'accessories'].includes(step) ? step : 'intro';
+  rrgPackagePick = step === 'pick' && pick && pick.items.length ? pick : null;
+  rrgPackageStep = ['racks', 'accessories'].includes(step) ? step : rrgPackagePick ? 'pick' : 'intro';
   rrgCloseMiniCart(); // opened from the mini-cart's nudge: one drawer at a time
   rrgRenderPackageDrawer();
   const backdrop = document.getElementById('pkgDrawerBackdrop');

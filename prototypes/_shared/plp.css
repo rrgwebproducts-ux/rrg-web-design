@@ -680,7 +680,9 @@
 /* Package Deal banner (2026-10-29, plpRenderPackageBanner in plp.js) — a thin, full-width version
    of roofbox.co.uk's package-deal banner, under the Shop By tabs on eligible categories.
    Photo | blue copy panel | rack + accessory = | yellow saving. Package Deal blue (--rrg-deal). */
-.plp-pkg-banner{display:flex;align-items:stretch;min-height:96px;margin:0 0 24px;border-radius:var(--radius);overflow:hidden;background:var(--rrg-deal);color:#fff;}
+.plp-pkg-banner{display:flex;align-items:stretch;min-height:96px;margin:0 0 24px;border-radius:var(--radius);overflow:hidden;background:var(--rrg-deal);color:#fff;cursor:pointer;transition:box-shadow var(--t-fast),transform var(--t-fast);}
+.plp-pkg-banner:hover{box-shadow:0 4px 14px rgba(10,102,194,.3);transform:translateY(-1px);}
+.plp-pkg-banner:focus-visible{outline:3px solid var(--rrg-cta);outline-offset:2px;}
 .plp-pkg-banner-photo{flex:0 0 22%;background:50% 72%/cover no-repeat;clip-path:polygon(0 0,100% 0,calc(100% - 22px) 100%,0 100%);}
 .plp-pkg-banner-copy{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:12px 20px 12px 24px;min-width:0;}
 .plp-pkg-banner-eyebrow{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--rrg-cta);}
