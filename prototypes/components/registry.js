@@ -354,6 +354,15 @@ const RRG_COMPONENTS = [
       v('Sale on (Rack Friday) — campaign tag', 'plp', '.plp-card', { ls: S.sale }),
       v('Sale on (Christmas) — campaign tag', 'plp', '.plp-card', { ls: S.xmas }),
     ] },
+  { id: 'package-deal-banner', group: 'listing', name: 'Package Deal Banner', build: 'shared', usedOn: ['plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers'],
+    source: 'plpRenderPackageBanner (plp.js)',
+    note: 'Phase 2. Under the category description on categories set with packageBanner (spec.md §27 item 2).',
+    variants: [
+      v('Bike Racks — Roof Mounting', 'plp', '#plpPkgBanner', { ls: S.phase2, q: 'attachment=roof-mounting' }),
+      v('Roof Boxes', 'plp-roof-boxes', '#plpPkgBanner', { ls: S.phase2 }),
+      v('Awnings (no icon)', 'plp-awnings', '#plpPkgBanner', { ls: S.phase2 }),
+      v('Water Carriers (label override)', 'plp-water-carriers', '#plpPkgBanner', { ls: S.phase2 }),
+    ] },
   { id: 'results-grid', group: 'listing', name: 'Results Grid / List', build: 'shared', usedOn: [...PLP3, 'brand', 'search-results'],
     source: 'plpCardHTML / plpListCardHTML (plp.js)',
     variants: [

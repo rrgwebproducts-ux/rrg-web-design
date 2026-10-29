@@ -674,7 +674,36 @@
 }
 .plp-card-pkg.is-empty{display:none;}
 .plp-results.is-grid:has(.plp-card-pkg:not(.is-empty)) .plp-card-pkg.is-empty{display:block;visibility:hidden;}
-.plp-results.is-list .plp-card-pkg{grid-column:1 / -1;margin:4px -16px -16px;width:auto;}
+/* 16px above (2026-10-29, Brenton: was 4px, sat right on the specs table) = the card's own padding. */
+.plp-results.is-list .plp-card-pkg{grid-column:1 / -1;margin:16px -16px -16px;width:auto;}
+
+/* Package Deal banner (2026-10-29, plpRenderPackageBanner in plp.js) — a thin, full-width version
+   of roofbox.co.uk's package-deal banner, under the category description on eligible categories.
+   Photo | blue copy panel | rack + accessory = | yellow saving. Package Deal blue (--rrg-deal). */
+.plp-pkg-banner{display:flex;align-items:stretch;min-height:96px;margin:24px 0 0;border-radius:var(--radius);overflow:hidden;background:var(--rrg-deal);color:#fff;}
+.plp-pkg-banner-photo{flex:0 0 22%;background:50% 72%/cover no-repeat;clip-path:polygon(0 0,100% 0,calc(100% - 22px) 100%,0 100%);}
+.plp-pkg-banner-copy{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:12px 20px 12px 24px;min-width:0;}
+.plp-pkg-banner-eyebrow{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--rrg-cta);}
+.plp-pkg-banner-title{font-family:'Barlow Condensed',Arial,sans-serif;font-size:34px;line-height:1;font-weight:700;text-transform:uppercase;}
+.plp-pkg-banner-sub{font-size:15px;line-height:1.35;}
+.plp-pkg-banner-sum{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:12px 18px;background:#fff;color:var(--rrg-deal);clip-path:polygon(18px 0,100% 0,100% 100%,0 100%);padding-left:34px;}
+.plp-pkg-banner-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:700;color:var(--rrg-text);text-transform:capitalize;white-space:nowrap;}
+.plp-pkg-banner-item img{width:88px;height:39px;object-fit:contain;}
+.plp-pkg-banner-item.is-text span{padding:8px 12px;border:2px solid var(--rrg-deal);border-radius:var(--radius);color:var(--rrg-deal);}
+.plp-pkg-banner-op{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--rrg-deal);color:#fff;font-size:18px;font-weight:800;line-height:1;}
+.plp-pkg-banner-save{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px 26px 12px 34px;margin-left:-18px;background:var(--rrg-cta);color:var(--rrg-black);clip-path:polygon(18px 0,100% 0,100% 100%,0 100%);font-family:'Barlow Condensed',Arial,sans-serif;font-size:40px;font-weight:700;line-height:1;}
+.plp-pkg-banner-save small{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
+@media (max-width:1100px){
+  .plp-pkg-banner-photo{display:none;}
+}
+@media (max-width:760px){
+  .plp-pkg-banner{min-height:0;margin-top:16px;}
+  .plp-pkg-banner-sum{display:none;}
+  .plp-pkg-banner-copy{padding:12px 14px;}
+  .plp-pkg-banner-title{font-size:26px;}
+  .plp-pkg-banner-sub{font-size:13px;}
+  .plp-pkg-banner-save{padding:10px 14px 10px 26px;font-size:26px;}
+}
 
 /* ==== Clearance page (2026-10-09, spec.md §20.3) =============================================
    Landing on top of the standard PLP grid: marketing's Overstock Clearance banner (the home page

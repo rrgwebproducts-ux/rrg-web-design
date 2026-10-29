@@ -261,6 +261,55 @@ function plpRenderCategoryContent() {
   plpRenderBreadcrumb();
   plpApplyCategoryImage();
   plpApplyHeroReadMore();
+  plpRenderPackageBanner();
+}
+
+// Package Deal banner (2026-10-29, Brenton — our take on roofbox.co.uk's package-deal banner on
+// eligible bike carrier categories): a thin full-width strip under the category description,
+// above Shop By. Phase 2 with the rest of Package Deal. Which categories get it: PLP_CONFIG
+// packageBanner (a qualifying package category, e.g. 'roof-bike'), set on categoryRoot or a Shop By
+// tab; a tab inherits its parent's, and `packageBanner: false` switches it off (brackets, spares…).
+// Production: a per-category yes/no attribute plus the category's package category.
+const PLP_PKG_ICONS = { rack: 'roof-racks.png', 'roof-bike': 'bike-racks.png', 'roof-box': 'roof-boxes-cargo.png', 'rooftop-tent': 'roof-top-type.png' };
+// Photo override where the Shop by Category tile doesn't show the deal (bike-racks.webp is a
+// tow-bar rack; this one is a bike on a roof rack).
+const PLP_PKG_PHOTOS = { 'roof-bike': 'brands/rockymounts-hero.jpg' };
+function plpRenderPackageBanner() {
+  document.getElementById('plpPkgBanner')?.remove();
+  const cfg = window.PLP_CONFIG;
+  const shopBy = document.querySelector('main .plp-shopby');
+  if (!shopBy || typeof rrgPackageOn !== 'function' || !rrgPackageOn()) return;
+  const { l2, l3 } = plpActiveTabChain();
+  const chain = [l3, l2, cfg.categoryRoot].filter(Boolean);
+  const cat = chain.map(t => t.packageBanner).find(v => v !== undefined);
+  if (!cat || !RRG_PACKAGE_DEAL.qualifying[cat]) return;
+  const rates = cfg.products.filter(p => p.pkgCategory === cat).map(p => rrgPackageRate({ brand: p.brand, pkgCategory: cat }));
+  if (!rates.length) return;
+  const hi = Math.max(...rates);
+  const pct = rrgPctLabel(hi);
+  const upTo = Math.min(...rates) < hi ? 'up to ' : '';
+  // packageBannerLabel: a clearer word than the category's own ("carrier" → "kayak & SUP carrier").
+  const label = chain.map(t => t.packageBannerLabel).find(Boolean) || RRG_PACKAGE_CATEGORY_LABEL[cat];
+  // Photo: this page's own entry in the drawer's category banners (snow vs water share a category).
+  const tiles = RRG_PACKAGE_CATEGORY_PLP[cat] || [];
+  const tile = tiles.find(([, href]) => location.pathname.includes('/' + href.split('/')[0] + '/')) || tiles[0];
+  const photo = PLP_PKG_PHOTOS[cat] || (tile && `category-tiles/${tile[2]}.webp`);
+  const icon = key => PLP_PKG_ICONS[key]
+    ? `<span class="plp-pkg-banner-item"><img src="${RRG_PROTO}_shared/icons/${PLP_PKG_ICONS[key]}" alt=""><span>${RRG_PACKAGE_CATEGORY_LABEL[key]}</span></span>`
+    : `<span class="plp-pkg-banner-item is-text"><span>${label}</span></span>`;
+  shopBy.insertAdjacentHTML('beforebegin', `
+    <aside class="plp-pkg-banner" id="plpPkgBanner" aria-label="${RRG_PACKAGE_DEAL.name}">
+      ${photo ? `<span class="plp-pkg-banner-photo" style="background-image:url('${RRG_PROTO}_shared/${photo}')"></span>` : ''}
+      <div class="plp-pkg-banner-copy">
+        <span class="plp-pkg-banner-eyebrow">Roof rack + ${label}</span>
+        <strong class="plp-pkg-banner-title">${RRG_PACKAGE_DEAL.name}s</strong>
+        <span class="plp-pkg-banner-sub">Save ${upTo}${pct} on any ${label} bought with a roof rack</span>
+      </div>
+      <div class="plp-pkg-banner-sum" aria-hidden="true">
+        ${icon('rack')}<span class="plp-pkg-banner-op">+</span>${icon(cat)}<span class="plp-pkg-banner-op">=</span>
+      </div>
+      <span class="plp-pkg-banner-save"><small>Save${upTo ? ' up to' : ''}</small>${pct}</span>
+    </aside>`);
 }
 
 // Mobile "Read more" on the hero description (2026-09-29, spec.md §15 S4) — the description is

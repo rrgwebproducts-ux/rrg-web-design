@@ -305,9 +305,21 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 **Look (restyled 2026-10-07, spec.md §19.2):** white strip, 1px top border, icon and label in the Package Deal colour `--rrg-deal` (blue, the same in every region), 13px, light blue tint on hover, no chevron.
 
-**Alignment:** in grid view, cards without a deal render an invisible copy of the strip (same height) whenever the grid has at least one real strip, so Add to Cart lines up across every row. List view doesn't need it.
+**Alignment:** in grid view, cards without a deal render an invisible copy of the strip (same height) whenever the grid has at least one real strip, so Add to Cart lines up across every row. List view doesn't need it. In list view the strip runs the full card width along the bottom, **16px below the specs** (the card's own padding; spec.md §27 item 1).
 
 **Data:** the product's package category + rate (same attributes as PDP 4.19 / 4.19a).
+
+### 4.6b Package Deal banner (2026-10-29, spec.md §27 item 2)
+
+> **Phase 2**, like the strip above.
+
+A thin full-width banner (about 100px tall) under the category description (after the hero buttons), above Shop By, on categories where the deal applies. Left to right: lifestyle photo with an angled edge · blue `--rrg-deal` panel (yellow eyebrow "Roof rack + bike rack", "PACKAGE DEALS" in Barlow Condensed, "Save up to 15% on any bike rack bought with a roof rack") · white panel with the roof rack and accessory icons joined by + and = · yellow `--rrg-cta` saving ("Save up to 15%"). Under 1100px the photo drops; on phones the icons drop too (copy + saving only). Not a link.
+
+**Saving:** the highest Package Deal rate among the category's products; "up to" only when the rates differ (e.g. CRUZ 15% alongside 10% brands).
+
+**Where:** a per-category setting — show yes/no + the package category (roof-mounted bike rack, roof box, awning, rooftop tent, water/snow carrier) and an optional display word ("kayak & SUP carrier"). Prototype: Roof Mounting bike racks and its Level 3 tabs, Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers; switched off on the brackets/extensions/accessories/spares/tie-downs/load-assist/soft-rack/boat-loader tabs and on Bike Racks "Show All".
+
+**Photo:** per category, supplied by marketing (the prototype uses placeholders).
 
 ---
 
