@@ -356,9 +356,9 @@ const RRG_COMPONENTS = [
     ] },
   { id: 'package-deal-banner', group: 'listing', name: 'Package Deal Banner', build: 'shared', usedOn: ['plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers'],
     source: 'plpRenderPackageBanner (plp.js)',
-    note: 'Phase 2. Under the category description on categories set with packageBanner (spec.md §27 item 2).',
+    note: 'Phase 2. Under the Shop By tabs on categories set with packageBanner (spec.md §27 item 2).',
     variants: [
-      v('Bike Racks — Roof Mounting', 'plp', '#plpPkgBanner', { ls: S.phase2, q: 'attachment=roof-mounting' }),
+      v('Bike Racks', 'plp', '#plpPkgBanner', { ls: S.phase2 }),
       v('Roof Boxes', 'plp-roof-boxes', '#plpPkgBanner', { ls: S.phase2 }),
       v('Awnings (no icon)', 'plp-awnings', '#plpPkgBanner', { ls: S.phase2 }),
       v('Water Carriers (label override)', 'plp-water-carriers', '#plpPkgBanner', { ls: S.phase2 }),

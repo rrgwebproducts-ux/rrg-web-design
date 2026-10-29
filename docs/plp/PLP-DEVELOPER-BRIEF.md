@@ -313,11 +313,11 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 > **Phase 2**, like the strip above.
 
-A thin full-width banner (about 100px tall) under the category description (after the hero buttons), above Shop By, on categories where the deal applies. Left to right: lifestyle photo with an angled edge · blue `--rrg-deal` panel (yellow eyebrow "Roof rack + bike rack", "PACKAGE DEALS" in Barlow Condensed, "Save up to 15% on any bike rack bought with a roof rack") · white panel with the roof rack and accessory icons joined by + and = · yellow `--rrg-cta` saving ("Save up to 15%"). Under 1100px the photo drops; on phones the icons drop too (copy + saving only). Not a link.
+A thin full-width banner (about 100px tall) under the Shop By tabs, above the results toolbar, on categories where the deal applies. Left to right: lifestyle photo with an angled edge · blue `--rrg-deal` panel (yellow eyebrow "Roof rack + bike rack", "PACKAGE DEALS" in Barlow Condensed, "Save up to 15% on any bike rack bought with a roof rack") · white panel with the roof rack and accessory icons joined by + and = · yellow `--rrg-cta` saving ("Save up to 15%"). Under 1100px the photo drops; on phones the icons drop too (copy + saving only). Not a link.
 
 **Saving:** the highest Package Deal rate among the category's products; "up to" only when the rates differ (e.g. CRUZ 15% alongside 10% brands).
 
-**Where:** a per-category setting — show yes/no + the package category (roof-mounted bike rack, roof box, awning, rooftop tent, water/snow carrier) and an optional display word ("kayak & SUP carrier"). Prototype: Roof Mounting bike racks and its Level 3 tabs, Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers; switched off on the brackets/extensions/accessories/spares/tie-downs/load-assist/soft-rack/boat-loader tabs and on Bike Racks "Show All".
+**Where:** a per-category setting — show yes/no + the package category (roof-mounted bike rack, roof box, awning, rooftop tent, water/snow carrier) and an optional display word ("kayak & SUP carrier"). Prototype: Bike Racks (Show All, Roof Mounting and its Level 3 tabs), Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers; switched off on the tow ball/hitch/rear mounting and bike rack accessories tabs, and the brackets/extensions/accessories/spares/tie-downs/load-assist/soft-rack/boat-loader tabs.
 
 **Photo:** per category, supplied by marketing (the prototype uses placeholders).
 

@@ -265,8 +265,8 @@ function plpRenderCategoryContent() {
 }
 
 // Package Deal banner (2026-10-29, Brenton — our take on roofbox.co.uk's package-deal banner on
-// eligible bike carrier categories): a thin full-width strip under the category description,
-// above Shop By. Phase 2 with the rest of Package Deal. Which categories get it: PLP_CONFIG
+// eligible bike carrier categories): a thin full-width strip under the Shop By tabs, above the
+// results toolbar (moved from above Shop By, Brenton 2026-10-29). Phase 2 with the rest of Package Deal. Which categories get it: PLP_CONFIG
 // packageBanner (a qualifying package category, e.g. 'roof-bike'), set on categoryRoot or a Shop By
 // tab; a tab inherits its parent's, and `packageBanner: false` switches it off (brackets, spares…).
 // Production: a per-category yes/no attribute plus the category's package category.
@@ -297,7 +297,7 @@ function plpRenderPackageBanner() {
   const icon = key => PLP_PKG_ICONS[key]
     ? `<span class="plp-pkg-banner-item"><img src="${RRG_PROTO}_shared/icons/${PLP_PKG_ICONS[key]}" alt=""><span>${RRG_PACKAGE_CATEGORY_LABEL[key]}</span></span>`
     : `<span class="plp-pkg-banner-item is-text"><span>${label}</span></span>`;
-  shopBy.insertAdjacentHTML('beforebegin', `
+  shopBy.insertAdjacentHTML('afterend', `
     <aside class="plp-pkg-banner" id="plpPkgBanner" aria-label="${RRG_PACKAGE_DEAL.name}">
       ${photo ? `<span class="plp-pkg-banner-photo" style="background-image:url('${RRG_PROTO}_shared/${photo}')"></span>` : ''}
       <div class="plp-pkg-banner-copy">

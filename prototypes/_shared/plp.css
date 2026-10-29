@@ -678,9 +678,9 @@
 .plp-results.is-list .plp-card-pkg{grid-column:1 / -1;margin:16px -16px -16px;width:auto;}
 
 /* Package Deal banner (2026-10-29, plpRenderPackageBanner in plp.js) — a thin, full-width version
-   of roofbox.co.uk's package-deal banner, under the category description on eligible categories.
+   of roofbox.co.uk's package-deal banner, under the Shop By tabs on eligible categories.
    Photo | blue copy panel | rack + accessory = | yellow saving. Package Deal blue (--rrg-deal). */
-.plp-pkg-banner{display:flex;align-items:stretch;min-height:96px;margin:24px 0 0;border-radius:var(--radius);overflow:hidden;background:var(--rrg-deal);color:#fff;}
+.plp-pkg-banner{display:flex;align-items:stretch;min-height:96px;margin:0 0 24px;border-radius:var(--radius);overflow:hidden;background:var(--rrg-deal);color:#fff;}
 .plp-pkg-banner-photo{flex:0 0 22%;background:50% 72%/cover no-repeat;clip-path:polygon(0 0,100% 0,calc(100% - 22px) 100%,0 100%);}
 .plp-pkg-banner-copy{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:12px 20px 12px 24px;min-width:0;}
 .plp-pkg-banner-eyebrow{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--rrg-cta);}
@@ -697,7 +697,7 @@
   .plp-pkg-banner-photo{display:none;}
 }
 @media (max-width:760px){
-  .plp-pkg-banner{min-height:0;margin-top:16px;}
+  .plp-pkg-banner{min-height:0;margin-bottom:16px;}
   .plp-pkg-banner-sum{display:none;}
   .plp-pkg-banner-copy{padding:12px 14px;}
   .plp-pkg-banner-title{font-size:26px;}
