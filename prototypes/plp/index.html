@@ -546,7 +546,6 @@ window.PLP_CONFIG = {
   // not just the results grid (see plpRenderCategoryContent() in plp.js). heroImage is a real
   // product photo from within that tab's own range (never the blurry SHOP BY icon).
   categoryRoot: {
-    packageBanner: 'roof-bike', // Package Deal banner (plp.js plpRenderPackageBanner, 2026-10-29); off on non-roof tabs
     breadcrumbLabel: 'Bike Racks',
     heading: 'Bike Racks',
     // Long on purpose so the hero shows Read more (live /bike-racks category description (2026-10-20)).
@@ -570,7 +569,7 @@ window.PLP_CONFIG = {
   // "Hot Deals" promo tile appear in every -main-default row too; both excluded here (Show All
   // is redundant with clearing the Level 3 selection, Hot Deals isn't a category).
   shopBy: [
-    { key: 'roof-mounting', label: 'Roof Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1742.webp" alt="Roof Mounting Icon">`,
+    { key: 'roof-mounting', packageBanner: 'roof-bike', label: 'Roof Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1742.webp" alt="Roof Mounting Icon">`,
       heading: 'Roof Mounted Bike Racks',
       description: 'Clamp, custom-point or track-mount carriers that sit on your existing roof bars — the most common style, carrying 1 bike per unit with the option to fit several side by side.',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg',
@@ -589,7 +588,7 @@ window.PLP_CONFIG = {
           heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-61018-Platforms--Trays---Accessories._1.jpg' }
       ]
     },
-    { key: 'tow-ball-mounting', packageBanner: false, label: 'Tow Ball Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1829.webp" alt="Tow Ball Mounting Icon">`,
+    { key: 'tow-ball-mounting', label: 'Tow Ball Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1829.webp" alt="Tow Ball Mounting Icon">`,
       heading: 'Tow Ball Mounted Bike Racks',
       description: 'Hang-on and platform carriers that mount straight to your tow ball, no tow bar receiver or roof access needed — ideal for vehicles without factory roof rails.',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg',
@@ -604,7 +603,7 @@ window.PLP_CONFIG = {
           heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg' }
       ]
     },
-    { key: 'hitch-mounting', packageBanner: false, label: 'Hitch Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1830.webp" alt="Hitch Mounting Icon">`,
+    { key: 'hitch-mounting', label: 'Hitch Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1830.webp" alt="Hitch Mounting Icon">`,
       heading: 'Hitch Mounted Bike Racks',
       description: 'Platform and hang-on carriers built for a 50mm tow bar receiver, tool-free to fit and rated up to 80kg total for e-bikes and family loads.',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg',
@@ -635,7 +634,7 @@ window.PLP_CONFIG = {
           heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/6/f672e9e642cbef771939567e8e6c39d3_N3Y9GB_1.jpg' }
       ]
     },
-    { key: 'rear-mounting', packageBanner: false, label: 'Rear Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1831.webp" alt="Rear Mounting Icon">`,
+    { key: 'rear-mounting', label: 'Rear Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1831.webp" alt="Rear Mounting Icon">`,
       heading: 'Rear Mounted Bike Racks',
       description: 'Carriers that hang straight off the rear door, boot or spare wheel — no roof access or tow ball required, with straps that adjust to fit wagons, SUVs and 4WDs.',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg',
@@ -654,7 +653,7 @@ window.PLP_CONFIG = {
           heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/-/R-PBR-01_1_FVS4GK_1.jpg' }
       ]
     },
-    { key: 'bike-rack-accessories', packageBanner: false, label: 'Bike Rack Accessories', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/126.webp" alt="Bike Rack Accessories Icon">`,
+    { key: 'bike-rack-accessories', label: 'Bike Rack Accessories', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/126.webp" alt="Bike Rack Accessories Icon">`,
       heading: 'Bike Rack Accessories',
       description: 'Add-on extensions, spare parts and mounting accessories to extend or maintain your existing bike rack — from extra-bike add-ons to replacement fittings.',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/o/Rocky-Mounts-10941-Bike-Rack---Roof-Mount._1.jpg',

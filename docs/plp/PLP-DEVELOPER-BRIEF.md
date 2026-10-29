@@ -317,7 +317,7 @@ A thin full-width banner (about 100px tall) under the Shop By tabs, above the re
 
 **Saving:** the highest Package Deal rate among the category's products; "up to" only when the rates differ (e.g. CRUZ 15% alongside 10% brands).
 
-**Where:** a per-category setting — show yes/no + the package category (roof-mounted bike rack, roof box, awning, rooftop tent, water/snow carrier) and an optional display word ("kayak & SUP carrier"). Prototype: Bike Racks (Show All, Roof Mounting and its Level 3 tabs), Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers; switched off on the tow ball/hitch/rear mounting and bike rack accessories tabs, and the brackets/extensions/accessories/spares/tie-downs/load-assist/soft-rack/boat-loader tabs.
+**Where:** a per-category setting — show yes/no + the package category (roof-mounted bike rack, roof box, awning, rooftop tent, water/snow carrier) and an optional display word ("kayak & SUP carrier"). Prototype: Roof Mounting bike racks and its Level 3 tabs (not Bike Racks Show All), Roof Boxes, Awnings, Rooftop Tents, Water Carriers, Snow Carriers; switched off on the brackets/extensions/accessories/spares/tie-downs/load-assist/soft-rack/boat-loader tabs.
 
 **Photo:** per category, supplied by marketing (the prototype uses placeholders).
 

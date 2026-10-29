@@ -358,7 +358,7 @@ const RRG_COMPONENTS = [
     source: 'plpRenderPackageBanner (plp.js)',
     note: 'Phase 2. Under the Shop By tabs on categories set with packageBanner (spec.md §27 item 2).',
     variants: [
-      v('Bike Racks', 'plp', '#plpPkgBanner', { ls: S.phase2 }),
+      v('Bike Racks — Roof Mounting', 'plp', '#plpPkgBanner', { ls: S.phase2, q: 'attachment=roof-mounting' }),
       v('Roof Boxes', 'plp-roof-boxes', '#plpPkgBanner', { ls: S.phase2 }),
       v('Awnings (no icon)', 'plp-awnings', '#plpPkgBanner', { ls: S.phase2 }),
       v('Water Carriers (label override)', 'plp-water-carriers', '#plpPkgBanner', { ls: S.phase2 }),
