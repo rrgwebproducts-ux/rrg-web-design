@@ -28,8 +28,16 @@ const RRG_VEHICLES = {
   ranger: { label: 'Ford Ranger', demoKey: 'mismatch', plpKey: 'ford-ranger-p703', image: 'vehicle-ford-ranger.webp', badge: 'brand-ford-badge.png' },
   // Van Fit Finder demo (spec.md §28, 2026-11-05). The image is a placeholder drawing: the live
   // site has no HiAce photo.
-  hiace: { label: 'Toyota Hiace', demoKey: 'van', plpKey: 'toyota-hiace-h300', image: 'vehicle-toyota-hiace.svg', badge: 'brand-toyota-badge.png' }
+  hiace: { label: 'Toyota Hiace', model: 'Hiace', demoKey: 'van', plpKey: 'toyota-hiace-h300', image: 'vehicle-toyota-hiace.svg', badge: 'brand-toyota-badge.png' },
+  // Scott's other demo vans (Vehicle Demos List). `model` because "Mercedes Benz" is two words.
+  // Same placeholder van drawing; no make badge where the prototype has none.
+  sprinter: { label: 'Mercedes Benz Sprinter', model: 'Sprinter', demoKey: 'sprinter', plpKey: 'mercedes-benz-sprinter-vs30', image: 'vehicle-toyota-hiace.svg', badge: '' },
+  transit: { label: 'Ford Transit', model: 'Transit', demoKey: 'transit', plpKey: 'ford-transit-2024', image: 'vehicle-toyota-hiace.svg', badge: 'brand-ford-badge.png' },
+  berlingo: { label: 'Citroen Berlingo', model: 'Berlingo', demoKey: 'berlingo', plpKey: 'citroen-berlingo-ii', image: 'vehicle-toyota-hiace.svg', badge: '' },
+  esuperjolly: { label: 'Iveco eSuperJolly', model: 'eSuperJolly', demoKey: 'esuperjolly', plpKey: 'iveco-esuperjolly', image: 'vehicle-toyota-hiace.svg', badge: '' }
 };
+// A vehicle's model name ("Hilux", "Sprinter") — label minus the make.
+const rrgVehicleModel = v => v.model || v.label.split(' ').slice(1).join(' ');
 const RRG_VEHICLE_KEY = 'rrgSessionVehicle';
 
 // 'none' | 'hilux' | 'ranger' | 'hiace'. Default Toyota Hilux; carries over the old on/off key once.

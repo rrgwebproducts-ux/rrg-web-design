@@ -277,24 +277,11 @@ const VLP_VEHICLES = {
       { id: 'r6', sku: 'JC-05287', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-05287 Sportz RX Black 2 Bar Roof Rack', image: '../_shared/vlp-products/jc-05287.webp', price: 443.21, wasPrice: 533.00, stock: 'in_stock' }
     ]
   },
-  // Van Fit Finder demo (spec.md §28, 2026-11-05): every van the Fit Finder sets lands here. The
-  // body is the tail-end body type only ("LWB Low Roof - L3H1"), so the H1, breadcrumbs and
-  // notices never repeat the wheelbase and roof height. Popular Racks are the live site's own
-  // HiAce Gen 6 (H300) mounting products — names, prices and photos from roofracksgalore.com.au
-  // 2026-11-05; the site shows no ratings for them. Image = placeholder drawing (no HiAce photo live).
+  // Van Fit Finder demo (spec.md §28): the Hiace H300's real products — the live site's own HiAce
+  // Gen 6 mounting products (names, prices, photos from roofracksgalore.com.au 2026-11-05; the
+  // site shows no ratings for them). Everything else on a van page is built below, from the pick.
   hiace: {
-    rrgKey: 'hiace', plpKey: 'toyota-hiace-h300',
-    make: 'Toyota', model: 'Hiace', code: 'H300', years: '2019 onwards', body: 'LWB Low Roof - L3H1', roof: 'Factory Mounting Point', roofPhrase: 'factory mounting points',
-    image: '../_shared/vehicle-toyota-hiace.svg', badge: '../_shared/brand-toyota-badge.png',
-    vclpHref: '#', roofRacksHref: '#',
-    intro: 'Vans are matched by wheelbase and roof height, not by door count, so what fits a long wheelbase low roof Hiace won’t always fit a high roof one. Everything on this page is filtered to fit a 2019-onwards Hiace LWB Low Roof - L3H1 with factory mounting points.',
     vsCategories: ['misc-vehicle-accessories'],
-    fitCount: 0,
-    faqs: [
-      { q: 'What does L3H1 mean?', a: 'It’s the van’s wheelbase and roof height code. L3 is a long wheelbase (LWB) and H1 is a low roof. Racks are matched to both, so a high roof (H2) Hiace takes a different fitment.' },
-      { q: 'Does the number of doors on my van matter?', a: 'No. The same van can come with one or two sliding doors, and makers count doors differently, but the roof is the same. Only the wheelbase and roof height change what fits.' },
-      { q: 'Do you offer professional installation for the Toyota Hiace?', a: 'Yes — we fit roof racks and accessories nationwide at our 35+ stores. Book an installation or use the Store Finder to find your nearest fitting centre.' }
-    ],
     popular: [
       { id: 'v1', sku: 'RTHB3', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino-Rack Backbone Spine 3 Base Mounting System for Toyota HiAce Gen6 - RTHB3', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RTHB3-Platform-Backbone._1_1.jpg', price: 659.12, wasPrice: 749.00, stock: 'in_stock' },
       { id: 'v2', sku: 'RCHT6', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack RCH Locking Leg for Toyota (x6) RCHT6', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RCHT6-Roof-Rack---Legs._1_4.jpg', price: 205.92, wasPrice: 234.00, stock: 'in_stock' },
@@ -303,6 +290,49 @@ const VLP_VEHICLES = {
     ]
   }
 };
+
+// ==== Van pages (spec.md §28) =====================================================
+// Every van in the Fit Finder gets a page. The Fit Finder's link carries the exact pick
+// (?vehicle=&year=&body=&roof=) and the page is named the way Scott's "Result Name" column is —
+// "Toyota Hiace 2019 onwards LWB Low Roof - L3H1 with Factory Mounting Point" — the body type
+// only, never the wheelbase and roof height again. With no pick: the van's first combination.
+// Only the Hiace H300 has products, so the other vans have no Popular Racks row or
+// vehicle-specific tiles. Photo = the placeholder van drawing for every van.
+(function vlpBuildVanPages() {
+  const params = new URLSearchParams(location.search);
+  const wbPhrase = { L1: 'a short wheelbase', L2: 'a medium wheelbase', L3: 'a long wheelbase', L4: 'an extra long wheelbase' };
+  Object.entries(FIT_FINDER_VEHICLES).filter(([, f]) => f.van).forEach(([key, f]) => {
+    const mine = params.get('vehicle') === key;
+    const year = mine && f.variants[params.get('year')] ? params.get('year') : f.years[0][0];
+    const variants = f.variants[year];
+    const variant = (mine && variants.find(x => x.wb + x.rh === params.get('body'))) || variants[0];
+    const roofKey = mine && variant.roofs.includes(params.get('roof')) ? params.get('roof') : variant.roofs[0];
+    const session = RRG_VEHICLES[key] || {};
+    const hand = VLP_VEHICLES[key] || {};
+    const hasProducts = key === 'hiace' && year === '2019+';
+    const make = FIT_FINDER_MAKES.find(([k]) => k === f.make)[1];
+    const body = rrgVanBodyLabel(variant.wb, variant.rh);
+    const years = f.yearNames[year];
+    const rhName = RRG_VAN_ROOF_HEIGHTS[variant.rh][0].toLowerCase();
+    const article = years || !/^[aeiou]/i.test(f.model) ? 'a' : 'an';
+    VLP_VEHICLES[key] = {
+      rrgKey: key, plpKey: session.plpKey,
+      make, model: f.model, code: (f.codes || {})[year] || '', years, body,
+      roof: RRG_VAN_ROOF_TYPES[roofKey], roofPhrase: RRG_VAN_ROOF_PHRASES[roofKey],
+      image: '../_shared/' + (session.image || 'vehicle-toyota-hiace.svg'), badge: session.badge ? '../_shared/' + session.badge : '',
+      vclpHref: '#', roofRacksHref: '#',
+      intro: `Vans are matched by wheelbase and roof height, not by door count, so what fits one ${f.model} won’t always fit another. Everything on this page is filtered to fit ${[article, years, f.model, body].filter(Boolean).join(' ')} with ${RRG_VAN_ROOF_PHRASES[roofKey]}.`,
+      vsCategories: hasProducts ? hand.vsCategories : [],
+      fitCount: 0,
+      faqs: [
+        { q: `What does ${variant.wb}${variant.rh} mean?`, a: `It’s the van’s wheelbase and roof height code. ${variant.wb} is ${wbPhrase[variant.wb]} (${RRG_VAN_WHEELBASES[variant.wb][0]}) and ${variant.rh} is a ${rhName}. Racks are matched to both, so the same van with a different roof height takes a different fitment.` },
+        { q: 'Does the number of doors on my van matter?', a: 'No. The same van can come with one or two sliding doors, and makers count doors differently, but the roof is the same. Only the wheelbase and roof height change what fits.' },
+        { q: `Do you offer professional installation for the ${make} ${f.model}?`, a: 'Yes — we fit roof racks and accessories nationwide at our 35+ stores. Book an installation or use the Store Finder to find your nearest fitting centre.' }
+      ],
+      popular: hasProducts ? hand.popular : []
+    };
+  });
+})();
 
 // Fitment Gallery photos for the page vehicle — the Hilux's are the same 16 real fitment-centre
 // photos as the VCLP/Vehicle-Specific (see the note there); the Ranger has none yet.
@@ -333,8 +363,9 @@ const FIT_GALLERY_PHOTOS = VLP_PAGE_KEY === 'hilux' ? VLP_HILUX_FIT_PHOTOS : [];
 window.VLP_STATE = { pageKey: VLP_PAGE_KEY, vsAvailable: new Set(VLP_VEHICLE.vsCategories) };
 
 const vlpName = v => `${v.make} ${v.model}`;
-const vlpNameCode = v => `${v.make} ${v.model} (${v.code})`;
-const vlpSpec = v => `${v.make} ${v.model} ${v.years} ${v.body} with ${v.roof}`;
+const vlpNameCode = v => `${v.make} ${v.model}${v.code ? ` (${v.code})` : ''}`;
+// Years can be blank (Scott's eSuperJolly name has none).
+const vlpSpec = v => `${[v.make, v.model, v.years, v.body].filter(Boolean).join(' ')} with ${v.roof}`;
 
 // ==== Breadcrumbs + hero ============================================================
 function vlpRenderHeader() {
@@ -344,7 +375,7 @@ function vlpRenderHeader() {
     { label: 'Home', href: '#' }, { label: 'Vehicles', href: '#' }, { label: v.make, href: '#' },
     { label: v.model, href: v.vclpHref }, { label: v.years, href: v.vclpHref }, { label: v.body, href: v.vclpHref },
     { label: v.roof }
-  ];
+  ].filter(seg => seg.label);
   document.getElementById('vlpCrumbs').innerHTML = trail.map((seg, i) =>
     (i ? ' &gt; ' : '') + (seg.href ? `<a href="${seg.href}">${seg.label}</a>` : `<span>${seg.label}</span>`)).join('');
   document.getElementById('vlpCrumbsLd').textContent = JSON.stringify({
@@ -356,7 +387,8 @@ function vlpRenderHeader() {
   const img = document.getElementById('vlpHeroImg');
   img.src = v.image; img.alt = vlpName(v);
   const badge = document.getElementById('vlpHeroBadge');
-  badge.querySelector('img').src = v.badge; badge.querySelector('img').alt = v.make;
+  badge.style.display = v.badge ? '' : 'none';
+  if (v.badge) { badge.querySelector('img').src = v.badge; badge.querySelector('img').alt = v.make; }
   const headings = {
     main: `${vlpNameCode(v)} Specific Roof Racks & Accessories`,
     adventure: `Adventure Carriers & Accessories for the ${vlpNameCode(v)}`,
@@ -433,6 +465,8 @@ function vlpSizeStoreFinder(el, standardCount) {
 // vehicle, so a shopper with a different saved vehicle honestly sees "doesn't fit your …".
 function vlpRenderPopular() {
   const track = document.getElementById('vlpPopularTrack');
+  // No products for this vehicle (Scott's demo vans other than the Hiace H300): no row at all.
+  document.getElementById('vlpPopular').style.display = VLP_VEHICLE.popular.length ? '' : 'none';
   const products = VLP_VEHICLE.popular.map(p => ({ ...p, fitsVehicle: VLP_VEHICLE.plpKey }));
   // Add to Cart is the shared cart's (cart.js).
   track.innerHTML = products.map(p => plpCardHTML(p, { vrs: false })).join('');
@@ -465,7 +499,7 @@ function vlpRenderVehicleNotice() {
     <span class="dot"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg></span>
     <div class="vlp-vehicle-notice-text">
       <strong>This page isn’t for your ${savedName}</strong>
-      You’re viewing the ${vlpName(v)} ${v.code} — ${v.years}, ${v.body}, ${v.roof}.
+      You’re viewing the ${vlpNameCode(v)} — ${[v.years, v.body, v.roof].filter(Boolean).join(', ')}.
     </div>
     <div class="actions">
       <button type="button" class="btn btn-outline-red btn-sm" data-vlp-notice="adopt">Make this my vehicle</button>

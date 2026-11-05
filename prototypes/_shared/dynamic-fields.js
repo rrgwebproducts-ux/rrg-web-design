@@ -335,7 +335,7 @@ const RRG_DYN_FIELDS = [
     sel: '.fit-finder-widget [data-ff-van]',
     rule: ['Model is a van: Wheelbase and Roof Height image tiles show after Year; otherwise hidden', 'Tiles = the combinations that year comes in; a roof height is greyed until its wheelbase is picked; a wheelbase with one roof height picks it automatically', 'Wheelbase + Roof Height picked: Body Style fills itself with the one matching body type', 'Labels: "LWB - L3", "Low Roof - H1"; body type "LWB Low Roof - L3H1", with no door count', 'Vehicle name (VLP H1, breadcrumbs, notices) uses the body type only, never the wheelbase and roof height again'],
     example: 'LWB Low Roof - L3H1',
-    notes: 'spec.md §28 (Scott Childs, 2026-11-05). Codes: L1 SWB, L2 MWB, L3 LWB, L4 XLWB; H1 Low Roof, H2 High Roof, H3 Super High Roof. Tile images are placeholder drawings until Scott\'s arrive.',
+    notes: 'spec.md §28 (Scott Childs, 2026-11-05). Codes: L1 SWB, L2 MWB, L3 LWB, L4 XLWB; H1 Low Roof, H2 High Roof, H3 Super High Roof. Tile images: Scott\'s, one per code (_shared/van-icons/wb-L1…L4, rh-H1…H3).',
     status: 'draft' },
   { id: 'global.vf.known', label: 'Vehicle finder: "Shopping for your <vehicle>?"', source: 'session',
     token: { 'h2': 'Shopping for your {vehicle.make} {vehicle.model}?', '.btn-cta': 'Shop for my {vehicle.model}' },

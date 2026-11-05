@@ -90,7 +90,7 @@ function plpRenderVehicleChip() {
   const v = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const cfg = window.PLP_CONFIG;
   if (!cfg.vehicleFilter || !v) { el.hidden = true; el.innerHTML = ''; return; }
-  const model = v.label.split(' ').slice(1).join(' ');
+  const model = rrgVehicleModel(v);
   const tip = `Roof racks and fitting parts are matched to your ${model}. Other products don't depend on your vehicle.`;
   el.hidden = false;
   el.innerHTML = plpState.vehicleFilterOff
@@ -495,7 +495,11 @@ const PLP_VEHICLES = {
   'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Raised Roof Rail, 2022 onwards' },
   // Van Fit Finder demo (spec.md §28): the van's body type is its tail end only, never the
   // wheelbase and roof height repeated.
-  'toyota-hiace-h300': { name: 'Toyota Hiace', short: 'Toyota Hiace H300', long: 'Toyota Hiace H300 LWB Low Roof - L3H1 (2019 onwards)', spec: 'LWB Low Roof - L3H1, Factory Mounting Point, 2019 onwards' }
+  'toyota-hiace-h300': { name: 'Toyota Hiace', short: 'Toyota Hiace H300', long: 'Toyota Hiace H300 LWB Low Roof - L3H1 (2019 onwards)', spec: 'LWB Low Roof - L3H1, Factory Mounting Point, 2019 onwards' },
+  'mercedes-benz-sprinter-vs30': { name: 'Mercedes Benz Sprinter', short: 'Mercedes Benz Sprinter VS30', long: 'Mercedes Benz Sprinter VS30 MWB High Roof - L2H2 (2019 onwards)', spec: 'MWB High Roof - L2H2, Factory Mounting Point, 2019 onwards' },
+  'ford-transit-2024': { name: 'Ford Transit', short: 'Ford Transit', long: 'Ford Transit SWB Low Roof - L1H1 (2024 onwards)', spec: 'SWB Low Roof - L1H1, Factory Mounting Point, 2024 onwards' },
+  'citroen-berlingo-ii': { name: 'Citroen Berlingo', short: 'Citroen Berlingo II', long: 'Citroen Berlingo II LWB Low Roof - L3H1 (2008 to 2018)', spec: 'LWB Low Roof - L3H1, Bare Roof, 2008 to 2018' },
+  'iveco-esuperjolly': { name: 'Iveco eSuperJolly', short: 'Iveco eSuperJolly', long: 'Iveco eSuperJolly XLWB Super High Roof - L4H3', spec: 'XLWB Super High Roof - L4H3, Bare Roof' }
 };
 // The session vehicle comes from Site Admin's "Vehicle" (rrgVehicle(), session-state.js — spec.md
 // §15 P4); this is only the fallback for copy that needs a vehicle name before one is set.

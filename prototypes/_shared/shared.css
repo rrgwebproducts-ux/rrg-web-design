@@ -1543,12 +1543,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .ff-tile[aria-checked="true"],.ff-tile[aria-checked="true"]:hover:not(:disabled){border-color:var(--rrg-red);box-shadow:0 0 0 1px var(--rrg-red);}
 .ff-tile:disabled{cursor:not-allowed;opacity:.45;}
 .ff-tile-label{text-align:center;line-height:1.2;}
-.ff-van-drawing{width:100%;max-width:150px;height:auto;display:block;}
-.ff-van-body{fill:var(--rrg-line-soft);stroke:var(--rrg-grey-700);stroke-width:2;stroke-linejoin:round;}
-.ff-van-glass{fill:#fff;stroke:var(--rrg-grey-700);stroke-width:1.5;}
-.ff-van-wheel{fill:var(--rrg-grey-700);}
-.ff-van-dim{fill:none;stroke:var(--rrg-red);stroke-width:2.5;stroke-linecap:round;}
-.ff-tile[aria-checked="true"] .ff-van-body{fill:#fff;}
+.ff-tile-img{width:100%;max-width:170px;height:auto;display:block;}
 @media (min-width:1101px){
   .fit-finder-widget--compact.ff-is-van{display:block;}
   .fit-finder-widget--compact.ff-is-van .ff-head{margin-bottom:14px;}

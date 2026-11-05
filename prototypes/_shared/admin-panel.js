@@ -100,6 +100,10 @@ function buildSiteAdminPanel(currentKey) {
           <option value="hilux">Toyota Hilux</option>
           <option value="ranger">Ford Ranger</option>
           <option value="hiace">Toyota Hiace (van)</option>
+          <option value="sprinter">Mercedes Benz Sprinter (van)</option>
+          <option value="transit">Ford Transit (van)</option>
+          <option value="berlingo">Citroen Berlingo (van)</option>
+          <option value="esuperjolly">Iveco eSuperJolly (van)</option>
         </select>
       </label>
       <label class="site-admin-toggle">
