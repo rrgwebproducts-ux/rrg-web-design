@@ -54,7 +54,7 @@
      inline widget above the hero, as on Fit My Vehicle, instead of a panel over the banner: the
      Fit Finder with no vehicle, "Shopping for your Toyota Hilux?" with one. Lands on the VLP.
      Compact (one-row) variant since 2026-10-03 (Brenton) so more of the page sits above the fold. -->
-<div class="wrap">
+<div class="wrap rrg-phase2">
   <div data-widget="vehicle-finder" data-compact="true" data-class="home-finder" data-vf-browse-href="#shop-by-category"></div>
 </div>
 
@@ -98,6 +98,13 @@
     <button type="button" class="home-hero-nav next" aria-label="Next slide">›</button>
     <div class="home-hero-dots"></div>
   </div>
+  <!-- Phase 1 (Brenton, 2026-11-05): the live site's homepage, where the Fit Finder sits over the
+       banner carousel — the new design (compact finder above a contained hero) isn't live yet.
+       Same shared widget, skinned like the live block (.home-hero-ff, shared.css); with a van it
+       gains the Wheelbase / Roof Height tiles (spec.md §28) and the banner grows to fit, as the
+       live banner does for its Roof Type tiles. Never the "Shopping for your…" state: live always
+       shows the dropdowns. -->
+  <div data-widget="vehicle-finder" data-class="home-hero-ff rrg-phase1" data-known="false" data-intro="Select your vehicle to find the perfect fit"></div>
 </section>
 
 <div class="wrap">

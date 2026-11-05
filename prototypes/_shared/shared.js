@@ -1508,7 +1508,8 @@ function initInlineFitFinders() {
     // ?ffModel=hiace[&ffYear=2005-2019] (prototype-only demo link, spec.md §28) pre-picks a model
     // (and year) in the page's first Fit Finder, so the van tiles can be shown straight away.
     const params = new URLSearchParams(location.search);
-    const urlPreset = root === document.querySelector('[data-fit-finder-inline]') && FIT_FINDER_VEHICLES[params.get('ffModel')] ? params.get('ffModel') : '';
+    // (the first one on screen — Phase 1's home page hides the compact finder)
+    const urlPreset = root === [...document.querySelectorAll('[data-fit-finder-inline]')].find(el => el.getClientRects().length) && FIT_FINDER_VEHICLES[params.get('ffModel')] ? params.get('ffModel') : '';
     const presetKey = urlPreset || root.dataset.vfPreset;
     const preset = FIT_FINDER_VEHICLES[presetKey];
     if (preset) {
@@ -1704,6 +1705,18 @@ function initOfferCarousel() {
 // prefers-reduced-motion.
 // Inactive slides are aria-hidden with their links taken out of the tab order.
 function initHomeHero() {
+  // Phase 1 hero Fit Finder (.home-hero-ff): like the live banner, the hero grows when the panel
+  // does (a van's Wheelbase / Roof Height tiles), keeping the panel's 47px top and bottom margin.
+  // Desktop only; below 901px the panel sits under the slides instead.
+  document.querySelectorAll('.home-hero-ff').forEach(panel => {
+    const stage = panel.closest('.home-hero').querySelector('.home-hero-stage');
+    const fit = () => {
+      const on = getComputedStyle(panel).display !== 'none' && window.innerWidth > 900;
+      stage.style.height = on ? `${Math.max(404, panel.offsetHeight + 94)}px` : '';
+    };
+    new ResizeObserver(fit).observe(panel);
+    window.addEventListener('resize', fit);
+  });
   document.querySelectorAll('.home-hero').forEach(hero => {
     const slides = [...hero.querySelectorAll('.home-hero-slide')];
     const dotsEl = hero.querySelector('.home-hero-dots');

@@ -85,6 +85,10 @@ Governing rule (2026-09-10): one unmistakable primary action above the fold. On 
 
 ---
 
+### 5.3 Phase 1 = the live layout (2026-11-05)
+
+The design in this spec is **Phase 2**. In **Phase 1** (Site Admin → Build phase) the home page shows what is live today, so new widget work can be reviewed in the live context: a full-width banner carousel (404px, grows with the panel) with the Fit Finder panel over its left side, copied from the live block (Marc's `.vehicle-finder-options-attribute-default`), and without the compact finder above the hero. First built for the van Fit Finder (spec.md §28 item 6c).
+
 ## 6. New / changed components
 
 | Component | Where | Notes |

@@ -323,6 +323,8 @@ a.u-item:hover{text-decoration:underline;}
 html[data-build-phase="1"] .region-switcher-menu a[data-region="UK"]{display:none;}
 /* Phase 2 features on a Phase 1 page (spec.md §23): kept in the prototype, hidden at launch. */
 html[data-build-phase="1"] .rrg-phase2{display:none!important;}
+/* Phase-1-only content (2026-11-05): the opposite of .rrg-phase2. */
+html:not([data-build-phase="1"]) .rrg-phase1{display:none!important;}
 
 .rrg-main-header{background:#fff;border-bottom:1px solid var(--rrg-line);padding:16px 0;}
 .rrg-main-inner{display:flex;align-items:center;gap:32px;padding:0 24px;flex-wrap:wrap;}
@@ -3279,4 +3281,49 @@ a.pkg-rack-name:hover{text-decoration:underline;}
   .hold-card img{height:64px;}
   .plate-states li{grid-template-columns:1fr;gap:2px;}
   .guide-advice-ctas{grid-template-columns:1fr;}
+}
+
+/* ==== Phase 1 home hero: the live homepage (Brenton, 2026-11-05) ===============================
+   The new home design isn't live yet, so Phase 1 shows the live layout: a full-width banner
+   carousel with the Fit Finder panel over its left side (.home-hero-ff — the shared vehicle-finder
+   widget, data-known="false"). Values copied from the live block (.vehicle-finder-options-
+   attribute-default, Marc's theme): 70% black panel, 8px radius, 24px/16px padding, 70px from the
+   left, 47px from the top, 38% wide; 40px white selects with a 6px radius, two to a row; fields not
+   yet usable at 65% opacity. Van tiles (spec.md §28) are white cards like the live Roof Type icons
+   (.roof-type-wrapper): 2px #ccc tiles, red border and tick when picked. */
+html[data-build-phase="1"] .home-hero{width:100%;max-width:none;margin:0;border-radius:0;}
+html[data-build-phase="1"] .home-hero-stage{height:404px;}
+.home-hero-ff{position:absolute;left:70px;top:47px;z-index:4;width:481px;max-width:38%;margin:0;padding:24px 16px;background:rgba(0,0,0,.7);border-radius:8px;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);color:#fff;}
+.home-hero-ff [hidden]{display:none!important;}
+.home-hero-ff .ff-head{display:grid;grid-template-columns:43px minmax(0,1fr);gap:2px 9px;align-items:center;margin:0 0 12px;}
+.home-hero-ff .ff-badge{width:43px;height:43px;border-radius:6px;background:#BEB28A;grid-row:1;}
+.home-hero-ff .ff-badge svg{width:24px;height:24px;}
+.home-hero-ff .ff-head h2{grid-row:1;margin:0;font-size:44px;line-height:1;color:#fff;}
+.home-hero-ff .ff-head p{grid-column:2;margin:0;padding:0;max-width:none;font-size:14px;color:#e6e7e8;}
+.home-hero-ff .ff-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 4%;}
+.home-hero-ff .ff-row select{height:40px;padding:0 36px 0 16px;border:1px solid #767676;border-radius:6px;font-size:13px;}
+.home-hero-ff .ff-row select:disabled{background-color:#fff;color:var(--rrg-black);opacity:.65;}
+.home-hero-ff .ff-row .btn{grid-column:auto;height:40px;min-height:0;padding:0 12px;border-radius:6px;font-size:14px;text-transform:none;letter-spacing:0;font-weight:400;}
+.home-hero-ff .ff-row .btn:disabled{opacity:.65;}
+/* Van: Year takes the whole row, then the two tile cards side by side, then Body / Roof, then the
+   button on its own row. */
+.home-hero-ff .ff-row.is-van{grid-template-columns:repeat(2,minmax(0,1fr));}
+.home-hero-ff .ff-row.is-van [data-ff-field="years"],.home-hero-ff .ff-row.is-van .btn{grid-column:1 / -1;}
+.home-hero-ff .ff-van{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 4%;padding:0;}
+.home-hero-ff .ff-tiles{background:#fff;border-radius:6px;padding:9px 12.5px 12px;color:#000;}
+.home-hero-ff .ff-tiles-label{margin-bottom:8px;font-size:13px;font-weight:400;}
+.home-hero-ff .ff-tile-list{flex-wrap:wrap;gap:8px;}
+.home-hero-ff .ff-tile{position:relative;flex:0 0 calc(50% - 4px);padding:8px 4px;border:2px solid #ccc;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);font-size:12px;font-weight:400;color:#333;}
+.home-hero-ff .ff-tile:hover:not(:disabled){border-color:#999;}
+.home-hero-ff .ff-tile[aria-checked="true"],.home-hero-ff .ff-tile[aria-checked="true"]:hover:not(:disabled){border-color:#d72a2a;box-shadow:none;}
+.home-hero-ff .ff-tile[aria-checked="true"]::after{content:"\2714";position:absolute;top:2px;right:5px;font-size:13px;color:#BB0200;}
+/* Tablet/phone: the panel sits under the slides, full width, instead of over them. */
+@media (max-width:900px){
+  html[data-build-phase="1"] .home-hero-stage{height:auto;}
+  .home-hero-ff{position:static;width:auto;max-width:none;border-radius:0;background:var(--rrg-black);box-shadow:none;}
+  .home-hero-ff .ff-head h2{font-size:36px;}
+}
+@media (max-width:520px){
+  .home-hero-ff .ff-row,.home-hero-ff .ff-row.is-van{grid-template-columns:minmax(0,1fr);}
+  .home-hero-ff .ff-van{grid-template-columns:minmax(0,1fr);}
 }
