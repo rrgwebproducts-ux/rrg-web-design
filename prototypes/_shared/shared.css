@@ -3291,7 +3291,7 @@ a.pkg-rack-name:hover{text-decoration:underline;}
    left, 47px from the top, 38% wide; 40px white selects with a 6px radius, two to a row; fields not
    yet usable at 65% opacity. Van tiles (spec.md §28) are white cards like the live Roof Type icons
    (.roof-type-wrapper): 2px #ccc tiles, red border and tick when picked. */
-html[data-build-phase="1"] .home-hero{width:100%;max-width:1440px;margin:0 auto;border-radius:0;}
+html[data-build-phase="1"] .home-hero{width:calc(100% - 48px);max-width:calc(var(--maxw) - 48px);margin:0 auto;border-radius:0;}
 html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .home-hero-ff{position:absolute;left:70px;top:47px;z-index:4;width:42rem;max-width:38%;margin:0;padding:24px 16px;background:rgba(0,0,0,.7);border-radius:8px;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);color:#fff;}
 .home-hero-ff [hidden]{display:none!important;}
