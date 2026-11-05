@@ -3315,6 +3315,15 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .home-hero-ff .ff-tile-list{flex-wrap:wrap;gap:8px;}
 .home-hero-ff .ff-tile{position:relative;flex:0 0 calc(50% - 4px);padding:8px 4px;border:2px solid #ccc;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);font-size:12px;font-weight:400;color:#333;}
 .home-hero-ff .ff-tile:hover:not(:disabled){border-color:#999;}
+/* Narrow tiles: name and code always on two lines ("High Roof" / "H2"), so switching wheelbase never
+   changes the card's height. */
+.home-hero-ff .ff-tile-label{line-height:1.25;}
+.home-hero-ff .ff-tile-name,.home-hero-ff .ff-tile-code{display:block;white-space:nowrap;}
+.home-hero-ff .ff-tile-sep{display:none;}
+/* One option: the tile spans the whole card (Brenton, 2026-11-05). The picture keeps the two-across
+   size, so a card with one option is the same height as one with two. */
+.home-hero-ff .ff-tile:only-child{flex-basis:100%;}
+.home-hero-ff .ff-tile-img{max-width:84px;margin:0 auto;}
 .home-hero-ff .ff-tile[aria-checked="true"],.home-hero-ff .ff-tile[aria-checked="true"]:hover:not(:disabled){border-color:#d72a2a;box-shadow:none;}
 .home-hero-ff .ff-tile[aria-checked="true"]::after{content:"\2714";position:absolute;top:2px;right:5px;font-size:13px;color:#BB0200;}
 /* Phase 1 live slides (copied from the live slider): background covers, artwork fills the right

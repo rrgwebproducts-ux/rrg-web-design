@@ -1470,8 +1470,14 @@ function rrgVanTileHTML(kind, code, label, checked, disabled) {
   const size = kind === 'wb' ? 'width="383" height="196"' : 'width="476" height="232"';
   return `<button type="button" class="ff-tile" role="radio" data-ff-pick="${kind}" data-value="${code}" aria-checked="${checked}"${disabled ? ' disabled' : ''}>
       <img class="ff-tile-img" src="${RRG_PROTO}_shared/van-icons/${kind}-${code}.webp" alt="" ${size} loading="lazy">
-      <span class="ff-tile-label">${label}</span>
+      <span class="ff-tile-label">${rrgVanTileLabelHTML(label)}</span>
     </button>`;
+}
+// "High Roof - H2" → name / separator / code spans: one line normally; the narrow Phase 1 home
+// panel puts the name and code on two lines always, so every tile is the same height (2026-11-05).
+function rrgVanTileLabelHTML(label) {
+  const [name, code] = label.split(' - ');
+  return `<span class="ff-tile-name">${name}</span><span class="ff-tile-sep"> - </span><span class="ff-tile-code">${code}</span>`;
 }
 // Van mode widens the row: Make / Model / Year, then the tiles full width, then Body Style /
 // Roof Type / button (shared.css .ff-row.is-van). Also called when Change vehicle resets it.
