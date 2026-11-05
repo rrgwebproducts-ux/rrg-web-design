@@ -1718,7 +1718,8 @@ function initHomeHero() {
     window.addEventListener('resize', fit);
   });
   document.querySelectorAll('.home-hero').forEach(hero => {
-    const slides = [...hero.querySelectorAll('.home-hero-slide')];
+    // Only this build phase's slides (Phase 1 = the live slider, Phase 2 = the new design's).
+    const slides = [...hero.querySelectorAll('.home-hero-slide')].filter(sl => getComputedStyle(sl).display !== 'none');
     const dotsEl = hero.querySelector('.home-hero-dots');
     if (slides.length < 2) return;
     let current = 0;

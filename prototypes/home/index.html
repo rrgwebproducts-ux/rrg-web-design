@@ -68,31 +68,70 @@
      initHomeHero() in shared.js. -->
 <section class="home-hero" aria-roledescription="carousel" aria-label="Featured offers">
   <div class="home-hero-stage">
-    <div class="home-hero-slide home-hero-slide--flat is-active" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Rack Friday" data-campaign-slide="rack-friday" style="--slide-fill:#d8ff1e">
+    <div class="home-hero-slide rrg-phase2 home-hero-slide--flat is-active" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Rack Friday" data-campaign-slide="rack-friday" style="--slide-fill:#d8ff1e">
       <a class="home-hero-flat" href="#"><img src="../_shared/home-hero/rack-friday-desktop.webp" alt="Rack Friday sale on now — platforms from just $599.95, take up to XX% off. 1–29 Nov 2026, in-store and online, selected lines while stocks last. Shop Rack Friday" width="2464" height="828" fetchpriority="high"></a>
     </div>
-    <div class="home-hero-slide home-hero-slide--flat" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Christmas Sale" data-campaign-slide="christmas" style="--slide-fill:#083a22">
+    <div class="home-hero-slide rrg-phase2 home-hero-slide--flat" role="group" aria-roledescription="slide" aria-label="1 of 5" data-title="Christmas Sale" data-campaign-slide="christmas" style="--slide-fill:#083a22">
       <a class="home-hero-flat" href="#"><img src="../_shared/home-hero/christmas-desktop.webp" alt="Christmas sale on now — gifts for every adventure, take up to XX% off. 1–24 Dec 2026, in-store and online, selected lines while stocks last. Shop the Christmas sale" width="2464" height="828" fetchpriority="high"></a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" data-title="Spring Adventure Sale">
+    <div class="home-hero-slide rrg-phase2" role="group" aria-roledescription="slide" aria-label="2 of 5" data-title="Spring Adventure Sale">
       <img class="home-hero-bg" src="../_shared/home-hero/adventure-sale-bg.webp" alt="" width="1441" height="410" loading="lazy">
       <a class="home-hero-art" href="#"><img src="../_shared/home-hero/adventure-sale-art.webp" alt="Spring Adventure Sale — up to 60% off camping, fishing, touring and watersports gear" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#">Shop Adventure Sale</a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" data-title="New Platform Slimline 3">
+    <div class="home-hero-slide rrg-phase2" role="group" aria-roledescription="slide" aria-label="3 of 5" data-title="New Platform Slimline 3">
       <img class="home-hero-bg" src="../_shared/home-hero/slimline-3-bg.webp" alt="" width="1441" height="410" loading="lazy">
       <a class="home-hero-art" href="#"><img src="../_shared/home-hero/slimline-3-art.webp" alt="New platform: Front Runner Slimline 3" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#">Shop Slimline 3</a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" data-title="Cruz Kicker 2">
+    <div class="home-hero-slide rrg-phase2" role="group" aria-roledescription="slide" aria-label="4 of 5" data-title="Cruz Kicker 2">
       <img class="home-hero-bg" src="../_shared/home-hero/cruz-kicker-bg.webp" alt="" width="2000" height="569" loading="lazy">
       <a class="home-hero-art" href="#"><img src="../_shared/home-hero/cruz-kicker-art.webp" alt="Person loading bikes onto a Cruz Kicker 2 bike rack" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#">Shop Cruz Kicker 2</a>
     </div>
-    <div class="home-hero-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" data-title="Expert Fitting">
+    <div class="home-hero-slide rrg-phase2" role="group" aria-roledescription="slide" aria-label="5 of 5" data-title="Expert Fitting">
       <img class="home-hero-bg" src="../_shared/home-hero/expert-fitting-bg.webp" alt="" width="2000" height="569" loading="lazy">
       <a class="home-hero-art" href="#" data-store-slideout><img src="../_shared/home-hero/expert-fitting-art.webp" alt="Expert fitting — two people fitting roof racks, 35+ nationwide locations" width="1400" height="820" loading="lazy"></a>
       <a class="btn btn-outline btn-sm home-hero-link" href="#" data-store-slideout>Find Your Store</a>
+    </div>
+    <!-- Phase 1 slides = the live slider, as it is today (roofracksgalore.com.au, read 2026-11-05):
+         the live images, hot-linked; a background layer plus artwork in the right 55%, which
+         leaves the left side free for the Fit Finder panel. Rack Friday only while that sale is on
+         (campaign.js), as live. -->
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="Rack Friday" data-campaign-slide="rack-friday">
+      <picture><source media="(max-width: 768px)" srcset="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/rack-friday-overlay-background-mobile.webp"><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/rack-friday-overlay-background.webp" alt=""></picture>
+      <a class="home-hero-live-art" href="#"><picture><source media="(max-width: 768px)" srcset="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/rack-friday-overlay-mobile.webp"><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/rack-friday-overlay.webp" alt="Rack Friday sale on now - a Roof Racks Galore ute bursting through rock"></picture></a>
+      <a class="home-hero-live-btn" href="#">Shop Rack Friday</a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="New Platform Slimline 3">
+      <picture><source media="(max-width: 768px)" srcset="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/front-runner-slimline-3-overlay-background-mobile.webp"><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/front-runner-slimline-3-overlay-background.webp" alt="" loading="lazy"></picture>
+      <a class="home-hero-live-art" href="#"><picture><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/front-runner-slimline-3-overlay.webp" alt="New Platform Slimline 3" loading="lazy"></picture></a>
+      <a class="home-hero-live-btn" href="#">Shop Slimline 3</a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="Overstock Clearance">
+      <picture><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/2026-06-home/new/overstock-clearance-bg.webp" alt="" loading="lazy"></picture>
+      <a class="home-hero-live-art" href="#"><picture><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/2026-06-home/new/bg-overstock-clearance.webp" alt="Overstock Clearance" loading="lazy"></picture></a>
+      <a class="home-hero-live-btn" href="#">Shop Overstock Clearance</a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="Cruz Kicker 2">
+      <picture><source media="(max-width: 768px)" srcset="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/ecruz-kicker-bg.webp"><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/cruz-kicker-bg.webp" alt="" loading="lazy"></picture>
+      <a class="home-hero-live-art" href="#"><picture><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/bg-cruz-kicker.webp" alt="Person loading Cruz Kicker 2 onto bike rack" loading="lazy"></picture></a>
+      <a class="home-hero-live-btn" href="#">Shop Cruz Kicker 2</a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="Expert Fitting">
+      <picture><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/we-fit-bg.webp" alt="" loading="lazy"></picture>
+      <a class="home-hero-live-art" href="#" data-store-slideout><picture><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/bg-we-fit.webp" alt="Two people fitting roof racks" loading="lazy"></picture></a>
+      <a class="home-hero-live-btn" href="#" data-store-slideout>Find Your Store</a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="EGR">
+      <picture><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/egr-roller-shutters-bg.webp" alt="" loading="lazy"></picture>
+      <a class="home-hero-live-art" href="#"><picture><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/2026-06-home/new/bg-egr-roller-shutters.webp" alt="EGR Sale" loading="lazy"></picture></a>
+      <a class="home-hero-live-btn" href="#">Shop EGR</a>
+    </div>
+    <div class="home-hero-slide home-hero-slide--live rrg-phase1" role="group" aria-roledescription="slide" data-title="Dropracks">
+      <picture><img class="home-hero-live-bg" src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/content-banner-home-slider-default/50-off-dropracks-bg.webp" alt="" loading="lazy"></picture>
+      <a class="home-hero-live-art" href="#"><picture><img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/2026-06-home/new/bg-50-off-dropracks.webp" alt="MSA Sale" loading="lazy"></picture></a>
+      <a class="home-hero-live-btn" href="#">Shop Dropracks</a>
     </div>
     <button type="button" class="home-hero-nav prev" aria-label="Previous slide">‹</button>
     <button type="button" class="home-hero-nav next" aria-label="Next slide">›</button>

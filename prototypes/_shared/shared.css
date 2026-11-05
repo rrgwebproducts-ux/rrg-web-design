@@ -3317,11 +3317,22 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .home-hero-ff .ff-tile:hover:not(:disabled){border-color:#999;}
 .home-hero-ff .ff-tile[aria-checked="true"],.home-hero-ff .ff-tile[aria-checked="true"]:hover:not(:disabled){border-color:#d72a2a;box-shadow:none;}
 .home-hero-ff .ff-tile[aria-checked="true"]::after{content:"\2714";position:absolute;top:2px;right:5px;font-size:13px;color:#BB0200;}
+/* Phase 1 live slides (copied from the live slider): background covers, artwork fills the right
+   55% anchored bottom-right, red "SHOP …" button bottom-right. */
+.home-hero-slide--live .home-hero-live-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:bottom right;}
+.home-hero-live-art{position:absolute;right:0;bottom:0;width:55%;height:100%;display:block;}
+.home-hero-live-art picture{display:block;height:100%;}
+.home-hero-live-art img{width:100%;height:100%;object-fit:contain;object-position:bottom right;}
+.home-hero-live-btn{position:absolute;right:16px;bottom:16px;z-index:2;padding:10px 14px;border-radius:6px;background:#BB0220;color:#fff;font-weight:700;font-size:15px;text-transform:uppercase;text-decoration:none;}
+.home-hero-live-btn:hover{background:#9a011a;color:#fff;}
 /* Tablet/phone: the panel sits under the slides, full width, instead of over them. */
 @media (max-width:900px){
   html[data-build-phase="1"] .home-hero-stage{height:auto;}
   .home-hero-ff{position:static;width:auto;max-width:none;border-radius:0;background:var(--rrg-black);box-shadow:none;}
   .home-hero-ff .ff-head h2{font-size:36px;}
+  html[data-build-phase="1"] .home-hero-stage{aspect-ratio:auto;max-height:none;min-height:calc(20rem + 35vw);}
+  .home-hero-live-art{left:0;width:100%;height:60%;bottom:4rem;}
+  .home-hero-live-btn{left:50%;right:auto;bottom:2rem;transform:translateX(-50%);white-space:nowrap;}
 }
 @media (max-width:520px){
   .home-hero-ff .ff-row,.home-hero-ff .ff-row.is-van{grid-template-columns:minmax(0,1fr);}
