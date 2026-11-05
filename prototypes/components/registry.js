@@ -499,7 +499,7 @@ const RRG_COMPONENTS = [
       v('VCLP (Toyota / Hilux pre-filled)', 'vehicle-category-landing', '#fitFinder', { ls: S.noVehicle }),
       v('Brand page', 'brand', '#brandFinder'),
       // Van Fit Finder (spec.md §28): ?ffModel= pre-picks the van so the tiles show.
-      v('Van — Wheelbase + Roof Height dropdowns (Toyota Hiace H200)', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.noVehicle, q: 'ffModel=hiace&ffYear=2005-2019' }),
+      v('Van — Wheelbase + Roof Height tiles (Toyota Hiace H200)', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.noVehicle, q: 'ffModel=hiace&ffYear=2005-2019' }),
       v('Van — home compact (Toyota Hiace H200)', 'home', '.home-finder', { ls: S.noVehicle, q: 'ffModel=hiace&ffYear=2005-2019' }),
       v('Vehicle known — van (Toyota Hiace)', 'fit-my-vehicle', '.fit-finder-widget', { ls: { rrgSessionVehicle: 'hiace' } }),
     ] },
