@@ -1371,17 +1371,20 @@ function initFitFinderCascade(root, onSubmit) {
   const renderVan = () => {
     const v = current();
     if (!v || !v.van || !van) return;
-    const all = Object.values(v.variants).flat();
     const yearVariants = v.variants[year.value] || [];
     const order = (list, key, codes) => Object.keys(codes).filter(c => list.some(x => x[key] === c));
-    // Before a year is picked the tiles show every wheelbase and roof height the model comes in,
-    // greyed; after, only that year's, and a roof height lights up once its wheelbase is picked.
-    const wbs = order(year.value ? yearVariants : all, 'wb', RRG_VAN_WHEELBASES);
-    const rhs = order(year.value ? yearVariants : all, 'rh', RRG_VAN_ROOF_HEIGHTS);
+    // Scott, 2026-11-05: nothing until a Year is picked, then only what that van comes in — no
+    // greyed-out tiles. Wheelbase shows that year's wheelbases; Roof Height appears once a
+    // wheelbase is picked, with only that wheelbase's roof heights.
+    van.hidden = !year.value;
+    const wbs = order(yearVariants, 'wb', RRG_VAN_WHEELBASES);
+    const rhs = pick.wb ? order(yearVariants.filter(x => x.wb === pick.wb), 'rh', RRG_VAN_ROOF_HEIGHTS) : [];
     van.querySelector('[data-ff-tiles="wheelbase"] .ff-tile-list').innerHTML = wbs.map(c =>
-      rrgVanTileHTML('wb', c, RRG_VAN_WHEELBASES[c][1], pick.wb === c, !year.value)).join('');
-    van.querySelector('[data-ff-tiles="roofHeight"] .ff-tile-list').innerHTML = rhs.map(c =>
-      rrgVanTileHTML('rh', c, RRG_VAN_ROOF_HEIGHTS[c][1], pick.rh === c, !pick.wb || !yearVariants.some(x => x.wb === pick.wb && x.rh === c))).join('');
+      rrgVanTileHTML('wb', c, RRG_VAN_WHEELBASES[c][1], pick.wb === c, false)).join('');
+    const rhGroup = van.querySelector('[data-ff-tiles="roofHeight"]');
+    rhGroup.hidden = !rhs.length;
+    rhGroup.querySelector('.ff-tile-list').innerHTML = rhs.map(c =>
+      rrgVanTileHTML('rh', c, RRG_VAN_ROOF_HEIGHTS[c][1], pick.rh === c, false)).join('');
   };
   const applyVan = () => {
     const v = current();
