@@ -1362,29 +1362,58 @@ function initFitFinderCascade(root, onSubmit) {
   const roof = root.querySelector('[data-ff-field="roofs"]');
   const required = [...root.querySelectorAll('[data-ff-required]')];
   const submit = root.querySelector('[data-ff-submit]');
-  const van = root.querySelector('[data-ff-van]');
+  // Van fields (spec.md §28): Wheelbase + Roof Height, each a select-style trigger whose panel
+  // holds Scott's image tiles (Scott, 2026-11-05: dropdowns side by side, tiles inside).
+  const dds = { wb: root.querySelector('[data-ff-dd="wb"]'), rh: root.querySelector('[data-ff-dd="rh"]') };
+  const hasVan = !!(dds.wb && dds.rh);
   const pick = { wb: '', rh: '' };
   const reset = (sel, placeholder) => { sel.innerHTML = `<option value="" selected disabled>${placeholder}</option>`; sel.disabled = true; };
   const sync = () => { submit.disabled = !model.value || required.some(s => !s.value); };
   const current = () => FIT_FINDER_VEHICLES[model.value];
   const resetBodyRoof = () => { reset(body, FF_PLACEHOLDERS.bodies); reset(roof, FF_PLACEHOLDERS.roofs); };
+  const ddPlaceholders = { wb: 'Wheelbase', rh: 'Roof Height' };
+  const ddTables = { wb: RRG_VAN_WHEELBASES, rh: RRG_VAN_ROOF_HEIGHTS };
+  const closeDD = dd => {
+    const panel = dd.querySelector('.ff-dd-panel');
+    if (panel.hidden) return;
+    panel.hidden = true;
+    dd.querySelector('.ff-dd-trigger').setAttribute('aria-expanded', 'false');
+  };
+  const openDD = dd => {
+    Object.values(dds).forEach(other => { if (other !== dd) closeDD(other); });
+    const panel = dd.querySelector('.ff-dd-panel');
+    panel.hidden = false;
+    dd.querySelector('.ff-dd-trigger').setAttribute('aria-expanded', 'true');
+    // Opens under the field and stays inside the Fit Finder's row (and the screen): no wider than
+    // the row (tiles shrink to fit, e.g. in the drawer), shifted left only as far as it must.
+    panel.style.left = ''; panel.style.maxWidth = '';
+    const rowRect = dd.closest('.ff-row').getBoundingClientRect();
+    const minX = Math.max(rowRect.left, 8), maxX = Math.min(rowRect.right, document.documentElement.clientWidth - 8);
+    panel.style.maxWidth = `${maxX - minX}px`;
+    const ddLeft = dd.getBoundingClientRect().left, width = panel.getBoundingClientRect().width;
+    panel.style.left = `${Math.max(minX, Math.min(ddLeft, maxX - width)) - ddLeft}px`;
+  };
+  const fillDD = (kind, codes) => {
+    const dd = dds[kind], table = ddTables[kind], chosen = pick[kind];
+    const trigger = dd.querySelector('.ff-dd-trigger');
+    trigger.disabled = !codes.length;
+    trigger.classList.toggle('has-value', !!chosen);
+    dd.querySelector('.ff-dd-value').textContent = chosen ? table[chosen][1] : ddPlaceholders[kind];
+    trigger.setAttribute('aria-label', chosen ? `${ddPlaceholders[kind]}: ${table[chosen][1]}` : ddPlaceholders[kind]);
+    dd.querySelector('.ff-tile-list').innerHTML = codes.map(c => rrgVanTileHTML(kind, c, table[c][1], chosen === c, false)).join('');
+    if (!codes.length) closeDD(dd);
+  };
   const renderVan = () => {
     const v = current();
-    if (!v || !v.van || !van) return;
+    if (!v || !v.van || !hasVan) return;
     const yearVariants = v.variants[year.value] || [];
     const order = (list, key, codes) => Object.keys(codes).filter(c => list.some(x => x[key] === c));
-    // Scott, 2026-11-05: nothing until a Year is picked, then only what that van comes in — no
-    // greyed-out tiles. Wheelbase shows that year's wheelbases; Roof Height appears once a
-    // wheelbase is picked, with only that wheelbase's roof heights.
-    van.hidden = !year.value;
-    const wbs = order(yearVariants, 'wb', RRG_VAN_WHEELBASES);
-    const rhs = pick.wb ? order(yearVariants.filter(x => x.wb === pick.wb), 'rh', RRG_VAN_ROOF_HEIGHTS) : [];
-    van.querySelector('[data-ff-tiles="wheelbase"] .ff-tile-list').innerHTML = wbs.map(c =>
-      rrgVanTileHTML('wb', c, RRG_VAN_WHEELBASES[c][1], pick.wb === c, false)).join('');
-    const rhGroup = van.querySelector('[data-ff-tiles="roofHeight"]');
-    rhGroup.hidden = !rhs.length;
-    rhGroup.querySelector('.ff-tile-list').innerHTML = rhs.map(c =>
-      rrgVanTileHTML('rh', c, RRG_VAN_ROOF_HEIGHTS[c][1], pick.rh === c, false)).join('');
+    // Scott, 2026-11-05: only what that van comes in — never a greyed-out option. Wheelbase opens
+    // once a Year is picked (that year's wheelbases); Roof Height once a wheelbase is picked (only
+    // that wheelbase's roof heights). Until then each is disabled with its placeholder, like the
+    // selects around them.
+    fillDD('wb', year.value ? order(yearVariants, 'wb', RRG_VAN_WHEELBASES) : []);
+    fillDD('rh', pick.wb ? order(yearVariants.filter(x => x.wb === pick.wb), 'rh', RRG_VAN_ROOF_HEIGHTS) : []);
   };
   const applyVan = () => {
     const v = current();
@@ -1400,9 +1429,8 @@ function initFitFinderCascade(root, onSubmit) {
     sync();
   };
   const setVanMode = on => {
-    if (!van) return;
+    if (!hasVan) return;
     pick.wb = pick.rh = '';
-    van.hidden = !on;
     rrgFfVanClass(root, on);
   };
   make.addEventListener('change', () => {
@@ -1443,22 +1471,45 @@ function initFitFinderCascade(root, onSubmit) {
     renderVan();
     applyVan();
   });
-  if (van) van.addEventListener('click', e => {
-    const tile = e.target.closest('.ff-tile');
-    if (!tile || tile.disabled) return;
-    const yearVariants = current().variants[year.value] || [];
-    if (tile.dataset.ffPick === 'wb') {
-      pick.wb = tile.dataset.value;
-      // One roof height for that wheelbase (e.g. H300 LWB is Low Roof only) → picked for them.
-      const heights = yearVariants.filter(x => x.wb === pick.wb).map(x => x.rh);
-      pick.rh = heights.length === 1 ? heights[0] : (heights.includes(pick.rh) ? pick.rh : '');
-    } else {
-      pick.rh = tile.dataset.value;
-    }
-    renderVan();
-    applyVan();
-    van.querySelector(`.ff-tile[data-ff-pick="${tile.dataset.ffPick}"][data-value="${tile.dataset.value}"]`)?.focus();
-  });
+  if (hasVan) {
+    Object.values(dds).forEach(dd => {
+      dd.querySelector('.ff-dd-trigger').addEventListener('click', () => {
+        if (dd.querySelector('.ff-dd-panel').hidden) openDD(dd); else closeDD(dd);
+      });
+      dd.addEventListener('click', e => {
+        const tile = e.target.closest('.ff-tile');
+        if (!tile || tile.disabled) return;
+        const yearVariants = current().variants[year.value] || [];
+        let next = null;
+        if (tile.dataset.ffPick === 'wb') {
+          pick.wb = tile.dataset.value;
+          // One roof height for that wheelbase (e.g. H300 LWB is Low Roof only) → picked for them;
+          // otherwise Roof Height opens next.
+          const heights = yearVariants.filter(x => x.wb === pick.wb).map(x => x.rh);
+          pick.rh = heights.length === 1 ? heights[0] : (heights.includes(pick.rh) ? pick.rh : '');
+          if (!pick.rh) next = dds.rh;
+        } else {
+          pick.rh = tile.dataset.value;
+        }
+        closeDD(dd);
+        renderVan();
+        applyVan();
+        if (next) { openDD(next); next.querySelector('.ff-dd-trigger').focus(); } else dd.querySelector('.ff-dd-trigger').focus();
+      });
+      dd.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !dd.querySelector('.ff-dd-panel').hidden) {
+          closeDD(dd);
+          dd.querySelector('.ff-dd-trigger').focus();
+        }
+      });
+    });
+    // A click anywhere outside the open field closes it.
+    // (A tile click redraws the tiles, so its target is gone by now — not an outside click.)
+    document.addEventListener('click', e => {
+      if (!e.target.isConnected) return;
+      Object.values(dds).forEach(dd => { if (!dd.contains(e.target)) closeDD(dd); });
+    });
+  }
   required.forEach(s => s.addEventListener('change', sync));
   submit.addEventListener('click', () => onSubmit(model.value));
 }
@@ -1473,15 +1524,17 @@ function rrgVanTileHTML(kind, code, label, checked, disabled) {
       <span class="ff-tile-label">${label}</span>
     </button>`;
 }
-// Van mode widens the row: Make / Model / Year, then the tiles full width, then Body Style /
-// Roof Type / button (shared.css .ff-row.is-van). Also called when Change vehicle resets it.
+// Van mode makes the row two rows of four: Make / Model / Year / Wheelbase, then Roof Height /
+// Body Style / Roof Type / button (shared.css .ff-row.is-van). Also called when Change vehicle resets it.
 function rrgFfVanClass(root, on) {
   const widget = root.matches('.fit-finder-widget') ? root : root.querySelector('.fit-finder-widget');
   const row = root.querySelector('.ff-row');
   if (widget) widget.classList.toggle('ff-is-van', on);
   if (row) row.classList.toggle('is-van', on);
-  const van = root.querySelector('[data-ff-van]');
-  if (van && !on) van.hidden = true;
+  root.querySelectorAll('[data-ff-dd]').forEach(dd => {
+    dd.hidden = !on;
+    if (!on) { dd.querySelector('.ff-dd-panel').hidden = true; dd.querySelector('.ff-dd-trigger').setAttribute('aria-expanded', 'false'); }
+  });
 }
 
 // Home page hero Fit Finder (docs/home/home-spec.md Section 3) — lands on the VLP, the same as
