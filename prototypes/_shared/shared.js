@@ -24,7 +24,9 @@ const VEHICLE_SLUG = `${PRODUCT_FITMENT.vehicle_make}-${PRODUCT_FITMENT.vehicle_
 const DEMO_VEHICLES = {
   none: null,
   match: { make: "Toyota", model: "Hilux", generation: "N80", year: 2022, body_style: "4dr Ute", roof_type: "Bare Roof" },
-  mismatch: { make: "Ford", model: "Ranger", generation: "P703", year: 2023, body_style: "4dr Ute", roof_type: "Raised Roof Rail" }
+  mismatch: { make: "Ford", model: "Ranger", generation: "P703", year: 2023, body_style: "4dr Ute", roof_type: "Raised Roof Rail" },
+  // Van Fit Finder demo (spec.md §28, 2026-11-05): body_style is the van's tail-end body type.
+  van: { make: "Toyota", model: "Hiace", generation: "H300", year: 2024, body_style: "LWB Low Roof - L3H1", roof_type: "Factory Mounting Point" }
 };
 
 function getFitmentStatus(productFitment, sessionVehicle) {
@@ -1338,7 +1340,9 @@ function buildFitFinderDrawer() {
     if (backdrop.dataset.mode === 'navigate') window.location.href = `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
     // PDP "Doesn't fit" → Find the right fit: the Roof Racks results for that vehicle (the VPLP,
     // which reads the session vehicle). Phase 2 may send it to the VLP instead.
-    if (backdrop.dataset.mode === 'results') window.location.href = `${RRG_PROTO}vplp/index.html`;
+    // A van goes to its VLP from either mode (spec.md §28): the VPLP is Hilux stock.
+    const isVan = FIT_FINDER_VEHICLES[key] && FIT_FINDER_VEHICLES[key].van;
+    if (backdrop.dataset.mode === 'results') window.location.href = isVan ? `${RRG_PROTO}vlp/index.html?vehicle=${key}` : `${RRG_PROTO}vplp/index.html`;
   });
 }
 
@@ -1348,24 +1352,131 @@ function buildFitFinderDrawer() {
 function initFitFinderCascade(root, onSubmit) {
   const make = root.querySelector('[data-ff-make]');
   const model = root.querySelector('[data-ff-model]');
+  const year = root.querySelector('[data-ff-field="years"]');
+  const body = root.querySelector('[data-ff-field="bodies"]');
+  const roof = root.querySelector('[data-ff-field="roofs"]');
   const required = [...root.querySelectorAll('[data-ff-required]')];
   const submit = root.querySelector('[data-ff-submit]');
+  const van = root.querySelector('[data-ff-van]');
+  const pick = { wb: '', rh: '' };
   const reset = (sel, placeholder) => { sel.innerHTML = `<option value="" selected disabled>${placeholder}</option>`; sel.disabled = true; };
   const sync = () => { submit.disabled = !model.value || required.some(s => !s.value); };
+  const current = () => FIT_FINDER_VEHICLES[model.value];
+  const resetBodyRoof = () => { reset(body, FF_PLACEHOLDERS.bodies); reset(roof, FF_PLACEHOLDERS.roofs); };
+  const renderVan = () => {
+    const v = current();
+    if (!v || !v.van || !van) return;
+    const all = Object.values(v.variants).flat();
+    const yearVariants = v.variants[year.value] || [];
+    const order = (list, key, codes) => Object.keys(codes).filter(c => list.some(x => x[key] === c));
+    // Before a year is picked the tiles show every wheelbase and roof height the model comes in,
+    // greyed; after, only that year's, and a roof height lights up once its wheelbase is picked.
+    const wbs = order(year.value ? yearVariants : all, 'wb', RRG_VAN_WHEELBASES);
+    const rhs = order(year.value ? yearVariants : all, 'rh', RRG_VAN_ROOF_HEIGHTS);
+    van.querySelector('[data-ff-tiles="wheelbase"] .ff-tile-list').innerHTML = wbs.map(c =>
+      rrgVanTileHTML('wb', c, RRG_VAN_WHEELBASES[c][1], pick.wb === c, !year.value)).join('');
+    van.querySelector('[data-ff-tiles="roofHeight"] .ff-tile-list').innerHTML = rhs.map(c =>
+      rrgVanTileHTML('rh', c, RRG_VAN_ROOF_HEIGHTS[c][1], pick.rh === c, !pick.wb || !yearVariants.some(x => x.wb === pick.wb && x.rh === c))).join('');
+  };
+  const applyVan = () => {
+    const v = current();
+    const match = pick.wb && pick.rh && (v.variants[year.value] || []).find(x => x.wb === pick.wb && x.rh === pick.rh);
+    if (!match) { resetBodyRoof(); sync(); return; }
+    // Body Style fills itself from the two picks (Scott's system requirement): one answer.
+    body.innerHTML = ffOptions([[match.wb + match.rh, rrgVanBodyLabel(match.wb, match.rh)]], FF_PLACEHOLDERS.bodies);
+    body.selectedIndex = 1;
+    body.disabled = false;
+    roof.innerHTML = ffOptions(match.roofs.map(r => [r, v.roofTypes[r]]), FF_PLACEHOLDERS.roofs);
+    roof.disabled = false;
+    sync();
+  };
+  const setVanMode = on => {
+    if (!van) return;
+    pick.wb = pick.rh = '';
+    van.hidden = !on;
+    rrgFfVanClass(root, on);
+  };
   make.addEventListener('change', () => {
     const models = Object.entries(FIT_FINDER_VEHICLES).filter(([, v]) => v.make === make.value).map(([key, v]) => [key, v.model]);
     model.innerHTML = ffOptions(models, 'Model');
     model.disabled = false;
     required.forEach(s => reset(s, FF_PLACEHOLDERS[s.dataset.ffField]));
+    setVanMode(false);
     sync();
   });
   model.addEventListener('change', () => {
-    const v = FIT_FINDER_VEHICLES[model.value];
-    required.forEach(s => { s.innerHTML = ffOptions(v[s.dataset.ffField], FF_PLACEHOLDERS[s.dataset.ffField]); s.disabled = false; });
+    const v = current();
+    if (v.van) {
+      year.innerHTML = ffOptions(v.years, FF_PLACEHOLDERS.years);
+      year.disabled = false;
+      resetBodyRoof();
+      setVanMode(true);
+      renderVan();
+    } else {
+      setVanMode(false);
+      required.forEach(s => { s.innerHTML = ffOptions(v[s.dataset.ffField], FF_PLACEHOLDERS[s.dataset.ffField]); s.disabled = false; });
+    }
     sync();
+  });
+  year.addEventListener('change', () => {
+    if (!current() || !current().van) return;
+    pick.wb = pick.rh = '';
+    resetBodyRoof();
+    renderVan();
+  });
+  if (van) van.addEventListener('click', e => {
+    const tile = e.target.closest('.ff-tile');
+    if (!tile || tile.disabled) return;
+    const yearVariants = current().variants[year.value] || [];
+    if (tile.dataset.ffPick === 'wb') {
+      pick.wb = tile.dataset.value;
+      // One roof height for that wheelbase (e.g. H300 LWB is Low Roof only) → picked for them.
+      const heights = yearVariants.filter(x => x.wb === pick.wb).map(x => x.rh);
+      pick.rh = heights.length === 1 ? heights[0] : (heights.includes(pick.rh) ? pick.rh : '');
+    } else {
+      pick.rh = tile.dataset.value;
+    }
+    renderVan();
+    applyVan();
+    van.querySelector(`.ff-tile[data-ff-pick="${tile.dataset.ffPick}"][data-value="${tile.dataset.value}"]`)?.focus();
   });
   required.forEach(s => s.addEventListener('change', sync));
   submit.addEventListener('click', () => onSubmit(model.value));
+}
+
+// Van tiles + drawings (spec.md §28). The drawings are placeholders for Scott's wheelbase and
+// roof height images: a side-on van, longer per wheelbase / taller per roof height, with the
+// dimension the tile is about marked in red. Swap the <svg> for an <img> once his images land.
+function rrgVanTileHTML(kind, code, label, checked, disabled) {
+  return `<button type="button" class="ff-tile" role="radio" data-ff-pick="${kind}" data-value="${code}" aria-checked="${checked}"${disabled ? ' disabled' : ''}>
+      ${rrgVanDrawingSVG(kind === 'wb' ? code : 'L3', kind === 'rh' ? code : 'H1', kind)}
+      <span class="ff-tile-label">${label}</span>
+    </button>`;
+}
+function rrgVanDrawingSVG(wb, rh, mark) {
+  const len = { L1: 128, L2: 142, L3: 156, L4: 172 }[wb];
+  const top = { H1: 38, H2: 26, H3: 14 }[rh];
+  const x0 = 10, x1 = x0 + len, ground = 84, w1 = x0 + 28, w2 = x1 - 26;
+  const van = `M${x0} 76 L${x0} 61 Q${x0} 57 ${x0 + 4} 57 L${x0 + 16} 57 L${x0 + 32} ${top + 5} Q${x0 + 35} ${top} ${x0 + 42} ${top} L${x1 - 5} ${top} Q${x1} ${top} ${x1} ${top + 5} L${x1} 76 Z`;
+  const screen = `M${x0 + 20} 56 L${x0 + 33} ${top + 7} L${x0 + 48} ${top + 7} L${x0 + 48} 56 Z`;
+  const dim = mark === 'wb'
+    ? `<path d="M${w1} 97 H${w2} M${w1} 93 V101 M${w2} 93 V101" class="ff-van-dim"/>`
+    : `<path d="M${x1 + 10} ${top} V${ground} M${x1 + 6} ${top} H${x1 + 14} M${x1 + 6} ${ground} H${x1 + 14}" class="ff-van-dim"/>`;
+  return `<svg class="ff-van-drawing" viewBox="0 0 210 104" aria-hidden="true" focusable="false">
+      <path d="${van}" class="ff-van-body"/><path d="${screen}" class="ff-van-glass"/>
+      <circle cx="${w1}" cy="${ground - 6}" r="9" class="ff-van-wheel"/><circle cx="${w2}" cy="${ground - 6}" r="9" class="ff-van-wheel"/>
+      ${dim}
+    </svg>`;
+}
+// Van mode widens the row: Make / Model / Year, then the tiles full width, then Body Style /
+// Roof Type / button (shared.css .ff-row.is-van). Also called when Change vehicle resets it.
+function rrgFfVanClass(root, on) {
+  const widget = root.matches('.fit-finder-widget') ? root : root.querySelector('.fit-finder-widget');
+  const row = root.querySelector('.ff-row');
+  if (widget) widget.classList.toggle('ff-is-van', on);
+  if (row) row.classList.toggle('is-van', on);
+  const van = root.querySelector('[data-ff-van]');
+  if (van && !on) van.hidden = true;
 }
 
 // Home page hero Fit Finder (docs/home/home-spec.md Section 3) — lands on the VLP, the same as
@@ -1382,19 +1493,32 @@ function initInlineFitFinders() {
     initFitFinderCascade(root, key => {
       rrgVehicleSpecSave(key, root);
       if (window.rrgSetVehicle) window.rrgSetVehicle(key);
-      const stay = root.dataset.vfStay && document.querySelector(root.dataset.vfStay);
+      // A van always lands on its VLP (spec.md §28 demo: the HiAce VLP), even from a page that
+      // sends utes elsewhere — every other listing in the prototype is Hilux stock.
+      const isVan = FIT_FINDER_VEHICLES[key] && FIT_FINDER_VEHICLES[key].van;
+      const stay = !isVan && root.dataset.vfStay && document.querySelector(root.dataset.vfStay);
       if (stay) stay.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      else window.location.href = root.dataset.vfSubmitHref || `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
+      else window.location.href = (!isVan && root.dataset.vfSubmitHref) || `${RRG_PROTO}vlp/index.html?vehicle=${key}`;
     });
-    const preset = FIT_FINDER_VEHICLES[root.dataset.vfPreset];
+    // ?ffModel=hiace[&ffYear=2005-2019] (prototype-only demo link, spec.md §28) pre-picks a model
+    // (and year) in the page's first Fit Finder, so the van tiles can be shown straight away.
+    const params = new URLSearchParams(location.search);
+    const urlPreset = root === document.querySelector('[data-fit-finder-inline]') && FIT_FINDER_VEHICLES[params.get('ffModel')] ? params.get('ffModel') : '';
+    const presetKey = urlPreset || root.dataset.vfPreset;
+    const preset = FIT_FINDER_VEHICLES[presetKey];
     if (preset) {
       const model = root.querySelector('[data-ff-model]');
       make.value = preset.make;
       make.dispatchEvent(new Event('change'));
-      model.value = root.dataset.vfPreset;
+      model.value = presetKey;
       model.dispatchEvent(new Event('change'));
+      const year = root.querySelector('[data-ff-field="years"]');
+      if (urlPreset && preset.years.some(([y]) => y === params.get('ffYear'))) {
+        year.value = params.get('ffYear');
+        year.dispatchEvent(new Event('change'));
+      }
     }
-    if (root.hasAttribute('data-vehicle-finder')) initVehicleFinder(root);
+    if (root.hasAttribute('data-vehicle-finder')) initVehicleFinder(root, !!urlPreset);
   });
 }
 
@@ -1411,7 +1535,7 @@ const RRG_VEHICLE_SPEC_KEY = 'rrgSessionVehicleSpec';
 const RRG_VF_STYLE_KEY = 'rrgVehicleFinderStyle';
 // The last Year/Body/Roof picked for each vehicle. Demo default: the generation the rest of the
 // prototype uses (RRG_VEHICLES plpKey — Hilux N80, Ranger P703), else each list's first option.
-const RRG_VEHICLE_SPEC_DEFAULTS = { hilux: { years: '2015-2023' } };
+const RRG_VEHICLE_SPEC_DEFAULTS = { hilux: { years: '2015-2023' }, hiace: { years: '2019+', bodies: 'L3H1', roofs: 'factory-mount' } };
 function rrgVehicleSpec(key) {
   const v = FIT_FINDER_VEHICLES[key];
   if (!v) return null;
@@ -1434,7 +1558,7 @@ window.rrgSetVehicleFinderStyle = style => {
   try { localStorage.setItem(RRG_VF_STYLE_KEY, style); } catch (e) {}
   document.querySelectorAll('[data-vehicle-finder]').forEach(el => el.dataset.vfStyle = rrgVehicleFinderStyle());
 };
-function initVehicleFinder(root) {
+function initVehicleFinder(root, startChanging) {
   const head = root.querySelector('.ff-head');
   const row = root.querySelector('.ff-row');
   const make = root.querySelector('[data-ff-make]');
@@ -1457,7 +1581,8 @@ function initVehicleFinder(root) {
     proof.textContent = root.dataset.vfProof;
     root.appendChild(proof);
   }
-  let changing = false;
+  // startChanging: a ?ffModel= demo link opens on the cascade even with a vehicle saved.
+  let changing = !!startChanging && !!rrgVehicle();
 
   const render = () => {
     const key = rrgVehicleGet();
@@ -1493,6 +1618,7 @@ function initVehicleFinder(root) {
       root.querySelectorAll('[data-ff-model], [data-ff-required]').forEach(s => { s.disabled = true; });
       root.querySelectorAll('[data-ff-required]').forEach(s => { s.innerHTML = `<option value="" selected disabled>${FF_PLACEHOLDERS[s.dataset.ffField]}</option>`; });
       root.querySelector('[data-ff-submit]').disabled = true;
+      rrgFfVanClass(root, false);
       render();
       make.focus();
     } else if (e.target.closest('.vf-back')) {
@@ -1501,7 +1627,14 @@ function initVehicleFinder(root) {
       known.querySelector('.vf-change')?.focus();
     }
   });
-  document.addEventListener('rrg-session-change', () => { changing = false; render(); });
+  // Only a real vehicle change ends "changing" — the page-load session event (and other session
+  // fields) mustn't close a cascade the ?ffModel= demo link opened.
+  let lastKey = rrgVehicleGet();
+  document.addEventListener('rrg-session-change', () => {
+    if (rrgVehicleGet() !== lastKey) changing = false;
+    lastKey = rrgVehicleGet();
+    render();
+  });
   render();
 }
 
@@ -1615,8 +1748,35 @@ const FIT_FINDER_VEHICLES = {
   ranger: { make: 'ford', model: 'Ranger',
     years: [['2022+', '2022 Onwards (P703)'], ['2015-2022', '2015–2022 (PX2/PX3)'], ['2011-2015', '2011–2015 (PX1)']],
     bodies: [['double-cab', 'Double Cab (4dr Ute)'], ['super-cab', 'Super Cab'], ['single-cab', 'Single Cab']],
-    roofs: [['raised-rails', 'Raised Roof Rails'], ['bare', 'No Rails — Bare Roof']] }
+    roofs: [['raised-rails', 'Raised Roof Rails'], ['bare', 'No Rails — Bare Roof']] },
+  // Van Fit Finder (spec.md §28, Scott Childs 2026-11-05): a van adds Wheelbase and Roof Height
+  // between Year and Body Style, picked from image tiles, and Body Style then fills itself from
+  // the two picks (one answer). Variants per year are the real HiAce body types in rack{IT}
+  // (H300: LWB Low Roof, SLWB High Roof; H200: SWB Low, LWB Low, LWB High, SLWB High), recoded
+  // with Scott's L/H codes. SLWB → L4 is a guess: Scott's code table has no SLWB (§28.6).
+  hiace: { make: 'toyota', model: 'Hiace', van: true,
+    years: [['2019+', '2019 Onwards (H300)'], ['2005-2019', '2005–2019 (H200)']],
+    variants: {
+      '2019+': [{ wb: 'L3', rh: 'H1', roofs: ['factory-mount'] }, { wb: 'L4', rh: 'H2', roofs: ['factory-mount'] }],
+      '2005-2019': [{ wb: 'L1', rh: 'H1', roofs: ['rain-gutter'] }, { wb: 'L3', rh: 'H1', roofs: ['rain-gutter'] },
+        { wb: 'L3', rh: 'H2', roofs: ['rain-gutter'] }, { wb: 'L4', rh: 'H2', roofs: ['rain-gutter'] }]
+    },
+    roofTypes: { 'factory-mount': 'Factory Mounting Point', 'rain-gutter': 'Rain Gutter' } }
 };
+// Scott's code table ("Van Specs" sheet, Codes tab): the wheelbase and roof height labels lead
+// with the abbreviation and end with the code, and the body type joins both:
+// "LWB Low Roof - L3H1". The vehicle name only ever uses that body type (the tail end), never
+// "LWB - L3 Low Roof - H1 LWB Low Roof - L3H1".
+const RRG_VAN_WHEELBASES = { L1: ['SWB', 'SWB - L1'], L2: ['MWB', 'MWB - L2'], L3: ['LWB', 'LWB - L3'], L4: ['XLWB', 'XLWB - L4'] };
+const RRG_VAN_ROOF_HEIGHTS = { H1: ['Low Roof', 'Low Roof - H1'], H2: ['High Roof', 'High Roof - H2'], H3: ['Super High Roof', 'Super High Roof - H3'] };
+const rrgVanBodyLabel = (wb, rh) => `${RRG_VAN_WHEELBASES[wb][0]} ${RRG_VAN_ROOF_HEIGHTS[rh][0]} - ${wb}${rh}`;
+// A van's flat bodies/roofs lists (every combination it comes in), so the saved-vehicle summary
+// (rrgVehicleSpec) reads a van the same way as a ute.
+Object.values(FIT_FINDER_VEHICLES).filter(v => v.van).forEach(v => {
+  const codes = [...new Set(Object.values(v.variants).flat().map(x => x.wb + x.rh))].sort();
+  v.bodies = codes.map(c => [c, rrgVanBodyLabel(c.slice(0, 2), c.slice(2))]);
+  v.roofs = Object.entries(v.roofTypes);
+});
 const FIT_FINDER_MAKES = [['ford', 'Ford'], ['toyota', 'Toyota']];
 const FF_PLACEHOLDERS = { years: 'Year', bodies: 'Body Style', roofs: 'Roof Type' };
 function ffOptions(pairs, placeholder) {
@@ -3567,7 +3727,7 @@ function buildAdminPanel() {
     const vs = window.VLP_STATE;
     const nosave = html => html.replace(/<(input|select) /g, '<$1 data-admin-nosave ');
     html += section('Page vehicle <span class="admin-note">(the URL — session vehicle is in Site Admin)</span>',
-      nosave(choice('vlpPageVehicle', 'Landing page for', [['hilux', 'Toyota Hilux N80'], ['ranger', 'Ford Ranger P703']], vs.pageKey)));
+      nosave(choice('vlpPageVehicle', 'Landing page for', [['hilux', 'Toyota Hilux N80'], ['ranger', 'Ford Ranger P703'], ['hiace', 'Toyota Hiace H300 (van)']], vs.pageKey)));
     const cats = (typeof VLP_CATEGORIES !== 'undefined' ? VLP_CATEGORIES : []).filter(c => c.vehicleSpecific);
     html += section('Categories with results',
       nosave(cats.map(c => toggle('vlpCat:' + c.slug, c.label, vs.vsAvailable.has(c.slug))).join('')) +

@@ -492,7 +492,10 @@ function plpSelectSearchCategory(key) {
 const PLP_VEHICLES = {
   'toyota-hilux-n80': { name: 'Toyota Hilux', short: 'Toyota Hilux N80', long: 'Toyota Hilux N80 4dr Ute (2015 to 2026)', spec: '4dr Ute, Bare Roof, 2015 to 2026' },
   // Raised Roof Rail (2026-09-29) — matches the VLP's Ford Ranger worked example (the Figma's own).
-  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Raised Roof Rail, 2022 onwards' }
+  'ford-ranger-p703': { name: 'Ford Ranger', short: 'Ford Ranger P703', long: 'Ford Ranger P703 4dr Ute (2022 onwards)', spec: '4dr Ute, Raised Roof Rail, 2022 onwards' },
+  // Van Fit Finder demo (spec.md §28): the van's body type is its tail end only, never the
+  // wheelbase and roof height repeated.
+  'toyota-hiace-h300': { name: 'Toyota Hiace', short: 'Toyota Hiace H300', long: 'Toyota Hiace H300 LWB Low Roof - L3H1 (2019 onwards)', spec: 'LWB Low Roof - L3H1, Factory Mounting Point, 2019 onwards' }
 };
 // The session vehicle comes from Site Admin's "Vehicle" (rrgVehicle(), session-state.js — spec.md
 // §15 P4); this is only the fallback for copy that needs a vehicle name before one is set.

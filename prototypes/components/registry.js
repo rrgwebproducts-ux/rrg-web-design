@@ -498,6 +498,10 @@ const RRG_COMPONENTS = [
       v('Home — compact, no vehicle', 'home', '.home-finder', { ls: S.noVehicle }),
       v('VCLP (Toyota / Hilux pre-filled)', 'vehicle-category-landing', '#fitFinder', { ls: S.noVehicle }),
       v('Brand page', 'brand', '#brandFinder'),
+      // Van Fit Finder (spec.md §28): ?ffModel= pre-picks the van so the tiles show.
+      v('Van — Wheelbase + Roof Height tiles (Toyota Hiace H200)', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.noVehicle, q: 'ffModel=hiace&ffYear=2005-2019' }),
+      v('Van — home compact (Toyota Hiace H200)', 'home', '.home-finder', { ls: S.noVehicle, q: 'ffModel=hiace&ffYear=2005-2019' }),
+      v('Vehicle known — van (Toyota Hiace)', 'fit-my-vehicle', '.fit-finder-widget', { ls: { rrgSessionVehicle: 'hiace' } }),
     ] },
   { id: 'store-card', group: 'stores', name: 'Store Card', build: 'copied', usedOn: ['store-finder', 'order-confirmation', 'checkout'],
     source: 'Inline, duplicated: sfCardHTML (store-finder), storeCardHTML (order-confirmation, checkout)',

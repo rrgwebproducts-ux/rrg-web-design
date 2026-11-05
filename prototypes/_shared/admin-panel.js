@@ -99,6 +99,7 @@ function buildSiteAdminPanel(currentKey) {
           <option value="none">None</option>
           <option value="hilux">Toyota Hilux</option>
           <option value="ranger">Ford Ranger</option>
+          <option value="hiace">Toyota Hiace (van)</option>
         </select>
       </label>
       <label class="site-admin-toggle">

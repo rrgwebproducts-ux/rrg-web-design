@@ -251,6 +251,8 @@ function rrgWidgetFooterHTML() {
 //   intro             the line under the heading (default "Select your vehicle to find the perfect fit.")
 //   submit            the button label (default "View Results")
 //   inline            "false" leaves out data-fit-finder-inline (the drawer wires up its own cascade)
+//   Vans (spec.md §28): the [data-ff-van] Wheelbase / Roof Height tiles show after Year when the
+//   model is a van (FIT_FINDER_VEHICLES van: true); the cascade fills Body Style from them.
 //   compact           "true" = the one-row home variant (2026-10-03, Brenton): heading, selects and
 //                     button on one line, no intro; with a vehicle, a slim bar. Desktop only — below
 //                     900px it stacks like the standard widget.
@@ -270,6 +272,10 @@ function rrgWidgetVehicleFinderHTML(opts = {}) {
     <select aria-label="Make" data-ff-make></select>
     <select aria-label="Model" data-ff-model disabled><option value="" selected disabled>Model</option></select>
     <select aria-label="Year range" data-ff-required data-ff-field="years" disabled><option value="" selected disabled>Year</option></select>
+    <div class="ff-van" data-ff-van hidden>
+      <div class="ff-tiles" data-ff-tiles="wheelbase" role="radiogroup" aria-label="Wheelbase"><span class="ff-tiles-label" aria-hidden="true">Wheelbase</span><div class="ff-tile-list"></div></div>
+      <div class="ff-tiles" data-ff-tiles="roofHeight" role="radiogroup" aria-label="Roof Height"><span class="ff-tiles-label" aria-hidden="true">Roof Height</span><div class="ff-tile-list"></div></div>
+    </div>
     <select aria-label="Body style" data-ff-required data-ff-field="bodies" disabled><option value="" selected disabled>Body Style</option></select>
     <select aria-label="Roof type" data-ff-required data-ff-field="roofs" disabled><option value="" selected disabled>Roof Type</option></select>
     <button type="button" class="btn btn-cta" data-ff-submit disabled>${opts.submit || 'View Results'}</button>

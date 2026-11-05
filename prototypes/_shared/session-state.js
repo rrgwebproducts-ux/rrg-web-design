@@ -25,11 +25,14 @@ const RRG_SESSION_FIELDS = {
 // shared.js), PLP-family card fitment + hero (plpKey → PLP_VEHICLES in plp.js), search results.
 const RRG_VEHICLES = {
   hilux: { label: 'Toyota Hilux', demoKey: 'match', plpKey: 'toyota-hilux-n80', image: 'vehicle-toyota-hilux.webp', badge: 'brand-toyota-badge.png' },
-  ranger: { label: 'Ford Ranger', demoKey: 'mismatch', plpKey: 'ford-ranger-p703', image: 'vehicle-ford-ranger.webp', badge: 'brand-ford-badge.png' }
+  ranger: { label: 'Ford Ranger', demoKey: 'mismatch', plpKey: 'ford-ranger-p703', image: 'vehicle-ford-ranger.webp', badge: 'brand-ford-badge.png' },
+  // Van Fit Finder demo (spec.md §28, 2026-11-05). The image is a placeholder drawing: the live
+  // site has no HiAce photo.
+  hiace: { label: 'Toyota Hiace', demoKey: 'van', plpKey: 'toyota-hiace-h300', image: 'vehicle-toyota-hiace.svg', badge: 'brand-toyota-badge.png' }
 };
 const RRG_VEHICLE_KEY = 'rrgSessionVehicle';
 
-// 'none' | 'hilux' | 'ranger'. Default Toyota Hilux; carries over the old on/off key once.
+// 'none' | 'hilux' | 'ranger' | 'hiace'. Default Toyota Hilux; carries over the old on/off key once.
 function rrgVehicleGet() {
   const v = localStorage.getItem(RRG_VEHICLE_KEY);
   if (v === 'none' || RRG_VEHICLES[v]) return v;

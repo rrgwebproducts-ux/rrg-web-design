@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 956 556" width="956" height="556">
+  <!-- Placeholder drawing of a long-wheelbase low-roof van (spec.md §28, 2026-11-05): the live
+       site has no Toyota HiAce photo. Swap for a real cut-out photo before handover. -->
+  <ellipse cx="478" cy="470" rx="420" ry="18" fill="#000" opacity=".08"/>
+  <path d="M70 420 L70 330 Q70 300 95 292 L175 268 L265 150 Q282 128 312 128 L860 128 Q890 128 890 158 L890 420 Q890 436 874 436 L86 436 Q70 436 70 420 Z" fill="#f4f4f4" stroke="#333" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M185 268 L272 160 Q282 148 300 148 L352 148 L352 268 Z" fill="#cfd8e0" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M378 148 L520 148 L520 268 L378 268 Z" fill="#cfd8e0" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M362 150 L362 430 M540 150 L540 430 M860 150 L860 430" stroke="#333" stroke-width="3" opacity=".5"/>
+  <path d="M70 360 L890 360" stroke="#333" stroke-width="3" opacity=".25"/>
+  <rect x="404" y="300" width="44" height="10" rx="5" fill="#333"/>
+  <rect x="78" y="305" width="34" height="22" rx="6" fill="#ffd36b" stroke="#333" stroke-width="3"/>
+  <rect x="868" y="300" width="18" height="40" rx="4" fill="#bb0220" stroke="#333" stroke-width="3"/>
+  <circle cx="240" cy="436" r="66" fill="#222"/><circle cx="240" cy="436" r="30" fill="#bbb"/>
+  <circle cx="740" cy="436" r="66" fill="#222"/><circle cx="740" cy="436" r="30" fill="#bbb"/>
+</svg>

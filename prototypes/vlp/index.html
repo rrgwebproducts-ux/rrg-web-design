@@ -276,6 +276,31 @@ const VLP_VEHICLES = {
       { id: 'r5', sku: 'JC-02252', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-02252 Pioneer 6 Tradie (1300mm x 1240mm) with RX100 Legs', image: '../_shared/vlp-products/jc-02252.webp', price: 1315.21, wasPrice: 1568.00, stock: 'in_stock' },
       { id: 'r6', sku: 'JC-05287', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack JC-05287 Sportz RX Black 2 Bar Roof Rack', image: '../_shared/vlp-products/jc-05287.webp', price: 443.21, wasPrice: 533.00, stock: 'in_stock' }
     ]
+  },
+  // Van Fit Finder demo (spec.md §28, 2026-11-05): every van the Fit Finder sets lands here. The
+  // body is the tail-end body type only ("LWB Low Roof - L3H1"), so the H1, breadcrumbs and
+  // notices never repeat the wheelbase and roof height. Popular Racks are the live site's own
+  // HiAce Gen 6 (H300) mounting products — names, prices and photos from roofracksgalore.com.au
+  // 2026-11-05; the site shows no ratings for them. Image = placeholder drawing (no HiAce photo live).
+  hiace: {
+    rrgKey: 'hiace', plpKey: 'toyota-hiace-h300',
+    make: 'Toyota', model: 'Hiace', code: 'H300', years: '2019 onwards', body: 'LWB Low Roof - L3H1', roof: 'Factory Mounting Point', roofPhrase: 'factory mounting points',
+    image: '../_shared/vehicle-toyota-hiace.svg', badge: '../_shared/brand-toyota-badge.png',
+    vclpHref: '#', roofRacksHref: '#',
+    intro: 'Vans are matched by wheelbase and roof height, not by door count, so what fits a long wheelbase low roof Hiace won’t always fit a high roof one. Everything on this page is filtered to fit a 2019-onwards Hiace LWB Low Roof - L3H1 with factory mounting points.',
+    vsCategories: ['misc-vehicle-accessories'],
+    fitCount: 0,
+    faqs: [
+      { q: 'What does L3H1 mean?', a: 'It’s the van’s wheelbase and roof height code. L3 is a long wheelbase (LWB) and H1 is a low roof. Racks are matched to both, so a high roof (H2) Hiace takes a different fitment.' },
+      { q: 'Does the number of doors on my van matter?', a: 'No. The same van can come with one or two sliding doors, and makers count doors differently, but the roof is the same. Only the wheelbase and roof height change what fits.' },
+      { q: 'Do you offer professional installation for the Toyota Hiace?', a: 'Yes — we fit roof racks and accessories nationwide at our 35+ stores. Book an installation or use the Store Finder to find your nearest fitting centre.' }
+    ],
+    popular: [
+      { id: 'v1', sku: 'RTHB3', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino-Rack Backbone Spine 3 Base Mounting System for Toyota HiAce Gen6 - RTHB3', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RTHB3-Platform-Backbone._1_1.jpg', price: 659.12, wasPrice: 749.00, stock: 'in_stock' },
+      { id: 'v2', sku: 'RCHT6', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack RCH Locking Leg for Toyota (x6) RCHT6', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RCHT6-Roof-Rack---Legs._1_4.jpg', price: 205.92, wasPrice: 234.00, stock: 'in_stock' },
+      { id: 'v3', sku: 'SBVLK', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Fits Toyota SBV LEG KIT PR - SBVLK', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-SBVLK-Roof-Rack---Legs._1_15.jpg', price: 139.00, wasPrice: 169.00, stock: 'in_stock' },
+      { id: 'v4', sku: 'ILRH6GK1', brand: 'Rhino-Rack', brandLogo: '../_shared/brand-rhino-rack.webp', name: 'Rhino Rack Fits Toyota Hiace 6th Gen Internal Ladder Rack Bracket kit - ILRH6GK1', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-ILRH6GK1-Ladder-System-Accessories._1_1.jpg', price: 203.00, stock: 'in_stock' }
+    ]
   }
 };
 
