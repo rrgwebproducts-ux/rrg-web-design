@@ -765,16 +765,16 @@ function rrgRenderGroupedItems() {
   document.querySelectorAll('.cta-col').forEach(col => {
     const notice = col.parentNode.querySelector(':scope > .grouped-notice');
     if (!blocked) { if (notice) notice.remove(); return; }
-    // Names every blocking item, grouped by reason (e.g. "K328 is out of stock and P17 isn't
-    // available"), not just the worst one.
-    const oos = items.filter(el => rrgGroupedKitKey(el.dataset.itemStock) === 'out_of_stock');
-    const unav = items.filter(el => rrgGroupedKitKey(el.dataset.itemStock) === 'unavailable');
-    const why = [oos.length && `${rrgGroupedNames(oos)} ${oos.length > 1 ? 'are' : 'is'} out of stock`,
-      unav.length && `${rrgGroupedNames(unav)} ${unav.length > 1 ? "aren't" : "isn't"} available`].filter(Boolean).join(' and ');
+    // One blocking item is named; two or more get a summary line, since the What's Included
+    // pills already show which ones (Brenton, 2026-11-12).
+    const blocking = items.filter(el => ['out_of_stock', 'unavailable'].includes(rrgGroupedKitKey(el.dataset.itemStock)));
+    const one = blocking[0];
+    const why = blocking.length > 1 ? "Multiple items in this kit aren't available"
+      : `${rrgGroupedNames([one])} ${rrgGroupedKitKey(one.dataset.itemStock) === 'out_of_stock' ? 'is out of stock' : "isn't available"}`;
     // Every item affected → the whole kit, not "part of" it (Brenton, 2026-11-12).
-    const all = oos.length + unav.length === items.length;
+    const all = blocking.length === items.length;
     const html = rrgNoticeCardHTML('unknown', all ? 'This kit is unavailable' : 'Part of this kit is unavailable',
-      `${why} right now, so this kit can't be ordered. <a href="#" class="stock-subline-link">Contact our team</a> and we'll help you find an alternative.`,
+      `${why} right now, so ${blocking.length > 1 ? 'it' : 'this kit'} can't be ordered. <a href="#" class="stock-subline-link">Contact our team</a> and we'll help you find an alternative.`,
       '', 'grouped-notice');
     if (notice) notice.outerHTML = html; else col.insertAdjacentHTML('beforebegin', html);
   });
