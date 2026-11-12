@@ -1,7 +1,9 @@
 // Roof Racks Galore — shared fitment logic for vehicle-specific PDP prototypes
 // Implements spec Section 2.1: getFitmentStatus is a pure function of (productFitment, sessionVehicle).
 
-const PRODUCT_FITMENT = {
+// A page can set window.RRG_PAGE_FITMENT before shared.js loads for its own vehicle
+// (grouped-kit-unavailable: VW Amarok Gen 2, spec.md §29). Default: the Hilux N80 kit.
+const PRODUCT_FITMENT = window.RRG_PAGE_FITMENT || {
   vehicle_make: "Toyota",
   vehicle_model: "Hilux",
   vehicle_generation: "N80",
@@ -128,6 +130,7 @@ function applyFitmentState(state, vehicle) {
   // the verdict and its own "Select your vehicle"/"Find the right fit" actions.
   document.querySelectorAll('[data-cta-label]').forEach(btn => {
     btn.textContent = 'Add To Cart';
+    btn.disabled = false; // stock blocks re-apply on top (applyStockStatus) — was left disabled after Out of Stock → In Stock
     btn.classList.remove('btn-outline');
     btn.classList.add('btn-cta');
   });
@@ -652,6 +655,7 @@ const STOCK_STATUS = {
   low_stock: { blocksCta: false, specialOrder: false },
   out_of_stock: { blocksCta: true, specialOrder: false, ctaLabel: 'Out Of Stock' },
   special_order: { blocksCta: false, specialOrder: true },
+  unavailable: { blocksCta: true, specialOrder: false, ctaLabel: 'Currently Unavailable' },
   discontinued: { blocksCta: true, specialOrder: false, discontinued: true, ctaLabel: 'Discontinued' }
 };
 
@@ -717,6 +721,60 @@ function renderStockLine(line) {
   line.append(' — ', link);
 }
 
+// ---- Grouped products: the kit takes its worst item's status (spec.md §29, 2026-11-12) ----
+// Live bug (Jake Martin → Graham → Brenton, 2026-11-12): a grouped product with one item set to
+// "not for sale" still showed its own stock and a live Add To Cart, and adding it silently left
+// that item out of the cart (Amarok GP06OEUIB1: $348 kit, only the K328 fitting kit added). Rule
+// for Magento: the grouped product's status = the worst status of its items, ranked below. An item
+// that is Discontinued or Not for sale makes the kit "unavailable" (the kit itself isn't
+// discontinued; it can come back once the item does). A blocked kit can't be added at all, there
+// is no partial add (Brenton, 2026-11-12). Items: .package-item[data-item-stock] inside
+// [data-grouped-items]. Production: each child product's own stock status.
+const RRG_GROUPED_RANK = ['in_stock', 'low_stock', 'special_order', 'out_of_stock', 'unavailable'];
+const rrgIsGroupedPage = () => !!document.querySelector('[data-grouped-items]');
+const rrgGroupedKitKey = key => (key = rrgStockKey(key)) === 'discontinued' ? 'unavailable' : key;
+function rrgGroupedStock() {
+  const items = [...document.querySelectorAll('[data-grouped-items] .package-item[data-item-stock]')];
+  const rank = el => Math.max(0, RRG_GROUPED_RANK.indexOf(rrgGroupedKitKey(el.dataset.itemStock)));
+  const worst = items.reduce((max, el) => Math.max(max, rank(el)), 0);
+  const key = RRG_GROUPED_RANK[worst];
+  return { key, items, culprits: worst === 0 ? [] : items.filter(el => rank(el) === worst) };
+}
+const rrgGroupedNames = els => els.map(el => `<b>${el.querySelector('.pi-name').textContent.trim()}</b>`).join(' and ');
+const RRG_GROUPED_ITEM_CHIP = {
+  low_stock: ['order', 'Low Stock'], special_order: ['order', 'Special Order'],
+  out_of_stock: ['out', 'Out of Stock'], unavailable: ['out', 'Not Available'], discontinued: ['out', 'Discontinued']
+};
+// Per-item status on each What's Included line (only when it's an issue, so in-stock lines stay
+// clean), plus a "Fits your vehicle"-style notice card above the CTA when the kit is blocked.
+function rrgRenderGroupedItems() {
+  const { key, items, culprits } = rrgGroupedStock();
+  items.forEach(el => {
+    const chip = RRG_GROUPED_ITEM_CHIP[rrgStockKey(el.dataset.itemStock)];
+    let slot = el.querySelector('.pi-stock');
+    el.classList.toggle('is-issue', !!chip && chip[0] === 'out');
+    if (!chip) { if (slot) slot.remove(); return; }
+    if (!slot) { slot = document.createElement('span'); el.querySelector('.pi-name').after(slot); }
+    slot.className = 'pi-stock stock-chip ' + chip[0];
+    slot.textContent = chip[1];
+  });
+  const blocked = !!(STOCK_STATUS[key] && STOCK_STATUS[key].blocksCta);
+  document.querySelectorAll('.cta-col').forEach(col => {
+    const notice = col.parentNode.querySelector(':scope > .grouped-notice');
+    if (!blocked) { if (notice) notice.remove(); return; }
+    const many = culprits.length > 1;
+    const why = key === 'out_of_stock' ? (many ? 'are out of stock' : 'is out of stock') : (many ? "aren't available" : "isn't available");
+    const html = rrgNoticeCardHTML('unknown', 'Part of this kit is unavailable',
+      `${rrgGroupedNames(culprits)} ${why} right now, so this kit can't be ordered. <a href="#" class="stock-subline-link">Contact our team</a> and we'll help you find an alternative.`,
+      '', 'grouped-notice');
+    if (notice) notice.outerHTML = html; else col.insertAdjacentHTML('beforebegin', html);
+  });
+}
+function applyGroupedStock() {
+  adminState.stockOverride = true;
+  applyStockStatus(rrgGroupedStock().key);
+}
+
 function applyStockStatus(status) {
   status = rrgStockKey(status);
   adminState.stockStatus = status;
@@ -731,12 +789,12 @@ function applyStockStatus(status) {
   document.querySelectorAll('.cta-col').forEach(col => {
     const parent = col.parentNode;
     const banner = parent.querySelector(':scope > .stock-banner');
-    if (cfg.blocksCta && !cfg.discontinued && !banner) {
+    if (cfg.blocksCta && !cfg.discontinued && !banner && !rrgIsGroupedPage()) {
       const el = document.createElement('div');
       el.className = 'stock-banner';
       el.textContent = '✕ Currently out of stock';
       parent.insertBefore(el, col);
-    } else if ((!cfg.blocksCta || cfg.discontinued) && banner) {
+    } else if ((!cfg.blocksCta || cfg.discontinued || rrgIsGroupedPage()) && banner) {
       banner.remove();
     }
     const specialBanner = parent.querySelector(':scope > .special-order-banner');
@@ -744,6 +802,10 @@ function applyStockStatus(status) {
       const el = document.createElement('div');
       el.className = 'special-order-banner';
       el.innerHTML = '⏱ <strong>Note:</strong> This item is ordered in as required, please allow 5-7 business days before item is ready';
+      if (rrgIsGroupedPage()) {
+        const late = rrgGroupedStock().culprits;
+        el.innerHTML = `⏱ <strong>Note:</strong> ${rrgGroupedNames(late)} ${late.length > 1 ? 'are' : 'is'} ordered in as required, please allow 5-7 business days before this kit is ready`;
+      }
       parent.insertBefore(el, col);
     } else if (!cfg.specialOrder && specialBanner) {
       specialBanner.remove();
@@ -779,6 +841,7 @@ function applyStockStatus(status) {
       });
     }
   }
+  if (rrgIsGroupedPage()) rrgRenderGroupedItems();
   // col.hidden just changed above (discontinued toggling hides/shows .cta-col) — re-sync
   // the compatibility banner, which must never show alongside a hidden CTA.
   applyCartConflict(adminState.cartConflict);
@@ -880,7 +943,7 @@ function applyAvailabilityFlags(shipping, collect) {
   adminState.collect = collect;
   // Out of Stock / Discontinued (spec.md §14.1): neither option is available, whatever the
   // panel toggles say — the note explains why instead of the generic "both unavailable".
-  const stockBlocked = ['out_of_stock', 'discontinued'].includes(rrgStockKey(adminState.stockStatus));
+  const stockBlocked = ['out_of_stock', 'unavailable', 'discontinued'].includes(rrgStockKey(adminState.stockStatus));
   if (stockBlocked) { shipping = false; collect = false; }
   document.querySelectorAll('.dc-widget').forEach(widget => {
     const deliveryTab = widget.querySelector('[data-dc-tab="delivery"]');
@@ -901,7 +964,9 @@ function applyAvailabilityFlags(shipping, collect) {
       note.textContent = stockBlocked
         ? (rrgStockKey(adminState.stockStatus) === 'discontinued'
           ? "This product has been discontinued, so Delivery and Click & Collect aren't available."
-          : "This item is currently out of stock, so Delivery and Click & Collect aren't available right now.")
+          : rrgStockKey(adminState.stockStatus) === 'unavailable'
+            ? "This item isn't available right now, so Delivery and Click & Collect aren't available."
+            : "This item is currently out of stock, so Delivery and Click & Collect aren't available right now.")
         : 'Delivery and Click & Collect are both currently unavailable for this item.';
       note.hidden = false;
       return;
@@ -1281,6 +1346,7 @@ function rrgStoreCount() {
 function rrgStorePillsHTML(name) {
   const key = typeof adminState !== 'undefined' ? rrgStockKey(adminState.stockStatus) : 'in_stock';
   const displayPill = ON_DISPLAY_STORES.has(name) ? `<span class="stock-chip display">On Display</span>` : '';
+  if (key === 'unavailable') return `<span class="stock-chip out">Unavailable</span>` + displayPill;
   if (key === 'out_of_stock' || key === 'discontinued') return `<span class="stock-chip out">Out of Stock</span>` + displayPill;
   if (key === 'special_order') return `<span class="stock-chip order">Special Order — 5-7 Days</span>` + displayPill;
   const inPill = `<span class="stock-chip in">In Stock</span>`;
@@ -3758,8 +3824,13 @@ function buildAdminPanel() {
       toggle('sale', 'Product is on sale', initialSale));
     const stockOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['out_of_stock', 'Out of Stock'], ['special_order', 'Special Order'], ['discontinued', 'Discontinued']];
     if (hasSwatches) stockOpts.unshift(['per_colour', 'As per colour (real data)']);
+    // Grouped products (spec.md §29): one dropdown per kit item; the kit's own status is derived.
+    const groupedItems = [...document.querySelectorAll('[data-grouped-items] .package-item[data-item-stock]')];
+    const itemOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['special_order', 'Special Order'], ['out_of_stock', 'Out of Stock'], ['unavailable', 'Not for sale'], ['discontinued', 'Discontinued']];
+    if (groupedItems.length) html += section('Kit items <span class="admin-note">(the kit takes the worst)</span>',
+      groupedItems.map(el => choice('groupedItem:' + el.dataset.itemSku, el.dataset.itemSku, itemOpts, el.dataset.itemStock)).join(''));
     html += section('Stock',
-      choice('stockStatus', 'Stock level', stockOpts, hasSwatches ? 'per_colour' : 'in_stock') +
+      (groupedItems.length ? '' : choice('stockStatus', 'Stock level', stockOpts, hasSwatches ? 'per_colour' : 'in_stock')) +
       choice('storeStock', 'Stock at your store', [['here', 'At your store'], ['nearby', 'Nearby store only'], ['warehouse', 'Warehouse only']], 'here') +
       hint('storeStock', 'Needs Build Phase 2 and a nearest store — both in Site Admin.') +
       toggle('exdemo', 'B-Stock / Ex-Demo available', false) +
@@ -3934,6 +4005,12 @@ function buildAdminPanel() {
     adminState.stockOverride = true;
     applyStockStatus(value);
   });
+  panel.querySelectorAll('select[name^="groupedItem:"]').forEach(sel => sel.addEventListener('change', () => {
+    const item = document.querySelector(`[data-grouped-items] .package-item[data-item-sku="${sel.name.slice(12)}"]`);
+    if (item) item.dataset.itemStock = sel.value;
+    applyGroupedStock();
+  }));
+  if (document.querySelector('[data-grouped-items]')) applyGroupedStock();
   onChoice('storeStock', value => {
     adminState.storeStock = value;
     rrgRefreshStockSurfaces();

@@ -1296,6 +1296,10 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* Quantity per row (2026-09-10, Graham Sowerby meeting) — so a customer adding what looks
    like one product isn't confused when a multi-part kit arrives with no visible reason
    why. Real per-component quantities aren't confirmed by the client yet — see spec.md §7. */
+/* Grouped products (spec.md §29): per-item stock chip, only when the item is an issue. */
+.package-item .pi-stock{flex:0 0 auto;margin-left:0;}
+.package-item.is-issue .pi-name{color:var(--rrg-grey-500);}
+.grouped-notice{margin-bottom:10px;}
 .package-item .pi-qty{flex:0 0 auto;color:var(--rrg-grey-400);font-size:12px;font-weight:700;white-space:nowrap;}
 .package-item .pi-sku{display:flex;align-items:center;gap:6px;color:var(--rrg-grey-500);white-space:nowrap;}
 

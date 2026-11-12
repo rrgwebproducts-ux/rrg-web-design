@@ -126,7 +126,9 @@ rrgApplyPhaseAttr();
 // One status model for every surface that shows stock — PDP stock line, PLP-family cards,
 // the Availability filter, the Delivery/Click & Collect widget and JSON-LD all call
 // rrgStockStatus() instead of keeping their own wording.
-//   stock (online, product-level): in_stock | low_stock | out_of_stock | special_order | discontinued
+//   stock (online, product-level): in_stock | low_stock | out_of_stock | special_order | unavailable | discontinued
+//   unavailable = Magento's "This product is not for sale at the current time" (spec.md §29):
+//   temporary, unlike discontinued. Grouped products take their worst item's status (rrgGroupedStock()).
 //   storeStock (Phase 2 only, relative to the session's nearest store): here | nearby | warehouse
 // Phase 1 (and Phase 2 with no store set) only knows online stock — "In Stock Online",
 // dispatched next business day, ready in any store within 2 business days (often sooner,
@@ -176,6 +178,9 @@ function rrgStockStatus(stock, storeStock, ctx = rrgStoreContext()) {
   const base = { key, subline: '', contact: false, setStore: false, collectToday: false };
   if (key === 'out_of_stock') {
     return { ...base, label: '✕ Out of Stock', pdpLabel: '✕ Out of Stock', tone: 'out-of-stock', schema: 'OutOfStock', contact: true, collectEta: 'Unavailable' };
+  }
+  if (key === 'unavailable') {
+    return { ...base, label: '✕ Unavailable', pdpLabel: '✕ Currently Unavailable', tone: 'out-of-stock', schema: 'OutOfStock', contact: true, collectEta: 'Unavailable' };
   }
   if (key === 'special_order') {
     return { ...base, label: '⏱ Special Order', pdpLabel: '⏱ Special Order', subline: 'Ordered in for you — ready in 5–7 business days', tone: 'special-order', schema: 'BackOrder', collectEta: 'Ready in 5–7 business days' };
