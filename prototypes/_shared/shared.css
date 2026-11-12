@@ -1195,7 +1195,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 
 /* Shown in place of the Delivery/Click & Collect widget when the demo admin panel has
    both availability toggles switched off */
-.dc-unavailable-note{font-size:14px;color:var(--rrg-grey-500);padding:12px 14px;border:1px dashed var(--rrg-line);border-radius:var(--radius);}
+.dc-unavailable-note{margin-top:12px;font-size:14px;color:var(--rrg-grey-500);padding:12px 14px;border:1px dashed var(--rrg-line);border-radius:var(--radius);}
 
 /* Special order banner — sits above Add to Cart, demo admin panel "Special order" toggle */
 /* Text recoloured black (2026-09-11, legibility fix) — box stays amber-tinted
@@ -1298,6 +1298,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
    why. Real per-component quantities aren't confirmed by the client yet — see spec.md §7. */
 /* Grouped products (spec.md §29): per-item stock chip, only when the item is an issue. */
 .package-item .pi-stock{flex:0 0 auto;margin-left:0;}
+/* Blocking items (Out of Stock / Not Available / Discontinued) match the kit's warning card colour (Brenton, 2026-11-12). */
+.package-item .pi-stock.out{background:var(--rrg-unknown-bg);color:var(--rrg-unknown);}
 .package-item.is-issue .pi-name{color:var(--rrg-grey-500);}
 .grouped-notice{margin-bottom:10px;}
 .package-item .pi-qty{flex:0 0 auto;color:var(--rrg-grey-400);font-size:12px;font-weight:700;white-space:nowrap;}
