@@ -740,7 +740,10 @@ function rrgGroupedStock() {
   const key = RRG_GROUPED_RANK[worst];
   return { key, items, culprits: worst === 0 ? [] : items.filter(el => rank(el) === worst) };
 }
-const rrgGroupedNames = els => els.map(el => `<b>${el.querySelector('.pi-name').textContent.trim()}</b>`).join(' and ');
+const rrgGroupedNames = els => {
+  const names = els.map(el => `<b>${el.querySelector('.pi-name').textContent.trim()}</b>`);
+  return names.length > 1 ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] : names.join('');
+};
 const RRG_GROUPED_ITEM_CHIP = {
   low_stock: ['order', 'Low Stock'], special_order: ['order', 'Special Order'],
   out_of_stock: ['out', 'Out of Stock'], unavailable: ['out', 'Not Available'], discontinued: ['out', 'Discontinued']
@@ -762,10 +765,16 @@ function rrgRenderGroupedItems() {
   document.querySelectorAll('.cta-col').forEach(col => {
     const notice = col.parentNode.querySelector(':scope > .grouped-notice');
     if (!blocked) { if (notice) notice.remove(); return; }
-    const many = culprits.length > 1;
-    const why = key === 'out_of_stock' ? (many ? 'are out of stock' : 'is out of stock') : (many ? "aren't available" : "isn't available");
-    const html = rrgNoticeCardHTML('unknown', 'Part of this kit is unavailable',
-      `${rrgGroupedNames(culprits)} ${why} right now, so this kit can't be ordered. <a href="#" class="stock-subline-link">Contact our team</a> and we'll help you find an alternative.`,
+    // Names every blocking item, grouped by reason (e.g. "K328 is out of stock and P17 isn't
+    // available"), not just the worst one.
+    const oos = items.filter(el => rrgGroupedKitKey(el.dataset.itemStock) === 'out_of_stock');
+    const unav = items.filter(el => rrgGroupedKitKey(el.dataset.itemStock) === 'unavailable');
+    const why = [oos.length && `${rrgGroupedNames(oos)} ${oos.length > 1 ? 'are' : 'is'} out of stock`,
+      unav.length && `${rrgGroupedNames(unav)} ${unav.length > 1 ? "aren't" : "isn't"} available`].filter(Boolean).join(' and ');
+    // Every item affected → the whole kit, not "part of" it (Brenton, 2026-11-12).
+    const all = oos.length + unav.length === items.length;
+    const html = rrgNoticeCardHTML('unknown', all ? 'This kit is unavailable' : 'Part of this kit is unavailable',
+      `${why} right now, so this kit can't be ordered. <a href="#" class="stock-subline-link">Contact our team</a> and we'll help you find an alternative.`,
       '', 'grouped-notice');
     if (notice) notice.outerHTML = html; else col.insertAdjacentHTML('beforebegin', html);
   });
@@ -773,6 +782,18 @@ function rrgRenderGroupedItems() {
 function applyGroupedStock() {
   adminState.stockOverride = true;
   applyStockStatus(rrgGroupedStock().key);
+}
+
+const RRG_STOCK_NOTICE = {
+  out_of_stock: ['Out of stock', "This product is out of stock right now. <a href=\"#\" class=\"stock-subline-link\">Contact our team</a> for availability, or we'll help you find an alternative."],
+  unavailable: ['Currently unavailable', "This product isn't available right now. <a href=\"#\" class=\"stock-subline-link\">Contact our team</a> and we'll help you find an alternative."],
+  // Alternatives are Phase 2 (spec.md §23 item 23), so Phase 1 doesn't point to them.
+  discontinued: ['Discontinued', () => 'This product has been discontinued and is no longer available to buy.' + (typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2 ? ' See similar alternatives below.' : '')]
+};
+function rrgStockNoticeHTML(status) {
+  const n = RRG_STOCK_NOTICE[status];
+  if (!n || typeof rrgNoticeCardHTML !== 'function') return '';
+  return rrgNoticeCardHTML('unknown', n[0], typeof n[1] === 'function' ? n[1]() : n[1], '', 'stock-banner');
 }
 
 function applyStockStatus(status) {
@@ -788,15 +809,13 @@ function applyStockStatus(status) {
   });
   document.querySelectorAll('.cta-col').forEach(col => {
     const parent = col.parentNode;
-    const banner = parent.querySelector(':scope > .stock-banner');
-    if (cfg.blocksCta && !cfg.discontinued && !banner && !rrgIsGroupedPage()) {
-      const el = document.createElement('div');
-      el.className = 'stock-banner';
-      el.textContent = '✕ Currently out of stock';
-      parent.insertBefore(el, col);
-    } else if ((!cfg.blocksCta || cfg.discontinued || rrgIsGroupedPage()) && banner) {
-      banner.remove();
-    }
+    // Out of Stock / Unavailable / Discontinued notice (Brenton, 2026-11-12, spec.md §29 item 8): the
+    // same "Fits your vehicle"-style warning card as the grouped kit's, on every PDP, worded for the
+    // product (grouped pages show their own item-level card, rrgRenderGroupedItems()). Was a grey
+    // "✕ Currently out of stock" box and a red discontinued box.
+    parent.querySelectorAll(':scope > .stock-banner').forEach(el => el.remove());
+    const notice = !rrgIsGroupedPage() && rrgStockNoticeHTML(status);
+    if (notice) col.insertAdjacentHTML('beforebegin', notice);
     const specialBanner = parent.querySelector(':scope > .special-order-banner');
     if (cfg.specialOrder && !specialBanner) {
       const el = document.createElement('div');
@@ -809,16 +828,6 @@ function applyStockStatus(status) {
       parent.insertBefore(el, col);
     } else if (!cfg.specialOrder && specialBanner) {
       specialBanner.remove();
-    }
-    const discBanner = parent.querySelector(':scope > .discontinued-banner');
-    if (cfg.discontinued && !discBanner) {
-      const el = document.createElement('div');
-      el.className = 'discontinued-banner';
-      // Alternatives are Phase 2 (spec.md §23 item 23), so Phase 1 doesn't point to them.
-      el.innerHTML = '⛔ This product has been discontinued and is no longer available for purchase' + (typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2 ? ' — see similar alternatives below.' : '.');
-      parent.insertBefore(el, col);
-    } else if (!cfg.discontinued && discBanner) {
-      discBanner.remove();
     }
     col.hidden = !!cfg.discontinued;
   });
@@ -3822,12 +3831,16 @@ function buildAdminPanel() {
     html += section('Price &amp; media',
       toggle('video', 'Product has a video', initialVideo) +
       toggle('sale', 'Product is on sale', initialSale));
-    const stockOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['out_of_stock', 'Out of Stock'], ['special_order', 'Special Order'], ['discontinued', 'Discontinued']];
+    const stockOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['out_of_stock', 'Out of Stock'], ['special_order', 'Special Order'], ['unavailable', 'Not for sale (Unavailable)'], ['discontinued', 'Discontinued']];
     if (hasSwatches) stockOpts.unshift(['per_colour', 'As per colour (real data)']);
     // Grouped products (spec.md §29): one dropdown per kit item; the kit's own status is derived.
     const groupedItems = [...document.querySelectorAll('[data-grouped-items] .package-item[data-item-stock]')];
     const itemOpts = [['in_stock', 'In Stock'], ['low_stock', 'Low Stock'], ['special_order', 'Special Order'], ['out_of_stock', 'Out of Stock'], ['unavailable', 'Not for sale'], ['discontinued', 'Discontinued']];
+    const skus = groupedItems.map(el => el.dataset.itemSku);
+    const scenarioOpts = [['one', `One item not for sale (${skus[skus.length - 1]})`], ['two', `Two items not for sale (${skus.slice(0, 2).join(' + ')})`],
+      ['mixed', `${skus[0]} out of stock + ${skus[skus.length - 1]} not for sale`], ['special', `${skus[skus.length - 1]} special order`], ['all_in', 'Everything in stock'], ['custom', 'Custom (set below)']];
     if (groupedItems.length) html += section('Kit items <span class="admin-note">(the kit takes the worst)</span>',
+      choice('groupedScenario', 'Scenario', scenarioOpts, 'one') +
       groupedItems.map(el => choice('groupedItem:' + el.dataset.itemSku, el.dataset.itemSku, itemOpts, el.dataset.itemStock)).join(''));
     html += section('Stock',
       (groupedItems.length ? '' : choice('stockStatus', 'Stock level', stockOpts, hasSwatches ? 'per_colour' : 'in_stock')) +
@@ -4005,11 +4018,22 @@ function buildAdminPanel() {
     adminState.stockOverride = true;
     applyStockStatus(value);
   });
-  panel.querySelectorAll('select[name^="groupedItem:"]').forEach(sel => sel.addEventListener('change', () => {
+  const itemSelects = [...panel.querySelectorAll('select[name^="groupedItem:"]')];
+  itemSelects.forEach(sel => sel.addEventListener('change', e => {
     const item = document.querySelector(`[data-grouped-items] .package-item[data-item-sku="${sel.name.slice(12)}"]`);
     if (item) item.dataset.itemStock = sel.value;
     applyGroupedStock();
+    // A hand-picked item turns the Scenario to Custom (scenario changes set the items silently).
+    const sc = panel.querySelector('select[name="groupedScenario"]');
+    if (sc && !e.rrgScenario) sc.value = 'custom';
   }));
+  onChoice('groupedScenario', value => {
+    const last = itemSelects.length - 1;
+    const pick = { one: i => i === last ? 'unavailable' : 'in_stock', two: i => i < 2 ? 'unavailable' : 'in_stock',
+      mixed: i => i === 0 ? 'out_of_stock' : i === last ? 'unavailable' : 'in_stock', special: i => i === last ? 'special_order' : 'in_stock', all_in: () => 'in_stock' }[value];
+    if (!pick) return;
+    itemSelects.forEach((sel, i) => { sel.value = pick(i); const ev = new Event('change', { bubbles: true }); ev.rrgScenario = true; sel.dispatchEvent(ev); });
+  });
   if (document.querySelector('[data-grouped-items]')) applyGroupedStock();
   onChoice('storeStock', value => {
     adminState.storeStock = value;

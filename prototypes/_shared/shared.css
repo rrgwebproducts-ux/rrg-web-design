@@ -1191,7 +1191,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .admin-toggle input.admin-number::after{display:none;}
 
 /* Out-of-stock banner, inserted above the Add to Cart column by the demo admin panel */
-.stock-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-grey-600);background:var(--rrg-bg);border:1px solid var(--rrg-line-strong);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;}
+/* Out of Stock / Unavailable / Discontinued: a .fitment.unknown notice card (rrgStockNoticeHTML, spec.md §29 item 8). */
+.stock-banner{margin-bottom:10px;}
 
 /* Shown in place of the Delivery/Click & Collect widget when the demo admin panel has
    both availability toggles switched off */
@@ -1234,7 +1235,6 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* Discontinued banner — sits above Add to Cart in place of the button/payment-badges
    (which are hidden via .cta-col[hidden] while this state is active), demo admin panel
    "Discontinued" stock-status option, backlog item 23, 2026-09-11. */
-.discontinued-banner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--rrg-black);background:var(--rrg-nofit-bg);border:1px solid var(--rrg-nofit);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;}
 
 /* Brand logo — required on every product page, sits at the top of the decision panel.
    Fixed height/auto width made MAXTRAX (and Front Runner, same source aspect ratio)

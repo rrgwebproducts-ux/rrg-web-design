@@ -701,7 +701,7 @@ const RRG_DYN_FIELDS = [
   { id: 'pdp.stock_banners', label: 'Stock-state banners (low stock / out of stock / special order / discontinued)', source: 'magento',
     token: '{stock.banner_message}',
     attr: 'Magento: stock status',
-    sel: '.decision-panel .scarcity, .decision-panel .stock-banner, .decision-panel .special-order-banner, .decision-panel .discontinued-banner',
+    sel: '.decision-panel .scarcity, .decision-panel .stock-banner, .decision-panel .special-order-banner',
     pages: ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box'],
     rule: ['Fixed copy per state, shown only in that state', 'In stock → none shown'],
     example: 'Only a few left — get in before they run out',

@@ -24,7 +24,7 @@
 //            selM  a different selector for the mobile frame (when mobile uses another element)
 //            sizes ['d','m'] (default both): d = 1280px desktop, m = 390px mobile
 
-const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box'];
+const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box', 'grouped-kit-unavailable'];
 const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers', 'vplp'];
 const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'clearance', 'blog', 'blog-post', 'header'];
 const NOT_CHECKOUT = ALL_PAGES.filter(p => p !== 'checkout');
@@ -168,8 +168,9 @@ const RRG_COMPONENTS = [
     ] },
   { id: 'stock-status', group: 'product', name: 'Stock Status (price, stock line, Add to Cart)', build: 'shared', hover: '.stock-status-line, .stock-subline', usedOn: PDP5,
     source: 'applyStockStatus / renderStockLine (shared.js), STOCK_STATUS',
-    variants: ['in_stock', 'low_stock', 'out_of_stock', 'special_order', 'discontinued'].map(s =>
-      v({ in_stock: 'In Stock', low_stock: 'Low Stock', out_of_stock: 'Out of Stock', special_order: 'Special Order', discontinued: 'Discontinued' }[s], 'simple', '.decision-panel', { ls: demo('simple', { 'r:stockStatus': s }), sizes: ['d'] }))
+    variants: ['in_stock', 'low_stock', 'out_of_stock', 'special_order', 'unavailable', 'discontinued'].map(s =>
+      v({ in_stock: 'In Stock', low_stock: 'Low Stock', out_of_stock: 'Out of Stock', special_order: 'Special Order', unavailable: 'Not for sale (Unavailable)', discontinued: 'Discontinued' }[s], 'simple', '.decision-panel', { ls: demo('simple', { 'r:stockStatus': s }), sizes: ['d'] }))
+      .concat(['one', 'two', 'mixed'].map(sc => v({ one: 'Grouped kit — one item not for sale', two: 'Grouped kit — two items not for sale', mixed: 'Grouped kit — one out of stock, one not for sale' }[sc], 'grouped-kit-unavailable', '.decision-panel', { ls: demo('grouped-kit-unavailable', { 'r:groupedScenario': sc }), sizes: ['d'] })))
       .concat([v('Phase 2 — stock at your store', 'simple', '.decision-panel', { ls: { ...S.phase2, ...demo('simple', { 'r:storeStock': 'nearby' }) }, sizes: ['d'] })]) },
   { id: 'cart-conflict', group: 'product', name: 'Cart Compatibility Banner', build: 'shared', hover: '.cart-conflict-banner', usedOn: PDP5,
     source: 'applyCartConflict (shared.js) + rrgPackageCompatHTML (cart.js)',
@@ -280,11 +281,13 @@ const RRG_COMPONENTS = [
       v('Open', 'simple', '#storeSlideoutBackdrop', { do: 'call:openStoreSlideout', h: 760 }),
       v('Open — Phase 2', 'simple', '#storeSlideoutBackdrop', { ls: S.phase2, do: 'call:openStoreSlideout', h: 760 }),
     ] },
-  { id: 'package-contents', group: 'product', name: 'What\'s Included (Package Contents)', build: 'copied', usedOn: ['vehicle-specific', 'grouped-bundle'],
-    source: 'Static per page',
+  { id: 'package-contents', group: 'product', name: 'What\'s Included (Package Contents)', build: 'copied', usedOn: ['vehicle-specific', 'grouped-bundle', 'grouped-kit-unavailable'],
+    source: 'Static per page; per-item stock chips from rrgRenderGroupedItems (shared.js) on [data-grouped-items]',
     variants: [
       v('Vehicle-Specific', 'vehicle-specific', '.package-items'),
       v('Grouped / Bundle', 'grouped-bundle', '.package-items'),
+      v('Grouped kit — item not for sale', 'grouped-kit-unavailable', '.package-items', { ls: demo('grouped-kit-unavailable', { 'r:groupedScenario': 'one' }) }),
+      v('Grouped kit — two items not for sale', 'grouped-kit-unavailable', '.package-items', { ls: demo('grouped-kit-unavailable', { 'r:groupedScenario': 'two' }) }),
     ] },
   { id: 'install-cta', group: 'product', name: 'Get It Installed', build: 'copied', usedOn: PDP5,
     source: 'Static per page; copy changes with the Fitment Gallery count (shared.js)',
