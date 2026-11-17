@@ -71,8 +71,11 @@
   <!-- Section 3.4 — services, the PDP trust row. Copy trimmed from live's "Get Racked Right". -->
   <div class="trust-row" id="storeServices"></div>
 
-  <!-- Section 3.5 — products on this store's showroom floor (demo data per store). -->
-  <section class="product-carousel-section" id="onDisplay">
+  <!-- Section 3.5 — products on this store's showroom floor (demo data per store). Phase 2 only
+       (design meeting 2026-11-17, spec.md §30 item 1): it needs a Rackit "showroom" flag (product in a
+       showroom bin location, or a SKU ending "-display") that doesn't exist yet. Hidden at launch,
+       not deleted: Site Admin › Phase 2 shows it again. -->
+  <section class="product-carousel-section rrg-phase2" id="onDisplay">
     <div class="product-carousel-head">
       <h2 class="related-heading" id="storeDisplayHeading"></h2>
     </div>
@@ -250,7 +253,7 @@ function renderStore() {
   document.getElementById('storeServices').innerHTML = [
     { icon: '<path d="M22 7.24a5 5 0 0 1-6.16 6.16l-8.3 8.3a2 2 0 0 1-2.83-2.83l8.3-8.3A5 5 0 0 1 19.76 2l-3.4 3.4 1.24 1.24L21 3.24A5 5 0 0 1 22 7.24z"/>', h: 'Expert Fitting', p: 'Roof racks, bike racks, awnings, roof boxes and touring gear, <a href="#">book an installation</a>' },
     s.clickAndCollect && { icon: '<path d="M3 9l1.5-5h15L21 9"/><path d="M4 9h16v11H4z"/><path d="M9 20v-6h6v6"/>', h: 'Click & Collect', p: `Order online, pick up from ${s.name}` },
-    { icon: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>', h: 'See It In Person', p: `Racks, fittings and accessories to see and touch, <a href="#onDisplay">see what's on show</a>` },
+    { icon: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>', h: 'See It In Person', p: `Racks, fittings and accessories to see and touch${rrgPhaseGet() === 2 ? `, <a href="#onDisplay">see what's on show</a>` : ''}` },
     { icon: '<path d="M21 12a8 8 0 0 1-11.8 7L3 21l2-6.2A8 8 0 1 1 21 12z"/>', h: 'Advice & After-Sales', p: 'Help choosing the right setup, plus warranty and spare-parts support' }
   ].filter(Boolean).map(x => `<div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg><h4>${x.h}</h4><p>${x.p}</p></div>`).join('');
 
