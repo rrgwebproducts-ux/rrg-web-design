@@ -4106,3 +4106,93 @@ document.addEventListener('DOMContentLoaded', () => {
   buildSiteAdminPanel(currentTemplateKey);
   rrgApplySessionState();
 });
+
+// ==== Spare Parts tab (design meeting 2026-11-17, spec.md §30 item 2) =============================
+// Modelled on roofbox.co.uk's ProRide 598 page. Data, shaped like the future API:
+//   window.PDP_SPARE_PARTS = { brand, diagramUrl, diagramAlt, parts: [{ ref?, sku, name, url, price, thumb }] }
+//   (product.sparePartsDiagramUrl + product.spareParts[]; every part is its own product with its own PDP).
+// No parts → no tab, so most products never show it. It's inserted as the last tab before Reviews and
+// is never the checked radio, so it starts closed (desktop tab bar and mobile accordion alike). The
+// diagram sits on top: an image opens full size in a new tab, a PDF becomes a download card, none yet
+// shows a placeholder. Rows stay compact (40px thumbnail); lists longer than RRG_SPARE_PARTS_SHOWN
+// show that many plus "Show all {n} parts". The Ref column only appears when parts carry a diagram ref.
+const RRG_SPARE_PARTS_SHOWN = 6;
+function rrgSparePartsDiagramHTML(d) {
+  const url = d.diagramUrl || '';
+  if (/\.pdf($|\?)/i.test(url)) {
+    return `<div class="doc-cards spare-diagram-pdf"><a class="doc-card" href="${url}" target="_blank" rel="noopener"><span class="doc-card-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H14a1 1 0 0 1-1-1V3.5z"/></svg></span><span class="doc-card-text"><strong>Spare parts diagram</strong><span>PDF</span></span><span class="doc-card-cta">View</span></a></div>`;
+  }
+  if (url) {
+    return `<a class="spare-diagram" href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="${d.diagramAlt || 'Spare parts diagram'}" loading="lazy"></a>`;
+  }
+  return `<div class="spare-diagram spare-diagram--empty" role="img" aria-label="Spare parts diagram (example placeholder)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></svg>
+    <span>Exploded parts diagram</span><span class="store-demo-tag">Example: image or PDF from the API</span>
+  </div>`;
+}
+function rrgSparePartsRowsHTML(d) {
+  const cur = typeof regionCurrencySymbol === 'function' ? regionCurrencySymbol() : '$';
+  const hasRef = d.parts.some(p => p.ref != null);
+  return d.parts.map((p, i) => `
+    <tr${i >= RRG_SPARE_PARTS_SHOWN ? ' class="spare-more-row" hidden' : ''}>
+      ${hasRef ? `<td class="sp-ref">${p.ref ?? ''}</td>` : ''}
+      <td class="sp-thumb"><img src="${p.thumb}" alt="" width="40" height="40" loading="lazy"></td>
+      <td class="sp-name"><a href="${p.url}" target="_blank" rel="noopener">${p.name}</a></td>
+      <td class="sp-sku-col">${p.sku}</td>
+      <td class="sp-price">${cur}${Number(p.price).toFixed(2)}</td>
+      <td class="sp-add"><button type="button" class="btn btn-cta btn-sm" data-spare-add="${i}" aria-label="Add ${p.name} to cart">Add</button></td>
+    </tr>`).join('');
+}
+function rrgSparePartsHTML(d) {
+  const hasRef = d.parts.some(p => p.ref != null);
+  const more = d.parts.length > RRG_SPARE_PARTS_SHOWN;
+  return `<input type="radio" name="tabs" id="tSpare"><label for="tSpare">Spare Parts</label>
+    <div class="content spare-parts">
+      ${d.example ? '<p class="spare-example"><span class="store-demo-tag">Example data</span></p>' : ''}
+      ${rrgSparePartsDiagramHTML(d)}
+      <table class="spare-table">
+        <caption class="visually-hidden">Spare parts for this product</caption>
+        <thead><tr>
+          ${hasRef ? '<th scope="col" class="sp-ref">Ref</th>' : ''}
+          <th scope="col" class="sp-thumb"><span class="visually-hidden">Image</span></th>
+          <th scope="col" class="sp-name">Part</th>
+          <th scope="col" class="sp-sku-col">Part no.</th>
+          <th scope="col" class="sp-price">Price</th>
+          <th scope="col" class="sp-add"><span class="visually-hidden">Add to cart</span></th>
+        </tr></thead>
+        <tbody>${rrgSparePartsRowsHTML(d)}</tbody>
+      </table>
+      ${more ? `<button type="button" class="spare-more" data-spare-more>Show all ${d.parts.length} parts</button>` : ''}
+    </div>`;
+}
+function rrgMountSpareParts() {
+  const d = window.PDP_SPARE_PARTS;
+  const tabs = document.querySelector('.tabs');
+  if (!tabs || !d || !(d.parts || []).length || tabs.querySelector('#tSpare')) return;
+  const reviews = [...tabs.querySelectorAll(':scope > label')].find(l => l.textContent.trim() === 'Reviews');
+  const before = reviews ? tabs.querySelector(`:scope > #${reviews.htmlFor}`) : null;
+  const tpl = document.createElement('template');
+  tpl.innerHTML = rrgSparePartsHTML(d);
+  tabs.insertBefore(tpl.content, before);
+  const panel = tabs.querySelector('.spare-parts');
+  panel.addEventListener('click', e => {
+    const add = e.target.closest('[data-spare-add]');
+    if (add && typeof rrgCartAdd === 'function') {
+      const p = d.parts[+add.dataset.spareAdd];
+      rrgCartAdd({ sku: p.sku, brand: d.brand, name: p.name, price: p.price, image: p.thumb, url: p.url });
+    }
+    const more = e.target.closest('[data-spare-more]');
+    if (more) {
+      panel.querySelectorAll('.spare-more-row').forEach(r => { r.hidden = false; });
+      more.remove();
+    }
+  });
+  // Currency follows the region (prices are the prototype-wide demo swap, like product cards).
+  document.addEventListener('rrg-region-change', () => {
+    const body = panel.querySelector('tbody');
+    const open = !panel.querySelector('[data-spare-more]');
+    body.innerHTML = rrgSparePartsRowsHTML(d);
+    if (open) body.querySelectorAll('.spare-more-row').forEach(r => { r.hidden = false; });
+  });
+}
+document.addEventListener('DOMContentLoaded', rrgMountSpareParts);

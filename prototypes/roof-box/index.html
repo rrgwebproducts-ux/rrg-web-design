@@ -573,6 +573,83 @@
 <script src="../_shared/shared.js"></script>
 <script src="../_shared/cart.js"></script>
 <script>
+// ==== Spare Parts tab data — EXAMPLE DATA (design meeting 2026-11-17, spec.md §30 item 2) ==========
+// Shaped like the future API: product.sparePartsDiagramUrl + product.spareParts[]. The parts are real
+// Thule spares the AU site sells (names shortened from the live titles, prices + thumbnails from their
+// live pages, 2026-11-17), matched to the Motion 3 spares roofbox.co.uk lists for this box. Which parts
+// belong to which product, and the diagram, come from the API in production; no Motion 3 diagram was
+// available, so diagramUrl is empty and the tab shows its placeholder. Rendered by rrgMountSpareParts().
+window.PDP_SPARE_PARTS = {
+  example: true,
+  brand: 'Thule',
+  diagramUrl: '',
+  diagramAlt: 'Thule Motion 3 L spare parts diagram',
+  parts: [
+    {
+      "sku": "1500055083",
+      "name": "Thule PowerClick G3 Clamp (x1) Spare Kit",
+      "url": "https://www.roofracksgalore.com.au/thule-spare-or-replacement-powerclick-g3-x1-sp-kit-1500055083",
+      "price": 39.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/t/h/thule-powerclick-g3-clamp-spare-1500055083_1.webp"
+    },
+    {
+      "sku": "1500054109",
+      "name": "Thule LidLifter ML 70 XT, Grey Housing",
+      "url": "https://www.roofracksgalore.com.au/thule-lidlifter-ml-70-xt-grey-housing-1500054109",
+      "price": 19.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500054109-Spare-Parts._1_1.webp"
+    },
+    {
+      "sku": "1500054110",
+      "name": "Thule LidLifter ML 100 XT, Grey Housing",
+      "url": "https://www.roofracksgalore.com.au/thule-lidlifter-ml-100-xt-grey-housing-1500054110",
+      "price": 19.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500054110-Spare-Parts._1_1.webp"
+    },
+    {
+      "sku": "1500014952",
+      "name": "Thule LidLifter Kit ML 70",
+      "url": "https://www.roofracksgalore.com.au/thule-lidlifter-kit-ml-70-1500014952",
+      "price": 24.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500014952-Spare-Parts._1_1.webp"
+    },
+    {
+      "sku": "1500014956",
+      "name": "Thule LidLifter Kit ML 100",
+      "url": "https://www.roofracksgalore.com.au/thule-lidlifter-kit-ml-100-1500014956",
+      "price": 24.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500014956-Spare-Parts._1_1.webp"
+    },
+    {
+      "sku": "1500014958",
+      "name": "Thule LidLifter Kit ML 120",
+      "url": "https://www.roofracksgalore.com.au/thule-lidlifter-kit-ml-120-1500014958",
+      "price": 27.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500014958-Spare-Parts._1_1.webp"
+    },
+    {
+      "sku": "1500014053",
+      "name": "Thule Cover Locking Cylinder, Left (Motion XT & Arcos)",
+      "url": "https://www.roofracksgalore.com.au/thule-cover-locking-cylinder-left-for-motion-xt-arcos-1500014053",
+      "price": 19.95,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500014053-Spare-Parts._1.webp"
+    },
+    {
+      "sku": "1500001225",
+      "name": "Thule Lock Barrel + Key N225",
+      "url": "https://www.roofracksgalore.com.au/thule-lock-barrel-key-n225-1500001225",
+      "price": 25.0,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500001225-Keys--Barrels._1.webp"
+    },
+    {
+      "sku": "1500000227",
+      "name": "Thule Premium Key N227",
+      "url": "https://www.roofracksgalore.com.au/thule-premium-key-n227-1500000227",
+      "price": 19.0,
+      "thumb": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/88x88/pub/media/catalog/product/T/h/Thule-1500000227-Keys--Barrels._1.webp"
+    }
+  ]
+};
 const MAXTRAX_FAMILY = {
   // Thule Motion 3 L — real live data (2026-10-06). Kept under the template's own variable name so
   // the Sibling-Color render functions below are unchanged. Gloss Black was $1,999.95, now $1,999.00.

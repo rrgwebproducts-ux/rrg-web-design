@@ -1897,6 +1897,20 @@ Phase 2 with no store set adds **"Set your store to see local stock"** after the
 
 ---
 
+### 4.38 Spare Parts tab
+
+**Added 2026-11-17 (`spec.md` §30 item 2, design meeting with Graham, Marc and Scott).** Modelled on roofbox.co.uk's ProRide 598 page. Low-traffic, so it is **closed by default**: a tab after Shipping Info / Fitting Instructions (before Reviews) that is never the open one on load; on phones it's a collapsed accordion row.
+
+**Data (future API):** `product.sparePartsDiagramUrl` (image or PDF) and `product.spareParts[]`. Each part is **its own product with its own PDP**: `sku`, `name`, `url`, `price`, `thumb`, optional `ref` (the callout number on the diagram). **No parts → no tab.** Where the product ↔ part links live (Rackit or Magento related products) is still to be decided.
+
+**Layout:**
+- **Diagram** on top (max 640px wide). Image → opens full size in a new tab. PDF → a download card (the Fitting Instructions `.doc-card`). The prototype shows a placeholder because no Motion 3 diagram was available.
+- **Parts table** below, compact (~52px rows): 40px thumbnail · part name (links to the part's PDP) · part no. · price · gold **Add** (adds 1 to the cart, opens the mini-cart). A **Ref** column appears only when the parts carry diagram refs.
+- **Long lists:** first 6 rows, then "Show all {n} parts".
+- **Phones:** thumbnail | name, then part no. + price on one line | Add.
+
+**Built:** `rrgMountSpareParts()` / `rrgSparePartsHTML()` in shared.js, CSS "Spare Parts tab" in shared.css. Shown on the Roof Box template (Thule Motion 3 L) with **example data** (`window.PDP_SPARE_PARTS`, `example: true` shows an "Example data" tag): 9 real Thule spares sold on the AU site (lid lifters, PowerClick G3 clamp, lock cylinder cover, lock barrel, key), prices and thumbnails from their live pages, 2026-11-17. Page Debugger: `pdp.spare_parts`.
+
 ## 5. SEO & Structured Data
 
 **Location:** the page `<head>` and inline `<script type="application/ld+json">` blocks — not a visible widget, so it doesn't follow the Name/Location/Purpose/screenshot template used elsewhere in this document. Applies to all 5 templates.
