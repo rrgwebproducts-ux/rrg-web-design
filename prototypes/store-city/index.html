@@ -131,25 +131,89 @@
 // photo and the store photos (the prototype's copies in _shared/stores/; production uses each
 // store record's own images). Brands follow the approved list (no STEDI or Wedgetail until
 // their rebates are paid, Tim 2026-10-09).
+// Shared by every city: the live pages' fitting paragraph and brand line (approved brands only).
+const CITY_FITTING_COPY = 'Every store has an experienced team who can recommend, supply and install the right setup, from popular models like the Ford Ranger, Ford Everest, Toyota HiLux, Toyota LandCruiser, Mitsubishi Pajero Sport, Isuzu MU-X and Subaru Forester through to everyday family cars, work utes and touring vehicles.';
+const CITY_BRANDS = 'Rhino-Rack, Yakima, Thule, Cruz, DropRacks, Prorack, Front Runner, MAXTRAX, Kuat, KAON, Darche and BUZZ Rack';
+const cityCopy = (region, extra = '') => [
+  `Whether you’re fitting out a work vehicle, setting up for weekends away or upgrading your touring setup, our ${region} superstores stock roof racks, bike carriers, eBike racks, platforms, roof boxes, roof top tents, awnings, ${extra}LED lights and touring gear.`,
+  CITY_FITTING_COPY,
+  `In store you’ll find ${CITY_BRANDS}.`
+];
+
 const CITY_PAGES = {
   brisbane: {
     title: 'Roof Racks Galore | SEQ | Brisbane, Gold Coast & Sunshine Coast Roof Rack Superstores',
     metaDescription: 'Shop roof racks, bike racks, roof boxes, awnings, roof top tents and 4x4 accessories across South East Queensland. Roof Racks Galore has stores throughout Brisbane, Gold Coast and Sunshine Coast with expert advice and professional fitting available.',
-    region: 'South East Queensland',
+    region: 'South East Queensland', fitPlaces: 'Brisbane, the Gold Coast or the Sunshine Coast',
     intro: 'South East Queensland’s destination for roof racks, bike racks, camping, touring and 4x4 accessories, with expert advice and professional fitting at every store.',
     heroImage: { src: 'northlakes-outside.webp', alt: 'Roof Racks Galore North Lakes superstore' },
     localHeading: 'Roof Racks, Bike Racks, Touring Gear & Professional Fitting',
-    localCopy: [
-      'Whether you’re fitting out a work vehicle, setting up for weekends away or upgrading your touring setup, our South East Queensland superstores stock roof racks, bike carriers, eBike racks, platforms, roof boxes, roof top tents, awnings, 4WD accessories, LED lights and touring gear.',
-      'Every store has an experienced team who can recommend, supply and install the right setup, from popular models like the Ford Ranger, Ford Everest, Toyota HiLux, Toyota LandCruiser, Mitsubishi Pajero Sport, Isuzu MU-X and Subaru Forester through to everyday family cars, work utes and touring vehicles.',
-      'In store you’ll find Rhino-Rack, Yakima, Thule, Cruz, DropRacks, Prorack, Front Runner, MAXTRAX, Kuat, KAON, Darche and BUZZ Rack.'
-    ],
-    brands: 'Rhino-Rack, Yakima, Thule, Cruz, DropRacks, Prorack, Front Runner, MAXTRAX, Kuat, KAON, Darche and BUZZ Rack',
+    localCopy: cityCopy('South East Queensland', '4WD accessories, '),
     photos: [
       { store: 'North Lakes', src: 'northlakes-inside-1.webp', alt: 'Inside Roof Racks Galore North Lakes' },
       { store: 'East Brisbane', src: 'eastbrisbane-outside.webp', alt: 'Roof Racks Galore East Brisbane superstore' },
       { store: 'Kedron', src: 'kedron-1.webp', alt: 'Roof Racks Galore Kedron superstore' },
       { store: 'Rocklea', src: 'rocklea-outside.webp', alt: 'Roof Racks Galore Rocklea superstore' }
+    ]
+  },
+  sydney: {
+    title: 'Roof Racks Galore | New South Wales | Sydney Roof Racks & Touring Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Sydney. Roof Racks Galore has Superstores in Silverwater, Miranda, Warriewood, Moorebank, Castle Hill, Smeaton Grange and Matraville with expert advice and professional fitting available.',
+    region: 'Sydney', fitPlaces: 'Sydney',
+    intro: 'Sydney’s destination for roof racks, bike racks, camping and touring accessories, with expert advice and professional fitting at every store.',
+    heroImage: { src: 'moorebank-outside.webp', alt: 'Roof Racks Galore Moorebank superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Sydney'),
+    photos: [
+      { store: 'Castle Hill', src: 'castlehill-front.webp', alt: 'Roof Racks Galore Castle Hill superstore' },
+      { store: 'Silverwater', src: 'silverwater-outside-1.webp', alt: 'Roof Racks Galore Silverwater superstore' },
+      { store: 'Matraville', src: 'matraville-outside-1.webp', alt: 'Roof Racks Galore Matraville superstore' },
+      { store: 'Warriewood', src: 'warriewood.webp', alt: 'Roof Racks Galore Warriewood superstore' }
+    ]
+  },
+  melbourne: {
+    title: 'Roof Racks Galore | Victoria | Melbourne & Geelong Roof Rack Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Melbourne and Geelong. Roof Racks Galore has 9 Superstores throughout Victoria with expert advice, professional fitting and products from leading brands.',
+    region: 'Melbourne & Geelong', fitPlaces: 'Melbourne or Geelong',
+    intro: 'Victoria’s destination for roof racks, bike racks, camping and touring accessories, with expert advice and professional fitting at every store.',
+    heroImage: { src: 'preston-outside.webp', alt: 'Roof Racks Galore Preston superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Melbourne and Geelong'),
+    photos: [
+      { store: 'Frankston', src: 'frankston-outside.webp', alt: 'Roof Racks Galore Frankston superstore' },
+      { store: 'Epping', src: 'epping-outside.webp', alt: 'Roof Racks Galore Epping superstore' },
+      { store: 'Geelong', src: 'geelong-1.webp', alt: 'Roof Racks Galore Geelong superstore' },
+      { store: 'Hallam', src: 'hallam-outside.webp', alt: 'Roof Racks Galore Hallam superstore' }
+    ]
+  },
+  perth: {
+    title: 'Roof Racks Galore | Western Australia | Perth Roof Rack Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Perth. Roof Racks Galore has Superstores in Osborne Park, Welshpool, Malaga, Joondalup and Rockingham with expert advice and professional fitting available.',
+    region: 'Perth', fitPlaces: 'Perth',
+    intro: 'Perth’s destination for roof racks, bike racks, camping and touring accessories, with expert advice and professional fitting at every store.',
+    heroImage: { src: 'joondalup-outside.webp', alt: 'Roof Racks Galore Joondalup superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Perth'),
+    photos: [
+      { store: 'Osborne Park', src: 'osbornepark-inside-1.webp', alt: 'Inside Roof Racks Galore Osborne Park' },
+      { store: 'Welshpool', src: 'welshpool-outside.webp', alt: 'Roof Racks Galore Welshpool superstore' },
+      { store: 'Malaga', src: 'malaga-outside.webp', alt: 'Roof Racks Galore Malaga superstore' },
+      { store: 'Joondalup', src: 'joondalup-inside-1.webp', alt: 'Inside Roof Racks Galore Joondalup' }
+    ]
+  },
+  adelaide: {
+    title: 'Roof Racks Galore | SA | Adelaide Metro Roof Rack Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Adelaide Metro. Roof Racks Galore has Superstores in Adelaide City, Edinburgh, Lonsdale and Pooraka, with expert advice and professional fitting available.',
+    region: 'Adelaide', fitPlaces: 'Adelaide',
+    intro: 'South Australia’s destination for roof racks, bike racks, camping and touring accessories, with expert advice and professional fitting at every store.',
+    heroImage: { src: 'pooraka-outside.webp', alt: 'Roof Racks Galore Pooraka superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Adelaide'),
+    photos: [
+      { store: 'Adelaide City', src: 'adelaidecity-outside.webp', alt: 'Roof Racks Galore Adelaide City superstore' },
+      { store: 'Edinburgh', src: 'edinburgh-1.webp', alt: 'Roof Racks Galore Edinburgh superstore' },
+      { store: 'Lonsdale', src: 'lonsdale-outside.webp', alt: 'Roof Racks Galore Lonsdale superstore' },
+      { store: 'Pooraka', src: 'pooraka-inside-1.webp', alt: 'Inside Roof Racks Galore Pooraka' }
     ]
   }
 };
@@ -262,13 +326,13 @@ function cityRender() {
   }).join('');
 
   // FAQ — store lists and hours come from the data, so they can't drift.
-  const storeName = st => st.city && st.city !== st.name ? `${st.name} (${st.city})` : st.name;
+  const storeName = st => st.city && !st.name.includes(st.city) && !st.city.includes(st.name) ? `${st.name} (${st.city})` : st.name;
   const faqs = [
     { q: `Where are your stores in ${CITY.region}?`, a: `We have ${NUM_WORDS[n] || n} superstores. ${CITY.areas.map(a => `${a.name}: ${listJoin(a.stores.map(name => storeName(CITY_STORES.find(st => st.name === name))))}`).join('. ')}.` },
     { q: 'What are your store opening hours?', a: cityHoursSentence() },
-    { q: `Can I get a roof rack fitted in ${listJoin(CITY.areas.map(a => a.name)).replace(/ and ([^,]*)$/, ' or $1')}?`, a: `Yes. Every one of our ${CITY.region} superstores has an experienced team who can recommend, supply and install roof racks, bike racks, roof boxes, awnings, roof top tents and touring gear. Book a fitting online or call your nearest store.` },
+    { q: `Can I get a roof rack fitted in ${CITY.fitPlaces}?`, a: `Yes. Every one of our ${CITY.region} superstores has an experienced team who can recommend, supply and install roof racks, bike racks, roof boxes, awnings, roof top tents and touring gear. Book a fitting online or call your nearest store.` },
     { q: 'Can I order online and pick up in store?', a: `Yes. Choose Click & Collect at checkout and pick your order up from any of our ${n} ${CITY.region} stores.` },
-    { q: 'Which brands do your stores carry?', a: `Our ${CITY.region} stores carry ${CITY.brands}, with displays of roof racks, roof boxes, bike racks and touring gear to see in person.` }
+    { q: 'Which brands do your stores carry?', a: `Our ${CITY.region} stores carry ${CITY_BRANDS}, with displays of roof racks, roof boxes, bike racks and touring gear to see in person.` }
   ];
   $('cityFaqHeading').textContent = `${CITY.region} Store FAQs`;
   $('cityFaqList').innerHTML = faqs.map((f, i) => `

@@ -539,7 +539,7 @@ const RRG_COMPONENTS = [
     variants: [v('AU', 'store-finder', '#sfLayout', { sizes: ['d'] }), v('State tabs', 'store-finder', '#sfTabs'), v('NZ', 'store-finder', '#sfLayout', { ls: S.nz, sizes: ['d'] })] },
   { id: 'city-stores', group: 'stores', name: 'City Stores — Area Tabs, List + Map', build: 'copied', usedOn: ['store-city'],
     source: 'Inline in store-city; the Store Finder layout (.sf-tabs, .sf-layout) + rrgStoreCardHTML, grouped by area from RRG_STORE_CITIES (shared.js)',
-    variants: [v('Brisbane & SEQ', 'store-city', '#cityStores', { q: 'city=brisbane', sizes: ['d'] }), v('Area tabs', 'store-city', '#cityTabs', { q: 'city=brisbane' })] },
+    variants: [v('Brisbane & SEQ', 'store-city', '#cityStores', { q: 'city=brisbane', sizes: ['d'] }), v('Area tabs — Brisbane', 'store-city', '#cityTabs', { q: 'city=brisbane' }), v('Area tabs — Melbourne (5 areas)', 'store-city', '#cityTabs', { q: 'city=melbourne' }), v('Adelaide (4 stores)', 'store-city', '#cityStores', { q: 'city=adelaide', sizes: ['d'] })] },
   { id: 'city-photo-grid', group: 'stores', name: 'City Store Photos', build: 'copied', usedOn: ['store-city'],
     source: 'Inline in store-city (CITY_PAGES photos), each photo links to its store page',
     variants: [v('Brisbane & SEQ', 'store-city', '.store-local', { q: 'city=brisbane' })] },

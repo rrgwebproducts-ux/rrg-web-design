@@ -2000,6 +2000,7 @@ Graham asked whether there were plans for the live city pages (`/roof-racks-bris
    - **Store Finder:** each state heading links to its city ("Brisbane & SEQ stores ›").
    - **Store pages:** the crumb is now Home › Store Finder › Brisbane & SEQ › North Lakes, and Nearby Stores gets "All Brisbane & SEQ stores ›".
    - **Other stores:** NSW stores keep the state crumb until Sydney is built.
-3. **Next, after Brisbane is approved:** Sydney, Melbourne, Perth and Adelaide, from their live pages.
+3. ✅ **Built 2026-11-17 (after Brenton approved Brisbane): Sydney (7), Melbourne & Geelong (9), Perth (5) and Adelaide (4).** Each uses its live page's areas, title, meta and lead line, plus four store photos from the stores' live galleries. Every state with a city now gets a "{City} stores ›" link on the Store Finder, and those states' store pages get the city crumb. ACT and TAS have no city page and keep the state crumb.
    - **Live lists to fix (for Graham):** Sydney is missing Arncliffe; Melbourne says 9 stores but lists 8 (no Preston).
-   - **Check Perth:** the live sitemap has Cockburn, which our store network doesn't.
+   - **Melbourne:** Preston is included here.
+   - **Perth:** Cockburn (Yangebup) is on the live page and locator map with no address, phone or page, so it's left out until its store record exists.

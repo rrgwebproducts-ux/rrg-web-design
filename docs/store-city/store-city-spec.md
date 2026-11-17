@@ -2,7 +2,7 @@
 
 Project: the city (metro area) store pages: the live `/roof-racks-brisbane`, `/roof-racks-sydney`, `/roof-racks-melbourne`, `/roof-racks-perth` and `/roof-racks-adelaide`. They sit between the Store Finder (`docs/store-finder/store-finder-spec.md`) and the individual store pages (`docs/store/store-spec.md`). The conventions are the same as those pages: a plain HTML/CSS/JS prototype, checked with Playwright, and pushed for Brenton's review on Vercel.
 
-Raised by Graham on 2026-11-17 and agreed with Brenton the same day (spec.md §31). **Brisbane & SEQ is built (2026-11-17) and in review.** Sydney, Melbourne, Perth and Adelaide follow once Brisbane is approved.
+Raised by Graham on 2026-11-17 and agreed with Brenton the same day (spec.md §31). **All five are built (2026-11-17) and in review:** Brisbane & SEQ first, then Sydney, Melbourne & Geelong, Perth and Adelaide once Brenton approved the Brisbane design.
 
 ---
 
@@ -66,6 +66,17 @@ In production this is the city page's CMS content; the store list and facts are 
 
 All 8 stores, matching the live page.
 
+The other cities use the live pages' own area groupings (crawled 2026-11-17):
+
+| City (`?city=`) | Areas → stores | Differences from the live page |
+|---|---|---|
+| Sydney (`sydney`), 7 | Northern Sydney: Warriewood, Castle Hill · Western Sydney: Silverwater · South Western Sydney: Moorebank, Smeaton Grange · Southern Sydney: Miranda, Matraville | None. Arncliffe is in the live sitemap but not on the page or in the store network. |
+| Melbourne & Geelong (`melbourne`), 9 | Northern Melbourne: Epping, Preston · Eastern Melbourne: Mitcham · Western Melbourne: Hoppers Crossing, Maidstone · South Eastern Melbourne: Hallam, Moorabbin, Frankston · Geelong: Geelong | **Preston added.** The live page says 9 stores but lists 8. Live calls the last group "Regional Victoria". |
+| Perth (`perth`), 5 | Northern Perth: Joondalup, Malaga · Central Perth: Osborne Park · Eastern Perth: Welshpool · Southern Perth: Rockingham | **Cockburn (Yangebup) left out.** On live it's only a locator map pin, with no address, phone or store page, and it isn't in the store network. |
+| Adelaide (`adelaide`), 4 | Central Adelaide: Adelaide City · Northern Adelaide: Edinburgh, Pooraka · Southern Adelaide: Lonsdale | None. The H1 keeps the live "Adelaide Metro"; the crumb and links say "Adelaide". |
+
+**Shared copy.** The fitting paragraph and the brand line are shared by every city (`CITY_FITTING_COPY`, `CITY_BRANDS`). Each city has its own lead line (the live one), range paragraph, hero photo and four store photos, taken from the stores' live galleries and saved as .webp in `_shared/stores/`.
+
 ---
 
 ## 3. FAQ
@@ -113,6 +124,8 @@ The store lists and hours are generated from the data, so they can't drift.
 
 ## 7. Open
 
-- **Sydney, Melbourne, Perth, Adelaide:** crawl each live page for copy and its store list, and check the live Perth list against our network (the live sitemap has Cockburn; `RRG_STORE_NETWORK` has 5 WA stores without it). Then add a record to `RRG_STORE_CITIES` and `CITY_PAGES`.
-- **Live store lists to correct (for Graham):** Sydney is missing Arncliffe (in the sitemap, not on the page; is it still open?); Melbourne says 9 but lists 8 (Preston missing).
+- **For Graham:**
+  - **Cockburn:** we need its address, phone and hours to add it to the store network. Then it appears on the Store Finder and the Perth page automatically.
+  - **Arncliffe:** it's still in the live sitemap. Has it closed?
+  - **Live Melbourne page:** it lists 8 stores under "9"; Preston is missing.
 - **Store photos:** the prototype only has photos for the stores it has pages for. Production uses each store record's images.

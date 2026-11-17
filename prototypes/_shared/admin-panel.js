@@ -25,7 +25,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'home', label: 'Home Page' },
       { key: 'store', label: 'Store Page — North Lakes' },
       { key: 'store-finder', label: 'Store Finder' },
-      { key: 'store-city', label: 'City Stores — Brisbane &amp; SEQ' },
+      { key: 'store-city', label: 'City Stores — Brisbane &amp; SEQ (+4 cities)' },
       { key: 'fit-my-vehicle', label: 'Fit My Vehicle' },
       { key: 'installation', label: 'Installation &amp; Booking' },
       { key: 'buying-guide', label: 'Buying Guide — Bike Racks' },

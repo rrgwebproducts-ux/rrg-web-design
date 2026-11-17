@@ -1238,6 +1238,46 @@ const RRG_STORE_CITIES = {
       { name: 'Gold Coast', stores: ['Gold Coast', 'Burleigh Heads'] },
       { name: 'Sunshine Coast', stores: ['Sunshine Coast'] }
     ]
+  },
+  // Areas as the live city pages group them (crawled 2026-11-17).
+  sydney: {
+    name: 'Sydney', short: 'Sydney', state: 'New South Wales', url: '/roof-racks-sydney',
+    areas: [
+      { name: 'Northern Sydney', stores: ['Warriewood', 'Castle Hill'] },
+      { name: 'Western Sydney', stores: ['Silverwater'] },
+      { name: 'South Western Sydney', stores: ['Moorebank', 'Smeaton Grange'] },
+      { name: 'Southern Sydney', stores: ['Miranda', 'Matraville'] }
+    ]
+  },
+  // The live page lists 8 stores under "9 Superstores": Preston is missing there, added here.
+  melbourne: {
+    name: 'Melbourne & Geelong', short: 'Melbourne & Geelong', state: 'Victoria', url: '/roof-racks-melbourne',
+    areas: [
+      { name: 'Northern Melbourne', stores: ['Epping', 'Preston'] },
+      { name: 'Eastern Melbourne', stores: ['Mitcham'] },
+      { name: 'Western Melbourne', stores: ['Hoppers Crossing', 'Maidstone'] },
+      { name: 'South Eastern Melbourne', stores: ['Hallam', 'Moorabbin', 'Frankston'] },
+      { name: 'Geelong', stores: ['Geelong'] }
+    ]
+  },
+  // The live page also lists Cockburn (Yangebup): a map pin with no address, phone or page yet,
+  // and not in RRG_STORE_NETWORK. Left out until its store record exists.
+  perth: {
+    name: 'Perth', short: 'Perth', state: 'Western Australia', url: '/roof-racks-perth',
+    areas: [
+      { name: 'Northern Perth', stores: ['Joondalup', 'Malaga'] },
+      { name: 'Central Perth', stores: ['Osborne Park'] },
+      { name: 'Eastern Perth', stores: ['Welshpool'] },
+      { name: 'Southern Perth', stores: ['Rockingham'] }
+    ]
+  },
+  adelaide: {
+    name: 'Adelaide Metro', short: 'Adelaide', state: 'South Australia', url: '/roof-racks-adelaide',
+    areas: [
+      { name: 'Central Adelaide', stores: ['Adelaide City'] },
+      { name: 'Northern Adelaide', stores: ['Edinburgh', 'Pooraka'] },
+      { name: 'Southern Adelaide', stores: ['Lonsdale'] }
+    ]
   }
 };
 const rrgStoreCityHref = slug => `${RRG_PROTO}store-city/index.html?city=${slug}`;
