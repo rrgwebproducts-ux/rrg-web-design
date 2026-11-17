@@ -259,7 +259,7 @@ function rrgWidgetFooterHTML() {
 //                     button on one line, no intro; with a vehicle, a slim bar. Desktop only — below
 //                     900px it stacks like the standard widget.
 //   vf*               passed through as data-vf-* — vfBrowseHref, vfStay, vfShopHref, vfShopLabel,
-//                     vfProof, vfPreset, vfSubmitHref; see initVehicleFinder / initInlineFitFinders
+//                     vfProof, vfPreset, vfPresetMake, vfSubmitHref; see initVehicleFinder / initInlineFitFinders
 function rrgWidgetVehicleFinderHTML(opts = {}) {
   const attr = v => String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
   const vf = Object.entries(opts).filter(([k]) => /^vf[A-Z]/.test(k))

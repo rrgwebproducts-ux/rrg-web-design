@@ -1572,6 +1572,8 @@ function rrgFfVanClass(root, on) {
 // [data-vf-submit-href] sends it somewhere else instead (VCLP → its roof rack listing, the VPLP).
 // [data-vf-preset="hilux"] (VCLP, 2026-10-02) pre-picks that vehicle's Make and Model, still
 // changeable, so a single make/model page starts the shopper at Year.
+// [data-vf-preset-make="toyota"] (make landing page, spec.md §30 item 3) pre-picks the Make only,
+// so the shopper starts at Model.
 function initInlineFitFinders() {
   document.querySelectorAll('[data-fit-finder-inline]').forEach(root => {
     const make = root.querySelector('[data-ff-make]');
@@ -1604,6 +1606,9 @@ function initInlineFitFinders() {
         year.value = params.get('ffYear');
         year.dispatchEvent(new Event('change'));
       }
+    } else if (FIT_FINDER_MAKES.some(([k]) => k === root.dataset.vfPresetMake)) {
+      make.value = root.dataset.vfPresetMake;
+      make.dispatchEvent(new Event('change'));
     }
     if (root.hasAttribute('data-vehicle-finder')) initVehicleFinder(root, !!urlPreset);
   });
@@ -3877,6 +3882,14 @@ function buildAdminPanel() {
       : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none') +
         hint('cartPhase2', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.'));
   }
+  // Make landing page (spec.md §30 item 3): which make's page (the URL) + the no-image hero (item 4).
+  const mclp = window.MCLP_STATE;
+  if (mclp && document.querySelector('[data-mclp-page]')) {
+    const nosave = h => h.replace(/<(input|select) /g, '<$1 data-admin-nosave ');
+    html += section('Page make <span class="admin-note">(the URL)</span>',
+      nosave(choice('mclpMake', 'Landing page for', [['toyota', 'Toyota'], ['ford', 'Ford']], mclp.makeKey)));
+    html += section('Hero image', nosave(choice('mclpHeroImage', 'Show', [['vehicle', 'Vehicle photo'], ['none', 'No vehicle image']], mclp.heroImage)));
+  }
   if (isVlp) {
     // VLP (docs/vlp/vlp-spec.md Sections 2 + 7.1). Neither control is saved (data-admin-nosave):
     // the page vehicle comes from the URL, and the category list starts from that vehicle's own
@@ -4017,6 +4030,8 @@ function buildAdminPanel() {
   // Dropdown choices (were radio groups) — each handler gets the chosen value.
   const onChoice = (name, fn) => { const sel = panel.querySelector(`select[name="${name}"]`); if (sel) sel.addEventListener('change', () => fn(sel.value)); };
   onChoice('vlpPageVehicle', v => { if (window.vlpSetPageVehicle) window.vlpSetPageVehicle(v); });
+  onChoice('mclpMake', v => { if (window.mclpSetMake) window.mclpSetMake(v); });
+  onChoice('mclpHeroImage', v => { if (window.MCLP_STATE) { window.MCLP_STATE.heroImage = v; if (window.mclpRenderHero) window.mclpRenderHero(); } });
   onChoice('vlpHeroImage', v => { if (window.VLP_STATE) { window.VLP_STATE.heroImage = v; if (typeof vlpRenderHeader === 'function') vlpRenderHeader(); } });
   onChoice('plpHeroImage', v => { if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(v); });
   panel.querySelectorAll('[data-admin-input]').forEach(input => {

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<title>Toyota Roof Racks | Roof Racks Galore</title>
+<meta name="description" content="Shop Toyota roof racks by model. Find what fits your Toyota’s roof, with nationwide installation.">
+<!-- Make Category Landing Page (MCLP): one data-driven template for every make (?make=toyota|ford here;
+     live, one URL per make, e.g. /roof-racks/toyota). Design meeting 2026-11-17 (spec.md §30 item 3) and
+     docs/make-category-landing/make-category-landing-spec.md. Title, description and canonical are set
+     per make by mclpRenderHead(). -->
+<link rel="canonical" href="https://www.roofracksgalore.com.au/roof-racks/toyota" id="mclpCanonical">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<style>
+  /* Models table (spec.md §30 item 3): the shared vehicle table (.vclp-gen-table, shared.css) with
+     Model / Vehicle type / Shop. Popular models first, the rest behind "Show all". */
+  .mclp-model-table td.gen-type{color:var(--rrg-grey-600);}
+  .mclp-model-more{margin-top:12px;}
+  .mclp-roof-list li{margin-bottom:6px;}
+</style>
+</head>
+<body data-mclp-page>
+
+<div data-widget="header"></div>
+
+<!-- Breadcrumbs: Make › Model › category (Brenton, 2026-11-17; replaces the 2026-10-08 category-led
+     plan). Make page: Home › Toyota › Roof Racks. "Toyota" has no page of its own yet (a make hub
+     with every category), so it is plain text for now; see spec.md §30 item 3. -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="mclpCrumbs"></div>
+  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-open-fit-finder>Change Vehicle</a>
+</div>
+<script type="application/ld+json" id="mclpCrumbsLd"></script>
+<script type="application/ld+json" id="mclpModelsLd"></script>
+<script type="application/ld+json" id="mclpFaqLd"></script>
+
+<main>
+<div class="wrap">
+  <section class="plp-hero" id="mclpHero">
+    <div>
+      <h1 id="mclpH1"></h1>
+      <p id="mclpIntro"></p>
+    </div>
+    <div class="plp-hero-media is-cutout">
+      <img id="mclpHeroImg" src="" alt="" width="956" height="556" fetchpriority="high">
+      <span class="plp-hero-make-badge" id="mclpHeroBadge"><img src="" alt="" width="534" height="370"></span>
+    </div>
+  </section>
+
+  <!-- Fit Finder, Make pre-filled only (data-vf-preset-make, set from the make record before
+       shared.js initialises it), so the shopper starts at Model. -->
+  <div data-widget="vehicle-finder" data-id="fitFinder" data-intro="Looking for roof racks for your vehicle? Select your vehicle to find the perfect fit." data-vf-submit-href="../vplp/index.html" data-vf-browse-href="../vplp/index.html"></div>
+
+  <!-- Models table: replaces the VCLP's generations/roof-type table. Model only, no years. Each
+       model → its model page (VCLP). Real anchors in the HTML (hidden rows too) for SEO. -->
+  <section class="content-block" id="mclpModels">
+    <h2 id="mclpModelsHeading"></h2>
+    <div class="vclp-gen-table-wrap">
+      <table class="vclp-gen-table mclp-model-table" id="mclpModelTable"></table>
+    </div>
+    <button type="button" class="spare-more mclp-model-more" id="mclpModelMore"></button>
+    <p class="vclp-gen-table-note" id="mclpModelNote"></p>
+  </section>
+
+  <!-- Fitment Gallery: the shared widget, this make's fitments only. Hidden when the make has none. -->
+  <section class="fit-gallery-section" id="fitGallerySection" data-count="0" data-fit-gallery></section>
+
+  <section class="content-block" id="mclpFit"></section>
+</div>
+
+<section class="vclp-trust-banner">
+  <img class="install-photo" src="../_shared/installer.png" alt="" width="740" height="420" loading="lazy">
+  <div class="wrap">
+    <div class="vclp-trust-inner">
+      <h2>Friendly + Trusted Nationwide Experts in Roof Rack Supply and Installation</h2>
+      <div class="vclp-reviews-badge"><span class="stars" aria-hidden="true">★★★★<span class="star-dim">★</span></span> Reviews.io — 4.3 / 5 from 1,914 reviews</div>
+      <div class="vclp-trust-ctas">
+        <a href="#" class="btn btn-primary">Book An Installation</a>
+        <a href="#" class="btn btn-outline">Store Finder</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- Phase 2, same as the VCLP's FAQs (spec.md §26 item 2): the section and its FAQPage JSON-LD
+       stay off the launch build. -->
+  <section class="faq-section rrg-phase2" id="mclpFaq">
+    <h2 class="faq-heading" id="mclpFaqHeading">Frequently Asked Questions</h2>
+    <div class="faq-list" id="mclpFaqList"></div>
+  </section>
+</div>
+
+<div data-widget="brands-strip"></div>
+</main>
+
+<div data-widget="footer"></div>
+
+<script>
+// ==== Make records (spec.md §30 item 3) =====================================================
+// One record drives the page: head tags, H1, intro, hero, Fit Finder pre-fill, crumbs, models
+// table, gallery, "what fits" copy and FAQs. models[] comes from the Rackit master-vehicle export in
+// the repo (vehicles_20261027_003426.csv): one row per Rackit Model for the Make; type = that model's
+// most common Rackit Type; important = Rackit's Important flag (on any of its vehicles); vehicles =
+// its master vehicles. PLACEHOLDER until Graham supplies the full make/model export from Rackit.
+// roofs = master vehicles per Rackit Roof Type, for the "what fits" block. modelPages = models that
+// have a model page (VCLP); every other model links to the Hilux VCLP as a placeholder (the same
+// convention as unbuilt stores in the Store Finder).
+const MCLP_MAKES = {
+  toyota: {
+    name: 'Toyota', ffMake: 'toyota', liveUrl: 'https://www.roofracksgalore.com.au/roof-racks/toyota',
+    image: '../_shared/vehicle-toyota-hilux.webp', imageAlt: 'Toyota Hilux', badge: '../_shared/brand-toyota-badge.png',
+    intro: 'Toyota builds everything from the Hilux and LandCruiser to the RAV4 and Corolla, so the right roof rack comes down to your model and what is on its roof. Pick your Toyota below, or use the Fit Finder to see exactly what fits.',
+    modelPages: { Hilux: '../vehicle-category-landing/index.html' },
+    galleryAlt: 'Roof rack fitted to a customer’s Toyota',
+    "models": [{"name": "Land Cruiser", "type": "Wagon", "important": true, "vehicles": 23}, {"name": "Hilux", "type": "Ute", "important": true, "vehicles": 19}, {"name": "Rav 4", "type": "SUV", "important": true, "vehicles": 15}, {"name": "Land Cruiser Prado", "type": "Wagon", "important": true, "vehicles": 14}, {"name": "Hiace", "type": "Van", "important": true, "vehicles": 13}, {"name": "FJ Cruiser", "type": "SUV", "important": true, "vehicles": 2}, {"name": "Fortuner", "type": "SUV", "important": true, "vehicles": 2}, {"name": "4 Runner", "type": "SUV", "important": false, "vehicles": 5}, {"name": "86", "type": "Coupe", "important": false, "vehicles": 1}, {"name": "Allex", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Alphard", "type": "Van", "important": false, "vehicles": 3}, {"name": "Altezza", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Aqua", "type": "Hatchback", "important": false, "vehicles": 2}, {"name": "Aurion", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Auris", "type": "Hatchback", "important": false, "vehicles": 6}, {"name": "Avalon", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Avanza", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Avensis", "type": "Wagon", "important": false, "vehicles": 8}, {"name": "Aygo", "type": "Hatchback", "important": false, "vehicles": 2}, {"name": "Belta", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Blade", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Blizzard", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Bundera", "type": "SUV", "important": false, "vehicles": 1}, {"name": "bZ4X", "type": "SUV", "important": false, "vehicles": 2}, {"name": "bZ4X Touring", "type": "SUV", "important": false, "vehicles": 1}, {"name": "C-HR", "type": "SUV", "important": false, "vehicles": 2}, {"name": "Caldina", "type": "Wagon", "important": false, "vehicles": 3}, {"name": "Camry", "type": "Sedan", "important": false, "vehicles": 14}, {"name": "Carib", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Carina", "type": "Wagon", "important": false, "vehicles": 3}, {"name": "Celica", "type": "Coupe", "important": false, "vehicles": 4}, {"name": "Chaser", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Corolla", "type": "Wagon", "important": false, "vehicles": 42}, {"name": "Corolla Cross", "type": "SUV", "important": false, "vehicles": 2}, {"name": "Corona", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Cressida", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Cresta", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Crown Crossover", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Crown Royal", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Echo", "type": "Sedan", "important": false, "vehicles": 3}, {"name": "Emina", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Estima", "type": "Van", "important": false, "vehicles": 8}, {"name": "Etios", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Fun Cargo", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Gracia", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Grand Highlander", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Granvia", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Harrier", "type": "SUV", "important": false, "vehicles": 2}, {"name": "Hiace Commuter", "type": "Van", "important": false, "vehicles": 2}, {"name": "Hiace Regius", "type": "MPV", "important": false, "vehicles": 2}, {"name": "Hiace SBV", "type": "Van", "important": false, "vehicles": 1}, {"name": "Highlander", "type": "SUV", "important": false, "vehicles": 8}, {"name": "Ipsum", "type": "Van", "important": false, "vehicles": 3}, {"name": "Kijang", "type": "MPV", "important": false, "vehicles": 1}, {"name": "Kluger", "type": "SUV", "important": false, "vehicles": 8}, {"name": "Lexcen", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Liteace", "type": "Van", "important": false, "vehicles": 4}, {"name": "Lucida", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "MR-2", "type": "Coupe", "important": false, "vehicles": 1}, {"name": "Noah", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Paseo", "type": "Coupe", "important": false, "vehicles": 1}, {"name": "Picnic", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Platz", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Previa", "type": "Van", "important": false, "vehicles": 6}, {"name": "Prius", "type": "Hatchback", "important": false, "vehicles": 5}, {"name": "Prius +", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Prius C", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Prius Prime", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Prius V (Glass Roof)", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Prius V (Steel Roof)", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "ProAce", "type": "Van", "important": false, "vehicles": 7}, {"name": "ProAce City", "type": "MPV", "important": false, "vehicles": 7}, {"name": "Proace MAX", "type": "Van", "important": false, "vehicles": 4}, {"name": "ProAce Verso", "type": "Van", "important": false, "vehicles": 3}, {"name": "ProBox", "type": "Van", "important": false, "vehicles": 2}, {"name": "Raum", "type": "Van", "important": false, "vehicles": 1}, {"name": "Rukus", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Rumion", "type": "Van", "important": false, "vehicles": 1}, {"name": "Rush", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Sienna", "type": "Van", "important": false, "vehicles": 1}, {"name": "Sienta", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Spacia", "type": "Van", "important": false, "vehicles": 1}, {"name": "Spacio", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Sprinter", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Starlet", "type": "Hatchback", "important": false, "vehicles": 7}, {"name": "Supra", "type": "Coupe", "important": false, "vehicles": 1}, {"name": "Tacoma", "type": "Ute", "important": false, "vehicles": 3}, {"name": "Tarago", "type": "Van", "important": false, "vehicles": 7}, {"name": "Townace", "type": "Van", "important": false, "vehicles": 2}, {"name": "Tundra", "type": "Ute", "important": false, "vehicles": 6}, {"name": "Urban Cruiser", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Vanguard", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Varis", "type": "Van", "important": false, "vehicles": 1}, {"name": "Vellfire", "type": "Van", "important": false, "vehicles": 1}, {"name": "Verso", "type": "Van", "important": false, "vehicles": 2}, {"name": "Vienta", "type": "Wagon", "important": false, "vehicles": 3}, {"name": "Vigo", "type": "Ute", "important": false, "vehicles": 2}, {"name": "Vios", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Vista", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Vitz", "type": "Hatchback", "important": false, "vehicles": 4}, {"name": "Voxy", "type": "Wagon", "important": false, "vehicles": 1}, {"name": "Wish", "type": "Van", "important": false, "vehicles": 2}, {"name": "Yaris", "type": "Hatchback", "important": false, "vehicles": 12}, {"name": "Yaris Cross", "type": "SUV", "important": false, "vehicles": 2}, {"name": "Yaris Verso", "type": "Van", "important": false, "vehicles": 1}], "roofs": [["Bare Roof", 206], ["Rain Gutter", 68], ["Raised Roof Rail", 67], ["Factory Mounting Point", 21], ["Flush Roof Rail", 16]], "vehicles": 378
+  },
+  ford: {
+    name: 'Ford', ffMake: 'ford', liveUrl: 'https://www.roofracksgalore.com.au/roof-racks/ford',
+    image: '../_shared/vehicle-ford-ranger.webp', imageAlt: 'Ford Ranger', badge: '../_shared/brand-ford-badge.png',
+    intro: 'From the Ranger and Everest to the Transit, Ford covers utes, SUVs and vans, so the right roof rack comes down to your model and what is on its roof. Pick your Ford below, or use the Fit Finder to see exactly what fits.',
+    modelPages: {},
+    galleryAlt: 'Roof rack fitted to a customer’s Ford',
+    "models": [{"name": "Ranger", "type": "Ute", "important": true, "vehicles": 13}, {"name": "Everest", "type": "SUV", "important": true, "vehicles": 3}, {"name": "Ranger Raptor", "type": "Ute", "important": true, "vehicles": 2}, {"name": "Bronco", "type": "Ute", "important": false, "vehicles": 2}, {"name": "C-Max", "type": "Wagon", "important": false, "vehicles": 4}, {"name": "Capri EV", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Corsair", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Cougar", "type": "Coupe", "important": false, "vehicles": 1}, {"name": "Courier", "type": "Ute", "important": false, "vehicles": 5}, {"name": "Custom", "type": "Van", "important": false, "vehicles": 2}, {"name": "E-Transit Custom", "type": "Van", "important": false, "vehicles": 1}, {"name": "Econovan", "type": "Van", "important": false, "vehicles": 4}, {"name": "EcoSport", "type": "SUV", "important": false, "vehicles": 5}, {"name": "Edge", "type": "SUV", "important": false, "vehicles": 3}, {"name": "Endura", "type": "SUV", "important": false, "vehicles": 2}, {"name": "Escape", "type": "SUV", "important": false, "vehicles": 7}, {"name": "Escort", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Explorer", "type": "SUV", "important": false, "vehicles": 7}, {"name": "Explorer EV", "type": "SUV", "important": false, "vehicles": 1}, {"name": "F100", "type": "Ute", "important": false, "vehicles": 1}, {"name": "F150", "type": "Ute", "important": false, "vehicles": 13}, {"name": "F150 Lightning", "type": "Ute", "important": false, "vehicles": 1}, {"name": "F250", "type": "Ute", "important": false, "vehicles": 10}, {"name": "F350", "type": "Ute", "important": false, "vehicles": 6}, {"name": "F450", "type": "Ute", "important": false, "vehicles": 5}, {"name": "F550", "type": "Ute", "important": false, "vehicles": 2}, {"name": "Fairlane", "type": "Sedan", "important": false, "vehicles": 4}, {"name": "Falcon", "type": "Wagon", "important": false, "vehicles": 16}, {"name": "Festiva", "type": "Hatchback", "important": false, "vehicles": 3}, {"name": "Fiesta", "type": "Hatchback", "important": false, "vehicles": 6}, {"name": "Figo", "type": "Hatchback", "important": false, "vehicles": 1}, {"name": "Focus", "type": "Wagon", "important": false, "vehicles": 20}, {"name": "Fusion", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Galaxy", "type": "Wagon", "important": false, "vehicles": 5}, {"name": "Grand C-Max", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Grand Tourneo Connect", "type": "MPV", "important": false, "vehicles": 2}, {"name": "KA", "type": "Hatchback", "important": false, "vehicles": 2}, {"name": "Kuga", "type": "SUV", "important": false, "vehicles": 5}, {"name": "Laser", "type": "Hatchback", "important": false, "vehicles": 7}, {"name": "LTD", "type": "Sedan", "important": false, "vehicles": 5}, {"name": "Maverick", "type": "SUV", "important": false, "vehicles": 6}, {"name": "Meteor", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Mondeo", "type": "Wagon", "important": false, "vehicles": 14}, {"name": "Mustang", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Probe", "type": "Coupe", "important": false, "vehicles": 1}, {"name": "Puma", "type": "SUV", "important": false, "vehicles": 2}, {"name": "Raider", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Ranger Super Duty", "type": "Ute", "important": false, "vehicles": 3}, {"name": "S-Max", "type": "Wagon", "important": false, "vehicles": 4}, {"name": "Scorpio", "type": "Wagon", "important": false, "vehicles": 2}, {"name": "Sierra", "type": "Sedan", "important": false, "vehicles": 2}, {"name": "Spectron", "type": "Van", "important": false, "vehicles": 2}, {"name": "Taurus", "type": "Sedan", "important": false, "vehicles": 1}, {"name": "Telstar", "type": "Hatchback", "important": false, "vehicles": 4}, {"name": "Territory", "type": "SUV", "important": false, "vehicles": 1}, {"name": "Tourneo", "type": "Van", "important": false, "vehicles": 9}, {"name": "Transit", "type": "Van", "important": false, "vehicles": 28}, {"name": "Transit City", "type": "Van", "important": false, "vehicles": 1}, {"name": "Transit Custom", "type": "Van", "important": false, "vehicles": 7}], "roofs": [["Bare Roof", 148], ["Raised Roof Rail", 40], ["Rain Gutter", 39], ["Flush Roof Rail", 27], ["Factory Mounting Point", 17], ["Factory Fitted Track", 4]], "vehicles": 275
+  }
+};
+// Fitment Gallery per make: Toyota = the 16 real Hilux N80 install photos (the only Toyota fitments in
+// the prototype, the same array as the VCLP); Ford has none, so its gallery is hidden.
+const MCLP_PHOTOS = { toyota: [
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_FhlLK_1.jpg", id: 166874, colour: "White" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_P7ZoC_1.jpg", id: 166832, colour: "White" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_jQonU_1.jpg", id: 166830, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_2750_YaaKX_1.jpg", id: 166829, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_4122_UYR7R_1.jpg", id: 166814, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/17791433691174490956170860620194_cDO9c_1.jpg", id: 166786, colour: "Grey" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/P/_/P_20260511_142833_afuMl_1.jpg", id: 166139, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_aNE06_1.jpg", id: 165847, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/1/7/1777955625720802347718023618055_GHZgB_1.jpg", id: 165841, colour: "Black" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_J6mwc_1.jpg", id: 165781, colour: "Silver" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/i/m/image_9n7yh_1.jpg", id: 165779, colour: "Silver" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260420_151706_B6naw_1.jpg", id: 165689, colour: "Red" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/2/0/20260427_111136_PjcDx_1.jpg", id: 165515, colour: "Red" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0621_9m6aU_1.jpg", id: 165492, colour: "Blue" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/I/M/IMG_0365_ZEGC1_1.jpg", id: 165368, colour: "Blue" },
+  { thumb: "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/142x106/r/a/rackit-fitment-1-9994-1_1.jpg", id: 164886, colour: "Grey" }
+], ford: [] };
+
+const MCLP_KEY = (() => { const q = new URLSearchParams(location.search).get('make'); return MCLP_MAKES[q] ? q : 'toyota'; })();
+const MCLP = MCLP_MAKES[MCLP_KEY];
+const FIT_GALLERY_PHOTOS = MCLP_PHOTOS[MCLP_KEY];
+window.MCLP_STATE = { makeKey: MCLP_KEY, heroImage: 'vehicle' };
+// Fit Finder pre-fill: set before widgets.js renders the widget and shared.js initialises it.
+document.querySelector('[data-widget="vehicle-finder"]').dataset.vfPresetMake = MCLP.ffMake;
+</script>
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script>
+// ==== Render ==================================================================================
+const MCLP_ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const MCLP_ROOF_COPY = {
+  'Bare Roof': 'no rails or mounting points. These take a clamp-on system, or a track bolted to the roof.',
+  'Raised Roof Rail': 'rails with a gap underneath. Rail-mount feet wrap around them.',
+  'Flush Roof Rail': 'rails that sit flat against the roof. The feet grip the inside edge of the rail.',
+  'Factory Mounting Point': 'threaded points hidden under covers. Fixed-point feet bolt straight in.',
+  'Rain Gutter': 'a gutter along the roof edge, common on older 4WDs and vans. Gutter-mount legs clamp into it.',
+  'Factory Fitted Track': 'tracks fitted at the factory. Track-mount feet slide into them.'
+};
+const mclpModelHref = m => MCLP.modelPages[m.name] || '../vehicle-category-landing/index.html';
+
+function mclpRenderHead() {
+  const n = MCLP.name;
+  document.title = `${n} Roof Racks | Roof Racks Galore`;
+  document.querySelector('meta[name="description"]').setAttribute('content', `Shop ${n} roof racks by model. Find what fits your ${n}’s roof, with nationwide installation.`);
+  document.getElementById('mclpCanonical').href = MCLP.liveUrl;
+  // Breadcrumbs: Home › {Make} › Roof Racks (Make › Model › category, Brenton 2026-11-17).
+  const trail = [{ label: 'Home', href: '../home/index.html' }, { label: n }, { label: 'Roof Racks' }];
+  document.getElementById('mclpCrumbs').innerHTML = trail.map((s, i) => (i ? ' &gt; ' : '') + (s.href ? `<a href="${s.href}">${s.label}</a>` : `<span>${s.label}</span>`)).join('');
+  document.getElementById('mclpCrumbsLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: trail.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.label, ...(s.href ? { item: s.href } : {}) })) });
+}
+
+function mclpRenderHero() {
+  document.getElementById('mclpH1').textContent = `Shop ${MCLP.name} Roof Racks`;
+  document.getElementById('mclpIntro').textContent = MCLP.intro;
+  // No vehicle image → text-only hero (spec.md §30 item 4, the same rule as the VLP). The make badge
+  // only shows with a vehicle photo, never on its own.
+  const hero = document.getElementById('mclpHero');
+  const media = hero.querySelector('.plp-hero-media');
+  const img = document.getElementById('mclpHeroImg');
+  const setNoMedia = on => { hero.classList.toggle('no-media', on); media.hidden = on; };
+  const show = !!MCLP.image && MCLP_STATE.heroImage !== 'none';
+  setNoMedia(!show);
+  img.onerror = () => setNoMedia(true);
+  if (show) { img.src = MCLP.image; img.alt = MCLP.imageAlt; }
+  const badge = document.getElementById('mclpHeroBadge');
+  badge.querySelector('img').src = MCLP.badge; badge.querySelector('img').alt = MCLP.name;
+}
+
+function mclpRenderModels() {
+  const n = MCLP.name;
+  const popular = MCLP.models.filter(m => m.important);
+  const rest = MCLP.models.filter(m => !m.important);
+  document.getElementById('mclpModelsHeading').textContent = `Shop Roof Racks by ${n} Model`;
+  const row = m => `<tr>
+      <td class="gen-series"><span class="gen-name">${m.name}</span></td>
+      <td class="gen-type">${m.type}</td>
+      <td class="gen-shop"><a class="vclp-gen-shop-link" href="${mclpModelHref(m)}">Shop ${n} ${m.name} roof racks ${MCLP_ARROW}</a></td>
+    </tr>`;
+  const group = (label, list, hidden) => `<tbody${hidden ? ' class="mclp-more-body" hidden' : ''}>
+      <tr class="gen-group"><th colspan="3" scope="colgroup"><span class="gen-body">${label}</span><span class="gen-group-count">${list.length} ${list.length === 1 ? 'model' : 'models'}</span></th></tr>
+      ${list.map(row).join('')}
+    </tbody>`;
+  document.getElementById('mclpModelTable').innerHTML = `
+    <caption>${n} models we have roof racks for</caption>
+    <thead><tr><th scope="col">Model</th><th scope="col">Vehicle type</th><th scope="col" class="gen-shop">Shop</th></tr></thead>
+    ${group(`Popular ${n} models`, popular, false)}
+    ${rest.length ? group(`More ${n} models (A–Z)`, rest, true) : ''}`;
+  const more = document.getElementById('mclpModelMore');
+  more.hidden = !rest.length;
+  more.textContent = `Show all ${MCLP.models.length} ${n} models`;
+  more.onclick = () => { document.querySelectorAll('.mclp-more-body').forEach(b => { b.hidden = false; }); more.hidden = true; };
+  document.getElementById('mclpModelNote').textContent = `Not sure which model you have? Use the Fit Finder above, or send us a photo of your roof and we’ll confirm fitment before you order.`;
+  document.getElementById('mclpModelsLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: `${n} roof racks by model`,
+    itemListElement: MCLP.models.map((m, i) => ({ '@type': 'ListItem', position: i + 1, name: `${n} ${m.name} Roof Racks` })) });
+}
+
+function mclpRenderGallery() {
+  const section = document.getElementById('fitGallerySection');
+  section.hidden = !FIT_GALLERY_PHOTOS.length;
+  if (section.hidden) return;
+  section.dataset.count = FIT_GALLERY_PHOTOS.length;
+  mountFitGallery();
+  renderFitGalleryTrack(MCLP.galleryAlt);
+}
+
+function mclpRenderFit() {
+  const n = MCLP.name;
+  const roofs = MCLP.roofs.filter(([r]) => MCLP_ROOF_COPY[r]);
+  document.getElementById('mclpFit').innerHTML = `
+    <h2>What Roof Racks Fit My ${n}?</h2>
+    <p>It depends on two things: which ${n} you drive, and what’s on its roof. Racks are made for each model’s roof, so a rack that fits one ${n} won’t always fit another.</p>
+    <h3>${n} roof types</h3>
+    <p>Across the ${MCLP.vehicles} ${n} vehicles we hold fitment data for, these are the roof types you’ll find, most common first:</p>
+    <ul class="mclp-roof-list">${roofs.map(([r]) => `<li><strong>${r}:</strong> ${MCLP_ROOF_COPY[r]}</li>`).join('')}</ul>
+    <p>Not sure what’s on your roof? Choose your model above or use the Fit Finder, and you’ll only see racks that fit.</p>`;
+}
+
+function mclpFaqs() {
+  const n = MCLP.name;
+  return [
+    { q: `What roof racks fit my ${n}?`, a: `It depends on your model and its roof type (bare roof, raised rails, flush rails, factory mounting points or rain gutters). Choose your ${n} from the model list on this page, or use the Fit Finder, and you’ll only see racks that fit.` },
+    { q: `Are roof racks the same for every ${n} model?`, a: `No. Mounting points, roof shape and load ratings change between models and generations, so racks are made for a specific vehicle and roof type.` },
+    { q: `Can I fit a roof rack to a ${n} with no roof rails?`, a: `Yes. A bare roof takes a clamp-on system or a track that bolts to the roof. The Fit Finder shows which ones fit your ${n}.` },
+    { q: `Do you install roof racks on ${n} vehicles?`, a: `Yes. We fit roof racks nationwide at our 35+ stores. Book an installation or use the Store Finder to find your nearest fitting centre.` },
+    { q: `My ${n} isn’t listed. Can you still help?`, a: `Yes. Send us your vehicle details or a photo of your roof and our team will check what fits.` }
+  ];
+}
+function mclpRenderFaq() {
+  const items = mclpFaqs();
+  document.getElementById('mclpFaqHeading').textContent = `${MCLP.name} Roof Rack FAQs`;
+  document.getElementById('mclpFaqList').innerHTML = items.map(f => `<details class="faq-item"><summary>${f.q}</summary><div class="faq-answer"><p>${f.a}</p></div></details>`).join('');
+  // Phase 1 has no FAQs on this page (like the VCLP), so no FAQPage JSON-LD either.
+  document.getElementById('mclpFaqLd').textContent = document.documentElement.dataset.buildPhase === '2'
+    ? JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }) : '';
+}
+
+function mclpRender() { mclpRenderHead(); mclpRenderHero(); mclpRenderModels(); mclpRenderGallery(); mclpRenderFit(); mclpRenderFaq(); }
+window.mclpRenderHero = mclpRenderHero;
+window.mclpSetMake = key => { if (key !== MCLP_KEY) location.search = '?make=' + key; };
+mclpRender();
+</script>
+</body>
+</html>

@@ -107,6 +107,15 @@ Not a PDP — a make/model landing page (2026-09-15), one per make/model rather 
 
 ---
 
+## Make Category Landing Page — MCLP (`prototypes/make-category-landing/`)
+
+Added 2026-11-17 (design meeting, `spec.md` §30 item 3; `docs/make-category-landing/make-category-landing-spec.md`). The make-level version of the VCLP ("Toyota Roof Racks"), one data-driven template for every make (`?make=toyota|ford`; live: one URL per make, `/roof-racks/{make}`). Breadcrumbs **Home › Toyota › Roof Racks**. Reuses the Breadcrumb row, Category hero, Vehicle finder (with **Make pre-filled only**, `data-vf-preset-make`), Fitment Gallery (this make's fitments; hidden when none), `.content-block`, Trust banner, FAQ (Phase 2) and Shop The Best Brands.
+
+| Name | What it is |
+|---|---|
+| **Models table** | Replaces the VCLP's generation table: Model · Vehicle type · Shop, one row per Rackit Model for the make, no years. Popular models (Rackit "Important") first, the rest A–Z behind **Show all {n} {Make} models**. Every row links to that model's page (VCLP); unbuilt models → the Hilux VCLP as a placeholder. Uses the shared vehicle table (`.vclp-gen-table`, moved to shared.css 2026-11-17). — `#mclpModelTable`, `mclpRenderModels()` |
+| **{Make} roof types** | "What Roof Racks Fit My Toyota?": the roof types across the make's Rackit vehicles, most common first, each with one line on what fits it. — `#mclpFit` |
+
 ## Vehicle Landing Page — VLP (`prototypes/vlp/`)
 
 Added 2026-09-29 (`docs/vlp/vlp-spec.md`). Where the header's **Fit My Vehicle drawer** lands: one page per **exact** vehicle (make/model/year/body/roof), listing every category that fits it. Not the VCLP (one per make/model, indexed) — the VLP is **noindex**. Two worked examples on one template via `?vehicle=hilux|ranger` (the **page vehicle**); the **session vehicle** is Site Admin's, and the two can differ. Reuses the Breadcrumb row, Category hero, Fitment Gallery, Trust banner, FAQ section and Shop The Best Brands as-is; the pieces below are new.

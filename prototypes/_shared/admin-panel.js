@@ -43,6 +43,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'grouped-bundle', label: 'Grouped / Bundle' },
     ] },
     { title: 'Category &amp; listing', items: [
+      { key: 'make-category-landing', label: 'Make Category Landing (Toyota)' },
       { key: 'vehicle-category-landing', label: 'Vehicle Category Landing (VCLP)' },
       { key: 'vlp', label: 'Vehicle Landing (VLP)' },
       { key: 'plp-camping', label: 'PLP Camping' },

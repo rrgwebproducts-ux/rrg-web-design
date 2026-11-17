@@ -4,7 +4,9 @@ Project: a roof rack landing page for a vehicle **make** ("Toyota Roof Racks"). 
 
 Companion to `spec.md` (PDP), `docs/plp/plp-spec.md` (PLP/VPLP), `docs/vlp/vlp-spec.md` and the VCLP brief (`docs/vehicle-category-landing/`). Same conventions: plain HTML/CSS/JS prototypes, `prototypes/_shared/` shared code, Component Library first for any widget change, Playwright verification, push once approved.
 
-Planning session: 2026-10-08, from a meeting with Marc (developer). Decisions in Section 11 were answered by Brenton the same day; Section 12 still needs answers before the build.
+Planning session: 2026-10-08, from a meeting with Marc (developer). Decisions in Section 11 were answered by Brenton the same day.
+
+> **Built 2026-11-17 from the design meeting with Graham, Marc and Scott (spec.md §30 item 3). Section 13 is what was built and overrides Sections 3–6 and 11–12 where they differ** (table not tiles, no years, Make › Model › category breadcrumbs; the mismatch drawer and Ranger VCLP are not built).
 
 ---
 
@@ -218,3 +220,17 @@ Needed so "View Ford Ranger roof racks" lands on something real (Brenton, follow
    - **Vehicle-Specific PDP:** Home › Roof Racks › Toyota Roof Racks › Toyota Hilux Roof Racks › <product>.
    - **VLP** (all categories, noindex) and **Vehicle Specific Accessories VPLP** (not roof racks): keep the Vehicles trail, but point their Toyota/Hilux crumbs at the MCLP/VCLP.
 4. **The VLP's existing mismatch notice** (inline fitment-card notice, vlp-spec §4). Switch it to the new drawer so there's one behaviour site-wide? **Recommendation: yes**, keeping the VLP's "Make this my vehicle" action, since an exact-vehicle page can set a full vehicle.
+
+---
+
+## 13. Built 2026-11-17 (design meeting, spec.md §30 item 3) — supersedes the above where they differ
+
+- **Template:** `prototypes/make-category-landing/index.html?make=toyota|ford` (default Toyota). One make record drives everything. Demo State: **Page make** and **Hero image** (vehicle photo / no vehicle image).
+- **Models table, not tiles** (Brenton): Model · Vehicle type · Shop. **Model only, no years.** Data: the Rackit master-vehicle export in the repo (`vehicles_20261027_003426.csv`; Toyota 105 models, Ford 59), one row per Rackit Model; Vehicle type = the model's most common Rackit Type. **Placeholder until Graham's full Rackit make/model export.** Popular models = Rackit's **Important** flag (Toyota 7, Ford 3), listed first by number of master vehicles; the rest A–Z behind "Show all {n} {Make} models". Rows are real anchors in the HTML (hidden ones too). Hilux → its VCLP; every other model → the Hilux VCLP as a placeholder. Rackit's own model names are used as-is ("Rav 4", "Land Cruiser").
+- **Fit Finder:** Make pre-filled (`data-vf-preset-make`), Model is the first open field. The demo finder only has Hilux + Hiace (Toyota) and Ranger + Transit (Ford) as models.
+- **Breadcrumbs: Make › Model › category** (Brenton, replaces decision 4): MCLP `Home › Toyota › Roof Racks`; VCLP `Home › Toyota › Hilux › Roof Racks` ("Toyota" → this page). "Toyota" on this page and "Hilux" on the VCLP are plain text: there is no make hub or model hub page (every category for Toyota / for Hilux) to link to yet. **Open:** build those hubs, or link the crumbs to the category pages instead. VLP, VPLP and Vehicle-Specific PDP trails are unchanged for now.
+- **Headings / copy:** "Shop Toyota Roof Racks", "Shop Roof Racks by Toyota Model", "What Roof Racks Fit My Toyota?" with the make's roof types from the Rackit export (most common first) and one line on what fits each.
+- **Fitment Gallery:** this make's fitments (Toyota: the 16 real Hilux photos; Ford: none, hidden).
+- **FAQs:** 5 make-level Q&As, **Phase 2** like the VCLP's (no FAQPage JSON-LD in Phase 1).
+- **No vehicle image:** text-only hero (spec.md §30 item 4).
+- **Not built (from Sections 7–8):** the vehicle mismatch drawer and the Ranger VCLP.

@@ -26,7 +26,7 @@
 
 const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box', 'grouped-kit-unavailable'];
 const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers', 'vplp'];
-const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'clearance', 'blog', 'blog-post', 'header'];
+const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'clearance', 'blog', 'blog-post', 'header'];
 const NOT_CHECKOUT = ALL_PAGES.filter(p => p !== 'checkout');
 
 // Storage presets — merged into a variant's `ls`.
@@ -116,13 +116,13 @@ const RRG_COMPONENTS = [
       v('Guest', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', ls: S.guest, sizes: ['m'], h: 780 }),
       v('Sale on (Christmas) — Santa-hat logo, sale replaces Clearance', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', ls: S.xmas, sizes: ['m'], h: 780 }),
     ] },
-  { id: 'breadcrumbs', group: 'global', name: 'Breadcrumbs', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'buying-guide'],
+  { id: 'breadcrumbs', group: 'global', name: 'Breadcrumbs', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'buying-guide'],
     source: 'Static on most pages; plpRenderBreadcrumb (plp.js) on listing pages',
     variants: [
       v('Product page', 'simple', '.rrg-crumbs'),
       v('Listing page', 'plp', '.rrg-crumbs'),
     ] },
-  { id: 'breadcrumb-row', group: 'global', name: 'Breadcrumb Row + Change Vehicle', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results'],
+  { id: 'breadcrumb-row', group: 'global', name: 'Breadcrumb Row + Change Vehicle', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results'],
     source: 'Static row; plpRenderBreadcrumb (plp.js), vlpRenderHeader (vlp)',
     variants: [
       v('VLP (with Change Vehicle)', 'vlp', '.plp-crumbs-row'),
@@ -328,7 +328,7 @@ const RRG_COMPONENTS = [
     ] },
 
   // ---------------------------------------------------------------- Listing, search & category
-  { id: 'category-hero', group: 'listing', name: 'Category Hero', build: 'mixed', usedOn: ['vehicle-category-landing', 'vlp', ...PLP3],
+  { id: 'category-hero', group: 'listing', name: 'Category Hero', build: 'mixed', usedOn: ['vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3],
     source: 'Static (both states in the page); plpRenderHero / applyPlpHeroImageFlag (plp.js)',
     variants: [
       v('PLP — vehicle set', 'plp', '#plpHeroVehicleSet', { ls: demo('plp', { 'r:plpHeroImage': 'vehicle' }) }),
@@ -396,7 +396,7 @@ const RRG_COMPONENTS = [
   { id: 'search-vehicle-strip', group: 'listing', name: 'Search Vehicle Strip', build: 'shared', usedOn: ['search-results'],
     source: 'plp.js',
     variants: [v('Fits', 'search-results', '.plp-search-vehicle-strip'), v('Another vehicle\'s products — "ranger"', 'search-results', '.plp-search-vehicle-strip', { q: 'q=ranger' })] },
-  { id: 'fitment-gallery', group: 'listing', name: 'Fitment Gallery', build: 'shared', usedOn: ['home', 'vehicle-specific', 'vehicle-category-landing', 'vlp', 'vplp', 'brand'],
+  { id: 'fitment-gallery', group: 'listing', name: 'Fitment Gallery', build: 'shared', usedOn: ['home', 'vehicle-specific', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'vplp', 'brand'],
     source: 'fitGalleryPanelHTML / mountFitGallery (shared.js); plpFitGallerySectionHTML (plp.js)',
     note: 'Hidden when a vehicle has no customer fitment photos.',
     variants: [
@@ -404,7 +404,7 @@ const RRG_COMPONENTS = [
       v('VCLP', 'vehicle-category-landing', '.fit-gallery-section'),
       v('Home', 'home', '.fit-gallery-section'),
     ] },
-  { id: 'fitment-gallery-slideout', group: 'listing', name: 'Fitment Gallery Slide-out', build: 'shared', usedOn: ['home', 'vehicle-specific', 'vehicle-category-landing', 'vlp', 'vplp', 'brand'],
+  { id: 'fitment-gallery-slideout', group: 'listing', name: 'Fitment Gallery Slide-out', build: 'shared', usedOn: ['home', 'vehicle-specific', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'vplp', 'brand'],
     source: 'buildFitGallerySlideout (shared.js)',
     variants: [v('Open', 'vehicle-category-landing', '.fit-gallery-slideout-backdrop', { do: 'call:openFitGallerySlideout', h: 780 })] },
   { id: 'product-carousel', group: 'listing', name: 'Product Carousel', build: 'mixed', usedOn: ['home', 'store', 'cart', 'vlp', 'brand'],
@@ -494,7 +494,7 @@ const RRG_COMPONENTS = [
     variants: [v('Default', 'order-confirmation', '#confirmFitting', { order: 'collect' })] },
 
   // ---------------------------------------------------------------- Stores, vehicles & brands
-  { id: 'vehicle-finder', group: 'stores', name: 'Vehicle Finder (inline)', build: 'shared', usedOn: ['home', 'fit-my-vehicle', 'cart', 'vehicle-category-landing', 'brand'],
+  { id: 'vehicle-finder', group: 'stores', name: 'Vehicle Finder (inline)', build: 'shared', usedOn: ['home', 'fit-my-vehicle', 'cart', 'vehicle-category-landing', 'make-category-landing', 'brand'],
     source: 'rrgWidgetVehicleFinderHTML (widgets.js); initInlineFitFinders / initVehicleFinder (shared.js). Also inside the Fit Finder Drawer',
     variants: [
       v('Vehicle known — light', 'fit-my-vehicle', '.fit-finder-widget'),
@@ -507,6 +507,7 @@ const RRG_COMPONENTS = [
       v('Home — Phase 1 (live): panel over the banner', 'home', '.home-hero', { ls: { rrgBuildPhase: '1' } }),
       v('Home — Phase 1 (live): van tiles (Toyota Hiace H200)', 'home', '.home-hero', { ls: { rrgBuildPhase: '1' }, q: 'ffModel=hiace&ffYear=2005-2019' }),
       v('VCLP (Toyota / Hilux pre-filled)', 'vehicle-category-landing', '#fitFinder', { ls: S.noVehicle }),
+      v('Make page (Toyota pre-filled, Model open)', 'make-category-landing', '#fitFinder', { ls: S.noVehicle }),
       v('Brand page', 'brand', '#brandFinder'),
       // Van Fit Finder (spec.md §28): ?ffModel= pre-picks the van so the tiles show.
       v('Van — Wheelbase + Roof Height tiles (Toyota Hiace H200)', 'fit-my-vehicle', '.fit-finder-widget', { ls: S.noVehicle, q: 'ffModel=hiace&ffYear=2005-2019' }),
@@ -547,6 +548,10 @@ const RRG_COMPONENTS = [
   { id: 'info-cards', group: 'stores', name: 'Info Cards', build: 'copied', usedOn: ['fit-my-vehicle', 'buying-guide'],
     source: 'Static in fit-my-vehicle',
     variants: [v('4-up', 'fit-my-vehicle', '.info-cards--4'), v('Default', 'fit-my-vehicle', '.info-cards:not(.info-cards--4)')] },
+  { id: 'model-table', group: 'stores', name: 'Models Table (make page)', build: 'mixed', usedOn: ['make-category-landing'],
+    source: 'Shared table CSS (.vclp-gen-table, shared.css); rows rendered by mclpRenderModels(), inline in make-category-landing',
+    note: 'Model / Vehicle type / Shop. Popular models (Rackit Important) first, the rest behind "Show all {n} models". Every model links to its model page (VCLP). spec.md §30 item 3.',
+    variants: [v('Toyota', 'make-category-landing', '#mclpModels'), v('Ford', 'make-category-landing', '#mclpModels', { q: 'make=ford' })] },
   { id: 'generation-table', group: 'stores', name: 'Vehicle Generation Table', build: 'copied', usedOn: ['vehicle-category-landing'],
     source: 'Rendered from Rackit master vehicles (Make + Model) by vclpRenderGenTable(), inline in vehicle-category-landing; grouped by Body (spec.md §26)',
     variants: [v('Default', 'vehicle-category-landing', '.vclp-gen-table')] },
@@ -590,7 +595,7 @@ const RRG_COMPONENTS = [
       v('Buying Guide', 'buying-guide', '.trust-row'),
       v('Clearance', 'clearance', '.trust-row'),
     ] },
-  { id: 'trust-banner', group: 'content', name: 'Trust Banner (install photo)', build: 'copied', usedOn: ['home', 'store-finder', 'vehicle-category-landing', 'vlp', 'brand', 'brands', 'blog', 'blog-post'],
+  { id: 'trust-banner', group: 'content', name: 'Trust Banner (install photo)', build: 'copied', usedOn: ['home', 'store-finder', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'brand', 'brands', 'blog', 'blog-post'],
     source: 'Static per page — the copy differs per page',
     variants: [v('Home', 'home', '.vclp-trust-banner'), v('VCLP', 'vehicle-category-landing', '.vclp-trust-banner'), v('Store Finder', 'store-finder', '.vclp-trust-banner'), v('Brands hub', 'brands', '.vclp-trust-banner'), v('Blog', 'blog', '.vclp-trust-banner')] },
   { id: 'fitting-banner', group: 'content', name: '{Category} Fitting (PLP)', build: 'shared', usedOn: [...PLP3, 'vplp-accessories'],
@@ -607,16 +612,16 @@ const RRG_COMPONENTS = [
   { id: 'blog-post', group: 'content', name: 'Blog Post (header, body, side column)', build: 'shared', usedOn: ['blog-post'],
     source: 'initBlogPost (blog/blog.js); CSS _shared/blog.css',
     variants: [v('Long guide (On this page)', 'blog-post', '.blog-post', { q: 'post=how-to-choose-a-roof-rack-platform', h: 1400 }), v('Photo story', 'blog-post', '.blog-post', { q: 'post=road-to-sea-otter-maydena-bike-park', h: 1400 }), v('Short Q&A', 'blog-post', '.blog-post', { q: 'post=what-size-cargo-bag-do-i-need' })] },
-  { id: 'brands-strip', group: 'content', name: 'Shop The Best Brands', build: 'shared', usedOn: ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'order-confirmation', 'vehicle-category-landing', 'vlp', 'brand', 'buying-guide'],
+  { id: 'brands-strip', group: 'content', name: 'Shop The Best Brands', build: 'shared', usedOn: ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'order-confirmation', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'brand', 'buying-guide'],
     source: 'rrgWidgetBrandsStripHTML + RRG_PROMOTED_BRANDS (widgets.js), <div data-widget="brands-strip">; region hiding applyRegionBrandsStrip (shared.js). Approved brands only (Tim, 2026-10-09)',
     variants: [v('Default', 'home', '.brands-section'), v('Bike brands (filter="bike")', 'buying-guide', '.brands-section'), v('Brand page (exclude + All brands)', 'brand', '.brands-section', { q: 'brand=thule' })] },
-  { id: 'faq', group: 'content', name: 'FAQ', build: 'mixed', usedOn: ['store', 'fit-my-vehicle', 'installation', ...PDP5, 'vehicle-category-landing', 'vlp', ...PLP3, 'brand', 'buying-guide'],
+  { id: 'faq', group: 'content', name: 'FAQ', build: 'mixed', usedOn: ['store', 'fit-my-vehicle', 'installation', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'buying-guide'],
     source: 'Static on PDPs + VCLP; plpRenderFAQ (plp.js); vlpRenderFaq, renderBrandFaq inline',
     variants: [v('Product page (Phase 2)', 'simple', '.faq-section', { ls: S.phase2 }), v('PLP (Phase 2)', 'plp', '.faq-section', { ls: S.phase2 }), v('VCLP', 'vehicle-category-landing', '.faq-section'), v('Brand', 'brand', '.faq-section'), v('Fit My Vehicle', 'fit-my-vehicle', '.faq-section'), v('Buying Guide (grouped)', 'buying-guide', '.faq-section')] },
   { id: 'page-hero', group: 'content', name: 'Page Hero', build: 'copied', usedOn: ['fit-my-vehicle', 'installation', 'buying-guide'],
     source: 'Static per page',
     variants: [v('Fit My Vehicle', 'fit-my-vehicle', '.page-hero'), v('Installation', 'installation', '.page-hero'), v('Buying Guide (with Bike Rack Finder)', 'buying-guide', '.page-hero')] },
-  { id: 'content-block', group: 'content', name: 'Content Block / Split Media', build: 'copied', usedOn: ['store', 'fit-my-vehicle', 'vehicle-category-landing'],
+  { id: 'content-block', group: 'content', name: 'Content Block / Split Media', build: 'copied', usedOn: ['store', 'fit-my-vehicle', 'vehicle-category-landing', 'make-category-landing'],
     source: 'Static per page',
     variants: [v('VCLP', 'vehicle-category-landing', '.content-block'), v('Fit My Vehicle (split media)', 'fit-my-vehicle', '.split-media')] },
   { id: 'steps', group: 'content', name: 'Steps', build: 'copied', usedOn: ['fit-my-vehicle', 'installation'],
