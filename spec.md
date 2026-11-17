@@ -2001,6 +2001,6 @@ Graham asked whether there were plans for the live city pages (`/roof-racks-bris
    - **Store pages:** the crumb is now Home › Store Finder › Brisbane & SEQ › North Lakes, and Nearby Stores gets "All Brisbane & SEQ stores ›".
    - **Other stores:** NSW stores keep the state crumb until Sydney is built.
 3. ✅ **Built 2026-11-17 (after Brenton approved Brisbane): Sydney (7), Melbourne & Geelong (9), Perth (5) and Adelaide (4).** Each uses its live page's areas, title, meta and lead line, plus four store photos from the stores' live galleries. Every state with a city now gets a "{City} stores ›" link on the Store Finder, and those states' store pages get the city crumb. ACT and TAS have no city page and keep the state crumb.
-   - **Live lists to fix (for Graham):** Sydney is missing Arncliffe; Melbourne says 9 stores but lists 8 (no Preston).
+   - **Live lists to fix (for Graham):** Melbourne says 9 stores but lists 8 (no Preston). Arncliffe has closed permanently (Brenton, 2026-11-17), so Sydney is right to leave it out, but its page is still in the live sitemap and needs a redirect.
    - **Melbourne:** Preston is included here.
-   - **Perth:** Cockburn (Yangebup) is on the live page and locator map with no address, phone or page, so it's left out until its store record exists.
+   - **Perth:** ✅ Cockburn (Yangebup) added 2026-11-17 from its new live page (`/roof-racks-galore-cockburn-store`): 10/49 Simper Drive, (08) 9566 1922, standard hours. Perth is now 6 stores and the network 36, so every "35 stores" / "35 nationwide locations" line is now 36, matching live.

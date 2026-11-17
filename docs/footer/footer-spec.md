@@ -23,7 +23,7 @@ Design source: `Footer Design/Footer Component - Desktop.png` and `Footer Compon
 1. **Information** — heading + link list: About Us, Opening Hours, Wholesale Policy, Privacy Policy, Careers, Feedback, Contact Us, Checkout Error Form.
 2. **Customer Service** — heading + link list: Terms and Conditions, Warranty, Payment and Pricing, Shipping & Delivery, Refund & Exchange, Frequently Asked Questions.
 3. **Store Finder** + **Online Orders and Enquiries** stacked in one column:
-   - Store Finder: yellow pin icon + "Click here to find your closest store from our 35 nationwide locations." ("Click here" underlined, links out).
+   - Store Finder: yellow pin icon + "Click here to find your closest store from our 36 nationwide locations." ("Click here" underlined, links out).
    - Online Orders and Enquiries: support-hours paragraph ("Our team is here to support you. Phone and chat is open Monday to Friday, 8:30am to 5pm AEST (closed Public Hols)."), an info-icon email row (`help@roofracksgalore.com.au`), a phone-icon "Call Us 1300 071 264" row.
 4. **Brand column** (right-aligned): full Roof Racks Galore logo (white/red, stacked lockup — larger than the header's horizontal lockup), "Follow Us" heading + 4 circular white social icon buttons (YouTube, Facebook, Instagram, TikTok), "Payment Options" heading + payment-method icon row (PayPal, Visa, MasterCard, Zip, Afterpay, Apple Pay, Google Pay).
 
@@ -47,7 +47,7 @@ Confirmed scope: brand identity, copyright text, phone number, Store Finder copy
    - **New asset added this session:** `prototypes/_shared/headerlogo-white.png` — a white-text/red-accent recolour of `headerlogo.png` (which is black-text-on-transparent, built for the white header, and unreadable on the footer's dark background). Generated programmatically (pixel recolour preserving the red accent and alpha channel exactly, no other differences) since no white variant existed. Used as the footer's AU/NZ logo; UK continues to use the existing self-contained `brand-roofbox-uk-logo.svg` unchanged.
 2. **Copyright text:** "© 2026 Roof Racks Galore" (AU/NZ) vs "© 2026 The Roof Box Company" (UK) — new region-driven text swap, same pattern as the existing trust-row copy swaps in `applyRegion()`.
 3. **Phone number:** reuses `REGION_PHONE` as-is (AU 1300 071 264 / NZ 09 481 1919 / UK 01204 899778) — the footer's "Call Us" row gets the same `data-trust`-style treatment already used for the header/trust-row phone number.
-4. **Store Finder copy:** "35 nationwide locations" (AU) vs single-store wording for NZ/UK, reusing `REGION_SINGLE_STORES` — same convention as the existing Nearest Store / Showroom Finder region text.
+4. **Store Finder copy:** "36 nationwide locations" (AU) vs single-store wording for NZ/UK, reusing `REGION_SINGLE_STORES` — same convention as the existing Nearest Store / Showroom Finder region text.
 5. **Payment Options row:** reuses `paymentBadgeSet(currentRegion)` — AU: PayPal + Visa/MasterCard + Zip + Afterpay + Apple Pay + Google Pay; NZ: same minus Zip; UK: PayPal + Visa/MasterCard + Clearpay + Klarna (drops Afterpay/Zip, per the existing UK payment-provider set) + Apple Pay + Google Pay. Card network icons (Visa/MasterCard/Apple Pay/Google Pay) are not region-specific themselves — only which BNPL providers appear changes.
 
 **Expanded 2026-09-14 (design-review round 2) — UK now diverges much further, matching the real roofbox.co.uk footer rather than just reskinning the AU layout:**

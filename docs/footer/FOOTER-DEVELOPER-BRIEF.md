@@ -74,9 +74,9 @@ One block, present at the bottom of every page: four columns on desktop (Informa
 
 **Purpose:** a one-line prompt into the store locator, echoing the same real store-count claim the client uses elsewhere on the site.
 
-**Contents:** a yellow pin icon + "Click here to find your closest store from our **35 nationwide locations**." — "Click here" links out (placeholder URL, pending).
+**Contents:** a yellow pin icon + "Click here to find your closest store from our **36 nationwide locations**." — "Click here" links out (placeholder URL, pending).
 
-**Region-aware (reuses `REGION_SINGLE_STORES`, already the source of truth for this store data elsewhere in the prototype, e.g. the Showroom Finder heading):** AU shows the real "35 nationwide locations" claim; NZ/UK — which each trade from a single real store — instead read "Click here to find our **[Store Name]** store." (NZ: Auckland; UK: Bolton).
+**Region-aware (reuses `REGION_SINGLE_STORES`, already the source of truth for this store data elsewhere in the prototype, e.g. the Showroom Finder heading):** AU shows the real "36 nationwide locations" claim; NZ/UK — which each trade from a single real store — instead read "Click here to find our **[Store Name]** store." (NZ: Auckland; UK: Bolton).
 
 **States:**
 - AU (default): ![Store Finder — AU](footer-dev-brief-assets/footer-desktop-default.png)

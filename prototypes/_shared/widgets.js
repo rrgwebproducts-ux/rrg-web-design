@@ -202,7 +202,7 @@ function rrgWidgetFooterHTML() {
           <h4>Store Finder</h4>
           <div class="footer-store-finder">
             <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 5.5 8 12 8 12s8-6.5 8-12c0-4.42-3.58-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" fill="#FFCA48"/></svg>
-            <p><a href="#">Click here</a> <span data-footer-store-copy>to find your closest store from our <strong>35 nationwide locations</strong>.</span></p>
+            <p><a href="#">Click here</a> <span data-footer-store-copy>to find your closest store from our <strong>36 nationwide locations</strong>.</span></p>
           </div>
         </div>
         <div class="footer-col footer-enquiries">

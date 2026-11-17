@@ -1290,7 +1290,7 @@ Same SKU-list table as 4.31 (Reviews tab) applies here — use the identical `da
 
 **Spacing:** the two placements use classes, not inline margins: `.dc-widget--panel` (in the Decision Panel, 18px above) and `.dc-widget--tab` (top of the Shipping Info tab, 22px below).
 
-**Stock (2026-09-29, 4.37):** follows the product's stock status. Out of Stock / Discontinued → both tabs unavailable, with a note saying why (the Demo State Panel also unticks and disables its Delivery/C&C toggles in those states, and restores them afterwards). Store pills follow the stock state too (see 4.24). The summary line reads "Click & Collect from 35 stores —" (was "In stock and on display in 35 stores", which claimed every store held it).
+**Stock (2026-09-29, 4.37):** follows the product's stock status. Out of Stock / Discontinued → both tabs unavailable, with a note saying why (the Demo State Panel also unticks and disables its Delivery/C&C toggles in those states, and restores them afterwards). Store pills follow the stock state too (see 4.24). The summary line reads "Click & Collect from 36 stores —" (was "In stock and on display in 36 stores", which claimed every store held it).
 
 **States:**
 - Location (full page, red arrow): ![Delivery/Click & Collect — location](dev-brief-assets/dc-widget-location.png)

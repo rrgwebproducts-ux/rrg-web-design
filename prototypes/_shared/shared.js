@@ -1182,7 +1182,9 @@ const RRG_STORE_NETWORK = [
     { name: "Osborne Park", street: "51 Frobisher Street", city: "Osborne Park", postcode: "6017", phone: "(08) 9444 5061", mapLink: "https://maps.app.goo.gl/zEvXaoWceNKR7TgeA", lat: -31.891, lng: 115.816 },
     { name: "Welshpool", street: "74 Dowd St", city: "Welshpool", postcode: "6106", phone: "(08) 9258 7663", mapLink: "https://maps.app.goo.gl/y6btYejbz9eQ39vD8", lat: -31.988, lng: 115.940 },
     { name: "Malaga", street: "9 Rowe St", city: "Malaga", postcode: "6090", phone: "(08) 6102 6767", mapLink: "https://maps.app.goo.gl/ZFEKHyycGL8YhgoE8", lat: -31.861, lng: 115.895 },
-    { name: "Rockingham", street: "6B Leach Crescent", city: "Rockingham", postcode: "6168", phone: "(08) 6102 6722", mapLink: "https://maps.app.goo.gl/fvpWNyA1HTyT2Rwf7", lat: -32.277, lng: 115.729 }
+    { name: "Rockingham", street: "6B Leach Crescent", city: "Rockingham", postcode: "6168", phone: "(08) 6102 6722", mapLink: "https://maps.app.goo.gl/fvpWNyA1HTyT2Rwf7", lat: -32.277, lng: 115.729 },
+    // Opened Nov 2026: live /roof-racks-galore-cockburn-store (pin from the live locator).
+    { name: "Cockburn", street: "10/49 Simper Drive", city: "Yangebup", postcode: "6164", phone: "(08) 9566 1922", mapLink: "https://www.google.com/maps/search/?api=1&query=Roof+Racks+Galore+Cockburn+10%2F49+Simper+Drive+Yangebup+WA+6164", lat: -32.124, lng: 115.799 }
   ]}
 ];
 
@@ -1260,15 +1262,13 @@ const RRG_STORE_CITIES = {
       { name: 'Geelong', stores: ['Geelong'] }
     ]
   },
-  // The live page also lists Cockburn (Yangebup): a map pin with no address, phone or page yet,
-  // and not in RRG_STORE_NETWORK. Left out until its store record exists.
   perth: {
     name: 'Perth', short: 'Perth', state: 'Western Australia', url: '/roof-racks-perth',
     areas: [
       { name: 'Northern Perth', stores: ['Joondalup', 'Malaga'] },
       { name: 'Central Perth', stores: ['Osborne Park'] },
       { name: 'Eastern Perth', stores: ['Welshpool'] },
-      { name: 'Southern Perth', stores: ['Rockingham'] }
+      { name: 'Southern Perth', stores: ['Rockingham', 'Cockburn'] }
     ]
   },
   adelaide: {
@@ -2253,7 +2253,7 @@ function applyShowroomMapFlag(on) {
 // no separate per-region page files. Resets to AU on every fresh page load — same
 // no-persistence convention as the rest of the demo-state toggles, not saved across visits.
 //
-// RRG's real store network (RRG_STORE_NETWORK, 35 stores) is AU-only — NZ/UK are entirely
+// RRG's real store network (RRG_STORE_NETWORK, 36 stores) is AU-only — NZ/UK are entirely
 // hypothetical single-store demo regions for previewing what an international expansion
 // would look like on this page, not real business fact. Their address/copy below is
 // explicitly placeholder (flagged in DEVELOPER-BRIEF.md's Region-specific heading copy
@@ -2385,11 +2385,11 @@ function renderFooterSocial(region) {
   });
 }
 
-// Footer Store Finder blurb — AU's real "35 nationwide locations" claim doesn't apply to
+// Footer Store Finder blurb — AU's real "36 nationwide locations" claim doesn't apply to
 // NZ/UK, which reuse REGION_SINGLE_STORES (already the source of truth for this store data
 // elsewhere, e.g. the Showroom Finder heading) rather than duplicating it here.
 function regionFooterStoreCopy(region) {
-  if (region === 'AU') return 'to find your closest store from our <strong>35 nationwide locations</strong>.';
+  if (region === 'AU') return 'to find your closest store from our <strong>36 nationwide locations</strong>.';
   return `to find our <strong>${REGION_SINGLE_STORES[region].name}</strong> store.`;
 }
 
@@ -3488,7 +3488,7 @@ const RRG_SEARCH_PAGES = [
   { type: 'category', title: 'Water Carriers', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/C/R/CRUZ-940-622-Kayak--Canoe-Carriers._1_1.jpg', imageStandIn: true, desc: 'Kayak, canoe, SUP and surfboard carriers for your roof rack.', href: RRG_PROTO + 'plp-water-carriers/index.html', kw: 'kayak canoe sup surfboard paddle board water carriers' },
   { type: 'category', title: 'Snow Carriers', image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-RRAC149-Ski--Fishing-Rod-Holders._1_1.jpg', imageStandIn: true, desc: 'Ski and snowboard carriers that lock to your roof rack.', href: RRG_PROTO + 'plp-snow-carriers/index.html', kw: 'ski snowboard snow carriers' },
   { type: 'category', title: 'Camping Gear', image: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/d/a/darche-ranger-solo-050801183r.webp', imageStandIn: true, desc: 'Tents, swags, camp furniture and camp site essentials.', href: RRG_PROTO + 'plp-camping/index.html', kw: 'camping gear tents swags camp furniture' },
-  { type: 'page', title: 'Find a Store', image: RRG_PROTO + '_shared/installer.png', imageStandIn: true, desc: '35 stores nationwide, with opening hours, directions and fitting bays.', href: RRG_LIVE_URL + '/locations', kw: 'find a store stores locations near me opening hours showroom fitting', cta: true },
+  { type: 'page', title: 'Find a Store', image: RRG_PROTO + '_shared/installer.png', imageStandIn: true, desc: '36 stores nationwide, with opening hours, directions and fitting bays.', href: RRG_LIVE_URL + '/locations', kw: 'find a store stores locations near me opening hours showroom fitting', cta: true },
   { type: 'page', title: 'Warranty', desc: 'How warranty claims work for the products we sell.', href: RRG_LIVE_URL + '/warranty', kw: 'warranty claims guarantee' },
   { type: 'page', title: 'Shipping & Delivery', desc: 'Delivery options, timeframes and costs.', href: RRG_LIVE_URL + '/delivery', kw: 'shipping delivery freight postage' },
   { type: 'page', title: 'Refund & Exchange', desc: 'Our returns, refunds and exchange policy.', href: RRG_LIVE_URL + '/returns', kw: 'refund returns exchange' },

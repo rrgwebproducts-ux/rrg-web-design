@@ -9,7 +9,7 @@ Raised by Graham on 2026-11-17 and agreed with Brenton the same day (spec.md §3
 ## 0. Goal & scope
 
 **Live today.** Each city page has a hero image, about 300 words of copy and a list of store names, with no addresses, hours, phone numbers or map. **Nothing links to these pages.** Their store lists are typed in by hand, and they have drifted:
-- Sydney leaves out Arncliffe.
+- Sydney still links an Arncliffe page from the sitemap; that store has closed permanently (Brenton, 2026-11-17).
 - Melbourne says "9 Superstores" but lists 8 (Preston is missing).
 
 **The new page.** It shows every store in the city with the same detail and map as the Store Finder, and its store list comes from the store data, so it can't drift. It also links both up (to the Store Finder) and down (to each store page).
@@ -70,9 +70,9 @@ The other cities use the live pages' own area groupings (crawled 2026-11-17):
 
 | City (`?city=`) | Areas → stores | Differences from the live page |
 |---|---|---|
-| Sydney (`sydney`), 7 | Northern Sydney: Warriewood, Castle Hill · Western Sydney: Silverwater · South Western Sydney: Moorebank, Smeaton Grange · Southern Sydney: Miranda, Matraville | None. Arncliffe is in the live sitemap but not on the page or in the store network. |
+| Sydney (`sydney`), 7 | Northern Sydney: Warriewood, Castle Hill · Western Sydney: Silverwater · South Western Sydney: Moorebank, Smeaton Grange · Southern Sydney: Miranda, Matraville | None. Arncliffe has closed permanently (Brenton); its page is still in the live sitemap. |
 | Melbourne & Geelong (`melbourne`), 9 | Northern Melbourne: Epping, Preston · Eastern Melbourne: Mitcham · Western Melbourne: Hoppers Crossing, Maidstone · South Eastern Melbourne: Hallam, Moorabbin, Frankston · Geelong: Geelong | **Preston added.** The live page says 9 stores but lists 8. Live calls the last group "Regional Victoria". |
-| Perth (`perth`), 5 | Northern Perth: Joondalup, Malaga · Central Perth: Osborne Park · Eastern Perth: Welshpool · Southern Perth: Rockingham | **Cockburn (Yangebup) left out.** On live it's only a locator map pin, with no address, phone or store page, and it isn't in the store network. |
+| Perth (`perth`), 6 | Northern Perth: Joondalup, Malaga · Central Perth: Osborne Park · Eastern Perth: Welshpool · Southern Perth: Rockingham, Cockburn | None. **Cockburn (Yangebup)** opened Nov 2026 and was added to the store network from its live page `/roof-racks-galore-cockburn-store`: 10/49 Simper Drive, Yangebup WA 6164, (08) 9566 1922, cockburn@roofracksgalore.com.au, standard hours. The pin is the live locator's. It has no store photos yet. |
 | Adelaide (`adelaide`), 4 | Central Adelaide: Adelaide City · Northern Adelaide: Edinburgh, Pooraka · Southern Adelaide: Lonsdale | None. The H1 keeps the live "Adelaide Metro"; the crumb and links say "Adelaide". |
 
 **Shared copy.** The fitting paragraph and the brand line are shared by every city (`CITY_FITTING_COPY`, `CITY_BRANDS`). Each city has its own lead line (the live one), range paragraph, hero photo and four store photos, taken from the stores' live galleries and saved as .webp in `_shared/stores/`.
@@ -125,7 +125,7 @@ The store lists and hours are generated from the data, so they can't drift.
 ## 7. Open
 
 - **For Graham:**
-  - **Cockburn:** we need its address, phone and hours to add it to the store network. Then it appears on the Store Finder and the Perth page automatically.
-  - **Arncliffe:** it's still in the live sitemap. Has it closed?
+  - **Live Arncliffe page:** the store has closed permanently, but its page is still in the live sitemap. It should be redirected (to the Sydney page) and dropped from the sitemap.
   - **Live Melbourne page:** it lists 8 stores under "9"; Preston is missing.
+  - **Cockburn photos:** the live store page has none yet, so it isn't in the Perth photo grid.
 - **Store photos:** the prototype only has photos for the stores it has pages for. Production uses each store record's images.

@@ -185,7 +185,7 @@ All built and Playwright-verified (1440 + 390px, both page vehicles, session non
 
 **Built differently from the plan:**
 - **Ranger demo data** has Towing Mirrors, Roller Shutters and Protection & Trim only (no Vehicle Specific Accessories, Storage & Drawers or Misc Vehicle Accessories), so switching to the Ranger shows both rules at once: the Store Finder widens to 3 columns and the bottom section loses tiles.
-- **Store Finder map** is centred on the nearest store (North Lakes) at street level rather than all 35 stores — at tile size the Australia-wide view read as an empty dark rectangle. The map is darkened with a CSS filter to match the Figma's dark street map.
+- **Store Finder map** is centred on the nearest store (North Lakes) at street level rather than all 36 stores — at tile size the Australia-wide view read as an empty dark rectangle. The map is darkened with a CSS filter to match the Figma's dark street map.
 - **Popular Racks cards** show the session vehicle's fitment, so with a different saved vehicle they honestly read "Doesn't fit your Toyota Hilux" until the shopper uses the notice's "Make this my vehicle".
 
 ---
