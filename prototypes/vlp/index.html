@@ -360,7 +360,7 @@ const VLP_VEHICLE = VLP_VEHICLES[VLP_PAGE_KEY];
 // Read by shared.js's Fitment Gallery builders and slide-out.
 const FIT_GALLERY_PHOTOS = VLP_PAGE_KEY === 'hilux' ? VLP_HILUX_FIT_PHOTOS : [];
 // Live page state — the Demo State Panel's checklist edits vsAvailable (buildAdminPanel() in shared.js).
-window.VLP_STATE = { pageKey: VLP_PAGE_KEY, vsAvailable: new Set(VLP_VEHICLE.vsCategories) };
+window.VLP_STATE = { pageKey: VLP_PAGE_KEY, vsAvailable: new Set(VLP_VEHICLE.vsCategories), heroImage: 'vehicle' };
 
 const vlpName = v => `${v.make} ${v.model}`;
 const vlpNameCode = v => `${v.make} ${v.model}${v.code ? ` (${v.code})` : ''}`;
@@ -384,8 +384,18 @@ function vlpRenderHeader() {
   });
   document.getElementById('vlpH1').textContent = `Shop Roof Racks & Accessories for your ${vlpSpec(v)}`;
   document.getElementById('vlpIntro').textContent = v.intro;
+  // No vehicle image (none in the data, the Demo State "No image" preview, or the file fails to
+  // load) → text-only hero, the shared .plp-hero.no-media state the PLPs already use (design meeting
+  // 2026-11-17, spec.md §30 item 4, Brenton picked "no image"). The make badge only ever shows with
+  // a vehicle photo, never on its own as a fallback (brand-logo licensing).
+  const hero = document.getElementById('vlpHero');
+  const media = hero.querySelector('.plp-hero-media');
   const img = document.getElementById('vlpHeroImg');
-  img.src = v.image; img.alt = vlpName(v);
+  const setNoMedia = on => { hero.classList.toggle('no-media', on); media.hidden = on; };
+  const showImage = !!v.image && VLP_STATE.heroImage !== 'none';
+  setNoMedia(!showImage);
+  img.onerror = () => setNoMedia(true);
+  if (showImage) { img.src = v.image; img.alt = vlpName(v); }
   const badge = document.getElementById('vlpHeroBadge');
   badge.style.display = v.badge ? '' : 'none';
   if (v.badge) { badge.querySelector('img').src = v.badge; badge.querySelector('img').alt = v.make; }

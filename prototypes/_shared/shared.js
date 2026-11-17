@@ -3885,6 +3885,8 @@ function buildAdminPanel() {
     const nosave = html => html.replace(/<(input|select) /g, '<$1 data-admin-nosave ');
     html += section('Page vehicle <span class="admin-note">(the URL — session vehicle is in Site Admin)</span>',
       nosave(choice('vlpPageVehicle', 'Landing page for', [['hilux', 'Toyota Hilux N80'], ['ranger', 'Ford Ranger P703'], ['hiace', 'Toyota Hiace H300 (van)']], vs.pageKey)));
+    // spec.md §30 item 4: a vehicle with no photo gets the text-only hero.
+    html += section('Hero image', nosave(choice('vlpHeroImage', 'Show', [['vehicle', 'Vehicle photo'], ['none', 'No vehicle image']], vs.heroImage)));
     const cats = (typeof VLP_CATEGORIES !== 'undefined' ? VLP_CATEGORIES : []).filter(c => c.vehicleSpecific);
     html += section('Categories with results',
       nosave(cats.map(c => toggle('vlpCat:' + c.slug, c.label, vs.vsAvailable.has(c.slug))).join('')) +
@@ -4015,6 +4017,7 @@ function buildAdminPanel() {
   // Dropdown choices (were radio groups) — each handler gets the chosen value.
   const onChoice = (name, fn) => { const sel = panel.querySelector(`select[name="${name}"]`); if (sel) sel.addEventListener('change', () => fn(sel.value)); };
   onChoice('vlpPageVehicle', v => { if (window.vlpSetPageVehicle) window.vlpSetPageVehicle(v); });
+  onChoice('vlpHeroImage', v => { if (window.VLP_STATE) { window.VLP_STATE.heroImage = v; if (typeof vlpRenderHeader === 'function') vlpRenderHeader(); } });
   onChoice('plpHeroImage', v => { if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(v); });
   panel.querySelectorAll('[data-admin-input]').forEach(input => {
     input.addEventListener('input', () => {
