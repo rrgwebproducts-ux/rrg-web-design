@@ -230,7 +230,7 @@ const RRG_DYN_FIELDS = [
     token: '{config.phone}',
     attr: 'CMS / config: support phone per region',
     sel: '.rrg-footer [data-trust="phone"] a[href^="tel:"]',
-    rule: ['AU 1300 071 264, NZ 09 481 1910, UK 01204 899778'],
+    rule: ['AU 1300 071 264, NZ 09 481 1919, UK 01204 899778'],
     example: '1300 071 264',
     notes: 'The same per-region number also fills the PDP Trust Row.',
     status: 'draft' },

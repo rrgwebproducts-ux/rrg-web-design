@@ -40,6 +40,11 @@ const BRF_BIKE_WHY = {
 };
 
 // Which way the rack should hold the bike, per mount + bike mix. Returns { label, cards[] }.
+// Support number for the region (shared.js REGION_PHONE), so NZ/UK never see the AU 1300 number.
+function brfPhone() {
+  return typeof REGION_PHONE !== 'undefined' ? REGION_PHONE[typeof currentRegion !== 'undefined' ? currentRegion : 'AU'] : '1300 071 264';
+}
+
 function brfHold(mount, bikes) {
   const b = k => bikes.has(k);
   if (mount === 'tow') {
@@ -205,7 +210,7 @@ function initBikeRackFinder() {
         ask: `<ul class="brf-why">${bikeWhy.map(w => `<li>${w}</li>`).join('')}</ul><p class="brf-note">For this mix of bikes and vehicle, we'd rather check your setup with you than guess.</p>`,
       }[rec.kind];
       html = `<p class="brf-eyebrow">Your result</p><h3 class="brf-match">${title}</h3>${summary}${body}
-        <div class="brf-actions"><a class="btn btn-primary" href="tel:1300071264">Call 1300 071 264</a><a class="brf-link" href="#" data-store-finder-link>Find a store</a></div>${restart}`;
+        <div class="brf-actions"><a class="btn btn-primary" href="tel:${brfPhone().replace(/[^0-9+]/g, '')}">Call ${brfPhone()}</a><a class="brf-link" href="#" data-store-finder-link>Find a store</a></div>${restart}`;
       markMatches(null, bikes, null);
     }
     resultEl.innerHTML = html;

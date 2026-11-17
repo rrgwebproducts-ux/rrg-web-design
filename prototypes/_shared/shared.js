@@ -2195,7 +2195,7 @@ function applyRegionStoreNav(region) {
 }
 
 const REGION_SINGLE_STORES = {
-  NZ: { name: 'Auckland', address: '195A Wairau Road, Wairau Valley, Auckland, 0627', phone: '09 481 1910', lat: -36.7747, lng: 174.7381, onDisplay: true, note: 'Roof Racks Galore, Auckland — roofracksgalore.co.nz/contact-us' },
+  NZ: { name: 'Auckland', address: '195A Wairau Road, Wairau Valley, Auckland, 0627', phone: '09 481 1919', lat: -36.7747, lng: 174.7381, onDisplay: true, note: 'Roof Racks Galore, Auckland — roofracksgalore.co.nz/contact-us' },
   UK: { name: 'Bolton', address: 'Unit B9, Edge Fold Industrial Estate, Plodder Lane, Farnworth, Bolton, BL4 0LR', phone: '01204 899778', lat: 53.5503, lng: -2.3882, onDisplay: true, note: 'The Roof Box Company, Manchester North Store — roofbox.co.uk/locations/manchester-north.php' }
 };
 
@@ -2203,7 +2203,24 @@ const REGION_SINGLE_STORES = {
 // separately from REGION_TRUST_COPY below since this item's markup nests a <a href="tel:">
 // inside its <p> (`<p>Contact us on: <a href="tel:...">...</a></p>`), which a plain
 // `p.textContent = ...` swap (as used for the other two trust items) would silently destroy.
-const REGION_PHONE = { AU: '1300 071 264', NZ: '09 481 1910', UK: '01204 899778' };
+const REGION_PHONE = { AU: '1300 071 264', NZ: '09 481 1919', UK: '01204 899778' };
+
+// Support number written into page copy (Home, Buying Guide, cart, VCLP, blog posts…) — design
+// meeting 2026-11-17, spec.md §30 item 6: the AU 1300 number must never show on NZ/UK. Any tel: link
+// to a REGION_PHONE number gets the current region's number (href + the link's own text). Store
+// numbers aren't in REGION_PHONE, so they're never touched. Call it again after rendering copy late.
+function rrgSwapSupportPhone(root, region) {
+  const numbers = Object.values(REGION_PHONE);
+  const digits = numbers.map(p => p.replace(/[^0-9]/g, ''));
+  const phone = REGION_PHONE[region];
+  root.querySelectorAll('a[href^="tel:"]').forEach(a => {
+    if (!digits.includes(a.getAttribute('href').replace(/[^0-9]/g, ''))) return;
+    a.href = `tel:${phone.replace(/[^0-9+]/g, '')}`;
+    a.childNodes.forEach(n => {
+      if (n.nodeType === 3) numbers.forEach(p => { n.nodeValue = n.nodeValue.split(p).join(phone); });
+    });
+  });
+}
 
 // Footer region copy (footer-spec.md Section 3) — support-email domain per region. NZ/UK
 // emails are a placeholder (no real address exists anywhere in this project yet — footer-
@@ -2323,6 +2340,7 @@ function applyRegionFooter(region) {
   // shoppers can't tap to call); still a tel: link. Also sets the mobile header's phone icon.
   document.querySelectorAll('[data-utility-call]').forEach(a => { a.href = `tel:${REGION_PHONE[region].replace(/[^0-9+]/g, '')}`; });
   document.querySelectorAll('[data-utility-call-number]').forEach(el => { el.textContent = REGION_PHONE[region]; });
+  rrgSwapSupportPhone(document, region);
   document.querySelectorAll('[data-footer-store-copy]').forEach(el => {
     el.innerHTML = regionFooterStoreCopy(region);
   });

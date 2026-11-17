@@ -551,7 +551,7 @@ One region change touches eleven separate things on the page. Each is independen
 | 6 | Trust Row — "Trusted Since 1989" / "Australia's Largest" tiles | Real AU copy (unchanged) | "Trusted Since 1989" / "Visit In Person — Check it out at our Auckland showroom" | "Trusted Since 1989" / "Visit In Person — Check it out at our **Bolton** showroom" *(corrected — was London)* |
 | 7 | Currency symbol on every price on the page | $ | $ | £ (same numeric value — **symbol swap only, no FX conversion anywhere in this prototype**) |
 | 8 | Brand skin (logo, primary colour, Add to Cart colour) | RRG red/gold, RRG wordmark logo | Unchanged — NZ stays RRG-branded, no rebrand (real scraped copy already treats AU+NZ as one network under one brand) | **The Roof Box Company** navy/yellow branding, green Add to Cart — see UK Brand Skin & Currency below |
-| 9 | **Trust Row phone number** ("Need Help" tile) | `1300 071 264` (unchanged) | `09 481 1910` | `01204 899778` |
+| 9 | **Trust Row phone number** ("Need Help" tile) | `1300 071 264` (unchanged) | `09 481 1919` | `01204 899778` |
 | 10 | **Payment badges under Add to Cart** — see UK payment provider differences below | Afterpay + PayPal + Zip (Afterpay/PayPal "Pay in 4," Zip its own weekly copy) | Afterpay + PayPal only, "Pay in 4" (Zip dropped — not offered in NZ) | Full 3-provider swap, not a hide/show: **Clearpay** ("Pay in 4," same structure as Afterpay) + **PayPal** ("Pay in 3," not 4) + **Klarna** ("Pay in 3" over 3 months) |
 | 11 | **Header utility bar "Your Nearest Store"** | North Lakes (unchanged) | Auckland | Bolton |
 
@@ -586,7 +586,7 @@ const REGION_SINGLE_STORES = {
   NZ: {
     name: 'Auckland',
     address: '195A Wairau Road, Wairau Valley, Auckland 0627',
-    phone: '09 481 1910',
+    phone: '09 481 1919',
     lat: -36.7747, lng: 174.7381
   },
   UK: {
@@ -598,7 +598,7 @@ const REGION_SINGLE_STORES = {
 };
 
 // Trust Row phone number, by region (item 28).
-const REGION_PHONE = { AU: '1300 071 264', NZ: '09 481 1910', UK: '01204 899778' };
+const REGION_PHONE = { AU: '1300 071 264', NZ: '09 481 1919', UK: '01204 899778' };
 
 const REGION_TRUST_COPY = {
   AU: { founded: { h4: 'Trusted Since 1989', p: 'Now with over 30 locations Australia wide' },
@@ -704,13 +704,13 @@ Three separate places on the page show a phone number and/or store name that cha
 
 | Where | AU (real, unchanged) | NZ | UK |
 |---|---|---|---|
-| Trust Row "Need Help" tile phone number | `1300 071 264` | `09 481 1910` | `01204 899778` |
+| Trust Row "Need Help" tile phone number | `1300 071 264` | `09 481 1919` | `01204 899778` |
 | Header utility bar "Your Nearest Store" | North Lakes | Auckland | Bolton |
 | Showroom Finder heading + Click & Collect "on display" line (both read the same underlying store name) | Real per-product AU store count | Auckland | **Bolton** — corrected 2026-09-11, was showing a placeholder "London" |
 
 **Real NZ contact details** (Roof Racks Galore, Auckland — sourced 2026-09-11 from [roofracksgalore.co.nz/contact-us](https://roofracksgalore.co.nz/contact-us)):
 - Address: 195A Wairau Road, Wairau Valley, Auckland 0627
-- Phone: `09 481 1910`
+- Phone: `09 481 1919`
 
 **Real UK contact details** (The Roof Box Company, Manchester North Store — sourced 2026-09-11 from [roofbox.co.uk/locations/manchester-north.php](https://www.roofbox.co.uk/locations/manchester-north.php)):
 - Address: Unit B9, Edge Fold Industrial Estate, Plodder Lane, Farnworth, Bolton, BL4 0LR
@@ -1398,7 +1398,7 @@ The section uses the standard 48px section spacing (Section 2). Carousel photos 
 
 **Typography:** 26px icon (`--rrg-red`); label is `h4`, 16px bold; body copy 14px, `--rrg-grey-600` (`#666`) (desktop and mobile — no separate floor bump needed since the 2026-09-16 sitewide pass). The "Need Help" tile's phone number is bold red, not the default grey.
 
-**Region differences:** 2 of the 4 tiles are region-aware, swapped by `applyRegion()` via `REGION_TRUST_COPY`: "Trusted Since 1989" (`[data-trust="founded"]`) and "Australia's Largest" (`[data-trust="network"]`) — NZ/UK show placeholder region-appropriate wording (e.g. NZ: "Visit In Person" / "Check it out at our Auckland showroom"), flagged as needing real client-approved copy before production. The "Need Help" tile's phone number + `tel:` link is separately region-aware via `REGION_PHONE` (AU `1300 071 264` / NZ `09 481 1910` / UK `01204 899778`) — handled as its own pass since it nests a link inside the `<p>`, unlike the other two tiles' plain-text swap. "Trained Professionals" is not region-aware — identical copy everywhere.
+**Region differences:** 2 of the 4 tiles are region-aware, swapped by `applyRegion()` via `REGION_TRUST_COPY`: "Trusted Since 1989" (`[data-trust="founded"]`) and "Australia's Largest" (`[data-trust="network"]`) — NZ/UK show placeholder region-appropriate wording (e.g. NZ: "Visit In Person" / "Check it out at our Auckland showroom"), flagged as needing real client-approved copy before production. The "Need Help" tile's phone number + `tel:` link is separately region-aware via `REGION_PHONE` (AU `1300 071 264` / NZ `09 481 1919` / UK `01204 899778`) — handled as its own pass since it nests a link inside the `<p>`, unlike the other two tiles' plain-text swap. "Trained Professionals" is not region-aware — identical copy everywhere.
 
 **Links:** only the "Need Help" tile's phone number is a real link (`tel:`); the other 3 tiles are plain text, no links.
 

@@ -120,7 +120,7 @@ The old page ranks on its URL, title, H1, keyword list and price table. Every on
 - **Links:** Book a Fitting and every store link go to the NZ Store Locator, `/locations`.
 - **Page settings:** NZ's Content Heading is already empty; leave it empty. Also leave its meta title and description ("Roof Rack Installation NZ | Roof Rack Fitting & Costs Auckland…") as they are.
 - **No script:** the cost section isn't collapsed, so it's not needed.
-- **Structured data (2026-10-26):** Organization (the NZ site had none), the Auckland store as an AutoPartsStore (195A Wairau Road, Wairau Valley, Auckland 0627, +64 9 481 1910, Mon–Fri 8:30–5, Sat 8:30–12:30, map coordinates), WebPage, BreadcrumbList, Service (provided by the Auckland store, area New Zealand, the 8 "What we fit" services; no prices) and FAQPage (the 5 NZ FAQs). 0 errors / 0 warnings on validator.schema.org.
+- **Structured data (2026-10-26):** Organization (the NZ site had none), the Auckland store as an AutoPartsStore (195A Wairau Road, Wairau Valley, Auckland 0627, +64 9 481 1919, Mon–Fri 8:30–5, Sat 8:30–12:30, map coordinates), WebPage, BreadcrumbList, Service (provided by the Auckland store, area New Zealand, the 8 "What we fit" services; no prices) and FAQPage (the 5 NZ FAQs). 0 errors / 0 warnings on validator.schema.org.
 
 ## 6. Rebuilding this file
 

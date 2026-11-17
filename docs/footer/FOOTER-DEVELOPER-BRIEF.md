@@ -96,7 +96,7 @@ One block, present at the bottom of every page: four columns on desktop (Informa
 
 **Region-aware:**
 - **Email** — swaps to the equivalent domain per region: `help@roofracksgalore.com.au` (AU/NZ... see data-gap note below) / `help@roofbox.co.uk` (UK).
-- **Phone** — reuses the same real per-region numbers already used elsewhere in the prototype (`REGION_PHONE`): AU 1300 071 264, NZ 09 481 1910, UK 01204 899778.
+- **Phone** — reuses the same real per-region numbers already used elsewhere in the prototype (`REGION_PHONE`): AU 1300 071 264, NZ 09 481 1919, UK 01204 899778.
 
 > **Data gap (footer-spec.md Section 4):** the NZ/UK support email addresses are a placeholder — built as the equivalent domain (`help@roofracksgalore.co.nz`, `help@roofbox.co.uk`) since no real address exists anywhere in this project yet. **Needs Brenton to confirm the real addresses before this leaves prototype stage.**
 
