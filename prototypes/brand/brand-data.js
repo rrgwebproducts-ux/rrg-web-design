@@ -62,6 +62,42 @@ const RRG_BRAND_PAGES = {
     ]
    },
    {
+    "label": "Leg Packs",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-bars/thule-leg-packs",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/t/h/thule-foot-pack-775000-half-05c5752a8b97.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Fitting Kits",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-fitting-kits/thule-fitting-kits",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-KIT141683-Roof-Rack---Fitting-Kit._1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Baskets & Bags",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-accessories/thule-baskets-bags",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-859101-Baskets._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Caprock Platforms",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-rack-platforms/thule-caprock-platforms",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-611001-Platforms--Trays._1_39.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
     "label": "Bike Racks",
     "href": "https://www.roofracksgalore.com.au/bike-racks/by-brand/thule-bike-racks",
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-933402-Bike-Rack---Accessories._1.webp",
@@ -82,6 +118,15 @@ const RRG_BRAND_PAGES = {
     ]
    },
    {
+    "label": "Awnings & Tents",
+    "href": "https://www.roofracksgalore.com.au/awnings-roof-top-tents/brands/thule-awnings-roof-top-tents",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/t/h/thule-tepui-foothill-roof-top-tent-901250_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
     "label": "Water & Snow",
     "href": "https://www.roofracksgalore.com.au/water-snow-sports/brands/thule",
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-845000-Board-Carriers._1_1.webp",
@@ -92,9 +137,18 @@ const RRG_BRAND_PAGES = {
     ]
    },
    {
-    "label": "Awnings & Tents",
-    "href": "https://www.roofracksgalore.com.au/awnings-roof-top-tents/brands/thule-awnings-roof-top-tents",
-    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/t/h/thule-tepui-foothill-roof-top-tent-901250_1.webp",
+    "label": "Camping & Offroad",
+    "href": "https://www.roofracksgalore.com.au/camping-offroad/brands/thule",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/t/h/thule-outset-3-person-towbar-mounted-tent-901520-3857d024694c.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Lifestyle",
+    "href": "https://www.roofracksgalore.com.au/lifestyle/brands/thule",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/t/h/thule-chasm-90l-3204418-34f4065bf626.webp",
     "regions": [
      "AU",
      "NZ"
@@ -185,29 +239,101 @@ const RRG_BRAND_PAGES = {
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/c/d/cdde2045cdecf5c7fcf4e708b0e7699f99a58cc2e24832493bcfec6b5ee2a04b_1_38.webp"
    },
    {
+    "label": "Cross Bars",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-bars/rhino-rack-cross-bars",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-vortex-bar-1200mm-black-x-1-va120b1-bbfbc0c44e23.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Leg Packs",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-bars/rhino-rack-leg-packs",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RLKVF-Roof-Rack---Legs._1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Fitting Kits",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-fitting-kits/rhino-rack-base-fitting-kits",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RCP52-BK-Roof-Rack---Fitting-Kit._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Tracks",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-tracks/rhino-rack-tracks",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RTC8JWMY11-Tracks._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Pioneer Platforms",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-rack-platforms/rhino-rack-pioneer-platforms",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Pioneer-6-Medium-Generic_1_6.webp"
+   },
+   {
+    "label": "Pioneer Tradie Platforms",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-rack-platforms/rhino-rack-tradie-platforms",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-65109-Platforms--Trays._1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Platform Accessories",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-tray-platform-accessories/rhino-rack-pioneer-platform-accessories",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-43104-Platforms--Trays---Accessories._1_1.webp"
+   },
+   {
+    "label": "Backbone",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-tray-platform-accessories/rhino-rack-backbone",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-backbone-spine-mounting-system-fits-toyota-tundra-double-cab-rttb3-0634ebb05cb2.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Roof Trays & Baskets",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-trays/rhino-roof-trays",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RLBM-Baskets._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Bike Racks",
+    "href": "https://www.roofracksgalore.com.au/bike-racks/by-brand/rhino-bike-racks",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-spare-wheel-2-bike-carrier-rbc025-454fa1f60721.webp"
+   },
+   {
     "label": "Roof Boxes",
     "href": "https://www.roofracksgalore.com.au/roof-boxes/brands/rhino-rack-roof-boxes",
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-RMFT370A-Roof-Boxes._1_1.webp"
    },
    {
-    "label": "Awnings",
+    "label": "Awnings & Tents",
     "href": "https://www.roofracksgalore.com.au/awnings-roof-top-tents/brands/rhino-rack-awnings-roof-top-tents",
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-low-profile-roof-top-tent-61052.webp"
    },
    {
-    "label": "Platforms",
-    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-rack-platforms/rhino-rack-pioneer-platforms",
-    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Pioneer-6-Medium-Generic_1_6.webp"
-   },
-   {
-    "label": "Accessories",
-    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-tray-platform-accessories/rhino-rack-pioneer-platform-accessories",
-    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/R/h/Rhino-Rack-43104-Platforms--Trays---Accessories._1_1.webp"
-   },
-   {
-    "label": "Bike Racks",
-    "href": "https://www.roofracksgalore.com.au/bike-racks/by-brand/rhino-bike-racks",
-    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/m/rm047-bracket-kit-to-suit-monorail-solo-and-highnoon-solo_F2OFCM_1.webp"
+    "label": "Water & Snow",
+    "href": "https://www.roofracksgalore.com.au/water-snow-sports/brands/rhino-rack",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/r/h/rhino-rack-adjustable-canoe-holder-suits-heavy-duty-bars-rlh1-de0980e1d5ef.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
    }
   ],
   "hasFitment": true,
@@ -299,9 +425,72 @@ const RRG_BRAND_PAGES = {
     ]
    },
    {
-    "label": "Platforms",
+    "label": "Roof Bars",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-bars/yakima-roof-bars",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-locknload-hd-bar_K3TDN7_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Leg Packs",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-bars/yakima-leg-packs",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-9813012-Roof-Rack---Legs._1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Fitting Kits",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-fitting-kits/yakima-fitting-kits",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-9813173-Roof-Rack---Fitting-Kit._1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Tracks",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-tracks/yakima-tracks",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-locknload-track-kit-for-mitsubishi-triton-mq-dc-2015-2025-8000330-cebc2c3d1d7a.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "LockNLoad Platforms",
     "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-rack-platforms/yakima-locknload",
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-locknload-platform-u-1485-x-2130mm-8000380-9820380.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Roof Trays",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-trays/yakima-roof-trays",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8007108-Baskets._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Platform Accessories",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-tray-platform-accessories/yakima-locknload-platform-accessories",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8005031-General-Accessories._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Tray Accessories",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-tray-platform-accessories/yakima-tray-accessories",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/y/a/yakima-light-mounting-bracket-8007075.webp",
     "regions": [
      "AU",
      "NZ"
@@ -344,6 +533,15 @@ const RRG_BRAND_PAGES = {
      "AU",
      "NZ",
      "UK"
+    ]
+   },
+   {
+    "label": "Camping & Offroad",
+    "href": "https://www.roofracksgalore.com.au/camping-offroad/brands/yakima",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/Y/a/Yakima-8004103-Camping._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
     ]
    }
   ],
@@ -539,6 +737,24 @@ const RRG_BRAND_PAGES = {
     ]
    },
    {
+    "label": "Leg Packs",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-bars/cruz-leg-packs",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/C/R/CRUZ-934-418-Roof-Rack---Legs._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
+    "label": "Fitting Kits",
+    "href": "https://www.roofracksgalore.com.au/roof-racks/roof-rack-fitting-kits/cruz-fitting-kits",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/C/R/CRUZ-935-860-Roof-Rack---Fitting-Kit._1_1.webp",
+    "regions": [
+     "AU",
+     "NZ"
+    ]
+   },
+   {
     "label": "Evo Rack Trays",
     "href": "https://www.roofracksgalore.com.au/platforms-trays/commercial-trade/cruz-evo-rack-tray",
     "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/c/r/cruz-evo-rack-alloy-1800-x-1260mm-van-ladder-rack-a18-126-912-201-d0384725246b.webp",
@@ -546,6 +762,15 @@ const RRG_BRAND_PAGES = {
      "AU",
      "NZ",
      "UK"
+    ]
+   },
+   {
+    "label": "Evo Rack Accessories",
+    "href": "https://www.roofracksgalore.com.au/platforms-trays/roof-tray-platform-accessories/cruz-evo-rack-accessories",
+    "image": "https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/C/R/CRUZ-941-043-Ladder-Slides--Conduit._1.webp",
+    "regions": [
+     "AU",
+     "NZ"
     ]
    },
    {
