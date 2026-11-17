@@ -1223,6 +1223,78 @@ const RRG_STORE_FINDER_HREF = () => `${RRG_PROTO}store-finder/index.html`;
 const RRG_FMV_HREF = () => `${RRG_PROTO}fit-my-vehicle/index.html`;
 const RRG_INSTALL_HREF = () => `${RRG_PROTO}installation/index.html`;
 
+// ---- City store pages (docs/store-city/store-city-spec.md, 2026-11-17) ----
+// The step between the Store Finder and a store page: every store in one metro area
+// (/roof-racks-brisbane on live). One record per city: its areas, in display order, each with its
+// stores (names as in RRG_STORE_NETWORK). A store page's breadcrumb goes through its city
+// (Home › Store Finder › Brisbane & SEQ › North Lakes) and the Store Finder links each state
+// to its city. Stores in no city (Canberra, Hobart) keep the state crumb. Only cities listed here
+// get links, so a city goes live here once its page is built.
+const RRG_STORE_CITIES = {
+  brisbane: {
+    name: 'Brisbane, Gold Coast & Sunshine Coast', short: 'Brisbane & SEQ', state: 'Queensland', url: '/roof-racks-brisbane',
+    areas: [
+      { name: 'Brisbane', stores: ['North Lakes', 'Kedron', 'East Brisbane', 'Rocklea', 'Springwood'] },
+      { name: 'Gold Coast', stores: ['Gold Coast', 'Burleigh Heads'] },
+      { name: 'Sunshine Coast', stores: ['Sunshine Coast'] }
+    ]
+  }
+};
+const rrgStoreCityHref = slug => `${RRG_PROTO}store-city/index.html?city=${slug}`;
+// [slug, city] for the city a store belongs to, or null.
+function rrgStoreCity(storeName) {
+  return Object.entries(RRG_STORE_CITIES).find(([, c]) => c.areas.some(a => a.stores.includes(storeName))) || null;
+}
+
+// ---- Store card (Store Finder + city pages) ----
+// One store as a card: name (→ its page), distance, open now, address, today's hours, phone,
+// View Store / Directions / Make this my store. opts: km (number or null), nearest (label the
+// first search result), active (the store highlighted on the map). st needs the
+// RRG_STORE_NETWORK fields plus state, timeZone and hours (null for the NZ/UK single stores,
+// which have no hours record yet).
+function rrgStoreCardHTML(st, opts = {}) {
+  const status = st.hours ? rrgStoreOpenStatus(st.hours, st.timeZone, rrgStoreHolidays(RRG_STATE_ABBR[st.state])) : null;
+  const today = st.hours ? st.hours[rrgStoreNow(st.timeZone).day] : null;
+  const href = rrgStorePageHref(st.name);
+  const tel = `tel:${st.phone.replace(/[^0-9]/g, '')}`;
+  const mine = rrgSessionGet('storeSet') && document.querySelector('[data-region-nearest-store]')?.dataset.currentStoreName === st.name;
+  const kmLabel = opts.km == null ? '' : opts.nearest ? '<span class="sf-card-km is-nearest">Nearest store</span>' : `<span class="sf-card-km">${Math.round(opts.km)}km</span>`;
+  return `
+    <article class="sf-card${st.name === opts.active ? ' is-active' : ''}" data-sf-store="${st.name}">
+      <div class="sf-card-top">
+        <h3 class="sf-card-name">${href ? `<a href="${href}">${st.name}</a>` : st.name}</h3>
+        ${kmLabel}
+      </div>
+      ${st.hours ? `<div class="store-open${status.open ? ' is-open' : ''}">${status.open ? 'Open now' : 'Closed'} <span>· ${status.text}</span></div>` : ''}
+      <span>${st.street || st.address}${st.city ? `, ${st.city} ${RRG_STATE_ABBR[st.state] || ''} ${st.postcode}` : ''}</span>
+      ${today ? `<span>Today ${rrgFmtTime(today[0])} – ${rrgFmtTime(today[1])}</span>` : st.hours ? '<span>Closed today</span>' : ''}
+      <a class="sf-card-phone" href="${tel}">${st.phone}</a>
+      <div class="sf-card-actions">
+        ${href ? `<a class="btn btn-outline btn-sm" href="${href}">View Store</a>` : ''}
+        ${st.mapLink ? `<a href="${st.mapLink}" target="_blank" rel="noopener noreferrer">Directions</a>` : ''}
+        ${href ? (mine ? '<span class="sf-card-mine">✓ Your store</span>' : `<button type="button" data-sf-mine="${st.name}">Make this my store</button>`) : ''}
+      </div>
+    </article>`;
+}
+// Every AU store with its state, time zone and hours (the standard live hours).
+const rrgAuStoreList = () => RRG_STORE_NETWORK.flatMap(g => g.stores.map(st => ({ ...st, state: g.state, timeZone: RRG_STATE_TZ[g.state], hours: RRG_STANDARD_HOURS })));
+
+// The shared store map (#showroomMap) beside a list of store cards: run fn once the map and its
+// pins exist; open a store's pin (zooming the cluster) when its card is clicked.
+function rrgWhenStoreMap(fn) {
+  if (typeof showroomLeafletMap !== 'undefined' && showroomLeafletMap && showroomPinLayer) return fn(showroomLeafletMap);
+  const t = setInterval(() => { if (showroomLeafletMap && showroomPinLayer) { clearInterval(t); fn(showroomLeafletMap); } }, 150);
+  setTimeout(() => clearInterval(t), 15000);
+}
+function rrgOpenStorePin(name) {
+  rrgWhenStoreMap(() => {
+    const marker = showroomPinLayer.getLayers ? showroomPinLayer.getLayers().find(m => m.options.rrgStoreName === name) : null;
+    if (!marker) return;
+    if (showroomPinLayer.zoomToShowLayer) showroomPinLayer.zoomToShowLayer(marker, () => marker.openPopup());
+    else marker.openPopup();
+  });
+}
+
 // Each store's own inbox — the live store pages all follow <name without spaces>@ (northlakes@,
 // eastbrisbane@, smeatongrange@…). Fitting requests go here (docs/installation/installation-spec.md).
 const rrgStoreEmail = name => `${name.toLowerCase().replace(/[^a-z]/g, '')}@roofracksgalore.com.au`;

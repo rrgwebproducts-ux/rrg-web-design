@@ -57,7 +57,11 @@ NZ and UK show their single store (Auckland / Bolton) with no search or tabs, th
 - Header nav **Store Finder** (desktop and the mobile menu).
 - Header **Find A Store** (shown when no store is saved).
 - Footer **Click here to find your closest store**.
-- Store page breadcrumbs: **Store Finder** and the **state** (`?state=`).
+- Store page breadcrumbs: **Store Finder**, then the store's **city page** (2026-11-17), or the **state** (`?state=`) for a store in no city.
+
+### 4a. Links out to the city pages (2026-11-17)
+
+Each state heading in the list links to that state's city page (`.sf-group-head`: "Queensland … Brisbane & SEQ stores ›"), from `RRG_STORE_CITIES` (shared.js). See `docs/store-city/store-city-spec.md`. The store card is now the shared `rrgStoreCardHTML()` (shared.js), also used by the city pages.
 - The Store slide-out's new **Open the Store Finder map ›** link.
 
 The nav/footer links are matched by text in `shared.js` (like the "Fit My Vehicle" nav link), so no template needs a markup change.

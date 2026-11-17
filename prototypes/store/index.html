@@ -32,7 +32,7 @@
 
 <div data-widget="header"></div>
 
-<!-- Breadcrumbs (spec 3.2). Store Finder, and the state opens the Store Finder on that state. -->
+<!-- Breadcrumbs (spec 3.2). Store Finder, then the store's city page (or its state on the Store Finder). -->
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs" id="storeCrumbs"></div>
 </div>
@@ -133,9 +133,12 @@
     <div class="faq-list" id="storeFaqList"></div>
   </section>
 
-  <!-- Section 3.9 — the 4 closest other stores, linked. -->
+  <!-- Section 3.9 — the 4 closest other stores, linked, plus "All {city} stores ›" (its city page). -->
   <section class="cat-tile-section">
-    <h2 class="related-heading" id="storeNearbyHeading"></h2>
+    <div class="product-carousel-head">
+      <h2 class="related-heading" id="storeNearbyHeading"></h2>
+      <a class="product-carousel-viewall" id="storeNearbyAll" hidden></a>
+    </div>
     <div class="store-nearby" id="storeNearby"></div>
   </section>
 </div>
@@ -159,6 +162,7 @@
 // Store records (STORES, STORE_PRODUCTS) live in stores-data.js.
 const STORE_SLUG = STORES[new URLSearchParams(location.search).get('store')] ? new URLSearchParams(location.search).get('store') : 'north-lakes';
 const STORE = STORES[STORE_SLUG];
+const STORE_CITY = rrgStoreCity(STORE.name);   // [slug, city] or null (shared.js)
 const DAYS = RRG_DAYS;
 const fmtTime = rrgFmtTime;
 const addressLine = s => `${s.address.street}, ${s.address.suburb} ${s.state} ${s.address.postcode}`;
@@ -198,7 +202,10 @@ function renderStore() {
   const s = STORE;
   document.title = s.title;
   document.querySelector('meta[name=description]').content = s.metaDescription;
-  const trail = [{ label: 'Home', href: '../home/index.html' }, { label: 'Store Finder', href: RRG_STORE_FINDER_HREF() }, { label: s.stateName, href: `${RRG_STORE_FINDER_HREF()}?state=${s.state}` }, { label: s.name }];
+  // Through the store's city page where it has one (Home › Store Finder › Brisbane & SEQ › North
+  // Lakes, 2026-11-17); otherwise the state, which opens the Store Finder on that state.
+  const trail = [{ label: 'Home', href: '../home/index.html' }, { label: 'Store Finder', href: RRG_STORE_FINDER_HREF() },
+    STORE_CITY ? { label: STORE_CITY[1].short, href: rrgStoreCityHref(STORE_CITY[0]) } : { label: s.stateName, href: `${RRG_STORE_FINDER_HREF()}?state=${s.state}` }, { label: s.name }];
   document.getElementById('storeCrumbs').innerHTML = trail.map((seg, i) => (i ? ' &gt; ' : '') + (seg.href ? `<a href="${seg.href}">${seg.label}</a>` : `<span>${seg.label}</span>`)).join('');
 
   // Gallery — the PDP's; the thumbnail click handler is shared.js's.
@@ -283,6 +290,9 @@ function renderStore() {
     </details>`).join('');
 
   document.getElementById('storeNearbyHeading').textContent = `Other Stores Near ${s.name}`;
+  const allLink = document.getElementById('storeNearbyAll');
+  allLink.hidden = !STORE_CITY;
+  if (STORE_CITY) { allLink.href = rrgStoreCityHref(STORE_CITY[0]); allLink.textContent = `All ${STORE_CITY[1].short} stores ›`; }
   document.getElementById('storeNearby').innerHTML = NEARBY.map(n => {
     // Unbuilt stores' placeholder is North Lakes' page — never link a card back to this page.
     const href = rrgStorePageHref(n.name);

@@ -103,8 +103,7 @@
 // store (REGION_SINGLE_STORES), like the rest of the site, then any "opening soon" stores
 // (REGION_COMING_SOON, spec.md §16 item 12).
 const SF_STATE_ORDER = ['Queensland', 'New South Wales', 'Australian Capital Territory', 'Victoria', 'Tasmania', 'South Australia', 'Western Australia'];
-const SF_STORES = RRG_STORE_NETWORK
-  .flatMap(g => g.stores.map(st => ({ ...st, state: g.state, timeZone: RRG_STATE_TZ[g.state], hours: RRG_STANDARD_HOURS })))
+const SF_STORES = rrgAuStoreList()
   .sort((a, b) => SF_STATE_ORDER.indexOf(a.state) - SF_STATE_ORDER.indexOf(b.state) || a.name.localeCompare(b.name));
 
 // Postcode search is state-level in the prototype (Brenton, 2026-09-30): any postcode in a
@@ -123,31 +122,8 @@ const sf = { tab: 'ALL', origin: null, active: null };
 const $ = id => document.getElementById(id);
 
 // ==== Rendering =====================================================================
-function sfCardHTML(st, km, nearest) {
-  // NZ/UK single stores have no hours record yet — no open status or today line for them.
-  const status = st.hours ? rrgStoreOpenStatus(st.hours, st.timeZone, rrgStoreHolidays(RRG_STATE_ABBR[st.state])) : null;
-  const today = st.hours ? st.hours[rrgStoreNow(st.timeZone).day] : null;
-  const href = rrgStorePageHref(st.name);
-  const tel = `tel:${st.phone.replace(/[^0-9]/g, '')}`;
-  const mine = rrgSessionGet('storeSet') && document.querySelector('[data-region-nearest-store]')?.dataset.currentStoreName === st.name;
-  const kmLabel = km == null ? '' : nearest ? '<span class="sf-card-km is-nearest">Nearest store</span>' : `<span class="sf-card-km">${Math.round(km)}km</span>`;
-  return `
-    <article class="sf-card${st.name === sf.active ? ' is-active' : ''}" data-sf-store="${st.name}">
-      <div class="sf-card-top">
-        <h3 class="sf-card-name">${href ? `<a href="${href}">${st.name}</a>` : st.name}</h3>
-        ${kmLabel}
-      </div>
-      ${st.hours ? `<div class="store-open${status.open ? ' is-open' : ''}">${status.open ? 'Open now' : 'Closed'} <span>· ${status.text}</span></div>` : ''}
-      <span>${st.street || st.address}${st.city ? `, ${st.city} ${RRG_STATE_ABBR[st.state] || ''} ${st.postcode}` : ''}</span>
-      ${today ? `<span>Today ${rrgFmtTime(today[0])} – ${rrgFmtTime(today[1])}</span>` : st.hours ? '<span>Closed today</span>' : ''}
-      <a class="sf-card-phone" href="${tel}">${st.phone}</a>
-      <div class="sf-card-actions">
-        ${href ? `<a class="btn btn-outline btn-sm" href="${href}">View Store</a>` : ''}
-        ${st.mapLink ? `<a href="${st.mapLink}" target="_blank" rel="noopener noreferrer">Directions</a>` : ''}
-        ${href ? (mine ? '<span class="sf-card-mine">✓ Your store</span>' : `<button type="button" data-sf-mine="${st.name}">Make this my store</button>`) : ''}
-      </div>
-    </article>`;
-}
+// The card is the shared store card (rrgStoreCardHTML, shared.js), also used by the city pages.
+const sfCardHTML = (st, km, nearest) => rrgStoreCardHTML(st, { km, nearest, active: sf.active });
 
 // "Opening soon" — deliberately not a link: no store page, pin or phone until it opens.
 function sfSoonCardHTML(st) {
@@ -157,6 +133,13 @@ function sfSoonCardHTML(st) {
       <span>${st.city}</span>
       <span class="sf-soon-note">We'll share the address and opening date here once it's confirmed.</span>
     </article>`;
+}
+
+// State heading, with a link to that state's city page where one exists (spec Section 4a):
+// "Brisbane & SEQ stores ›" under Queensland.
+function sfGroupHeadHTML(state) {
+  const cities = Object.entries(RRG_STORE_CITIES).filter(([, c]) => c.state === state);
+  return `<div class="sf-group-head"><h2 class="related-heading sf-group-heading">${state}</h2>${cities.map(([slug, c]) => `<a href="${rrgStoreCityHref(slug)}">${c.short} stores ›</a>`).join('')}</div>`;
 }
 
 function sfVisibleStores() {
@@ -191,7 +174,7 @@ function sfRender() {
   } else {
     let lastState = null;
     rows.forEach(r => {
-      if (r.st.state !== lastState) { html += `<h2 class="related-heading sf-group-heading">${r.st.state}</h2>`; lastState = r.st.state; }
+      if (r.st.state !== lastState) { html += sfGroupHeadHTML(r.st.state); lastState = r.st.state; }
       html += sfCardHTML(r.st, null, false);
     });
   }
@@ -200,11 +183,7 @@ function sfRender() {
 
 // ==== Map sync ======================================================================
 // The shared store map (#showroomMap) is created by shared.js; this page only moves it.
-function sfWhenMap(fn) {
-  if (typeof showroomLeafletMap !== 'undefined' && showroomLeafletMap && showroomPinLayer) return fn(showroomLeafletMap);
-  const t = setInterval(() => { if (typeof showroomLeafletMap !== 'undefined' && showroomLeafletMap && showroomPinLayer) { clearInterval(t); fn(showroomLeafletMap); } }, 150);
-  setTimeout(() => clearInterval(t), 15000);
-}
+const sfWhenMap = rrgWhenStoreMap;
 function sfFitMap() {
   // Region checked when the map is ready, not when asked: on load this runs before shared.js has
   // applied the saved region, which fitted a UK/NZ map to Australia.
@@ -219,12 +198,7 @@ function sfFocusStore(name, fromPin) {
   document.querySelectorAll('.sf-card').forEach(c => c.classList.toggle('is-active', c.dataset.sfStore === name));
   const card = document.querySelector(`.sf-card[data-sf-store="${CSS.escape(name)}"]`);
   if (fromPin) { card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); return; }
-  sfWhenMap(() => {
-    const marker = showroomPinLayer.getLayers ? showroomPinLayer.getLayers().find(m => m.options.rrgStoreName === name) : null;
-    if (!marker) return;
-    if (showroomPinLayer.zoomToShowLayer) showroomPinLayer.zoomToShowLayer(marker, () => marker.openPopup());
-    else marker.openPopup();
-  });
+  rrgOpenStorePin(name);
 }
 
 // ==== Search ========================================================================

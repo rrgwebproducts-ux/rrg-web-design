@@ -1977,3 +1977,29 @@ Design meeting with Graham (ecommerce), Marc (developer) and Scott (product / Ra
 6. ✅ **Built 2026-11-17. NZ phone number is 09 481 1919** (was 09 481 1910 everywhere: `REGION_PHONE`, `REGION_SINGLE_STORES.NZ`, Page Debugger, briefs, the NZ Installation CMS page's JSON-LD). The AU 1300 number never shows on NZ/UK now: new `rrgSwapSupportPhone()` in `applyRegion()` swaps any `tel:` link to a support number (Home, Buying Guide, cart, VCLP FAQ, blog posts, PDP Shipping Info tab, which is now a `tel:` link). The Bike Rack Finder's "Call" button reads `REGION_PHONE` too. Store numbers aren't touched.
    - **Where numbers come from (for Marc):** the prototype is static and can't write to Magento. Live numbers come from Magento config and the theme's per-store-view templates. **The live NZ site still shows 09 481 1910** (Marc's NZ theme `crm/contact/store/details/footer/crm-contact-store-details-footer.phtml`, and the header/footer in the 2026-10-26 live NZ capture): flagged to Marc, not changed by us.
    - **Product data:** one Rackit/Magento spec value carries the AU number ("Off-road Load Limits: Refer to product fitting instructions or call 1300 071 264", Prorack kit GP06OEUIB1). It's shared product data, so NZ shows it too. Flagged to Scott; not swapped in the prototype.
+
+---
+
+## 31. City store pages: /roof-racks-brisbane and friends (Graham → Brenton, 2026-11-17)
+
+Graham asked whether there were plans for the live city pages (`/roof-racks-brisbane`, `-sydney`, `-melbourne`, plus Perth and Adelaide). They sit between the Store Finder and the store pages, but nothing links to them. Spec: `docs/store-city/store-city-spec.md`.
+
+**Brenton's decisions:**
+- **Cities:** Brisbane, Sydney, Melbourne, Perth and Adelaide. Canberra and Hobart have one store each, so they get no city page.
+- **Store page breadcrumbs:** Home › Store Finder › {City} › {Store}, with the city replacing the state.
+- **Footer:** no city links; the Store Finder gets people there.
+- **Design:** left to Claude. Build Brisbane first for review.
+
+1. ✅ **Built 2026-11-17: Brisbane & SEQ** (`prototypes/store-city/?city=brisbane`).
+   - **Hero:** H1, the live lead line, a live "8 superstores · N open now" count, **Find My Nearest Store** (gold; sorts by real distance) and Book a Fitting.
+   - **Stores:** area tabs (Brisbane 5 · Gold Coast 2 · Sunshine Coast 1), then store cards grouped by area beside the shared map. These are the Store Finder's parts; its card is now shared as `rrgStoreCardHTML()`.
+   - **Services and local copy:** the services row, then the live copy trimmed beside a 2×2 grid of linked store photos.
+   - **Bottom of the page:** trust banner, 5 city FAQs (store lists and hours generated from the data), brands.
+   - **Store list:** `RRG_STORE_CITIES` (shared.js), so it can't drift like the live lists have.
+2. ✅ **Built 2026-11-17: links.**
+   - **Store Finder:** each state heading links to its city ("Brisbane & SEQ stores ›").
+   - **Store pages:** the crumb is now Home › Store Finder › Brisbane & SEQ › North Lakes, and Nearby Stores gets "All Brisbane & SEQ stores ›".
+   - **Other stores:** NSW stores keep the state crumb until Sydney is built.
+3. **Next, after Brisbane is approved:** Sydney, Melbourne, Perth and Adelaide, from their live pages.
+   - **Live lists to fix (for Graham):** Sydney is missing Arncliffe; Melbourne says 9 stores but lists 8 (no Preston).
+   - **Check Perth:** the live sitemap has Cockburn, which our store network doesn't.

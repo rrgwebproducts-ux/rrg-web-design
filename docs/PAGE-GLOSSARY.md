@@ -171,6 +171,19 @@ Added 2026-09-30 (`docs/store-finder/store-finder-spec.md`). The all-stores page
 
 ---
 
+## City Stores Page (`prototypes/store-city/`)
+
+Added 2026-11-17 (`docs/store-city/store-city-spec.md`). Every store in one metro area, on the live city URLs (`/roof-racks-brisbane`, …), between the Store Finder and the store pages. `?city=brisbane`. Reuses the Store Finder's state tabs, store card and list + map, and the store page's trust row and local copy layout.
+
+| Name | Description |
+|---|---|
+| **City hero facts** | "8 superstores · 6 open now", counted live from each store's open status. — `.city-hero-facts` |
+| **Area tabs** | All stores / Brisbane / Gold Coast / Sunshine Coast with counts: the Store Finder's state tabs, by area. — `.sf-tabs` |
+| **City store photos** | A 2×2 grid of the city's store photos, each labelled and linked to its store page. — `.city-photo-grid` |
+| **City link** | "Brisbane & SEQ stores ›" beside a Store Finder state heading, "All Brisbane & SEQ stores ›" beside a store page's Nearby Stores, and the city crumb on store pages. — `.sf-group-head`, `RRG_STORE_CITIES` |
+
+---
+
 ## Fit My Vehicle (`prototypes/fit-my-vehicle/`) and Installation (`prototypes/installation/`)
 
 Added 2026-09-30 (`docs/fit-my-vehicle/fit-my-vehicle-spec.md`, `docs/installation/installation-spec.md`). The header's "Fit My Vehicle" link now goes to the Fit My Vehicle page (the utility-bar vehicle link still opens the drawer). Every "Book a Fitting" / "Book An Installation" link on the site goes to the Installation page's form.

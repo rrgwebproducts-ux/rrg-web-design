@@ -26,7 +26,7 @@
 
 const PDP5 = ['vehicle-specific', 'config-variant', 'sibling-color', 'simple', 'grouped-bundle', 'roof-box', 'grouped-kit-unavailable'];
 const PLP3 = ['plp-camping', 'plp', 'plp-roof-boxes', 'plp-awnings', 'plp-roof-top-tents', 'plp-water-carriers', 'plp-snow-carriers', 'vplp'];
-const ALL_PAGES = ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'clearance', 'blog', 'blog-post', 'header'];
+const ALL_PAGES = ['home', 'store', 'store-finder', 'store-city', 'fit-my-vehicle', 'installation', 'buying-guide', 'cart', 'checkout', 'order-confirmation', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'clearance', 'blog', 'blog-post', 'header'];
 const NOT_CHECKOUT = ALL_PAGES.filter(p => p !== 'checkout');
 
 // Storage presets — merged into a variant's `ls`.
@@ -116,13 +116,13 @@ const RRG_COMPONENTS = [
       v('Guest', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', ls: S.guest, sizes: ['m'], h: 780 }),
       v('Sale on (Christmas) — Santa-hat logo, sale replaces Clearance', 'header', '.mm-mobile-takeover', { do: 'click:.rrg-main-header .mobile-nav-toggle', ls: S.xmas, sizes: ['m'], h: 780 }),
     ] },
-  { id: 'breadcrumbs', group: 'global', name: 'Breadcrumbs', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'buying-guide'],
+  { id: 'breadcrumbs', group: 'global', name: 'Breadcrumbs', build: 'mixed', usedOn: ['store-city', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results', 'buying-guide'],
     source: 'Static on most pages; plpRenderBreadcrumb (plp.js) on listing pages',
     variants: [
       v('Product page', 'simple', '.rrg-crumbs'),
       v('Listing page', 'plp', '.rrg-crumbs'),
     ] },
-  { id: 'breadcrumb-row', group: 'global', name: 'Breadcrumb Row + Change Vehicle', build: 'mixed', usedOn: ['store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results'],
+  { id: 'breadcrumb-row', group: 'global', name: 'Breadcrumb Row + Change Vehicle', build: 'mixed', usedOn: ['store-city', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'brands', 'search-results'],
     source: 'Static row; plpRenderBreadcrumb (plp.js), vlpRenderHeader (vlp)',
     variants: [
       v('VLP (with Change Vehicle)', 'vlp', '.plp-crumbs-row'),
@@ -328,7 +328,7 @@ const RRG_COMPONENTS = [
     ] },
 
   // ---------------------------------------------------------------- Listing, search & category
-  { id: 'category-hero', group: 'listing', name: 'Category Hero', build: 'mixed', usedOn: ['vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3],
+  { id: 'category-hero', group: 'listing', name: 'Category Hero', build: 'mixed', usedOn: ['store-city', 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3],
     source: 'Static (both states in the page); plpRenderHero / applyPlpHeroImageFlag (plp.js)',
     variants: [
       v('PLP — vehicle set', 'plp', '#plpHeroVehicleSet', { ls: demo('plp', { 'r:plpHeroImage': 'vehicle' }) }),
@@ -514,12 +514,13 @@ const RRG_COMPONENTS = [
       v('Van — home compact (Toyota Hiace H200)', 'home', '.home-finder', { ls: { ...S.noVehicle, ...S.phase2 }, q: 'ffModel=hiace&ffYear=2005-2019' }),
       v('Vehicle known — van (Toyota Hiace)', 'fit-my-vehicle', '.fit-finder-widget', { ls: { rrgSessionVehicle: 'hiace' } }),
     ] },
-  { id: 'store-card', group: 'stores', name: 'Store Card', build: 'copied', usedOn: ['store-finder', 'order-confirmation', 'checkout'],
-    source: 'Inline, duplicated: sfCardHTML (store-finder), storeCardHTML (order-confirmation, checkout)',
+  { id: 'store-card', group: 'stores', name: 'Store Card', build: 'copied', usedOn: ['store-city', 'store-finder', 'order-confirmation', 'checkout'],
+    source: 'Shared rrgStoreCardHTML (shared.js) on store-finder + store-city; storeCardHTML still duplicated inline (order-confirmation, checkout)',
     variants: [
       v('Store Finder', 'store-finder', '.sf-card'),
       v('Store Finder — UK coming soon', 'store-finder', '.sf-card', { ls: S.uk, nth: 1 }),
       v('Order confirmation', 'order-confirmation', '.confirm-store-card', { order: 'collect' }),
+      v('City page (Brisbane)', 'store-city', '.sf-card', { q: 'city=brisbane' }),
     ] },
   { id: 'store-panel', group: 'stores', name: 'Store Panel (store page)', build: 'copied', usedOn: ['store'],
     source: 'Inline in store, from stores-data.js',
@@ -527,7 +528,7 @@ const RRG_COMPONENTS = [
   { id: 'store-reviews', group: 'stores', name: 'Store Reviews Row', build: 'copied', usedOn: ['store'],
     source: 'Inline in store',
     variants: [v('Default', 'store', '#storeReviews')] },
-  { id: 'store-local', group: 'stores', name: 'Store Local Copy + Map', build: 'copied', usedOn: ['store'],
+  { id: 'store-local', group: 'stores', name: 'Store Local Copy + Map', build: 'copied', usedOn: ['store-city', 'store'],
     source: 'Inline in store',
     variants: [v('Default', 'store', '.store-local')] },
   { id: 'store-finder-search', group: 'stores', name: 'Store Finder Search', build: 'copied', usedOn: ['store-finder'],
@@ -536,6 +537,12 @@ const RRG_COMPONENTS = [
   { id: 'store-finder-layout', group: 'stores', name: 'Store Finder — State Tabs, List + Map', build: 'copied', usedOn: ['store-finder'],
     source: 'Inline in store-finder',
     variants: [v('AU', 'store-finder', '#sfLayout', { sizes: ['d'] }), v('State tabs', 'store-finder', '#sfTabs'), v('NZ', 'store-finder', '#sfLayout', { ls: S.nz, sizes: ['d'] })] },
+  { id: 'city-stores', group: 'stores', name: 'City Stores — Area Tabs, List + Map', build: 'copied', usedOn: ['store-city'],
+    source: 'Inline in store-city; the Store Finder layout (.sf-tabs, .sf-layout) + rrgStoreCardHTML, grouped by area from RRG_STORE_CITIES (shared.js)',
+    variants: [v('Brisbane & SEQ', 'store-city', '#cityStores', { q: 'city=brisbane', sizes: ['d'] }), v('Area tabs', 'store-city', '#cityTabs', { q: 'city=brisbane' })] },
+  { id: 'city-photo-grid', group: 'stores', name: 'City Store Photos', build: 'copied', usedOn: ['store-city'],
+    source: 'Inline in store-city (CITY_PAGES photos), each photo links to its store page',
+    variants: [v('Brisbane & SEQ', 'store-city', '.store-local', { q: 'city=brisbane' })] },
   { id: 'price-accordion', group: 'stores', name: 'Fitting Charges List', build: 'copied', usedOn: ['installation'],
     source: 'Static in installation',
     variants: [v('Default', 'installation', '#costs')] },
@@ -587,7 +594,7 @@ const RRG_COMPONENTS = [
       v('Installation (top of page)', 'installation', '.rrg-trust-bar'),
       v('Product page', 'simple', '.rrg-trust-bar'),
     ] },
-  { id: 'trust-row', group: 'content', name: 'Trust Row', build: 'copied', usedOn: ['store', 'fit-my-vehicle', 'buying-guide', 'clearance'],
+  { id: 'trust-row', group: 'content', name: 'Trust Row', build: 'copied', usedOn: ['store-city', 'store', 'fit-my-vehicle', 'buying-guide', 'clearance'],
     source: 'Static per page — the copy differs on every page (REGION_TRUST_COPY)',
     variants: [
       v('Store (services)', 'store', '.trust-row'),
@@ -595,7 +602,7 @@ const RRG_COMPONENTS = [
       v('Buying Guide', 'buying-guide', '.trust-row'),
       v('Clearance', 'clearance', '.trust-row'),
     ] },
-  { id: 'trust-banner', group: 'content', name: 'Trust Banner (install photo)', build: 'copied', usedOn: ['home', 'store-finder', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'brand', 'brands', 'blog', 'blog-post'],
+  { id: 'trust-banner', group: 'content', name: 'Trust Banner (install photo)', build: 'copied', usedOn: ['store-city', 'home', 'store-finder', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'brand', 'brands', 'blog', 'blog-post'],
     source: 'Static per page — the copy differs per page',
     variants: [v('Home', 'home', '.vclp-trust-banner'), v('VCLP', 'vehicle-category-landing', '.vclp-trust-banner'), v('Store Finder', 'store-finder', '.vclp-trust-banner'), v('Brands hub', 'brands', '.vclp-trust-banner'), v('Blog', 'blog', '.vclp-trust-banner')] },
   { id: 'fitting-banner', group: 'content', name: '{Category} Fitting (PLP)', build: 'shared', usedOn: [...PLP3, 'vplp-accessories'],
@@ -612,16 +619,16 @@ const RRG_COMPONENTS = [
   { id: 'blog-post', group: 'content', name: 'Blog Post (header, body, side column)', build: 'shared', usedOn: ['blog-post'],
     source: 'initBlogPost (blog/blog.js); CSS _shared/blog.css',
     variants: [v('Long guide (On this page)', 'blog-post', '.blog-post', { q: 'post=how-to-choose-a-roof-rack-platform', h: 1400 }), v('Photo story', 'blog-post', '.blog-post', { q: 'post=road-to-sea-otter-maydena-bike-park', h: 1400 }), v('Short Q&A', 'blog-post', '.blog-post', { q: 'post=what-size-cargo-bag-do-i-need' })] },
-  { id: 'brands-strip', group: 'content', name: 'Shop The Best Brands', build: 'shared', usedOn: ['home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'order-confirmation', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'brand', 'buying-guide'],
+  { id: 'brands-strip', group: 'content', name: 'Shop The Best Brands', build: 'shared', usedOn: ['store-city', 'home', 'store', 'store-finder', 'fit-my-vehicle', 'installation', 'cart', 'order-confirmation', 'vehicle-category-landing', 'make-category-landing', 'vlp', 'brand', 'buying-guide'],
     source: 'rrgWidgetBrandsStripHTML + RRG_PROMOTED_BRANDS (widgets.js), <div data-widget="brands-strip">; region hiding applyRegionBrandsStrip (shared.js). Approved brands only (Tim, 2026-10-09)',
     variants: [v('Default', 'home', '.brands-section'), v('Bike brands (filter="bike")', 'buying-guide', '.brands-section'), v('Brand page (exclude + All brands)', 'brand', '.brands-section', { q: 'brand=thule' })] },
-  { id: 'faq', group: 'content', name: 'FAQ', build: 'mixed', usedOn: ['store', 'fit-my-vehicle', 'installation', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'buying-guide'],
+  { id: 'faq', group: 'content', name: 'FAQ', build: 'mixed', usedOn: ['store-city', 'store', 'fit-my-vehicle', 'installation', ...PDP5, 'vehicle-category-landing', 'make-category-landing', 'vlp', ...PLP3, 'brand', 'buying-guide'],
     source: 'Static on PDPs + VCLP; plpRenderFAQ (plp.js); vlpRenderFaq, renderBrandFaq inline',
     variants: [v('Product page (Phase 2)', 'simple', '.faq-section', { ls: S.phase2 }), v('PLP (Phase 2)', 'plp', '.faq-section', { ls: S.phase2 }), v('VCLP', 'vehicle-category-landing', '.faq-section'), v('Brand', 'brand', '.faq-section'), v('Fit My Vehicle', 'fit-my-vehicle', '.faq-section'), v('Buying Guide (grouped)', 'buying-guide', '.faq-section')] },
   { id: 'page-hero', group: 'content', name: 'Page Hero', build: 'copied', usedOn: ['fit-my-vehicle', 'installation', 'buying-guide'],
     source: 'Static per page',
     variants: [v('Fit My Vehicle', 'fit-my-vehicle', '.page-hero'), v('Installation', 'installation', '.page-hero'), v('Buying Guide (with Bike Rack Finder)', 'buying-guide', '.page-hero')] },
-  { id: 'content-block', group: 'content', name: 'Content Block / Split Media', build: 'copied', usedOn: ['store', 'fit-my-vehicle', 'vehicle-category-landing', 'make-category-landing'],
+  { id: 'content-block', group: 'content', name: 'Content Block / Split Media', build: 'copied', usedOn: ['store-city', 'store', 'fit-my-vehicle', 'vehicle-category-landing', 'make-category-landing'],
     source: 'Static per page',
     variants: [v('VCLP', 'vehicle-category-landing', '.content-block'), v('Fit My Vehicle (split media)', 'fit-my-vehicle', '.split-media')] },
   { id: 'steps', group: 'content', name: 'Steps', build: 'copied', usedOn: ['fit-my-vehicle', 'installation'],

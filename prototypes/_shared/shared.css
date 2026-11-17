@@ -2395,6 +2395,10 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .sf-list{display:flex;flex-direction:column;gap:12px;}
 .sf-group-heading{margin:14px 0 2px;font-size:24px;}
 .sf-group-heading:first-child{margin-top:0;}
+.sf-group-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:14px 0 2px;}
+.sf-group-head:first-child{margin-top:0;}
+.sf-group-head .sf-group-heading{margin:0;}
+.sf-group-head a{font-weight:700;font-size:14px;color:var(--rrg-red);white-space:nowrap;}
 .sf-map{position:sticky;top:calc(var(--sticky-offset,0px) + 16px);height:calc(100vh - var(--sticky-offset,0px) - 32px);min-height:420px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--rrg-line);transition:top var(--t-slide) ease;}
 .sf-map .showroom-map{position:absolute;inset:0;margin:0;height:auto;border-radius:0;}
 .sf-view-toggle{display:none;}
@@ -2432,6 +2436,26 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
   .sf-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:16px -24px 14px;padding:0 24px;}
   .sf-tabs::-webkit-scrollbar{display:none;}
   .sf-tab{flex:0 0 auto;}
+}
+
+/* ===== City store page (docs/store-city/store-city-spec.md, 2026-11-17) =====
+   /roof-racks-brisbane: every store in one metro area. Built from the Store Finder's parts
+   (.sf-tabs, .sf-layout, .sf-card, the shared map) and the store page's (.trust-row,
+   .store-local); only the hero facts and the store photo grid are new. */
+.city-hero-facts{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;margin:0 0 4px;padding:0;font-size:15px;color:var(--rrg-grey-700);}
+.city-hero-facts li{display:flex;align-items:center;gap:8px;}
+.city-hero-facts li+li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--rrg-grey-400);margin-right:10px;}
+.city-hero-facts strong{color:var(--rrg-text);}
+.city-hero-facts .is-open strong{color:var(--rrg-fits);}
+.plp-hero .sf-status{margin-top:10px;}
+.plp-hero-media.city-hero-media{border-radius:var(--radius);overflow:hidden;}
+.city-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.city-photo{position:relative;display:block;aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;background:var(--rrg-line-soft);}
+.city-photo img{width:100%;height:100%;object-fit:cover;transition:transform var(--t-slide) ease;}
+.city-photo:hover img{transform:scale(1.03);}
+.city-photo span{position:absolute;left:10px;bottom:10px;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.72);color:#fff;font-size:13px;font-weight:700;}
+@media (max-width:900px){
+  .city-hero-facts{font-size:14px;}
 }
 
 /* ===== Fit My Vehicle + Installation (docs/fit-my-vehicle/, docs/installation/, 2026-09-30) =====
