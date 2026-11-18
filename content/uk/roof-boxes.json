@@ -1,5 +1,11 @@
 {
-  "_about": "2026-11-18 (Brenton): UK Roof Boxes PLP copy, trimmed from roofbox.co.uk (/roof-boxes/ and /roof-boxes/roof-boxes-info.php). Source of truth for the generated blocks in prototypes/plp-roof-boxes/index.html. Edit here, then run: node tools/build-plp-content.mjs. Inline markup: **bold**, [link text](placeholder:what it is). Bullets starting '! ' are watch-outs. Size bands pending Elliot's confirmation.",
+  "_about": "2026-11-18 (Brenton): UK Roof Boxes PLP copy, trimmed from roofbox.co.uk (/roof-boxes/ and /roof-boxes/roof-boxes-info.php). Source of truth for the generated blocks in prototypes/plp-roof-boxes/index.html. Edit here, then run: node tools/build-plp-content.mjs. Inline markup: **bold**, [link text](todo:what the link needs). Bullets starting '! ' are watch-outs. Size bands pending Elliot's confirmation.",
+  "_todo": [
+    "2026-11-18 (Brenton, QA item 6): these links are href=\"#\" placeholders until the pages exist. Swap each [text](todo:…) for a real link once it is live.",
+    "TODO link: Compare sizes in our 360° size tool → UK 360° size tool URL",
+    "TODO link: Buying Guide → Buying Guide page URL",
+    "TODO link: package deal → package deals page URL"
+  ],
   "region": "uk",
   "category": "roof-boxes",
   "hero": {
@@ -16,7 +22,7 @@
         "Length and width often matter more than the litre figure on the box",
         "If you also need roof bars, a package deal includes everything you will need"
       ],
-      "footer": "Not sure? [Compare sizes in our 360° size tool](placeholder:360° size tool)"
+      "footer": "Not sure? [Compare sizes in our 360° size tool](todo:UK 360° size tool URL)"
     },
     {
       "tab": "small",
@@ -80,7 +86,7 @@
           "Even if you don’t have particularly long things to carry, a long box will often suit a family of four or five. There will usually be space on the bars for at least one bike carrier, especially with T-track aluminium aerobars."
         ],
         "Price is important, but a roof box should be expected to last for many family holidays and weekends away, so it needs to be reliable. There is no such thing as a particular box for a particular car, but it makes sense to be able to open your tailgate fully, making sure that any tailgate spoiler doesn’t hit the back of the box.",
-        "Our [Buying Guide](placeholder:buying guide) covers the features that really make a difference. If you also need roof bars, a [package deal](placeholder:package deals) includes the bars and any adapters you will need. And if, once you have used the box, it is not right for you, our 90 day exchange scheme is there so you are not left with a box you are not happy with."
+        "Our [Buying Guide](todo:Buying Guide page URL) covers the features that really make a difference. If you also need roof bars, a [package deal](todo:package deals page URL) includes the bars and any adapters you will need. And if, once you have used the box, it is not right for you, our 90 day exchange scheme is there so you are not left with a box you are not happy with."
       ]
     },
     "table": {

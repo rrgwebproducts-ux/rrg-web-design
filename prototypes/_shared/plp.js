@@ -61,6 +61,7 @@ function plpMatchesShopBy(product, activeSubcat, activeSubsubcat) {
 //   any entry  .labelByRegion / .headingByRegion: { UK: '…' }       — per-region wording
 //   PLP_CONFIG.regionExclude: { UK: { subcategories: [...] } }       — products hidden per region
 //   PLP_CONFIG.featuredProductByRegion: { UK: product }              — sidebar Featured Product
+//   PLP_CONFIG.documentTitle: 'Roof Boxes'                          — "Roof Boxes | {region brand}" tab title
 // Production: each region is its own Magento website, so this is just per-store category/attribute
 // config — none of it needs to be a runtime switch there.
 function plpRegion() {
@@ -73,6 +74,13 @@ function plpRegionText(entry, field = 'label') {
   if (!entry) return '';
   const by = entry[field + 'ByRegion'];
   return (by && by[plpRegion()]) || entry[field];
+}
+// Tab title per region (2026-11-18, Brenton — QA item 7): PLP_CONFIG.documentTitle: 'Roof Boxes' gives
+// "Roof Boxes | Roof Racks Galore" in AU/NZ and "Roof Boxes | The Roof Box Company" in the UK. Opt-in;
+// pages without it keep their static <title>. Production: each Magento store sets its own title.
+function plpApplyDocumentTitle() {
+  const t = window.PLP_CONFIG && window.PLP_CONFIG.documentTitle;
+  if (t && typeof rrgBrandName === 'function') document.title = `${t} | ${rrgBrandName(plpRegion())}`;
 }
 function plpProductInRegion(product) {
   const ex = ((window.PLP_CONFIG && window.PLP_CONFIG.regionExclude) || {})[plpRegion()];
@@ -2693,6 +2701,7 @@ document.addEventListener('DOMContentLoaded', () => {
   plpRenderResults();
   plpRenderFAQ();
   plpRenderCategoryContent();
+  plpApplyDocumentTitle();
   window.addEventListener('resize', () => plpRenderResults());
   document.addEventListener('rrg-session-change', plpRenderHero);
   document.addEventListener('rrg-session-change', () => { plpRenderCategoryContent(); if (typeof applyPlpHeroImageFlag === 'function') applyPlpHeroImageFlag(plpState.heroImageMode || 'none'); });
@@ -2719,6 +2728,7 @@ document.addEventListener('DOMContentLoaded', () => {
     plpRenderResults();
     plpRenderMerchSidebar();
     plpRenderCategoryContent();
+    plpApplyDocumentTitle();
   });
   // Vehicle-scoped page buttons/Pages results come and go with the session vehicle.
   if (window.PLP_CONFIG.isSearch) document.addEventListener('rrg-session-change', () => { plpRenderSearchHeadline(); plpRenderSearchScope(); });

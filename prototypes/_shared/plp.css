@@ -795,6 +795,9 @@ body.region-uk .plp-rgn:not([data-region="uk"]){display:none !important;}
 .plp-guide-table thead th{background:var(--rrg-red);border-color:var(--rrg-red);color:#fff;font-family:'Barlow Condensed',Arial,sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
 .plp-guide-table tbody th{background:var(--rrg-bg);color:var(--rrg-black);white-space:nowrap;}
 .plp-guide-note{font-size:14px !important;}
+/* 2026-11-18 (Brenton, QA item 4): the hero Fitting / FAQs buttons jump here — keep the section
+   title clear of the sticky header. */
+#plpHowToChoose,#plpGuideTable,#plpFitting,#plpFaqs{scroll-margin-top:calc(var(--sticky-offset,0px) + 24px);}
 .plp-guide .faq-item[open]{border-color:var(--rrg-red);}
 .plp-guide .faq-item[open] summary{color:var(--rrg-red);}
 .plp-guide .faq-item[open] summary::after{color:var(--rrg-red);}
@@ -802,6 +805,12 @@ body.region-uk .plp-rgn:not([data-region="uk"]){display:none !important;}
 .plp-guide .faq-answer p:last-child{margin:0;}
 @media (max-width:640px){
   .plp-guide-section{margin-bottom:32px;}
+  /* 2026-11-18 (Brenton, QA item 5): no sideways scroll on phones — the table fits the column and
+     the text wraps (the 560px minimum clipped the last column mid-word at 390px). */
+  .plp-guide-table{min-width:0;font-size:13px;}
+  .plp-guide-table th,.plp-guide-table td{padding:8px;overflow-wrap:break-word;}
+  .plp-guide-table thead th{font-size:14px;}
+  .plp-guide-table tbody th{white-space:normal;}
 }
 
 /* Region-tinted Shop By icons (2026-11-18): live AU tab artwork as is for AU/NZ, a blue-accent

@@ -18,8 +18,8 @@
 //   node tools/build-plp-content.mjs          (writes the pages)
 //   node tools/build-plp-content.mjs --check  (exits 1 if a page is out of date; writes nothing)
 //
-// JSON inline markup: **bold**, [link text](placeholder:what it is) → href="#" plus a
-// "placeholder — what it is" comment. A bullet starting "! " is a watch-out (! icon), otherwise ✓.
+// JSON inline markup: **bold**, [link text](todo:what the link needs) → a TODO placeholder link,
+// href="#" plus a "TODO placeholder link — …" comment (each JSON file lists its own in _todo). A bullet starting "! " is a watch-out (! icon), otherwise ✓.
 // A body array item that is itself an array becomes a <ul>.
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -39,9 +39,9 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 function inline(s) {
   return esc(s)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\[([^\]]+)\]\(placeholder:([^)]+)\)/g, (_, text, what) => `<a href="#" data-placeholder="${what}">${text}</a><!-- placeholder — ${what} -->`);
+    .replace(/\[([^\]]+)\]\(todo:([^)]+)\)/g, (_, text, what) => `<a href="#" data-todo-link="${what}">${text}</a><!-- TODO placeholder link — ${what} -->`);
 }
-const plain = s => String(s).replace(/\*\*(.+?)\*\*/g, '$1').replace(/\[([^\]]+)\]\(placeholder:[^)]+\)/g, '$1');
+const plain = s => String(s).replace(/\*\*(.+?)\*\*/g, '$1').replace(/\[([^\]]+)\]\(todo:[^)]+\)/g, '$1');
 
 function body(items, indent) {
   return (items || []).map(item => Array.isArray(item)

@@ -1,5 +1,10 @@
 {
-  "_about": "2026-11-18 (Brenton): UK Bike Racks PLP copy, trimmed from roofbox.co.uk (/bike-carriers/ and /bike-carriers/bike-carriers-racks-info.php). Source of truth for the generated blocks in prototypes/plp/index.html. Edit here, then run: node tools/build-plp-content.mjs. Inline markup: **bold**, [link text](placeholder:what it is). Bullets starting '! ' are watch-outs. No Hitch tab in the UK.",
+  "_about": "2026-11-18 (Brenton): UK Bike Racks PLP copy, trimmed from roofbox.co.uk (/bike-carriers/ and /bike-carriers/bike-carriers-racks-info.php). Source of truth for the generated blocks in prototypes/plp/index.html. Edit here, then run: node tools/build-plp-content.mjs. Inline markup: **bold**, [link text](todo:what the link needs). Bullets starting '! ' are watch-outs. No Hitch tab in the UK.",
+  "_todo": [
+    "2026-11-18 (Brenton, QA item 6): these links are href=\"#\" placeholders until the pages exist. Swap each [text](todo:…) for a real link once it is live.",
+    "TODO link: Buying Guide → Buying Guide page URL",
+    "TODO link: package deal → package deals page URL"
+  ],
   "region": "uk",
   "category": "bike-racks",
   "hero": {
@@ -73,7 +78,7 @@
           "Many people fit a tow ball specifically for carrying bikes. Tow ball carriers will take up to four bikes, but some vehicles are restricted to a maximum of three — your handbook will include the tow bar nose weight.",
           "You can usually carry bikes on the roof unless you have a soft top, a “moon roof”, or a car where the roof bars are too close together or too far apart to hold bike carriers safely."
         ],
-        "Our [Buying Guide](placeholder:buying guide) has more on the different types, including e-bikes and children’s bikes. If you also need roof bars, a [package deal](placeholder:package deals) is often the simplest way to buy a roof-mounted carrier and the bars together."
+        "Our [Buying Guide](todo:Buying Guide page URL) has more on the different types, including e-bikes and children’s bikes. If you also need roof bars, a [package deal](todo:package deals page URL) is often the simplest way to buy a roof-mounted carrier and the bars together."
       ]
     },
     "table": {

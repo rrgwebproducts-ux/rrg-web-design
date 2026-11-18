@@ -2047,11 +2047,20 @@ Brenton's brief (v2, superseding the tooltip-only v1) for the Bike Racks PLP (`p
 7. ✅ **No vehicle prompt on either page.** `vehiclePrompt: false`; the vehicle hero, Set Your Vehicle and Change Vehicle are removed. The global header is unchanged.
 8. ✅ **Icons:** the live AU Shop By tab artwork is now in `_shared/shopby-icons/`, plus a UK-blue (#2E41AE) copy with only the red accent recoloured. On Accessories the keys stay as drawn. Show All also gets a UK copy on these two pages.
 9. ✅ **Component Library:** two new entries (Shop By Advice Panel, PLP Buying Guide). The examples that used Bike Racks' vehicle hero, old FAQ and fitting banner now point at Roof Top Tents.
+10. ✅ **QA fixes (Brenton, 2026-11-18, preview review).** Built on `feat/plp-filtering-tabs-content`, not merged to main.
+    - **Roof Boxes price filter:** the same `range` filter as Bike Racks; `{c}` shows $ for AU/NZ and £ for the UK. The bands are Under 1,000 / 1,000–1,500 / 1,500–2,000 / 2,000+. The demo prices are the AU numbers in every region; production sets each store's own GBP bands.
+    - **Jump links:** `#plpHowToChoose`, `#plpGuideTable`, `#plpFitting` and `#plpFaqs` get `scroll-margin-top` (sticky offset + 24px), so the section titles clear the sticky header.
+    - **Phone tables:** at 640px and below the guide tables drop the 560px minimum and wrap inside the column, with no sideways scroll and no cut-off words.
+    - **TODO links:** the JSON marks placeholder links as `[text](todo:what the link needs)`, and each UK file lists them in `_todo`. The page renders `href="#"` with a "TODO placeholder link" comment.
+    - **Tab title:** `PLP_CONFIG.documentTitle` gives "Roof Boxes | Roof Racks Galore" in AU/NZ and "Roof Boxes | The Roof Box Company" in the UK (Bike Racks likewise).
+    - **Wording:** the hero button reads "Buying Guide", matching the body copy.
+    - **Body class:** `region-au` is added, next to `region-nz` and `region-uk`.
+    - **Towbar tab:** the two ROLA vertical racks (p17, p18) had no Level 3 child, so 6 racks showed under cards that added up to 4. They now sit under Frame Hanging (their hold style), giving 3 + 3.
 
 **Open:**
 - **Size bands:** Elliot to confirm.
 - **Hero text:** refine the Bike Racks hero (TODO in the JSON). AU/NZ also uses the Show All intro, so the live paragraph isn't repeated in How to choose.
-- **Placeholder links:** Buying Guide, package deal and the UK 360° size tool are `href="#"`.
+- **Placeholder links:** Buying Guide, package deal and the UK 360° size tool are `href="#"`, marked TODO in the JSON (`_todo`).
 - **AU/NZ copy:** write the full guide to replace the placeholder.
 - **Roof Box PDP breadcrumb:** its `?attachment=medium` link (the old shape) now lands on the Medium size tab.
 - **ROLA products:** three are still in the demo grid (only the filter option was dropped).

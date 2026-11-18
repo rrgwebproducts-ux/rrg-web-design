@@ -443,13 +443,17 @@ A thin full-width banner (about 100px tall) under the Shop By tabs, above the re
 
 **Order:**
 1. How to choose (H2)
-2. Sizes explained (Roof Boxes) or Types compared (Bike Racks), as a simple table. It scrolls sideways on phones.
+2. Sizes explained (Roof Boxes) or Types compared (Bike Racks), as a simple table. On phones it fits the column and the text wraps (no sideways scroll).
 3. Fitting & roof bars (H2)
 4. Frequently asked questions: `<details>`/`<summary>` accordions, the first open, every answer in the HTML.
 
 **Structured data:** FAQPage JSON-LD built from the same FAQs, alongside the visible headings.
 
-**Hero buttons:** Fitting and FAQs scroll to sections 3 and 4.
+**Hero buttons:** Fitting and FAQs scroll to sections 3 and 4. Each section has `scroll-margin-top` so its title clears the sticky header. The first button reads "Buying Guide", matching the body copy.
+
+**Price filter:** both pages have one, in the store's own currency and bands.
+
+**Page title:** "{Category} | {store name}", e.g. "Roof Boxes | The Roof Box Company" on the UK store.
 
 **Copy:** per region.
 - **UK:** trimmed roofbox.co.uk copy.

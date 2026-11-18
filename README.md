@@ -18,4 +18,4 @@ node tools/build-plp-content.mjs          # rewrites the generated blocks in bot
 node tools/build-plp-content.mjs --check  # exits 1 if a page is out of date (writes nothing)
 ```
 
-Don't edit the blocks between `<!-- plp-content:…:start -->` and `<!-- plp-content:…:end -->` by hand; the next run overwrites them. The JSON format is described at the top of `tools/build-plp-content.mjs` (`**bold**`, `[text](placeholder:what)`, `! ` for watch-out bullets). See spec.md §32.
+Don't edit the blocks between `<!-- plp-content:…:start -->` and `<!-- plp-content:…:end -->` by hand; the next run overwrites them. The JSON format is described at the top of `tools/build-plp-content.mjs` (`**bold**`, `[text](todo:what the link needs)` for a TODO placeholder link (listed in each file's `_todo`), `! ` for watch-out bullets). See spec.md §32.
