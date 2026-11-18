@@ -746,9 +746,17 @@ body.region-uk .plp-rgn:not([data-region="uk"]){display:none !important;}
 .plp-shopby-sub{display:block;margin-top:-6px;font-size:13px;line-height:1.2;color:var(--rrg-grey-600);}
 .plp-shopby-tile.active .plp-shopby-sub{color:var(--rrg-red);font-weight:700;}
 
-/* Advice panel — sits under the whole tab row (outside the horizontal scroll track, so it is
-   never clipped on phones), full width, accent from the region token. */
+/* Advice panel — full width, outside the Shop By scroll track (never clipped on phones), accent from
+   the region token. */
 .plp-advice-wrap{margin-top:14px;}
+/* 2026-11-18 (Brenton): on desktop the panel sits in the hero, under the category description and above
+   the Buyers Guide / Fitting / FAQs buttons, so it reads as part of the category intro (it still follows
+   the Shop By tab below). On phones (≤900px) plp.js plpPlaceAdvice() moves it under the tab row instead.
+   Reset the hero's own paragraph styles (.plp-hero p: 560px, 16px, 20px gap; phone
+   font-size !important) for it. */
+.plp-hero .plp-advice-wrap{margin:4px 0 0;}
+.plp-hero .plp-advice p{max-width:none;margin:0 0 10px;font-size:15px !important;line-height:1.55;}
+.plp-hero .plp-advice p.plp-advice-foot{margin:12px 0 0;font-size:14px !important;}
 .plp-advice{border:1px solid var(--rrg-line);border-left:4px solid var(--rrg-red);border-radius:var(--radius);background:#fff;padding:16px 20px;}
 .plp-advice[hidden]{display:none;}
 .plp-advice-title{margin:0 0 6px;font-family:'Barlow Condensed',Arial,sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;color:var(--rrg-black);}
@@ -759,6 +767,18 @@ body.region-uk .plp-rgn:not([data-region="uk"]){display:none !important;}
 .plp-advice-list li.is-tick::before{content:'\2713';}
 .plp-advice-list li.is-warn::before{content:'!';background:var(--rrg-unknown);}
 .plp-advice-foot{margin:12px 0 0;font-size:14px;}
+/* Accordion (2026-11-18, Brenton): closed by default to a single title bar so the products stay above
+   the fold; the title is the toggle (plp.js). Closed copy is display:none but still in the HTML. */
+.plp-advice-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;margin:0;padding:0;border:0;background:none;font:inherit;color:inherit;text-transform:inherit;letter-spacing:inherit;text-align:left;cursor:pointer;}
+.plp-advice-toggle::after{content:'';flex:0 0 auto;width:9px;height:9px;margin:0 4px 4px 0;border-right:2px solid var(--rrg-red);border-bottom:2px solid var(--rrg-red);transform:rotate(45deg);transition:transform .2s ease;}
+.plp-advice-toggle:hover{color:var(--rrg-red);}
+.plp-advice-toggle:focus-visible{outline:2px solid var(--rrg-red);outline-offset:4px;}
+.plp-advice-wrap.is-open .plp-advice-toggle::after{transform:rotate(-135deg);margin:4px 4px 0 0;}
+.plp-advice-wrap:not(.is-open) .plp-advice-body{display:none;}
+.plp-advice-wrap:not(.is-open) .plp-advice{padding-top:12px;padding-bottom:12px;}
+.plp-advice-wrap:not(.is-open) .plp-advice-title{margin:0;}
+.plp-advice-wrap.is-open .plp-advice-title{margin-bottom:8px;}
+@media (prefers-reduced-motion:reduce){.plp-advice-toggle::after{transition:none;}}
 .plp-advice-foot a{color:var(--rrg-red);font-weight:700;}
 @media (max-width:640px){
   .plp-advice{padding:14px 16px;}

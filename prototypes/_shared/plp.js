@@ -443,7 +443,8 @@ function plpRenderShopBy() {
 }
 
 // ==== Shop By advice panel (2026-11-18, Brenton — spec.md §32) ===============================
-// Visible buying advice under the tab row: a short title, an intro line and 3–6 ✓ / ! bullets for
+// Visible buying advice in the hero, under the category description and above the hero buttons
+// (moved up from under the tab row 2026-11-18, Brenton): a short title, an intro line and 3–6 ✓ / ! bullets for
 // whichever tab is selected, Show All included. Every tab's panel (and every region's copy of it)
 // is already in the page's HTML — generated from content/{region}/*.json by
 // tools/build-plp-content.mjs — so search engines see all of it on first load. This only shows
@@ -458,6 +459,44 @@ function plpRenderAdvice() {
   const target = panels.find(p => p.dataset.adviceTab === key) || panels.find(p => p.dataset.adviceTab === 'all');
   panels.forEach(p => { p.hidden = p !== target; });
 }
+
+// Where the advice panel sits (2026-11-18, Brenton): desktop = in the hero, under the category
+// description and above the hero buttons; phones (the PLP's ≤900px layout, same as plpRenderResults)
+// = under the Shop By tab row, right next to the tabs it describes. The HTML has it once, in the hero
+// (so it's indexed there); on phones this just moves that same element below the tabs, and back
+// again if the window widens. Never copies or rewrites the copy.
+// Accordion (2026-11-18, Brenton: open, the panel pushed the products below the fold). Closed by
+// default: just the tab's title and a chevron. The title toggles the whole panel (.is-open on
+// #plpAdvice), so every tab/region shares one open state and switching tabs keeps it. The body copy
+// stays in the HTML while closed, so it's still indexed.
+document.addEventListener('click', e => {
+  const toggle = e.target.closest('.plp-advice-toggle');
+  if (!toggle) return;
+  const wrap = document.getElementById('plpAdvice');
+  if (!wrap) return;
+  const open = wrap.classList.toggle('is-open');
+  wrap.querySelectorAll('.plp-advice-toggle').forEach(t => t.setAttribute('aria-expanded', String(open)));
+});
+
+const PLP_ADVICE_MOBILE_MQ = '(max-width:900px)';
+function plpPlaceAdvice() {
+  const wrap = document.getElementById('plpAdvice');
+  const track = document.getElementById('plpShopByTrack');
+  if (!wrap || !track) return;
+  let slot = document.getElementById('plpAdviceHeroSlot');
+  if (!slot) {
+    slot = document.createElement('span');
+    slot.id = 'plpAdviceHeroSlot';
+    slot.hidden = true;
+    wrap.before(slot);
+  }
+  if (window.matchMedia(PLP_ADVICE_MOBILE_MQ).matches) {
+    if (track.nextElementSibling !== wrap) track.after(wrap);
+  } else if (slot.nextElementSibling !== wrap) {
+    slot.after(wrap);
+  }
+}
+window.matchMedia(PLP_ADVICE_MOBILE_MQ).addEventListener('change', plpPlaceAdvice);
 
 // Level 3 icon card — reuses .plp-shopby-icon/.plp-shopby-label so the icon renders at the
 // same size as the Level 2 tabs (spec: "explicitly not shrunk"), inside a .plp-icon-card
@@ -2654,6 +2693,7 @@ document.addEventListener('DOMContentLoaded', () => {
     plpState.searchQuery = (urlQuery !== null ? urlQuery : window.PLP_CONFIG.initialQuery) || '';
   }
   plpApplyUrlFilters();
+  plpPlaceAdvice(); // hero on desktop, under the tabs on phones (2026-11-18)
   plpRenderShopBy();
   if (window.PLP_CONFIG.isSearch) { plpInitSearchPage(); plpRenderSearchTabs(); }
   plpInitAvailabilityFacet();

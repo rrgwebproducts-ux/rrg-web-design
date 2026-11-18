@@ -73,15 +73,21 @@ function adviceHTML(c) {
       const a = c[r].advice.find(x => x.tab === key);
       if (!a) return '';
       const id = `plpAdviceTitle-${key}-${r}`;
+      const bodyId = `plpAdviceBody-${key}-${r}`;
       const lis = a.bullets.map(b => b.startsWith('! ')
-        ? `          <li class="is-warn">${inline(b.slice(2))}</li>`
-        : `          <li class="is-tick">${inline(b)}</li>`).join('\n');
+        ? `            <li class="is-warn">${inline(b.slice(2))}</li>`
+        : `            <li class="is-tick">${inline(b)}</li>`).join('\n');
+      // Accordion (2026-11-18, Brenton: the open panel pushed the products below the fold). The title is
+      // the toggle; the body is closed by default but always in the HTML (indexed). plp.js opens/closes
+      // every panel together, so switching tabs keeps the shopper's choice.
       return `      <div class="plp-rgn" data-region="${r}" role="region" aria-labelledby="${id}">
-        <h3 class="plp-advice-title" id="${id}">${inline(a.title)}</h3>
-        <p class="plp-advice-intro">${inline(a.intro)}</p>
-        <ul class="plp-advice-list">
+        <h3 class="plp-advice-title" id="${id}"><button type="button" class="plp-advice-toggle" aria-expanded="false" aria-controls="${bodyId}">${inline(a.title)}</button></h3>
+        <div class="plp-advice-body" id="${bodyId}">
+          <p class="plp-advice-intro">${inline(a.intro)}</p>
+          <ul class="plp-advice-list">
 ${lis}
-        </ul>${a.footer ? `\n        <p class="plp-advice-foot">${inline(a.footer)}</p>` : ''}
+          </ul>${a.footer ? `\n          <p class="plp-advice-foot">${inline(a.footer)}</p>` : ''}
+        </div>
       </div>`;
     }).filter(Boolean).join('\n');
     return `    <div class="plp-advice" id="plpAdvice-${key}" data-advice-tab="${key}"${key === 'all' ? '' : ' hidden'}>
