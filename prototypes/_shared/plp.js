@@ -52,7 +52,36 @@ function plpMatchesShopBy(product, activeSubcat, activeSubsubcat) {
   return true;
 }
 
+// ==== Region-aware config (2026-11-18, Brenton — spec.md §32) ================================
+// One page serves AU, NZ and UK (?region= / the header flag menu, shared.js currentRegion), and
+// some categories differ by region: the UK has no hitch receivers, so Bike Racks drops the Hitch
+// tab, hitch-only products and the ute tub / spare wheel children there. All opt-in, so pages
+// that set none of these fields behave exactly as before:
+//   shopBy[] / children[] / facet / option  .regions: ['AU','NZ']   — only shown in those regions
+//   any entry  .labelByRegion / .headingByRegion: { UK: '…' }       — per-region wording
+//   PLP_CONFIG.regionExclude: { UK: { subcategories: [...] } }       — products hidden per region
+//   PLP_CONFIG.featuredProductByRegion: { UK: product }              — sidebar Featured Product
+// Production: each region is its own Magento website, so this is just per-store category/attribute
+// config — none of it needs to be a runtime switch there.
+function plpRegion() {
+  return typeof currentRegion !== 'undefined' && currentRegion ? currentRegion : 'AU';
+}
+function plpInRegion(entry) {
+  return !entry || !entry.regions || entry.regions.includes(plpRegion());
+}
+function plpRegionText(entry, field = 'label') {
+  if (!entry) return '';
+  const by = entry[field + 'ByRegion'];
+  return (by && by[plpRegion()]) || entry[field];
+}
+function plpProductInRegion(product) {
+  const ex = ((window.PLP_CONFIG && window.PLP_CONFIG.regionExclude) || {})[plpRegion()];
+  if (!ex || !ex.subcategories) return true;
+  return !(product.subcategories || []).some(s => ex.subcategories.includes(s));
+}
+
 function plpMatchesFiltersExcept(product, activeFilters, exceptFacetKey, activeSubcat, activeSubsubcat) {
+  if (!plpProductInRegion(product)) return false;
   if (!plpMatchesShopBy(product, activeSubcat, activeSubsubcat)) return false;
   // Search-results page only (cfg.isSearch) — gated here, the single choke point both
   // plpFilteredSortedProducts() and every filter option's live count (plpFilterGroupHTML) run
@@ -230,8 +259,8 @@ function plpRenderBreadcrumb() {
   const segments = [
     ...(cfg.breadcrumbRoot || [{ label: 'Home' }]),
     { label: (cfg.categoryRoot && cfg.categoryRoot.breadcrumbLabel) || cfg.categoryKey },
-    ...(l2 ? [{ label: l2.breadcrumbLabel || l2.label }] : []),
-    ...(l3 ? [{ label: l3.breadcrumbLabel || l3.label }] : [])
+    ...(l2 ? [{ label: plpRegionText(l2, 'breadcrumbLabel') || plpRegionText(l2) }] : []),
+    ...(l3 ? [{ label: plpRegionText(l3, 'breadcrumbLabel') || plpRegionText(l3) }] : [])
   ];
   trail.innerHTML = segments.map((seg, i) => {
     const isLast = i === segments.length - 1;
@@ -249,7 +278,7 @@ function plpRenderCategoryContent() {
   if (!cfg.categoryRoot) return;
   const { l2, l3 } = plpActiveTabChain();
   const active = l3 || l2 || cfg.categoryRoot;
-  const heading = active.heading || active.label || cfg.categoryRoot.heading;
+  const heading = plpRegionText(active, 'heading') || plpRegionText(active) || cfg.categoryRoot.heading;
   const description = active.description || cfg.categoryRoot.description;
   const sessionVehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const suffix = cfg.vehicleHeadingSuffix ? ` ${cfg.vehicleHeadingSuffix.replace('{vehicle}', sessionVehicle ? sessionVehicle.label : 'vehicle')}` : '';
@@ -257,7 +286,11 @@ function plpRenderCategoryContent() {
   const simpleH1 = document.querySelector('#plpHeroSimple h1');
   if (setH1) setH1.textContent = `Shop ${heading}${suffix}`;
   if (simpleH1) simpleH1.textContent = `Shop ${heading}`;
-  document.querySelectorAll('#plpHeroVehicleSet > div > p, #plpHeroSimple > div > p').forEach(p => { p.textContent = description; });
+  // cfg.heroFromContent (2026-11-18, Brenton — spec.md §32): the hero paragraph is per-region
+  // copy generated into the page's HTML from content/{region}/*.json (tools/build-plp-content.mjs)
+  // and stays the category text on every tab — the per-tab copy lives in the Shop By advice
+  // panel instead, so the two never repeat each other. Don't overwrite it here.
+  if (!cfg.heroFromContent) document.querySelectorAll('#plpHeroVehicleSet > div > p, #plpHeroSimple > div > p').forEach(p => { p.textContent = description; });
   plpRenderBreadcrumb();
   plpApplyCategoryImage();
   plpApplyHeroReadMore();
@@ -378,21 +411,52 @@ function plpRenderShopBy() {
   const cfg = window.PLP_CONFIG;
   const track = document.getElementById('plpShopByTrack');
   if (!track) return;
-  const tiles = [{ key: 'all', label: 'Show All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...cfg.shopBy];
+  // Region-only tabs (2026-11-18): a tab missing from this region drops out, and if it was the
+  // selected one (region switched while on Hitch) the page goes back to Show All.
+  const regionTabs = (cfg.shopBy || []).filter(plpInRegion);
+  if (plpState.activeSubcat && plpState.activeSubcat !== 'all' && !regionTabs.some(t => t.key === plpState.activeSubcat)) {
+    plpState.activeSubcat = 'all';
+    plpState.activeSubsubcat = null;
+  }
+  const tiles = [{ key: 'all', label: 'Show All', icon: cfg.shopByAllIcon || PLP_SHOWALL_ICON }, ...regionTabs];
   // Count per tab under the current filters (2026-10-06, see plpSelectSubcat).
   const countFor = key => cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, key, null)).length;
+  const activeKey = plpState.activeSubcat || 'all';
   track.innerHTML = tiles.map(t => {
     const n = countFor(t.key);
+    const isActive = activeKey === t.key;
+    // Advice panel link (2026-11-18): aria-controls points at the tab's own panel when the page
+    // has one (plpRenderAdvice), so screen readers know what the tab changes.
+    const panelId = document.getElementById(`plpAdvice-${t.key}`) ? ` aria-controls="plpAdvice-${t.key}"` : '';
     return `
-    <button type="button" class="plp-shopby-tile ${plpState.activeSubcat === t.key ? 'active' : ''}${n === 0 ? ' is-zero' : ''}" data-shopby="${t.key}">
+    <button type="button" class="plp-shopby-tile ${isActive ? 'active' : ''}${n === 0 ? ' is-zero' : ''}" data-shopby="${t.key}" aria-pressed="${isActive}"${panelId}>
       <span class="plp-shopby-icon">${t.icon}</span>
-      <span class="plp-shopby-label">${t.label} (${n})</span>
+      <span class="plp-shopby-label">${plpRegionText(t)} (${n})</span>
+      ${t.sub ? `<span class="plp-shopby-sub">${t.sub}</span>` : ''}
     </button>
   `;
   }).join('');
+  plpRenderAdvice();
   track.querySelectorAll('[data-shopby]').forEach(btn => {
     btn.addEventListener('click', () => plpSelectSubcat(btn.dataset.shopby));
   });
+}
+
+// ==== Shop By advice panel (2026-11-18, Brenton — spec.md §32) ===============================
+// Visible buying advice under the tab row: a short title, an intro line and 3–6 ✓ / ! bullets for
+// whichever tab is selected, Show All included. Every tab's panel (and every region's copy of it)
+// is already in the page's HTML — generated from content/{region}/*.json by
+// tools/build-plp-content.mjs — so search engines see all of it on first load. This only shows
+// the selected tab's panel and hides the rest; it never writes any copy itself. A tab with no
+// panel of its own falls back to Show All's; Level 3 cards keep their parent tab's panel.
+// Region copies inside a panel are switched by CSS (.plp-rgn, plp.css), not here.
+function plpRenderAdvice() {
+  const wrap = document.getElementById('plpAdvice');
+  if (!wrap) return;
+  const panels = [...wrap.querySelectorAll('[data-advice-tab]')];
+  const key = plpState.activeSubcat || 'all';
+  const target = panels.find(p => p.dataset.adviceTab === key) || panels.find(p => p.dataset.adviceTab === 'all');
+  panels.forEach(p => { p.hidden = p !== target; });
 }
 
 // Level 3 icon card — reuses .plp-shopby-icon/.plp-shopby-label so the icon renders at the
@@ -1122,13 +1186,17 @@ const PLP_FILTER_TOOLTIPS = {
 
 function plpFilterGroupHTML(facetDef, isPriority) {
   const cfg = window.PLP_CONFIG;
-  const options = facetDef.options.map(opt => {
+  // 2026-11-18 (Brenton): options can be region-only (Bike Racks: 5 and 6 bikes are AU/NZ only),
+  // can carry a small hint under the label (Roof Boxes: "≤165cm"), and "{c}" in a label is the
+  // region's currency symbol (Price bands).
+  const sym = typeof regionCurrencySymbol === 'function' ? regionCurrencySymbol() : '$';
+  const options = facetDef.options.filter(plpInRegion).map(opt => {
     const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, facetDef.key, plpState.activeSubcat, plpState.activeSubsubcat) && plpValueMatches(p, facetDef.key, facetDef, opt.value)).length;
     const checked = plpState.activeFilters[facetDef.key] && plpState.activeFilters[facetDef.key].has(String(opt.value));
     return `
       <label class="plp-filter-option ${count === 0 && !checked ? 'is-zero' : ''}">
         <input type="checkbox" data-facet="${facetDef.key}" value="${opt.value}" ${checked ? 'checked' : ''}>
-        ${opt.icon ? `<img class="plp-filter-option-icon" src="${opt.icon}" alt="" loading="lazy">` : ''}<span>${opt.label}</span>
+        ${opt.icon ? `<img class="plp-filter-option-icon" src="${opt.icon}" alt="" loading="lazy">` : ''}<span>${plpRegionText(opt).replace(/\{c\}/g, sym)}${opt.hint ? `<small class="plp-filter-option-hint">${opt.hint}</small>` : ''}</span>
         <span class="plp-filter-count">${count}</span>
       </label>
     `;
@@ -1145,14 +1213,14 @@ function plpFilterGroupHTML(facetDef, isPriority) {
   if (isPriority) {
     return `
       <div class="plp-filter-group plp-filter-priority-group" data-facet-group="${facetDef.key}">
-        <h4>${facetDef.label} ${tooltipIcon}</h4>
+        <h4>${plpRegionText(facetDef)} ${tooltipIcon}</h4>
         <div class="plp-filter-options">${options}</div>
       </div>
     `;
   }
   return `
     <details class="plp-filter-group" data-facet-group="${facetDef.key}" open>
-      <summary>${facetDef.label} ${tooltipIcon}</summary>
+      <summary>${plpRegionText(facetDef)} ${tooltipIcon}</summary>
       ${storePrompt}<div class="plp-filter-options">${options}</div>
     </details>
   `;
@@ -1164,19 +1232,22 @@ function plpRenderFilters() {
   const priorityWrap = document.getElementById('plpPriorityFilters');
   const standardWrap = document.getElementById('plpStandardFilters');
   const chipsWrap = document.getElementById('plpPriorityChips');
+  // Region-only filter groups (2026-11-18) — see plpInRegion.
+  const priorityFacets = cfg.facets.priority.filter(plpInRegion);
+  const standardFacets = cfg.facets.standard.filter(plpInRegion);
   if (priorityWrap) {
-    priorityWrap.innerHTML = cfg.facets.priority.length
-      ? `<div class="plp-filter-priority">${cfg.facets.priority.map(f => plpFilterGroupHTML(f, true)).join('')}</div>`
+    priorityWrap.innerHTML = priorityFacets.length
+      ? `<div class="plp-filter-priority">${priorityFacets.map(f => plpFilterGroupHTML(f, true)).join('')}</div>`
       : '';
   }
   if (standardWrap) {
-    standardWrap.innerHTML = cfg.facets.standard.map(f => plpFilterGroupHTML(f, false)).join('');
+    standardWrap.innerHTML = standardFacets.map(f => plpFilterGroupHTML(f, false)).join('');
   }
   // Mobile priority chips (spec Section 6) — quick-access row above "Refine Results";
   // tapping one opens the full drawer, scrolled to that filter's group (Section 14 item 3,
   // Brenton's working "maybe" assumption).
   if (chipsWrap) {
-    chipsWrap.innerHTML = cfg.facets.priority.map(f => `<button type="button" class="plp-filter-chip" data-chip-facet="${f.key}">${f.label}</button>`).join('');
+    chipsWrap.innerHTML = priorityFacets.map(f => `<button type="button" class="plp-filter-chip" data-chip-facet="${f.key}">${plpRegionText(f)}</button>`).join('');
     chipsWrap.querySelectorAll('[data-chip-facet]').forEach(chip => {
       chip.addEventListener('click', () => plpOpenFilterDrawer(chip.dataset.chipFacet));
     });
@@ -1931,7 +2002,7 @@ function plpRenderResults() {
       wrap.parentElement.insertBefore(level3Row, wrap);
     }
     level3Row.hidden = false;
-    level3Row.innerHTML = activeTile.children.map(child => {
+    level3Row.innerHTML = activeTile.children.filter(plpInRegion).map(child => {
       const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, child.key)).length;
       return plpIconCardHTML(child, count);
     }).join('');
@@ -2212,7 +2283,9 @@ function plpRenderMerchSidebar() {
   if (!wrap) return;
   // Promos flagged phase2 (the Package Deal ones, spec.md §23 item 25) only show in Build Phase 2.
   const promos = (cfg.merchPromos || []).filter(p => !p.phase2 || (typeof rrgPhaseGet === 'function' && rrgPhaseGet() === 2));
-  const featured = cfg.featuredProduct;
+  // featuredProductByRegion (2026-11-18): e.g. the Bike Racks pick is a hitch rack, which the UK
+  // doesn't sell — the UK gets its own.
+  const featured = (cfg.featuredProductByRegion && cfg.featuredProductByRegion[plpRegion()]) || cfg.featuredProduct;
   let html = '';
   if (promos.length) {
     html += `
@@ -2504,6 +2577,9 @@ function applyPlpHeroImageFlag(mode) {
 //   any facet key (bikeCount=2, colour=black…) also works directly.
 const PLP_URL_HOLD_TO_CARRIER = { wheel: 'wheel-support', pwheel: 'wheel-support', 'wheel-hold': 'wheel-support', 'platform-wheel-hold': 'wheel-support' };
 const PLP_URL_ATTACHMENT_TO_FIT = { 'tow-ball-mounting': 'towball', 'hitch-mounting': 'hitch' };
+// 2026-11-18 (Brenton, spec.md §32): pages with the "How it holds the bike" filter (Bike Racks) take the
+// Bike Rack Finder's hold= cards straight into it — any of them, since "fork, frame or wheel hold" is a choice.
+const PLP_URL_HOLD_TO_STYLE = { wheel: 'wheel', 'wheel-hold': 'wheel', pwheel: 'platform', pframe: 'platform', 'platform-wheel-hold': 'platform', 'platform-frame-hold': 'platform', frame: 'frame', 'frame-hold': 'frame', fork: 'fork', 'fork-hold': 'fork', hang: 'hang', 'frame-hanging': 'hang' };
 function plpApplyUrlFilters() {
   const cfg = window.PLP_CONFIG;
   if (!cfg || cfg.isSearch) return;
@@ -2515,8 +2591,10 @@ function plpApplyUrlFilters() {
     if (!opt) return;
     (plpState.activeFilters[key] = plpState.activeFilters[key] || new Set()).add(String(opt.value));
   };
-  const tabs = cfg.shopBy || [];
-  const attachment = (q.get('attachment') || '').split(',').filter(Boolean);
+  // Region-only tabs (2026-11-18): a UK link to "tow-ball-mounting,hitch-mounting" becomes just the
+  // tow ball tab, since the UK has no Hitch tab.
+  const tabs = (cfg.shopBy || []).filter(plpInRegion);
+  const attachment = (q.get('attachment') || '').split(',').filter(Boolean).filter(a => tabs.some(t => t.key === a) || !(cfg.shopBy || []).some(t => t.key === a));
   if (attachment.length === 1 && tabs.some(t => t.key === attachment[0])) {
     plpState.activeSubcat = attachment[0];
     const tab = tabs.find(t => t.key === attachment[0]);
@@ -2529,15 +2607,18 @@ function plpApplyUrlFilters() {
     const def = plpFacetDefByKey('bikeCount');
     const n = Number(q.get('bikes'));
     // "Carry at least n": the option equal to n, or the highest one below it if the list stops short.
-    const opt = (def.options || []).filter(o => Number(o.value) <= n).pop();
+    const opt = (def.options || []).filter(plpInRegion).filter(o => Number(o.value) <= n).pop();
     if (opt) add('bikeCount', opt.value);
   }
   // Only when every hold style maps to the same carrier type: "fork, frame or wheel hold" is a
   // choice, so ticking Wheel Support would hide the other two.
   const holds = (q.get('hold') || '').split(',').filter(Boolean);
   const carriers = new Set(holds.map(h => PLP_URL_HOLD_TO_CARRIER[h]));
-  if (holds.length && carriers.size === 1 && !carriers.has(undefined)) add('carrierType', [...carriers][0]);
-  if (q.get('ebike') === '1') add('carrierType', 'ebike');
+  if (plpFacetDefByKey('holdStyle').options) holds.forEach(h => PLP_URL_HOLD_TO_STYLE[h] && add('holdStyle', PLP_URL_HOLD_TO_STYLE[h]));
+  else if (holds.length && carriers.size === 1 && !carriers.has(undefined)) add('carrierType', [...carriers][0]);
+  // E-bike: its own "Carrying e-bikes?" filter where the page has one (Bike Racks, 2026-11-18),
+  // otherwise the older Type of Carrier option.
+  if (q.get('ebike') === '1') { if (plpFacetDefByKey('ebike').options) add('ebike', 'yes'); else add('carrierType', 'ebike'); }
   if (q.get('brand')) add('brand', q.get('brand'));
   [...(cfg.facets.priority || []), ...(cfg.facets.standard || [])].forEach(f => { if (q.get(f.key)) q.get(f.key).split(',').forEach(v => add(f.key, v)); });
 }
@@ -2598,6 +2679,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // A new vehicle turns the brand page's "Fits your {vehicle}" filter back on (brand-spec.md §4).
   document.addEventListener('rrg-session-change', () => { plpState.vehicleFilterOff = false; plpState.page = 1; if (window.PLP_CONFIG.vehicleFilter) plpRenderFilters(); });
   document.addEventListener('rrg-session-change', plpRenderResults);
+  // Region switch (2026-11-18, Brenton — spec.md §32): region-only tabs, products, filter options
+  // and wording (plpInRegion) need a re-render. Selected filter values the new region doesn't
+  // offer (5 or 6 bikes in the UK) are dropped first so they can't silently empty the grid.
+  document.addEventListener('rrg-region-change', () => {
+    const cfg = window.PLP_CONFIG;
+    [...(cfg.facets?.priority || []), ...(cfg.facets?.standard || [])].forEach(f => {
+      const set = plpState.activeFilters[f.key];
+      if (!set || !f.options) return;
+      if (!plpInRegion(f)) { delete plpState.activeFilters[f.key]; return; }
+      f.options.filter(o => !plpInRegion(o)).forEach(o => set.delete(String(o.value)));
+    });
+    plpState.page = 1;
+    plpState.visibleCount = PLP_PAGE_SIZE;
+    plpRenderShopBy();
+    plpRenderFilters();
+    plpSyncFilterDrawerFromMain();
+    plpRenderResults();
+    plpRenderMerchSidebar();
+    plpRenderCategoryContent();
+  });
   // Vehicle-scoped page buttons/Pages results come and go with the session vehicle.
   if (window.PLP_CONFIG.isSearch) document.addEventListener('rrg-session-change', () => { plpRenderSearchHeadline(); plpRenderSearchScope(); });
 });

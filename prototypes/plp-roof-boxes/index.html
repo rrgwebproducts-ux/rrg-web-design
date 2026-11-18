@@ -5,23 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="../_shared/favicon.ico">
 <title>Roof Boxes — Roof Racks Galore</title>
-<meta name="description" content="Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.">
+<meta name="description" content="Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance.">
 <link rel="canonical" href="https://www.roofracksgalore.com.au/roof-boxes">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Roof Racks Galore">
 <meta property="og:title" content="Roof Boxes">
-<meta property="og:description" content="Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.">
+<meta property="og:description" content="Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance.">
 <meta property="og:url" content="https://www.roofracksgalore.com.au/roof-boxes">
 <meta property="og:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Dualsideopening_645XXX_1_4.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Roof Boxes">
-<meta name="twitter:description" content="Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.">
+<meta name="twitter:description" content="Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance.">
 <meta name="twitter:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/ThuleForce3_Dualsideopening_645XXX_1_4.jpg">
 <!-- Roof Boxes PLP (2026-10-06) — the exact Bike Racks PLP template (plp/index.html), config and
      data only. Shop By = the four live shape categories (roofracksgalore.com.au/roof-boxes/
      roof-box-shapes), size = priority filter. Products are the real live range, scraped
      2026-10-06 (price/stock from each product page). Built as the demo page for the Package Deal
-     (spec.md §19): roof boxes are the first qualifying accessory. -->
+     (spec.md §19): roof boxes are the first qualifying accessory.
+     2026-11-18 (Brenton, spec.md §32): Shop By is now size by volume (Small → XXL), shape is a "Box
+     shape" filter, plus box length/width/height filters, a visible advice panel and a below-grid
+     buying guide (per-region copy from content/{au,nz,uk}/roof-boxes.json). -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
@@ -31,50 +34,21 @@
 <link rel="stylesheet" href="../_shared/footer.css">
 <link rel="stylesheet" href="../_shared/campaign.css">
 <link rel="stylesheet" href="../_shared/plp.css">
-<style>
-/* Shop By shape icons: RRG red everywhere, the original roofbox.co.uk blue on the UK region
-   (which swaps the site red for blue — shared.css body.region-uk). See rbShapeIcon() below. */
-.rb-shape-icon-uk{display:none;}
-body.region-uk .rb-shape-icon{display:none;}
-body.region-uk .rb-shape-icon-uk{display:block;}
-</style>
+<!-- 2026-11-18 (Brenton): meta/og/twitter descriptions = the hero copy (spec.md §32; size tabs, not
+     shape). TODO: per-region meta in production (each Magento store sets its own). Shop By icons now
+     use the shared .plp-icon-au/.plp-icon-uk classes (plp.css), so the page's own icon <style> is gone. -->
 </head>
 <body data-plp-page>
 
 <div data-widget="header"></div>
 
-<!-- Change Vehicle moved up here from the hero CTA row (2026-09-18 design review — Graham:
-     it's a low-usage action once a vehicle is set, better placed out of the way near the
-     breadcrumbs than competing with the hero's other CTAs). Right-aligned, red outline not
-     gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
+<!-- 2026-11-18 (Brenton): no Change Vehicle / Set Your Vehicle / "for your {vehicle}" hero on Roof Boxes —
+     there's no fitment data for this category (spec.md §32, vehiclePrompt: false below). -->
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs" id="plpCrumbTrail"></div>
-  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-vclp-cta="change-vehicle">Change Vehicle</a>
 </div>
 
 <main class="wrap">
-
-  <!-- Hero — Vehicle-Set state (spec Section 4.1): short framing, no full vehicle spec in
-       the H1 since Roof Boxes is a standard (non-fitment-locked) category. Media/badge reuse
-       the same real assets + component pattern as the Vehicle Category Landing Page hero. -->
-  <section class="plp-hero" id="plpHeroVehicleSet" hidden>
-    <div>
-      <h1>Shop Roof Boxes for your Toyota Hilux</h1>
-      <p>Roof boxes for your Toyota Hilux in every shape: long wide for skis and long gear, medium for family luggage, narrow to leave room for a bike rack, and short wide for short roofs. Boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro.</p>
-      <!-- Change Vehicle moved to the breadcrumb row (2026-09-18 design review) — see
-           .plp-crumbs-cta above, shown whenever Site Admin has a Vehicle set. -->
-      <div class="plp-hero-cta-row">
-        <a href="#" class="btn btn-primary">Buyers Guide</a>
-        <a href="#plpFitting" class="btn btn-outline">Fitting</a>
-        <a href="#faqSection" class="btn btn-outline">FAQs</a>
-        <a href="#plpVideoCarousel" class="btn btn-outline">Videos</a>
-      </div>
-    </div>
-    <div class="plp-hero-media is-cutout">
-      <img class="plp-hero-vehicle-img" src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="956" height="556">
-      <span class="plp-hero-make-badge"><img src="../_shared/brand-toyota-badge.png" alt="Toyota" width="534" height="370"></span>
-    </div>
-  </section>
 
   <!-- Hero — Simple state (spec Section 4.2). No Figma reference exists for this state;
        drafted from the rest of the session's decisions, flagged for review at first build
@@ -84,12 +58,14 @@ body.region-uk .rb-shape-icon-uk{display:block;}
   <section class="plp-hero no-media" id="plpHeroSimple" hidden>
     <div>
       <h1>Shop Roof Boxes</h1>
-      <p>Roof boxes from Thule, Yakima, Rhino-Rack, CRUZ and Hapro, from compact 300 litre boxes to 600 litre family haulers. Shop by shape, then narrow it down by size, volume and mounting system.</p>
+      <!-- 2026-11-18 (Brenton): hero paragraph is per-region copy from content/{au,nz,uk}/roof-boxes.json
+           (hero.description); it stays the category text on every tab (PLP_CONFIG.heroFromContent). -->
+      <p><!-- plp-content:hero:start — generated by tools/build-plp-content.mjs from content/{au,nz,uk}/roof-boxes.json (hero) — edit the JSON and re-run, do not edit this block by hand --><span class="plp-rgn" data-region="au">Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance.</span><span class="plp-rgn" data-region="nz">Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance.</span><span class="plp-rgn" data-region="uk">Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance.</span><!-- plp-content:hero:end --></p>
       <div class="plp-hero-cta-row">
-        <a href="#" class="btn btn-cta" data-vclp-cta="set-vehicle">Set Your Vehicle</a>
-        <a href="#" class="btn btn-primary">Buyers Guide</a>
+        <a href="#" class="btn btn-primary">Buyers Guide</a><!-- placeholder — buying guide -->
+        <!-- Fitting / FAQs scroll to the below-grid buying guide (spec.md §32). -->
         <a href="#plpFitting" class="btn btn-outline">Fitting</a>
-        <a href="#faqSection" class="btn btn-outline">FAQs</a>
+        <a href="#plpFaqs" class="btn btn-outline">FAQs</a>
       </div>
     </div>
     <div class="plp-hero-media" hidden>
@@ -105,6 +81,191 @@ body.region-uk .rb-shape-icon-uk{display:block;}
       <h2>Shop By</h2>
     </div>
     <div class="plp-shopby-track" id="plpShopByTrack"></div>
+    <!-- Shop By advice panel (2026-11-18, Brenton — spec.md §32): every tab's advice, every region,
+         in the HTML on first load; plp.js plpRenderAdvice() only shows the selected tab's panel.
+         Sits outside the scrolling tab track so it is never clipped on phones. -->
+<!-- plp-content:advice:start — generated by tools/build-plp-content.mjs from content/{au,nz,uk}/roof-boxes.json (advice) — edit the JSON and re-run, do not edit this block by hand -->
+  <div class="plp-advice-wrap" id="plpAdvice" aria-live="polite">
+    <div class="plp-advice" id="plpAdvice-all" data-advice-tab="all">
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-all-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-all-au">Choose a size, then refine</h3>
+        <p class="plp-advice-intro">So how do you decide which roof box to buy? Start with the size you need, then use the filters for length, width and height.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">If you need to carry other items on the roof, such as bikes, choose a box that leaves space on your roof bars — and bars that are long enough</li>
+          <li class="is-tick">If you need to carry long things, such as skis, choose a long box</li>
+          <li class="is-tick">Length and width often matter more than the litre figure on the box</li>
+          <li class="is-tick">If you also need roof bars, a package deal includes everything you will need</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-all-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-all-nz">Choose a size, then refine</h3>
+        <p class="plp-advice-intro">So how do you decide which roof box to buy? Start with the size you need, then use the filters for length, width and height.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">If you need to carry other items on the roof, such as bikes, choose a box that leaves space on your roof bars — and bars that are long enough</li>
+          <li class="is-tick">If you need to carry long things, such as skis, choose a long box</li>
+          <li class="is-tick">Length and width often matter more than the litre figure on the box</li>
+          <li class="is-tick">If you also need roof bars, a package deal includes everything you will need</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-all-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-all-uk">Choose a size, then refine</h3>
+        <p class="plp-advice-intro">So how do you decide which roof box to buy? Start with the size you need, then use the filters for length, width and height.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">If you need to carry other items on the roof, such as bikes, choose a box that leaves space on your roof bars — and bars that are long enough</li>
+          <li class="is-tick">If you need to carry long things, such as skis, choose a long box</li>
+          <li class="is-tick">Length and width often matter more than the litre figure on the box</li>
+          <li class="is-tick">If you also need roof bars, a package deal includes everything you will need</li>
+        </ul>
+        <p class="plp-advice-foot">Not sure? <a href="#" data-placeholder="360° size tool">Compare sizes in our 360° size tool</a><!-- placeholder — 360° size tool --></p>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-small" data-advice-tab="small" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-small-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-small-au">Small roof boxes (Up to 340L)</h3>
+        <p class="plp-advice-intro">A compact box for smaller cars, hatchbacks and short roofs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Weekend bags and soft luggage</li>
+          <li class="is-tick">Often leaves bar space for a bike carrier</li>
+          <li class="is-tick">A practical choice when the roof itself is short</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-small-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-small-nz">Small roof boxes (Up to 340L)</h3>
+        <p class="plp-advice-intro">A compact box for smaller cars, hatchbacks and short roofs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Weekend bags and soft luggage</li>
+          <li class="is-tick">Often leaves bar space for a bike carrier</li>
+          <li class="is-tick">A practical choice when the roof itself is short</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-small-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-small-uk">Small roof boxes (Up to 340L)</h3>
+        <p class="plp-advice-intro">A compact box for smaller cars, hatchbacks and short roofs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Weekend bags and soft luggage</li>
+          <li class="is-tick">Often leaves bar space for a bike carrier</li>
+          <li class="is-tick">A practical choice when the roof itself is short</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-medium" data-advice-tab="medium" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-medium-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-medium-au">Medium roof boxes (350–420L)</h3>
+        <p class="plp-advice-intro">Our everyday family size. Suits most hatchbacks, sedans and small SUVs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Holiday luggage for a weekend away</li>
+          <li class="is-tick">A practical size for most family cars</li>
+          <li class="is-tick">Use the width filter if you also want to carry a bike on the roof</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-medium-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-medium-nz">Medium roof boxes (350–420L)</h3>
+        <p class="plp-advice-intro">Our everyday family size. Suits most hatchbacks, sedans and small SUVs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Holiday luggage for a weekend away</li>
+          <li class="is-tick">A practical size for most family cars</li>
+          <li class="is-tick">Use the width filter if you also want to carry a bike on the roof</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-medium-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-medium-uk">Medium roof boxes (350–420L)</h3>
+        <p class="plp-advice-intro">Our everyday family size. Suits most hatchbacks, saloons and small SUVs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Holiday luggage for a weekend away</li>
+          <li class="is-tick">A practical size for most family cars</li>
+          <li class="is-tick">Use the width filter if you also want to carry a bike on the roof</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-large" data-advice-tab="large" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-large-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-large-au">Large roof boxes (430–470L)</h3>
+        <p class="plp-advice-intro">For family holidays and camping gear. Suits wagons and mid-size SUVs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">More room than the everyday family size</li>
+          <li class="is-tick">Check the internal length if you carry skis</li>
+          <li class="is-tick">Use the length filter to find a long box in this size</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-large-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-large-nz">Large roof boxes (430–470L)</h3>
+        <p class="plp-advice-intro">For family holidays and camping gear. Suits wagons and mid-size SUVs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">More room than the everyday family size</li>
+          <li class="is-tick">Check the internal length if you carry skis</li>
+          <li class="is-tick">Use the length filter to find a long box in this size</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-large-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-large-uk">Large roof boxes (430–470L)</h3>
+        <p class="plp-advice-intro">For family holidays and camping gear. Suits estates and mid-size SUVs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">More room than the everyday family size</li>
+          <li class="is-tick">Check the internal length if you carry skis</li>
+          <li class="is-tick">Use the length filter to find a long box in this size</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-xl" data-advice-tab="xl" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-xl-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-xl-au">XL roof boxes (480–530L)</h3>
+        <p class="plp-advice-intro">Big family loads, camping and snow trips. Suits larger wagons, SUVs and 4WDs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Long enough for most skis and snowboards</li>
+          <li class="is-tick">A large, flexible family box</li>
+          <li class="is-tick">Check you can open the tailgate fully with the box in place</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-xl-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-xl-nz">XL roof boxes (480–530L)</h3>
+        <p class="plp-advice-intro">Big family loads, camping and snow trips. Suits larger wagons, SUVs and 4WDs.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Long enough for most skis and snowboards</li>
+          <li class="is-tick">A large, flexible family box</li>
+          <li class="is-tick">Check you can open the tailgate fully with the box in place</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-xl-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-xl-uk">XL roof boxes (480–530L)</h3>
+        <p class="plp-advice-intro">Big family loads, camping and snow trips. Suits larger estates, SUVs and 4x4s.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Long enough for most skis and snowboards</li>
+          <li class="is-tick">A large, flexible family box</li>
+          <li class="is-tick">Check you can open the tailgate fully with the box in place</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-xxl" data-advice-tab="xxl" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-xxl-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-xxl-au">XXL roof boxes (540L+)</h3>
+        <p class="plp-advice-intro">Maximum space for bulky and long gear.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Needs a long roof and long roof bars</li>
+          <li class="is-tick">The usual choice for the biggest family loads</li>
+          <li class="is-warn">Check your roof load limit and garage height</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-xxl-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-xxl-nz">XXL roof boxes (540L+)</h3>
+        <p class="plp-advice-intro">Maximum space for bulky and long gear.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Needs a long roof and long roof bars</li>
+          <li class="is-tick">The usual choice for the biggest family loads</li>
+          <li class="is-warn">Check your roof load limit and garage height</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-xxl-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-xxl-uk">XXL roof boxes (540L+)</h3>
+        <p class="plp-advice-intro">Maximum space for bulky and long gear.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Needs a long roof and long roof bars</li>
+          <li class="is-tick">The usual choice for the biggest family loads</li>
+          <li class="is-warn">Check your roof load limit and garage height</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<!-- plp-content:advice:end -->
   </section>
 
   <div class="plp-toolbar">
@@ -146,14 +307,181 @@ body.region-uk .rb-shape-icon-uk{display:block;}
     </div>
   </div>
 
+  <!-- Below-grid buying guide (2026-11-18, Brenton — spec.md §32): How to choose, Sizes explained,
+       Fitting & roof bars, FAQs (first open) + FAQPage JSON-LD. Build Phase 1 — visible and
+       indexable now. Replaces the old per-tab JS FAQ section and the "Roof Box Fitting" banner. -->
+<!-- plp-content:guide:start — generated by tools/build-plp-content.mjs from content/{au,nz,uk}/roof-boxes.json (guide) — edit the JSON and re-run, do not edit this block by hand -->
+<section class="plp-guide" id="plpGuide" aria-label="Buying guide">
+  <section class="plp-guide-section" id="plpHowToChoose">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>How to choose a roof box</h2>
+      <p>“Roof boxes” or “roof pods”. We call them roof boxes. Here at Roof Racks Galore, we have a huge range of roof boxes from the world’s leading manufacturers. We’ve sourced the best roof boxes from the top brands on the planet: CRUZ, Prorack, Rhino Rack, Thule and Yakima. Roof boxes are one of our specialist subjects at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the roof box fits safely to your vehicle. “Too easy” as our experts like to say! No matter what size of roof box or pod you’re after, we’ve got all bases covered: Short wide roof boxes, medium roof boxes, narrow roof boxes and long wide boxes are all in our range.</p>
+      <p>Use the size tabs first, then narrow the list with the length, width and height filters.</p>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>How to choose a roof box</h2>
+      <p>“Roof boxes” or “roof pods”. We call them roof boxes. Here at Roof Racks Galore, we have a huge range of roof boxes from the world’s leading manufacturers. We’ve sourced the best roof boxes from the top brands on the planet: CRUZ, Prorack, Rhino Rack, Thule and Yakima. Roof boxes are one of our specialist subjects at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the roof box fits safely to your vehicle. “Too easy” as our experts like to say! No matter what size of roof box or pod you’re after, we’ve got all bases covered: Short wide roof boxes, medium roof boxes, narrow roof boxes and long wide boxes are all in our range.</p>
+      <p>Use the size tabs first, then narrow the list with the length, width and height filters.</p>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>How to choose a roof box</h2>
+      <p>Start by choosing the size you need, then use the filters to narrow the list — for example by length, width, height or colour. Most boxes are available in black or in silver.</p>
+      <ul>
+        <li><strong>If you want to carry other things on the roof as well as the box</strong> — now or later — choose a box that leaves space on the roof bars. Narrow or medium-width boxes will suit people who want the flexibility to carry bikes, windsurfers or kayaks. Choose roof bars that are long enough too.</li>
+        <li><strong>If you need to carry long items over 2 metres</strong>, such as skis, you will need a long box, whatever the width.</li>
+        <li>Even if you don’t have particularly long things to carry, a long box will often suit a family of four or five. There will usually be space on the bars for at least one bike carrier, especially with T-track aluminium aerobars.</li>
+      </ul>
+      <p>Price is important, but a roof box should be expected to last for many family holidays and weekends away, so it needs to be reliable. There is no such thing as a particular box for a particular car, but it makes sense to be able to open your tailgate fully, making sure that any tailgate spoiler doesn’t hit the back of the box.</p>
+      <p>Our <a href="#" data-placeholder="buying guide">Buying Guide</a><!-- placeholder — buying guide --> covers the features that really make a difference. If you also need roof bars, a <a href="#" data-placeholder="package deals">package deal</a><!-- placeholder — package deals --> includes the bars and any adapters you will need. And if, once you have used the box, it is not right for you, our 90 day exchange scheme is there so you are not left with a box you are not happy with.</p>
+    </div>
+  </section>
+  <section class="plp-guide-section" id="plpGuideTable">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>Roof box sizes explained</h2>
+      <div class="plp-guide-table-wrap">
+        <table class="plp-guide-table">
+        <thead><tr><th scope="col">Size</th><th scope="col">Volume</th><th scope="col">Typically suits</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Small</th><td>Up to 340L</td><td>Smaller cars, hatchbacks and short roofs. Weekend bags and soft luggage. Often leaves bar space for a bike carrier.</td></tr>
+          <tr><th scope="row">Medium</th><td>350–420L</td><td>Our everyday family size. Suits most hatchbacks, sedans and small SUVs. Holiday luggage for a weekend away.</td></tr>
+          <tr><th scope="row">Large</th><td>430–470L</td><td>Family holidays and camping gear. Suits wagons and mid-size SUVs. Check the internal length if you carry skis.</td></tr>
+          <tr><th scope="row">XL</th><td>480–530L</td><td>Big family loads, camping and snow trips. Suits larger wagons, SUVs and 4WDs. Long enough for most skis and snowboards.</td></tr>
+          <tr><th scope="row">XXL</th><td>540L+</td><td>Maximum space for bulky and long gear. Needs a long roof and long roof bars. Check your roof load limit and garage height.</td></tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>Roof box sizes explained</h2>
+      <div class="plp-guide-table-wrap">
+        <table class="plp-guide-table">
+        <thead><tr><th scope="col">Size</th><th scope="col">Volume</th><th scope="col">Typically suits</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Small</th><td>Up to 340L</td><td>Smaller cars, hatchbacks and short roofs. Weekend bags and soft luggage. Often leaves bar space for a bike carrier.</td></tr>
+          <tr><th scope="row">Medium</th><td>350–420L</td><td>Our everyday family size. Suits most hatchbacks, sedans and small SUVs. Holiday luggage for a weekend away.</td></tr>
+          <tr><th scope="row">Large</th><td>430–470L</td><td>Family holidays and camping gear. Suits wagons and mid-size SUVs. Check the internal length if you carry skis.</td></tr>
+          <tr><th scope="row">XL</th><td>480–530L</td><td>Big family loads, camping and snow trips. Suits larger wagons, SUVs and 4WDs. Long enough for most skis and snowboards.</td></tr>
+          <tr><th scope="row">XXL</th><td>540L+</td><td>Maximum space for bulky and long gear. Needs a long roof and long roof bars. Check your roof load limit and garage height.</td></tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>Roof box sizes explained</h2>
+      <div class="plp-guide-table-wrap">
+        <table class="plp-guide-table">
+        <thead><tr><th scope="col">Size</th><th scope="col">Volume</th><th scope="col">Typically suits</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Small</th><td>Up to 340L</td><td>Smaller cars, hatchbacks and short roofs. Weekend bags and soft luggage. Often leaves bar space for a bike carrier.</td></tr>
+          <tr><th scope="row">Medium</th><td>350–420L</td><td>Our everyday family size. Suits most hatchbacks, saloons and small SUVs. Holiday luggage for a weekend away.</td></tr>
+          <tr><th scope="row">Large</th><td>430–470L</td><td>Family holidays and camping gear. Suits estates and mid-size SUVs. Check the internal length if you carry skis.</td></tr>
+          <tr><th scope="row">XL</th><td>480–530L</td><td>Big family loads, camping and snow trips. Suits larger estates, SUVs and 4x4s. Long enough for most skis and snowboards.</td></tr>
+          <tr><th scope="row">XXL</th><td>540L+</td><td>Maximum space for bulky and long gear. Needs a long roof and long roof bars. Check your roof load limit and garage height.</td></tr>
+        </tbody>
+        </table>
+      </div>
+      <p class="plp-guide-note">Litre figures are a useful starting point, but length and width are what really matter. A 480 litre box and a 330 litre box can be almost the same length and width, and hold a similar quantity of bags — so use the length, width and height filters as well as the size tabs. Low-profile boxes are a height, not a size, and live in the Height filter.</p>
+    </div>
+  </section>
+  <section class="plp-guide-section" id="plpFitting">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>Fitting &amp; roof bars</h2>
+      <p>Roof boxes fit to a set of roof bars going across the vehicle. Check the product page for the mounting system and for bar compatibility. A low-profile box is a height, not a size — use the Height filter.</p>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>Fitting &amp; roof bars</h2>
+      <p>Roof boxes fit to a set of roof bars going across the vehicle. Check the product page for the mounting system and for bar compatibility. A low-profile box is a height, not a size — use the Height filter.</p>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>Fitting &amp; roof bars</h2>
+      <p>Roof boxes are always fitted to a set of roof bars — a set of steel or aluminium bars going across the car, from one side to the other. Cars with factory-fitted longitudinal roof-rails will still need a set of roof bars going from rail to rail.</p>
+      <p>Apart from a few T-track-only models, any brand of roof box can be fitted to any brand of roof bars. A set of box-to-bar fittings is included with every roof box we sell, as is a set of straps to keep luggage in place. When a box is locked it can’t be removed from the bars, because the fittings that hold it on are tightened up inside the box.</p>
+      <ul>
+        <li>If you also need roof bars, a package deal includes the bars and any adapters, and is usually the most economical way to buy both.</li>
+        <li>Aluminium T-track bars are quieter than square-edged steel bars and let you use the full length of the bar — useful if you also want to carry a bike.</li>
+        <li>Flush (“closed end”) bars are shorter than through bars, which can prevent you carrying bikes on the roof at the same time as a box.</li>
+        <li>If you already have aluminium bars, check whether you also need T-track roof box adapters. These are included as standard with some boxes, but are a vital accessory for others.</li>
+      </ul>
+    </div>
+  </section>
+  <section class="plp-guide-section" id="plpFaqs">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Do I need roof bars for a roof box?</summary>
+          <div class="faq-answer"><p>Yes. Roof boxes fit to a set of roof bars going across the vehicle. Check the product page for the mounting system and for bar compatibility.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I carry a bike on the roof as well as a roof box?</summary>
+          <div class="faq-answer"><p>Yes — choose a narrower box that leaves space on your roof bars, and bars that are long enough.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Does a roof box open from both sides?</summary>
+          <div class="faq-answer"><p>Some boxes open from either side and some from one side only. Check the product page for each box.</p></div>
+        </details>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Do I need roof bars for a roof box?</summary>
+          <div class="faq-answer"><p>Yes. Roof boxes fit to a set of roof bars going across the vehicle. Check the product page for the mounting system and for bar compatibility.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I carry a bike on the roof as well as a roof box?</summary>
+          <div class="faq-answer"><p>Yes — choose a narrower box that leaves space on your roof bars, and bars that are long enough.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Does a roof box open from both sides?</summary>
+          <div class="faq-answer"><p>Some boxes open from either side and some from one side only. Check the product page for each box.</p></div>
+        </details>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Do I need anything else apart from roof bars and a roof box?</summary>
+          <div class="faq-answer"><p>No. A set of box-to-standard-bar fittings is included with every roof box we sell, as is a set of straps to keep luggage in place. When a box is locked it can’t be removed from the bars because the fittings that hold it to the roof bars are tightened up inside the box, and the box will be locked.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>I have a full-length box and it seems to overhang the bars a long way. Is this OK?</summary>
+          <div class="faq-answer"><p>Yes. These boxes are designed so that approximately one third hangs out behind the rear bar, one third is supported by the roof bars, and one third overhangs the front bar.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Which side is left-hand opening and which side is right-hand opening?</summary>
+          <div class="faq-answer"><p>Left-hand opening boxes open on the passenger side of a standard UK right-hand drive car, the “nearside”. Right-hand opening means the driver’s side, the “offside”.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I carry bikes on the roof as well as a roof box?</summary>
+          <div class="faq-answer"><p>Yes — if you choose a box that leaves space on the roof bars, and bars that are long enough. Narrow or medium-width boxes are the usual choice when you also want to carry bikes, windsurfers or kayaks. T-track aluminium “through bars” make it easier to use the full length of the bar. Flush bars are shorter, which can get in the way of carrying bikes at the same time as a box.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Does a roof box open from both sides?</summary>
+          <div class="faq-answer"><p>Dual side opening — the ability to open a box from either the left or the right — is particularly useful on full-width boxes, especially on taller vehicles. It is of less benefit on narrower boxes, which need to sit on one side of the car or the other and cannot then be reached from the opposite side. Check the product page for each box.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+  <script type="application/ld+json" data-region="au">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need roof bars for a roof box?","acceptedAnswer":{"@type":"Answer","text":"Yes. Roof boxes fit to a set of roof bars going across the vehicle. Check the product page for the mounting system and for bar compatibility."}},{"@type":"Question","name":"Can I carry a bike on the roof as well as a roof box?","acceptedAnswer":{"@type":"Answer","text":"Yes — choose a narrower box that leaves space on your roof bars, and bars that are long enough."}},{"@type":"Question","name":"Does a roof box open from both sides?","acceptedAnswer":{"@type":"Answer","text":"Some boxes open from either side and some from one side only. Check the product page for each box."}}]}</script>
+  <script type="application/ld+json" data-region="nz">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need roof bars for a roof box?","acceptedAnswer":{"@type":"Answer","text":"Yes. Roof boxes fit to a set of roof bars going across the vehicle. Check the product page for the mounting system and for bar compatibility."}},{"@type":"Question","name":"Can I carry a bike on the roof as well as a roof box?","acceptedAnswer":{"@type":"Answer","text":"Yes — choose a narrower box that leaves space on your roof bars, and bars that are long enough."}},{"@type":"Question","name":"Does a roof box open from both sides?","acceptedAnswer":{"@type":"Answer","text":"Some boxes open from either side and some from one side only. Check the product page for each box."}}]}</script>
+  <script type="application/ld+json" data-region="uk">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need anything else apart from roof bars and a roof box?","acceptedAnswer":{"@type":"Answer","text":"No. A set of box-to-standard-bar fittings is included with every roof box we sell, as is a set of straps to keep luggage in place. When a box is locked it can’t be removed from the bars because the fittings that hold it to the roof bars are tightened up inside the box, and the box will be locked."}},{"@type":"Question","name":"I have a full-length box and it seems to overhang the bars a long way. Is this OK?","acceptedAnswer":{"@type":"Answer","text":"Yes. These boxes are designed so that approximately one third hangs out behind the rear bar, one third is supported by the roof bars, and one third overhangs the front bar."}},{"@type":"Question","name":"Which side is left-hand opening and which side is right-hand opening?","acceptedAnswer":{"@type":"Answer","text":"Left-hand opening boxes open on the passenger side of a standard UK right-hand drive car, the “nearside”. Right-hand opening means the driver’s side, the “offside”."}},{"@type":"Question","name":"Can I carry bikes on the roof as well as a roof box?","acceptedAnswer":{"@type":"Answer","text":"Yes — if you choose a box that leaves space on the roof bars, and bars that are long enough. Narrow or medium-width boxes are the usual choice when you also want to carry bikes, windsurfers or kayaks. T-track aluminium “through bars” make it easier to use the full length of the bar. Flush bars are shorter, which can get in the way of carrying bikes at the same time as a box."}},{"@type":"Question","name":"Does a roof box open from both sides?","acceptedAnswer":{"@type":"Answer","text":"Dual side opening — the ability to open a box from either the left or the right — is particularly useful on full-width boxes, especially on taller vehicles. It is of less benefit on narrower boxes, which need to sit on one side of the car or the other and cannot then be reached from the opposite side. Check the product page for each box."}}]}</script>
+</section>
+<!-- plp-content:guide:end -->
+
   <section class="plp-video-carousel-section" id="plpVideoCarousel">
     <h2 class="related-heading">Roof Box Videos</h2>
     <div class="plp-video-carousel-track" id="plpVideoCarouselTrack"></div>
-  </section>
-
-  <section class="faq-section" id="faqSection">
-    <h2 class="faq-heading">Frequently Asked Questions</h2>
-    <div class="faq-list" id="faqList"></div>
   </section>
 
   <section class="related-section">
@@ -180,8 +508,8 @@ body.region-uk .rb-shape-icon-uk{display:block;}
 
 </main>
 
-<!-- "{Category} Fitting" (spec.md §24 item 8): the hero's Fitting button scrolls here. -->
-<div data-widget="fitting-banner" data-heading="Roof Box Fitting" data-noun="roof box"></div>
+<!-- 2026-11-18 (Brenton): no "{Category} Fitting" banner on Roof Boxes — it carries a fitment CTA and the
+     "fitted over 200,000" figure; the buying guide's "Fitting & roof bars" section replaces it. -->
 
 <div data-widget="footer"></div>
 
@@ -519,105 +847,114 @@ const ROOF_BOX_PRODUCTS = [
   }
 ];
 
-// Shop By shape icons (2026-10-06): the roofbox.co.uk shape silhouettes (their "-mobile" 2:1
-// versions, so they fill the existing 100x50 tab icon box with no resize), recoloured to RRG red.
-// The UK region swaps the site red for blue (shared.css body.region-uk), so each tab carries the
-// original blue copy too and the page CSS above shows whichever matches the region.
-const rbShapeIcon = (key, label) =>
-  `<img class="rb-shape-icon" src="../_shared/shopby-roofbox-${key}.png" alt="${label} Icon">` +
-  `<img class="rb-shape-icon-uk" src="../_shared/shopby-roofbox-${key}-uk.png" alt="${label} Icon">`;
+// ==== Size tabs, dimension filters and Box shape (2026-11-18, Brenton — spec.md §32) ============
+// Shop By is now SIZE BY VOLUME (Small → XXL), not shape. Each box's tab comes from facets.volume,
+// not from the manufacturer's size name and not from its shape.
+// PENDING ELLIOT'S CONFIRMATION: the bands below are as specified 2026-11-18, not yet signed off.
+// The display ranges on the tabs (Up to 340L, 350–420L, 430–470L, 480–530L, 540L+) and these data
+// rules (≤349, 350–424, 425–474, 475–534, ≥535) differ ON PURPOSE: the gaps mean no current box sits
+// right on a boundary. Low Profile is not a size tab — it's Box height = Low profile.
+const ROOF_BOX_SIZE_BANDS = [
+  { key: 'small',  max: 349 },
+  { key: 'medium', max: 424 },
+  { key: 'large',  max: 474 },
+  { key: 'xl',     max: 534 },
+  { key: 'xxl',    max: Infinity }
+];
+// Long-term dimension filters, derived from each box's External Dimensions spec (L x W x H, mm),
+// compared in whole cm. Thresholds (external): length ≤165 / 166–199 / ≥200, width ≤75 / 76–86 / ≥87,
+// height ≤38 / 39–43 / ≥44.
+const rbBucket = (cm, lo, hi, names) => cm <= lo ? names[0] : cm >= hi ? names[2] : names[1];
+// The four live shape categories stay as a "Box shape" facet (labels only, no product retagged), so
+// that data isn't thrown away; they used to be the Shop By tabs.
+const ROOF_BOX_SHAPES = ['short-wide', 'medium', 'long-wide', 'narrow'];
+ROOF_BOX_PRODUCTS.forEach(p => {
+  p.facets.shape = (p.subcategories || []).find(s => ROOF_BOX_SHAPES.includes(s));
+  p.subcategories = [ROOF_BOX_SIZE_BANDS.find(b => p.facets.volume <= b.max).key];
+  delete p.facets.size; // the old live size labels (incl. Low Profile) — replaced by the tabs + Box height
+  const dims = ((p.specs.find(s => s.label === 'External Dimensions') || {}).value || '').match(/\d+/g);
+  if (dims && dims.length >= 3) {
+    const [l, w, h] = dims.slice(0, 3).map(mm => Math.round(Number(mm) / 10));
+    p.facets.boxLength = rbBucket(l, 165, 200, ['short', 'standard', 'long']);
+    p.facets.boxWidth = rbBucket(w, 75, 87, ['narrow', 'standard', 'wide']);
+    p.facets.boxHeight = rbBucket(h, 38, 44, ['low', 'standard', 'tall']);
+  }
+});
 
-// FAQ content per Shop By tab, same convention as BIKE_RACK_FAQS on plp/index.html.
-const ROOF_BOX_FAQS = {
-  all: [
-    { q: 'Which roof box shape should I choose?', a: 'Pick by what else goes on the roof. Long wide boxes take skis and long gear; medium boxes suit everyday family luggage; narrow boxes leave room beside them for a bike rack or kayak; short wide boxes stay clear of a rear hatch on smaller cars.' },
-    { q: 'Will a roof box fit my roof bars?', a: 'Most boxes clamp around standard aero and square bars. Check the box’s Max Crossbar Spread against the distance between your bars, and the mounting system (PowerClick, FastClick, Claw, U-Bolt) against your bar profile.' },
-    { q: 'How much can I put in a roof box?', a: 'The box’s Load Rating is the most it can carry, but your vehicle’s roof load limit and your roof bars’ rating also apply. Use the lowest of the three, and remember the box’s own weight counts toward it.' },
-    { q: 'Does a roof box open from both sides?', a: 'Most boxes in this range open from either side, which makes loading easier in car parks and on the roadside. Check the product page for single-side models.' }
-  ],
-  'long-wide': [
-    { q: 'Will a long roof box hit my rear hatch?', a: 'Check the box’s length against your roof and how far forward it can sit on the bars. Most long boxes are shaped to clear the hatch on wagons and SUVs.' },
-    { q: 'Can I fit skis in a long wide roof box?', a: 'Yes. Long wide boxes are the usual choice for skis, snowboards and fishing rods.' }
-  ],
-  'medium': [
-    { q: 'Is a medium roof box big enough for a family holiday?', a: 'Most medium boxes hold 370 to 470 litres, enough for soft bags, bedding and camping gear for a family of four.' }
-  ],
-  'narrow': [
-    { q: 'Can I fit a bike rack next to a narrow roof box?', a: 'That is what narrow boxes are for. On most bar sets they leave room for one bike carrier or a kayak cradle alongside.' }
-  ],
-  'short-wide': [
-    { q: 'Why choose a short wide roof box?', a: 'They give generous width without overhanging the windscreen or rear hatch, which suits smaller hatchbacks and vehicles with short roofs.' }
-  ]
-};
+// Shop By size icons (2026-11-18): the live AU /roof-boxes tab artwork (1756–1760), downloaded into
+// _shared/shopby-icons/ (not hotlinked). AU/NZ as is; the -uk copy has only the red box/bars
+// recoloured to the UK blue #2E41AE. plp.css .plp-icon-au/.plp-icon-uk shows the region's one.
+const shopByIcon = (file, label) =>
+  `<img class="plp-icon-au" src="../_shared/shopby-icons/${file}.webp" alt="${label} Icon">` +
+  `<img class="plp-icon-uk" src="../_shared/shopby-icons/${file}-uk.webp" alt="${label} Icon">`;
+const rbBandImage = key => (ROOF_BOX_PRODUCTS.find(p => p.subcategories[0] === key) || {}).image;
 
 window.PLP_CONFIG = {
-  // Vehicle prompt on: "Set Your Vehicle" + "Shop … for your {vehicle}" hero (spec.md §24 item 13).
-  vehiclePrompt: true,
+  // 2026-11-18 (Brenton — spec.md §32): no vehicle prompt on Roof Boxes — we have no fitment data
+  // for this category, so no "Set Your Vehicle", vehicle hero or Change Vehicle here (the global
+  // header's Select Your Vehicle / Fit My Vehicle are site chrome and stay).
+  vehiclePrompt: false,
   categoryKey: 'roof-boxes',
   vrs: false,
-  vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
   categoryImage: '../_shared/icons/roof-boxes-cargo.png',
-  shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
+  // Show All icon: the existing artwork for AU/NZ, a UK-blue copy for the UK (2026-11-18).
+  shopByAllIcon: `<img class="plp-icon-au" src="../_shared/shopby-show-all.png" alt=""><img class="plp-icon-uk" src="../_shared/shopby-icons/show-all-uk.png" alt="">`,
+  // Hero paragraph = per-region copy generated into the HTML (content/{region}/roof-boxes.json);
+  // it stays the category text on every tab, the per-size copy is the advice panel (plp.js).
+  heroFromContent: true,
   categoryRoot: {
     packageBanner: 'roof-box', // Package Deal banner (plp.js plpRenderPackageBanner, 2026-10-29)
     breadcrumbLabel: 'Roof Boxes',
     heading: 'Roof Boxes',
-    // Long on purpose so the hero shows Read more (live /roof-boxes category description (2026-10-20)).
-    description: "“Roof boxes” or “roof pods”. We call them roof boxes. Here at Roof Racks Galore, we have a huge range of roof boxes from the world’s leading manufacturers. We’ve sourced the best roof boxes from the top brands on the planet: CRUZ, Prorack, Rhino Rack, Thule and Yakima. Roof boxes are one of our specialist subjects at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the roof box fits safely to your vehicle. “Too easy” as our experts like to say! No matter what size of roof box or pod you’re after, we’ve got all bases covered: Short wide roof boxes, medium roof boxes, narrow roof boxes and long wide boxes are all in our range.",
     heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645700').image
   },
   breadcrumbRoot: [ { label: 'Home' } ],
-  vehicleHeadingSuffix: 'for your {vehicle}',
-  // Level 2, real, from roofracksgalore.com.au/roof-boxes/roof-box-shapes (2026-10-06): the four
-  // shape categories, in the live tab order. Shop By uses shape, not size (Brenton, 2026-10-06);
-  // size is the priority filter instead. Headings/descriptions follow each live page's own H1 and
-  // meta description. No Level 3 children on the live site.
+  // Size tabs (pending Elliot, see ROOF_BOX_SIZE_BANDS): `sub` is the litre range under the name.
   shopBy: [
-    { key: 'long-wide', label: 'Long Wide', icon: rbShapeIcon('long-wide', 'Long Wide'),
-      heading: 'Long Wide Roof Boxes',
-      description: 'Long, wide boxes ideal for skis, snowboards and fishing rods. The biggest boxes in the range, up to 600 litres, for full family loads.',
-      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645800').image },
-    { key: 'medium', label: 'Medium', icon: rbShapeIcon('medium', 'Medium'),
-      heading: 'Medium Roof Boxes',
-      description: 'Balanced length and width for versatile gear storage. The most popular shape for everyday family luggage and weekends away.',
-      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T634208').image },
-    { key: 'narrow', label: 'Narrow', icon: rbShapeIcon('narrow', 'Narrow'),
-      heading: 'Narrow Roof Boxes',
-      description: 'Slim roof boxes that leave room on the roof for bike racks or kayaks, so you can carry the box and your toys on one set of bars.',
-      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645600').image },
-    { key: 'short-wide', label: 'Short Wide', icon: rbShapeIcon('short-wide', 'Short Wide'),
-      heading: 'Short Wide Roof Boxes',
-      description: 'Shorter but wider boxes that offer generous width without extending far over the roof. A good fit for hatchbacks and short roofs.',
-      heroImage: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T645100').image }
+    { key: 'small',  label: 'Small',  sub: 'Up to 340L', icon: shopByIcon('rb-small', 'Small'),   heading: 'Small Roof Boxes',  heroImage: rbBandImage('small') },
+    { key: 'medium', label: 'Medium', sub: '350–420L',   icon: shopByIcon('rb-medium', 'Medium'), heading: 'Medium Roof Boxes', heroImage: rbBandImage('medium') },
+    { key: 'large',  label: 'Large',  sub: '430–470L',   icon: shopByIcon('rb-large', 'Large'),   heading: 'Large Roof Boxes',  heroImage: rbBandImage('large') },
+    { key: 'xl',     label: 'XL',     sub: '480–530L',   icon: shopByIcon('rb-xl', 'XL'),         heading: 'XL Roof Boxes',     heroImage: rbBandImage('xl') },
+    { key: 'xxl',    label: 'XXL',    sub: '540L+',      icon: shopByIcon('rb-xxl', 'XXL'),       heading: 'XXL Roof Boxes',    heroImage: rbBandImage('xxl') }
   ],
   products: ROOF_BOX_PRODUCTS,
+  // Side filters (2026-11-18, spec.md §32): Box length / width / height pinned first (threshold as a
+  // hint under each value), then Load rating, Mounting system, Colour, Brand, Box shape. The old
+  // Size priority filter and Volume filter are gone — size is the tabs now.
   facets: {
     priority: [
-      // Size was the live /roof-boxes tab row; here it is the first filter. A box can be in two
-      // sizes on the live site (e.g. X Large and Low Profile), so facets.size is an array.
-      { key: 'size', label: 'What size roof box do you need?', mode: 'eq', tooltip: 'Roof box sizes run from Small (around 300 litres) up to XX Large, the longest boxes at up to 600 litres. Low Profile boxes sit lower on the roof for garage clearance and less wind noise.', options: [
-        { value:'small', label:'Small' }, { value:'medium', label:'Medium' }, { value:'large', label:'Large' },
-        { value:'x-large', label:'X Large' }, { value:'xx-large', label:'XX Large' }, { value:'low-profile', label:'Low Profile' } ] }
+      { key: 'boxLength', label: 'Box length', mode: 'eq', tooltip: 'External length. A long box takes skis and other long gear.', options: [
+        { value: 'short', label: 'Short', hint: '≤165cm' },
+        { value: 'standard', label: 'Standard', hint: '166–199cm' },
+        { value: 'long', label: 'Long', hint: '≥200cm · skis' } ] },
+      { key: 'boxWidth', label: 'Box width', mode: 'eq', tooltip: 'External width. A narrow box leaves room on the roof bars for a bike.', options: [
+        { value: 'narrow', label: 'Narrow', hint: '≤75cm · room for a bike' },
+        { value: 'standard', label: 'Standard', hint: '76–86cm' },
+        { value: 'wide', label: 'Wide', hint: '≥87cm' } ] },
+      { key: 'boxHeight', label: 'Box height', mode: 'eq', tooltip: 'External height. A low-profile box is a height, not a size.', options: [
+        { value: 'low', label: 'Low profile', hint: '≤38cm' },
+        { value: 'standard', label: 'Standard', hint: '39–43cm' },
+        { value: 'tall', label: 'Tall', hint: '≥44cm' } ] }
     ],
     standard: [
-      { key: 'volume', label: 'Volume', mode: 'atleast', tooltip: 'How much the box holds, in litres. Around 400 litres suits a family of four for a week away.', options: [ { value:300, label:'300L+' }, { value:400, label:'400L+' }, { value:450, label:'450L+' }, { value:500, label:'500L+' }, { value:600, label:'600L+' } ] },
       { key: 'loadRating', label: 'Product Load Rating', mode: 'atleast', options: [ { value:50, label:'50kg' }, { value:75, label:'75kg' } ] },
       { key: 'mount', label: 'Mounting System', mode: 'eq', tooltip: 'How the box clamps to your roof bars. All of these fit standard aero and square bars; check the box’s Max Crossbar Spread against the gap between your bars.', options: [ { value:'powerclick', label:'PowerClick' }, { value:'fastclick', label:'FastClick' }, { value:'claw', label:'Claw' }, { value:'clamp', label:'Crossbar Clamp' }, { value:'u-bolt', label:'U-Bolt' }, { value:'premium-fit', label:'Premium-Fit' } ] },
       { key: 'colour', label: 'Colour', mode: 'eq', options: [ { value:'matte-black', label:'Matte Black' }, { value:'gloss-black', label:'Gloss Black' }, { value:'titan', label:'Gloss Titan Silver' } ] },
-      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value:'Thule', label:'Thule' }, { value:'Yakima', label:'Yakima' }, { value:'Rhino-Rack', label:'Rhino-Rack' }, { value:'CRUZ', label:'CRUZ' }, { value:'Hapro', label:'Hapro' } ] }
+      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value:'Thule', label:'Thule' }, { value:'Yakima', label:'Yakima' }, { value:'Rhino-Rack', label:'Rhino-Rack' }, { value:'CRUZ', label:'CRUZ' }, { value:'Hapro', label:'Hapro' } ] },
+      // "Medium" renamed "Medium wide" so it doesn't clash with the Medium size tab (label only).
+      { key: 'shape', label: 'Box shape', mode: 'eq', options: [ { value:'short-wide', label:'Short Wide' }, { value:'medium', label:'Medium wide' }, { value:'long-wide', label:'Long Wide' }, { value:'narrow', label:'Narrow' } ] }
     ]
   },
   videos: [
     { title: 'How to Fit a Roof Box', thumb: '../_shared/video-thumbnail.png', url: '#' },
-    { title: 'Choosing the Right Roof Box Shape', thumb: '../_shared/video-thumbnail.png', url: '#' },
+    { title: 'Choosing the Right Roof Box Size', thumb: '../_shared/video-thumbnail.png', url: '#' },
     { title: 'Packing a Roof Box: Tips & Load Limits', thumb: '../_shared/video-thumbnail.png', url: '#' }
   ],
   merchPromos: [
     { image: '../_shared/promo-merch-1.png', eyebrow: 'Ends Sunday', label: 'Spring Sale — Up to 20% Off Roof Boxes', href: '#' },
     { phase2: true, image: '../_shared/promo-merch-1.png', eyebrow: 'Package Deal', label: 'Save on a Roof Box when you buy a Roof Rack', href: '#' }
   ],
-  featuredProduct: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T634208'),
-  faqByCategory: ROOF_BOX_FAQS
+  featuredProduct: ROOF_BOX_PRODUCTS.find(p => p.sku === 'T634208')
 };
 
 </script>

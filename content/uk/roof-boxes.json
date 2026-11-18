@@ -1,0 +1,123 @@
+{
+  "_about": "2026-11-18 (Brenton): UK Roof Boxes PLP copy, trimmed from roofbox.co.uk (/roof-boxes/ and /roof-boxes/roof-boxes-info.php). Source of truth for the generated blocks in prototypes/plp-roof-boxes/index.html. Edit here, then run: node tools/build-plp-content.mjs. Inline markup: **bold**, [link text](placeholder:what it is). Bullets starting '! ' are watch-outs. Size bands pending Elliot's confirmation.",
+  "region": "uk",
+  "category": "roof-boxes",
+  "hero": {
+    "description": "Pick the size you need first, from Small to XXL by volume. Then narrow it down by length, width and height: a long box for skis, a narrow box to leave room for a bike, or a low box for garage clearance."
+  },
+  "advice": [
+    {
+      "tab": "all",
+      "title": "Choose a size, then refine",
+      "intro": "So how do you decide which roof box to buy? Start with the size you need, then use the filters for length, width and height.",
+      "bullets": [
+        "If you need to carry other items on the roof, such as bikes, choose a box that leaves space on your roof bars — and bars that are long enough",
+        "If you need to carry long things, such as skis, choose a long box",
+        "Length and width often matter more than the litre figure on the box",
+        "If you also need roof bars, a package deal includes everything you will need"
+      ],
+      "footer": "Not sure? [Compare sizes in our 360° size tool](placeholder:360° size tool)"
+    },
+    {
+      "tab": "small",
+      "title": "Small roof boxes (Up to 340L)",
+      "intro": "A compact box for smaller cars, hatchbacks and short roofs.",
+      "bullets": [
+        "Weekend bags and soft luggage",
+        "Often leaves bar space for a bike carrier",
+        "A practical choice when the roof itself is short"
+      ]
+    },
+    {
+      "tab": "medium",
+      "title": "Medium roof boxes (350–420L)",
+      "intro": "Our everyday family size. Suits most hatchbacks, saloons and small SUVs.",
+      "bullets": [
+        "Holiday luggage for a weekend away",
+        "A practical size for most family cars",
+        "Use the width filter if you also want to carry a bike on the roof"
+      ]
+    },
+    {
+      "tab": "large",
+      "title": "Large roof boxes (430–470L)",
+      "intro": "For family holidays and camping gear. Suits estates and mid-size SUVs.",
+      "bullets": [
+        "More room than the everyday family size",
+        "Check the internal length if you carry skis",
+        "Use the length filter to find a long box in this size"
+      ]
+    },
+    {
+      "tab": "xl",
+      "title": "XL roof boxes (480–530L)",
+      "intro": "Big family loads, camping and snow trips. Suits larger estates, SUVs and 4x4s.",
+      "bullets": [
+        "Long enough for most skis and snowboards",
+        "A large, flexible family box",
+        "Check you can open the tailgate fully with the box in place"
+      ]
+    },
+    {
+      "tab": "xxl",
+      "title": "XXL roof boxes (540L+)",
+      "intro": "Maximum space for bulky and long gear.",
+      "bullets": [
+        "Needs a long roof and long roof bars",
+        "The usual choice for the biggest family loads",
+        "! Check your roof load limit and garage height"
+      ]
+    }
+  ],
+  "guide": {
+    "howToChoose": {
+      "heading": "How to choose a roof box",
+      "body": [
+        "Start by choosing the size you need, then use the filters to narrow the list — for example by length, width, height or colour. Most boxes are available in black or in silver.",
+        [
+          "**If you want to carry other things on the roof as well as the box** — now or later — choose a box that leaves space on the roof bars. Narrow or medium-width boxes will suit people who want the flexibility to carry bikes, windsurfers or kayaks. Choose roof bars that are long enough too.",
+          "**If you need to carry long items over 2 metres**, such as skis, you will need a long box, whatever the width.",
+          "Even if you don’t have particularly long things to carry, a long box will often suit a family of four or five. There will usually be space on the bars for at least one bike carrier, especially with T-track aluminium aerobars."
+        ],
+        "Price is important, but a roof box should be expected to last for many family holidays and weekends away, so it needs to be reliable. There is no such thing as a particular box for a particular car, but it makes sense to be able to open your tailgate fully, making sure that any tailgate spoiler doesn’t hit the back of the box.",
+        "Our [Buying Guide](placeholder:buying guide) covers the features that really make a difference. If you also need roof bars, a [package deal](placeholder:package deals) includes the bars and any adapters you will need. And if, once you have used the box, it is not right for you, our 90 day exchange scheme is there so you are not left with a box you are not happy with."
+      ]
+    },
+    "table": {
+      "heading": "Roof box sizes explained",
+      "head": ["Size", "Volume", "Typically suits"],
+      "rowHeaders": true,
+      "rows": [
+        ["Small", "Up to 340L", "Smaller cars, hatchbacks and short roofs. Weekend bags and soft luggage. Often leaves bar space for a bike carrier."],
+        ["Medium", "350–420L", "Our everyday family size. Suits most hatchbacks, saloons and small SUVs. Holiday luggage for a weekend away."],
+        ["Large", "430–470L", "Family holidays and camping gear. Suits estates and mid-size SUVs. Check the internal length if you carry skis."],
+        ["XL", "480–530L", "Big family loads, camping and snow trips. Suits larger estates, SUVs and 4x4s. Long enough for most skis and snowboards."],
+        ["XXL", "540L+", "Maximum space for bulky and long gear. Needs a long roof and long roof bars. Check your roof load limit and garage height."]
+      ],
+      "note": "Litre figures are a useful starting point, but length and width are what really matter. A 480 litre box and a 330 litre box can be almost the same length and width, and hold a similar quantity of bags — so use the length, width and height filters as well as the size tabs. Low-profile boxes are a height, not a size, and live in the Height filter."
+    },
+    "fitting": {
+      "heading": "Fitting & roof bars",
+      "body": [
+        "Roof boxes are always fitted to a set of roof bars — a set of steel or aluminium bars going across the car, from one side to the other. Cars with factory-fitted longitudinal roof-rails will still need a set of roof bars going from rail to rail.",
+        "Apart from a few T-track-only models, any brand of roof box can be fitted to any brand of roof bars. A set of box-to-bar fittings is included with every roof box we sell, as is a set of straps to keep luggage in place. When a box is locked it can’t be removed from the bars, because the fittings that hold it on are tightened up inside the box.",
+        [
+          "If you also need roof bars, a package deal includes the bars and any adapters, and is usually the most economical way to buy both.",
+          "Aluminium T-track bars are quieter than square-edged steel bars and let you use the full length of the bar — useful if you also want to carry a bike.",
+          "Flush (“closed end”) bars are shorter than through bars, which can prevent you carrying bikes on the roof at the same time as a box.",
+          "If you already have aluminium bars, check whether you also need T-track roof box adapters. These are included as standard with some boxes, but are a vital accessory for others."
+        ]
+      ]
+    },
+    "faqs": {
+      "heading": "Frequently asked questions",
+      "items": [
+        { "q": "Do I need anything else apart from roof bars and a roof box?", "a": "No. A set of box-to-standard-bar fittings is included with every roof box we sell, as is a set of straps to keep luggage in place. When a box is locked it can’t be removed from the bars because the fittings that hold it to the roof bars are tightened up inside the box, and the box will be locked." },
+        { "q": "I have a full-length box and it seems to overhang the bars a long way. Is this OK?", "a": "Yes. These boxes are designed so that approximately one third hangs out behind the rear bar, one third is supported by the roof bars, and one third overhangs the front bar." },
+        { "q": "Which side is left-hand opening and which side is right-hand opening?", "a": "Left-hand opening boxes open on the passenger side of a standard UK right-hand drive car, the “nearside”. Right-hand opening means the driver’s side, the “offside”." },
+        { "q": "Can I carry bikes on the roof as well as a roof box?", "a": "Yes — if you choose a box that leaves space on the roof bars, and bars that are long enough. Narrow or medium-width boxes are the usual choice when you also want to carry bikes, windsurfers or kayaks. T-track aluminium “through bars” make it easier to use the full length of the bar. Flush bars are shorter, which can get in the way of carrying bikes at the same time as a box." },
+        { "q": "Does a roof box open from both sides?", "a": "Dual side opening — the ability to open a box from either the left or the right — is particularly useful on full-width boxes, especially on taller vehicles. It is of less benefit on narrower boxes, which need to sit on one side of the car or the other and cannot then be reached from the opposite side. Check the product page for each box." }
+      ]
+    }
+  }
+}

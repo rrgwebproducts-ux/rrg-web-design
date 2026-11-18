@@ -1,0 +1,114 @@
+{
+  "_about": "2026-11-18 (Brenton): AU Bike Racks PLP copy — PLACEHOLDER, to be expanded later. How to choose = the current live roofracksgalore.com.au/bike-racks category paragraph (audited 18 Nov 2026); tab advice = the UK advice with the AU substitutions only (Tow Ball Mount, Hitch Mount added, spare wheel on Rear Mount). Table/fitting/FAQs only repeat what the tab advice already says. No 360° tool, 90-day exchange or Fit My Vehicle. Edit here, then run: node tools/build-plp-content.mjs.",
+  "region": "au",
+  "category": "bike-racks",
+  "placeholder": true,
+  "hero": {
+    "description": "So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.",
+    "todo": "TODO (Brenton, 2026-11-18): hero reuses the Show All tab intro (the live category paragraph moved to How to choose, so the two don't repeat) — refine later."
+  },
+  "advice": [
+    {
+      "tab": "all",
+      "title": "Choose how you want to carry your bikes",
+      "intro": "So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.",
+      "bullets": [
+        "You can fit a tow bar bike carrier to any car that can carry a tow ball",
+        "Roof-fitting bike carriers go on any car with a set of roof bars",
+        "Rear (back of car) bike carriers are vehicle specific",
+        "E-bikes are usually better on a wheel-supported tow bar rack than on the roof"
+      ]
+    },
+    {
+      "tab": "roof-mounting",
+      "title": "Roof mount bike carriers",
+      "intro": "Sits on your roof bars. You will need one carrier for each bike.",
+      "bullets": [
+        "Carry up to 4 bikes",
+        "Holds the bike upright, secure and lockable",
+        "Bar and rack package deals available",
+        "! Requires roof bars"
+      ]
+    },
+    {
+      "tab": "tow-ball-mounting",
+      "title": "Tow ball mount bike carriers",
+      "intro": "Fits a standard 50mm tow ball. Easy to use and load, and a strong long-term choice if you carry bikes often.",
+      "bullets": [
+        "Carry up to 4 bikes on one rack",
+        "Very secure",
+        "Good boot access (choose a tilting model)",
+        "Fits all bikes",
+        "! Tow bar and tow ball required"
+      ]
+    },
+    {
+      "tab": "hitch-mounting",
+      "title": "Hitch mount bike carriers",
+      "intro": "Slides into a 50mm square hitch receiver. A stable platform for heavier bikes and e-bikes.",
+      "bullets": [
+        "Carry several bikes on one rack",
+        "Many tilt or swing away for rear access",
+        "! Needs a hitch receiver, not just a tow ball"
+      ]
+    },
+    {
+      "tab": "rear-mounting",
+      "title": "Rear mount bike carriers",
+      "intro": "Straps to the boot, tailgate or spare wheel. Relatively cheap, but car specific — not suitable for every vehicle.",
+      "bullets": [
+        "Carry up to 3 bikes",
+        "! Car specific: not suitable for every vehicle",
+        "! Boot access can be tricky"
+      ]
+    },
+    {
+      "tab": "bike-rack-accessories",
+      "title": "Bike carrier accessories",
+      "intro": "Locks, adaptors, light boards and spares for the carrier you already own.",
+      "bullets": [
+        "Lighting boards and number plate holders",
+        "Locks and fitting adaptors",
+        "Check the accessory against your existing carrier before ordering"
+      ]
+    }
+  ],
+  "guide": {
+    "howToChoose": {
+      "heading": "How to choose a bike rack",
+      "body": [
+        "Here at Roof Racks Galore, we have a huge range of tow bar mounting, hitch mounting, roof mounting and rear mounting bike racks from the world’s leading manufacturers. We’ve sourced the best bike carriers from the top rack brands: BUZZRACK, CRUZ, Prorack, Rhino Rack, Thule and Yakima. Bike racks are our specialist subject at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the bike rack fits safely to your vehicle. “Too easy” as our experts like to say! Questions about bike racks? Get in touch with our experienced and knowledgeable team, and we'll be more than happy to guide you to the best bike rack for your vehicle and needs. Don’t worry, our Spare Parts & Keys service is second to none, so we’ll always have your back if you ever get stuck or lose something."
+      ]
+    },
+    "table": {
+      "heading": "Bike rack types compared",
+      "head": ["", "Roof mount", "Tow ball mount", "Hitch mount", "Rear mount"],
+      "rowHeaders": true,
+      "rows": [
+        ["How many bikes", "Carry up to 4 bikes. You will need one carrier for each bike.", "Carry up to 4 bikes on one rack.", "Carry several bikes on one rack.", "Carry up to 3 bikes."],
+        ["What’s good", "Holds the bike upright, secure and lockable. Bar and rack package deals available.", "Easy to use and load. Very secure. Good boot access (choose a tilting model). Fits all bikes.", "A stable platform for heavier bikes and e-bikes. Many tilt or swing away for rear access.", "Relatively cheap."],
+        ["Watch-outs", "Requires roof bars.", "Tow bar and tow ball required.", "Needs a hitch receiver, not just a tow ball.", "Car specific: not suitable for every vehicle. Boot access can be tricky."]
+      ]
+    },
+    "fitting": {
+      "heading": "Fitting & roof bars",
+      "body": [
+        [
+          "Roof-mounted carriers need a set of roof bars.",
+          "Tow ball carriers need a tow bar and a standard 50mm tow ball.",
+          "Hitch carriers slide into a 50mm square hitch receiver — a tow ball on its own is not enough.",
+          "Rear-mounted carriers are vehicle specific, so check the product page before you buy."
+        ]
+      ]
+    },
+    "faqs": {
+      "heading": "Frequently asked questions",
+      "items": [
+        { "q": "Can I carry an e-bike on a bike rack?", "a": "E-bikes are usually better on a wheel-supported tow ball or hitch rack than on the roof. Use the E-bike compatible filter, and check the product page before you buy." },
+        { "q": "Do I need roof bars for a roof-mounted bike rack?", "a": "Yes. Roof-mounted carriers sit on your roof bars, and you will need one carrier for each bike." },
+        { "q": "What is the difference between a tow ball and a hitch bike rack?", "a": "A tow ball rack fits a standard 50mm tow ball. A hitch rack slides into a 50mm square hitch receiver, so it needs a hitch receiver, not just a tow ball." },
+        { "q": "Are rear-mounted bike racks suitable for every vehicle?", "a": "No. Rear-mounted carriers are vehicle specific, and boot access can be tricky. Check the product page before you buy." }
+      ]
+    }
+  }
+}

@@ -5,24 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="../_shared/favicon.ico">
 <title>Bike Racks — Roof Racks Galore</title>
-<meta name="description" content="Roof, tow bar, rear hatch and ute tub bike carriers for every vehicle — carry 1 to 4 bikes securely with clamp-mount, custom-point or track-mounted systems from Rhino-Rack, Thule, Yakima and ROLA. Set your vehicle for fitment-specific recommendations, or browse the full range below.">
+<meta name="description" content="So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.">
 <link rel="canonical" href="https://www.roofracksgalore.com.au/bike-racks">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Roof Racks Galore">
 <meta property="og:title" content="Bike Racks">
-<meta property="og:description" content="Roof, tow bar, rear hatch and ute tub bike carriers for every vehicle — carry 1 to 4 bikes securely with clamp-mount, custom-point or track-mounted systems from Rhino-Rack, Thule, Yakima and ROLA. Set your vehicle for fitment-specific recommendations, or browse the full range below.">
+<meta property="og:description" content="So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.">
 <meta property="og:url" content="https://www.roofracksgalore.com.au/bike-racks">
 <meta property="og:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Bike Racks">
-<meta name="twitter:description" content="Roof, tow bar, rear hatch and ute tub bike carriers for every vehicle — carry 1 to 4 bikes securely with clamp-mount, custom-point or track-mounted systems from Rhino-Rack, Thule, Yakima and ROLA. Set your vehicle for fitment-specific recommendations, or browse the full range below.">
+<meta name="twitter:description" content="So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.">
 <meta name="twitter:image" content="https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg">
 <!-- Standard PLP (docs/plp/plp-spec.md) — Bike Racks / Toyota Hilux demo dataset, matching
      "PLP Bike Racks - Vehicle Specific.png" + its mobile companion file. Section 3
      correction: this is a standard (non-VRS) category, so the breadcrumb is always the
      category path, never the vehicle path, regardless of session vehicle state — unlike
      the Figma reference file itself, whose vehicle-first breadcrumb was confirmed wrong for
-     this page type. -->
+     this page type.
+     2026-11-18 (Brenton, spec.md §32): region-aware Shop By (Hitch AU/NZ only, UK "Towbar Mount"),
+     new side filters, a visible advice panel and a below-grid buying guide (per-region copy from
+     content/{au,nz,uk}/bike-racks.json). No vehicle prompt on this category. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
@@ -32,43 +35,20 @@
 <link rel="stylesheet" href="../_shared/footer.css">
 <link rel="stylesheet" href="../_shared/campaign.css">
 <link rel="stylesheet" href="../_shared/plp.css">
+<!-- 2026-11-18 (Brenton): meta/og/twitter descriptions = the hero's Show All intro (no vehicle CTA,
+     no ROLA). TODO: per-region meta in production (each Magento store sets its own). -->
 </head>
 <body data-plp-page>
 
 <div data-widget="header"></div>
 
-<!-- Change Vehicle moved up here from the hero CTA row (2026-09-18 design review — Graham:
-     it's a low-usage action once a vehicle is set, better placed out of the way near the
-     breadcrumbs than competing with the hero's other CTAs). Right-aligned, red outline not
-     gold — see plp.css .plp-crumbs-row/.btn-outline-red. -->
+<!-- 2026-11-18 (Brenton): no Change Vehicle / Set Your Vehicle / "for your {vehicle}" hero on Bike Racks —
+     there's no fitment data for this category (spec.md §32, vehiclePrompt: false below). -->
 <div class="plp-crumbs-row wrap">
   <div class="rrg-crumbs" id="plpCrumbTrail"></div>
-  <a href="#" class="btn btn-outline-red btn-sm plp-crumbs-cta" data-vclp-cta="change-vehicle">Change Vehicle</a>
 </div>
 
 <main class="wrap">
-
-  <!-- Hero — Vehicle-Set state (spec Section 4.1): short framing, no full vehicle spec in
-       the H1 since Bike Racks is a standard (non-fitment-locked) category. Media/badge reuse
-       the same real assets + component pattern as the Vehicle Category Landing Page hero. -->
-  <section class="plp-hero" id="plpHeroVehicleSet" hidden>
-    <div>
-      <h1>Shop Bike Racks for your Toyota Hilux</h1>
-      <p>Toyota Hilux bike racks come in four fitment styles: roof mounted, tow bar mount, rear hatch mount and ute tub mount, each carrying 1 to 4 bikes depending on the system. Shop vehicle-specific carriers from Rhino-Rack, Thule, Yakima and ROLA, with clamp-mount, custom-point and track-mounted options engineered to fit your Hilux precisely for a secure, quiet ride on every trip.</p>
-      <!-- Change Vehicle moved to the breadcrumb row (2026-09-18 design review) — see
-           .plp-crumbs-cta above, shown whenever Site Admin has a Vehicle set. -->
-      <div class="plp-hero-cta-row">
-        <a href="#" class="btn btn-primary">Buyers Guide</a>
-        <a href="#plpFitting" class="btn btn-outline">Fitting</a>
-        <a href="#faqSection" class="btn btn-outline">FAQs</a>
-        <a href="#plpVideoCarousel" class="btn btn-outline">Videos</a>
-      </div>
-    </div>
-    <div class="plp-hero-media is-cutout">
-      <img class="plp-hero-vehicle-img" src="../_shared/vehicle-toyota-hilux.webp" alt="Toyota Hilux" width="956" height="556">
-      <span class="plp-hero-make-badge"><img src="../_shared/brand-toyota-badge.png" alt="Toyota" width="534" height="370"></span>
-    </div>
-  </section>
 
   <!-- Hero — Simple state (spec Section 4.2). No Figma reference exists for this state;
        drafted from the rest of the session's decisions, flagged for review at first build
@@ -78,12 +58,14 @@
   <section class="plp-hero no-media" id="plpHeroSimple" hidden>
     <div>
       <h1>Shop Bike Racks</h1>
-      <p>Roof, tow bar, rear hatch and ute tub bike carriers for every vehicle — carry 1 to 4 bikes securely with clamp-mount, custom-point or track-mounted systems from Rhino-Rack, Thule, Yakima and ROLA. Set your vehicle for fitment-specific recommendations, or browse the full range below.</p>
+      <!-- 2026-11-18 (Brenton): hero paragraph is per-region copy from content/{au,nz,uk}/bike-racks.json
+           (hero.description); it stays the category text on every tab (PLP_CONFIG.heroFromContent). -->
+      <p><!-- plp-content:hero:start — generated by tools/build-plp-content.mjs from content/{au,nz,uk}/bike-racks.json (hero) — edit the JSON and re-run, do not edit this block by hand --><span class="plp-rgn" data-region="au">So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.</span><!-- TODO (Brenton, 2026-11-18): hero reuses the Show All tab intro (the live category paragraph moved to How to choose, so the two don't repeat) — refine later. --><span class="plp-rgn" data-region="nz">So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.</span><!-- TODO (Brenton, 2026-11-18): hero reuses the Show All tab intro (the live category paragraph moved to How to choose, so the two don't repeat) — refine later. --><span class="plp-rgn" data-region="uk">So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.</span><!-- TODO (Brenton, 2026-11-18): UK hero reuses the Show All tab intro for now — refine with a UK-specific hero line later (no hitch, no RRG wording). --><!-- plp-content:hero:end --></p>
       <div class="plp-hero-cta-row">
-        <a href="#" class="btn btn-cta" data-vclp-cta="set-vehicle">Set Your Vehicle</a>
-        <a href="#" class="btn btn-primary">Buyers Guide</a>
+        <a href="#" class="btn btn-primary">Buyers Guide</a><!-- placeholder — buying guide -->
+        <!-- Fitting / FAQs scroll to the below-grid buying guide (spec.md §32). -->
         <a href="#plpFitting" class="btn btn-outline">Fitting</a>
-        <a href="#faqSection" class="btn btn-outline">FAQs</a>
+        <a href="#plpFaqs" class="btn btn-outline">FAQs</a>
       </div>
     </div>
     <div class="plp-hero-media" hidden>
@@ -99,6 +81,190 @@
       <h2>Shop By</h2>
     </div>
     <div class="plp-shopby-track" id="plpShopByTrack"></div>
+    <!-- Shop By advice panel (2026-11-18, Brenton — spec.md §32): every tab's advice, every region,
+         in the HTML on first load; plp.js plpRenderAdvice() only shows the selected tab's panel.
+         Sits outside the scrolling tab track so it is never clipped on phones. -->
+<!-- plp-content:advice:start — generated by tools/build-plp-content.mjs from content/{au,nz,uk}/bike-racks.json (advice) — edit the JSON and re-run, do not edit this block by hand -->
+  <div class="plp-advice-wrap" id="plpAdvice" aria-live="polite">
+    <div class="plp-advice" id="plpAdvice-all" data-advice-tab="all">
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-all-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-all-au">Choose how you want to carry your bikes</h3>
+        <p class="plp-advice-intro">So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">You can fit a tow bar bike carrier to any car that can carry a tow ball</li>
+          <li class="is-tick">Roof-fitting bike carriers go on any car with a set of roof bars</li>
+          <li class="is-tick">Rear (back of car) bike carriers are vehicle specific</li>
+          <li class="is-tick">E-bikes are usually better on a wheel-supported tow bar rack than on the roof</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-all-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-all-nz">Choose how you want to carry your bikes</h3>
+        <p class="plp-advice-intro">So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">You can fit a tow bar bike carrier to any car that can carry a tow ball</li>
+          <li class="is-tick">Roof-fitting bike carriers go on any car with a set of roof bars</li>
+          <li class="is-tick">Rear (back of car) bike carriers are vehicle specific</li>
+          <li class="is-tick">E-bikes are usually better on a wheel-supported tow bar rack than on the roof</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-all-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-all-uk">Choose how you want to carry your bikes</h3>
+        <p class="plp-advice-intro">So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">You can fit a tow bar bike carrier to any car that can carry a tow ball</li>
+          <li class="is-tick">Roof-fitting bike carriers go on any car with a set of roof bars</li>
+          <li class="is-tick">Rear (back of car) bike carriers are vehicle specific</li>
+          <li class="is-tick">E-bikes are usually better on a wheel-supported tow bar rack than on the roof</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-roof-mounting" data-advice-tab="roof-mounting" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-roof-mounting-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-roof-mounting-au">Roof mount bike carriers</h3>
+        <p class="plp-advice-intro">Sits on your roof bars. You will need one carrier for each bike.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 4 bikes</li>
+          <li class="is-tick">Holds the bike upright, secure and lockable</li>
+          <li class="is-tick">Bar and rack package deals available</li>
+          <li class="is-warn">Requires roof bars</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-roof-mounting-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-roof-mounting-nz">Roof mount bike carriers</h3>
+        <p class="plp-advice-intro">Sits on your roof bars. You will need one carrier for each bike.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 4 bikes</li>
+          <li class="is-tick">Holds the bike upright, secure and lockable</li>
+          <li class="is-tick">Bar and rack package deals available</li>
+          <li class="is-warn">Requires roof bars</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-roof-mounting-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-roof-mounting-uk">Roof mount bike carriers</h3>
+        <p class="plp-advice-intro">Sits on your roof bars. You will need one carrier for each bike.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 4 bikes</li>
+          <li class="is-tick">Holds the bike upright, secure and lockable</li>
+          <li class="is-tick">Bar and rack package deals available</li>
+          <li class="is-warn">Requires roof bars</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-tow-ball-mounting" data-advice-tab="tow-ball-mounting" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-tow-ball-mounting-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-tow-ball-mounting-au">Tow ball mount bike carriers</h3>
+        <p class="plp-advice-intro">Fits a standard 50mm tow ball. Easy to use and load, and a strong long-term choice if you carry bikes often.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 4 bikes on one rack</li>
+          <li class="is-tick">Very secure</li>
+          <li class="is-tick">Good boot access (choose a tilting model)</li>
+          <li class="is-tick">Fits all bikes</li>
+          <li class="is-warn">Tow bar and tow ball required</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-tow-ball-mounting-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-tow-ball-mounting-nz">Tow ball mount bike carriers</h3>
+        <p class="plp-advice-intro">Fits a standard 50mm tow ball. Easy to use and load, and a strong long-term choice if you carry bikes often.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 4 bikes on one rack</li>
+          <li class="is-tick">Very secure</li>
+          <li class="is-tick">Good boot access (choose a tilting model)</li>
+          <li class="is-tick">Fits all bikes</li>
+          <li class="is-warn">Tow bar and tow ball required</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-tow-ball-mounting-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-tow-ball-mounting-uk">Towbar mount bike carriers</h3>
+        <p class="plp-advice-intro">Fits a standard tow ball. Easy to use and load, and a strong long-term choice if you carry bikes often.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 4 bikes on one rack</li>
+          <li class="is-tick">Very secure</li>
+          <li class="is-tick">Good boot access (choose a tilting model)</li>
+          <li class="is-tick">Fits all bikes</li>
+          <li class="is-warn">Vehicle tow bar required</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-hitch-mounting" data-advice-tab="hitch-mounting" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-hitch-mounting-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-hitch-mounting-au">Hitch mount bike carriers</h3>
+        <p class="plp-advice-intro">Slides into a 50mm square hitch receiver. A stable platform for heavier bikes and e-bikes.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry several bikes on one rack</li>
+          <li class="is-tick">Many tilt or swing away for rear access</li>
+          <li class="is-warn">Needs a hitch receiver, not just a tow ball</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-hitch-mounting-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-hitch-mounting-nz">Hitch mount bike carriers</h3>
+        <p class="plp-advice-intro">Slides into a 50mm square hitch receiver. A stable platform for heavier bikes and e-bikes.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry several bikes on one rack</li>
+          <li class="is-tick">Many tilt or swing away for rear access</li>
+          <li class="is-warn">Needs a hitch receiver, not just a tow ball</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-rear-mounting" data-advice-tab="rear-mounting" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-rear-mounting-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-rear-mounting-au">Rear mount bike carriers</h3>
+        <p class="plp-advice-intro">Straps to the boot, tailgate or spare wheel. Relatively cheap, but car specific — not suitable for every vehicle.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 3 bikes</li>
+          <li class="is-warn">Car specific: not suitable for every vehicle</li>
+          <li class="is-warn">Boot access can be tricky</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-rear-mounting-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-rear-mounting-nz">Rear mount bike carriers</h3>
+        <p class="plp-advice-intro">Straps to the boot, tailgate or spare wheel. Relatively cheap, but car specific — not suitable for every vehicle.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 3 bikes</li>
+          <li class="is-warn">Car specific: not suitable for every vehicle</li>
+          <li class="is-warn">Boot access can be tricky</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-rear-mounting-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-rear-mounting-uk">Rear mount bike carriers</h3>
+        <p class="plp-advice-intro">Straps to the boot or tailgate. Relatively cheap, but car specific — not suitable for every vehicle.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Carry up to 3 bikes</li>
+          <li class="is-warn">Car specific: not suitable for every vehicle</li>
+          <li class="is-warn">Boot access can be tricky</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plp-advice" id="plpAdvice-bike-rack-accessories" data-advice-tab="bike-rack-accessories" hidden>
+      <div class="plp-rgn" data-region="au" role="region" aria-labelledby="plpAdviceTitle-bike-rack-accessories-au">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-bike-rack-accessories-au">Bike carrier accessories</h3>
+        <p class="plp-advice-intro">Locks, adaptors, light boards and spares for the carrier you already own.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Lighting boards and number plate holders</li>
+          <li class="is-tick">Locks and fitting adaptors</li>
+          <li class="is-tick">Check the accessory against your existing carrier before ordering</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="nz" role="region" aria-labelledby="plpAdviceTitle-bike-rack-accessories-nz">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-bike-rack-accessories-nz">Bike carrier accessories</h3>
+        <p class="plp-advice-intro">Locks, adaptors, light boards and spares for the carrier you already own.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Lighting boards and number plate holders</li>
+          <li class="is-tick">Locks and fitting adaptors</li>
+          <li class="is-tick">Check the accessory against your existing carrier before ordering</li>
+        </ul>
+      </div>
+      <div class="plp-rgn" data-region="uk" role="region" aria-labelledby="plpAdviceTitle-bike-rack-accessories-uk">
+        <h3 class="plp-advice-title" id="plpAdviceTitle-bike-rack-accessories-uk">Bike carrier accessories</h3>
+        <p class="plp-advice-intro">Locks, adaptors, light boards and spares for the carrier you already own.</p>
+        <ul class="plp-advice-list">
+          <li class="is-tick">Lighting boards and number plate holders</li>
+          <li class="is-tick">Locks and fitting adaptors</li>
+          <li class="is-tick">Check the accessory against your existing carrier before ordering</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<!-- plp-content:advice:end -->
   </section>
 
   <div class="plp-toolbar">
@@ -140,14 +306,190 @@
     </div>
   </div>
 
+  <!-- Below-grid buying guide (2026-11-18, Brenton — spec.md §32): How to choose, Types compared,
+       Fitting & roof bars, FAQs (first open) + FAQPage JSON-LD. Build Phase 1 — visible and
+       indexable now. Replaces the old per-tab JS FAQ section and the "Bike Rack Fitting" banner. -->
+<!-- plp-content:guide:start — generated by tools/build-plp-content.mjs from content/{au,nz,uk}/bike-racks.json (guide) — edit the JSON and re-run, do not edit this block by hand -->
+<section class="plp-guide" id="plpGuide" aria-label="Buying guide">
+  <section class="plp-guide-section" id="plpHowToChoose">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>How to choose a bike rack</h2>
+      <p>Here at Roof Racks Galore, we have a huge range of tow bar mounting, hitch mounting, roof mounting and rear mounting bike racks from the world’s leading manufacturers. We’ve sourced the best bike carriers from the top rack brands: BUZZRACK, CRUZ, Prorack, Rhino Rack, Thule and Yakima. Bike racks are our specialist subject at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the bike rack fits safely to your vehicle. “Too easy” as our experts like to say! Questions about bike racks? Get in touch with our experienced and knowledgeable team, and we'll be more than happy to guide you to the best bike rack for your vehicle and needs. Don’t worry, our Spare Parts &amp; Keys service is second to none, so we’ll always have your back if you ever get stuck or lose something.</p>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>How to choose a bike rack</h2>
+      <p>Here at Roof Racks Galore, we have a huge range of tow bar mounting, hitch mounting, roof mounting and rear mounting bike racks from the world’s leading manufacturers. We’ve sourced the best bike carriers from the top rack brands: BUZZRACK, CRUZ, Prorack, Rhino Rack, Thule and Yakima. Bike racks are our specialist subject at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the bike rack fits safely to your vehicle. “Too easy” as our experts like to say! Questions about bike racks? Get in touch with our experienced and knowledgeable team, and we'll be more than happy to guide you to the best bike rack for your vehicle and needs. Don’t worry, our Spare Parts &amp; Keys service is second to none, so we’ll always have your back if you ever get stuck or lose something.</p>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>How to choose a bike carrier</h2>
+      <p>We have a wide range of roof-mounting, rear-mounting and tow bar-mounting bike carriers. So how do you decide which one to buy? To a large extent this is determined by (1) the number of bikes to be carried, and (2) which bike carriers fit your car. Once you have decided which type to go for, you need to consider style, features and price.</p>
+      <ul>
+        <li>You can fit a tow bar bike carrier to any car that can carry a tow ball, and roof-fitting bike carriers to any car with a set of roof bars. But all “back of car” bike carriers are vehicle specific.</li>
+        <li>If you need to carry more than four bikes, you will need a combination of roof-mounted carriers and either a tow bar or a rear-mounted carrier (if permitted for your vehicle).</li>
+        <li>Many people fit a tow ball specifically for carrying bikes. Tow ball carriers will take up to four bikes, but some vehicles are restricted to a maximum of three — your handbook will include the tow bar nose weight.</li>
+        <li>You can usually carry bikes on the roof unless you have a soft top, a “moon roof”, or a car where the roof bars are too close together or too far apart to hold bike carriers safely.</li>
+      </ul>
+      <p>Our <a href="#" data-placeholder="buying guide">Buying Guide</a><!-- placeholder — buying guide --> has more on the different types, including e-bikes and children’s bikes. If you also need roof bars, a <a href="#" data-placeholder="package deals">package deal</a><!-- placeholder — package deals --> is often the simplest way to buy a roof-mounted carrier and the bars together.</p>
+    </div>
+  </section>
+  <section class="plp-guide-section" id="plpGuideTable">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>Bike rack types compared</h2>
+      <div class="plp-guide-table-wrap">
+        <table class="plp-guide-table">
+        <thead><tr><th scope="col"></th><th scope="col">Roof mount</th><th scope="col">Tow ball mount</th><th scope="col">Hitch mount</th><th scope="col">Rear mount</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">How many bikes</th><td>Carry up to 4 bikes. You will need one carrier for each bike.</td><td>Carry up to 4 bikes on one rack.</td><td>Carry several bikes on one rack.</td><td>Carry up to 3 bikes.</td></tr>
+          <tr><th scope="row">What’s good</th><td>Holds the bike upright, secure and lockable. Bar and rack package deals available.</td><td>Easy to use and load. Very secure. Good boot access (choose a tilting model). Fits all bikes.</td><td>A stable platform for heavier bikes and e-bikes. Many tilt or swing away for rear access.</td><td>Relatively cheap.</td></tr>
+          <tr><th scope="row">Watch-outs</th><td>Requires roof bars.</td><td>Tow bar and tow ball required.</td><td>Needs a hitch receiver, not just a tow ball.</td><td>Car specific: not suitable for every vehicle. Boot access can be tricky.</td></tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>Bike rack types compared</h2>
+      <div class="plp-guide-table-wrap">
+        <table class="plp-guide-table">
+        <thead><tr><th scope="col"></th><th scope="col">Roof mount</th><th scope="col">Tow ball mount</th><th scope="col">Hitch mount</th><th scope="col">Rear mount</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">How many bikes</th><td>Carry up to 4 bikes. You will need one carrier for each bike.</td><td>Carry up to 4 bikes on one rack.</td><td>Carry several bikes on one rack.</td><td>Carry up to 3 bikes.</td></tr>
+          <tr><th scope="row">What’s good</th><td>Holds the bike upright, secure and lockable. Bar and rack package deals available.</td><td>Easy to use and load. Very secure. Good boot access (choose a tilting model). Fits all bikes.</td><td>A stable platform for heavier bikes and e-bikes. Many tilt or swing away for rear access.</td><td>Relatively cheap.</td></tr>
+          <tr><th scope="row">Watch-outs</th><td>Requires roof bars.</td><td>Tow bar and tow ball required.</td><td>Needs a hitch receiver, not just a tow ball.</td><td>Car specific: not suitable for every vehicle. Boot access can be tricky.</td></tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>Bike carrier types compared</h2>
+      <div class="plp-guide-table-wrap">
+        <table class="plp-guide-table">
+        <thead><tr><th scope="col"></th><th scope="col">Roof mounting</th><th scope="col">Towbar mounting</th><th scope="col">Rear mounting</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">How many bikes</th><td>Carry up to 4 bikes. You will need one carrier for each bike.</td><td>Carry up to 4 bikes on one rack.</td><td>Carry up to 3 bikes.</td></tr>
+          <tr><th scope="row">What’s good</th><td>Holds the bike upright and secure. Lockable. Bar and rack package deals available.</td><td>Easy to use and load. Very secure. Good boot access. Fits all bikes. A strong long-term choice.</td><td>Relatively cheap.</td></tr>
+          <tr><th scope="row">Watch-outs</th><td>Requires roof bars.</td><td>Vehicle tow bar required.</td><td>Car specific — not suitable for every vehicle. Boot access can be tricky.</td></tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="plp-guide-section" id="plpFitting">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>Fitting &amp; roof bars</h2>
+      <ul>
+        <li>Roof-mounted carriers need a set of roof bars.</li>
+        <li>Tow ball carriers need a tow bar and a standard 50mm tow ball.</li>
+        <li>Hitch carriers slide into a 50mm square hitch receiver — a tow ball on its own is not enough.</li>
+        <li>Rear-mounted carriers are vehicle specific, so check the product page before you buy.</li>
+      </ul>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>Fitting &amp; roof bars</h2>
+      <ul>
+        <li>Roof-mounted carriers need a set of roof bars.</li>
+        <li>Tow ball carriers need a tow bar and a standard 50mm tow ball.</li>
+        <li>Hitch carriers slide into a 50mm square hitch receiver — a tow ball on its own is not enough.</li>
+        <li>Rear-mounted carriers are vehicle specific, so check the product page before you buy.</li>
+      </ul>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>Fitting &amp; roof bars</h2>
+      <p>Roof-mounting carriers need a set of roof bars. There are three types of roof mount — frame holder, fork holder, and tyre holder — and most will fit standard 32mm by 22mm roof bars, or slotted aluminium aerobars. One roof-mounting carrier is required for each bike.</p>
+      <p>Tow bar carriers fit a standard 50mm tow ball, including detachable tow balls. There are two types of tow ball — “bolt on” (sometimes known as a two-bolt flange) and “swan neck” (which includes detachable tow balls). Some carriers only fit one type or the other, so check before you buy.</p>
+      <ul>
+        <li>If you use a tow bar cycle rack, you must not exceed the maximum permitted tow ball nose weight, taking into account the weight of the carrier and the weight of the bikes.</li>
+        <li>Most wheel-support tow bar racks tilt, even with the bikes in place, so you can open the tailgate. This is very handy, and sometimes almost essential.</li>
+        <li>Cheaper tow bar racks are “hang on” racks — you hang the bike from its crossbar. Wheel-support racks stand the bikes on their wheels and always come with a lighting and number plate unit.</li>
+        <li>All rear-door mounting cycle carriers are car specific. The cheaper “strap on” carriers are relatively cheap and can carry up to 3 bikes. On most vehicles the carrier can be left on when the boot is opened, although the bikes should be taken off first.</li>
+      </ul>
+    </div>
+  </section>
+  <section class="plp-guide-section" id="plpFaqs">
+    <div class="plp-rgn" data-region="au">
+      <!-- PLACEHOLDER copy (AU) — current live category wording, to be expanded later -->
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Can I carry an e-bike on a bike rack?</summary>
+          <div class="faq-answer"><p>E-bikes are usually better on a wheel-supported tow ball or hitch rack than on the roof. Use the E-bike compatible filter, and check the product page before you buy.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need roof bars for a roof-mounted bike rack?</summary>
+          <div class="faq-answer"><p>Yes. Roof-mounted carriers sit on your roof bars, and you will need one carrier for each bike.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What is the difference between a tow ball and a hitch bike rack?</summary>
+          <div class="faq-answer"><p>A tow ball rack fits a standard 50mm tow ball. A hitch rack slides into a 50mm square hitch receiver, so it needs a hitch receiver, not just a tow ball.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Are rear-mounted bike racks suitable for every vehicle?</summary>
+          <div class="faq-answer"><p>No. Rear-mounted carriers are vehicle specific, and boot access can be tricky. Check the product page before you buy.</p></div>
+        </details>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="nz">
+      <!-- PLACEHOLDER copy (NZ) — current live category wording, to be expanded later -->
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Can I carry an e-bike on a bike rack?</summary>
+          <div class="faq-answer"><p>E-bikes are usually better on a wheel-supported tow ball or hitch rack than on the roof. Use the E-bike compatible filter, and check the product page before you buy.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need roof bars for a roof-mounted bike rack?</summary>
+          <div class="faq-answer"><p>Yes. Roof-mounted carriers sit on your roof bars, and you will need one carrier for each bike.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What is the difference between a tow ball and a hitch bike rack?</summary>
+          <div class="faq-answer"><p>A tow ball rack fits a standard 50mm tow ball. A hitch rack slides into a 50mm square hitch receiver, so it needs a hitch receiver, not just a tow ball.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Are rear-mounted bike racks suitable for every vehicle?</summary>
+          <div class="faq-answer"><p>No. Rear-mounted carriers are vehicle specific, and boot access can be tricky. Check the product page before you buy.</p></div>
+        </details>
+      </div>
+    </div>
+    <div class="plp-rgn" data-region="uk">
+      <h2>Frequently asked questions</h2>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Can I carry my e-bike on a bike carrier?</summary>
+          <div class="faq-answer"><p>It is nearly always possible to carry an e-bike on a bike carrier, but this will usually need to be on a wheel-supported tow bar mounted rack. Their frame shape is rarely suitable for the hang-on type of tow bar rack (which are anyway usually weight-rated to a maximum 15kg per bike). E-bikes are usually either too heavy or too long for roof-mounted carriers, regardless of the effort required to lift an e-bike onto a vehicle roof. Check the specifications on the product page for weight, tyre width and wheelbase, and always remove the battery from the bike before fitting it to a carrier.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need roof bars for a roof-mounted bike carrier?</summary>
+          <div class="faq-answer"><p>Yes. Roof-mounting carriers require roof bars. Most will fit standard 32mm by 22mm roof bars, or slotted aluminium aerobars. If you also need bars, a package deal includes the carrier and the bars together.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need a tow bar for a tow bar bike carrier?</summary>
+          <div class="faq-answer"><p>Yes. Tow bar carriers fit a standard 50mm tow ball, including detachable tow balls. Check whether your tow ball is a “bolt on” or “swan neck” type, because some carriers only fit one or the other. Do not exceed the maximum permitted tow ball nose weight, including the weight of the carrier and the bikes.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Are rear-mounting bike carriers suitable for every vehicle?</summary>
+          <div class="faq-answer"><p>No. All “back of car” / rear-door mounting cycle carriers are vehicle specific — they are not suitable for every vehicle. Check the application notes on the product page. Boot access can also be tricky: on most vehicles the carrier can be left on when the boot is opened, but the bikes should be taken off first.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I open the boot with bikes loaded?</summary>
+          <div class="faq-answer"><p>On a tow bar carrier, choose a tilting (or slide-away) model — most wheel-support racks tilt, even with the bikes in place, so you can open the tailgate. On a rear-mounting carrier, the carrier can often be left on when the boot is opened, but the bikes should be taken off first to avoid damaging the tailgate hinges.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+  <script type="application/ld+json" data-region="au">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I carry an e-bike on a bike rack?","acceptedAnswer":{"@type":"Answer","text":"E-bikes are usually better on a wheel-supported tow ball or hitch rack than on the roof. Use the E-bike compatible filter, and check the product page before you buy."}},{"@type":"Question","name":"Do I need roof bars for a roof-mounted bike rack?","acceptedAnswer":{"@type":"Answer","text":"Yes. Roof-mounted carriers sit on your roof bars, and you will need one carrier for each bike."}},{"@type":"Question","name":"What is the difference between a tow ball and a hitch bike rack?","acceptedAnswer":{"@type":"Answer","text":"A tow ball rack fits a standard 50mm tow ball. A hitch rack slides into a 50mm square hitch receiver, so it needs a hitch receiver, not just a tow ball."}},{"@type":"Question","name":"Are rear-mounted bike racks suitable for every vehicle?","acceptedAnswer":{"@type":"Answer","text":"No. Rear-mounted carriers are vehicle specific, and boot access can be tricky. Check the product page before you buy."}}]}</script>
+  <script type="application/ld+json" data-region="nz">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I carry an e-bike on a bike rack?","acceptedAnswer":{"@type":"Answer","text":"E-bikes are usually better on a wheel-supported tow ball or hitch rack than on the roof. Use the E-bike compatible filter, and check the product page before you buy."}},{"@type":"Question","name":"Do I need roof bars for a roof-mounted bike rack?","acceptedAnswer":{"@type":"Answer","text":"Yes. Roof-mounted carriers sit on your roof bars, and you will need one carrier for each bike."}},{"@type":"Question","name":"What is the difference between a tow ball and a hitch bike rack?","acceptedAnswer":{"@type":"Answer","text":"A tow ball rack fits a standard 50mm tow ball. A hitch rack slides into a 50mm square hitch receiver, so it needs a hitch receiver, not just a tow ball."}},{"@type":"Question","name":"Are rear-mounted bike racks suitable for every vehicle?","acceptedAnswer":{"@type":"Answer","text":"No. Rear-mounted carriers are vehicle specific, and boot access can be tricky. Check the product page before you buy."}}]}</script>
+  <script type="application/ld+json" data-region="uk">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Can I carry my e-bike on a bike carrier?","acceptedAnswer":{"@type":"Answer","text":"It is nearly always possible to carry an e-bike on a bike carrier, but this will usually need to be on a wheel-supported tow bar mounted rack. Their frame shape is rarely suitable for the hang-on type of tow bar rack (which are anyway usually weight-rated to a maximum 15kg per bike). E-bikes are usually either too heavy or too long for roof-mounted carriers, regardless of the effort required to lift an e-bike onto a vehicle roof. Check the specifications on the product page for weight, tyre width and wheelbase, and always remove the battery from the bike before fitting it to a carrier."}},{"@type":"Question","name":"Do I need roof bars for a roof-mounted bike carrier?","acceptedAnswer":{"@type":"Answer","text":"Yes. Roof-mounting carriers require roof bars. Most will fit standard 32mm by 22mm roof bars, or slotted aluminium aerobars. If you also need bars, a package deal includes the carrier and the bars together."}},{"@type":"Question","name":"Do I need a tow bar for a tow bar bike carrier?","acceptedAnswer":{"@type":"Answer","text":"Yes. Tow bar carriers fit a standard 50mm tow ball, including detachable tow balls. Check whether your tow ball is a “bolt on” or “swan neck” type, because some carriers only fit one or the other. Do not exceed the maximum permitted tow ball nose weight, including the weight of the carrier and the bikes."}},{"@type":"Question","name":"Are rear-mounting bike carriers suitable for every vehicle?","acceptedAnswer":{"@type":"Answer","text":"No. All “back of car” / rear-door mounting cycle carriers are vehicle specific — they are not suitable for every vehicle. Check the application notes on the product page. Boot access can also be tricky: on most vehicles the carrier can be left on when the boot is opened, but the bikes should be taken off first."}},{"@type":"Question","name":"Can I open the boot with bikes loaded?","acceptedAnswer":{"@type":"Answer","text":"On a tow bar carrier, choose a tilting (or slide-away) model — most wheel-support racks tilt, even with the bikes in place, so you can open the tailgate. On a rear-mounting carrier, the carrier can often be left on when the boot is opened, but the bikes should be taken off first to avoid damaging the tailgate hinges."}}]}</script>
+</section>
+<!-- plp-content:guide:end -->
+
   <section class="plp-video-carousel-section" id="plpVideoCarousel">
     <h2 class="related-heading">Bike Rack Videos</h2>
     <div class="plp-video-carousel-track" id="plpVideoCarouselTrack"></div>
-  </section>
-
-  <section class="faq-section" id="faqSection">
-    <h2 class="faq-heading">Frequently Asked Questions</h2>
-    <div class="faq-list" id="faqList"></div>
   </section>
 
   <section class="related-section">
@@ -174,8 +516,8 @@
 
 </main>
 
-<!-- "{Category} Fitting" (spec.md §24 item 8): the hero's Fitting button scrolls here. -->
-<div data-widget="fitting-banner" data-heading="Bike Rack Fitting" data-noun="bike rack"></div>
+<!-- 2026-11-18 (Brenton): no "{Category} Fitting" banner on Bike Racks — it carries a fitment CTA and the
+     "fitted over 200,000" figure; the buying guide's "Fitting & roof bars" section replaces it. -->
 
 <div data-widget="footer"></div>
 
@@ -456,237 +798,154 @@ const BIKE_RACK_PRODUCTS = [
 // carriers and bike rack accessories never do (they don't sit on a roof rack).
 BIKE_RACK_PRODUCTS.forEach(p => { p.pkgCategory = (p.subcategories || []).includes('roof-mounting') ? 'roof-bike' : null; });
 
-// FAQ content, keyed per Level 2/3 tab (2026-09-21, matching plp-camping/index.html's own
-// CAMPING_FAQS convention) — clearly authored, category-appropriate Q&As, consumed by
-// plpRenderFAQ() in plp.js, re-run on every Shop By tab / icon-card change. 'all' reuses the 4
-// general FAQs this page already carried. Some Level 3 keys repeat under more than one Level 2
-// parent (e.g. "Wheel Hold" under both Roof Mounting and Hitch Mounting) — plpRenderFAQ() keys
-// off the flat tab key, so one entry below covers every parent that key appears under.
-const BIKE_RACK_FAQS = {
-  all: [
-    { q: 'How many bikes can I carry, and does it depend on my vehicle?', a: 'It depends on the mounting style, not your vehicle — roof-mounted wheel-support carriers typically carry 1 bike per unit (fit multiple for more), while tow bar platform racks carry 2 to 4 bikes on one unit. Use the "How many bikes" filter to narrow the range quickly.' },
-    { q: "What's the difference between a hang-on and a platform bike rack?", a: "Hang-on racks support the bike by its frame; platform racks support it by the wheels on a tray. Platform racks are generally easier to load and gentler on the bike's frame, but sit further back off the vehicle." },
-    { q: 'Do I need roof bars already fitted to use a roof-mounted bike rack?', a: 'Most roof-mounted carriers clamp onto an existing roof bar or factory roof rail — check the "Vehicle Fit Type" filter for Clamp Mount vs. Track Mount options, or use Fit My Vehicle to confirm what your roof already has.' },
-    { q: 'Can e-bikes go on any bike rack?', a: 'No — e-bikes are heavier, so they need a carrier rated for the extra weight. Filter by "Bike Racks for E-Bikes" under Type of Carrier, or check the Product Load Rating filter.' }
-  ],
-  'roof-mounting': [
-    { q: 'Will a roof-mounted bike rack fit my roof bars?', a: 'Most fit both aero and square roof bars via clamp mount; if your vehicle uses factory roof rails instead, look for a track-mount option in the Vehicle Fit Type filter.' },
-    { q: 'How do I load a bike onto a roof-mounted rack safely?', a: "Lift the bike onto the cradle or fork mount at roof height — a step stool helps on taller vehicles — then tighten the tool-free knob or strap until it's firmly seated before driving." }
-  ],
-  'tow-ball-mounting': [
-    { q: 'Do I need a tow bar to use a tow ball mounted bike rack?', a: 'Just a standard tow ball — no wiring or tow bar receiver needed, which makes this style an option even on vehicles without a full tow package.' },
-    { q: 'How many bikes can a tow ball mounted rack carry?', a: 'Most carry 2 to 3 bikes depending on the model, with some extending further via an add-on arm — check each product’s Max Total Weight spec before loading heavier e-bikes.' }
-  ],
-  'hitch-mounting': [
-    { q: 'What size tow bar receiver do I need for a hitch mounted rack?', a: 'These are built for a standard 50mm receiver — check the Hitch Size spec on the product page if your vehicle has a different opening.' },
-    { q: 'Can I still open my boot or tailgate with a hitch rack loaded?', a: 'Yes — every hitch-mounted rack here tilts down or folds away for full rear access without needing to unload the bikes first.' }
-  ],
-  'rear-mounting': [
-    { q: 'Will a rear-mounted bike rack scratch my paint or rear glass?', a: 'Adjustable straps and padded contact points are designed to sit clear of glass and body panels — always double-check strap placement before driving, especially on wagons and SUVs.' },
-    { q: 'Can a rear-mounted rack be used with a rear window wiper?', a: 'Check the specific product’s fitting guide — some strap layouts are designed to route clear of a rear wiper, others aren’t suited to it.' }
-  ],
-  'bike-rack-accessories': [
-    { q: 'Will an accessory or add-on fit any bike rack, or just a specific model?', a: "Fitment is model-specific — check the product title and description against your existing rack's exact model before ordering." },
-    { q: 'Can I add extra bike capacity to a rack I already own?', a: 'Some platform and hitch-mounted racks support an add-on extension arm — check this range for one matching your existing rack’s brand and model.' }
-  ],
-  'wheel-hold': [
-    { q: 'Does a wheel hold rack touch or mark the bike frame?', a: 'No — the cradle supports the bike entirely by its wheels, so the frame, paint and cabling stay untouched.' }
-  ],
-  'frame-hold': [
-    { q: 'Will a frame hold rack fit an odd-shaped or carbon frame?', a: 'The tool-free clamp knob adjusts to most frame shapes including carbon and full-suspension — check the individual product if your frame has a very unusual tube shape.' }
-  ],
-  'fork-hold': [
-    { q: 'Do I need to remove my front wheel for a fork hold rack?', a: 'Yes — the front wheel comes off and the fork mounts directly to the carrier by the thru-axle or quick-release, which is what makes this style so light and stable.' }
-  ],
-  'platform-frame-hold': [
-    { q: 'Is a platform frame hold rack heavier to lift onto the vehicle than other styles?', a: 'These mount to the tow bar or tow ball rather than being lifted overhead, so there’s no roof-height lifting involved at all.' }
-  ],
-  'frame-hanging': [
-    { q: 'Can frame hanging racks damage the bike frame over a long drive?', a: 'Padded contact arms are designed to spread the load, but a hang-on rack does bear weight through the frame — for carbon frames or long trips, a wheel-support or platform style is gentler.' }
-  ],
-  'platform-wheel-hold': [
-    { q: 'Do platform wheel hold racks work with fat tyres or e-bikes?', a: 'Most trays adjust to fit wider tyres — check the individual product’s Max Total Weight spec if you’re loading a heavier e-bike.' }
-  ],
-  'vertical-hanging': [
-    { q: 'How much space does a vertical hanging rack need behind the vehicle?', a: 'These fold flat against the vehicle when loaded, so they add relatively little to your overall length compared with a flat platform rack.' }
-  ],
-  'spare-wheel': [
-    { q: 'Will a spare wheel mounted rack fit any spare wheel size?', a: 'Mounting brackets are typically adjustable within a size range — check the individual product’s compatible spare wheel diameter before ordering.' }
-  ],
-  'rear-door-boot': [
-    { q: 'Will a rear door mounted rack fit my hatchback or SUV?', a: 'Straps adjust to suit most hatchbacks, wagons and SUVs — check the product’s vehicle compatibility notes if your rear door has an unusual shape or spoiler.' }
-  ],
-  'ute-tub': [
-    { q: 'Does a ute tub mounted rack leave the tub usable for other gear?', a: 'Yes — these mount into existing tie-down points or tracks and keep a low profile so the rest of the tub stays usable underneath.' }
-  ],
-  'roof-rack': [
-    { q: 'Do I need an existing roof rack to use this accessory?', a: 'Yes — these accessories mount to an existing roof rack or bar set rather than standing alone.' }
-  ],
-  '50mm-hitch': [
-    { q: 'Will a 50mm hitch accessory fit any hitch-mounted bike rack?', a: 'Fitment is brand and model specific — check it against your existing rack before ordering.' }
-  ]
+// DEMO DATA (2026-11-18, Brenton — spec.md §32): values for the new bike rack filters (how it holds
+// the bike, boot access, lockable, lights & number plate, folds flat, e-bike compatible). The
+// prototype products don't carry these attributes yet, so they're set here by hand from each
+// product's name/USPs — illustrative only, NOT checked against the real product specs. In
+// production they are product attributes in Magento.
+const BIKE_RACK_DEMO_FACETS = {
+  p1:  { holdStyle: 'wheel', lockable: 'yes' },
+  p2:  { holdStyle: 'wheel', lockable: 'yes' },
+  p3:  { holdStyle: 'hang', bootAccess: 'fixed', folds: 'yes' },
+  p4:  { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes', lights: 'yes', ebike: 'yes' },
+  p5:  { holdStyle: 'hang', bootAccess: 'fixed', folds: 'yes' },
+  p6:  { holdStyle: 'wheel' },
+  p7:  { holdStyle: 'wheel', lockable: 'yes', ebike: 'yes' },
+  p8:  { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes', lights: 'yes', folds: 'yes', ebike: 'yes' },
+  p9:  { holdStyle: 'wheel' },
+  p10: { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes', lights: 'yes', ebike: 'yes' },
+  p11: { holdStyle: 'platform', bootAccess: 'tilts', folds: 'yes' },
+  p12: { holdStyle: 'platform', bootAccess: 'tilts' },
+  p13: { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes' },
+  p14: { holdStyle: 'fork' },
+  p15: { holdStyle: 'fork' },
+  p16: { holdStyle: 'wheel', lockable: 'yes' },
+  p17: { holdStyle: 'hang', bootAccess: 'fixed', folds: 'yes' },
+  p18: { holdStyle: 'hang', bootAccess: 'fixed', folds: 'yes' },
+  p19: { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes', lights: 'yes', folds: 'yes' },
+  p20: { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes', lights: 'yes', folds: 'yes', ebike: 'yes' },
+  p21: { holdStyle: 'frame', lockable: 'yes' },
+  p22: { holdStyle: 'frame', lockable: 'yes' },
+  p23: { holdStyle: 'fork' },
+  p24: { holdStyle: 'wheel' },
+  p25: { holdStyle: 'platform', bootAccess: 'tilts', lockable: 'yes', lights: 'yes', folds: 'yes' },
+  p26: { holdStyle: 'wheel' },
+  p27: { holdStyle: 'platform' },
+  p28: { holdStyle: 'wheel' }
 };
+BIKE_RACK_PRODUCTS.forEach(p => Object.assign(p.facets, BIKE_RACK_DEMO_FACETS[p.id] || {}));
+
+// Shop By tab icons (2026-11-18): the live AU tab artwork, downloaded into _shared/shopby-icons/
+// (not hotlinked). AU/NZ use it as is (RRG red accent); the -uk copy has only the red accent
+// recoloured to the UK blue #2E41AE (black linework untouched; on Accessories the keys stay as
+// drawn). plp.css .plp-icon-au/.plp-icon-uk shows whichever matches the region.
+const shopByIcon = (file, label) =>
+  `<img class="plp-icon-au" src="../_shared/shopby-icons/${file}.webp" alt="${label} Icon">` +
+  `<img class="plp-icon-uk" src="../_shared/shopby-icons/${file}-uk.webp" alt="${label} Icon">`;
+const L3_ICON = (path, label) => `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/${path}.webp" alt="${label} Icon">`;
 
 window.PLP_CONFIG = {
-  // Vehicle prompt on: "Set Your Vehicle" + "Shop … for your {vehicle}" hero (spec.md §24 item 13).
-  vehiclePrompt: true,
+  // 2026-11-18 (Brenton — spec.md §32): no vehicle prompt on Bike Racks — we have no fitment data
+  // for this category, so no "Set Your Vehicle", vehicle hero or Change Vehicle here (the global
+  // header's Select Your Vehicle / Fit My Vehicle are site chrome and stay).
+  vehiclePrompt: false,
   categoryKey: 'bike-racks',
   vrs: false,
-  // Hero image 3-state fallback (2026-09-18 design review, Demo State Panel preview) —
-  // vehicleImage is the real session-vehicle photo already used in the hero markup;
-  // categoryImage stands in for a real Bike Racks category image (none supplied yet, reusing
-  // the SHOP BY icon as a placeholder, same flagged-stand-in convention as this file's other
-  // demo assets).
-  vehicleImage: '../_shared/vehicle-toyota-hilux.webp',
   categoryImage: '../_shared/icons/bike-racks.png',
-  shopByAllIcon: `<img src="../_shared/shopby-show-all.png" alt="">`,
-  // Tab-driven page content (2026-09-21): heading/description/breadcrumbLabel/heroImage on
-  // each shopBy/children entry, plus this categoryRoot for the "Show All" state — each SHOP BY
-  // tab is its own real URL in production, so switching tabs needs to change the whole page,
-  // not just the results grid (see plpRenderCategoryContent() in plp.js). heroImage is a real
-  // product photo from within that tab's own range (never the blurry SHOP BY icon).
+  // Show All icon: the existing artwork for AU/NZ, a UK-blue copy for the UK (2026-11-18).
+  shopByAllIcon: `<img class="plp-icon-au" src="../_shared/shopby-show-all.png" alt=""><img class="plp-icon-uk" src="../_shared/shopby-icons/show-all-uk.png" alt="">`,
+  // Hero paragraph = per-region copy generated into the HTML (content/{region}/bike-racks.json);
+  // it stays the category text on every tab, the per-tab copy is the advice panel (plp.js).
+  heroFromContent: true,
   categoryRoot: {
     breadcrumbLabel: 'Bike Racks',
     heading: 'Bike Racks',
-    // Long on purpose so the hero shows Read more (live /bike-racks category description (2026-10-20)).
-    description: "Here at Roof Racks Galore, we have a huge range of tow bar mounting, hitch mounting, roof mounting and rear mounting bike racks from the world’s leading manufacturers. We’ve sourced the best bike carriers from the top rack brands: BUZZRACK, CRUZ, Prorack, Rhino Rack, Thule and Yakima. Bike racks are our specialist subject at Roof Racks Galore, so shop with confidence as our team is with you every step of the way - from pre-sale advice, right through to making sure the bike rack fits safely to your vehicle. “Too easy” as our experts like to say! Questions about bike racks? Get in touch with our experienced and knowledgeable team, and we'll be more than happy to guide you to the best bike rack for your vehicle and needs. Don’t worry, our Spare Parts & Keys service is second to none, so we’ll always have your back if you ever get stuck or lose something.",
     heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg'
   },
   breadcrumbRoot: [ { label: 'Home' } ],
-  vehicleHeadingSuffix: 'for your {vehicle}', // {vehicle} = the session vehicle (Site Admin)
-  // Level 2 + 3, real, scraped live from roofracksgalore.com.au/bike-racks (2026-09-19).
-  // Level 2 (5, not the 4 originally in this file — "Ute Tub Mount" isn't a real Level 2 at
-  // all, and Hitch Mounting / Bike Rack Accessories were missing) came from the
-  // .magento-category-tabs-related-default strip on /bike-racks. Level 3 `children` came from
-  // .magento-category-tabs-main-default on each Level 2 tab's own page — a *different* widget
-  // than the one Camping's children were scraped from; that selector returned empty for every
-  // Level 2 tab at first (this file's own earlier attempt), which is what "Bike Racks has no
-  // real Level 3" looked like until Brenton pointed out the tab row that actually appears after
-  // clicking through on the live site uses -main-default, not -related-default. Checked 3 of
-  // the ~17 Level 3 children (across 3 different Level 2 parents) for a Level 4 by loading their
-  // query-param URL directly — none exists; clicking a Level 3 tab just re-highlights it within
-  // the same row and filters the grid, it doesn't reveal a deeper tier. "Show All" and a
-  // "Hot Deals" promo tile appear in every -main-default row too; both excluded here (Show All
-  // is redundant with clearing the Level 3 selection, Hot Deals isn't a category).
+  // UK (2026-11-18): no hitch receivers, so no Hitch tab and no hitch-only products; UK "towbar"
+  // racks fit the tow ball. Rear Mount is rear door / boot only (no ute tub, no spare wheel).
+  regionExclude: { UK: { subcategories: ['hitch-mounting', '50mm-hitch', 'ute-tub', 'spare-wheel'] } },
+  // Shop By (2026-11-18, spec.md §32): Roof Mount · Tow Ball Mount (UK: Towbar Mount) · Hitch Mount
+  // (AU/NZ only) · Rear Mount · Accessories. E-bike is a priority filter, not a tab — e-bike racks cut
+  // across mount types. Keys are unchanged from the live scrape (2026-09-19), so ?type= links and the
+  // Level 3 children still work. Per-tab copy lives in the advice panel, not here.
   shopBy: [
-    { key: 'roof-mounting', packageBanner: 'roof-bike', label: 'Roof Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1742.webp" alt="Roof Mounting Icon">`,
-      heading: 'Roof Mounted Bike Racks',
-      description: 'Clamp, custom-point or track-mount carriers that sit on your existing roof bars — the most common style, carrying 1 bike per unit with the option to fit several side by side.',
+    { key: 'roof-mounting', packageBanner: 'roof-bike', label: 'Roof Mount', icon: shopByIcon('bike-roof', 'Roof Mount'),
+      heading: 'Roof Mount Bike Racks',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg',
       children: [
-        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">`,
-          heading: 'Wheel Hold Bike Racks',
-          description: 'Wheel-support cradles carry the bike by its wheels rather than the frame, keeping paint and cables untouched and making loading and unloading straightforward.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-532002-Bike-Rack---Roof-Mount._1_2.jpg' },
-        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">`,
-          heading: 'Frame Hold Bike Racks',
-          description: 'Frame-holder arms secure the bike by the down tube with a single tool-free knob, fitting most frame shapes including carbon and full-suspension.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598001-bike-rack-roof-mount.jpg' },
-        { key: 'fork-hold', label: 'Fork Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32603.webp" alt="Fork Hold Icon">`,
-          heading: 'Fork Hold Bike Racks',
-          description: 'Thru-axle and fork-mount carriers hold the bike by the front axle instead of the frame, for a lightweight, rock-solid ride with no frame contact.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-61018-Platforms--Trays---Accessories._1.jpg' }
+        { key: 'wheel-hold', label: 'Wheel Hold', icon: L3_ICON('bike_rack_bike_attachment/32590', 'Wheel Hold'), heading: 'Wheel Hold Bike Racks' },
+        { key: 'frame-hold', label: 'Frame Hold', icon: L3_ICON('bike_rack_bike_attachment/32594', 'Frame Hold'), heading: 'Frame Hold Bike Racks' },
+        { key: 'fork-hold', label: 'Fork Hold', icon: L3_ICON('bike_rack_bike_attachment/32603', 'Fork Hold'), heading: 'Fork Hold Bike Racks' }
       ]
     },
-    { key: 'tow-ball-mounting', label: 'Tow Ball Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1829.webp" alt="Tow Ball Mounting Icon">`,
-      heading: 'Tow Ball Mounted Bike Racks',
-      description: 'Hang-on and platform carriers that mount straight to your tow ball, no tow bar receiver or roof access needed — ideal for vehicles without factory roof rails.',
+    { key: 'tow-ball-mounting', label: 'Tow Ball Mount', labelByRegion: { UK: 'Towbar Mount' }, icon: shopByIcon('bike-towball', 'Tow Ball Mount'),
+      heading: 'Tow Ball Mount Bike Racks', headingByRegion: { UK: 'Towbar Mount Bike Racks' },
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg',
       children: [
-        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">`,
-          heading: 'Platform Frame Hold Bike Racks',
-          description: 'Folding platform carriers cradle each bike by the wheels and tilt down for full boot access without unloading — no frame contact, easy on-off.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-Easyfold-3-2-Bike-Carrier-944100-1_1.jpg' },
-        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">`,
-          heading: 'Frame Hanging Bike Racks',
-          description: 'Hang-on arms carry bikes straight off the tow ball by their frame, folding flat against the vehicle when not loaded.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/h/Rhino-Rack-RBC050-Bike-Rack---Roof-Mount._1_1.jpg' }
+        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: L3_ICON('bike_rack_bike_attachment/32598', 'Platform Frame Hold'), heading: 'Platform Frame Hold Bike Racks' },
+        { key: 'frame-hanging', label: 'Frame Hanging', icon: L3_ICON('bike_rack_bike_attachment/32606', 'Frame Hanging'), heading: 'Frame Hanging Bike Racks' }
       ]
     },
-    { key: 'hitch-mounting', label: 'Hitch Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1830.webp" alt="Hitch Mounting Icon">`,
-      heading: 'Hitch Mounted Bike Racks',
-      description: 'Platform and hang-on carriers built for a 50mm tow bar receiver, tool-free to fit and rated up to 80kg total for e-bikes and family loads.',
+    { key: 'hitch-mounting', regions: ['AU', 'NZ'], label: 'Hitch Mount', icon: shopByIcon('bike-hitch', 'Hitch Mount'),
+      heading: 'Hitch Mount Bike Racks',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg',
       children: [
-        { key: 'wheel-hold', label: 'Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32590.webp" alt="Wheel Hold Icon">`,
-          heading: 'Wheel Hold Bike Racks',
-          description: 'Wheel-support platforms cradle each bike by the wheels rather than the frame, for a scratch-free ride straight off the tow bar.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
-        { key: 'frame-hold', label: 'Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32594.webp" alt="Frame Hold Icon">`,
-          heading: 'Frame Hold Bike Racks',
-          description: 'Frame-holder arms secure each bike by the down tube on a tow-bar-mounted platform, fitting most frame shapes without frame contact.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
-        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32598.webp" alt="Platform Frame Hold Icon">`,
-          heading: 'Platform Frame Hold Bike Racks',
-          description: 'Folds up one-handed for boot access and carries each bike on its own platform arm, up to 68kg combined across two bikes.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-easyfold-xt-2-bike-hitch-mounted-carrier-903202.jpg' },
-        { key: 'frame-hanging', label: 'Frame Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32606.webp" alt="Frame Hanging Icon">`,
-          heading: 'Frame Hanging Bike Racks',
-          description: 'Hang-on tow-bar carriers hold bikes by the frame and fold away flat against the vehicle when empty.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
-        { key: 'platform-wheel-hold', label: 'Platform Wheel Hold', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/32618.webp" alt="Platform Wheel Hold Icon">`,
-          heading: 'Platform Wheel Hold Bike Racks',
-          description: 'Platform arms cradle each bike by the wheels for a scratch-free ride, with tool-free hitch mounting and foldable arms for compact storage.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/c/r/cruz-kicker-2-bike-hitch-mounted-platform-rack-940-584-a51b92f7dd97.jpg' },
-        { key: 'vertical-hanging', label: 'Vertical Hanging', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_bike_attachment/33605.webp" alt="Vertical Hanging Icon">`,
-          heading: 'Vertical Hanging Bike Racks',
-          description: 'Vertical hang carriers stack multiple bikes upright off a single tow bar mount, folding flat against the vehicle when not loaded.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/6/f672e9e642cbef771939567e8e6c39d3_N3Y9GB_1.jpg' }
+        { key: 'wheel-hold', label: 'Wheel Hold', icon: L3_ICON('bike_rack_bike_attachment/32590', 'Wheel Hold'), heading: 'Wheel Hold Bike Racks' },
+        { key: 'frame-hold', label: 'Frame Hold', icon: L3_ICON('bike_rack_bike_attachment/32594', 'Frame Hold'), heading: 'Frame Hold Bike Racks' },
+        { key: 'platform-frame-hold', label: 'Platform Frame Hold', icon: L3_ICON('bike_rack_bike_attachment/32598', 'Platform Frame Hold'), heading: 'Platform Frame Hold Bike Racks' },
+        { key: 'frame-hanging', label: 'Frame Hanging', icon: L3_ICON('bike_rack_bike_attachment/32606', 'Frame Hanging'), heading: 'Frame Hanging Bike Racks' },
+        { key: 'platform-wheel-hold', label: 'Platform Wheel Hold', icon: L3_ICON('bike_rack_bike_attachment/32618', 'Platform Wheel Hold'), heading: 'Platform Wheel Hold Bike Racks' },
+        { key: 'vertical-hanging', label: 'Vertical Hanging', icon: L3_ICON('bike_rack_bike_attachment/33605', 'Vertical Hanging'), heading: 'Vertical Hanging Bike Racks' }
       ]
     },
-    { key: 'rear-mounting', label: 'Rear Mounting', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/1831.webp" alt="Rear Mounting Icon">`,
-      heading: 'Rear Mounted Bike Racks',
-      description: 'Carriers that hang straight off the rear door, boot or spare wheel — no roof access or tow ball required, with straps that adjust to fit wagons, SUVs and 4WDs.',
+    { key: 'rear-mounting', label: 'Rear Mount', icon: shopByIcon('bike-rear', 'Rear Mount'),
+      heading: 'Rear Mount Bike Racks',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg',
+      // AU/NZ keep all three Level 3 children; the UK is rear door / boot only.
       children: [
-        { key: 'spare-wheel', label: 'Spare Wheel', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32609.webp" alt="Spare Wheel Icon">`,
-          heading: 'Spare Wheel Bike Racks',
-          description: 'Mounts straight to a rear-mounted spare wheel, keeping the tow ball and roof free for other gear.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg' },
-        { key: 'rear-door-boot', label: 'Rear Door/Boot', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32610.webp" alt="Rear Door/Boot Icon">`,
-          heading: 'Rear Door / Boot Bike Racks',
-          description: 'Hangs directly off the rear door or boot with adjustable straps, folding compact for storage when not carrying bikes.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/f/r/front-runner-pro-bike-carrier-rrac148.jpg' },
-        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">`,
-          heading: 'Ute Tub Bike Racks',
-          description: 'Mounts straight into ute tub tie-down points or tracks, keeping the tub usable for other cargo underneath.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/R/-/R-PBR-01_1_FVS4GK_1.jpg' }
+        { key: 'spare-wheel', regions: ['AU', 'NZ'], label: 'Spare Wheel', icon: L3_ICON('bike_rack_vehicle_attachment/32609', 'Spare Wheel'), heading: 'Spare Wheel Bike Racks' },
+        { key: 'rear-door-boot', label: 'Rear Door/Boot', icon: L3_ICON('bike_rack_vehicle_attachment/32610', 'Rear Door/Boot'), heading: 'Rear Door / Boot Bike Racks' },
+        { key: 'ute-tub', regions: ['AU', 'NZ'], label: 'Ute Tub', icon: L3_ICON('bike_rack_vehicle_attachment/32611', 'Ute Tub'), heading: 'Ute Tub Bike Racks' }
       ]
     },
-    { key: 'bike-rack-accessories', label: 'Bike Rack Accessories', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/category/tab/126.webp" alt="Bike Rack Accessories Icon">`,
+    { key: 'bike-rack-accessories', label: 'Accessories', icon: shopByIcon('bike-accessories', 'Accessories'),
       heading: 'Bike Rack Accessories',
-      description: 'Add-on extensions, spare parts and mounting accessories to extend or maintain your existing bike rack — from extra-bike add-ons to replacement fittings.',
       heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/o/Rocky-Mounts-10941-Bike-Rack---Roof-Mount._1.jpg',
       children: [
-        { key: 'roof-rack', label: 'Roof Rack', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32589.webp" alt="Roof Rack Icon">`,
-          heading: 'Roof Rack Accessories',
-          description: 'Accessories and add-on carriers built to mount to an existing roof rack setup.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/o/Rocky-Mounts-10941-Bike-Rack---Roof-Mount._1.jpg' },
-        { key: '50mm-hitch', label: '50mm Hitch', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32615.webp" alt="50mm Hitch Icon">`,
-          heading: '50mm Hitch Accessories',
-          description: 'Add-on extensions and fittings for a 50mm tow bar receiver, built to extend an existing hitch-mounted rack to carry more bikes.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/Y/a/Yakima-8002482-Bike-Rack---Hitch-Platform--Vertical._1_2.jpg' },
-        { key: 'ute-tub', label: 'Ute Tub', icon: `<img src="https://www.roofracksgalore.com.au/pub/media/wysiwyg/attribute/bike_rack_vehicle_attachment/32611.webp" alt="Ute Tub Icon">`,
-          heading: 'Ute Tub Accessories',
-          description: 'Mounting accessories for a ute tub bike carrier setup, fitting into existing tie-down points or tracks.',
-          heroImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/h/o/hotrod_CZADGW_1.jpg' }
+        { key: 'roof-rack', label: 'Roof Rack', icon: L3_ICON('bike_rack_vehicle_attachment/32589', 'Roof Rack'), heading: 'Roof Rack Accessories' },
+        { key: '50mm-hitch', regions: ['AU', 'NZ'], label: '50mm Hitch', icon: L3_ICON('bike_rack_vehicle_attachment/32615', '50mm Hitch'), heading: '50mm Hitch Accessories' },
+        { key: 'ute-tub', regions: ['AU', 'NZ'], label: 'Ute Tub', icon: L3_ICON('bike_rack_vehicle_attachment/32611', 'Ute Tub'), heading: 'Ute Tub Accessories' }
       ]
     }
   ],
   products: BIKE_RACK_PRODUCTS,
+  // Side filters (2026-11-18, spec.md §32). Removed: Type of Carrier, Vehicle Fit Type, Bar Profile and
+  // Product Load Rating — they duplicate the tabs or mean little to shoppers. Brand: no ROLA (Tim's
+  // approved-brands list, 2026-10-09).
   facets: {
     priority: [
-      { key: 'bikeCount', label: 'How many bikes do you need to carry?', mode: 'atleast', options: [1,2,3,4,5,6].map((n, i) => ({ value: n, label: `${n} Bike${n > 1 ? 's' : ''}`,
+      // "At least" logic: a 4-bike rack also shows for "2 bikes". 5 and 6 are AU/NZ only.
+      { key: 'bikeCount', label: 'How many bikes do you need to carry?', mode: 'atleast', options: [1, 2, 3, 4, 5, 6].map((n, i) => ({
+        value: n, label: `${n} Bike${n > 1 ? 's' : ''}`,
+        ...(n > 4 ? { regions: ['AU', 'NZ'] } : {}),
         // Live's own filter icons (as on /bike-racks, 2026-10-20, spec.md §24.6 item 8).
-        icon: `https://www.roofracksgalore.com.au/pub/media/wysiwyg/filter/bike_rack_number_of_bikes/${[32588, 32596, 32601, 32605, 32614, 41645][i]}.webp` })) }
+        icon: `https://www.roofracksgalore.com.au/pub/media/wysiwyg/filter/bike_rack_number_of_bikes/${[32588, 32596, 32601, 32605, 32614, 41645][i]}.webp` })) },
+      { key: 'ebike', label: 'Carrying e-bikes?', mode: 'eq', tooltip: 'E-bike racks cut across mount types, so this is a filter rather than a tab.', options: [ { value: 'yes', label: 'E-bike compatible' } ] }
     ],
     standard: [
-      { key: 'carrierType', label: 'Type of Carrier', mode: 'eq', options: [ { value:'wheel-support', label:'Wheel Support Carrier' }, { value:'hang-on', label:'Hang-On Bike Rack' }, { value:'ebike', label:'Bike Racks for E-Bikes' } ] },
-      { key: 'vehicleFitType', label: 'Vehicle Fit Type', mode: 'eq', options: [ { value:'clamp', label:'Clamp Mount' }, { value:'custom', label:'Custom Point Mount' }, { value:'track', label:'Track Mount' }, { value:'towball', label:'Tow Ball Mount' }, { value:'hitch', label:'Hitch Mount' } ] },
-      { key: 'barProfile', label: 'Bar Profile', mode: 'eq', options: [ { value:'aero', label:'Aero' }, { value:'heavy', label:'Heavy Duty' }, { value:'platform', label:'Platform/Tray' }, { value:'na', label:'Not Bar-Mounted' } ] },
-      { key: 'loadRating', label: 'Product Load Rating', mode: 'atleast', options: [ { value:75, label:'75kg' }, { value:100, label:'100kg' }, { value:150, label:'150kg' } ] },
-      { key: 'colour', label: 'Colour', mode: 'eq', options: [ { value:'black', label:'Black' }, { value:'silver', label:'Silver' } ] },
-      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value:'Thule', label:'Thule' }, { value:'Rhino-Rack', label:'Rhino-Rack' }, { value:'Yakima', label:'Yakima' }, { value:'Front Runner', label:'Front Runner' }, { value:'ROLA', label:'ROLA' }, { value:'CRUZ', label:'CRUZ' }, { value:'Rocky Mounts', label:'Rocky Mounts' } ] }
+      { key: 'holdStyle', label: 'How it holds the bike', mode: 'eq', options: [
+        { value: 'wheel', label: 'Wheel hold' }, { value: 'platform', label: 'Platform (wheels in trays)' }, { value: 'frame', label: 'Frame hold' },
+        { value: 'fork', label: 'Fork / thru-axle hold' }, { value: 'hang', label: 'Hang-on (frame hanging)' } ] },
+      { key: 'bootAccess', label: 'Boot access', mode: 'eq', options: [ { value: 'tilts', label: 'Tilts / swings away' }, { value: 'fixed', label: 'Non-tilting' } ] },
+      { key: 'lockable', label: 'Lockable', mode: 'eq', options: [ { value: 'yes', label: 'Locks bikes + carrier' } ] },
+      { key: 'lights', label: 'Lights & number plate', mode: 'eq', options: [ { value: 'yes', label: 'Integrated lights / plate holder' } ] },
+      { key: 'folds', label: 'Folds for storage', mode: 'eq', options: [ { value: 'yes', label: 'Folds flat' } ] },
+      { key: 'brand', label: 'Brand', mode: 'eq', options: [ { value: 'Thule', label: 'Thule' }, { value: 'Rhino-Rack', label: 'Rhino-Rack' }, { value: 'Yakima', label: 'Yakima' }, { value: 'Front Runner', label: 'Front Runner' }, { value: 'CRUZ', label: 'CRUZ' }, { value: 'Rocky Mounts', label: 'Rocky Mounts' } ] },
+      // Price bands (the engine's existing 'range' mode — no slider exists yet); {c} = region currency.
+      { key: 'priceRange', label: 'Price', mode: 'range', options: [ { value: '0-250', label: 'Under {c}250' }, { value: '250-500', label: '{c}250 - {c}500' }, { value: '500-1000', label: '{c}500 - {c}1,000' }, { value: '1000-999999', label: '{c}1,000+' } ] },
+      { key: 'colour', label: 'Colour', mode: 'eq', options: [ { value: 'black', label: 'Black' }, { value: 'silver', label: 'Silver' } ] }
     ]
   },
   videos: [
@@ -704,7 +963,8 @@ window.PLP_CONFIG = {
     { image: '../_shared/promo-merch-1.png', eyebrow: 'Bundle & Save', label: 'Save 10% on Bike Racks when you buy a Roof Platform', href: '#' }
   ],
   featuredProduct: BIKE_RACK_PRODUCTS.find(p => p.id === 'p4'),
-  faqByCategory: BIKE_RACK_FAQS
+  // p4 is a hitch rack, which the UK doesn't sell — the UK features a tow ball rack instead.
+  featuredProductByRegion: { UK: BIKE_RACK_PRODUCTS.find(p => p.id === 'p19') }
 };
 
 </script>

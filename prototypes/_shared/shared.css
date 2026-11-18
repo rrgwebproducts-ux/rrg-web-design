@@ -1838,7 +1838,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .showroom-heading,
 .ff-head h2,
 .content-block h2,
-.vclp-trust-inner h2{
+.vclp-trust-inner h2,
+.plp-guide h2{ /* .plp-guide: PLP below-grid buying guide (2026-11-18, spec.md §32) */
   font-family:'Barlow Condensed',Arial,sans-serif;
   font-weight:700;
   font-style:italic;
@@ -1853,7 +1854,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .plp-search-empty h2{font-size:40px;line-height:1.15;}
 @media (max-width:640px){
   .related-heading,.showroom-widget h3,.fit-gallery-title h2,.faq-heading,.plp-search-empty-subheading,.tabs-heading,
-  .showroom-heading,.ff-head h2,.content-block h2,.vclp-trust-inner h2,.plp-search-empty h2{font-size:32px;}
+  .showroom-heading,.ff-head h2,.content-block h2,.vclp-trust-inner h2,.plp-search-empty h2,.plp-guide h2{font-size:32px;}
 }
 
 /* Prose content block — plain, non-heading-scale sub-sections of body copy (currently

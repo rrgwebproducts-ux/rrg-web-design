@@ -730,3 +730,72 @@
   .clearance-stats li{flex:1;padding:0 8px;}
   .clearance-stats strong{font-size:22px;white-space:nowrap;}
 }
+
+/* ==== Region copy, Shop By advice panel + below-grid buying guide (2026-11-18, Brenton —
+   spec.md §32) =================================================================================
+   Region copy: the page's HTML carries every region's version of the advice/guide copy
+   (generated from content/{region}/*.json by tools/build-plp-content.mjs) so it is all there on
+   first load; .plp-rgn[data-region] hides the ones that aren't the active region. AU is the
+   default until shared.js adds body.region-nz / body.region-uk. Production: Magento renders only
+   its own store's copy, so none of this is needed there. */
+body:not(.region-nz):not(.region-uk) .plp-rgn:not([data-region="au"]),
+body.region-nz .plp-rgn:not([data-region="nz"]),
+body.region-uk .plp-rgn:not([data-region="uk"]){display:none !important;}
+
+/* Litre range (or other sub-label) under a Shop By tab name. */
+.plp-shopby-sub{display:block;margin-top:-6px;font-size:13px;line-height:1.2;color:var(--rrg-grey-600);}
+.plp-shopby-tile.active .plp-shopby-sub{color:var(--rrg-red);font-weight:700;}
+
+/* Advice panel — sits under the whole tab row (outside the horizontal scroll track, so it is
+   never clipped on phones), full width, accent from the region token. */
+.plp-advice-wrap{margin-top:14px;}
+.plp-advice{border:1px solid var(--rrg-line);border-left:4px solid var(--rrg-red);border-radius:var(--radius);background:#fff;padding:16px 20px;}
+.plp-advice[hidden]{display:none;}
+.plp-advice-title{margin:0 0 6px;font-family:'Barlow Condensed',Arial,sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:1.2;color:var(--rrg-black);}
+.plp-advice-intro{margin:0 0 10px;font-size:15px;line-height:1.55;color:var(--rrg-grey-700);max-width:900px;}
+.plp-advice-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 28px;}
+.plp-advice-list li{position:relative;padding-left:26px;font-size:14px;line-height:1.5;color:var(--rrg-grey-700);}
+.plp-advice-list li::before{position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;line-height:1;color:#fff;background:var(--rrg-red);}
+.plp-advice-list li.is-tick::before{content:'\2713';}
+.plp-advice-list li.is-warn::before{content:'!';background:var(--rrg-unknown);}
+.plp-advice-foot{margin:12px 0 0;font-size:14px;}
+.plp-advice-foot a{color:var(--rrg-red);font-weight:700;}
+@media (max-width:640px){
+  .plp-advice{padding:14px 16px;}
+  .plp-advice-list{grid-template-columns:1fr;}
+}
+
+/* Filter option hint ("≤165cm", "skis"). */
+.plp-filter-option-hint{display:block;font-size:12px;color:var(--rrg-grey-600);line-height:1.3;}
+
+/* Below-grid buying guide: How to choose → table → Fitting & roof bars → FAQs. */
+.plp-guide{margin:var(--space-section) 0;}
+.plp-guide-section{margin:0 0 40px;max-width:960px;}
+.plp-guide-section h2{margin:0 0 14px;}
+.plp-guide-section p{margin:0 0 12px;font-size:15px;line-height:1.65;color:var(--rrg-grey-700);}
+.plp-guide-section ul{margin:0 0 14px;padding-left:20px;}
+.plp-guide-section li{margin:0 0 8px;font-size:15px;line-height:1.6;color:var(--rrg-grey-700);}
+.plp-guide-section a{color:var(--rrg-red);font-weight:700;}
+.plp-guide-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 12px;}
+.plp-guide-table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.5;min-width:560px;}
+.plp-guide-table th,.plp-guide-table td{border:1px solid var(--rrg-line);padding:10px 12px;text-align:left;vertical-align:top;color:var(--rrg-grey-700);}
+.plp-guide-table thead th{background:var(--rrg-red);border-color:var(--rrg-red);color:#fff;font-family:'Barlow Condensed',Arial,sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:.02em;}
+.plp-guide-table tbody th{background:var(--rrg-bg);color:var(--rrg-black);white-space:nowrap;}
+.plp-guide-note{font-size:14px !important;}
+.plp-guide .faq-item[open]{border-color:var(--rrg-red);}
+.plp-guide .faq-item[open] summary{color:var(--rrg-red);}
+.plp-guide .faq-item[open] summary::after{color:var(--rrg-red);}
+.plp-guide .faq-answer p{margin:0 0 10px;}
+.plp-guide .faq-answer p:last-child{margin:0;}
+@media (max-width:640px){
+  .plp-guide-section{margin-bottom:32px;}
+}
+
+/* Region-tinted Shop By icons (2026-11-18): live AU tab artwork as is for AU/NZ, a blue-accent
+   -uk copy for the UK (see shopByIcon() on plp/ and plp-roof-boxes/). */
+.plp-icon-uk{display:none !important;}
+body.region-uk .plp-icon-au{display:none !important;}
+body.region-uk .plp-icon-uk{display:block !important;}
+/* Tabs with a sub-label: drop the label's two-line reserve so the litre range sits right under it. */
+.plp-shopby-tile:has(.plp-shopby-sub) .plp-shopby-label{min-height:0;}
+.plp-shopby-sub{margin-top:-4px;}

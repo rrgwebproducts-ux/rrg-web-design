@@ -2702,6 +2702,10 @@ function rrgBrandName(region = typeof currentRegion === 'undefined' ? 'AU' : cur
 
 function applyRegionBrand(region) {
   document.body.classList.toggle('region-uk', region === 'UK');
+  // 2026-11-18 (Brenton): NZ gets a class too, so region-specific copy already in a page's HTML
+  // (PLP advice panels + below-grid guide, .plp-rgn in plp.css) can show the right region's
+  // version. No colour change — NZ keeps the AU skin.
+  document.body.classList.toggle('region-nz', region === 'NZ');
   // Clearance is AU only (2026-10-15 meeting): NZ and the UK have none, so the nav link drops out
   // and the links after it shift over. A running sale still adds its own link (campaign.css).
   document.body.classList.toggle('region-no-clearance', region !== 'AU');

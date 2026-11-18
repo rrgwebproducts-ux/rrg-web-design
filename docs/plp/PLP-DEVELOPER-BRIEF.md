@@ -32,7 +32,7 @@
 
 | Setting | What it does | Default |
 |---|---|---|
-| **Vehicle prompt** (e.g. a tickbox on the category) | On: "Set Your Vehicle" button, then "Shop {category} for your {vehicle}" with the vehicle photo once a vehicle is set. Off: the plain "Shop {category}" hero, vehicle or not | **Off.** On for Bike Racks, Roof Boxes, Rooftop Tents and both VPLPs |
+| **Vehicle prompt** (e.g. a tickbox on the category) | On: "Set Your Vehicle" button, then "Shop {category} for your {vehicle}" with the vehicle photo once a vehicle is set. Off: the plain "Shop {category}" hero, vehicle or not | **Off.** On for Rooftop Tents and both VPLPs. Bike Racks and Roof Boxes are **off** since 2026-11-18 (no fitment data, spec.md §32) |
 | **Buyers Guide link** | Phase 1 has no category-to-guide link, so the button comes from a field or the category description (like the store pages' buttons). Hidden when not set | Your call how |
 | **Category image** | Hero image. None set (and no vehicle photo): the text runs full width, no empty box. **Phase 1 launches with none loaded**, so the prototype's Demo State "Hero image" defaults to No image | Check Magento can already assign one |
 | **Category description** | The hero text under the H1. This is the existing category description, the SEO copy that sits at the bottom of the live pages today. It moves up, and nothing stays at the bottom. Clamped to 4 lines on desktop / 3 on phones with Read more (4.1) | Existing description, no new field |
@@ -41,7 +41,7 @@
 
 - Merchandising carousel + Featured Product (left sidebar)
 - Category videos ("Bike Rack Videos") and the hero's Videos button
-- FAQs and the hero's FAQs button
+- FAQs and the hero's FAQs button. Exception: the Buying Guide FAQs on Bike Racks and Roof Boxes (4.11a) are Phase 1
 - Related Products (Phase 2 may bring it back as Related Categories)
 - Sort options Newest, Best Selling, Highest Rated
 - Siblings on cards ("View Options", "From $X"), star ratings, ribbons, Compare, Package Deal
@@ -203,15 +203,32 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 
 | Key | Selects |
 |---|---|
-| `attachment` | One Level 2 tab key selects that tab. Two keys (`tow-ball-mounting,hitch-mounting`) select Vehicle Fit Type: Tow Ball Mount + Hitch Mount on Show All instead. |
+| `attachment` | One Level 2 tab key selects that tab. Two keys (`tow-ball-mounting,hitch-mounting`) select Vehicle Fit Type: Tow Ball Mount + Hitch Mount on Show All instead, on pages that still have that filter. Keys for a tab the region doesn't have are dropped first, so the UK gets the Towbar Mount tab (2026-11-18). |
 | `type` | A Level 3 card under that tab (e.g. `ute-tub`). |
-| `bikes` | How many bikes. Roof racks are 1-bike carriers ("one rack per bike"), so the Finder leaves this out for roof results. |
-| `hold` | Type of Carrier: Wheel Support Carrier, only when every hold style given is a wheel hold. |
-| `ebike=1` | Type of Carrier: Bike Racks for E-Bikes. |
+| `bikes` | How many bikes. Roof racks are 1-bike carriers ("one rack per bike"), so the Finder leaves this out for roof results. Capped at the region's highest option (4 in the UK). |
+| `hold` | Bike Racks (2026-11-18): "How it holds the bike", every hold given (`wheel`, `pwheel`/`pframe` → Platform, `frame`, `fork`). Pages without that filter: Type of Carrier: Wheel Support Carrier, only when every hold style given is a wheel hold. |
+| `ebike=1` | Bike Racks (2026-11-18): "Carrying e-bikes?" → E-bike compatible. Pages without that filter: Type of Carrier: Bike Racks for E-Bikes. |
 | `brand` | Brand (case-insensitive; `rhino-rack` matches Rhino-Rack). |
 | any facet key | Direct, e.g. `colour=black`. |
 
 **Screenshot:** see Section 4.4's screenshot, which shows this row together with the Level 3 cards it can reveal. It predates the counts.
+
+### 4.3a Shop By advice panel (2026-11-18, spec.md §32)
+
+**Where:** Bike Racks and Roof Boxes, directly under the Shop By tab row, full width. It sits outside the tab row's horizontal scroll track, so phones never clip it.
+
+**What:** for the selected tab (Show All included), a short title (H3), one or two intro lines, and 3–6 bullets: ✓ for advice, ! for a watch-out. The accent (left border, ✓ circles) is the region token (`--rrg-red`: AU/NZ red, UK #2E41AE).
+
+**SEO, the important part:** every tab's advice must be in the HTML the server sends. Hidden panels are fine; content added by JS on hover or click is not, and nothing lives only in a tooltip. Selecting a tab only shows its panel and hides the others. A tab with no advice falls back to Show All's. Level 3 cards keep their parent tab's advice. Tab buttons carry `aria-pressed` and `aria-controls`; each panel is a labelled region.
+
+**Magento:** a per-category (per-store) content field. Each Level 2 category holds its own advice (title, intro, bullets), and the parent category holds Show All's. Render them all into the parent PLP's HTML. Each store view renders only its own region's copy; the prototype carries all three and switches them with CSS (`.plp-rgn[data-region]`).
+
+**Prototype source:** `content/{au,nz,uk}/{bike-racks,roof-boxes}.json` → `node tools/build-plp-content.mjs` → static HTML in each page. Shown and hidden by `plpRenderAdvice()` (`plp.js`); CSS `.plp-advice` (`plp.css`).
+
+**Related tab changes on these two pages:**
+- **Roof Boxes:** tabs are size by volume (Small / Medium / Large / XL / XXL). Each tab shows its litre range under the name (`sub`). The bands are pending Elliot.
+- **Bike Racks:** Hitch Mount is AU/NZ only, and "Tow Ball Mount" is "Towbar Mount" in the UK.
+- **Icons:** both pages use the live AU tab artwork, plus a UK-blue copy.
 
 ---
 
@@ -259,6 +276,13 @@ Rebuilt fully on every Level 2/3 tab change (`plpRenderBreadcrumb()`) — in the
 - Mobile toolbar sequence (Refine Results → Sort → priority chip): ![Mobile toolbar + priority chip](plp-dev-brief-assets/mobile-toolbar-chips.png)
 - Mobile filter drawer (priority group pinned at top): ![Mobile filter drawer](plp-dev-brief-assets/mobile-filter-drawer.png)
 
+
+**2026-11-18 (spec.md §32):**
+- **Hints:** an option can show a small hint under its label, e.g. Roof Boxes' "≤165cm".
+- **Region-only options:** an option can be limited to some regions, e.g. Bike Racks' 5 and 6 bikes are AU/NZ only.
+- **Bike Racks filters:** How many bikes and Carrying e-bikes? are pinned first. Then How it holds the bike, Boot access, Lockable, Lights & number plate, Folds for storage, Brand (no ROLA), Price bands and Colour.
+- **Roof Boxes filters:** Box length, Box width and Box height are pinned first, bucketed from the External Dimensions spec. Then Load rating, Mounting system, Colour, Brand and Box shape.
+- **Magento:** the new bike facets and the box dimension buckets become product attributes.
 ---
 
 ### 4.6 Product Grid / List / Cards
@@ -412,6 +436,27 @@ A thin full-width banner (about 100px tall) under the Shop By tabs, above the re
 **Contents:** reused `.faq-section`/`.faq-item` accordion component (same as the PDP's). Dynamic per Level 2/3 tab on pages that opt in via `cfg.faqByCategory` (e.g. plp-camping) — re-renders on every tab change so the section genuinely demonstrates swapping content in/out, not just an empty/non-empty toggle. Pages without that config (plain plp/vplp) show static content instead.
 
 **Screenshot:** ![FAQ accordion](plp-dev-brief-assets/faq-closeup.png)
+
+### 4.11a Buying guide below the grid (2026-11-18, spec.md §32)
+
+**Where:** Bike Racks and Roof Boxes, below the product grid and pagination, above Videos. **Build Phase 1**: visible and indexable now. On these two pages it replaces the old JS FAQ section (4.11) and the "{Category} Fitting" banner, which carries a fitment CTA and the "fitted over 200,000" figure.
+
+**Order:**
+1. How to choose (H2)
+2. Sizes explained (Roof Boxes) or Types compared (Bike Racks), as a simple table. It scrolls sideways on phones.
+3. Fitting & roof bars (H2)
+4. Frequently asked questions: `<details>`/`<summary>` accordions, the first open, every answer in the HTML.
+
+**Structured data:** FAQPage JSON-LD built from the same FAQs, alongside the visible headings.
+
+**Hero buttons:** Fitting and FAQs scroll to sections 3 and 4.
+
+**Copy:** per region.
+- **UK:** trimmed roofbox.co.uk copy.
+- **AU/NZ:** placeholder for now, using the live category paragraph.
+- **Headings:** stay below the page's single H1.
+
+**Magento:** category content per store view (CMS block or category attributes). It must be server-rendered, like 4.3a.
 
 ---
 

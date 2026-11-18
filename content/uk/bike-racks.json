@@ -1,0 +1,113 @@
+{
+  "_about": "2026-11-18 (Brenton): UK Bike Racks PLP copy, trimmed from roofbox.co.uk (/bike-carriers/ and /bike-carriers/bike-carriers-racks-info.php). Source of truth for the generated blocks in prototypes/plp/index.html. Edit here, then run: node tools/build-plp-content.mjs. Inline markup: **bold**, [link text](placeholder:what it is). Bullets starting '! ' are watch-outs. No Hitch tab in the UK.",
+  "region": "uk",
+  "category": "bike-racks",
+  "hero": {
+    "description": "So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.",
+    "todo": "TODO (Brenton, 2026-11-18): UK hero reuses the Show All tab intro for now — refine with a UK-specific hero line later (no hitch, no RRG wording)."
+  },
+  "advice": [
+    {
+      "tab": "all",
+      "title": "Choose how you want to carry your bikes",
+      "intro": "So how do you decide which bike carrier to buy? To a large extent this is determined by the number of bikes to be carried, and which bike carriers fit your car. Once you have decided which type to go for, consider style, features and price.",
+      "bullets": [
+        "You can fit a tow bar bike carrier to any car that can carry a tow ball",
+        "Roof-fitting bike carriers go on any car with a set of roof bars",
+        "Rear (back of car) bike carriers are vehicle specific",
+        "E-bikes are usually better on a wheel-supported tow bar rack than on the roof"
+      ]
+    },
+    {
+      "tab": "roof-mounting",
+      "title": "Roof mount bike carriers",
+      "intro": "Sits on your roof bars. You will need one carrier for each bike.",
+      "bullets": [
+        "Carry up to 4 bikes",
+        "Holds the bike upright, secure and lockable",
+        "Bar and rack package deals available",
+        "! Requires roof bars"
+      ]
+    },
+    {
+      "tab": "tow-ball-mounting",
+      "title": "Towbar mount bike carriers",
+      "intro": "Fits a standard tow ball. Easy to use and load, and a strong long-term choice if you carry bikes often.",
+      "bullets": [
+        "Carry up to 4 bikes on one rack",
+        "Very secure",
+        "Good boot access (choose a tilting model)",
+        "Fits all bikes",
+        "! Vehicle tow bar required"
+      ]
+    },
+    {
+      "tab": "rear-mounting",
+      "title": "Rear mount bike carriers",
+      "intro": "Straps to the boot or tailgate. Relatively cheap, but car specific — not suitable for every vehicle.",
+      "bullets": [
+        "Carry up to 3 bikes",
+        "! Car specific: not suitable for every vehicle",
+        "! Boot access can be tricky"
+      ]
+    },
+    {
+      "tab": "bike-rack-accessories",
+      "title": "Bike carrier accessories",
+      "intro": "Locks, adaptors, light boards and spares for the carrier you already own.",
+      "bullets": [
+        "Lighting boards and number plate holders",
+        "Locks and fitting adaptors",
+        "Check the accessory against your existing carrier before ordering"
+      ]
+    }
+  ],
+  "guide": {
+    "howToChoose": {
+      "heading": "How to choose a bike carrier",
+      "body": [
+        "We have a wide range of roof-mounting, rear-mounting and tow bar-mounting bike carriers. So how do you decide which one to buy? To a large extent this is determined by (1) the number of bikes to be carried, and (2) which bike carriers fit your car. Once you have decided which type to go for, you need to consider style, features and price.",
+        [
+          "You can fit a tow bar bike carrier to any car that can carry a tow ball, and roof-fitting bike carriers to any car with a set of roof bars. But all “back of car” bike carriers are vehicle specific.",
+          "If you need to carry more than four bikes, you will need a combination of roof-mounted carriers and either a tow bar or a rear-mounted carrier (if permitted for your vehicle).",
+          "Many people fit a tow ball specifically for carrying bikes. Tow ball carriers will take up to four bikes, but some vehicles are restricted to a maximum of three — your handbook will include the tow bar nose weight.",
+          "You can usually carry bikes on the roof unless you have a soft top, a “moon roof”, or a car where the roof bars are too close together or too far apart to hold bike carriers safely."
+        ],
+        "Our [Buying Guide](placeholder:buying guide) has more on the different types, including e-bikes and children’s bikes. If you also need roof bars, a [package deal](placeholder:package deals) is often the simplest way to buy a roof-mounted carrier and the bars together."
+      ]
+    },
+    "table": {
+      "heading": "Bike carrier types compared",
+      "head": ["", "Roof mounting", "Towbar mounting", "Rear mounting"],
+      "rowHeaders": true,
+      "rows": [
+        ["How many bikes", "Carry up to 4 bikes. You will need one carrier for each bike.", "Carry up to 4 bikes on one rack.", "Carry up to 3 bikes."],
+        ["What’s good", "Holds the bike upright and secure. Lockable. Bar and rack package deals available.", "Easy to use and load. Very secure. Good boot access. Fits all bikes. A strong long-term choice.", "Relatively cheap."],
+        ["Watch-outs", "Requires roof bars.", "Vehicle tow bar required.", "Car specific — not suitable for every vehicle. Boot access can be tricky."]
+      ]
+    },
+    "fitting": {
+      "heading": "Fitting & roof bars",
+      "body": [
+        "Roof-mounting carriers need a set of roof bars. There are three types of roof mount — frame holder, fork holder, and tyre holder — and most will fit standard 32mm by 22mm roof bars, or slotted aluminium aerobars. One roof-mounting carrier is required for each bike.",
+        "Tow bar carriers fit a standard 50mm tow ball, including detachable tow balls. There are two types of tow ball — “bolt on” (sometimes known as a two-bolt flange) and “swan neck” (which includes detachable tow balls). Some carriers only fit one type or the other, so check before you buy.",
+        [
+          "If you use a tow bar cycle rack, you must not exceed the maximum permitted tow ball nose weight, taking into account the weight of the carrier and the weight of the bikes.",
+          "Most wheel-support tow bar racks tilt, even with the bikes in place, so you can open the tailgate. This is very handy, and sometimes almost essential.",
+          "Cheaper tow bar racks are “hang on” racks — you hang the bike from its crossbar. Wheel-support racks stand the bikes on their wheels and always come with a lighting and number plate unit.",
+          "All rear-door mounting cycle carriers are car specific. The cheaper “strap on” carriers are relatively cheap and can carry up to 3 bikes. On most vehicles the carrier can be left on when the boot is opened, although the bikes should be taken off first."
+        ]
+      ]
+    },
+    "faqs": {
+      "heading": "Frequently asked questions",
+      "items": [
+        { "q": "Can I carry my e-bike on a bike carrier?", "a": "It is nearly always possible to carry an e-bike on a bike carrier, but this will usually need to be on a wheel-supported tow bar mounted rack. Their frame shape is rarely suitable for the hang-on type of tow bar rack (which are anyway usually weight-rated to a maximum 15kg per bike). E-bikes are usually either too heavy or too long for roof-mounted carriers, regardless of the effort required to lift an e-bike onto a vehicle roof. Check the specifications on the product page for weight, tyre width and wheelbase, and always remove the battery from the bike before fitting it to a carrier." },
+        { "q": "Do I need roof bars for a roof-mounted bike carrier?", "a": "Yes. Roof-mounting carriers require roof bars. Most will fit standard 32mm by 22mm roof bars, or slotted aluminium aerobars. If you also need bars, a package deal includes the carrier and the bars together." },
+        { "q": "Do I need a tow bar for a tow bar bike carrier?", "a": "Yes. Tow bar carriers fit a standard 50mm tow ball, including detachable tow balls. Check whether your tow ball is a “bolt on” or “swan neck” type, because some carriers only fit one or the other. Do not exceed the maximum permitted tow ball nose weight, including the weight of the carrier and the bikes." },
+        { "q": "Are rear-mounting bike carriers suitable for every vehicle?", "a": "No. All “back of car” / rear-door mounting cycle carriers are vehicle specific — they are not suitable for every vehicle. Check the application notes on the product page. Boot access can also be tricky: on most vehicles the carrier can be left on when the boot is opened, but the bikes should be taken off first." },
+        { "q": "Can I open the boot with bikes loaded?", "a": "On a tow bar carrier, choose a tilting (or slide-away) model — most wheel-support racks tilt, even with the bikes in place, so you can open the tailgate. On a rear-mounting carrier, the carrier can often be left on when the boot is opened, but the bikes should be taken off first to avoid damaging the tailgate hinges." }
+      ]
+    }
+  }
+}

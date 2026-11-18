@@ -2004,3 +2004,55 @@ Graham asked whether there were plans for the live city pages (`/roof-racks-bris
    - **Live lists to fix (for Graham):** Melbourne says 9 stores but lists 8 (no Preston). Arncliffe has closed permanently (Brenton, 2026-11-17), so Sydney is right to leave it out, but its page is still in the live sitemap and needs a redirect.
    - **Melbourne:** Preston is included here.
    - **Perth:** ✅ Cockburn (Yangebup) added 2026-11-17 from its new live page (`/roof-racks-galore-cockburn-store`): 10/49 Simper Drive, (08) 9566 1922, standard hours. Perth is now 6 stores and the network 36, so every "35 stores" / "35 nationwide locations" line is now 36, matching live.
+
+## 32. Bike Racks + Roof Boxes: Shop By advice, new filters, buying guide (Brenton, 2026-11-18)
+
+Brenton's brief (v2, superseding the tooltip-only v1) for the Bike Racks PLP (`prototypes/plp/`) and Roof Boxes PLP (`prototypes/plp-roof-boxes/`), in every region (AU, NZ, UK). Tim wants the UK roofbox.co.uk information kept and indexable. Branch `feat/plp-filtering-tabs-content`; not merged to main.
+
+**Brenton's decisions (2026-11-18):**
+- **Copy in the HTML:** a build script writes the copy into each page as static HTML (`node tools/build-plp-content.mjs`); nothing is fetched or added after hover or click.
+- **Phase:** the below-grid guide and FAQs are Build Phase 1, visible now.
+- **Hero text:** the UK Bike Racks hero uses the UK Show All intro (TODO to refine). The hero keeps the category text on every tab; the advice panel carries the per-tab copy.
+- **ROLA:** dropped from the Bike Racks brand filter (Tim's approved-brands list).
+
+1. ✅ **Copy files.** `content/{au,nz,uk}/{bike-racks,roof-boxes}.json` hold the hero line, every tab's advice and the guide.
+   - **UK:** trimmed roofbox.co.uk copy, word for word from the brief.
+   - **AU/NZ:** placeholder copy. The live category paragraph goes in How to choose; the tab advice is the UK advice with AU words. No 360° tool, 90-day exchange or Fit My Vehicle.
+   - **Re-running:** edit the JSON, then run `node tools/build-plp-content.mjs`. `--check` reports whether a page is out of date.
+2. ✅ **Shop By advice panel** (new shared widget). It sits under the whole tab row (outside the scrolling track) and shows a title, intro and ✓ / ! bullets for the selected tab, Show All included.
+   - Every tab and every region is in the HTML. `plpRenderAdvice` only shows or hides panels.
+   - A tab with no panel falls back to Show All. There is no ⓘ.
+3. ✅ **Below-grid buying guide** (new shared widget): How to choose → Sizes explained / Types compared table → Fitting & roof bars → FAQs.
+   - FAQs use `<details>` with the first open, plus FAQPage JSON-LD per region.
+   - It replaces the old per-tab JS FAQ section and the "{Category} Fitting" banner on these two pages (that banner carries a fitment CTA and "fitted over 200,000").
+4. ✅ **Region-aware engine** (`plp.js`, all opt-in):
+   - `regions` and `labelByRegion` / `headingByRegion` on tabs, children, filters and options.
+   - `regionExclude` hides products per region; `featuredProductByRegion` swaps the sidebar pick.
+   - `sub` adds a tab sub-label; `hint` adds a small line under a filter option.
+   - `{c}` in a label becomes the region's currency.
+   - `heroFromContent` means tabs don't overwrite the hero paragraph.
+   - It re-renders when the region changes. `shared.js` now adds `body.region-nz` too.
+5. ✅ **Bike Racks.**
+   - **Tabs:** Roof Mount · Tow Ball Mount (UK: Towbar Mount) · Hitch Mount (AU/NZ only) · Rear Mount · Accessories.
+   - **UK:** hides hitch-only products, ute tub and spare wheel; Rear Mount is rear door / boot only.
+   - **Filters:** How many bikes (1–6 AU/NZ, 1–4 UK) and Carrying e-bikes? are pinned first. Then How it holds the bike, Boot access, Lockable, Lights & number plate, Folds for storage, Brand (no ROLA), Price bands and Colour.
+   - **Removed filters:** Type of Carrier, Vehicle Fit Type, Bar Profile and Load Rating.
+   - **Demo data:** the new filter values are hand-set and commented `BIKE_RACK_DEMO_FACETS`; they are not checked against real specs.
+6. ✅ **Roof Boxes.**
+   - **Tabs:** Small / Medium / Large / XL / XXL by `facets.volume`, with the litre range under each name.
+   - **Size bands (pending Elliot):** data rules ≤349 / 350–424 / 425–474 / 475–534 / ≥535. The display ranges differ on purpose, so no box sits on a boundary.
+   - **Low Profile:** not a tab; it's Box height = Low profile.
+   - **Dimension filters:** Box length, width and height come from External Dimensions, with the threshold as a hint (≤165 / 166–199 / ≥200cm; ≤75 / 76–86 / ≥87cm; ≤38 / 39–43 / ≥44cm).
+   - **Other filters:** Load rating, Mounting system, Colour, Brand, then Box shape. Box shape keeps the old shapes, with "Medium" renamed "Medium wide" (labels only). The Size and Volume filters are gone.
+7. ✅ **No vehicle prompt on either page.** `vehiclePrompt: false`; the vehicle hero, Set Your Vehicle and Change Vehicle are removed. The global header is unchanged.
+8. ✅ **Icons:** the live AU Shop By tab artwork is now in `_shared/shopby-icons/`, plus a UK-blue (#2E41AE) copy with only the red accent recoloured. On Accessories the keys stay as drawn. Show All also gets a UK copy on these two pages.
+9. ✅ **Component Library:** two new entries (Shop By Advice Panel, PLP Buying Guide). The examples that used Bike Racks' vehicle hero, old FAQ and fitting banner now point at Roof Top Tents.
+
+**Open:**
+- **Size bands:** Elliot to confirm.
+- **Hero text:** refine the Bike Racks hero (TODO in the JSON). AU/NZ also uses the Show All intro, so the live paragraph isn't repeated in How to choose.
+- **Placeholder links:** Buying Guide, package deal and the UK 360° size tool are `href="#"`.
+- **AU/NZ copy:** write the full guide to replace the placeholder.
+- **Roof Box PDP breadcrumb:** its `?attachment=medium` link (the old shape) now lands on the Medium size tab.
+- **ROLA products:** three are still in the demo grid (only the filter option was dropped).
+- **Per-region meta descriptions:** a production job (TODO in each page).
