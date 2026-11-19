@@ -2055,6 +2055,7 @@ Brenton's brief (v2, superseding the tooltip-only v1) for the Bike Racks PLP (`p
     - **Tab title:** `PLP_CONFIG.documentTitle` gives "Roof Boxes | Roof Racks Galore" in AU/NZ and "Roof Boxes | The Roof Box Company" in the UK (Bike Racks likewise).
     - **Wording:** the hero button reads "Buying Guide", matching the body copy.
     - **Body class:** `region-au` is added, next to `region-nz` and `region-uk`.
+    - **Guide width (2026-11-19):** the below-grid guide now runs the full content width; the 960px cap is gone.
     - **Towbar tab:** the two ROLA vertical racks (p17, p18) had no Level 3 child, so 6 racks showed under cards that added up to 4. They now sit under Frame Hanging (their hold style), giving 3 + 3.
 
 **Open:**

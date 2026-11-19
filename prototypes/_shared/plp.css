@@ -783,7 +783,8 @@ body.region-uk .plp-rgn:not([data-region="uk"]){display:none !important;}
 
 /* Below-grid buying guide: How to choose → table → Fitting & roof bars → FAQs. */
 .plp-guide{margin:var(--space-section) 0;}
-.plp-guide-section{margin:0 0 40px;max-width:960px;}
+/* Full content width (2026-11-19, Brenton: the 960px cap left a gap on the right of the page column). */
+.plp-guide-section{margin:0 0 40px;}
 .plp-guide-section h2{margin:0 0 14px;}
 .plp-guide-section p{margin:0 0 12px;font-size:15px;line-height:1.65;color:var(--rrg-grey-700);}
 .plp-guide-section ul{margin:0 0 14px;padding-left:20px;}
