@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../_shared/favicon.ico">
+<!-- Title + description are the city's live ones, set from its record (cityRender()). Indexed. -->
+<title>Roof Racks Galore Stores</title>
+<meta name="description" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Kalam:wght@700&family=Lato:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../_shared/shared.css">
+<link rel="stylesheet" href="../_shared/plp.css">
+<link rel="stylesheet" href="../_shared/mega-menu.css">
+<link rel="stylesheet" href="../_shared/admin-panel.css">
+<link rel="stylesheet" href="../_shared/footer.css">
+<link rel="stylesheet" href="../_shared/campaign.css">
+<!-- ===== City Store Page, REWORK EXAMPLE (docs/store-city/store-city-spec.md Section 8, 2026-11-24) =====
+     Marc's feedback on the current city page (prototypes/store-city/): it reads as a second
+     Store Finder (same map, tabs, cards) and can suggest RRG only has stores in that city. This
+     example rebuilds Perth around fitting and local advice: a nationwide bar, a fitting-led hero,
+     the Fit Finder, local questions, real WA fitments from Rackit, then the stores as compact cards
+     with no map. The current page is left untouched for comparison. Only Perth has its local
+     advice written; the other cities render without that section until their lists are signed off.
+     New CSS is page-scoped below; it moves to shared.css when the rework is approved. -->
+<style>
+  /* Nationwide bar (8.1 #2) */
+  .city-network-bar{display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap;background:var(--rrg-bg);border-radius:var(--radius);padding:12px 18px;margin:4px 0 18px;font-size:15px;}
+  .city-network-bar .cnb-count strong{font-weight:900;}
+  .city-network-bar .cnb-count .cnb-more{color:var(--rrg-red);font-weight:900;}
+  .city-network-bar nav{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;}
+  .city-network-bar nav span{color:var(--rrg-grey-700);}
+  .city-network-bar nav a{font-weight:700;color:var(--rrg-text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--rrg-line);}
+  .city-network-bar nav a:hover{text-decoration-color:currentColor;}
+  .city-network-bar .cnb-all{margin-left:auto;font-weight:900;color:var(--rrg-red);white-space:nowrap;}
+  @media (max-width:760px){
+    .city-network-bar{padding:10px 14px;font-size:14px;}
+    .city-network-bar nav{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:2px;scrollbar-width:none;}
+    .city-network-bar nav a,.city-network-bar nav span{white-space:nowrap;}
+    .city-network-bar .cnb-all{margin-left:0;}
+  }
+  /* Fit Finder band (8.1 #4) */
+  .city-fit-finder{margin:var(--space-section) 0;}
+  .city-fit-finder > h2{margin-bottom:12px;}
+  /* Local advice (8.1 #6): the FAQ accordion in two columns on desktop */
+  .city-advice .faq-intro{max-width:760px;margin:-6px 0 18px;color:var(--rrg-grey-700);}
+  .city-advice-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-items:start;}
+  .city-advice .faq-answer .city-advice-link{display:inline-block;margin-top:6px;font-weight:900;color:var(--rrg-red);}
+  @media (max-width:900px){ .city-advice-cols{grid-template-columns:1fr;} }
+  /* Stores, compact (8.1 #8): the shared store card in a grid, no map */
+  .city-stores-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+  .city-stores-head a{font-weight:900;color:var(--rrg-red);}
+  .city-store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 12px;margin-top:10px;}
+  .city-store-cell{display:flex;flex-direction:column;}
+  .city-store-cell .sf-card{flex:1;}
+  .city-store-area{margin:0 0 6px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--rrg-grey-700);}
+  @media (max-width:1000px){ .city-store-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:640px){ .city-store-grid{grid-template-columns:1fr;} }
+  /* Fitment Gallery detail: the store a fitment was done at (shared widget, per-photo record) */
+  .fgs-store-line{margin:10px 0 0;font-size:14px;}
+  .fgs-store-line a{font-weight:700;}
+</style>
+</head>
+<body>
+
+<div data-widget="header"></div>
+
+<!-- Breadcrumbs: Home › Store Finder › {city} (unchanged). -->
+<div class="plp-crumbs-row wrap">
+  <div class="rrg-crumbs" id="cityCrumbs"></div>
+</div>
+<script type="application/ld+json" id="cityLd">{}</script>
+
+<main data-store-city-page>
+<div class="wrap">
+  <!-- Nationwide bar: this city's stores, how many more there are, and the other cities. -->
+  <div class="city-network-bar" id="cityNetwork"></div>
+
+  <!-- Hero: led by fitting. Live H1 (SEO), fitting-first intro, facts, Book a Fitting (gold) and
+       Find My Nearest Store (sorts the store cards below; no map). -->
+  <section class="plp-hero" id="cityHero">
+    <div>
+      <h1 id="cityH1"></h1>
+      <p id="cityIntro"></p>
+      <ul class="city-hero-facts" id="cityFacts"></ul>
+      <div class="plp-hero-cta-row">
+        <a class="btn btn-cta" href="#">Book a Fitting</a>
+        <button type="button" class="btn btn-outline" id="cityLocate">Find My Nearest Store</button>
+      </div>
+      <p class="sf-status" id="cityStatus" role="status"></p>
+    </div>
+    <div class="plp-hero-media city-hero-media">
+      <img id="cityHeroImg" src="" alt="" width="1200" height="800" fetchpriority="high">
+    </div>
+  </section>
+
+  <!-- Fitting services row, worded for the city. -->
+  <div class="trust-row" id="cityServices"></div>
+
+  <!-- Fit Finder: the shared inline vehicle finder, as on the MCLP. -->
+  <section class="city-fit-finder">
+    <h2 class="related-heading" id="cityFitHeading"></h2>
+    <div data-widget="vehicle-finder" data-id="cityFitFinder" data-intro="Select your vehicle to see the roof racks, platforms and accessories that fit it." data-vf-submit-href="../vplp/index.html" data-vf-browse-href="../vplp/index.html"></div>
+  </section>
+
+  <!-- Local advice: questions about local trips and conditions, each answer linking to a category. -->
+  <section class="faq-section city-advice" id="cityAdvice">
+    <h2 class="faq-heading" id="cityAdviceHeading"></h2>
+    <p class="faq-intro" id="cityAdviceIntro"></p>
+    <div class="city-advice-cols" id="cityAdviceList"></div>
+  </section>
+
+  <!-- Fitment Gallery: real fitments from this city's stores (Rackit), each with its own vehicle,
+       rack and store in the detail view. -->
+  <section class="fit-gallery-section" id="fitGallerySection" data-count="0" data-fit-gallery></section>
+
+  <!-- Stores: the shared store card in a grid under area headings. No map, tabs or List/Map toggle. -->
+  <section id="cityStores">
+    <div class="city-stores-head">
+      <h2 class="related-heading" id="cityStoresHeading"></h2>
+      <a id="cityStoresAll" href="#"></a>
+    </div>
+    <div id="cityList"></div>
+  </section>
+
+  <!-- Local copy (the live page's, trimmed) beside photos of the city's stores. -->
+  <section class="store-local cat-tile-section">
+    <div class="content-block">
+      <h2 id="cityLocalHeading"></h2>
+      <div id="cityLocalCopy"></div>
+    </div>
+    <div class="city-photo-grid" id="cityPhotos"></div>
+  </section>
+</div>
+
+<section class="vclp-trust-banner">
+  <img class="install-photo" src="../_shared/installer.png" alt="" width="740" height="420" loading="lazy">
+  <div class="wrap">
+    <div class="vclp-trust-inner">
+      <h2>Friendly + Trusted Nationwide Experts in Roof Rack Supply and Installation</h2>
+      <div class="vclp-reviews-badge"><span class="stars" aria-hidden="true">★★★★<span class="star-dim">★</span></span> Reviews.io — 4.3 / 5 from 1,914 reviews</div>
+      <div class="vclp-trust-ctas">
+        <a href="#" class="btn btn-primary">Book An Installation</a>
+        <a href="#" class="btn btn-outline">See Fitting Costs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- Store FAQ, cut to the three practical questions; store lists and hours from the data. -->
+  <section class="faq-section">
+    <h2 class="faq-heading" id="cityFaqHeading"></h2>
+    <div class="faq-list" id="cityFaqList"></div>
+  </section>
+</div>
+
+<div data-widget="brands-strip"></div>
+</main>
+
+<div data-widget="footer"></div>
+
+<script src="../_shared/component-mode.js"></script>
+<script src="../_shared/nav-data.js"></script>
+<script src="../_shared/session-state.js"></script>
+<script src="../_shared/campaign.js"></script>
+<script src="../_shared/widgets.js"></script>
+<script src="../_shared/mega-menu.js"></script>
+<script src="../_shared/admin-panel.js"></script>
+<script src="../_shared/shared.js"></script>
+<script src="../_shared/cart.js"></script>
+<script>
+// ==== City records ====================================================================
+// Same shape as the current city page (prototypes/store-city/), plus: a fitting-led intro, the
+// state's Rackit fitment count, the local advice and the fitment photos. Brands follow the
+// approved list (no STEDI, Wedgetail or ROLA).
+const CITY_FITTING_COPY = 'Every store has an experienced team who can recommend, supply and install the right setup, from popular models like the Ford Ranger, Ford Everest, Toyota HiLux, Toyota LandCruiser, Mitsubishi Pajero Sport, Isuzu MU-X and Subaru Forester through to everyday family cars, work utes and touring vehicles.';
+const CITY_BRANDS = 'Rhino-Rack, Yakima, Thule, Cruz, DropRacks, Prorack, Front Runner, MAXTRAX, Kuat, KAON, Darche and BUZZ Rack';
+const cityCopy = (region, extra = '') => [
+  `Whether you’re fitting out a work vehicle, setting up for weekends away or upgrading your touring setup, our ${region} superstores stock roof racks, bike carriers, eBike racks, platforms, roof boxes, roof top tents, awnings, ${extra}LED lights and touring gear.`,
+  CITY_FITTING_COPY,
+  `In store you’ll find ${CITY_BRANDS}.`
+];
+
+// Category links for the advice answers. Prototype pages where one exists; the rest are TODO
+// (the live category URLs go in at build).
+const CAT = {
+  racks: { label: 'Shop roof racks & platforms', href: '../vplp/index.html' },
+  boxes: { label: 'Shop roof boxes', href: '../plp-roof-boxes/index.html' },
+  water: { label: 'Shop water carriers', href: '../plp-water-carriers/index.html' },
+  watersport: { label: 'Shop kayak & SUP carriers', href: '#' /* TODO: live watersports category */ },
+  surf: { label: 'Shop surfboard carriers', href: '#' /* TODO: live surf category */ },
+  tents: { label: 'Shop roof top tents', href: '../plp-roof-top-tents/index.html' },
+  recovery: { label: 'Shop platform accessories', href: '../vplp-accessories/index.html' },
+  awnings: { label: 'Shop awnings', href: '../plp-awnings/index.html' },
+  bikes: { label: 'Shop bike racks', href: '../plp/index.html' },
+  fit: { label: 'Check what fits your vehicle', href: '../fit-my-vehicle/index.html' },
+  costs: { label: 'See fitting costs', href: '../installation/index.html#costs' }
+};
+
+// Perth / WA advice: Marc's questions (2026-11-24). Q4 reworded: vehicles can't go to Rottnest.
+const PERTH_ADVICE = [
+  { q: 'What roof rack setup holds up best on the Gibb River Road and other corrugated WA tracks?',
+    a: 'Corrugations are the hardest test a roof rack gets: hours of vibration rather than one big hit. A platform on a backbone or tracks, rated for off-road use, spreads the load across more mounting points than two bars on clamp feet. Keep the load low and light, torque every bolt before you leave and recheck the mounts at the end of each day on the Gibb. Our Perth fitters can set up and torque the rack for you before the trip.', link: CAT.racks },
+  { q: 'How do I protect my roof rack and gear from red dust on outback trips?',
+    a: 'Fine red dust gets into anything that isn’t sealed. Carry gear that has to stay clean in a roof box with a good lid seal or in heavy-duty rack bags, and keep roof top tents and awnings in their covers on the road. When you get home, hose down the rack, the mounts and the lock barrels: dust packed into threads and lock cylinders is what makes them seize later.', link: CAT.boxes },
+  { q: 'What’s the best way to carry extra fuel and water jerry cans on a roof rack for remote WA travel?',
+    a: 'Water is fine on the roof in purpose-made holders, as long as it fits within your roof load limit: 20 litres of water weighs about 20kg before you add the can. Fuel is better carried low, in a rear-wheel or tub-mounted holder, because it’s heavy, it raises your centre of gravity and its vapour is best kept away from the roof gear. Whatever you carry, use holders made for your platform and lock them in.', link: CAT.water },
+  { q: 'What’s the best way to carry a kayak or SUP to the Swan River, Margaret River or the Coral Coast?',
+    a: 'Use kayak cradles or J-style carriers for a kayak, and padded bars or a SUP carrier for a board. Strap across the hull with cam straps, and add bow and stern tie-downs for the long highway runs to Margaret River or the Coral Coast. A few twists in each strap between the bars stops it humming. If you load on your own, a carrier that loads from the side or the rear saves lifting over the roof.', link: CAT.watersport },
+  { q: 'What roof rack setup works for carrying surfboards to Margaret River and the South West?',
+    a: 'Padded bars or a surf rack keep boards off bare metal. Load the boards deck down, fins up and towards the back of the car, with the biggest board on the bottom. Use cam straps rather than ocky straps, twisted to stop them humming on the drive south. A locking strap means the boards can stay on the car while you grab a coffee in town.', link: CAT.surf },
+  { q: 'How do I mount a rooftop tent for camping trips to Esperance and Cape Le Grand?',
+    a: 'Start with three numbers: your vehicle’s roof load rating, the rack’s rating and the tent’s weight. The tent, plus the rack, has to sit within the lowest of those ratings while you’re driving. A platform or heavy-duty bars on fixed mounting points is the usual base, and the tent bolts to the bars with its own brackets. Our fitters can check the ratings and fit the tent, so it’s ready to go before you head to Cape Le Grand.', link: CAT.tents },
+  { q: 'What roof rack is best for carrying a recovery kit, Maxtrax and a shovel for beach driving at Lancelin or Yeagarup?',
+    a: 'A platform is the easiest base. Recovery boards mount flat with their own pins or brackets, so they’re locked down but quick to grab when you’re bogged at Lancelin or Yeagarup, and a shovel holder keeps the shovel in the same place. Keep heavy gear like the compressor and recovery straps inside the vehicle; the roof is for light, bulky things.', link: CAT.recovery },
+  { q: 'How should I set up a roof rack for the strong crosswinds on the Brand and North West Coastal Highways?',
+    a: 'A low, narrow load catches less wind. Keep tall or flat items like boards, kayaks and ladders as low and as central as you can, and use aero bars or a wind fairing to cut noise and drag. Strap everything twice, check the straps at every fuel stop and ease off in strong gusts, because a roof load changes how the vehicle handles.', link: CAT.racks },
+  { q: 'What roof rack setup suits FIFO workers driving between Perth and the Pilbara or Goldfields?',
+    a: 'For long runs to the Pilbara or the Goldfields, keep it tough, simple and lockable: a platform or heavy-duty bars, with lockable storage so tools and gear stay secure while the vehicle sits at site or in the airport car park. A low setup saves fuel and noise over thousands of highway kilometres. If you’ve got a canopy or tub rack, we can match the roof rack to it.', link: CAT.racks },
+  { q: 'How much weight can I safely carry on my roof for off-road driving compared with highway driving?',
+    a: 'The limit is the lowest of three numbers: your vehicle’s roof load rating, the rack’s rating and any accessory’s rating. The weight of the rack itself counts too. Many rack makers publish a lower off-road rating than their on-road one, because bumps and corrugations multiply the forces on the mounts. Check the off-road figure for your rack, stay well under it on rough tracks and keep heavy gear inside the vehicle.', link: CAT.fit },
+  { q: 'Which awnings and roof rack accessories cope best with WA’s heat and UV?',
+    a: 'In WA it’s the sun that wears out roof gear. Choose an awning with UV-rated canvas and keep it in its cover when it’s rolled up. Look for UV-stabilised plastics on roof boxes and accessories, and replace straps once they fade and stiffen. At camp, an awning on the side you set up on makes the biggest difference.', link: CAT.awnings },
+  { q: 'What roof rack setup works for towing a caravan or camper trailer up the coast?',
+    a: 'A tow-bar bike rack can’t stay on while the caravan is hitched, so bikes usually go on roof carriers or on a rack on the van. Everything on the roof still counts towards your vehicle’s limits, so keep it light: an awning and light, bulky gear up top, heavy gear low in the vehicle. Check your ball weight and your vehicle’s towing and roof limits together before the trip.', link: CAT.bikes },
+  { q: 'How do I stop gear on my roof rack rattling loose on long gravel roads in the Kimberley?',
+    a: 'Rattles usually start at a loose fitting, so torque every bolt before you leave and recheck them after the first day on gravel. Use cam or ratchet straps, never ocky straps, and pack the gaps with soft bags so nothing can shift. An extra strap on anything long stops it knocking. Carry the right Allen keys and a spare strap, and check everything each morning.', link: CAT.racks }
+];
+
+// Real WA fitments from the Rackit gallery (16 of the state's 4,614, from five Perth stores),
+// saved as 480×360 .webp in _shared/fitments/perth/. Production queries Rackit by store list.
+const PERTH_FITMENTS = [
+  [6862, 'Ford Everest U704 (2022 onwards)', 'Rhino-Rack Pioneer 6 Platform (2100mm x 1240mm) with Backbone', 'Joondalup', 'Blue'],
+  [22493, 'Ford Ranger Raptor P703 (2022 onwards)', 'Rhino-Rack Pioneer 6 Platform (1500mm x 1240mm) with Backbone', 'Welshpool', 'Grey'],
+  [24008, 'Toyota LandCruiser 200 Series (2007 to 2022)', 'Rhino-Rack Pioneer 6 Platform (2100mm x 1240mm) with Backbone', 'Malaga', 'Grey'],
+  [26632, 'Isuzu D-Max (2020 onwards)', 'Rhino-Rack Pioneer 6 Flatpack Platform (1300mm x 1240mm) with Backbone', 'Rockingham', 'White'],
+  [20728, 'Ford Ranger P703 Wildtrak (2022 onwards)', 'Rhino-Rack Pioneer 6 Tradie (1300mm x 1240mm) with RX100 Legs', 'Welshpool', 'Silver'],
+  [6757, 'Mitsubishi Pajero NS-NX (2006 to 2022)', 'Rhino-Rack Pioneer 6 Platform (1500mm x 1240mm) with RX100 Legs', 'Osborne Park', 'Silver'],
+  [18776, 'Mitsubishi Triton MV (2024 onwards)', 'Yakima TrimHD SkyLine Black 2 Bar Roof Rack', 'Welshpool', 'White'],
+  [26640, 'Volkswagen Amarok (2011 to 2023)', 'Rhino-Rack Sportz RX300H Black 2 Bar Roof Rack', 'Malaga', 'White'],
+  [20732, 'Isuzu D-Max X-Terrain (2020 onwards)', 'Rhino-Rack Sportz RX300L Black 2 Bar Roof Rack', 'Malaga', 'Silver'],
+  [6901, 'Toyota HiAce H300 LWB (2019 onwards)', 'Rhino-Rack Vortex Black 4 Bar System with Backbone', 'Welshpool', 'Silver'],
+  [20741, 'Isuzu MU-X (2021 onwards)', 'Thule WingBar Evo Black 2 Bar Roof Rack', 'Welshpool', 'Grey'],
+  [6756, 'Volvo XC60 (2017 onwards)', 'Thule WingBar Evo Black 2 Bar Roof Rack', 'Osborne Park', 'Grey'],
+  [20727, 'Suzuki Vitara LY (2015 onwards)', 'Thule WingBar Evo Black 2 Bar Roof Rack', 'Osborne Park', 'Blue'],
+  [6213, 'Mazda CX-5 KF (2017 onwards)', 'Yakima Aero FlushBar Black 2 Bar Roof Rack', 'Welshpool', 'Silver'],
+  [6903, 'Toyota RAV4 XA20 (2000 to 2005)', 'Yakima Aero ThruBar Black 2 Bar Roof Rack', 'Joondalup', 'Black'],
+  [20731, 'BYD Seal (2023 onwards)', 'Yakima JetStream FX BaseLine Silver 2 Bar Roof Rack', 'Osborne Park', 'White']
+].map(([id, vehicle, rack, store, colour]) => ({ id, thumb: `../_shared/fitments/perth/${id}.webp`, vehicle, rack, store, colour, shopHref: '../vplp/index.html' }));
+
+const CITY_PAGES = {
+  brisbane: {
+    title: 'Roof Racks Galore | SEQ | Brisbane, Gold Coast & Sunshine Coast Roof Rack Superstores',
+    metaDescription: 'Shop roof racks, bike racks, roof boxes, awnings, roof top tents and 4x4 accessories across South East Queensland. Roof Racks Galore has stores throughout Brisbane, Gold Coast and Sunshine Coast with expert advice and professional fitting available.',
+    region: 'South East Queensland', stateShort: 'QLD',
+    intro: 'Expert roof rack fitting and advice at eight South East Queensland superstores, from the Sunshine Coast to the Gold Coast.',
+    heroImage: { src: 'northlakes-outside.webp', alt: 'Roof Racks Galore North Lakes superstore' },
+    localHeading: 'Roof Racks, Bike Racks, Touring Gear & Professional Fitting',
+    localCopy: cityCopy('South East Queensland', '4WD accessories, '),
+    photos: [
+      { store: 'North Lakes', src: 'northlakes-inside-1.webp', alt: 'Inside Roof Racks Galore North Lakes' },
+      { store: 'East Brisbane', src: 'eastbrisbane-outside.webp', alt: 'Roof Racks Galore East Brisbane superstore' },
+      { store: 'Kedron', src: 'kedron-1.webp', alt: 'Roof Racks Galore Kedron superstore' },
+      { store: 'Rocklea', src: 'rocklea-outside.webp', alt: 'Roof Racks Galore Rocklea superstore' }
+    ],
+    fitments: 6135, advice: [], fitPhotos: []
+  },
+  sydney: {
+    title: 'Roof Racks Galore | New South Wales | Sydney Roof Racks & Touring Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Sydney. Roof Racks Galore has Superstores in Silverwater, Miranda, Warriewood, Moorebank, Castle Hill, Smeaton Grange and Matraville with expert advice and professional fitting available.',
+    region: 'Sydney', stateShort: 'NSW',
+    intro: 'Expert roof rack fitting and advice at seven Sydney superstores, from Warriewood to Smeaton Grange.',
+    heroImage: { src: 'moorebank-outside.webp', alt: 'Roof Racks Galore Moorebank superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Sydney'),
+    photos: [
+      { store: 'Castle Hill', src: 'castlehill-front.webp', alt: 'Roof Racks Galore Castle Hill superstore' },
+      { store: 'Silverwater', src: 'silverwater-outside-1.webp', alt: 'Roof Racks Galore Silverwater superstore' },
+      { store: 'Matraville', src: 'matraville-outside-1.webp', alt: 'Roof Racks Galore Matraville superstore' },
+      { store: 'Warriewood', src: 'warriewood.webp', alt: 'Roof Racks Galore Warriewood superstore' }
+    ],
+    fitments: 3810, advice: [], fitPhotos: []
+  },
+  melbourne: {
+    title: 'Roof Racks Galore | Victoria | Melbourne & Geelong Roof Rack Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Melbourne and Geelong. Roof Racks Galore has 9 Superstores throughout Victoria with expert advice, professional fitting and products from leading brands.',
+    region: 'Melbourne & Geelong', stateShort: 'VIC',
+    intro: 'Expert roof rack fitting and advice at nine Melbourne and Geelong superstores, from Epping to Frankston.',
+    heroImage: { src: 'preston-outside.webp', alt: 'Roof Racks Galore Preston superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Melbourne and Geelong'),
+    photos: [
+      { store: 'Frankston', src: 'frankston-outside.webp', alt: 'Roof Racks Galore Frankston superstore' },
+      { store: 'Epping', src: 'epping-outside.webp', alt: 'Roof Racks Galore Epping superstore' },
+      { store: 'Geelong', src: 'geelong-1.webp', alt: 'Roof Racks Galore Geelong superstore' },
+      { store: 'Hallam', src: 'hallam-outside.webp', alt: 'Roof Racks Galore Hallam superstore' }
+    ],
+    fitments: 5704, advice: [], fitPhotos: []
+  },
+  perth: {
+    title: 'Roof Racks Galore | Western Australia | Perth Roof Rack Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Perth. Roof Racks Galore has Superstores in Osborne Park, Welshpool, Malaga, Joondalup, Rockingham and Cockburn with expert advice and professional fitting available.',
+    region: 'Perth', stateShort: 'WA',
+    intro: 'Expert roof rack fitting and advice at six Perth superstores, from Joondalup to Rockingham. Our fitters set vehicles up for everything from the school run to the Gibb River Road.',
+    heroImage: { src: 'joondalup-outside.webp', alt: 'Roof Racks Galore Joondalup superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Perth'),
+    photos: [
+      { store: 'Osborne Park', src: 'osbornepark-inside-1.webp', alt: 'Inside Roof Racks Galore Osborne Park' },
+      { store: 'Welshpool', src: 'welshpool-outside.webp', alt: 'Roof Racks Galore Welshpool superstore' },
+      { store: 'Malaga', src: 'malaga-outside.webp', alt: 'Roof Racks Galore Malaga superstore' },
+      { store: 'Joondalup', src: 'joondalup-inside-1.webp', alt: 'Inside Roof Racks Galore Joondalup' }
+    ],
+    fitments: 4614, advice: PERTH_ADVICE, fitPhotos: PERTH_FITMENTS,
+    adviceHeading: 'Perth & WA Roof Rack Advice',
+    adviceIntro: 'From corrugations on the Gibb to crosswinds on the Brand Highway, these are the questions our Perth fitters get asked most.'
+  },
+  adelaide: {
+    title: 'Roof Racks Galore | SA | Adelaide Metro Roof Rack Superstores',
+    metaDescription: 'Explore roof racks, bike racks, roof boxes, camping and touring accessories across Adelaide Metro. Roof Racks Galore has Superstores in Adelaide City, Edinburgh, Lonsdale and Pooraka, with expert advice and professional fitting available.',
+    region: 'Adelaide', stateShort: 'SA',
+    intro: 'Expert roof rack fitting and advice at four Adelaide superstores, from Edinburgh to Lonsdale.',
+    heroImage: { src: 'pooraka-outside.webp', alt: 'Roof Racks Galore Pooraka superstore' },
+    localHeading: 'Roof Racks, Bike Racks & Touring Gear',
+    localCopy: cityCopy('Adelaide'),
+    photos: [
+      { store: 'Adelaide City', src: 'adelaidecity-outside.webp', alt: 'Roof Racks Galore Adelaide City superstore' },
+      { store: 'Edinburgh', src: 'edinburgh-1.webp', alt: 'Roof Racks Galore Edinburgh superstore' },
+      { store: 'Lonsdale', src: 'lonsdale-outside.webp', alt: 'Roof Racks Galore Lonsdale superstore' },
+      { store: 'Pooraka', src: 'pooraka-inside-1.webp', alt: 'Inside Roof Racks Galore Pooraka' }
+    ],
+    fitments: 2704, advice: [], fitPhotos: []
+  }
+};
+
+const CITY_QS = new URLSearchParams(location.search).get('city');
+const CITY_SLUG = CITY_PAGES[CITY_QS] ? CITY_QS : 'perth';
+const CITY = { ...RRG_STORE_CITIES[CITY_SLUG], ...CITY_PAGES[CITY_SLUG] };
+const ALL_STORES = rrgAuStoreList();
+const CITY_STORES = CITY.areas.flatMap(a => a.stores.map(name => ({ ...ALL_STORES.find(st => st.name === name), area: a.name })));
+const FIT_GALLERY_PHOTOS = CITY.fitPhotos;
+const cityV2Href = slug => `index.html?city=${slug}`;
+const $ = id => document.getElementById(id);
+const NUM_WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const listJoin = arr => arr.length < 2 ? arr.join('') : `${arr.slice(0, -1).join(', ')} and ${arr[arr.length - 1]}`;
+const roundDown = n => n >= 1000 ? `${(Math.floor(n / 100) * 100).toLocaleString('en-AU')}+` : String(n);
+
+// Page state: origin = the visitor's location after Find My Nearest Store (cards then sort by distance).
+const city = { origin: null };
+
+// ==== Nationwide bar ================================================================
+function cityRenderNetwork() {
+  const n = CITY_STORES.length, total = ALL_STORES.length;
+  const others = Object.entries(RRG_STORE_CITIES).filter(([slug]) => slug !== CITY_SLUG);
+  $('cityNetwork').innerHTML = `
+    <span class="cnb-count"><strong>${n}</strong> ${CITY.short} stores · <span class="cnb-more">${total - n} more</span> across Australia</span>
+    <nav aria-label="Stores in other cities"><span>Also in</span>${others.map(([slug, c]) => `<a href="${cityV2Href(slug)}">${c.short}</a>`).join('')}</nav>
+    <a class="cnb-all" href="${RRG_STORE_FINDER_HREF()}">All ${total} stores ›</a>`;
+}
+
+// ==== Stores (compact cards, no map) ================================================
+function cityRenderStores() {
+  let html = '';
+  if (city.origin) {
+    const rows = CITY_STORES.map(st => ({ st, km: rrgKmBetween(city.origin, st) })).sort((a, b) => a.km - b.km);
+    html = `<div class="city-store-grid is-sorted">${rows.map((r, i) => rrgStoreCardHTML(r.st, { km: r.km, nearest: i === 0 })).join('')}</div>`;
+  } else {
+    // One grid in area order; each card carries its area name (most areas have one store, so
+    // a heading per area left half-empty rows).
+    html = `<div class="city-store-grid">${CITY_STORES.map(st =>
+      `<div class="city-store-cell">${CITY.areas.length > 1 ? `<span class="city-store-area">${st.area}</span>` : ''}${rrgStoreCardHTML(st)}</div>`).join('')}</div>`;
+  }
+  $('cityList').innerHTML = html;
+  cityRenderFacts();
+}
+
+// Hero facts: store count, how many are open now (each in its own time zone), the state's fitments.
+function cityRenderFacts() {
+  const open = CITY_STORES.filter(st => rrgStoreOpenStatus(st.hours, st.timeZone, rrgStoreHolidays(RRG_STATE_ABBR[st.state])).open).length;
+  const next = open ? null : rrgStoreOpenStatus(CITY_STORES[0].hours, CITY_STORES[0].timeZone, rrgStoreHolidays(RRG_STATE_ABBR[CITY_STORES[0].state])).text;
+  $('cityFacts').innerHTML = [
+    `<li><strong>${CITY_STORES.length}</strong> superstores</li>`,
+    open ? `<li class="is-open"><strong>${open} open now</strong></li>` : `<li>Closed now · ${next}</li>`,
+    `<li><strong>${roundDown(CITY.fitments)}</strong> ${CITY.stateShort} fitments</li>`
+  ].join('');
+}
+
+// ==== Find My Nearest Store =========================================================
+function citySetStatus(html, error) { $('cityStatus').innerHTML = html; $('cityStatus').classList.toggle('is-error', !!error); }
+$('cityLocate').addEventListener('click', () => {
+  const fail = `We couldn’t get your location. All ${CITY_STORES.length} ${CITY.region} stores are listed below.`;
+  if (!navigator.geolocation) { citySetStatus(fail, true); return; }
+  citySetStatus('Finding your location…');
+  navigator.geolocation.getCurrentPosition(pos => {
+    city.origin = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    citySetStatus(`Stores nearest <strong>your location</strong><button type="button" data-city-clear>Clear</button>`);
+    cityRenderStores();
+    $('cityStores').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, () => citySetStatus(fail, true), { timeout: 10000 });
+});
+
+// ==== Render (copy, services, advice, gallery, photos, FAQ, structured data) =========
+function cityHoursSentence() {
+  const h = RRG_STANDARD_HOURS;
+  const fmt = d => `${rrgFmtTime(d[0])}–${rrgFmtTime(d[1])}`;
+  return `Our ${CITY.region} stores are open Monday to Friday ${fmt(h.mon)} and Saturday ${fmt(h.sat)}, and closed on Sundays and public holidays. Each store’s page shows its hours for the week ahead, including any holiday closures.`;
+}
+const faqHTML = list => list.map((f, i) => `
+  <details class="faq-item"${i === 0 ? ' open' : ''}>
+    <summary>${f.q}</summary>
+    <div class="faq-answer"><p>${f.a}</p>${f.link ? `<a class="city-advice-link" href="${f.link.href}">${f.link.label} ›</a>` : ''}</div>
+  </details>`).join('');
+
+function cityRender() {
+  document.title = CITY.title;
+  document.querySelector('meta[name=description]').content = CITY.metaDescription;
+  const trail = [{ label: 'Home', href: '../home/index.html' }, { label: 'Store Finder', href: RRG_STORE_FINDER_HREF() }, { label: CITY.short }];
+  $('cityCrumbs').innerHTML = trail.map((seg, i) => (i ? ' &gt; ' : '') + (seg.href ? `<a href="${seg.href}">${seg.label}</a>` : `<span>${seg.label}</span>`)).join('');
+
+  cityRenderNetwork();
+  $('cityH1').textContent = `Roof Racks Galore ${CITY.name}`;
+  $('cityIntro').textContent = CITY.intro;
+  $('cityHeroImg').src = `../_shared/stores/${CITY.heroImage.src}`;
+  $('cityHeroImg').alt = CITY.heroImage.alt;
+
+  const n = CITY_STORES.length;
+  $('cityServices').innerHTML = [
+    { icon: '<path d="M22 7.24a5 5 0 0 1-6.16 6.16l-8.3 8.3a2 2 0 0 1-2.83-2.83l8.3-8.3A5 5 0 0 1 19.76 2l-3.4 3.4 1.24 1.24L21 3.24A5 5 0 0 1 22 7.24z"/>', h: 'Expert Fitting', p: `Trained fitters at every ${CITY.short} store, <a href="#">book a fitting</a>` },
+    { icon: '<path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>', h: 'Upfront Fitting Costs', p: `Know the price before you book, <a href="${CAT.costs.href}">see fitting costs</a>` },
+    { icon: '<path d="M3 9l1.5-5h15L21 9"/><path d="M4 9h16v11H4z"/><path d="M9 20v-6h6v6"/>', h: 'Click & Collect', p: `Order online, pick up from any of our ${n} ${CITY.region} stores` },
+    { icon: '<path d="M21 12a8 8 0 0 1-11.8 7L3 21l2-6.2A8 8 0 1 1 21 12z"/>', h: 'Local Advice', p: 'Help choosing the right setup for your vehicle and your trip' }
+  ].map(x => `<div class="item"><svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${x.icon}</svg><h4>${x.h}</h4><p>${x.p}</p></div>`).join('');
+
+  $('cityFitHeading').textContent = 'Find Racks That Fit Your Vehicle';
+
+  // Local advice: hidden for a city whose list isn't written yet.
+  $('cityAdvice').hidden = !CITY.advice.length;
+  if (CITY.advice.length) {
+    $('cityAdviceHeading').textContent = CITY.adviceHeading;
+    $('cityAdviceIntro').textContent = CITY.adviceIntro;
+    // Two independent columns (first half, second half) so opening one answer doesn't push
+    // the other column down; on phones they stack back into the original order.
+    const half = Math.ceil(CITY.advice.length / 2);
+    $('cityAdviceList').innerHTML = [CITY.advice.slice(0, half), CITY.advice.slice(half)]
+      .map((col, c) => `<div class="faq-list">${faqHTML(col).replace(c ? ' open' : '', '')}</div>`).join('');
+  }
+
+  // Fitment Gallery: this city's real fitments; hidden when there are none in the prototype.
+  const gallery = $('fitGallerySection');
+  gallery.hidden = !FIT_GALLERY_PHOTOS.length;
+  if (FIT_GALLERY_PHOTOS.length) {
+    gallery.dataset.count = CITY.fitments;
+    mountFitGallery();
+    gallery.querySelector('h2').innerHTML = `<span class="italic-lead">Recently Fitted</span> in ${CITY.short}`;
+    renderFitGalleryTrack(`Roof rack fitted at a Roof Racks Galore ${CITY.short} store`);
+  }
+
+  $('cityStoresHeading').textContent = `Our ${n} ${CITY.short} Stores`;
+  $('cityStoresAll').href = RRG_STORE_FINDER_HREF();
+  $('cityStoresAll').textContent = `All ${ALL_STORES.length} stores Australia-wide ›`;
+
+  $('cityLocalHeading').textContent = CITY.localHeading;
+  $('cityLocalCopy').innerHTML = CITY.localCopy.map(t => `<p>${t}</p>`).join('');
+  $('cityPhotos').innerHTML = CITY.photos.map(ph =>
+    `<a class="city-photo" href="${rrgStorePageHref(ph.store)}"><img src="../_shared/stores/${ph.src}" alt="${ph.alt}" loading="lazy"><span>${ph.store}</span></a>`).join('');
+
+  // Store FAQ: the three practical questions. Store lists and hours come from the data.
+  const storeName = st => st.city && !st.name.includes(st.city) && !st.city.includes(st.name) ? `${st.name} (${st.city})` : st.name;
+  const faqs = [
+    { q: `Where are your stores in ${CITY.region}?`, a: `We have ${NUM_WORDS[n] || n} superstores. ${CITY.areas.map(a => `${a.name}: ${listJoin(a.stores.map(name => storeName(CITY_STORES.find(st => st.name === name))))}`).join('. ')}.` },
+    { q: 'What are your store opening hours?', a: cityHoursSentence() },
+    { q: 'Can I order online and pick up in store?', a: `Yes. Choose Click & Collect at checkout and pick your order up from any of our ${n} ${CITY.region} stores.` }
+  ];
+  $('cityFaqHeading').textContent = `${CITY.region} Store FAQs`;
+  $('cityFaqList').innerHTML = faqHTML(faqs);
+
+  // Booking links → the Store Finder (the fitting request form is out of Phase 1).
+  document.querySelectorAll('a').forEach(link => {
+    const t = link.textContent.trim().toLowerCase();
+    if (t === 'book a fitting' || t === 'book an installation') link.href = RRG_STORE_FINDER_HREF();
+  });
+
+  // Structured data: the city's stores as an ItemList, breadcrumbs, FAQ (local advice + store FAQ).
+  const origin = 'https://www.roofracksgalore.com.au';
+  $('cityLd').textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'ItemList', name: `Roof Racks Galore ${CITY.name} stores`, itemListElement: CITY_STORES.map((st, i) => ({ '@type': 'ListItem', position: i + 1, item: {
+      '@type': 'AutoPartsStore', name: `Roof Racks Galore ${st.name}`,
+      url: `${origin}/roof-racks-${st.name.toLowerCase().replace(/ /g, '-')}-superstore`, telephone: st.phone,
+      address: { '@type': 'PostalAddress', streetAddress: st.street, addressLocality: st.city, addressRegion: RRG_STATE_ABBR[st.state], postalCode: st.postcode, addressCountry: 'AU' },
+      geo: { '@type': 'GeoCoordinates', latitude: st.lat, longitude: st.lng } } })) },
+    { '@type': 'BreadcrumbList', itemListElement: trail.map((seg, i) => ({ '@type': 'ListItem', position: i + 1, name: seg.label })) },
+    { '@type': 'FAQPage', mainEntity: [...CITY.advice, ...faqs].map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
+  ] });
+}
+
+// ==== Events ========================================================================
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-city-clear]')) { city.origin = null; citySetStatus(''); cityRenderStores(); return; }
+  const mine = e.target.closest('[data-sf-mine]');
+  if (mine) { window.rrgSetStore(mine.dataset.sfMine); }
+});
+document.addEventListener('rrg-session-change', cityRenderStores);
+document.addEventListener('rrg-region-change', cityRenderStores);
+
+cityRender();
+cityRenderStores();
+setInterval(cityRenderStores, 60000);
+</script>
+</body>
+</html>

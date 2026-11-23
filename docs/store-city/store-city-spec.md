@@ -132,7 +132,18 @@ The store lists and hours are generated from the data, so they can't drift.
 
 ---
 
-## 8. Rework plan: fitting and local advice, not a second Store Finder (Marc → Brenton, 2026-11-24). PLANNED, NOT BUILT
+## 8. Rework plan: fitting and local advice, not a second Store Finder (Marc → Brenton, 2026-11-24). EXAMPLE BUILT FOR COMPARISON
+
+**Example built 2026-11-24 (Brenton: a separate page to send Marc and Graham beside the current one):** `prototypes/store-city-v2/?city=perth`. The current page (`prototypes/store-city/`) is untouched.
+- Perth is complete: the nationwide bar, a hero led by fitting, the fitting services row, the Fit Finder, Marc's 13 questions with answers, 16 real WA fitments from Rackit (`_shared/fitments/perth/`, 480×360 .webp), store cards in a grid with no map, and the 3-question store FAQ.
+  - WA question 4 is reworded to "…the Swan River, Margaret River or the Coral Coast" (vehicles can't go to Rottnest).
+- The other cities render on the same page without the advice and gallery sections until their lists are signed off.
+- **Changes from 8.1:**
+  - The store cards are one grid with the area name above each card. Headings per area left half-empty rows.
+  - The services row comes before the Fit Finder.
+  - The advice is two independent columns, so opening one answer doesn't push the other column down.
+- **Shared widget change (8.2):** done in `shared.js`. A Fitment Gallery photo with `vehicle` / `rack` / `store` shows its own record: no extra-angle thumbs, a "Fitted at {store}" link and "Shop Racks For This Vehicle". The Vehicle-Specific product page was checked and is unchanged.
+- The new CSS is page-scoped in the example; it moves to shared.css when the rework is approved.
 
 **Marc's feedback (Slack, 2026-11-24).** He's happy with the Store Finder (`/locations`), but the city pages need more work:
 - **It looks like the Store Finder.** It has the same map, area tabs and cards, so it reads as a filtered copy of `/locations`.

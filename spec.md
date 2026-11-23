@@ -2067,12 +2067,12 @@ Brenton's brief (v2, superseding the tooltip-only v1) for the Bike Racks PLP (`p
 - **ROLA products:** three are still in the demo grid (only the filter option was dropped).
 - **Per-region meta descriptions:** a production job (TODO in each page).
 
-## 33. City pages rework: fitting + local advice, no map (Marc → Brenton, 2026-11-24). PLANNED, NOT BUILT
+## 33. City pages rework: fitting + local advice, no map (Marc → Brenton, 2026-11-24). EXAMPLE BUILT, IN REVIEW
 
 Marc (Slack): the city pages read as a copy of the Store Finder, and a visitor from another state could think RRG only has stores in that city. He'd like them built around fitting, local experts, the Fit Finder and questions written for the region. **Plan:** `docs/store-city/store-city-spec.md` Section 8.
 
 **Brenton's decisions:** all five city pages; no map; a nationwide call to action at the top (other cities + "All 36 stores"); we write the local answers (Marc's WA list as given, draft lists for the other four).
 
 1. ⬜ Component Library: Fitment Gallery per-photo vehicle/rack/store; new Nationwide bar.
-2. ⬜ Perth: the new layout, Marc's 13 questions answered, real WA Rackit fitments.
+2. ✅ **Example built 2026-11-24:** Perth, at `prototypes/store-city-v2/?city=perth`, a separate page beside the current one so Marc and Graham can compare them. The Fitment Gallery per-photo change from item 1 is done too. The Nationwide bar is page-scoped until it's approved.
 3. ⬜ Brisbane, Sydney, Melbourne and Adelaide once Perth is approved and their question lists are signed off.

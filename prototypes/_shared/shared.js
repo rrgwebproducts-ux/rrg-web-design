@@ -3013,10 +3013,15 @@ function renderFitGallerySlideoutDetail(index) {
   const clamped = Math.max(0, Math.min(tileCount - 1, index));
   fitGallerySlideoutIndex = clamped;
   const photo = FIT_GALLERY_PHOTOS[clamped % FIT_GALLERY_PHOTOS.length];
-  const others = FIT_GALLERY_PHOTOS.filter((_, i) => i !== (clamped % FIT_GALLERY_PHOTOS.length)).slice(0, 3);
-  const vehicleLine = (typeof VEHICLE_PRODUCT !== 'undefined' && VEHICLE_PRODUCT.shared.specifications_shared['Vehicle']) || '';
-  const productTitle = document.querySelector('h1') ? document.querySelector('h1').textContent : '';
-  const components = rackComponentsFromPage();
+  // A photo that carries its own fitment record (vehicle / rack / store: the city page's Rackit
+  // fitments, store-city-spec.md §8.2) shows that record. Every other page keeps reading the
+  // page's own product, vehicle and What's Included rows, unchanged.
+  const own = !!photo.vehicle;
+  const others = own ? [] : FIT_GALLERY_PHOTOS.filter((_, i) => i !== (clamped % FIT_GALLERY_PHOTOS.length)).slice(0, 3);
+  const vehicleLine = own ? photo.vehicle : ((typeof VEHICLE_PRODUCT !== 'undefined' && VEHICLE_PRODUCT.shared.specifications_shared['Vehicle']) || '');
+  const productTitle = own ? (photo.rack || '') : (document.querySelector('h1') ? document.querySelector('h1').textContent : '');
+  const components = own ? [] : rackComponentsFromPage();
+  const mainAlt = own ? `${photo.rack} fitted to a customer’s ${photo.vehicle}` : 'Rhino Rack Pioneer Platform fitted to a customer’s Hilux N80';
 
   document.getElementById('fitGallerySlideoutTitle').hidden = true;
   document.getElementById('fgsBackLink').hidden = false;
@@ -3032,19 +3037,23 @@ function renderFitGallerySlideoutDetail(index) {
       <button type="button" class="btn btn-outline fgs-prev" ${clamped === 0 ? 'disabled' : ''}>&lsaquo; Prev</button>
       <button type="button" class="btn btn-outline fgs-next" ${clamped === tileCount - 1 ? 'disabled' : ''}>Next &rsaquo;</button>
     </div>
-    <div class="fgs-main-image"><img src="${photo.thumb}" alt="Rhino Rack Pioneer Platform fitted to a customer's Hilux N80"></div>
-    <div class="fgs-thumbs">${[photo, ...others].map(p => `<img src="${p.thumb}" alt="">`).join('')}</div>
+    <div class="fgs-main-image"><img src="${photo.thumb}" alt="${mainAlt}"></div>
+    ${others.length ? `<div class="fgs-thumbs">${[photo, ...others].map(p => `<img src="${p.thumb}" alt="">`).join('')}</div>` : ''}
     <h3 class="fgs-product-title">${productTitle}</h3>
     <div class="fgs-vehicle-line">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11h1a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h1zm2.1-4l-1.2 4h12.2l-1.2-4a1 1 0 0 0-.9-.5H8a1 1 0 0 0-.9.5zM7 15.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
       ${vehicleLine}
     </div>
+    ${own ? `
+    ${photo.store ? `<p class="fgs-store-line">Fitted at <a href="${typeof rrgStorePageHref === 'function' ? rrgStorePageHref(photo.store) : '#'}">Roof Racks Galore ${photo.store}</a></p>` : ''}
+    <p class="fgs-note">Fitment images may show accessories or hardware that aren’t part of the rack system.</p>
+    <a class="btn btn-outline" href="${photo.shopHref || '../vplp/index.html'}">Shop Racks For This Vehicle</a>` : `
     <div class="fgs-components">
       <h4>Rack Components</h4>
       ${components.map(c => `<div class="fgs-component-row"><span class="fgs-c-name">${c.name}</span><span class="fgs-c-qty">${c.qty}</span></div>`).join('')}
     </div>
     <p class="fgs-note">Note: fitment images may contain additional accessories or hardware that are not included in the rack system. <strong>Only items listed above are included.</strong></p>
-    <button type="button" class="btn btn-outline fgs-back-to-product">Back to Product</button>
+    <button type="button" class="btn btn-outline fgs-back-to-product">Back to Product</button>`}
   `;
 }
 
