@@ -129,3 +129,137 @@ The store lists and hours are generated from the data, so they can't drift.
   - **Live Melbourne page:** it lists 8 stores under "9"; Preston is missing.
   - **Cockburn photos:** the live store page has none yet, so it isn't in the Perth photo grid.
 - **Store photos:** the prototype only has photos for the stores it has pages for. Production uses each store record's images.
+
+---
+
+## 8. Rework plan: fitting and local advice, not a second Store Finder (Marc → Brenton, 2026-11-24). PLANNED, NOT BUILT
+
+**Marc's feedback (Slack, 2026-11-24).** He's happy with the Store Finder (`/locations`), but the city pages need more work:
+- **It looks like the Store Finder.** It has the same map, area tabs and cards, so it reads as a filtered copy of `/locations`.
+- **It can read as "RRG is only in Perth."** Someone who lands on it from another state sees six stores on a map and nothing about the other 30.
+- **Lead with fitting.** He wants the page built around fittings, local experts and the Fit Finder, and focused on the region, with questions written for local conditions (his WA list is in 8.3).
+
+**Brenton's decisions (2026-11-24):**
+- **All five city pages** get the rework: Brisbane & SEQ, Sydney, Melbourne & Geelong, Perth, Adelaide. These are the only multi-store region pages on the live site (sitemap checked 2026-11-24). `/roof-racks-gold-coast`, `-sunshine-coast`, `-canberra`, `-adelaide-city`, `-pooraka`, `-hoppers-crossing` and `-wellington` are single-store pages.
+- **No map.** The Store Finder is the only page with the store map.
+- **A "we're nationwide" call to action at the top.** It shows the other stores and the other cities.
+- **We write the answers to the local questions.** Marc's WA questions are fine as they are. The other four cities need their own lists (8.3).
+
+### 8.1 New section order
+
+| # | Section | Change | Build |
+|---|---|---|---|
+| 1 | Breadcrumbs | No change (Home › Store Finder › {City}) | Global |
+| 2 | **Nationwide bar** (new) | A slim bar above the hero: "**6** Perth stores · **30** more across Australia", then links to the other four cities and **All 36 stores ›** (Store Finder). Counts come from `RRG_STORE_NETWORK` / `RRG_STORE_CITIES`, so they can't drift. On phones the city links scroll sideways. | New `.city-network-bar` |
+| 3 | **Hero** | The H1, title and meta stay the live ones (SEO). The intro is rewritten to lead with fitting and local know-how. Facts: "6 superstores · N open now · **4,600+ WA fitments**", where the last is the state's Rackit fitment count. Buttons: **Book a Fitting** (gold) and **Find My Nearest Store** (outline; still sorts the store cards, with no map). | Category Hero (existing) |
+| 4 | **Fit Finder** (new on this page) | The shared inline vehicle finder: "Find racks that fit your vehicle". Submits to the VPLP, as on the MCLP. | `data-widget="vehicle-finder"` (existing) |
+| 5 | **Fitting services row** | Reworded to lead with fitting: Expert Fitting at every {City} store · See Fitting Costs (→ Installation `#costs`) · Click & Collect · Advice & After-Sales. | `.trust-row` (existing) |
+| 6 | **Local advice** (new content) | 10–13 questions per city about local trips and conditions (8.3). Every answer ends with one link to the matching category. Accordion, first item open, two columns on desktop. Included in the `FAQPage` JSON-LD. | `.faq-section` (existing), plus a `.city-advice` 2-column modifier |
+| 7 | **Fitment Gallery: recently fitted in {City}** | Real fitments from that city's stores, from Rackit (photo, vehicle, rack, store). Count = the city's stores' fitments. | Fitment Gallery (existing). **Needs a widget change:** see 8.2 |
+| 8 | **Stores, compact** | Store cards in a grid, grouped under area headings, with "All 36 stores ›" at the end. **No map, no List/Map toggle, no area tabs.** The Leaflet and markercluster scripts come off the page. | Store Card (`rrgStoreCardHTML`, existing) |
+| 9 | Local copy + store photos | No change | Existing |
+| 10 | Trust banner | No change | Existing |
+| 11 | **Store FAQ, shortened** | Cut to the 3 practical questions: where are the stores, opening hours, Click & Collect. The fitting and brands questions are dropped because the advice section and the copy now cover them. | `.faq-section` (existing) |
+| 12 | Shop The Best Brands, footer | No change | Global |
+
+**What comes off the page:** the map, the List/Map toggle, the area tabs and Leaflet. Nothing else on the site uses the city page's map code, and the Store Finder keeps its own.
+
+### 8.2 Component changes (Component Library first)
+
+- **Fitment Gallery, per-photo details.** Today the detail view reads the vehicle and rack components off the page (a PDP concept), so on a city page it would show the city H1 and an empty component list. The change is backwards-compatible: when a photo record has `vehicle`, `rack` and `store`, the detail view shows those, and the button reads "Shop Racks For This Vehicle" instead of "Back to Product". Pages without them are unchanged.
+  - Change it in the Component Library first, then check every page it's used on (VS, VCLP, VPLP, MCLP, VLP).
+- **Nationwide bar.** A new Component Library entry (stores group), used on the city pages only.
+- **Store Card.** No change. It's just laid out in a grid instead of beside a map.
+- **Data:** the prototype takes about 16 real fitments per city from the Rackit gallery (filtered by the city's stores), saved like `MCLP_PHOTOS`. **Production:** the page queries Rackit by store list (Marc's integration). The count is the real total for those stores.
+
+### 8.3 Local advice questions
+
+The answers get written when this is built. They're practical, brand-neutral where possible, and never invent regulations or exact load numbers (they say "check your vehicle's and rack's rating"). Each one links to a category. **They go to each state's store team to sanity-check before launch.**
+
+**Perth / WA (Marc's list, 2026-11-24)**
+1. What roof rack setup holds up best on the Gibb River Road and other corrugated WA tracks?
+2. How do I protect my roof rack and gear from red dust on outback trips?
+3. What's the best way to carry extra fuel and water jerry cans on a roof rack for remote WA travel?
+4. What's the best way to carry a kayak or SUP to Rottnest ferries, Margaret River or the Coral Coast? *(To check: vehicles can't go to Rottnest. Suggest "…to the Swan River, Margaret River or the Coral Coast".)*
+5. What roof rack setup works for carrying surfboards to Margaret River and the South West?
+6. How do I mount a rooftop tent for camping trips to Esperance and Cape Le Grand?
+7. What roof rack is best for carrying a recovery kit, Maxtrax and a shovel for beach driving at Lancelin or Yeagarup?
+8. How should I set up a roof rack for the strong crosswinds on the Brand and North West Coastal Highways?
+9. What roof rack setup suits FIFO workers driving between Perth and the Pilbara or Goldfields?
+10. How much weight can I safely carry on my roof for off-road driving compared with highway driving?
+11. Which awnings and roof rack accessories cope best with WA's heat and UV?
+12. What roof rack setup works for towing a caravan or camper trailer up the coast?
+13. How do I stop gear on my roof rack rattling loose on long gravel roads in the Kimberley?
+
+**Brisbane & SEQ (draft, for Marc/Graham to approve)**
+1. What roof rack setup suits beach driving on K'gari (Fraser Island), Moreton Island and Bribie?
+2. How do I stop salt and sand corroding my roof rack after a beach trip?
+3. What's the best setup for a Cape York trip on the Peninsula Development Road and Old Telegraph Track?
+4. How do I carry surfboards to Noosa, the Sunshine Coast or the Gold Coast breaks?
+5. What's the best way to carry a kayak or SUP to the Noosa Everglades, Pumicestone Passage or Moreton Bay?
+6. Which bike rack suits mountain biking at Mt Coot-tha, Daisy Hill or Nerang?
+7. How do I mount a rooftop tent for camping trips to Girraween, Carnarvon Gorge or the Scenic Rim?
+8. Which awnings cope best with Queensland's summer storms, heat and UV?
+9. How much weight can I safely carry on my roof off-road compared with on the highway?
+10. What roof rack setup works when I'm towing a caravan up the coast?
+11. What ladder and tradie roof rack setups suit work utes around Brisbane?
+
+**Sydney (draft)**
+1. Will a roof box or roof rack fit in my apartment or shopping centre car park? *(Height clearance is a real Sydney problem.)*
+2. What's the best way to carry skis and snowboards to Thredbo and Perisher?
+3. How do I carry surfboards to the Northern Beaches, Cronulla or the South Coast?
+4. What's the best way to carry a kayak or SUP to Pittwater, the Hawkesbury or Port Hacking?
+5. Which bike rack suits mountain biking in the Blue Mountains, Old Joes or Manly Dam?
+6. What roof rack setup suits beach driving at Stockton Beach?
+7. How do I set up a roof rack for 4WD tracks in the Watagans, Barrington Tops or the Blue Mountains?
+8. How do I mount a rooftop tent for weekends in the Blue Mountains or the Hunter?
+9. What ladder and tradie roof rack setups suit work utes and vans in Sydney?
+10. How much weight can I safely carry on my roof off-road compared with on the highway?
+11. How do I keep my roof rack quiet at motorway speeds?
+
+**Melbourne & Geelong (draft)**
+1. What roof rack setup suits Victoria's High Country tracks around Dargo, Craig's Hut and the Bogong High Plains?
+2. What's the best way to carry skis and snowboards to Mt Buller, Falls Creek and Mt Hotham?
+3. How do I carry surfboards to Bells Beach, Torquay and the Great Ocean Road?
+4. Which bike rack suits mountain biking at Forrest, the You Yangs, Lysterfield or Mt Buller?
+5. What's the best way to carry a kayak or SUP on Port Phillip, the Gippsland Lakes or Lake Eildon?
+6. How do I mount a rooftop tent for camping at Wilsons Prom, the Grampians or the High Country?
+7. Which awnings and covers cope best with Victoria's cold, wet and windy weather?
+8. How do I set up a roof rack for strong winds along the coast and on the Westgate?
+9. How much weight can I safely carry on my roof off-road compared with on the highway?
+10. What roof rack setup works when I'm towing a caravan or camper trailer?
+11. What ladder and tradie roof rack setups suit work utes and vans in Melbourne?
+
+**Adelaide (draft)**
+1. What roof rack setup holds up on the Oodnadatta, Birdsville and Strzelecki tracks?
+2. How do I protect my gear from bulldust on outback SA trips?
+3. What roof rack setup suits a Flinders Ranges trip?
+4. What's the best way to carry jerry cans and water on a roof rack for remote SA and Nullarbor travel?
+5. How do I carry fishing rods and gear to the Yorke and Eyre Peninsulas?
+6. What's the best way to carry a kayak or SUP to the Fleurieu Peninsula or Port Noarlunga?
+7. Which bike rack suits mountain biking in the Adelaide Hills, Fox Creek or Eagle MTB Park?
+8. How do I mount a rooftop tent for trips to Kangaroo Island, the Coorong or the Flinders?
+9. Which awnings cope best with South Australia's heat and UV?
+10. How much weight can I safely carry on my roof off-road compared with on the highway?
+11. What roof rack setup works when I'm towing a caravan across the Nullarbor?
+
+### 8.4 SEO
+
+- The URLs, titles, meta descriptions and H1s stay the live ones.
+- The `FAQPage` JSON-LD gets the local advice plus the 3 store questions.
+- The `ItemList` of stores and the `BreadcrumbList` stay.
+- The advice gives each city page unique, local content. Today the five pages share most of their copy.
+
+### 8.5 Build order (once the plan is agreed)
+
+1. Component Library: the Fitment Gallery per-photo details and the Nationwide bar; check every page each one is used on.
+2. **Perth first**, using Marc's questions: the new layout, the answers, real WA Rackit fitments. Push it for review.
+3. Once Perth is approved, Brisbane, Sydney, Melbourne and Adelaide: question lists signed off, then answers written, plus each city's Rackit fitments.
+4. Update the Component Library's usedOn lists, PAGE-GLOSSARY and the Store Finder/store-page link notes (the links don't change).
+
+### 8.6 Open
+
+- **Who checks the answers:** each state's store manager, or Scott?
+- **Marc's Rottnest question:** reword it (8.3, WA 4)?
+- **The draft question lists for the other four cities:** Marc and Graham to approve or add to them.
+- **The Rackit feed in production:** confirm with Marc that the city page can query fitments by store list.
