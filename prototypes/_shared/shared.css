@@ -1467,7 +1467,10 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .compat-multi{list-style:none;margin:6px 0 0;padding:0;}
 .compat-multi li{padding:4px 0 4px 20px;position:relative;line-height:1.35;}
 .compat-multi li::before{content:'✓';position:absolute;left:0;font-weight:900;color:var(--rrg-fits);}
-.compat-multi li.is-no::before,.compat-multi li.is-adapter-amber::before{content:'⚠';color:var(--rrg-unknown);}
+/* Row icons: green tick = compatible, orange warning = compatible with an adapter, red cross = not compatible.
+   The card itself stays orange when any row isn't a plain yes (Brenton, 2026-11-24). */
+.compat-multi li.is-no::before{content:'✕';color:var(--rrg-nofit);}
+.compat-multi li.is-adapter-amber::before{content:'⚠';color:var(--rrg-unknown);}
 .adapter-step-card s{color:var(--rrg-grey-500);font-size:13px;}
 @media (max-width:640px){.compat-table td{white-space:normal;}}
 .stock-chip.none{background:var(--rrg-nofit-bg);}
