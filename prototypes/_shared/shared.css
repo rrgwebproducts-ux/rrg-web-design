@@ -1450,12 +1450,24 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .compat-adapter{display:block;margin-top:4px;white-space:normal;font-size:13px;}
 .compat-foot{margin:14px 0 0;font-size:13px;color:var(--rrg-grey-600);}
 /* Adapter step (mini-cart drawer, before the cart): ask before showing the cart. */
+.adapter-step-items{list-style:none;margin:0 0 4px;padding:0 0 14px;border-bottom:1px solid var(--rrg-line);display:grid;gap:8px;}
+.adapter-step-items li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;}
+.adapter-step-items img{width:44px;height:44px;object-fit:contain;flex:0 0 auto;border:1px solid var(--rrg-line);background:#fff;}
 .adapter-step-h{margin:20px 0 6px;font-size:24px;}
 .adapter-step-p{margin:0 0 14px;font-size:14px;color:var(--rrg-grey-700);}
 .adapter-step-card{display:flex;gap:14px;align-items:center;padding:14px;border:1px solid var(--rrg-line);border-left:3px solid var(--rrg-fits);background:#fff;}
 .adapter-step-card.is-amber{border-left-color:var(--rrg-unknown);}
 .adapter-step-card img{width:72px;height:72px;object-fit:contain;flex:0 0 auto;}
 .adapter-step-card strong{display:inline-block;margin-top:4px;}
+.adapter-step-card + .adapter-step-p{margin-top:16px;}
+.adapter-step-card{margin-bottom:6px;}
+.adapter-step-tick{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:13px;font-weight:700;cursor:pointer;}
+.adapter-step-tick input{width:18px;height:18px;accent-color:var(--rrg-fits);}
+/* Combined compatibility card (more than one rack / accessory to compare): a row per item. */
+.compat-multi{list-style:none;margin:6px 0 0;padding:0;}
+.compat-multi li{padding:4px 0 4px 20px;position:relative;line-height:1.35;}
+.compat-multi li::before{content:'✓';position:absolute;left:0;font-weight:900;color:var(--rrg-fits);}
+.compat-multi li.is-no::before,.compat-multi li.is-adapter-amber::before{content:'⚠';color:var(--rrg-unknown);}
 .adapter-step-card s{color:var(--rrg-grey-500);font-size:13px;}
 @media (max-width:640px){.compat-table td{white-space:normal;}}
 .stock-chip.none{background:var(--rrg-nofit-bg);}

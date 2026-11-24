@@ -123,6 +123,10 @@ function buildSiteAdminPanel(currentKey) {
           <option value="platformOnly">Pioneer platform only</option>
           <option value="thuleRackOnly">Thule roof rack only</option>
           <option value="notCompatible">Thule bars + Motion 3 L (compatibility)</option>
+          <option value="twoAccessories">Thule bars + Motion 3 L + ProRide (two accessories)</option>
+          <option value="twoRacks">Thule bars + Vortex bars + Motion 3 L (two racks)</option>
+          <option value="threeAccessories">Motion 3 L + ProRide + CRUZ box (three accessories)</option>
+          <option value="threeRacks">Thule bars + Vortex bars + SmartRack XT (three racks)</option>
           <option value="custom" disabled>Your own items</option>
         </select>
       </label>

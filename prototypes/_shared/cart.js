@@ -65,6 +65,13 @@ const RRG_DEMO_CART_ITEMS = {
     parts: ['1× Yakima RoadShower SM 15L (8004109)', '1× Yakima RoadShower On-Off Elbow (8004103)', '1× Yakima RoadShower Extra Long Hose 214cm (8881251)', '1× Yakima RoadShower FlexHead Shower LG 76cm (8004106)'] },
   waterTank: { sku: 'FRWTAN063', brand: 'Front Runner', name: 'Front Runner Pro Water Tank With Strap 42L', price: 299.00, wasPrice: 350.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/F/r/Front-Runner-WTAN063-Platforms--Trays---Accessories._1_1.jpg', url: 'simple/index.html' },
+  // Compatibility demos (2026-11-24, Graham: two accessories / two racks in the basket). Real listings.
+  proRide: { sku: '598002', brand: 'Thule', name: 'Thule ProRide 598 Black Roof Mounted Bike Carrier', price: 359.96,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598002-bike-rack-roof-mount_3.jpg', url: 'plp/index.html?attachment=roof-mounting', pkgCategory: 'roof-bike' },
+  vortexRack: { sku: 'RH-VTX2', brand: 'Rhino-Rack', name: 'Rhino Rack Vortex 2 Bar Cross Bar Set for Toyota Hilux N80 - Roof Track Mount', price: 389.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg', url: 'vplp/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
+  smartRack: { sku: '730402', brand: 'Thule', name: 'Thule SmartRack XT Silver 2 Bar Roof Rack for Toyota Hilux N80', price: 379.95,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-730402-Roof-Rack---Bars--Legs._1_269.jpg', url: 'vplp/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
   wheelHolder: { sku: '547001', brand: 'Thule', name: 'Thule Front Wheel Holder - 547001', price: 199.00, wasPrice: 239.95,
     image: RRG_CART_IMG('T/h/Thule-547001-Bike-Rack---Accessories._1_1.webp'), url: '#' }
 };
@@ -84,6 +91,10 @@ const RRG_DEMO_CARTS = {
   // Rack only — to view an accessory page against a rack (compatibility, phase 3):
   platformOnly: ['platformKit'],         // Pioneer platform: platforms aren't compared yet, so no compatibility note
   thuleRackOnly: ['thuleRack'],          // Thule WingBar Evo: the Motion 3 L shows the Demo State → Compatibility data result
+  twoAccessories: ['thuleRack', 'motionBox', 'proRide'],  // one rack, two accessories (both can need an adapter)
+  threeAccessories: ['motionBox', 'proRide', 'roofBox'], // mixed demo: a rack page against three accessories
+  threeRacks: ['thuleRack', 'vortexRack', 'smartRack'],                 // mixed demo: an accessory page against three racks
+  twoRacks: ['thuleRack', 'vortexRack', 'motionBox'],     // two racks, one accessory (a different result per rack)
   notCompatible: ['thuleRack', 'motionBox'] // Thule WingBar Evo + Motion 3 L: both lines carry the Compatibility data note
 };
 
@@ -203,7 +214,7 @@ const rrgAdapterAmber = () => { try { return localStorage.getItem('rrg-adapter-t
 const RRG_COMPAT_ADAPTERS = {
   // Live listings, prices as live 2026-11-24. pkgCategory null: an adapter is never a rack/accessory for the Package Deal.
   square: { sku: '889500', brand: 'Thule', name: 'Thule ProRide Square Bar Adapter - 889500', price: 29.95, pkgCategory: null, url: '#',
-    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-889500-Bike-Rack---Accessories._1_1.webp', pdp: 'https://www.roofracksgalore.com.au/thule-proride-square-bar-adapter-889500' },
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-889500-Bike-Rack---Accessories._1_1.jpg', pdp: 'https://www.roofracksgalore.com.au/thule-proride-square-bar-adapter-889500' },
   slot21: { sku: 'PR3110', brand: 'Prorack', name: 'Prorack 21mm Slot Adapter Kit - PR3110', price: 21.95, wasPrice: 32.00, pkgCategory: null, url: '#',
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/p/r/prorack-21mm-slot-adapter-kit-pr3110.jpg', pdp: 'https://www.roofracksgalore.com.au/prorack-21mm-slot-adapter-kit' }
 };
@@ -212,15 +223,22 @@ const RRG_COMPAT_ADAPTERS = {
 // state can be seen with the Thule WingBar Evo in the demo cart. The rest are fixed.
 const RRG_COMPAT_MOTION_3L = {
   product: 'Thule Motion 3 L',
+  focusAdapter: 'square',   // the adapter the focus row needs in the "adapter" state
+  mixedFocus: 'no',         // the focus row's result in the "Mixed" state (one of each across the products)
   rows: [
     { focus: true, group: 'Thule WingBar Evo', match: /wingbar/i },
     { group: 'Thule SquareBar Evo, Prorack P-Bar & generic square/Euro bars', match: /squarebar|p-bar|square bar|euro bar/i, status: 'adapter', adapter: 'square' },
     { group: 'Rhino-Rack Vortex', match: /vortex/i, status: 'yes' },
     { group: 'Rhino-Rack Heavy Duty', match: /heavy duty/i, status: 'no' },
-    { group: 'Prorack / Yakima "T" HD bars (not TrimHD)', match: /\bt-?(16|17|18)\b|t hd/i, status: 'adapter', adapter: 'slot21' }
+    { group: 'Prorack / Yakima "T" HD bars (not TrimHD)', match: /\bt-?(16|17|18)\b|t hd/i, status: 'adapter', adapter: 'slot21' },
+    { group: 'Thule SmartRack XT', match: /smartrack/i, status: 'adapter', adapter: 'square' }
   ]
 };
-const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L };
+// The ProRide 598's rows follow Scott's real adapters (square bars -> 889500, "T" HD bars -> PR3110);
+// its focus row needs the slot adapter so two accessories can need two different adapters.
+const RRG_COMPAT_PRORIDE = { ...RRG_COMPAT_MOTION_3L, product: 'Thule ProRide 598', focusAdapter: 'slot21', mixedFocus: 'adapter' };
+const RRG_COMPAT_CRUZ = { ...RRG_COMPAT_MOTION_3L, product: 'CRUZ Easy 430', focusAdapter: 'square', mixedFocus: 'yes' };
+const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L, 598002: RRG_COMPAT_PRORIDE, 'C940-349U': RRG_COMPAT_CRUZ };
 // Demo State → "Compatibility data" (Roof Box PDP): unknown | compatible | notcompatible | adapter.
 const RRG_COMPAT_DEMO_KEY = 'rrg-compat-demo';
 function rrgCompatDemoState() {
@@ -231,9 +249,11 @@ function rrgCompatRows(accessory) {
   const d = accessory && RRG_COMPAT_DATA[accessory.sku];
   const state = rrgCompatDemoState();
   if (!d || state === 'unknown') return null;
-  return d.rows.map(r => r.focus
-    ? { ...r, status: { compatible: 'yes', notcompatible: 'no', adapter: 'adapter' }[state] || 'yes', adapter: state === 'adapter' ? 'square' : null }
-    : r);
+  return d.rows.map(r => {
+    if (!r.focus) return r;
+    const status = state === 'mixed' ? d.mixedFocus : { compatible: 'yes', notcompatible: 'no', adapter: 'adapter' }[state] || 'yes';
+    return { ...r, status, adapter: status === 'adapter' ? d.focusAdapter : null };
+  });
 }
 // { status: 'yes' | 'no' | 'adapter', adapter } for this accessory on that rack's bars, or null (not known).
 function rrgCompatResult(accessory, rack) {
@@ -276,33 +296,60 @@ function rrgAdaptersNeeded(cart = rrgCartGet()) {
   const out = [];
   cart.lines.filter(rrgIsRoofAccessory).forEach(acc => cart.lines.filter(l => rrgPackageCategory(l) === 'rack').forEach(rack => {
     const r = rrgCompatResult(acc, rack);
-    if (r && r.status === 'adapter' && r.adapter && !have.has(r.adapter.sku) && !out.some(o => o.adapter.sku === r.adapter.sku)) out.push({ adapter: r.adapter, accessory: acc, rack });
+    if (!r || r.status !== 'adapter' || !r.adapter || have.has(r.adapter.sku)) return;
+    let n = out.find(o => o.adapter.sku === r.adapter.sku);
+    if (!n) out.push(n = { adapter: r.adapter, accessory: acc, rack, accessories: [], racks: [] });
+    if (!n.accessories.includes(acc)) n.accessories.push(acc);
+    if (!n.racks.includes(rack)) n.racks.push(rack);
   }));
   return out;
 }
-// The prompt card (mini-cart under the lines, cart page above them): green, one per missing adapter.
+// "The A and B fit the R with ..." names every accessory / rack the adapter covers.
+const rrgNeedNames = list => rrgListWords(list.map(l => `<b>${rrgEsc(rrgShortName(l.name))}</b>`), 'and');
+const rrgNeedSentence = n => `The ${rrgNeedNames(n.accessories)} ${n.accessories.length > 1 ? 'fit' : 'fits'} the ${rrgNeedNames(n.racks)} with the <b>${rrgAdapterLinkHTML(n.adapter)}</b>.`;
+// The prompt card (mini-cart under the lines, cart page above them): one per missing adapter.
 function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
-  return rrgAdaptersNeeded(cart).map(({ adapter, accessory, rack }) => rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', 'Add the adapter',
-    `The <b>${rrgEsc(rrgShortName(accessory.name))}</b> fits the <b>${rrgEsc(rrgShortName(rack.name))}</b> with the <b>${rrgAdapterLinkHTML(adapter)}</b>.
-     <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(adapter.sku)}">Add adapter · ${rrgMoney(adapter.price)}</button></div>`,
+  return rrgAdaptersNeeded(cart).map(n => rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', 'Add the adapter',
+    `${rrgNeedSentence(n)}
+     <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(n.adapter.sku)}">Add adapter · ${rrgMoney(n.adapter.price)}</button></div>`,
     '', 'adapter-notice')).join('');
 }
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-add-adapter], [data-adapter-yes], [data-adapter-no]');
   if (!btn) return;
-  const sku = btn.dataset.addAdapter || btn.dataset.adapterYes || btn.dataset.adapterNo;
-  const a = Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === sku);
-  if (!a) return;
-  if (btn.dataset.adapterNo) rrgAdapterDeclined.add(sku);
-  rrgAdapterStep = null;                       // the adapter step ends either way → the cart drawer
-  if (btn.dataset.adapterNo) rrgRenderMiniCart();
-  else rrgCartAdd(a, { open: false });         // saves → the open drawer redraws as the cart
+  const find = sku => Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === sku);
+  // "Yes" adds every ticked adapter in the step (one, or several when more than one is needed).
+  const skus = btn.dataset.adapterYes !== undefined
+    ? [...document.querySelectorAll('[data-adapter-pick]:checked')].map(i => i.dataset.adapterPick)
+    : [btn.dataset.addAdapter];
+  const adapters = skus.map(find).filter(Boolean);
+  const declined = btn.dataset.adapterNo !== undefined;
+  if (declined) (rrgAdapterStep || []).forEach(n => rrgAdapterDeclined.add(n.adapter.sku));
+  const single = btn.dataset.adapterYes !== undefined && !adapters.length && rrgAdapterStep && rrgAdapterStep.length === 1 ? [rrgAdapterStep[0].adapter] : adapters;
+  rrgAdapterStep = null;                       // the adapter step ends either way -> the cart drawer
+  if (declined || !single.length) { rrgRenderMiniCart(); return; }
+  single.forEach(a => rrgCartAdd(a, { open: false }));   // saves -> the open drawer redraws as the cart
 });
 // Chip on a drawer suggestion: only when the pair is a known yes (or yes with an adapter).
 function rrgCompatChipHTML(accessory, rack) {
   const r = rrgCompatResult(accessory, rack);
   return !r || r.status === 'no' ? '' : r.status === 'adapter'
     ? `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">${rrgAdapterAmber() ? '' : '✓ '}Compatible with an adapter</span>` : '<span class="chip chip-fits">✓ Compatible</span>';
+}
+// More than one rack / accessory in the cart to compare against (Graham, 2026-11-24): one card, a row
+// per item, the worst result sets the colour and label. Never hides a "not compatible" behind a yes.
+function rrgCompatCombinedHTML(results) {
+  const has = s => results.some(r => r.status === s);
+  const adapters = new Set(results.filter(r => r.status === 'adapter').map(r => r.adapter.sku)).size;
+  const label = has('no') ? (results.every(r => r.status === 'no') ? 'Heads up: not compatible' : 'Heads up: not everything is compatible') : has('adapter') ? (adapters > 1 ? 'Compatible with adapters' : 'Compatible with an adapter') : 'Compatible';
+  const state = has('no') ? 'unknown' : has('adapter') ? (rrgAdapterAmber() ? 'unknown' : 'fits') : 'fits';
+  const rows = results.map(({ line, status, adapter }) => {
+    const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
+    if (status === 'no') return `<li class="is-no">${name}: not compatible</li>`;
+    if (status === 'adapter') return `<li class="${rrgAdapterAmber() ? 'is-adapter-amber' : 'is-yes'}">${name}: compatible with the ${rrgAdapterLinkHTML(adapter)}</li>`;
+    return `<li class="is-yes">${name}: compatible</li>`;
+  }).join('');
+  return rrgNoticeCardHTML(state, label, `<ul class="compat-multi">${rows}</ul>`, RRG_COMPAT_TIP, 'cart-conflict-banner');
 }
 // Product names run long ("… for Toyota Hilux N80 (2015–2026), Bare Roof"): the message names
 // the product up to its vehicle/SKU suffix.
@@ -312,7 +359,9 @@ const rrgInfoTipHTML = text => `<span class="rrg-info-tip" tabindex="0" role="im
 // applyCartConflict); 'line' = the small note on a cart line (rrgCartLineHTML).
 function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
   const cat = rrgPackageCategory(item);
-  return rrgPackageCompatInCart(item, cart).map(({ line, compatible, status, adapter }) => {
+  const results = rrgPackageCompatInCart(item, cart);
+  if (mode === 'banner' && results.length > 1) return rrgCompatCombinedHTML(results);
+  return results.map(({ line, compatible, status, adapter }) => {
     const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
     if (mode === 'banner') {
       const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
@@ -357,7 +406,8 @@ function rrgCartAdd(item, { open = true } = {}) {
   rrgAdapterStep = null;
   rrgCartSave(cart);
   if (open) {
-    rrgAdapterStep = rrgAdaptersNeeded(rrgCartGet()).find(n => !rrgAdapterDeclined.has(n.adapter.sku)) || null;
+    const need = rrgAdaptersNeeded(rrgCartGet()).filter(n => !rrgAdapterDeclined.has(n.adapter.sku));
+    rrgAdapterStep = need.length ? need : null;
     rrgOpenMiniCart(true);
   }
 }
@@ -552,22 +602,26 @@ function rrgRenderMiniCart() {
     return;
   }
   // Adapter step: just added something that needs an adapter — ask before showing the cart.
-  if (rrgAdapterStep && !rrgAdaptersNeeded(cart).some(n => n.adapter.sku === rrgAdapterStep.adapter.sku)) rrgAdapterStep = null;
+  if (rrgAdapterStep) rrgAdapterStep = rrgAdaptersNeeded(cart).filter(n => rrgAdapterStep.some(o => o.adapter.sku === n.adapter.sku));
+  if (rrgAdapterStep && !rrgAdapterStep.length) rrgAdapterStep = null;
   if (rrgAdapterStep) {
-    const { adapter: a, accessory, rack } = rrgAdapterStep;
-    body.innerHTML = `
-      <ul class="cart-lines">${rrgCartLineHTML(accessory, { editable: false, compact: true })}</ul>
-      <h3 class="adapter-step-h">Add the adapter?</h3>
-      <p class="adapter-step-p">The <b>${rrgEsc(rrgShortName(accessory.name))}</b> fits the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart with this adapter.</p>
-      <div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}">
-        <img src="${a.image}" alt="">
-        <div><span class="cart-line-brand">${rrgEsc(a.brand)}</span>
-          <a class="cart-line-name" href="${a.pdp}" target="_blank" rel="noopener">${rrgEsc(a.name)}</a>
-          <strong>${rrgMoney(a.price)}</strong>${a.wasPrice ? ` <s>${rrgMoney(a.wasPrice)}</s>` : ''}</div>
+    const needs = rrgAdapterStep, many = needs.length > 1;
+    const adapterCard = (n, tick) => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}">
+        <img src="${n.adapter.image}" alt="">
+        <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span>
+          <a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
+          <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}</div>
+        ${tick ? `<label class="adapter-step-tick"><input type="checkbox" data-adapter-pick="${rrgEsc(n.adapter.sku)}" checked>Add</label>` : ''}
       </div>`;
+    const involved = [...new Map(needs.flatMap(n => [...n.accessories, ...n.racks]).map(l => [l.key, l])).values()];
+    body.innerHTML = `
+      <ul class="adapter-step-items">${involved.map(l => `<li><img src="${l.image}" alt=""><span>${rrgEsc(rrgShortName(l.name))}</span></li>`).join('')}</ul>
+      <h3 class="adapter-step-h">${many ? 'Add the adapters?' : 'Add the adapter?'}</h3>
+      ${needs.map(n => `<p class="adapter-step-p">${rrgNeedSentence(n)}</p>${adapterCard(n, many)}`).join('')}`;
+    const total = rrgMoney(needs.reduce((t, n) => t + n.adapter.price, 0));
     document.getElementById('miniCartFoot').innerHTML = `
-      <button type="button" class="btn btn-cta btn-block" data-adapter-yes="${rrgEsc(a.sku)}">Yes, add the adapter</button>
-      <button type="button" class="btn btn-outline btn-block" data-adapter-no="${rrgEsc(a.sku)}">No thanks, continue</button>`;
+      <button type="button" class="btn btn-cta btn-block" data-adapter-yes>${many ? `Add ${needs.length} adapters · ${total}` : 'Yes, add the adapter'}</button>
+      <button type="button" class="btn btn-outline btn-block" data-adapter-no>No thanks, continue</button>`;
     return;
   }
   const inCart = new Set(cart.lines.map(l => l.key));

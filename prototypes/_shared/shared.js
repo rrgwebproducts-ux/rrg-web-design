@@ -4015,7 +4015,7 @@ function buildAdminPanel() {
     const compatCat = document.querySelector('.cta-col[data-pkg-category]')?.dataset.pkgCategory;
     const compatPage = typeof RRG_COMPAT_DATA !== 'undefined' && ['roof-box', 'roof-bike'].includes(compatCat);
     html += section('Cart', document.querySelector('.cta-col[data-pkg-category]')
-      ? (compatPage ? choice('compatData', 'Compatibility data', [['unknown', 'Unknown (nothing shown)'], ['compatible', 'Compatible'], ['notcompatible', 'Not compatible'], ['adapter', 'Compatible with an adapter']], 'compatible') +
+      ? (compatPage ? choice('compatData', 'Compatibility data', [['unknown', 'Unknown (nothing shown)'], ['compatible', 'Compatible'], ['notcompatible', 'Not compatible'], ['adapter', 'Compatible with an adapter'], ['mixed', 'Mixed (one of each across products)']], 'compatible') +
           choice('adapterTone', 'Adapter colour', [['amber', 'Orange (warning icon)'], ['green', 'Green (tick)']], 'amber') +
           hint('compatData', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.') : '') +
         '<p class="admin-hint">The card above Add to Cart and the cart notes read the real cart. Load one in Site Admin → Demo cart (Thule roof rack only).</p>'
