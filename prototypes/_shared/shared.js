@@ -4013,12 +4013,13 @@ function buildAdminPanel() {
     // switch: what the product's compatibility work says (spec.md §34, 2026-11-24).
     // (The SKU isn't on the page yet when this panel is built, so key it on the page's category.)
     const compatCat = document.querySelector('.cta-col[data-pkg-category]')?.dataset.pkgCategory;
-    const compatPage = typeof RRG_COMPAT_DATA !== 'undefined' && ['roof-box', 'roof-bike'].includes(compatCat);
+    const compatPage = typeof RRG_COMPAT_DATA !== 'undefined' && ['roof-box', 'roof-bike', 'rack'].includes(compatCat);
     html += section('Cart', document.querySelector('.cta-col[data-pkg-category]')
       ? (compatPage ? choice('compatData', 'Compatibility data', [['unknown', 'Unknown (nothing shown)'], ['compatible', 'Compatible'], ['notcompatible', 'Not compatible'], ['adapter', 'Compatible with an adapter'], ['mixed', 'Mixed (one of each across products)']], 'compatible') +
           choice('adapterTone', 'Adapter colour', [['amber', 'Orange (warning icon)'], ['green', 'Green (tick)']], 'amber') +
+          rrgCompatScenarioChoice(choice) +
           hint('compatData', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.') : '') +
-        '<p class="admin-hint">The card above Add to Cart and the cart notes read the real cart. Load one in Site Admin → Demo cart (Thule roof rack only).</p>'
+        '<p class="admin-hint">The card above Add to Cart and the cart notes read the real cart. Pick what is in it with "Cart contents", or load one in Site Admin → Demo cart (Thule roof rack only).</p>'
       : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none') +
         hint('cartPhase2', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.'));
   }
@@ -4217,6 +4218,13 @@ function buildAdminPanel() {
     rrgRefreshStockSurfaces();
   });
   onChoice('cartConflict', value => applyCartConflict(value));
+  // Cart contents (Compatibility scenarios): loads a demo cart preset; not saved with the panel (the cart
+  // itself persists). Follows the cart if it changes elsewhere.
+  const scenarioSel = panel.querySelector('select[name="compatCart"]');
+  if (scenarioSel) {
+    onChoice('compatCart', value => { if (value !== 'custom') rrgCartLoadPreset(value); });
+    document.addEventListener('rrg-cart-change', () => { scenarioSel.value = rrgCartPresetName(); });
+  }
   // Compatibility data (spec.md §34): the choice lives in its own key so the cart page, mini-cart and
   // checkout notes read it too. Synced to the default here, before the saved choice is restored.
   const compatSel = panel.querySelector('select[name="compatData"]');
@@ -4375,6 +4383,18 @@ function rrgMountSpareParts() {
   });
 }
 document.addEventListener('DOMContentLoaded', rrgMountSpareParts);
+
+// "Cart contents" choice for the Demo State panel on pages that show compatibility: the demo carts
+// that exercise it (one or several racks / accessories). `choice` is the panel's own builder.
+const RRG_COMPAT_SCENARIOS = [['empty', 'Empty'], ['thuleRackOnly', 'One rack (Thule WingBar Evo)'], ['platformOnly', 'One platform (Pioneer)'],
+  ['roofBox', 'One roof box (CRUZ)'], ['notCompatible', 'Rack + roof box (Motion 3 L)'], ['twoAccessories', 'One rack + two accessories'],
+  ['threeAccessories', 'Three accessories, no rack'], ['twoRacks', 'Two racks + roof box'], ['threeRacks', 'Three racks, no accessory']];
+function rrgCompatScenarioChoice(choice) {
+  const cur = typeof rrgCartPresetName === 'function' ? rrgCartPresetName() : 'custom';
+  const opts = RRG_COMPAT_SCENARIOS.slice();
+  if (!opts.some(o => o[0] === cur)) opts.push(['custom', 'Other (your own items)']);
+  return choice('compatCart', 'Cart contents', opts, cur).replace(/<select /, '<select data-admin-nosave ');
+}
 
 // ==== Compatibility tab (Graham/Scott meeting 2026-11-24, spec.md §34) ============================
 // Which roof bars this roof box / bike rack suits, whether or not a rack is in the cart: one row per
