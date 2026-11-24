@@ -4388,7 +4388,8 @@ document.addEventListener('DOMContentLoaded', rrgMountSpareParts);
 // that exercise it (one or several racks / accessories). `choice` is the panel's own builder.
 const RRG_COMPAT_SCENARIOS = [['empty', 'Empty'], ['thuleRackOnly', 'One rack (Thule WingBar Evo)'], ['platformOnly', 'One platform (Pioneer)'],
   ['roofBox', 'One roof box (CRUZ)'], ['notCompatible', 'Rack + roof box (Motion 3 L)'], ['twoAccessories', 'One rack + two accessories'],
-  ['threeAccessories', 'Three accessories, no rack'], ['twoRacks', 'Two racks + roof box'], ['threeRacks', 'Three racks, no accessory']];
+  ['threeAccessories', 'Three accessories, no rack'], ['twoRacks', 'Two racks + roof box'], ['threeRacks', 'Three racks, no accessory'],
+  ['rangerRoof', 'Ranger: roof bars only'], ['rangerRoofAndTub', 'Ranger: roof bars + tub system'], ['rangerProRide', 'Ranger: roof bars + tub + ProRide']];
 function rrgCompatScenarioChoice(choice) {
   const cur = typeof rrgCartPresetName === 'function' ? rrgCartPresetName() : 'custom';
   const opts = RRG_COMPAT_SCENARIOS.slice();

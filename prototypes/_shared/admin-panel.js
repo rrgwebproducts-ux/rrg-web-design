@@ -40,6 +40,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'config-variant', label: 'Config-Variant' },
       { key: 'sibling-color', label: 'Sibling / Colour' },
       { key: 'roof-box', label: 'Roof Box (Motion 3 L)' },
+      { key: 'proride', label: 'Bike Carrier (Thule ProRide)' },
       { key: 'simple', label: 'Simple' },
       { key: 'grouped-bundle', label: 'Grouped / Bundle' },
     ] },
@@ -127,6 +128,9 @@ function buildSiteAdminPanel(currentKey) {
           <option value="twoRacks">Thule bars + Vortex bars + Motion 3 L (two racks)</option>
           <option value="threeAccessories">Motion 3 L + ProRide + CRUZ box (three accessories)</option>
           <option value="threeRacks">Thule bars + Vortex bars + SmartRack XT (three racks)</option>
+          <option value="rangerRoof">Ranger: roof bars only</option>
+          <option value="rangerRoofAndTub">Ranger: roof bars + tub system</option>
+          <option value="rangerProRide">Ranger: roof bars + tub + ProRide</option>
           <option value="custom" disabled>Your own items</option>
         </select>
       </label>

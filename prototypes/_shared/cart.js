@@ -70,6 +70,11 @@ const RRG_DEMO_CART_ITEMS = {
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/t/h/thule-598002-bike-rack-roof-mount_3.jpg', url: 'plp/index.html?attachment=roof-mounting', pkgCategory: 'roof-bike' },
   vortexRack: { sku: 'RH-VTX2', brand: 'Rhino-Rack', name: 'Rhino Rack Vortex 2 Bar Cross Bar Set for Toyota Hilux N80 - Roof Track Mount', price: 389.00,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RTS556-Tracks._1_6.jpg', url: 'vplp/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
+  // The Ranger demo (Graham/Scott 2026-11-24): roof bars on the cab + a tub system, both real P703 listings.
+  rangerWingBar: { sku: 'GP03QU54E', brand: 'Thule', name: 'Thule WingBar Evo Black 2 Bar Roof Rack for Ford Ranger P703 Wildtrak 4dr Ute with Raised Roof Rail (2022 onwards)', price: 499.85, wasPrice: 529.95,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-wingbar-evo-black-2-bar-roof-rack-for-ford-ranger-p703-wildtrak-4dr-ute-with-raised-roof-rail-2022-onwards-roof-raised-rail-mount-view-1-90a2a18f9a6e.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: 'rack' },
+  rangerTub: { sku: 'GP01V7AE6', brand: 'Rhino-Rack', name: 'Rhino Rack JC-03543 Reconn-Deck 2 Bar Ute Tub System for Ford Ranger P703 4dr Ute with Bare Roof (2022 onwards)', price: 740.20, wasPrice: 780.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-jc-03543-reconn-deck-2-bar-ute-tub-system-for-ford-ranger-p703-4dr-ute-with-bare-roof-2022-onwards-ute-tub-custom-point-mount-view-1-9ed4629f623d.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: 'rack' },
   smartRack: { sku: '730402', brand: 'Thule', name: 'Thule SmartRack XT Silver 2 Bar Roof Rack for Toyota Hilux N80', price: 379.95,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-730402-Roof-Rack---Bars--Legs._1_269.jpg', url: 'vplp/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
   wheelHolder: { sku: '547001', brand: 'Thule', name: 'Thule Front Wheel Holder - 547001', price: 199.00, wasPrice: 239.95,
@@ -93,7 +98,10 @@ const RRG_DEMO_CARTS = {
   thuleRackOnly: ['thuleRack'],          // Thule WingBar Evo: the Motion 3 L shows the Demo State → Compatibility data result
   twoAccessories: ['thuleRack', 'motionBox', 'proRide'],  // one rack, two accessories (both can need an adapter)
   threeAccessories: ['motionBox', 'proRide', 'roofBox'], // mixed demo: a rack page against three accessories
-  threeRacks: ['thuleRack', 'vortexRack', 'smartRack'],                 // mixed demo: an accessory page against three racks
+  threeRacks: ['thuleRack', 'vortexRack', 'smartRack'],
+  rangerRoof: ['rangerWingBar'],                    // Ranger: roof bars only (view the ProRide)
+  rangerRoofAndTub: ['rangerWingBar', 'rangerTub'], // Ranger: roof bars + tub system (the double-rack case)
+  rangerProRide: ['rangerWingBar', 'rangerTub', 'proRide'], // the same, with a ProRide already in the cart                 // mixed demo: an accessory page against three racks
   twoRacks: ['thuleRack', 'vortexRack', 'motionBox'],     // two racks, one accessory (a different result per rack)
   notCompatible: ['thuleRack', 'motionBox'] // Thule WingBar Evo + Motion 3 L: both lines carry the Compatibility data note
 };
@@ -236,7 +244,13 @@ const RRG_COMPAT_MOTION_3L = {
 };
 // The ProRide 598's rows follow Scott's real adapters (square bars -> 889500, "T" HD bars -> PR3110);
 // its focus row needs the slot adapter so two accessories can need two different adapters.
-const RRG_COMPAT_PRORIDE = { ...RRG_COMPAT_MOTION_3L, product: 'Thule ProRide 598', focusAdapter: 'slot21', mixedFocus: 'adapter' };
+// ProRide (Scott's real adapters). Two focus rows so one page shows the double-rack case: the roof bars follow
+  // the Demo State switch, the ute tub system follows it too ("Mixed" = fits the roof, not the tub).
+  const RRG_COMPAT_PRORIDE = { product: 'Thule ProRide 598', focusAdapter: 'square', mixedFocus: 'yes', rows: [
+    { focus: true, group: 'Thule WingBar Evo', match: /wingbar/i, mixed: 'yes', adapterKey: 'square' },
+    ...RRG_COMPAT_MOTION_3L.rows.slice(1),
+    { focus: true, group: 'Rhino-Rack Reconn-Deck / ute tub systems', match: /reconn|tub system|platform/i, mixed: 'no', adapterKey: 'slot21' }
+  ] };
 const RRG_COMPAT_CRUZ = { ...RRG_COMPAT_MOTION_3L, product: 'CRUZ Easy 430', focusAdapter: 'square', mixedFocus: 'yes' };
 const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L, 598002: RRG_COMPAT_PRORIDE, 'C940-349U': RRG_COMPAT_CRUZ };
 // Demo State → "Compatibility data" (Roof Box PDP): unknown | compatible | notcompatible | adapter.
@@ -251,8 +265,8 @@ function rrgCompatRows(accessory) {
   if (!d || state === 'unknown') return null;
   return d.rows.map(r => {
     if (!r.focus) return r;
-    const status = state === 'mixed' ? d.mixedFocus : { compatible: 'yes', notcompatible: 'no', adapter: 'adapter' }[state] || 'yes';
-    return { ...r, status, adapter: status === 'adapter' ? d.focusAdapter : null };
+    const status = state === 'mixed' ? (r.mixed || d.mixedFocus) : { compatible: 'yes', notcompatible: 'no', adapter: 'adapter' }[state] || 'yes';
+    return { ...r, status, adapter: status === 'adapter' ? (r.adapterKey || d.focusAdapter) : null };
   });
 }
 // { status: 'yes' | 'no' | 'adapter', adapter } for this accessory on that rack's bars, or null (not known).
@@ -290,46 +304,171 @@ function rrgPackageCompatInCart(item, cart = rrgCartGet()) {
 const rrgAdapterLinkHTML = a => `<a href="${a.pdp}" target="_blank" rel="noopener">${rrgEsc(rrgShortName(a.name))}</a>`;
 // Adapters the cart still needs (Brenton, 2026-11-24: adding a product that works "with an adapter"
 // prompts for the adapter): [{ adapter, accessory, rack }], one per adapter not yet in the cart.
-function rrgAdaptersNeeded(cart = rrgCartGet()) {
-  if (!rrgPackageOn()) return [];
-  const have = new Set(cart.lines.map(l => l.key));
-  const out = [];
-  cart.lines.filter(rrgIsRoofAccessory).forEach(acc => cart.lines.filter(l => rrgPackageCategory(l) === 'rack').forEach(rack => {
-    const r = rrgCompatResult(acc, rack);
-    if (!r || r.status !== 'adapter' || !r.adapter || have.has(r.adapter.sku)) return;
-    let n = out.find(o => o.adapter.sku === r.adapter.sku);
-    if (!n) out.push(n = { adapter: r.adapter, accessory: acc, rack, accessories: [], racks: [] });
-    if (!n.accessories.includes(acc)) n.accessories.push(acc);
-    if (!n.racks.includes(rack)) n.racks.push(rack);
-  }));
-  return out;
+// ---- Adapters the cart still needs (Graham/Scott follow-up 2026-11-24, spec.md §34) ----
+// An accessory is "mounted on" the racks the shopper chose (line.mount = [rack skus], set in the modal
+// or the cart card). With exactly one rack in the cart that's assumed. The adapter quantity follows the
+// accessory quantity (one per carrier: four ProRides need four adapters). Anything unresolved shows as
+// a card in the cart and mini-cart (the second chance) after the modal.
+function rrgMountRacks(acc, racks) {
+  if (Array.isArray(acc.mount)) return racks.filter(r => acc.mount.includes(r.key));
+  return racks.length === 1 ? racks : null;          // null = not chosen yet
 }
-// "The A and B fit the R with ..." names every accessory / rack the adapter covers.
+// { short: [{ adapter, required, have, shortfall, accessories, racks }], choose: [{ accessory, options }] }
+function rrgAdapterTasks(cart = rrgCartGet()) {
+  const none = { short: [], choose: [] };
+  if (!rrgPackageOn()) return none;
+  const racks = cart.lines.filter(l => rrgPackageCategory(l) === 'rack');
+  const have = {};
+  cart.lines.forEach(l => { have[l.key] = (have[l.key] || 0) + l.qty; });
+  const req = {}, choose = [];
+  cart.lines.filter(rrgIsRoofAccessory).forEach(acc => {
+    const mounted = rrgMountRacks(acc, racks);
+    if (mounted === null) {
+      const options = racks.map(rack => ({ rack, res: rrgCompatResult(acc, rack) })).filter(o => o.res);
+      if (options.some(o => o.res.status === 'adapter')) choose.push({ accessory: acc, options });
+      return;
+    }
+    mounted.forEach(rack => {
+      const res = rrgCompatResult(acc, rack);
+      if (!res || res.status !== 'adapter' || !res.adapter) return;
+      const r = req[res.adapter.sku] || (req[res.adapter.sku] = { adapter: res.adapter, required: 0, accessories: [], racks: [] });
+      r.required += acc.qty;
+      if (!r.accessories.includes(acc)) r.accessories.push(acc);
+      if (!r.racks.includes(rack)) r.racks.push(rack);
+    });
+  });
+  const short = Object.values(req).map(r => ({ ...r, have: have[r.adapter.sku] || 0 }))
+    .filter(r => r.have < r.required).map(r => ({ ...r, shortfall: r.required - r.have }));
+  return { short, choose };
+}
 const rrgNeedNames = list => rrgListWords(list.map(l => `<b>${rrgEsc(rrgShortName(l.name))}</b>`), 'and');
 const rrgNeedSentence = n => `The ${rrgNeedNames(n.accessories)} ${n.accessories.length > 1 ? 'fit' : 'fits'} the ${rrgNeedNames(n.racks)} with the <b>${rrgAdapterLinkHTML(n.adapter)}</b>.`;
-// The prompt card (mini-cart under the lines, cart page above them): one per missing adapter.
+const rrgAdapterTone = () => rrgAdapterAmber() ? 'unknown' : 'fits';
+// One adapter shortfall (the cart card, and a block in the modal).
+function rrgShortageBodyHTML(n) {
+  const q = n.required > 1 ? ` You need <b>${n.required}</b> (one per carrier) and have <b>${n.have}</b>.` : '';
+  return `${rrgNeedSentence(n)}${q}`;
+}
+// "Which rack is it going on?" — a tick per rack in the cart, plus "none of these". scope: 'card' | 'modal'.
+function rrgChooseHTML(t, scope) {
+  const acc = t.accessory, key = rrgEsc(acc.key);
+  const rows = t.options.map(o => {
+    const r = o.res, name = rrgEsc(rrgShortName(o.rack.name));
+    const note = r.status === 'adapter' ? `needs the ${rrgAdapterLinkHTML(r.adapter)} · ${rrgMoney(r.adapter.price)}${acc.qty > 1 ? ` × ${acc.qty}` : ''}`
+      : r.status === 'yes' ? 'compatible, no adapter needed' : 'not compatible';
+    return `<label class="adapter-choose-row is-${r.status}"><input type="checkbox" data-adapter-mount="${key}" value="${rrgEsc(o.rack.key)}" data-adapter-sku="${r.adapter ? rrgEsc(r.adapter.sku) : ''}" data-adapter-price="${r.adapter ? r.adapter.price : 0}"${r.status === 'no' ? ' disabled' : ''}>
+      <span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
+  }).join('');
+  return `<div class="adapter-choose" data-adapter-choose="${key}" data-adapter-qty="${acc.qty}">
+    <p class="adapter-choose-q">Which rack is the <b>${rrgEsc(rrgShortName(acc.name))}</b>${acc.qty > 1 ? ` (× ${acc.qty})` : ''} going on?</p>
+    ${rows}
+    <label class="adapter-choose-row is-none"><input type="checkbox" data-adapter-none="${key}"><span><b>None of these</b><span class="acr-note">not going on these racks, no adapter needed</span></span></label>
+    ${scope === 'card' ? `<div class="actions"><button type="button" class="btn btn-outline btn-sm" data-adapter-apply disabled>Add adapter</button></div>` : ''}
+  </div>`;
+}
+// The cart / mini-cart cards: one per unresolved choice, one per adapter shortfall.
 function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
-  return rrgAdaptersNeeded(cart).map(n => rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', 'Add the adapter',
-    `${rrgNeedSentence(n)}
-     <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(n.adapter.sku)}">Add adapter · ${rrgMoney(n.adapter.price)}</button></div>`,
-    '', 'adapter-notice')).join('');
+  const t = rrgAdapterTasks(cart), tone = rrgAdapterTone();
+  return t.choose.map(c => rrgNoticeCardHTML(tone, 'Which rack is it for?', rrgChooseHTML(c, 'card'), '', 'adapter-notice')).join('')
+    + t.short.map(n => rrgNoticeCardHTML(tone, n.have ? 'Add the missing adapters' : 'Add the adapter',
+      `${rrgShortageBodyHTML(n)}
+       <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(n.adapter.sku)}" data-qty="${n.shortfall}">Add ${n.shortfall > 1 ? n.shortfall + ' adapters' : 'adapter'} · ${rrgMoney(n.adapter.price * n.shortfall)}</button></div>`,
+      '', 'adapter-notice')).join('');
+}
+const rrgAdapterBySku = sku => Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === sku);
+// Add qty of an adapter (or raise its line to at least qty), without opening the cart drawer.
+function rrgCartEnsureQty(item, qty) {
+  const cart = rrgCartGet(), key = item.sku || item.name;
+  const line = cart.lines.find(l => l.key === key);
+  if (line) line.qty = Math.max(line.qty, qty); else cart.lines.push({ ...item, key, qty });
+  rrgCartSave(cart);
+}
+// Record the shopper's rack choices from every [data-adapter-choose] in scope, then top up the adapters.
+// Returns nothing; the cart-change event redraws the drawer / cart page.
+function rrgAdapterApply(scope) {
+  const cart = rrgCartGet();
+  scope.querySelectorAll('[data-adapter-choose]').forEach(box => {
+    const line = cart.lines.find(l => l.key === box.dataset.adapterChoose);
+    if (!line) return;
+    line.mount = box.querySelector('[data-adapter-none]:checked') ? [] : [...box.querySelectorAll('[data-adapter-mount]:checked')].map(i => i.value);
+  });
+  rrgCartSave(cart);
+  rrgAdapterTasks().short.forEach(n => rrgCartEnsureQty(n.adapter, n.have + n.shortfall));
+}
+// Ticks: "None of these" excludes the racks (and back); the button follows the ticked adapters' total.
+function rrgAdapterTickChanged(box) {
+  const none = box.querySelector('[data-adapter-none]'), racks = [...box.querySelectorAll('[data-adapter-mount]')];
+  racks.forEach(i => { if (i.checked && none && none.checked && document.activeElement !== none) none.checked = false; });
+  const scope = box.closest('.adapter-modal, .adapter-notice');
+  const all = [...scope.querySelectorAll('[data-adapter-choose]')];
+  const total = all.reduce((t, b) => t + [...b.querySelectorAll('[data-adapter-mount]:checked')].reduce((n, i) => n + (+i.dataset.adapterPrice || 0) * (+b.dataset.adapterQty || 1), 0), 0);
+  const anyTick = all.some(b => b.querySelector('[data-adapter-mount]:checked, [data-adapter-none]:checked'));
+  const btn = scope.querySelector('[data-adapter-apply], [data-adapter-modal-yes]');
+  if (btn) {
+    btn.disabled = !anyTick;
+    if (btn.hasAttribute('data-adapter-modal-yes')) btn.dataset.base = btn.dataset.base || btn.textContent;
+    const base = btn.dataset.base || 'Add adapter';
+    btn.textContent = total > 0 ? `Add adapter${all.some(b => b.querySelectorAll('[data-adapter-mount]:checked').length > 1) ? 's' : ''} · ${rrgMoney(total)}` : (anyTick ? 'Continue' : base);
+  }
+}
+
+// ---- The adapter modal (centre of screen, like the vehicle crossover) ----
+// Opens when Add to Cart puts something in the cart that has an unresolved adapter need involving it
+// (the accessory, or a rack it could go on), BEFORE the cart drawer. Yes adds the adapters and opens the
+// cart drawer; No thanks opens the cart drawer, which keeps the cards as a second chance.
+function rrgAdapterTasksFor(key, cart = rrgCartGet()) {
+  const t = rrgAdapterTasks(cart);
+  return {
+    choose: t.choose.filter(c => c.accessory.key === key || c.options.some(o => o.rack.key === key)),
+    short: t.short.filter(n => n.accessories.some(a => a.key === key) || n.racks.some(r => r.key === key))
+  };
+}
+function rrgAdapterModalHTML(t) {
+  const involved = [...new Map([...t.choose.flatMap(c => [c.accessory, ...c.options.map(o => o.rack)]), ...t.short.flatMap(n => [...n.accessories, ...n.racks])].map(l => [l.key, l])).values()];
+  const title = t.choose.length ? 'Which rack is it going on?' : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
+  const card = n => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}"><img src="${n.adapter.image}" alt="">
+    <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span><a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
+    <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}${n.shortfall > 1 ? ` <span class="am-qty">× ${n.shortfall}</span>` : ''}</div></div>`;
+  return `<div class="adapter-modal-backdrop" id="adapterModal"><div class="adapter-modal${t.choose.length === 1 ? ' is-single' : ''}" role="dialog" aria-modal="true" aria-labelledby="amTitle">
+    <ul class="adapter-step-items">${involved.map(l => `<li><img src="${l.image}" alt=""><span>${rrgEsc(rrgShortName(l.name))}${l.qty > 1 ? ` <em>× ${l.qty}</em>` : ''}</span></li>`).join('')}</ul>
+    <h2 id="amTitle">${title}</h2>
+    <p class="am-lead">Without the right adapter it won't fit. Choose now and we'll add it to your order.</p>
+    ${t.choose.map(c => rrgChooseHTML(c, 'modal')).join('')}
+    ${t.short.map(n => `<p class="adapter-step-p">${rrgShortageBodyHTML(n)}</p>${card(n)}`).join('')}
+    <div class="adapter-modal-actions">
+      <button type="button" class="btn btn-cta btn-block" data-adapter-modal-yes${t.choose.length ? ' disabled' : ''}>${t.short.length && !t.choose.length ? (t.short.length > 1 ? 'Yes, add the adapters' : 'Yes, add the adapter') : 'Add adapter'}</button>
+      <button type="button" class="btn btn-outline btn-block" data-adapter-modal-no>No thanks, continue</button>
+    </div></div></div>`;
+}
+function rrgCloseAdapterModal() { document.getElementById('adapterModal')?.remove(); }
+function rrgOpenAdapterModal(t) {
+  rrgCloseAdapterModal();
+  document.body.insertAdjacentHTML('beforeend', rrgAdapterModalHTML(t));
+  const m = document.getElementById('adapterModal');
+  // The usual single-rack case needs no choice: the primary button is live straight away.
+  m.querySelector('[data-adapter-modal-yes]').focus({ preventScroll: true });
 }
 document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-add-adapter], [data-adapter-yes], [data-adapter-no]');
-  if (!btn) return;
-  const find = sku => Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === sku);
-  // "Yes" adds every ticked adapter in the step (one, or several when more than one is needed).
-  const skus = btn.dataset.adapterYes !== undefined
-    ? [...document.querySelectorAll('[data-adapter-pick]:checked')].map(i => i.dataset.adapterPick)
-    : [btn.dataset.addAdapter];
-  const adapters = skus.map(find).filter(Boolean);
-  const declined = btn.dataset.adapterNo !== undefined;
-  if (declined) (rrgAdapterStep || []).forEach(n => rrgAdapterDeclined.add(n.adapter.sku));
-  const single = btn.dataset.adapterYes !== undefined && !adapters.length && rrgAdapterStep && rrgAdapterStep.length === 1 ? [rrgAdapterStep[0].adapter] : adapters;
-  rrgAdapterStep = null;                       // the adapter step ends either way -> the cart drawer
-  if (declined || !single.length) { rrgRenderMiniCart(); return; }
-  single.forEach(a => rrgCartAdd(a, { open: false }));   // saves -> the open drawer redraws as the cart
+  const add = e.target.closest('[data-add-adapter]');
+  if (add) {                                              // a shortfall card: top up to the qty needed
+    const a = rrgAdapterBySku(add.dataset.addAdapter);
+    if (a) { const cur = (rrgCartGet().lines.find(l => l.key === a.sku) || {}).qty || 0; rrgCartEnsureQty(a, cur + (+add.dataset.qty || 1)); }
+    return;
+  }
+  const apply = e.target.closest('[data-adapter-apply]');
+  if (apply) { rrgAdapterApply(apply.closest('.adapter-notice')); return; }
+  if (e.target.closest('[data-adapter-modal-yes]')) {
+    const m = document.getElementById('adapterModal');
+    rrgAdapterApply(m); rrgCloseAdapterModal(); rrgOpenMiniCart(true); return;
+  }
+  if (e.target.closest('[data-adapter-modal-no]') || e.target.id === 'adapterModal') { rrgCloseAdapterModal(); rrgOpenMiniCart(true); }
 });
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.matches('[data-adapter-none]') && t.checked) t.closest('[data-adapter-choose]').querySelectorAll('[data-adapter-mount]').forEach(i => { i.checked = false; });
+  if (t.matches('[data-adapter-mount], [data-adapter-none]')) rrgAdapterTickChanged(t.closest('[data-adapter-choose]'));
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('adapterModal')) { rrgCloseAdapterModal(); rrgOpenMiniCart(true); } });
 // Chip on a drawer suggestion: only when the pair is a known yes (or yes with an adapter).
 function rrgCompatChipHTML(accessory, rack) {
   const r = rrgCompatResult(accessory, rack);
@@ -401,18 +540,12 @@ function rrgCartAdd(item, { open = true } = {}) {
   const line = cart.lines.find(l => l.key === key);
   if (line) line.qty += 1;
   else cart.lines.push({ ...item, key, qty: 1 });
-  // A product that needs an adapter opens the adapter step first, then the cart drawer (Brenton,
-  // 2026-11-24). Declined adapters aren't asked again this visit; the cart still carries the card.
-  rrgAdapterStep = null;
   rrgCartSave(cart);
-  if (open) {
-    const need = rrgAdaptersNeeded(rrgCartGet()).filter(n => !rrgAdapterDeclined.has(n.adapter.sku));
-    rrgAdapterStep = need.length ? need : null;
-    rrgOpenMiniCart(true);
-  }
+  if (!open) return;
+  // A product with an unresolved adapter need opens the adapter modal first, then the cart drawer.
+  const t = rrgAdapterTasksFor(key);
+  if (t.choose.length || t.short.length) rrgOpenAdapterModal(t); else rrgOpenMiniCart(true);
 }
-let rrgAdapterStep = null;
-const rrgAdapterDeclined = new Set();
 function rrgCartSetQty(key, qty) {
   const cart = rrgCartGet();
   cart.lines = cart.lines.map(l => l.key === key ? { ...l, qty } : l).filter(l => l.qty > 0);
@@ -599,29 +732,6 @@ function rrgRenderMiniCart() {
   if (!cart.lines.length) {
     body.innerHTML = `<div class="cart-empty-mini"><p>Your cart is empty.</p><a class="btn btn-outline btn-sm" href="${RRG_PROTO}home/index.html#shop-by-category">Shop by category</a></div>`;
     document.getElementById('miniCartFoot').innerHTML = '';
-    return;
-  }
-  // Adapter step: just added something that needs an adapter — ask before showing the cart.
-  if (rrgAdapterStep) rrgAdapterStep = rrgAdaptersNeeded(cart).filter(n => rrgAdapterStep.some(o => o.adapter.sku === n.adapter.sku));
-  if (rrgAdapterStep && !rrgAdapterStep.length) rrgAdapterStep = null;
-  if (rrgAdapterStep) {
-    const needs = rrgAdapterStep, many = needs.length > 1;
-    const adapterCard = (n, tick) => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}">
-        <img src="${n.adapter.image}" alt="">
-        <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span>
-          <a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
-          <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}</div>
-        ${tick ? `<label class="adapter-step-tick"><input type="checkbox" data-adapter-pick="${rrgEsc(n.adapter.sku)}" checked>Add</label>` : ''}
-      </div>`;
-    const involved = [...new Map(needs.flatMap(n => [...n.accessories, ...n.racks]).map(l => [l.key, l])).values()];
-    body.innerHTML = `
-      <ul class="adapter-step-items">${involved.map(l => `<li><img src="${l.image}" alt=""><span>${rrgEsc(rrgShortName(l.name))}</span></li>`).join('')}</ul>
-      <h3 class="adapter-step-h">${many ? 'Add the adapters?' : 'Add the adapter?'}</h3>
-      ${needs.map(n => `<p class="adapter-step-p">${rrgNeedSentence(n)}</p>${adapterCard(n, many)}`).join('')}`;
-    const total = rrgMoney(needs.reduce((t, n) => t + n.adapter.price, 0));
-    document.getElementById('miniCartFoot').innerHTML = `
-      <button type="button" class="btn btn-cta btn-block" data-adapter-yes>${many ? `Add ${needs.length} adapters · ${total}` : 'Yes, add the adapter'}</button>
-      <button type="button" class="btn btn-outline btn-block" data-adapter-no>No thanks, continue</button>`;
     return;
   }
   const inCart = new Set(cart.lines.map(l => l.key));
