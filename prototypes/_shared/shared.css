@@ -1438,6 +1438,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .stock-chip.in,.chip-fits,.chip-adapter{background:var(--rrg-fits-bg);}
 .stock-chip.order{background:var(--rrg-unknown-bg);}
 .chip-no{background:var(--rrg-nofit-bg);}
+.chip-adapter.is-amber{background:var(--rrg-unknown-bg);}
 .chip-cart{background:var(--rrg-line-soft);margin-left:6px;}
 /* Compatibility tab (spec.md §34): one row per bar group, Yes / No / Yes with an adapter. */
 .compat-intro{margin:0 0 12px;}
@@ -1452,6 +1453,7 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .adapter-step-h{margin:20px 0 6px;font-size:24px;}
 .adapter-step-p{margin:0 0 14px;font-size:14px;color:var(--rrg-grey-700);}
 .adapter-step-card{display:flex;gap:14px;align-items:center;padding:14px;border:1px solid var(--rrg-line);border-left:3px solid var(--rrg-fits);background:#fff;}
+.adapter-step-card.is-amber{border-left-color:var(--rrg-unknown);}
 .adapter-step-card img{width:72px;height:72px;object-fit:contain;flex:0 0 auto;}
 .adapter-step-card strong{display:inline-block;margin-top:4px;}
 .adapter-step-card s{color:var(--rrg-grey-500);font-size:13px;}

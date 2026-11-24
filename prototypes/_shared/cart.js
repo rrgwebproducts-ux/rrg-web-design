@@ -196,6 +196,10 @@ function rrgPackageDeal(cart = rrgCartGet()) {
 // DEMO DATA — the group rows below are placeholders until Scott's bar/platform-range sheet lands.
 // Production: accessory ↔ bar-group table in Magento (yes / no / adapter product).
 // Adapters are Scott's real ones (Slack 2026-11-24, for the Thule ProRide 598002).
+// Adapter state colour (Graham asked: orange or green?). Default orange with the warning icon;
+// Demo State → "Adapter colour" switches it (saved under this key so the cart and drawer follow).
+const RRG_ADAPTER_TONE_KEY = 'rrg-adapter-tone';
+const rrgAdapterAmber = () => { try { return localStorage.getItem('rrg-adapter-tone') !== 'green'; } catch (e) { return true; } };
 const RRG_COMPAT_ADAPTERS = {
   // Live listings, prices as live 2026-11-24. pkgCategory null: an adapter is never a rack/accessory for the Package Deal.
   square: { sku: '889500', brand: 'Thule', name: 'Thule ProRide Square Bar Adapter - 889500', price: 29.95, pkgCategory: null, url: '#',
@@ -278,7 +282,7 @@ function rrgAdaptersNeeded(cart = rrgCartGet()) {
 }
 // The prompt card (mini-cart under the lines, cart page above them): green, one per missing adapter.
 function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
-  return rrgAdaptersNeeded(cart).map(({ adapter, accessory, rack }) => rrgNoticeCardHTML('fits', 'Add the adapter',
+  return rrgAdaptersNeeded(cart).map(({ adapter, accessory, rack }) => rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', 'Add the adapter',
     `The <b>${rrgEsc(rrgShortName(accessory.name))}</b> fits the <b>${rrgEsc(rrgShortName(rack.name))}</b> with the <b>${rrgAdapterLinkHTML(adapter)}</b>.
      <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(adapter.sku)}">Add adapter · ${rrgMoney(adapter.price)}</button></div>`,
     '', 'adapter-notice')).join('');
@@ -298,7 +302,7 @@ document.addEventListener('click', e => {
 function rrgCompatChipHTML(accessory, rack) {
   const r = rrgCompatResult(accessory, rack);
   return !r || r.status === 'no' ? '' : r.status === 'adapter'
-    ? '<span class="chip chip-adapter">✓ Compatible with an adapter</span>' : '<span class="chip chip-fits">✓ Compatible</span>';
+    ? `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">${rrgAdapterAmber() ? '' : '✓ '}Compatible with an adapter</span>` : '<span class="chip chip-fits">✓ Compatible</span>';
 }
 // Product names run long ("… for Toyota Hilux N80 (2015–2026), Bare Roof"): the message names
 // the product up to its vehicle/SKU suffix.
@@ -312,16 +316,16 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
     const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
     if (mode === 'banner') {
       const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
-      if (status === 'adapter') return rrgNoticeCardHTML('fits', 'Compatible with an adapter',
+      if (status === 'adapter') return rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', 'Compatible with an adapter',
         `Works with the ${name} in your cart when fitted with the ${rrgAdapterLinkHTML(adapter)}.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
       return rrgNoticeCardHTML(compatible ? 'fits' : 'unknown', compatible ? 'Compatible' : 'Heads up: not compatible',
         compatible ? `Works with the ${name} in your cart.` : `Not compatible with the ${name} in your cart. Choose a different ${swap}, or contact us and we'll help.`,
         RRG_COMPAT_TIP, 'cart-conflict-banner');
     }
     const name = `<strong>${rrgEsc(rrgShortName(line.name))}</strong>`;
-    const msg = status === 'adapter' ? `✓ Compatible with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)}`
+    const msg = status === 'adapter' ? `${rrgAdapterAmber() ? '' : '✓ '}Compatible with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)}`
       : compatible ? `✓ Compatible with the ${name} in your cart` : `Heads up: not compatible with the ${name} in your cart.`;
-    return `<div class="cart-line-compat ${compatible ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
+    return `<div class="cart-line-compat ${compatible && !(status === 'adapter' && rrgAdapterAmber()) ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
   }).join('');
 }
 // Decision-panel notice in the PDP's fitment-card style (Brenton, 2026-10-06: the compatibility
@@ -555,7 +559,7 @@ function rrgRenderMiniCart() {
       <ul class="cart-lines">${rrgCartLineHTML(accessory, { editable: false, compact: true })}</ul>
       <h3 class="adapter-step-h">Add the adapter?</h3>
       <p class="adapter-step-p">The <b>${rrgEsc(rrgShortName(accessory.name))}</b> fits the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart with this adapter.</p>
-      <div class="adapter-step-card">
+      <div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}">
         <img src="${a.image}" alt="">
         <div><span class="cart-line-brand">${rrgEsc(a.brand)}</span>
           <a class="cart-line-name" href="${a.pdp}" target="_blank" rel="noopener">${rrgEsc(a.name)}</a>

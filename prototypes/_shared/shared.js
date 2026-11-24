@@ -4016,6 +4016,7 @@ function buildAdminPanel() {
     const compatPage = typeof RRG_COMPAT_DATA !== 'undefined' && ['roof-box', 'roof-bike'].includes(compatCat);
     html += section('Cart', document.querySelector('.cta-col[data-pkg-category]')
       ? (compatPage ? choice('compatData', 'Compatibility data', [['unknown', 'Unknown (nothing shown)'], ['compatible', 'Compatible'], ['notcompatible', 'Not compatible'], ['adapter', 'Compatible with an adapter']], 'compatible') +
+          choice('adapterTone', 'Adapter colour', [['amber', 'Orange (warning icon)'], ['green', 'Green (tick)']], 'amber') +
           hint('compatData', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.') : '') +
         '<p class="admin-hint">The card above Add to Cart and the cart notes read the real cart. Load one in Site Admin → Demo cart (Thule roof rack only).</p>'
       : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none') +
@@ -4121,7 +4122,7 @@ function buildAdminPanel() {
     });
     setDisabled('[data-admin-flag="exdemo"], [data-admin-flag="showroom"]', !phase2, 'pdpPhase2');
     setDisabled('select[name="cartConflict"]', !phase2, 'cartPhase2');
-    setDisabled('select[name="compatData"]', !phase2, 'compatData');
+    setDisabled('select[name="compatData"], select[name="adapterTone"]', !phase2, 'compatData');
     const stock = STOCK_STATUS[adminState.stockStatus];
     const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);
     panel.querySelectorAll('[data-admin-flag="shipping"], [data-admin-flag="collect"]').forEach(i => {
@@ -4221,6 +4222,14 @@ function buildAdminPanel() {
   const compatSel = panel.querySelector('select[name="compatData"]');
   if (compatSel) {
     try { localStorage.setItem(RRG_COMPAT_DEMO_KEY, compatSel.value); } catch (e) {}
+    const toneSel = panel.querySelector('select[name="adapterTone"]');
+    try { localStorage.setItem(RRG_ADAPTER_TONE_KEY, toneSel.value); } catch (e) {}
+    onChoice('adapterTone', value => {
+      try { localStorage.setItem(RRG_ADAPTER_TONE_KEY, value); } catch (e) {}
+      rrgMountCompatTab();
+      applyCartConflict(adminState.cartConflict);
+      document.dispatchEvent(new CustomEvent('rrg-cart-change'));
+    });
     onChoice('compatData', value => {
       try { localStorage.setItem(RRG_COMPAT_DEMO_KEY, value); } catch (e) {}
       rrgMountCompatTab();
@@ -4384,7 +4393,7 @@ function rrgCompatTabHTML(d, checked) {
   const racks = rrgCartGet().lines.filter(l => rrgPackageCategory(l) === 'rack');
   const fits = r => r.status === 'yes' ? '<span class="chip chip-fits">Yes</span>'
     : r.status === 'no' ? '<span class="chip chip-no">No</span>'
-    : `<span class="chip chip-adapter">Yes, with an adapter</span> <span class="compat-adapter">${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</span>`;
+    : `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">Yes, with an adapter</span> <span class="compat-adapter">${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</span>`;
   return `<input type="radio" name="tabs" id="tCompat"${checked ? ' checked' : ''}><label for="tCompat">Compatibility</label>
     <div class="content compat-tab">
       <p class="compat-intro">Roof bars that suit the <strong>${rrgEsc(d.product)}</strong> <span class="store-demo-tag">Example data</span></p>
