@@ -1436,7 +1436,19 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 /* Variant-card "Save N%" — red, same as the price block's Save badge (C5, was green). */
 .variant-option .v-badge{margin-left:8px;background:var(--rrg-red);color:#fff;}
 .stock-chip.in,.chip-fits{background:var(--rrg-fits-bg);}
-.stock-chip.order{background:var(--rrg-unknown-bg);}
+.stock-chip.order,.chip-adapter{background:var(--rrg-unknown-bg);}
+.chip-no{background:var(--rrg-nofit-bg);}
+.chip-cart{background:var(--rrg-line-soft);margin-left:6px;}
+/* Compatibility tab (spec.md §34): one row per bar group, Yes / No / Yes with an adapter. */
+.compat-intro{margin:0 0 12px;}
+.compat-table{width:100%;border-collapse:collapse;font-size:14px;}
+.compat-table th,.compat-table td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--rrg-line);vertical-align:top;}
+.compat-table thead th{font-family:'Barlow Condensed',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--rrg-grey-600);}
+.compat-table tbody th{font-weight:600;color:var(--rrg-grey-800,#222);}
+.compat-table td{white-space:nowrap;}
+.compat-adapter{display:block;margin-top:4px;white-space:normal;font-size:13px;}
+.compat-foot{margin:14px 0 0;font-size:13px;color:var(--rrg-grey-600);}
+@media (max-width:640px){.compat-table td{white-space:normal;}}
 .stock-chip.none{background:var(--rrg-nofit-bg);}
 .stock-chip.out{background:var(--rrg-line-soft);color:var(--rrg-grey-600);}
 

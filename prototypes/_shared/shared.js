@@ -4009,8 +4009,15 @@ function buildAdminPanel() {
       hint('delivery', 'Off while the product is Out of Stock or Discontinued.'));
     if (hasShowroom) html += section('In-store', toggle('showroom', 'On display in-store (Showroom Finder)', true));
     // Rack / roof-accessory pages read the real cart for compatibility (applyCartConflict).
+    // Roof accessories with bar-group data (cart.js RRG_COMPAT_DATA) also get the "Compatibility data"
+    // switch: what the product's compatibility work says (spec.md §34, 2026-11-24).
+    // (The SKU isn't on the page yet when this panel is built, so key it on the page's category.)
+    const compatCat = document.querySelector('.cta-col[data-pkg-category]')?.dataset.pkgCategory;
+    const compatPage = typeof RRG_COMPAT_DATA !== 'undefined' && ['roof-box', 'roof-bike'].includes(compatCat);
     html += section('Cart', document.querySelector('.cta-col[data-pkg-category]')
-      ? '<p class="admin-hint">Compatibility uses the real cart on this page. Load a cart in Site Admin → Demo cart.</p>'
+      ? (compatPage ? choice('compatData', 'Compatibility data', [['unknown', 'Unknown (nothing shown)'], ['compatible', 'Compatible'], ['notcompatible', 'Not compatible'], ['adapter', 'Compatible with an adapter']], 'compatible') +
+          hint('compatData', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.') : '') +
+        '<p class="admin-hint">The card above Add to Cart and the cart notes read the real cart. Load one in Site Admin → Demo cart (Thule roof rack only).</p>'
       : choice('cartConflict', 'Cart already has', [['none', 'Nothing'], ['compatible', 'A compatible item'], ['incompatible', 'An incompatible item']], 'none') +
         hint('cartPhase2', 'Compatibility notes are Phase 2 — switch Site Admin to Build Phase 2.'));
   }
@@ -4114,6 +4121,7 @@ function buildAdminPanel() {
     });
     setDisabled('[data-admin-flag="exdemo"], [data-admin-flag="showroom"]', !phase2, 'pdpPhase2');
     setDisabled('select[name="cartConflict"]', !phase2, 'cartPhase2');
+    setDisabled('select[name="compatData"]', !phase2, 'compatData');
     const stock = STOCK_STATUS[adminState.stockStatus];
     const blocked = !!(adminState.stockOverride && stock && stock.blocksCta);
     panel.querySelectorAll('[data-admin-flag="shipping"], [data-admin-flag="collect"]').forEach(i => {
@@ -4208,6 +4216,18 @@ function buildAdminPanel() {
     rrgRefreshStockSurfaces();
   });
   onChoice('cartConflict', value => applyCartConflict(value));
+  // Compatibility data (spec.md §34): the choice lives in its own key so the cart page, mini-cart and
+  // checkout notes read it too. Synced to the default here, before the saved choice is restored.
+  const compatSel = panel.querySelector('select[name="compatData"]');
+  if (compatSel) {
+    try { localStorage.setItem(RRG_COMPAT_DEMO_KEY, compatSel.value); } catch (e) {}
+    onChoice('compatData', value => {
+      try { localStorage.setItem(RRG_COMPAT_DEMO_KEY, value); } catch (e) {}
+      rrgMountCompatTab();
+      applyCartConflict(adminState.cartConflict);
+      document.dispatchEvent(new CustomEvent('rrg-cart-change'));
+    });
+  }
   onChoice('fittedMode', value => {
     if (value === 'off') { setFittedOptionFlag(false); return; }
     setFittedOptionMode(value);
@@ -4346,3 +4366,51 @@ function rrgMountSpareParts() {
   });
 }
 document.addEventListener('DOMContentLoaded', rrgMountSpareParts);
+
+// ==== Compatibility tab (Graham/Scott meeting 2026-11-24, spec.md §34) ============================
+// Which roof bars this roof box / bike rack suits, whether or not a rack is in the cart: one row per
+// bar GROUP with Yes / No / Yes with an adapter (the adapter links to its product). Known-only: a
+// product with no compatibility data gets no tab at all. Sits straight after Details (Description),
+// ahead of Reviews. Data: cart.js RRG_COMPAT_DATA; Demo State → "Compatibility data" switches it.
+// Phase 2 (like the cart-card compatibility notes). Platforms aren't covered yet.
+function rrgCompatPageRows(anyState) {
+  if (!document.querySelector('.cta-col[data-pkg-category]') || typeof RRG_COMPAT_DATA === 'undefined') return null;
+  const item = rrgPdpCartItem();
+  const data = RRG_COMPAT_DATA[item.sku];
+  if (!data) return null;
+  return anyState ? data : (rrgPackageOn() && rrgCompatRows(item)) ? { ...data, rows: rrgCompatRows(item) } : null;
+}
+function rrgCompatTabHTML(d, checked) {
+  const racks = rrgCartGet().lines.filter(l => rrgPackageCategory(l) === 'rack');
+  const fits = r => r.status === 'yes' ? '<span class="chip chip-fits">Yes</span>'
+    : r.status === 'no' ? '<span class="chip chip-no">No</span>'
+    : `<span class="chip chip-adapter">Yes, with an adapter</span> <span class="compat-adapter">${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</span>`;
+  return `<input type="radio" name="tabs" id="tCompat"${checked ? ' checked' : ''}><label for="tCompat">Compatibility</label>
+    <div class="content compat-tab">
+      <p class="compat-intro">Roof bars that suit the <strong>${rrgEsc(d.product)}</strong> <span class="store-demo-tag">Example data</span></p>
+      <table class="compat-table">
+        <caption class="visually-hidden">Roof bar compatibility for this product</caption>
+        <thead><tr><th scope="col">Roof bars</th><th scope="col">Fits</th></tr></thead>
+        <tbody>${d.rows.map(r => `<tr>
+          <th scope="row">${rrgEsc(r.group)}${racks.some(k => r.match.test(k.name)) ? ' <span class="chip chip-cart">In your cart</span>' : ''}</th>
+          <td>${fits(r)}</td></tr>`).join('')}</tbody>
+      </table>
+      <p class="compat-foot">Platforms aren't listed yet. If you're not sure about your setup, contact us and we'll check it for you.</p>
+    </div>`;
+}
+function rrgMountCompatTab() {
+  const tabs = document.querySelector('.tabs');
+  if (!tabs) return;
+  const old = tabs.querySelector(':scope > #tCompat');
+  const wasChecked = !!(old && old.checked);
+  if (old) { old.nextElementSibling.remove(); old.nextElementSibling.remove(); old.remove(); }
+  const d = rrgCompatPageRows(false);
+  const first = tabs.querySelector(':scope > .content');
+  if (!d || !first) { if (wasChecked) { const t1 = tabs.querySelector(':scope > input[type="radio"]'); if (t1) t1.checked = true; } return; }
+  const tpl = document.createElement('template');
+  tpl.innerHTML = rrgCompatTabHTML(d, wasChecked);
+  first.after(tpl.content);
+}
+['DOMContentLoaded', 'rrg-cart-change', 'rrg-session-change'].forEach(evt => document.addEventListener(evt, () => {
+  if (document.querySelector('.cta-col[data-pkg-category]')) rrgMountCompatTab();
+}));

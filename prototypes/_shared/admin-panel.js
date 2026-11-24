@@ -122,7 +122,7 @@ function buildSiteAdminPanel(currentKey) {
           <option value="packageDeal">Rack + roof box (Package Deal)</option>
           <option value="platformOnly">Pioneer platform only</option>
           <option value="thuleRackOnly">Thule roof rack only</option>
-          <option value="notCompatible">Platform + Motion 3 L (not compatible)</option>
+          <option value="notCompatible">Thule bars + Motion 3 L (compatibility)</option>
           <option value="custom" disabled>Your own items</option>
         </select>
       </label>

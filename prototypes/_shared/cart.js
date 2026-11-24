@@ -82,9 +82,9 @@ const RRG_DEMO_CARTS = {
   roofBox: ['roofBox'],                  // Package Deal: accessory, no rack yet (potential saving)
   packageDeal: ['platformKit', 'roofBox'], // Package Deal: rack + accessory (active)
   // Rack only — to view an accessory page against a rack (compatibility, phase 3):
-  platformOnly: ['platformKit'],         // Pioneer platform: the Motion 3 L shows "not compatible" (demo exclusion)
-  thuleRackOnly: ['thuleRack'],          // Thule bars: the Motion 3 L shows "compatible"
-  notCompatible: ['platformKit', 'motionBox'] // Package Deal still applies; both lines show the demo exclusion note
+  platformOnly: ['platformKit'],         // Pioneer platform: platforms aren't compared yet, so no compatibility note
+  thuleRackOnly: ['thuleRack'],          // Thule WingBar Evo: the Motion 3 L shows the Demo State → Compatibility data result
+  notCompatible: ['thuleRack', 'motionBox'] // Thule WingBar Evo + Motion 3 L: both lines carry the Compatibility data note
 };
 
 // ---- Store ----
@@ -188,26 +188,80 @@ function rrgPackageDeal(cart = rrgCartGet()) {
 // roof-mounted category, whether or not it qualifies for the Package Deal discount yet.
 // Messages show both ways: on an accessory, against the racks in the cart; on a rack, against the
 // accessories in the cart. Products are never hidden — the shopper can still add either.
-const RRG_PACKAGE_EXCLUSIONS = [
-  // DEMO ONLY — not a real fitment rule. One exclusion so the "not compatible" message can be
-  // reviewed: the Thule Motion 3 L (roof-box/) against the Rhino-Rack Pioneer platforms.
-  { demo: true, accessories: ['T639700', 'T639701'], racks: ['GP01M1TZZ', 'RH62109', 'RH62112', 'RH62112F', 'JC-02306'] }
-];
+// KNOWN-ONLY (Graham/Scott meeting 2026-11-24, spec.md §34): the rule above is reversed. A product
+// only shows compatibility once someone has done the work for it — a definite yes, a definite no, or
+// "yes with an adapter" per BAR GROUP (a friendly group above bar range, e.g. "Thule WingBar Evo").
+// Nothing done → nothing shown anywhere (no card, no tab, no cart note). Crossbars only for now
+// (the UK's case, roof boxes + roof bike racks): a platform in the cart is never compared.
+// DEMO DATA — the group rows below are placeholders until Scott's bar/platform-range sheet lands.
+// Production: accessory ↔ bar-group table in Magento (yes / no / adapter product).
+// Adapters are Scott's real ones (Slack 2026-11-24, for the Thule ProRide 598002).
+const RRG_COMPAT_ADAPTERS = {
+  square: { sku: '889500', brand: 'Thule', name: 'Thule ProRide Square Bar Adapter - 889500', url: 'https://www.roofracksgalore.com.au/thule-proride-square-bar-adapter-889500' },
+  slot21: { sku: 'PR3110', brand: 'Prorack', name: 'Prorack 21mm Slot Adapter Kit - PR3110', url: 'https://www.roofracksgalore.com.au/prorack-21mm-slot-adapter-kit' }
+};
+// The Thule Motion 3 L's rows. `match` reads the rack's name (production: the rack's bar-group id).
+// The first row is the "focus" row: its result follows Demo State → Compatibility data, so each
+// state can be seen with the Thule WingBar Evo in the demo cart. The rest are fixed.
+const RRG_COMPAT_MOTION_3L = {
+  product: 'Thule Motion 3 L',
+  rows: [
+    { focus: true, group: 'Thule WingBar Evo', match: /wingbar/i },
+    { group: 'Thule SquareBar Evo, Prorack P-Bar & generic square/Euro bars', match: /squarebar|p-bar|square bar|euro bar/i, status: 'adapter', adapter: 'square' },
+    { group: 'Rhino-Rack Vortex', match: /vortex/i, status: 'yes' },
+    { group: 'Rhino-Rack Heavy Duty', match: /heavy duty/i, status: 'no' },
+    { group: 'Prorack / Yakima "T" HD bars (not TrimHD)', match: /\bt-?(16|17|18)\b|t hd/i, status: 'adapter', adapter: 'slot21' }
+  ]
+};
+const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L };
+// Demo State → "Compatibility data" (Roof Box PDP): unknown | compatible | notcompatible | adapter.
+const RRG_COMPAT_DEMO_KEY = 'rrg-compat-demo';
+function rrgCompatDemoState() {
+  try { return localStorage.getItem(RRG_COMPAT_DEMO_KEY) || 'compatible'; } catch (e) { return 'compatible'; }
+}
+// The accessory's rows with results filled in ([] → none: no data, so nothing shows).
+function rrgCompatRows(accessory) {
+  const d = accessory && RRG_COMPAT_DATA[accessory.sku];
+  const state = rrgCompatDemoState();
+  if (!d || state === 'unknown') return null;
+  return d.rows.map(r => r.focus
+    ? { ...r, status: { compatible: 'yes', notcompatible: 'no', adapter: 'adapter' }[state] || 'yes', adapter: state === 'adapter' ? 'square' : null }
+    : r);
+}
+// { status: 'yes' | 'no' | 'adapter', adapter } for this accessory on that rack's bars, or null (not known).
+function rrgCompatResult(accessory, rack) {
+  if (!accessory || !rack) return null;
+  const row = (rrgCompatRows(accessory) || []).find(r => r.match.test(rack.name || ''));
+  return row ? { status: row.status, adapter: row.adapter ? RRG_COMPAT_ADAPTERS[row.adapter] : null, group: row.group } : null;
+}
 const RRG_PACKAGE_CATEGORY_LABEL = { rack: 'roof rack', 'roof-box': 'roof box', 'roof-bike': 'bike rack', 'rooftop-tent': 'rooftop tent', awning: 'awning', 'water-snow': 'carrier' };
 const RRG_COMPAT_TIP = "Some roof racks and platforms don't suit some accessories because of the channel size or the way they mount. You can still order both. If you're not sure, contact us and we'll check your setup.";
 const rrgIsRoofAccessory = item => { const c = rrgPackageCategory(item); return !!c && c !== 'rack'; };
+// Only a definite "no" counts against a pair (unknown is still offered, as before).
 function rrgPackageCompatible(accessory, rack) {
-  return !RRG_PACKAGE_EXCLUSIONS.some(x => x.accessories.includes(accessory.sku) && x.racks.includes(rack.sku));
+  const r = rrgCompatResult(accessory, rack);
+  return !(r && r.status === 'no');
 }
-// The item's compatibility with the other kind of product in the cart: [{ line, compatible }].
-// Empty when the item isn't a rack or roof accessory, or there's nothing to compare it with.
+// The item's KNOWN compatibility with the other kind of product in the cart:
+// [{ line, status, adapter, compatible }]. Empty when the item isn't a rack or roof accessory, there's
+// nothing to compare it with, or the pair isn't in the data (unknown shows nothing).
 function rrgPackageCompatInCart(item, cart = rrgCartGet()) {
   if (!rrgPackageOn()) return [];
   const cat = rrgPackageCategory(item);
   if (!cat) return [];
   const self = item.key || item.sku;
   const others = cart.lines.filter(l => l.key !== self && (cat === 'rack' ? rrgIsRoofAccessory(l) : rrgPackageCategory(l) === 'rack'));
-  return others.map(l => ({ line: l, compatible: cat === 'rack' ? rrgPackageCompatible(l, item) : rrgPackageCompatible(item, l) }));
+  return others.map(l => {
+    const res = cat === 'rack' ? rrgCompatResult(l, item) : rrgCompatResult(item, l);
+    return res && { line: l, status: res.status, adapter: res.adapter, compatible: res.status !== 'no' };
+  }).filter(Boolean);
+}
+const rrgAdapterLinkHTML = a => `<a href="${a.url}" target="_blank" rel="noopener">${rrgEsc(rrgShortName(a.name))}</a>`;
+// Chip on a drawer suggestion: only when the pair is a known yes (or yes with an adapter).
+function rrgCompatChipHTML(accessory, rack) {
+  const r = rrgCompatResult(accessory, rack);
+  return !r || r.status === 'no' ? '' : r.status === 'adapter'
+    ? '<span class="chip chip-adapter">✓ Compatible with an adapter</span>' : '<span class="chip chip-fits">✓ Compatible</span>';
 }
 // Product names run long ("… for Toyota Hilux N80 (2015–2026), Bare Roof"): the message names
 // the product up to its vehicle/SKU suffix.
@@ -217,17 +271,20 @@ const rrgInfoTipHTML = text => `<span class="rrg-info-tip" tabindex="0" role="im
 // applyCartConflict); 'line' = the small note on a cart line (rrgCartLineHTML).
 function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
   const cat = rrgPackageCategory(item);
-  return rrgPackageCompatInCart(item, cart).map(({ line, compatible }) => {
+  return rrgPackageCompatInCart(item, cart).map(({ line, compatible, status, adapter }) => {
     const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
     if (mode === 'banner') {
       const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
+      if (status === 'adapter') return rrgNoticeCardHTML('unknown', 'Compatible with an adapter',
+        `Works with the ${name} in your cart when fitted with the ${rrgAdapterLinkHTML(adapter)}.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
       return rrgNoticeCardHTML(compatible ? 'fits' : 'unknown', compatible ? 'Compatible' : 'Heads up: not compatible',
         compatible ? `Works with the ${name} in your cart.` : `Not compatible with the ${name} in your cart. Choose a different ${swap}, or contact us and we'll help.`,
         RRG_COMPAT_TIP, 'cart-conflict-banner');
     }
     const name = `<strong>${rrgEsc(rrgShortName(line.name))}</strong>`;
-    const msg = compatible ? `✓ Compatible with the ${name} in your cart` : `Heads up: not compatible with the ${name} in your cart.`;
-    return `<div class="cart-line-compat ${compatible ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
+    const msg = status === 'adapter' ? `Compatible with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)}.`
+      : compatible ? `✓ Compatible with the ${name} in your cart` : `Heads up: not compatible with the ${name} in your cart.`;
+    return `<div class="cart-line-compat ${compatible && status !== 'adapter' ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
   }).join('');
 }
 // Decision-panel notice in the PDP's fitment-card style (Brenton, 2026-10-06: the compatibility
@@ -519,8 +576,6 @@ const RRG_PACKAGE_RACKS = {
       image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/p/r/primary-image-8005080-1-8005201-1-c68025f9f4f7.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: 'rack' }
   ]
 };
-// The Ranger's Pioneer platform joins the demo exclusion with its Hilux siblings.
-RRG_PACKAGE_EXCLUSIONS[0].racks.push('JC-01605');
 
 // Accessories suggested once a rack is in the cart (drawer "accessories" step, opened from the
 // cart / mini-cart card or a rack PDP). The first compatible one per qualifying category is shown,
@@ -790,7 +845,7 @@ function rrgRenderPackageDrawer() {
             <div class="pkg-rack-info">
               <span class="cart-line-brand">${rrgEsc(a.brand)} · ${rrgEsc(a.kind || RRG_PACKAGE_CATEGORY_LABEL[a.pkgCategory])}</span>
               ${row.name}
-              <span class="chip chip-fits">✓ Compatible</span>
+              ${rrgCompatChipHTML(a, item)}
               <span class="pkg-acc-price"><strong>${rrgMoney(a.price - aSave)}</strong> <s>${rrgMoney(a.price)}</s> <span class="pkg-acc-save">Save ${rrgPctLabel(rrgPackageRate(a))}</span></span>
             </div>
             <button type="button" class="btn btn-outline btn-sm" data-pkg-add-acc="${rrgEsc(a.sku)}">Add</button>
@@ -846,7 +901,7 @@ function rrgRenderPackageDrawer() {
             <div class="pkg-rack-info">
               <span class="cart-line-brand">${rrgEsc(r.brand)}</span>
               ${row.name}
-              <span class="chip chip-fits">✓ Compatible</span>
+              ${rrgCompatChipHTML(item, r)}
               <strong>${rrgMoney(r.price)}</strong>
             </div>
             <button type="button" class="btn btn-outline btn-sm" data-pkg-add-rack="${rrgEsc(r.sku || r.name)}">Add</button>
