@@ -231,7 +231,11 @@ function rrgCompatRows(accessory) {
 // { status: 'yes' | 'no' | 'adapter', adapter } for this accessory on that rack's bars, or null (not known).
 function rrgCompatResult(accessory, rack) {
   if (!accessory || !rack) return null;
-  const row = (rrgCompatRows(accessory) || []).find(r => r.match.test(rack.name || ''));
+  const rows = rrgCompatRows(accessory) || [];
+  // DEMO ONLY: a rack that matches no bar group (a platform, say) follows the Demo State switch via
+  // the focus row, so every state can be seen with whatever's in the cart. Production: a rack with
+  // no group is unknown, so nothing shows (platforms aren't covered yet).
+  const row = rows.find(r => r.match.test(rack.name || '')) || rows.find(r => r.focus);
   return row ? { status: row.status, adapter: row.adapter ? RRG_COMPAT_ADAPTERS[row.adapter] : null, group: row.group } : null;
 }
 const RRG_PACKAGE_CATEGORY_LABEL = { rack: 'roof rack', 'roof-box': 'roof box', 'roof-bike': 'bike rack', 'rooftop-tent': 'rooftop tent', awning: 'awning', 'water-snow': 'carrier' };
