@@ -197,8 +197,11 @@ function rrgPackageDeal(cart = rrgCartGet()) {
 // Production: accessory ↔ bar-group table in Magento (yes / no / adapter product).
 // Adapters are Scott's real ones (Slack 2026-11-24, for the Thule ProRide 598002).
 const RRG_COMPAT_ADAPTERS = {
-  square: { sku: '889500', brand: 'Thule', name: 'Thule ProRide Square Bar Adapter - 889500', url: 'https://www.roofracksgalore.com.au/thule-proride-square-bar-adapter-889500' },
-  slot21: { sku: 'PR3110', brand: 'Prorack', name: 'Prorack 21mm Slot Adapter Kit - PR3110', url: 'https://www.roofracksgalore.com.au/prorack-21mm-slot-adapter-kit' }
+  // Live listings, prices as live 2026-11-24. pkgCategory null: an adapter is never a rack/accessory for the Package Deal.
+  square: { sku: '889500', brand: 'Thule', name: 'Thule ProRide Square Bar Adapter - 889500', price: 29.95, pkgCategory: null, url: '#',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/T/h/Thule-889500-Bike-Rack---Accessories._1_1.webp', pdp: 'https://www.roofracksgalore.com.au/thule-proride-square-bar-adapter-889500' },
+  slot21: { sku: 'PR3110', brand: 'Prorack', name: 'Prorack 21mm Slot Adapter Kit - PR3110', price: 21.95, wasPrice: 32.00, pkgCategory: null, url: '#',
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/p/r/prorack-21mm-slot-adapter-kit-pr3110.jpg', pdp: 'https://www.roofracksgalore.com.au/prorack-21mm-slot-adapter-kit' }
 };
 // The Thule Motion 3 L's rows. `match` reads the rack's name (production: the rack's bar-group id).
 // The first row is the "focus" row: its result follows Demo State → Compatibility data, so each
@@ -260,7 +263,32 @@ function rrgPackageCompatInCart(item, cart = rrgCartGet()) {
     return res && { line: l, status: res.status, adapter: res.adapter, compatible: res.status !== 'no' };
   }).filter(Boolean);
 }
-const rrgAdapterLinkHTML = a => `<a href="${a.url}" target="_blank" rel="noopener">${rrgEsc(rrgShortName(a.name))}</a>`;
+const rrgAdapterLinkHTML = a => `<a href="${a.pdp}" target="_blank" rel="noopener">${rrgEsc(rrgShortName(a.name))}</a>`;
+// Adapters the cart still needs (Brenton, 2026-11-24: adding a product that works "with an adapter"
+// prompts for the adapter): [{ adapter, accessory, rack }], one per adapter not yet in the cart.
+function rrgAdaptersNeeded(cart = rrgCartGet()) {
+  if (!rrgPackageOn()) return [];
+  const have = new Set(cart.lines.map(l => l.key));
+  const out = [];
+  cart.lines.filter(rrgIsRoofAccessory).forEach(acc => cart.lines.filter(l => rrgPackageCategory(l) === 'rack').forEach(rack => {
+    const r = rrgCompatResult(acc, rack);
+    if (r && r.status === 'adapter' && r.adapter && !have.has(r.adapter.sku) && !out.some(o => o.adapter.sku === r.adapter.sku)) out.push({ adapter: r.adapter, accessory: acc, rack });
+  }));
+  return out;
+}
+// The prompt card (mini-cart under the lines, cart page above them): green, one per missing adapter.
+function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
+  return rrgAdaptersNeeded(cart).map(({ adapter, accessory, rack }) => rrgNoticeCardHTML('fits', 'Add the adapter',
+    `The <b>${rrgEsc(rrgShortName(accessory.name))}</b> fits the <b>${rrgEsc(rrgShortName(rack.name))}</b> with the <b>${rrgAdapterLinkHTML(adapter)}</b>.
+     <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(adapter.sku)}">Add adapter · ${rrgMoney(adapter.price)}</button></div>`,
+    '', 'adapter-notice')).join('');
+}
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-add-adapter]');
+  if (!btn) return;
+  const a = Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === btn.dataset.addAdapter);
+  if (a) rrgCartAdd(a, { open: false });
+});
 // Chip on a drawer suggestion: only when the pair is a known yes (or yes with an adapter).
 function rrgCompatChipHTML(accessory, rack) {
   const r = rrgCompatResult(accessory, rack);
@@ -279,16 +307,16 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
     const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
     if (mode === 'banner') {
       const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
-      if (status === 'adapter') return rrgNoticeCardHTML('unknown', 'Compatible with an adapter',
+      if (status === 'adapter') return rrgNoticeCardHTML('fits', 'Compatible with an adapter',
         `Works with the ${name} in your cart when fitted with the ${rrgAdapterLinkHTML(adapter)}.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
       return rrgNoticeCardHTML(compatible ? 'fits' : 'unknown', compatible ? 'Compatible' : 'Heads up: not compatible',
         compatible ? `Works with the ${name} in your cart.` : `Not compatible with the ${name} in your cart. Choose a different ${swap}, or contact us and we'll help.`,
         RRG_COMPAT_TIP, 'cart-conflict-banner');
     }
     const name = `<strong>${rrgEsc(rrgShortName(line.name))}</strong>`;
-    const msg = status === 'adapter' ? `Compatible with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)}.`
+    const msg = status === 'adapter' ? `✓ Compatible with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)}`
       : compatible ? `✓ Compatible with the ${name} in your cart` : `Heads up: not compatible with the ${name} in your cart.`;
-    return `<div class="cart-line-compat ${compatible && status !== 'adapter' ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
+    return `<div class="cart-line-compat ${compatible ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
   }).join('');
 }
 // Decision-panel notice in the PDP's fitment-card style (Brenton, 2026-10-06: the compatibility
@@ -510,6 +538,7 @@ function rrgRenderMiniCart() {
   const cross = RRG_DEMO_CROSS_SELLS.filter(p => !inCart.has(p.sku)).slice(0, 3);
   body.innerHTML = `
     <ul class="cart-lines">${cart.lines.map(l => rrgCartLineHTML(l, { compact: true })).join('')}</ul>
+    ${rrgAdapterNoticeHTML(cart)}
     ${rrgPackageCartNoticeHTML(cart)}
     ${cross.length ? `
       <div class="mini-cart-cross">

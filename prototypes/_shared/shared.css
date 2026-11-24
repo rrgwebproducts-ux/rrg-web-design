@@ -1435,8 +1435,8 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .stock-chip{margin-left:6px;}
 /* Variant-card "Save N%" — red, same as the price block's Save badge (C5, was green). */
 .variant-option .v-badge{margin-left:8px;background:var(--rrg-red);color:#fff;}
-.stock-chip.in,.chip-fits{background:var(--rrg-fits-bg);}
-.stock-chip.order,.chip-adapter{background:var(--rrg-unknown-bg);}
+.stock-chip.in,.chip-fits,.chip-adapter{background:var(--rrg-fits-bg);}
+.stock-chip.order{background:var(--rrg-unknown-bg);}
 .chip-no{background:var(--rrg-nofit-bg);}
 .chip-cart{background:var(--rrg-line-soft);margin-left:6px;}
 /* Compatibility tab (spec.md §34): one row per bar group, Yes / No / Yes with an adapter. */
