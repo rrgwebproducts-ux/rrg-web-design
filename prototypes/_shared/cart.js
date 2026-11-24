@@ -284,10 +284,15 @@ function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
     '', 'adapter-notice')).join('');
 }
 document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-add-adapter]');
+  const btn = e.target.closest('[data-add-adapter], [data-adapter-yes], [data-adapter-no]');
   if (!btn) return;
-  const a = Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === btn.dataset.addAdapter);
-  if (a) rrgCartAdd(a, { open: false });
+  const sku = btn.dataset.addAdapter || btn.dataset.adapterYes || btn.dataset.adapterNo;
+  const a = Object.values(RRG_COMPAT_ADAPTERS).find(x => x.sku === sku);
+  if (!a) return;
+  if (btn.dataset.adapterNo) rrgAdapterDeclined.add(sku);
+  rrgAdapterStep = null;                       // the adapter step ends either way → the cart drawer
+  if (btn.dataset.adapterNo) rrgRenderMiniCart();
+  else rrgCartAdd(a, { open: false });         // saves → the open drawer redraws as the cart
 });
 // Chip on a drawer suggestion: only when the pair is a known yes (or yes with an adapter).
 function rrgCompatChipHTML(accessory, rack) {
@@ -343,9 +348,17 @@ function rrgCartAdd(item, { open = true } = {}) {
   const line = cart.lines.find(l => l.key === key);
   if (line) line.qty += 1;
   else cart.lines.push({ ...item, key, qty: 1 });
+  // A product that needs an adapter opens the adapter step first, then the cart drawer (Brenton,
+  // 2026-11-24). Declined adapters aren't asked again this visit; the cart still carries the card.
+  rrgAdapterStep = null;
   rrgCartSave(cart);
-  if (open) rrgOpenMiniCart(true);
+  if (open) {
+    rrgAdapterStep = rrgAdaptersNeeded(rrgCartGet()).find(n => !rrgAdapterDeclined.has(n.adapter.sku)) || null;
+    rrgOpenMiniCart(true);
+  }
 }
+let rrgAdapterStep = null;
+const rrgAdapterDeclined = new Set();
 function rrgCartSetQty(key, qty) {
   const cart = rrgCartGet();
   cart.lines = cart.lines.map(l => l.key === key ? { ...l, qty } : l).filter(l => l.qty > 0);
@@ -532,6 +545,25 @@ function rrgRenderMiniCart() {
   if (!cart.lines.length) {
     body.innerHTML = `<div class="cart-empty-mini"><p>Your cart is empty.</p><a class="btn btn-outline btn-sm" href="${RRG_PROTO}home/index.html#shop-by-category">Shop by category</a></div>`;
     document.getElementById('miniCartFoot').innerHTML = '';
+    return;
+  }
+  // Adapter step: just added something that needs an adapter — ask before showing the cart.
+  if (rrgAdapterStep && !rrgAdaptersNeeded(cart).some(n => n.adapter.sku === rrgAdapterStep.adapter.sku)) rrgAdapterStep = null;
+  if (rrgAdapterStep) {
+    const { adapter: a, accessory, rack } = rrgAdapterStep;
+    body.innerHTML = `
+      <ul class="cart-lines">${rrgCartLineHTML(accessory, { editable: false, compact: true })}</ul>
+      <h3 class="adapter-step-h">Add the adapter?</h3>
+      <p class="adapter-step-p">The <b>${rrgEsc(rrgShortName(accessory.name))}</b> fits the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart with this adapter.</p>
+      <div class="adapter-step-card">
+        <img src="${a.image}" alt="">
+        <div><span class="cart-line-brand">${rrgEsc(a.brand)}</span>
+          <a class="cart-line-name" href="${a.pdp}" target="_blank" rel="noopener">${rrgEsc(a.name)}</a>
+          <strong>${rrgMoney(a.price)}</strong>${a.wasPrice ? ` <s>${rrgMoney(a.wasPrice)}</s>` : ''}</div>
+      </div>`;
+    document.getElementById('miniCartFoot').innerHTML = `
+      <button type="button" class="btn btn-cta btn-block" data-adapter-yes="${rrgEsc(a.sku)}">Yes, add the adapter</button>
+      <button type="button" class="btn btn-outline btn-block" data-adapter-no="${rrgEsc(a.sku)}">No thanks, continue</button>`;
     return;
   }
   const inCart = new Set(cart.lines.map(l => l.key));

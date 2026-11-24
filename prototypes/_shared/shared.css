@@ -1448,6 +1448,13 @@ body.region-uk .rrg-sticky-header .rrg-logo img{position:absolute;top:-20px;left
 .compat-table td{white-space:nowrap;}
 .compat-adapter{display:block;margin-top:4px;white-space:normal;font-size:13px;}
 .compat-foot{margin:14px 0 0;font-size:13px;color:var(--rrg-grey-600);}
+/* Adapter step (mini-cart drawer, before the cart): ask before showing the cart. */
+.adapter-step-h{margin:20px 0 6px;font-size:24px;}
+.adapter-step-p{margin:0 0 14px;font-size:14px;color:var(--rrg-grey-700);}
+.adapter-step-card{display:flex;gap:14px;align-items:center;padding:14px;border:1px solid var(--rrg-line);border-left:3px solid var(--rrg-fits);background:#fff;}
+.adapter-step-card img{width:72px;height:72px;object-fit:contain;flex:0 0 auto;}
+.adapter-step-card strong{display:inline-block;margin-top:4px;}
+.adapter-step-card s{color:var(--rrg-grey-500);font-size:13px;}
 @media (max-width:640px){.compat-table td{white-space:normal;}}
 .stock-chip.none{background:var(--rrg-nofit-bg);}
 .stock-chip.out{background:var(--rrg-line-soft);color:var(--rrg-grey-600);}
