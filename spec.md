@@ -2075,4 +2075,5 @@ Marc (Slack): the city pages read as a copy of the Store Finder, and a visitor f
 
 1. ⬜ Component Library: Fitment Gallery per-photo vehicle/rack/store; new Nationwide bar.
 2. ✅ **Example built 2026-11-24:** Perth, at `prototypes/store-city-v2/?city=perth`, a separate page beside the current one so Marc and Graham can compare them. The Fitment Gallery per-photo change from item 1 is done too. The Nationwide bar is page-scoped until it's approved.
+   - **Marc approved the direction (2026-11-24)** and asked for the stores higher up and a store photo on each card. Both are done: the stores now sit under the services row, and the shared store card takes an optional `photo` (the Store Finder's cards are unchanged).
 3. ⬜ Brisbane, Sydney, Melbourne and Adelaide once Perth is approved and their question lists are signed off.

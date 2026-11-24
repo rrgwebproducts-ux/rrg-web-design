@@ -2418,6 +2418,15 @@ a.cat-tile:hover .cat-tile-cta{color:var(--rrg-red);}
 .sf-card-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px;}
 .sf-card-actions a:not(.btn),.sf-card-actions button{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--rrg-text);text-decoration:underline;cursor:pointer;}
 .sf-card-mine{font-weight:700;color:var(--rrg-fits);}
+/* Store photo at the top of the card (city pages, Marc 2026-11-24): full bleed to the card's
+   edges, 16:9. A store with no photos yet gets the logo on a light panel. */
+.sf-card--photo{overflow:hidden;}
+.sf-card-photo{display:block;margin:-16px -18px 8px;aspect-ratio:16/9;background:var(--rrg-bg);overflow:hidden;}
+.sf-card-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--t-fast) ease;}
+.sf-card-photo:hover img{transform:scale(1.03);}
+.sf-card-photo.is-placeholder{display:flex;align-items:center;justify-content:center;}
+.sf-card-photo.is-placeholder img{width:45%;height:auto;object-fit:contain;opacity:.35;}
+.sf-card-photo.is-placeholder:hover img{transform:none;}
 /* "Opening soon" (spec.md §16 item 12) — quieter than an open store and not clickable. */
 .sf-card--soon{cursor:default;background:var(--rrg-bg);border-style:dashed;}
 .sf-card--soon:hover{border-color:var(--rrg-line);}

@@ -145,6 +145,12 @@ The store lists and hours are generated from the data, so they can't drift.
 - **Shared widget change (8.2):** done in `shared.js`. A Fitment Gallery photo with `vehicle` / `rack` / `store` shows its own record: no extra-angle thumbs, a "Fitted at {store}" link and "Shop Racks For This Vehicle". The Vehicle-Specific product page was checked and is unchanged.
 - The new CSS is page-scoped in the example; it moves to shared.css when the rework is approved.
 
+**Marc's reply (Slack, 2026-11-24):** "new perth page is great, i think that's the kind of stuff we need". He thinks the fitments are fine (Magento has location data). He asked for two changes, made the same day:
+- **Stores moved up,** to straight after the fitting services row, before the Fit Finder.
+- **Store photo on each card,** so visitors get a feel for their local store. The shared store card takes a new optional `photo` (`{ src, alt }`, or `'placeholder'`). The photo sits full-bleed at 16:9 at the top of the card and links to the store page. The Store Finder doesn't pass it, so its cards are unchanged (checked: 36 cards, no photos).
+  - Rockingham and Cockburn have no photos on their live pages (only an old "25 stores" banner), so their cards show the logo on a light panel until store photos exist.
+  - The local copy's 2×2 store photo grid is gone (the photos are on the cards now); the copy runs on its own.
+
 **Marc's feedback (Slack, 2026-11-24).** He's happy with the Store Finder (`/locations`), but the city pages need more work:
 - **It looks like the Store Finder.** It has the same map, area tabs and cards, so it reads as a filtered copy of `/locations`.
 - **It can read as "RRG is only in Perth."** Someone who lands on it from another state sees six stores on a map and nothing about the other 30.

@@ -40,6 +40,8 @@
     .city-network-bar nav a,.city-network-bar nav span{white-space:nowrap;}
     .city-network-bar .cnb-all{margin-left:0;}
   }
+  .city-stores{margin:var(--space-section) 0;}
+  .city-local{max-width:900px;margin:var(--space-section) 0;}
   /* Fit Finder band (8.1 #4) */
   .city-fit-finder{margin:var(--space-section) 0;}
   .city-fit-finder > h2{margin-bottom:12px;}
@@ -98,6 +100,16 @@
   <!-- Fitting services row, worded for the city. -->
   <div class="trust-row" id="cityServices"></div>
 
+  <!-- Stores (moved up under the services row, Marc 2026-11-24): one grid in area order, each
+       card with the store's photo, so visitors get a feel for their local store. No map. -->
+  <section id="cityStores" class="city-stores">
+    <div class="city-stores-head">
+      <h2 class="related-heading" id="cityStoresHeading"></h2>
+      <a id="cityStoresAll" href="#"></a>
+    </div>
+    <div id="cityList"></div>
+  </section>
+
   <!-- Fit Finder: the shared inline vehicle finder, as on the MCLP. -->
   <section class="city-fit-finder">
     <h2 class="related-heading" id="cityFitHeading"></h2>
@@ -115,22 +127,10 @@
        rack and store in the detail view. -->
   <section class="fit-gallery-section" id="fitGallerySection" data-count="0" data-fit-gallery></section>
 
-  <!-- Stores: the shared store card in a grid under area headings. No map, tabs or List/Map toggle. -->
-  <section id="cityStores">
-    <div class="city-stores-head">
-      <h2 class="related-heading" id="cityStoresHeading"></h2>
-      <a id="cityStoresAll" href="#"></a>
-    </div>
-    <div id="cityList"></div>
-  </section>
-
-  <!-- Local copy (the live page's, trimmed) beside photos of the city's stores. -->
-  <section class="store-local cat-tile-section">
-    <div class="content-block">
-      <h2 id="cityLocalHeading"></h2>
-      <div id="cityLocalCopy"></div>
-    </div>
-    <div class="city-photo-grid" id="cityPhotos"></div>
+  <!-- Local copy (the live page's, trimmed). The store photos now sit on the store cards. -->
+  <section class="content-block city-local">
+    <h2 id="cityLocalHeading"></h2>
+    <div id="cityLocalCopy"></div>
   </section>
 </div>
 
@@ -335,6 +335,19 @@ const CITY_PAGES = {
   }
 };
 
+// Each store's card photo (the stores' live galleries, saved in _shared/stores/). Rockingham and
+// Cockburn have no photos on their live pages yet, so their cards show the logo panel.
+const STORE_PHOTOS = {
+  'Joondalup': 'joondalup-outside.webp', 'Malaga': 'malaga-outside.webp', 'Osborne Park': 'osbornepark-inside-1.webp',
+  'Welshpool': 'welshpool-outside.webp', 'North Lakes': 'northlakes-outside.webp', 'East Brisbane': 'eastbrisbane-outside.webp',
+  'Kedron': 'kedron-1.webp', 'Rocklea': 'rocklea-outside.webp', 'Moorebank': 'moorebank-outside.webp', 'Castle Hill': 'castlehill-front.webp',
+  'Silverwater': 'silverwater-outside-1.webp', 'Matraville': 'matraville-outside-1.webp', 'Warriewood': 'warriewood.webp',
+  'Preston': 'preston-outside.webp', 'Frankston': 'frankston-outside.webp', 'Epping': 'epping-outside.webp', 'Geelong': 'geelong-1.webp',
+  'Hallam': 'hallam-outside.webp', 'Adelaide City': 'adelaidecity-outside.webp', 'Edinburgh': 'edinburgh-1.webp',
+  'Lonsdale': 'lonsdale-outside.webp', 'Pooraka': 'pooraka-outside.webp'
+};
+const storePhoto = name => STORE_PHOTOS[name] ? { src: `../_shared/stores/${STORE_PHOTOS[name]}`, alt: `Roof Racks Galore ${name} superstore` } : 'placeholder';
+
 const CITY_QS = new URLSearchParams(location.search).get('city');
 const CITY_SLUG = CITY_PAGES[CITY_QS] ? CITY_QS : 'perth';
 const CITY = { ...RRG_STORE_CITIES[CITY_SLUG], ...CITY_PAGES[CITY_SLUG] };
@@ -365,12 +378,12 @@ function cityRenderStores() {
   let html = '';
   if (city.origin) {
     const rows = CITY_STORES.map(st => ({ st, km: rrgKmBetween(city.origin, st) })).sort((a, b) => a.km - b.km);
-    html = `<div class="city-store-grid is-sorted">${rows.map((r, i) => rrgStoreCardHTML(r.st, { km: r.km, nearest: i === 0 })).join('')}</div>`;
+    html = `<div class="city-store-grid is-sorted">${rows.map((r, i) => rrgStoreCardHTML(r.st, { km: r.km, nearest: i === 0, photo: storePhoto(r.st.name) })).join('')}</div>`;
   } else {
     // One grid in area order; each card carries its area name (most areas have one store, so
     // a heading per area left half-empty rows).
     html = `<div class="city-store-grid">${CITY_STORES.map(st =>
-      `<div class="city-store-cell">${CITY.areas.length > 1 ? `<span class="city-store-area">${st.area}</span>` : ''}${rrgStoreCardHTML(st)}</div>`).join('')}</div>`;
+      `<div class="city-store-cell">${CITY.areas.length > 1 ? `<span class="city-store-area">${st.area}</span>` : ''}${rrgStoreCardHTML(st, { photo: storePhoto(st.name) })}</div>`).join('')}</div>`;
   }
   $('cityList').innerHTML = html;
   cityRenderFacts();
@@ -463,8 +476,6 @@ function cityRender() {
 
   $('cityLocalHeading').textContent = CITY.localHeading;
   $('cityLocalCopy').innerHTML = CITY.localCopy.map(t => `<p>${t}</p>`).join('');
-  $('cityPhotos').innerHTML = CITY.photos.map(ph =>
-    `<a class="city-photo" href="${rrgStorePageHref(ph.store)}"><img src="../_shared/stores/${ph.src}" alt="${ph.alt}" loading="lazy"><span>${ph.store}</span></a>`).join('');
 
   // Store FAQ: the three practical questions. Store lists and hours come from the data.
   const storeName = st => st.city && !st.name.includes(st.city) && !st.city.includes(st.name) ? `${st.name} (${st.city})` : st.name;

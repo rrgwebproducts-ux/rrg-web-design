@@ -1289,9 +1289,11 @@ function rrgStoreCity(storeName) {
 // ---- Store card (Store Finder + city pages) ----
 // One store as a card: name (→ its page), distance, open now, address, today's hours, phone,
 // View Store / Directions / Make this my store. opts: km (number or null), nearest (label the
-// first search result), active (the store highlighted on the map). st needs the
-// RRG_STORE_NETWORK fields plus state, timeZone and hours (null for the NZ/UK single stores,
-// which have no hours record yet).
+// first search result), active (the store highlighted on the map), photo ({ src, alt } puts the
+// store's photo at the top of the card, linked to its page; 'placeholder' shows the logo panel
+// for a store with no photos yet; leave it out for the plain card: Marc, 2026-11-24, city page
+// rework). st needs the RRG_STORE_NETWORK fields plus state, timeZone and hours (null for the
+// NZ/UK single stores, which have no hours record yet).
 function rrgStoreCardHTML(st, opts = {}) {
   const status = st.hours ? rrgStoreOpenStatus(st.hours, st.timeZone, rrgStoreHolidays(RRG_STATE_ABBR[st.state])) : null;
   const today = st.hours ? st.hours[rrgStoreNow(st.timeZone).day] : null;
@@ -1300,7 +1302,10 @@ function rrgStoreCardHTML(st, opts = {}) {
   const mine = rrgSessionGet('storeSet') && document.querySelector('[data-region-nearest-store]')?.dataset.currentStoreName === st.name;
   const kmLabel = opts.km == null ? '' : opts.nearest ? '<span class="sf-card-km is-nearest">Nearest store</span>' : `<span class="sf-card-km">${Math.round(opts.km)}km</span>`;
   return `
-    <article class="sf-card${st.name === opts.active ? ' is-active' : ''}" data-sf-store="${st.name}">
+    <article class="sf-card${opts.photo ? ' sf-card--photo' : ''}${st.name === opts.active ? ' is-active' : ''}" data-sf-store="${st.name}">
+      ${!opts.photo ? '' : opts.photo === 'placeholder'
+        ? `<a class="sf-card-photo is-placeholder" href="${href || '#'}" aria-label="${st.name} store"><img src="${RRG_PROTO}_shared/headerlogo.png" alt="" loading="lazy"></a>`
+        : `<a class="sf-card-photo" href="${href || '#'}"><img src="${opts.photo.src}" alt="${opts.photo.alt || `Roof Racks Galore ${st.name}`}" loading="lazy"></a>`}
       <div class="sf-card-top">
         <h3 class="sf-card-name">${href ? `<a href="${href}">${st.name}</a>` : st.name}</h3>
         ${kmLabel}
