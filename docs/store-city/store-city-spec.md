@@ -127,7 +127,7 @@ The store lists and hours are generated from the data, so they can't drift.
 - **For Graham:**
   - **Live Arncliffe page:** the store has closed permanently, but its page is still in the live sitemap. It should be redirected (to the Sydney page) and dropped from the sitemap.
   - **Live Melbourne page:** it lists 8 stores under "9"; Preston is missing.
-  - **Cockburn photos:** the live store page has none yet, so it isn't in the Perth photo grid.
+  - **Cockburn photos:** the live store page has none yet. The rework example uses its Google Business Profile storefront photo (Section 8).
 - **Store photos:** the prototype only has photos for the stores it has pages for. Production uses each store record's images.
 
 ---
@@ -148,7 +148,8 @@ The store lists and hours are generated from the data, so they can't drift.
 **Marc's reply (Slack, 2026-11-24):** "new perth page is great, i think that's the kind of stuff we need". He thinks the fitments are fine (Magento has location data). He asked for two changes, made the same day:
 - **Stores moved up,** to straight after the fitting services row, before the Fit Finder.
 - **Store photo on each card,** so visitors get a feel for their local store. The shared store card takes a new optional `photo` (`{ src, alt }`, or `'placeholder'`). The photo sits full-bleed at 16:9 at the top of the card and links to the store page. The Store Finder doesn't pass it, so its cards are unchanged (checked: 36 cards, no photos).
-  - Rockingham and Cockburn have no photos on their live pages (only an old "25 stores" banner), so their cards show the logo on a light panel until store photos exist.
+  - Rockingham and Cockburn have no photos on their live pages (only an old "25 stores" banner). Their card photos come from their **Google Business Profiles**: storefront shots the stores uploaded themselves, not customer photos (Brenton, 2026-11-24). They're saved as `rockingham-outside.webp` (1200×900) and `cockburn-outside.webp` (640×480, the largest Google has). The logo panel (`photo: 'placeholder'`) stays as the fallback for any store with no photo.
+  - **For production:** those two photos should go into the stores' own galleries, so their live store pages get them too.
   - The local copy's 2×2 store photo grid is gone (the photos are on the cards now); the copy runs on its own.
 
 **Marc's feedback (Slack, 2026-11-24).** He's happy with the Store Finder (`/locations`), but the city pages need more work:
