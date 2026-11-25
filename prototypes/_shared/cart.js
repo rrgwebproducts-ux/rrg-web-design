@@ -399,7 +399,7 @@ function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
   const t = rrgAdapterTasks(cart), tone = rrgAdapterTone();
   return t.choose.map(c => rrgNoticeCardHTML(tone, 'Which rack is it for?', rrgChooseHTML(c, 'card'), '', 'adapter-notice')).join('')
     + t.short.map(n => rrgNoticeCardHTML(tone, n.have ? 'Add the missing adapters' : 'Add the adapter',
-      `${rrgShortageBodyHTML(n)}
+      `<span class="adapter-notice-body">${rrgShortageBodyHTML(n)}</span>
        <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(n.adapter.sku)}" data-qty="${n.shortfall}">Add ${n.shortfall > 1 ? n.shortfall + ' adapters' : 'adapter'} · ${rrgMoney(n.adapter.price * n.shortfall)}</button></div>`,
       '', 'adapter-notice')).join('');
 }
