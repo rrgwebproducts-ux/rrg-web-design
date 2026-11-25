@@ -2723,6 +2723,13 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
    Brenton) — edge to edge (cancels .cart-panel's padding), Package Deal colour along the top
    edge instead of the left, a divider above the first line. */
 .cart-panel .fitment.pkg-cart-notice{margin:-4px -22px 0;padding:14px 22px;border:0;border-top:3px solid var(--rrg-deal);border-bottom:1px solid var(--rrg-line);border-radius:var(--radius) var(--radius) 0 0;}
+/* Adapter notices ("Add the adapter", "Which rack is it for?") are the same top band as the Package Deal
+   one (2026-11-26, Brenton: was a card inside the card). Colour along the top follows the tone. */
+.cart-panel .fitment.adapter-notice{margin:0 -22px;padding:14px 22px;border:0;border-top:3px solid var(--rrg-unknown);border-bottom:1px solid var(--rrg-line);border-radius:0;}
+.cart-panel .fitment.adapter-notice.no_fit{border-top-color:var(--rrg-nofit);}
+.cart-panel .fitment.adapter-notice.fits{border-top-color:var(--rrg-fits);}
+.cart-panel #cartPackageNotice > .adapter-notice:first-child{margin-top:-4px;border-radius:var(--radius) var(--radius) 0 0;}
+.cart-panel .fitment.pkg-cart-notice:not(:first-child){margin-top:0;border-radius:0;}
 /* Accessories step (rack in cart): "Now" price with the rack in sale red (same as the PDP's sale
    price), struck current price in grey, the % in green. Drawer suggestions show "Compatible" as a
    chip (.chip-fits) rather than green text, so the price line isn't one more green. */
@@ -2862,6 +2869,8 @@ a.pkg-rack-name:hover{text-decoration:underline;}
 @media (max-width:520px){
   .cart-panel{padding:4px 14px 14px;}
   .cart-panel .fitment.pkg-cart-notice{margin:-4px -14px 0;padding:12px 14px;}
+  .cart-panel .fitment.adapter-notice{margin-left:-14px;margin-right:-14px;padding:12px 14px;}
+  .cart-panel .fitment.pkg-cart-notice:not(:first-child){margin-top:0;}
   .cart-panel .cart-line{grid-template-columns:72px minmax(0,1fr);}
   .cart-panel .cart-line-img{width:72px;height:72px;}
   .cart-panel .cart-line-price{grid-column:2;flex-direction:row;gap:8px;align-items:baseline;}
