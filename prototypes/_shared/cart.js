@@ -336,7 +336,7 @@ const rrgAdapterLinkHTML = a => `<a href="${a.pdp}" target="_blank" rel="noopene
 // a card in the cart and mini-cart (the second chance) after the modal.
 function rrgMountRacks(acc, racks) {
   if (Array.isArray(acc.mount)) return racks.filter(r => acc.mount.includes(r.key));
-  return racks.length === 1 ? racks : null;          // null = not chosen yet
+  return null;          // null = not chosen yet (asked every time, one rack or many: 2026-11-26)
 }
 // { short: [{ adapter, required, have, shortfall, accessories, racks }], choose: [{ accessory, options }] }
 function rrgAdapterTasks(cart = rrgCartGet()) {
@@ -346,9 +346,17 @@ function rrgAdapterTasks(cart = rrgCartGet()) {
   const have = {};
   cart.lines.forEach(l => { have[l.key] = (have[l.key] || 0) + l.qty; });
   const req = {}, choose = [];
-  cart.lines.filter(rrgIsRoofAccessory).forEach(acc => {
+  const accs = cart.lines.filter(rrgIsRoofAccessory);
+  // One rack in the cart: ask once from the rack's side, "which of these go on it?" (a row per accessory).
+  // Several racks: ask per accessory, "which rack is it for?" (a row per rack). Same rows either way.
+  if (racks.length === 1) {
+    const options = accs.filter(a => !Array.isArray(a.mount)).map(acc => ({ acc, res: rrgCompatResult(acc, racks[0]) })).filter(o => o.res);
+    if (options.some(o => o.res.status === 'adapter')) choose.push({ kind: 'rack', rack: racks[0], options });
+  }
+  accs.forEach(acc => {
     const mounted = rrgMountRacks(acc, racks);
     if (mounted === null) {
+      if (racks.length === 1) return;
       const options = racks.map(rack => ({ rack, res: rrgCompatResult(acc, rack) })).filter(o => o.res);
       if (options.some(o => o.res.status === 'adapter')) choose.push({ accessory: acc, options });
       return;
@@ -377,27 +385,35 @@ function rrgShortageBodyHTML(n) {
   const q = n.required > 1 ? ` You need <b>${n.required}</b> (one per carrier) and have <b>${n.have}</b>.` : '';
   return `${rrgNeedSentence(n)}${q}`;
 }
-// "Which rack is it going on?" — a tick per rack in the cart, plus "none of these". scope: 'card' | 'modal'.
+// One row of a choice: a tick box (adapter needed), a green ✓ with no box (already compatible, nothing to
+// choose), or a disabled row (not compatible). Same look from the accessory's side and the rack's side.
+function rrgChooseRowHTML(groupKey, value, item, res, qty) {
+  const name = rrgEsc(rrgShortName(rrgLineName(item))), img = `<img class="acr-img" src="${rrgEsc(item.image || '')}" alt="">`;
+  if (res.status === 'yes') return `<div class="adapter-choose-row is-yes is-static"><span class="acr-tick" aria-hidden="true">${RRG_NOTICE_ICONS.fits}</span>${img}<span><b>${name}</b><span class="acr-note">Already compatible, no adapter needed</span></span></div>`;
+  const note = res.status === 'adapter' ? `needs the ${rrgAdapterLinkHTML(res.adapter)} · ${rrgMoney(res.adapter.price)}${qty > 1 ? ` × ${qty}` : ''}` : 'Not compatible';
+  return `<label class="adapter-choose-row is-${res.status}"><input type="checkbox" data-adapter-mount="${groupKey}" value="${rrgEsc(value)}" data-adapter-sku="${res.adapter ? rrgEsc(res.adapter.sku) : ''}" data-adapter-price="${res.adapter ? res.adapter.price : 0}" data-adapter-qty="${qty}"${res.status === 'no' ? ' disabled' : ''}>
+      ${img}<span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
+}
+// "Which rack is it going on?" (a row per rack) or, from the rack's side, "which of these go on it?" (a row per
+// accessory), plus "none of these". scope: 'card' | 'modal'.
 function rrgChooseHTML(t, scope) {
-  const acc = t.accessory, key = rrgEsc(acc.key);
-  const rows = t.options.map(o => {
-    const r = o.res, name = rrgEsc(rrgShortName(rrgLineName(o.rack)));
-    const note = r.status === 'adapter' ? `needs the ${rrgAdapterLinkHTML(r.adapter)} · ${rrgMoney(r.adapter.price)}${acc.qty > 1 ? ` × ${acc.qty}` : ''}`
-      : r.status === 'yes' ? 'compatible, no adapter needed' : 'not compatible';
-    return `<label class="adapter-choose-row is-${r.status}"><input type="checkbox" data-adapter-mount="${key}" value="${rrgEsc(o.rack.key)}" data-adapter-sku="${r.adapter ? rrgEsc(r.adapter.sku) : ''}" data-adapter-price="${r.adapter ? r.adapter.price : 0}"${r.status === 'no' ? ' disabled' : ''}>
-      <img class="acr-img" src="${rrgEsc(o.rack.image || '')}" alt=""><span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
-  }).join('');
-  return `<div class="adapter-choose" data-adapter-choose="${key}" data-adapter-qty="${acc.qty}">
-    <p class="adapter-choose-q">${scope === 'modal' ? 'For the' : 'Which rack is the'} <b>${rrgEsc(rrgShortName(rrgLineName(acc)))}</b>${acc.qty > 1 ? ` (× ${acc.qty})` : ''}${scope === 'modal' ? '' : ' going on?'}</p>
+  const isRack = t.kind === 'rack';
+  const owner = isRack ? t.rack : t.accessory, key = rrgEsc(owner.key);
+  const rows = t.options.map(o => isRack ? rrgChooseRowHTML(key, o.acc.key, o.acc, o.res, o.acc.qty) : rrgChooseRowHTML(key, o.rack.key, o.rack, o.res, owner.qty)).join('');
+  const nm = `<b>${rrgEsc(rrgShortName(rrgLineName(owner)))}</b>`;
+  const q = isRack ? (scope === 'modal' ? 'On the' : 'Which of these are going on the') + ` ${nm}${scope === 'modal' ? '' : '?'}`
+    : `${scope === 'modal' ? 'For the' : 'Which rack is the'} ${nm}${owner.qty > 1 ? ` (× ${owner.qty})` : ''}${scope === 'modal' ? '' : ' going on?'}`;
+  return `<div class="adapter-choose" data-adapter-choose="${key}"${isRack ? ' data-adapter-rack="1"' : ` data-adapter-qty="${owner.qty}"`}>
+    <p class="adapter-choose-q">${q}</p>
     ${rows}
-    <label class="adapter-choose-row is-none"><input type="checkbox" data-adapter-none="${key}"><span><b>None of these</b><span class="acr-note">not going on these racks, no adapter needed</span></span></label>
+    <label class="adapter-choose-row is-none"><input type="checkbox" data-adapter-none="${key}"><span><b>None of these</b><span class="acr-note">${isRack ? 'none of these are going on this rack, no adapter needed' : 'not going on these racks, no adapter needed'}</span></span></label>
     ${scope === 'card' ? `<div class="actions"><button type="button" class="btn btn-outline btn-sm" data-adapter-apply disabled>Add adapter</button></div>` : ''}
   </div>`;
 }
 // The cart / mini-cart cards: one per unresolved choice, one per adapter shortfall.
 function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
   const t = rrgAdapterTasks(cart), tone = rrgAdapterTone();
-  return t.choose.map(c => rrgNoticeCardHTML(tone, 'Which rack is it for?', rrgChooseHTML(c, 'card'), '', 'adapter-notice')).join('')
+  return t.choose.map(c => rrgNoticeCardHTML(tone, c.kind === 'rack' ? 'Which accessories are going on it?' : 'Which rack is it for?', rrgChooseHTML(c, 'card'), '', 'adapter-notice')).join('')
     + t.short.map(n => rrgNoticeCardHTML(tone, n.have ? 'Add the missing adapters' : 'Add the adapter',
       `<span class="adapter-notice-body">${rrgShortageBodyHTML(n)}</span>
        <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(n.adapter.sku)}" data-qty="${n.shortfall}">Add ${n.shortfall > 1 ? n.shortfall + ' adapters' : 'adapter'} · ${rrgMoney(n.adapter.price * n.shortfall)}</button></div>`,
@@ -416,6 +432,14 @@ function rrgCartEnsureQty(item, qty) {
 function rrgAdapterApply(scope) {
   const cart = rrgCartGet();
   scope.querySelectorAll('[data-adapter-choose]').forEach(box => {
+    if (box.dataset.adapterRack) {        // from the rack's side: every accessory in the box gets an answer
+      const none = box.querySelector('[data-adapter-none]:checked'), ticked = [...box.querySelectorAll('[data-adapter-mount]:checked')].map(i => i.value);
+      rrgAdapterTasks(cart).choose.filter(c => c.kind === 'rack' && c.rack.key === box.dataset.adapterChoose).forEach(c => c.options.forEach(o => {
+        const l = cart.lines.find(x => x.key === o.acc.key);
+        if (l) l.mount = !none && (ticked.includes(l.key) || o.res.status === 'yes') ? [box.dataset.adapterChoose] : [];
+      }));
+      return;
+    }
     const line = cart.lines.find(l => l.key === box.dataset.adapterChoose);
     if (!line) return;
     line.mount = box.querySelector('[data-adapter-none]:checked') ? [] : [...box.querySelectorAll('[data-adapter-mount]:checked')].map(i => i.value);
@@ -429,7 +453,7 @@ function rrgAdapterTickChanged(box) {
   racks.forEach(i => { if (i.checked && none && none.checked && document.activeElement !== none) none.checked = false; });
   const scope = box.closest('.adapter-modal, .adapter-notice');
   const all = [...scope.querySelectorAll('[data-adapter-choose]')];
-  const total = all.reduce((t, b) => t + [...b.querySelectorAll('[data-adapter-mount]:checked')].reduce((n, i) => n + (+i.dataset.adapterPrice || 0) * (+b.dataset.adapterQty || 1), 0), 0);
+  const total = all.reduce((t, b) => t + [...b.querySelectorAll('[data-adapter-mount]:checked')].reduce((n, i) => n + (+i.dataset.adapterPrice || 0) * (+(i.dataset.adapterQty || b.dataset.adapterQty) || 1), 0), 0);
   const anyTick = all.some(b => b.querySelector('[data-adapter-mount]:checked, [data-adapter-none]:checked'));
   const btn = scope.querySelector('[data-adapter-apply], [data-adapter-modal-yes]');
   if (btn) {
@@ -447,12 +471,12 @@ function rrgAdapterTickChanged(box) {
 function rrgAdapterTasksFor(key, cart = rrgCartGet()) {
   const t = rrgAdapterTasks(cart);
   return {
-    choose: t.choose.filter(c => c.accessory.key === key || c.options.some(o => o.rack.key === key)),
+    choose: t.choose.filter(c => c.kind === 'rack' ? (c.rack.key === key || c.options.some(o => o.acc.key === key)) : (c.accessory.key === key || c.options.some(o => o.rack.key === key))),
     short: t.short.filter(n => n.accessories.some(a => a.key === key) || n.racks.some(r => r.key === key))
   };
 }
 function rrgAdapterModalHTML(t) {
-  const title = t.choose.length ? 'Which rack is it going on?' : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
+  const title = t.choose.length ? (t.choose[0].kind === 'rack' ? 'Which accessories are going on it?' : 'Which rack is it going on?') : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
   const card = n => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}"><img src="${n.adapter.image}" alt="">
     <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span><a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
     <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}${n.shortfall > 1 ? ` <span class="am-qty">× ${n.shortfall}</span>` : ''}</div></div>`;
