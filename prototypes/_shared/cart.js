@@ -344,6 +344,9 @@ function rrgAdapterTasks(cart = rrgCartGet()) {
 const rrgNeedNames = list => rrgListWords(list.map(l => `<b>${rrgEsc(rrgShortName(l.name))}</b>`), 'and');
 const rrgNeedSentence = n => `The ${rrgNeedNames(n.accessories)} ${n.accessories.length > 1 ? 'fit' : 'fits'} the ${rrgNeedNames(n.racks)} with the <b>${rrgAdapterLinkHTML(n.adapter)}</b>.`;
 const rrgAdapterTone = () => rrgAdapterAmber() ? 'unknown' : 'fits';
+// Is the adapter already in the basket? Then the "adapter required" notes turn into a plain yes (Brenton
+// 2026-11-25: the orange note on the line is no longer a warning once the adapter is in the cart).
+const rrgAdapterInCart = (adapter, cart = rrgCartGet()) => !!adapter && cart.lines.some(l => l.key === adapter.sku);
 // One adapter shortfall (the cart card, and a block in the modal).
 function rrgShortageBodyHTML(n) {
   const q = n.required > 1 ? ` You need <b>${n.required}</b> (one per carrier) and have <b>${n.have}</b>.` : '';
@@ -357,10 +360,10 @@ function rrgChooseHTML(t, scope) {
     const note = r.status === 'adapter' ? `needs the ${rrgAdapterLinkHTML(r.adapter)} · ${rrgMoney(r.adapter.price)}${acc.qty > 1 ? ` × ${acc.qty}` : ''}`
       : r.status === 'yes' ? 'compatible, no adapter needed' : 'not compatible';
     return `<label class="adapter-choose-row is-${r.status}"><input type="checkbox" data-adapter-mount="${key}" value="${rrgEsc(o.rack.key)}" data-adapter-sku="${r.adapter ? rrgEsc(r.adapter.sku) : ''}" data-adapter-price="${r.adapter ? r.adapter.price : 0}"${r.status === 'no' ? ' disabled' : ''}>
-      <span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
+      <img class="acr-img" src="${rrgEsc(o.rack.image || '')}" alt=""><span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
   }).join('');
   return `<div class="adapter-choose" data-adapter-choose="${key}" data-adapter-qty="${acc.qty}">
-    <p class="adapter-choose-q">Which rack is the <b>${rrgEsc(rrgShortName(acc.name))}</b>${acc.qty > 1 ? ` (× ${acc.qty})` : ''} going on?</p>
+    <p class="adapter-choose-q">${scope === 'modal' ? 'For the' : 'Which rack is the'} <b>${rrgEsc(rrgShortName(acc.name))}</b>${acc.qty > 1 ? ` (× ${acc.qty})` : ''}${scope === 'modal' ? '' : ' going on?'}</p>
     ${rows}
     <label class="adapter-choose-row is-none"><input type="checkbox" data-adapter-none="${key}"><span><b>None of these</b><span class="acr-note">not going on these racks, no adapter needed</span></span></label>
     ${scope === 'card' ? `<div class="actions"><button type="button" class="btn btn-outline btn-sm" data-adapter-apply disabled>Add adapter</button></div>` : ''}
@@ -424,13 +427,11 @@ function rrgAdapterTasksFor(key, cart = rrgCartGet()) {
   };
 }
 function rrgAdapterModalHTML(t) {
-  const involved = [...new Map([...t.choose.flatMap(c => [c.accessory, ...c.options.map(o => o.rack)]), ...t.short.flatMap(n => [...n.accessories, ...n.racks])].map(l => [l.key, l])).values()];
   const title = t.choose.length ? 'Which rack is it going on?' : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
   const card = n => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}"><img src="${n.adapter.image}" alt="">
     <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span><a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
     <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}${n.shortfall > 1 ? ` <span class="am-qty">× ${n.shortfall}</span>` : ''}</div></div>`;
   return `<div class="adapter-modal-backdrop" id="adapterModal"><div class="adapter-modal${t.choose.length === 1 ? ' is-single' : ''}" role="dialog" aria-modal="true" aria-labelledby="amTitle">
-    <ul class="adapter-step-items">${involved.map(l => `<li><img src="${l.image}" alt=""><span>${rrgEsc(rrgShortName(l.name))}${l.qty > 1 ? ` <em>× ${l.qty}</em>` : ''}</span></li>`).join('')}</ul>
     <h2 id="amTitle">${title}</h2>
     <p class="am-lead">Without the right adapter it won't fit. Choose now and we'll add it to your order.</p>
     ${t.choose.map(c => rrgChooseHTML(c, 'modal')).join('')}
@@ -473,18 +474,23 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.g
 function rrgCompatChipHTML(accessory, rack) {
   const r = rrgCompatResult(accessory, rack);
   return !r || r.status === 'no' ? '' : r.status === 'adapter'
-    ? `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">${rrgAdapterAmber() ? '' : '✓ '}Compatible with an adapter</span>` : '<span class="chip chip-fits">✓ Compatible</span>';
+    ? `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">${rrgAdapterAmber() ? '' : '✓ '}Adapter required</span>` : '<span class="chip chip-fits">✓ Compatible</span>';
 }
 // More than one rack / accessory in the cart to compare against (Graham, 2026-11-24): one card, a row
 // per item, the worst result sets the colour and label. Never hides a "not compatible" behind a yes.
-function rrgCompatCombinedHTML(results) {
+// cat: the page's own category ('rack' on a rack page). Labels name which side needs the adapter (2026-11-25).
+function rrgCompatCombinedHTML(results, cat) {
+  const cart = rrgCartGet();
+  results = results.map(r => r.status === 'adapter' && rrgAdapterInCart(r.adapter, cart) ? { ...r, status: 'adapter-in-cart' } : r);
   const has = s => results.some(r => r.status === s);
   const adapters = new Set(results.filter(r => r.status === 'adapter').map(r => r.adapter.sku)).size;
-  const label = has('no') ? (results.every(r => r.status === 'no') ? 'Heads up: not compatible' : 'Heads up: not everything is compatible') : has('adapter') ? (adapters > 1 ? 'Compatible with adapters' : 'Compatible with an adapter') : 'Compatible';
+  const need = cat === 'rack' ? (adapters > 1 ? 'Accessories compatible with adapters' : 'Accessory compatible with an adapter') : (adapters > 1 ? 'Rack adapters required' : 'Rack adapter required');
+  const label = has('no') ? (results.every(r => r.status === 'no') ? 'Heads up: not compatible' : 'Heads up: not everything is compatible') : has('adapter') ? need : 'Compatible';
   const state = has('no') ? 'unknown' : has('adapter') ? (rrgAdapterAmber() ? 'unknown' : 'fits') : 'fits';
   const rows = results.map(({ line, status, adapter }) => {
     const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
     if (status === 'no') return `<li class="is-no">${name}: not compatible</li>`;
+    if (status === 'adapter-in-cart') return `<li class="is-yes">${name}: compatible with the ${rrgAdapterLinkHTML(adapter)} in your cart</li>`;
     if (status === 'adapter') return `<li class="${rrgAdapterAmber() ? 'is-adapter-amber' : 'is-yes'}">${name}: compatible with the ${rrgAdapterLinkHTML(adapter)}</li>`;
     return `<li class="is-yes">${name}: compatible</li>`;
   }).join('');
@@ -499,21 +505,25 @@ const rrgInfoTipHTML = text => `<span class="rrg-info-tip" tabindex="0" role="im
 function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
   const cat = rrgPackageCategory(item);
   const results = rrgPackageCompatInCart(item, cart);
-  if (mode === 'banner' && results.length > 1) return rrgCompatCombinedHTML(results);
+  if (mode === 'banner' && results.length > 1) return rrgCompatCombinedHTML(results, cat);
   return results.map(({ line, compatible, status, adapter }) => {
     const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
     if (mode === 'banner') {
       const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
-      if (status === 'adapter') return rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', 'Compatible with an adapter',
+      if (status === 'adapter' && rrgAdapterInCart(adapter, cart)) return rrgNoticeCardHTML('fits', 'Compatible',
+        `Works with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)} in your cart.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
+      if (status === 'adapter') return rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', cat === 'rack' ? 'Accessory compatible with an adapter' : 'Rack adapter required',
         `Works with the ${name} in your cart when fitted with the ${rrgAdapterLinkHTML(adapter)}.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
       return rrgNoticeCardHTML(compatible ? 'fits' : 'unknown', compatible ? 'Compatible' : 'Heads up: not compatible',
         compatible ? `Works with the ${name} in your cart.` : `Not compatible with the ${name} in your cart. Choose a different ${swap}, or contact us and we'll help.`,
         RRG_COMPAT_TIP, 'cart-conflict-banner');
     }
     const name = `<strong>${rrgEsc(rrgShortName(line.name))}</strong>`;
-    const msg = status === 'adapter' ? `${rrgAdapterAmber() ? '' : '✓ '}Compatible with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)}`
+    const have = status === 'adapter' && rrgAdapterInCart(adapter, cart);
+    const msg = have ? `✓ Fits the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)} in your cart`
+      : status === 'adapter' ? `${rrgAdapterAmber() ? '' : '✓ '}${cat === 'rack' ? 'Compatible with an adapter' : 'Rack adapter required'} for the ${name} in your cart: ${rrgAdapterLinkHTML(adapter)}`
       : compatible ? `✓ Compatible with the ${name} in your cart` : `Heads up: not compatible with the ${name} in your cart.`;
-    return `<div class="cart-line-compat ${compatible && !(status === 'adapter' && rrgAdapterAmber()) ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
+    return `<div class="cart-line-compat ${compatible && (have || !(status === 'adapter' && rrgAdapterAmber())) ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
   }).join('');
 }
 // Decision-panel notice in the PDP's fitment-card style (Brenton, 2026-10-06: the compatibility
@@ -599,7 +609,7 @@ function rrgPackageCartNoticeHTML(cart = rrgCartGet()) {
   if (!deal.accessories.length) {
     if (!deal.racks.length) return '';
     return rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name,
-      `Add a roof-mounted accessory to this order and save <b>${rrgPackageRateRange()}</b> on it. That covers ${rrgPackageQualifyingShort()}.${btn('Add an accessory', 'accessories', deal.racks[0])}`, '', 'pkg-cart-notice');
+      `Add a roof-mounted accessory to this order and save a further <b>${rrgPackageRateRange()}</b> on it. That covers ${rrgPackageQualifyingShort()}.${btn('Add an accessory', 'accessories', deal.racks[0])}`, '', 'pkg-cart-notice');
   }
   const acc = deal.accessories.find(a => !deal.matched.includes(a)) || deal.accessories[0];
   const label = deal.active ? rrgPackageLinesLabel(deal.matched) : RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(acc)];
@@ -887,7 +897,7 @@ const rrgPackageQualifyingLabel = (joiner = 'and') => rrgListWords(rrgPackageQua
 const rrgPackageQualifyingShort = () => { const w = rrgPackageQualifyingKeys().map(k => RRG_PACKAGE_CATEGORY_PLURAL[k]); return w.length > 2 ? `${w.slice(0, 2).join(', ')} and more` : rrgListWords(w); };
 // One product's category word ("roof box", "awning"…); "accessory" when unknown or mixed.
 const rrgPackageItemLabel = item => RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)] || 'accessory';
-const rrgPackageLinesLabel = lines => { const labels = [...new Set(lines.map(rrgPackageItemLabel))]; return labels.length === 1 && lines.length === 1 ? labels[0] : 'accessories'; };
+const rrgPackageLinesLabel = lines => { const labels = [...new Set(lines.map(rrgPackageItemLabel))]; return labels.length === 1 && lines.length === 1 ? labels[0] : 'qualifying accessories'; };
 // The rate range across brands ("10–15%"), for a rack page where the accessory isn't known yet.
 // Highest rate on offer ("up to 15%"), for one-line copy like the PLP card strip.
 function rrgPackageRateMax() {
@@ -921,17 +931,17 @@ function rrgRenderPackageTag() {
     const rack = deal.racks.find(r => rrgPackageCompatible(item, r)) || deal.racks[0];
     active = !!rack;
     body = rack
-      ? `You'll save <b>${save}</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} with the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart.`
-      : `Save <b>${rrgPctLabel(rrgPackageRate(item))} (${save})</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} when you buy it with any roof rack.`;
+      ? `You'll save a further <b>${save}</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} with the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart.`
+      : `Save a further <b>${rrgPctLabel(rrgPackageRate(item))} (${save})</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} when you buy it with any roof rack.`;
   } else {
     const acc = deal.accessories;
     const inCart = deal.racks.some(l => l.key === item.sku);
     active = acc.length > 0 && inCart;
     const accSave = rrgMoney(acc.reduce((n, l) => n + (deal.lines[l.key] || 0), 0));
     body = acc.length
-      ? (inCart ? `You're saving <b>${accSave}</b> on the ${rrgPackageLinesLabel(acc)} in your cart with this rack.`
+      ? (inCart ? `You're saving a further <b>${accSave}</b> on the ${rrgPackageLinesLabel(acc)} in your cart with this rack.`
         : `Add this rack and save <b>${accSave}</b> on the <b>${rrgEsc(rrgShortName(acc[0].name))}</b> in your cart.`)
-      : `Save <b>${rrgPackageRateRange()}</b> on ${rrgPackageQualifyingShort()} when you buy them with this rack.`;
+      : `Save a further <b>${rrgPackageRateRange()}</b> on qualifying accessories, like ${rrgPackageQualifyingShort()}, when you buy them with this rack.`;
   }
   // Same fitment-card style as the compatibility notice, in the Package Deal colour; ✓ once active.
   block.insertAdjacentHTML('afterend', rrgNoticeCardHTML(active ? 'deal-applied' : 'deal',

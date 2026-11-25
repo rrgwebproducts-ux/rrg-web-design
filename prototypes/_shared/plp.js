@@ -1848,20 +1848,29 @@ function plpCartItemAttr(product) {
 const plpPackageItem = product => ({ sku: String(product.sku || product.id), brand: product.brand || '', name: product.name, price: product.price,
   wasPrice: product.wasPrice || null, image: product.image || '', url: product.url || '#', pkgCategory: product.pkgCategory });
 function plpPackageStripHTML(product) {
-  // Build Phase 1: no Package Deal, so no strip and no spacer either (spec.md §23 item 25).
+  // Build Phase 1: no Package Deal, so nothing here (spec.md §23 item 25).
   if (typeof rrgPackageRole !== 'function' || (typeof rrgPackageOn === 'function' && !rrgPackageOn())) return '';
   const item = plpPackageItem(product);
   const role = rrgPackageRole(item);
-  // One line of full copy on wide cards; "Package Deal" over the short copy on narrow ones (plp.css).
-  const inner = (long, short) => `<span class="plp-card-pkg-in">${RRG_PACKAGE_ICON}<span class="plp-card-pkg-text"><b>${RRG_PACKAGE_DEAL.name}<span class="plp-card-pkg-long">:</span></b> <span class="plp-card-pkg-long">${long}</span><span class="plp-card-pkg-short">${short}</span></span></span>`;
-  // No deal: an invisible copy of the strip, so grid cards' buttons line up (plp.css).
-  if (!role) return `<span class="plp-card-pkg is-empty" aria-hidden="true">${inner('&nbsp;', '&nbsp;')}</span>`;
-  const pct = role === 'rmp' ? rrgPctLabel(rrgPackageRate(item)) : rrgPackageRateMax();
+  if (!role) return '';
+  // 2026-11-25 (Graham/Scott): the deal moved from a strip along the card's bottom edge to ONE blue line
+  // directly under the price, and it says "a further" because it stacks on the sale price. Two versions:
+  // no rack in the cart yet = a soft hint; rack already in the cart = "you've qualified" with the dollar saving.
+  const qualified = rrgPackageDeal().hasRack;
   const text = role === 'rmp'
-    ? inner(`${pct} off with a roof rack`, `${pct} off with a rack`)
-    : inner(`Up to ${pct} off accessories`, `Up to ${pct} off`);
-  return `<button type="button" class="plp-card-pkg" data-package-open data-package-item="${String(JSON.stringify(item)).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">${text}</button>`;
+    ? (qualified ? `You've qualified: save a further <b>${rrgMoney(rrgPackageSaving(item))}</b>` : `Save a further <b>${rrgPctLabel(rrgPackageRate(item))}</b> with a roof rack`)
+    : `Save up to a further <b>${rrgPackageRateMax()}</b> on accessories`;
+  return `<button type="button" class="plp-pkg-line${role === 'rmp' && qualified ? ' is-qualified' : ''}" data-package-open data-package-item="${String(JSON.stringify(item)).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">${RRG_PACKAGE_ICON}<span>${text}</span></button>`;
 }
+
+// The card lines depend on the cart (rack in it or not): refresh them in place when it changes,
+// without redrawing the grid. The line carries its own item, so it can rebuild itself.
+document.addEventListener('rrg-cart-change', () => {
+  document.querySelectorAll('.plp-pkg-line').forEach(el => {
+    let item; try { item = JSON.parse(el.dataset.packageItem); } catch (e) { return; }
+    el.outerHTML = plpPackageStripHTML(item);
+  });
+});
 
 function plpCardHTML(product, cfg) {
   const primaryBtn = plpPrimaryActionHTML(product, cfg.vrs ? '' : 'btn-block');
@@ -1890,6 +1899,7 @@ function plpCardHTML(product, cfg) {
         ${plpFitStatusHTML(product)}
         ${plpRatingHTML(product)}
         ${plpPriceHTML(product)}
+        ${plpPackageStripHTML(product)}
         ${plpStockLineHTML(product)}
         ${plpSpecsHTML(product)}
         <div class="plp-card-actions">
@@ -1897,7 +1907,6 @@ function plpCardHTML(product, cfg) {
           ${plpCompareCheckHTML(product)}
         </div>
       </div>
-      ${plpPackageStripHTML(product)}
     </div>
   `;
 }
@@ -1942,11 +1951,11 @@ function plpListCardHTML(product, cfg) {
       <div class="plp-list-col-actions">
         ${plpRibbonHTML(product)}
         ${plpPriceHTML(product)}
+        ${plpPackageStripHTML(product)}
         ${plpStockLineHTML(product)}
         ${plpPrimaryActionHTML(product)}
         ${plpCompareCheckHTML(product)}
       </div>
-      ${plpPackageStripHTML(product)}
     </div>
   `;
 }

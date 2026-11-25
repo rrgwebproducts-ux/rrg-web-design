@@ -3519,4 +3519,4 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .adapter-choose-row:has(input:checked){border-color:var(--rrg-grey-700);background:var(--rrg-bg,#f7f7f7);}
 .adapter-notice .adapter-choose{margin-bottom:0;}
 .adapter-notice [data-adapter-apply][disabled]{opacity:.5;cursor:not-allowed;}
-.adapter-modal.is-single .adapter-choose-q{display:none;}
+.adapter-choose-row .acr-img{width:44px;height:44px;object-fit:contain;flex:0 0 auto;border-radius:4px;background:#fff;}

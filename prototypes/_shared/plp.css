@@ -653,29 +653,15 @@
 .plp-empty-filters h3{margin:0 0 6px;font-size:24px;}
 .plp-empty-filters p{margin:0 0 16px;color:var(--rrg-grey-700);}
 
-/* Package Deal strip (spec.md §19 phase 6, 2026-10-06) — full width along the card's bottom edge,
-   opens the Package Deal drawer for this product (cart.js). Restyled 2026-10-07 (Brenton): white,
-   in the Package Deal colour (--rrg-deal), never wraps. Sized to the card (container query): one
-   line of full copy on cards 280px+, else "Package Deal" over a short saving. No › chevron — it
-   cost the width the one-line copy needs; the whole strip is the button (hover tint).
-   Grid alignment: cards with no deal get an invisible copy of the strip (.is-empty), shown only
-   when the grid has at least one real strip, so Add to Cart lines up across every row. */
-.plp-card-pkg{container-type:inline-size;display:block;width:100%;margin-top:auto;padding:0;border:0;border-top:1px solid var(--rrg-line);background:#fff;font:inherit;font-size:13px;line-height:1.35;color:var(--rrg-text);text-align:left;cursor:pointer;transition:background var(--t-fast);}
-.plp-card-pkg:hover{background:var(--rrg-deal-bg);}
-.plp-card-pkg-in{display:flex;align-items:center;gap:8px;padding:9px 14px;}
-.plp-card-pkg svg{width:16px;height:16px;flex:0 0 auto;color:var(--rrg-deal);}
-.plp-card-pkg-text{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.plp-card-pkg b{color:var(--rrg-deal);}
-.plp-card-pkg-short{display:none;}
-@container (max-width:279px){
-  .plp-card-pkg-in{padding:9px 10px;gap:6px;}
-  .plp-card-pkg-text b,.plp-card-pkg-short{display:block;overflow:hidden;text-overflow:ellipsis;}
-  .plp-card-pkg-long{display:none;}
-}
-.plp-card-pkg.is-empty{display:none;}
-.plp-results.is-grid:has(.plp-card-pkg:not(.is-empty)) .plp-card-pkg.is-empty{display:block;visibility:hidden;}
-/* 16px above (2026-10-29, Brenton: was 4px, sat right on the specs table) = the card's own padding. */
-.plp-results.is-list .plp-card-pkg{grid-column:1 / -1;margin:16px -16px -16px;width:auto;}
+/* Package Deal line (2026-11-25, Graham/Scott): one blue line directly under the price, in the Package
+   Deal colour, replacing the strip that sat along the card's bottom edge. "Save a further 10% with a roof
+   rack" until a rack is in the cart, then "You've qualified: save a further $X". The whole line opens the
+   Package Deal drawer for this product. */
+.plp-pkg-line{display:flex;align-items:flex-start;gap:7px;width:100%;margin:6px 0 0;padding:0;border:0;background:none;font:inherit;font-size:14px;line-height:1.35;color:var(--rrg-deal);text-align:left;cursor:pointer;}
+.plp-pkg-line svg{width:16px;height:16px;flex:0 0 auto;margin-top:1px;}
+.plp-pkg-line b{font-weight:700;}
+.plp-pkg-line:hover span{text-decoration:underline;}
+.plp-pkg-line.is-qualified{font-weight:600;}
 
 /* Package Deal banner (2026-10-29, plpRenderPackageBanner in plp.js) — a thin, full-width version
    of roofbox.co.uk's package-deal banner, under the Shop By tabs on eligible categories.
