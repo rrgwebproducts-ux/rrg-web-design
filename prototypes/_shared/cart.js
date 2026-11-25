@@ -73,8 +73,18 @@ const RRG_DEMO_CART_ITEMS = {
   // The Ranger demo (Graham/Scott 2026-11-24): roof bars on the cab + a tub system, both real P703 listings.
   rangerWingBar: { sku: 'GP03QU54E', brand: 'Thule', name: 'Thule WingBar Evo Black 2 Bar Roof Rack for Ford Ranger P703 Wildtrak 4dr Ute with Raised Roof Rail (2022 onwards)', price: 499.85, wasPrice: 529.95,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/t/h/thule-wingbar-evo-black-2-bar-roof-rack-for-ford-ranger-p703-wildtrak-4dr-ute-with-raised-roof-rail-2022-onwards-roof-raised-rail-mount-view-1-90a2a18f9a6e.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: 'rack' },
-  rangerTub: { sku: 'GP01V7AE6', brand: 'Rhino-Rack', name: 'Rhino Rack JC-03543 Reconn-Deck 2 Bar Ute Tub System for Ford Ranger P703 4dr Ute with Bare Roof (2022 onwards)', price: 740.20, wasPrice: 780.00,
-    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-jc-03543-reconn-deck-2-bar-ute-tub-system-for-ford-ranger-p703-4dr-ute-with-bare-roof-2022-onwards-ute-tub-custom-point-mount-view-1-9ed4629f623d.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: 'rack' },
+  // The Reconn-Deck tub system is a GROUP product on the live site (JC-03543, three components). Live, adding it drops the
+  // three components into the cart as separate lines; the prototype keeps them as lines (so rack / adapter / deal logic
+  // works on the bars) but tags them groupId so the cart draws ONE card (Graham 2026-11-25, spec.md §35).
+  // perSet = how many of the component come in one set; the group's quantity multiplies it.
+  tubBars: { sku: 'RHRDB165', brand: 'Rhino-Rack', name: 'Rhino Rack 1650mm Reconn Deck Bar Kit - Single - RDB165', price: 223.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-1650mm-reconn-deck-bar-kit-single-rdb165-view-1-3537fa5adb94.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: 'rack', perSet: 2,
+    groupId: 'GP01V7AE6', groupName: 'Rhino Rack JC-03543 Reconn-Deck 2 Bar Ute Tub System for Ford Ranger P703 4dr Ute with Bare Roof (2022 onwards)', groupBrand: 'Rhino-Rack', groupWasPrice: 780.00,
+    groupImage: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-jc-03543-reconn-deck-2-bar-ute-tub-system-for-ford-ranger-p703-4dr-ute-with-bare-roof-2022-onwards-ute-tub-custom-point-mount-view-1-9ed4629f623d.jpg' },
+  tubBase: { sku: 'RHRCP86-BK', brand: 'Rhino-Rack', name: 'Rhino Rack RCP Base Kit - P703 Ford Ranger Tub Mount Bracket - RCP86-BK', price: 135.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/R/h/Rhino-Rack-RCP86-BK-Roof-Rack---Fitting-Kit-1._1.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: null, perSet: 1, groupId: 'GP01V7AE6' },
+  tubLegs: { sku: 'RHRX300H-4', brand: 'Rhino-Rack', name: 'Rhino Rack RX300 High Locking Leg x4 - RX300H-4', price: 159.20, wasPrice: 199.00,
+    image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/r/h/rhino-rack-rx300-high-locking-leg-x4-rx300h-4-9ed4629f623d.jpg', url: '#', fitsVehicle: 'ranger', pkgCategory: null, perSet: 1, groupId: 'GP01V7AE6' },
   smartRack: { sku: '730402', brand: 'Thule', name: 'Thule SmartRack XT Silver 2 Bar Roof Rack for Toyota Hilux N80', price: 379.95,
     image: 'https://www.roofracksgalore.com.au/pub/media/catalog/product/cache/7523b1877f1a63c7cb82ba8541af57bb/T/h/Thule-730402-Roof-Rack---Bars--Legs._1_269.jpg', url: 'vplp/index.html', fitsVehicle: 'hilux', pkgCategory: 'rack' },
   wheelHolder: { sku: '547001', brand: 'Thule', name: 'Thule Front Wheel Holder - 547001', price: 199.00, wasPrice: 239.95,
@@ -100,8 +110,8 @@ const RRG_DEMO_CARTS = {
   threeAccessories: ['motionBox', 'proRide', 'roofBox'], // mixed demo: a rack page against three accessories
   threeRacks: ['thuleRack', 'vortexRack', 'smartRack'],
   rangerRoof: ['rangerWingBar'],                    // Ranger: roof bars only (view the ProRide)
-  rangerRoofAndTub: ['rangerWingBar', 'rangerTub'], // Ranger: roof bars + tub system (the double-rack case)
-  rangerProRide: ['rangerWingBar', 'rangerTub', 'proRide'], // the same, with a ProRide already in the cart                 // mixed demo: an accessory page against three racks
+  rangerRoofAndTub: ['rangerWingBar', 'tubBars', 'tubBase', 'tubLegs'], // Ranger: roof bars + tub system (the double-rack case)
+  rangerProRide: ['rangerWingBar', 'tubBars', 'tubBase', 'tubLegs', 'proRide'], // the same, with a ProRide already in the cart                 // mixed demo: an accessory page against three racks
   twoRacks: ['thuleRack', 'vortexRack', 'motionBox'],     // two racks, one accessory (a different result per rack)
   notCompatible: ['thuleRack', 'motionBox'] // Thule WingBar Evo + Motion 3 L: both lines carry the Compatibility data note
 };
@@ -118,7 +128,22 @@ function rrgCartSave(cart) {
   rrgCartSyncBadges();
   document.dispatchEvent(new CustomEvent('rrg-cart-change'));
 }
-const rrgCartCount = (cart = rrgCartGet()) => cart.lines.reduce((n, l) => n + l.qty, 0);
+// A set counts once per set, not once per component.
+const rrgCartCount = (cart = rrgCartGet()) => cart.lines.reduce((n, l) => n + (l.groupId ? 0 : l.qty), 0)
+  + Object.values(rrgCartGroups(cart)).reduce((n, g) => n + rrgGroupQty(g), 0);
+// Lines sharing a groupId are ONE group product in the cart: { [groupId]: [lines] }.
+function rrgCartGroups(cart = rrgCartGet()) {
+  const g = {};
+  cart.lines.forEach(l => { if (l.groupId) (g[l.groupId] = g[l.groupId] || []).push(l); });
+  return g;
+}
+const rrgGroupQty = lines => Math.max(0, Math.round(lines[0].qty / (lines[0].perSet || 1)));
+const rrgLineName = l => l.groupName || l.name;
+function rrgCartSetGroupQty(gid, qty) {
+  const cart = rrgCartGet();
+  cart.lines = cart.lines.map(l => l.groupId === gid ? { ...l, qty: qty * (l.perSet || 1) } : l).filter(l => l.qty > 0);
+  rrgCartSave(cart);
+}
 // Racks, bars, platforms, boxes, awnings, tents, bike carriers, shutters, ladder racks — what the
 // stores fit. Drives the confirmation page's "Book fitting" card (spec Section 5).
 const rrgIsFittable = line => /rack|bar\b|bars\b|platform|backbone|roof box|awning|tent|carrier|shutter|ladder|tray/i.test(line.name);
@@ -341,7 +366,7 @@ function rrgAdapterTasks(cart = rrgCartGet()) {
     .filter(r => r.have < r.required).map(r => ({ ...r, shortfall: r.required - r.have }));
   return { short, choose };
 }
-const rrgNeedNames = list => rrgListWords(list.map(l => `<b>${rrgEsc(rrgShortName(l.name))}</b>`), 'and');
+const rrgNeedNames = list => rrgListWords(list.map(l => `<b>${rrgEsc(rrgShortName(rrgLineName(l)))}</b>`), 'and');
 const rrgNeedSentence = n => `The ${rrgNeedNames(n.accessories)} ${n.accessories.length > 1 ? 'fit' : 'fits'} the ${rrgNeedNames(n.racks)} with the <b>${rrgAdapterLinkHTML(n.adapter)}</b>.`;
 const rrgAdapterTone = () => rrgAdapterAmber() ? 'unknown' : 'fits';
 // Is the adapter already in the basket? Then the "adapter required" notes turn into a plain yes (Brenton
@@ -356,14 +381,14 @@ function rrgShortageBodyHTML(n) {
 function rrgChooseHTML(t, scope) {
   const acc = t.accessory, key = rrgEsc(acc.key);
   const rows = t.options.map(o => {
-    const r = o.res, name = rrgEsc(rrgShortName(o.rack.name));
+    const r = o.res, name = rrgEsc(rrgShortName(rrgLineName(o.rack)));
     const note = r.status === 'adapter' ? `needs the ${rrgAdapterLinkHTML(r.adapter)} · ${rrgMoney(r.adapter.price)}${acc.qty > 1 ? ` × ${acc.qty}` : ''}`
       : r.status === 'yes' ? 'compatible, no adapter needed' : 'not compatible';
     return `<label class="adapter-choose-row is-${r.status}"><input type="checkbox" data-adapter-mount="${key}" value="${rrgEsc(o.rack.key)}" data-adapter-sku="${r.adapter ? rrgEsc(r.adapter.sku) : ''}" data-adapter-price="${r.adapter ? r.adapter.price : 0}"${r.status === 'no' ? ' disabled' : ''}>
       <img class="acr-img" src="${rrgEsc(o.rack.image || '')}" alt=""><span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
   }).join('');
   return `<div class="adapter-choose" data-adapter-choose="${key}" data-adapter-qty="${acc.qty}">
-    <p class="adapter-choose-q">${scope === 'modal' ? 'For the' : 'Which rack is the'} <b>${rrgEsc(rrgShortName(acc.name))}</b>${acc.qty > 1 ? ` (× ${acc.qty})` : ''}${scope === 'modal' ? '' : ' going on?'}</p>
+    <p class="adapter-choose-q">${scope === 'modal' ? 'For the' : 'Which rack is the'} <b>${rrgEsc(rrgShortName(rrgLineName(acc)))}</b>${acc.qty > 1 ? ` (× ${acc.qty})` : ''}${scope === 'modal' ? '' : ' going on?'}</p>
     ${rows}
     <label class="adapter-choose-row is-none"><input type="checkbox" data-adapter-none="${key}"><span><b>None of these</b><span class="acr-note">not going on these racks, no adapter needed</span></span></label>
     ${scope === 'card' ? `<div class="actions"><button type="button" class="btn btn-outline btn-sm" data-adapter-apply disabled>Add adapter</button></div>` : ''}
@@ -488,7 +513,7 @@ function rrgCompatCombinedHTML(results, cat) {
   const label = has('no') ? (results.every(r => r.status === 'no') ? 'Heads up: not compatible' : 'Heads up: not everything is compatible') : has('adapter') ? need : 'Compatible';
   const state = has('no') ? 'unknown' : has('adapter') ? (rrgAdapterAmber() ? 'unknown' : 'fits') : 'fits';
   const rows = results.map(({ line, status, adapter }) => {
-    const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
+    const name = `<b>${rrgEsc(rrgShortName(rrgLineName(line)))}</b>`;
     if (status === 'no') return `<li class="is-no">${name}: not compatible</li>`;
     if (status === 'adapter-in-cart') return `<li class="is-yes">${name}: compatible with the ${rrgAdapterLinkHTML(adapter)} in your cart</li>`;
     if (status === 'adapter') return `<li class="${rrgAdapterAmber() ? 'is-adapter-amber' : 'is-yes'}">${name}: compatible with the ${rrgAdapterLinkHTML(adapter)}</li>`;
@@ -509,7 +534,7 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
   return results.map(({ line, compatible, status, adapter }) => {
     const swap = RRG_PACKAGE_CATEGORY_LABEL[cat === 'rack' ? rrgPackageCategory(line) : 'rack'];
     if (mode === 'banner') {
-      const name = `<b>${rrgEsc(rrgShortName(line.name))}</b>`;
+      const name = `<b>${rrgEsc(rrgShortName(rrgLineName(line)))}</b>`;
       if (status === 'adapter' && rrgAdapterInCart(adapter, cart)) return rrgNoticeCardHTML('fits', 'Compatible',
         `Works with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)} in your cart.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
       if (status === 'adapter') return rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', cat === 'rack' ? 'Accessory compatible with an adapter' : 'Rack adapter required',
@@ -518,7 +543,7 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
         compatible ? `Works with the ${name} in your cart.` : `Not compatible with the ${name} in your cart. Choose a different ${swap}, or contact us and we'll help.`,
         RRG_COMPAT_TIP, 'cart-conflict-banner');
     }
-    const name = `<strong>${rrgEsc(rrgShortName(line.name))}</strong>`;
+    const name = `<strong>${rrgEsc(rrgShortName(rrgLineName(line)))}</strong>`;
     const have = status === 'adapter' && rrgAdapterInCart(adapter, cart);
     const msg = have ? `✓ Fits the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)} in your cart`
       : status === 'adapter' ? `${rrgAdapterAmber() ? '' : '✓ '}${cat === 'rack' ? 'Compatible with an adapter' : 'Rack adapter required'} for the ${name} in your cart: ${rrgAdapterLinkHTML(adapter)}`
@@ -562,11 +587,11 @@ function rrgCartSetQty(key, qty) {
   rrgCartSave(cart);
 }
 function rrgCartLoadPreset(name) {
-  rrgCartSave({ lines: (RRG_DEMO_CARTS[name] || []).map(k => ({ ...RRG_DEMO_CART_ITEMS[k], key: RRG_DEMO_CART_ITEMS[k].sku, qty: 1 })) });
+  rrgCartSave({ lines: (RRG_DEMO_CARTS[name] || []).map(k => { const it = RRG_DEMO_CART_ITEMS[k]; return { ...it, key: it.groupId ? it.groupId + ':' + it.sku : it.sku, qty: it.perSet || 1 }; }) });
 }
 function rrgCartPresetName(cart = rrgCartGet()) {
   const keys = cart.lines.map(l => l.key).sort().join();
-  const hit = Object.entries(RRG_DEMO_CARTS).find(([, items]) => items.map(k => RRG_DEMO_CART_ITEMS[k].sku).sort().join() === keys && cart.lines.every(l => l.qty === 1));
+  const hit = Object.entries(RRG_DEMO_CARTS).find(([, items]) => items.map(k => { const it = RRG_DEMO_CART_ITEMS[k]; return it.groupId ? it.groupId + ':' + it.sku : it.sku; }).sort().join() === keys && cart.lines.every(l => l.qty === (l.perSet || 1)));
   return hit ? hit[0] : 'custom';
 }
 
@@ -665,6 +690,59 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
       </div>`}
     </li>`;
 }
+// ---- Group products (Graham 2026-11-25, spec.md §35) ----
+// One card for the set, its parts listed underneath. The live site splits a group product into its
+// components in the cart; this is what the customer should see instead: one thing they added, made up
+// of N items. Quantity and Remove belong to the whole set (parts can't be taken out one by one); a
+// part that's in two sets is two sets, so the same component can appear under both.
+function rrgCartGroupHTML(gid, lines, { editable = true, compact = false, deal = rrgPackageDeal(), paid = false } = {}, stockFn) {
+  const head = lines[0], gq = rrgGroupQty(lines);
+  const items = lines.reduce((n, l) => n + (l.perSet || 1), 0);
+  const total = lines.reduce((n, l) => n + l.price * l.qty, 0);
+  const was = head.groupWasPrice ? head.groupWasPrice * gq : lines.reduce((n, l) => n + (l.wasPrice || l.price) * l.qty, 0);
+  const save = lines.reduce((n, l) => n + (deal.matched.some(m => m.key === l.key) ? (deal.lines[l.key] || 0) : 0), 0);
+  const name = rrgEsc(head.groupName || head.name);
+  const rows = lines.map(l => `<li><img src="${l.image}" alt="" loading="lazy">
+      <span class="cgi-name"><a href="${rrgPath(l.url || '#')}">${rrgEsc(l.name)}</a>${stockFn ? stockFn(l) : ''}</span>
+      <span class="cgi-qty">× ${l.qty}</span><span class="cgi-price">${rrgMoney(l.price * l.qty)}</span></li>`).join('');
+  return `
+    <li class="cart-line cart-group${compact ? ' is-compact' : ''}" data-cart-group="${rrgEsc(gid)}">
+      <a class="cart-line-img" href="${rrgPath(head.url || '#')}"><img src="${head.groupImage || head.image}" alt="" loading="lazy"></a>
+      <div class="cart-line-info">
+        <span class="cart-group-tag">Product set · ${items} items</span>
+        <span class="cart-line-brand">${rrgEsc(head.groupBrand || head.brand || '')}</span>
+        <a class="cart-line-name" href="${rrgPath(head.url || '#')}">${name}</a>
+        <ul class="cart-group-items" aria-label="Included in this set">${rows}</ul>
+        ${head.fitsVehicle ? '' : ''}
+        ${lines.filter(rrgIsRoofAccessory).map(l => rrgPackageCompatHTML(l, 'line')).join('')}
+        ${editable ? `
+          <div class="cart-line-controls">
+            <div class="qty-stepper" role="group" aria-label="Set quantity">
+              <button type="button" data-cart-group-qty="-1" aria-label="Decrease quantity">−</button>
+              <span aria-live="polite">${gq}</span>
+              <button type="button" data-cart-group-qty="1" aria-label="Increase quantity">+</button>
+            </div>
+            <button type="button" class="cart-line-remove" data-cart-group-remove>Remove set</button>
+          </div>` : `<span class="cart-line-meta">Qty ${gq}</span>`}
+      </div>
+      <div class="cart-line-price">
+        <strong>${rrgMoney(total)}</strong>
+        ${was > total ? `<s>${rrgMoney(was)}</s>` : ''}
+        ${save > 0 ? `<span class="cart-group-save">${RRG_PACKAGE_DEAL.name} −${rrgMoney(save)}</span>` : ''}
+      </div>
+    </li>`;
+}
+// A list of cart lines, with group products drawn as one card each (first appearance sets the position).
+// decorate(line, html): the cart page adds its stock line to a single product's markup.
+function rrgCartLinesHTML(lines, opts = {}, decorate, stockFn) {
+  const done = new Set();
+  return lines.map(l => {
+    if (!l.groupId) { const h = rrgCartLineHTML(l, opts); return decorate ? decorate(l, h) : h; }
+    if (done.has(l.groupId)) return '';
+    done.add(l.groupId);
+    return rrgCartGroupHTML(l.groupId, lines.filter(x => x.groupId === l.groupId), opts, stockFn);
+  }).join('');
+}
 // Package Deal price breakdown on a qualifying accessory's line, in place of the price column
 // (2026-10-08, Brenton: with the sale and the deal folded into one struck-through gap, a near-RRP
 // sale price — Thule Motion 3 L, $1,999.00 vs $1,999.95 — read as "10% off RRP"). Each step on
@@ -697,6 +775,15 @@ function rrgBnplHTML(total) {
 }
 // Qty / remove buttons, delegated — works in the mini-cart and on the cart page.
 document.addEventListener('click', e => {
+  const grp = e.target.closest('[data-cart-group]');
+  if (grp) {
+    const gid = grp.dataset.cartGroup, lines = rrgCartGet().lines.filter(l => l.groupId === gid);
+    if (!lines.length) return;
+    if (e.target.closest('[data-cart-group-remove]')) rrgCartSetGroupQty(gid, 0);
+    const gs = e.target.closest('[data-cart-group-qty]');
+    if (gs) rrgCartSetGroupQty(gid, Math.max(0, rrgGroupQty(lines) + Number(gs.dataset.cartGroupQty)));
+    return;
+  }
   const line = e.target.closest('[data-cart-key]');
   if (!line) return;
   const key = line.dataset.cartKey;
@@ -747,7 +834,7 @@ function rrgRenderMiniCart() {
   const inCart = new Set(cart.lines.map(l => l.key));
   const cross = RRG_DEMO_CROSS_SELLS.filter(p => !inCart.has(p.sku)).slice(0, 3);
   body.innerHTML = `
-    <ul class="cart-lines">${cart.lines.map(l => rrgCartLineHTML(l, { compact: true })).join('')}</ul>
+    <ul class="cart-lines">${rrgCartLinesHTML(cart.lines, { compact: true })}</ul>
     ${rrgAdapterNoticeHTML(cart)}
     ${rrgPackageCartNoticeHTML(cart)}
     ${cross.length ? `
@@ -931,7 +1018,7 @@ function rrgRenderPackageTag() {
     const rack = deal.racks.find(r => rrgPackageCompatible(item, r)) || deal.racks[0];
     active = !!rack;
     body = rack
-      ? `You'll save a further <b>${save}</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} with the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart.`
+      ? `You'll save a further <b>${save}</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} with the <b>${rrgEsc(rrgShortName(rrgLineName(rack)))}</b> in your cart.`
       : `Save a further <b>${rrgPctLabel(rrgPackageRate(item))} (${save})</b> on this ${RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(item)]} when you buy it with any roof rack.`;
   } else {
     const acc = deal.accessories;
@@ -1027,7 +1114,7 @@ function rrgRenderPackageDrawer() {
     // A rack already in the cart: one step only, the saving applies as soon as they pick.
     const rack = rrgPackageDeal().racks[0];
     body.innerHTML = `
-      ${rack ? rrgNoticeCardHTML('deal-applied', 'Rack in your cart', `You already have the <b>${rrgEsc(rrgShortName(rack.name))}</b> in your cart, so the saving applies as soon as you add a ${label}.`, '', 'pkg-added') : ''}
+      ${rack ? rrgNoticeCardHTML('deal-applied', 'Rack in your cart', `You already have the <b>${rrgEsc(rrgShortName(rrgLineName(rack)))}</b> in your cart, so the saving applies as soon as you add a ${label}.`, '', 'pkg-added') : ''}
       <p class="pkg-lead">Buy any ${label} here with any roof rack in the same order and the ${label} is <strong>${Math.min(...rates) < hi ? 'up to ' : ''}${rrgPctLabel(hi)} off</strong>. It stacks on sale prices.</p>
       <h3 class="pkg-h3">${rack ? '' : '<span class="pkg-step-num">Step 1 of 2</span>'}Choose your ${label}</h3>
       <ul class="pkg-racks">${items.map(p => {

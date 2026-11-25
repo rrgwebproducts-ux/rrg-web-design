@@ -146,7 +146,7 @@ function renderCart() {
   // Lines — full size, with the stock line under the name.
   // Package Deal notice above the lines (spec.md §19 phase 5): saving applied, or add a rack.
   document.getElementById('cartPackageNotice').innerHTML = rrgAdapterNoticeHTML(cart) + rrgPackageCartNoticeHTML(cart);
-  document.getElementById('cartLines').innerHTML = cart.lines.map(l => rrgCartLineHTML(l).replace('<span class="cart-line-meta">SKU', `${cartStockHTML(l)}<span class="cart-line-meta">SKU`)).join('');
+  document.getElementById('cartLines').innerHTML = rrgCartLinesHTML(cart.lines, {}, (l, h) => h.replace('<span class="cart-line-meta">SKU', `${cartStockHTML(l)}<span class="cart-line-meta">SKU`), cartStockHTML);
 
   // How do you want it? (AU: Click & Collect or Delivery; NZ/UK: delivery only)
   const rc = rrgRegionCheckout();
