@@ -634,13 +634,13 @@ function rrgPackageCartNoticeHTML(cart = rrgCartGet()) {
   if (!deal.accessories.length) {
     if (!deal.racks.length) return '';
     return rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name,
-      `Add a roof-mounted accessory to this order and save a further <b>${rrgPackageRateRange()}</b> on it. That covers ${rrgPackageQualifyingShort()}.${btn('Add an accessory', 'accessories', deal.racks[0])}`, '', 'pkg-cart-notice');
+      `<span class="adapter-notice-body">Add a roof-mounted accessory to this order and save a further <b>${rrgPackageRateRange()}</b> on it. That covers ${rrgPackageQualifyingShort()}.</span>${btn('Add an accessory', 'accessories', deal.racks[0])}`, '', 'pkg-cart-notice');
   }
   const acc = deal.accessories.find(a => !deal.matched.includes(a)) || deal.accessories[0];
   const label = deal.active ? rrgPackageLinesLabel(deal.matched) : RRG_PACKAGE_CATEGORY_LABEL[rrgPackageCategory(acc)];
   return deal.active
     ? rrgNoticeCardHTML('deal-applied', `${RRG_PACKAGE_DEAL.name} applied`, `You're saving <b>${rrgMoney(deal.discount)}</b> on your ${label} because there's a roof rack in this order.`, '', 'pkg-cart-notice')
-    : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `Add any roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.${btn('Choose a rack', 'racks', acc)}`, '', 'pkg-cart-notice');
+    : rrgNoticeCardHTML('deal', RRG_PACKAGE_DEAL.name, `<span class="adapter-notice-body">Add any roof rack to this order and save <b>${rrgMoney(deal.potential)}</b> on your ${label}.</span>${btn('Choose a rack', 'racks', acc)}`, '', 'pkg-cart-notice');
 }
 const rrgMoney = n => fmtAud(Math.round(n * 100) / 100);
 const rrgPath = rel => rel === '#' ? '#' : RRG_PROTO + rel;

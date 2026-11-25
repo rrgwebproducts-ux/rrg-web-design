@@ -2731,10 +2731,10 @@ a.cat-tile--ask:hover{border-color:var(--rrg-charcoal);}
 .cart-panel #cartPackageNotice > .adapter-notice:first-child{margin-top:-4px;border-radius:var(--radius) var(--radius) 0 0;}
 .cart-panel .fitment.pkg-cart-notice:not(:first-child){margin-top:0;border-radius:0;}
 /* "Add the adapter": text left, button right, so the band is thinner (2026-11-26, Brenton). */
-.cart-panel .adapter-notice .rrg-notice-text:has(> .actions){display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;align-items:center;}
-.cart-panel .adapter-notice .rrg-notice-text:has(> .actions) > strong,.cart-panel .adapter-notice .adapter-notice-body{grid-column:1;display:block;}
-.cart-panel .adapter-notice .rrg-notice-text:has(> .actions) > .actions{grid-column:2;grid-row:1 / span 2;margin:0;}
-@media (max-width:640px){.cart-panel .adapter-notice .rrg-notice-text:has(> .actions){display:block;}.cart-panel .adapter-notice .rrg-notice-text:has(> .actions) > .actions{margin-top:8px;}}
+.cart-panel :is(.adapter-notice,.pkg-cart-notice) .rrg-notice-text:has(> .actions){display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;align-items:center;}
+.cart-panel :is(.adapter-notice,.pkg-cart-notice) .rrg-notice-text:has(> .actions) > strong,.cart-panel :is(.adapter-notice,.pkg-cart-notice) .adapter-notice-body{grid-column:1;display:block;}
+.cart-panel :is(.adapter-notice,.pkg-cart-notice) .rrg-notice-text:has(> .actions) > .actions{grid-column:2;grid-row:1 / span 2;margin:0;}
+@media (max-width:640px){.cart-panel :is(.adapter-notice,.pkg-cart-notice) .rrg-notice-text:has(> .actions){display:block;}.cart-panel :is(.adapter-notice,.pkg-cart-notice) .rrg-notice-text:has(> .actions) > .actions{margin-top:8px;}}
 /* Accessories step (rack in cart): "Now" price with the rack in sale red (same as the PDP's sale
    price), struck current price in grey, the % in green. Drawer suggestions show "Compatible" as a
    chip (.chip-fits) rather than green text, so the price line isn't one more green. */
