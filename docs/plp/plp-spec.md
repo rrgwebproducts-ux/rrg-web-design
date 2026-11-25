@@ -224,3 +224,15 @@ Full item-by-item detail of everything raised in this meeting is in memory (`pro
 9. Store/inventory (delivery vs. local-store-stock indicator) — Graham explicitly kicked this to phase 2, needs a direct Tim conversation first (depends on a persistent-store feature that doesn't exist yet).
 10. Schema.org multi-`Offer` markup for sibling-group products — Marc's data-layer task.
 11. Whether VCLP and standard PLP merge into one dynamic Magento template — Marc's technical call.
+
+---
+
+## 34. Camping & Offroad: three-tier category navigation (Brenton, 2026-11-25)
+
+**Problem (live /camping-offroad/camping/camp-site):** the Shop By row shows only the page's own siblings, with no Show All, so the only way up is the breadcrumb; Level 4 (Camp Bags & Storage, Camp Cooking & Kitchen, Camp Lighting & Fans, Camp Accessories) sits in a sidebar "next level" filter.
+
+**Decision:** Show All = Level 1 (Camping & Offroad). Shop By tabs = Level 2 (Camping, 4x4 Accessories, Vehicle Accessories). Level 3 (Tents, Swags, Gazebo, Camp Site, Camp Furniture, First Aid) = icon cards above the results. Level 4 = a second card row under the selected Level 3, the Level 3 row stays so the shopper can move sideways. Nothing is a sidebar filter. Brenton would accept Level 4 as filters if needed, but prefers cards.
+
+**Built:** `prototypes/plp-camping/` (engine support in `_shared/plp.js`: `activeSubsubcat` holds the deepest key, `plpActiveTabChain()` returns l2/l3/l4, `#plpLevel4Row`). Deep link for review: `?tab=camping&type=camp-site&type4=camp-cooking-kitchen`. Breadcrumb, H1 and FAQ follow the deepest selection.
+
+**Open:** Level 2 icons are stand-ins (not on the live site); 4x4 Accessories / Vehicle Accessories have no demo products (tabs show 0); note for Marc on the live build still to be written.

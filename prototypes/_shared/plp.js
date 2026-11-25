@@ -222,8 +222,9 @@ function plpSelectSubcat(key) {
 
 // Level 3 icon-card selection — toggles (click again to clear), leaves the Level 2 tab row
 // untouched (see plpMatchesShopBy()'s comment on why activeSubsubcat is a separate field).
-function plpSelectSubsubcat(key) {
-  plpState.activeSubsubcat = plpState.activeSubsubcat === key ? null : key;
+function plpSelectSubsubcat(key, parentKey) {
+  // A Level 4 card (parentKey set) toggles back to its Level 3 parent, not to nothing.
+  plpState.activeSubsubcat = plpState.activeSubsubcat === key ? (parentKey || null) : key;
   plpState.page = 1;
   plpState.visibleCount = PLP_PAGE_SIZE;
   plpRenderResults();
@@ -243,14 +244,18 @@ function plpActiveTabChain() {
   const l2 = plpState.activeSubcat && plpState.activeSubcat !== 'all'
     ? (cfg.shopBy || []).find(t => t.key === plpState.activeSubcat)
     : null;
-  const l3 = l2 && l2.children ? l2.children.find(c => c.key === plpState.activeSubsubcat) : null;
-  return { l2, l3 };
+  // activeSubsubcat holds the DEEPEST selected key (a Level 3 card, or a Level 4 card under it) so
+  // product matching/counts stay one key; the Level 3 card is whichever child owns it (2026-11-25).
+  const sub = plpState.activeSubsubcat;
+  const l3 = l2 && l2.children ? l2.children.find(c => c.key === sub || (c.children || []).some(x => x.key === sub)) : null;
+  const l4 = l3 && l3.children ? l3.children.find(x => x.key === sub) : null;
+  return { l2, l3, l4 };
 }
 
 function plpActiveCategoryImage() {
   const cfg = window.PLP_CONFIG;
-  const { l2, l3 } = plpActiveTabChain();
-  return (l3 && l3.heroImage) || (l2 && l2.heroImage) || (cfg.categoryRoot && cfg.categoryRoot.heroImage) || cfg.categoryImage || null;
+  const { l2, l3, l4 } = plpActiveTabChain();
+  return (l4 && l4.heroImage) || (l3 && l3.heroImage) || (l2 && l2.heroImage) || (cfg.categoryRoot && cfg.categoryRoot.heroImage) || cfg.categoryImage || null;
 }
 
 // Breadcrumb trail, fully rebuilt on every tab change (real build: a distinct URL per tile
@@ -263,12 +268,13 @@ function plpRenderBreadcrumb() {
   const cfg = window.PLP_CONFIG;
   const trail = document.getElementById('plpCrumbTrail');
   if (!trail) return;
-  const { l2, l3 } = plpActiveTabChain();
+  const { l2, l3, l4 } = plpActiveTabChain();
   const segments = [
     ...(cfg.breadcrumbRoot || [{ label: 'Home' }]),
     { label: (cfg.categoryRoot && cfg.categoryRoot.breadcrumbLabel) || cfg.categoryKey },
     ...(l2 ? [{ label: plpRegionText(l2, 'breadcrumbLabel') || plpRegionText(l2) }] : []),
-    ...(l3 ? [{ label: plpRegionText(l3, 'breadcrumbLabel') || plpRegionText(l3) }] : [])
+    ...(l3 ? [{ label: plpRegionText(l3, 'breadcrumbLabel') || plpRegionText(l3) }] : []),
+    ...(l4 ? [{ label: plpRegionText(l4, 'breadcrumbLabel') || plpRegionText(l4) }] : [])
   ];
   trail.innerHTML = segments.map((seg, i) => {
     const isLast = i === segments.length - 1;
@@ -284,8 +290,8 @@ function plpRenderBreadcrumb() {
 function plpRenderCategoryContent() {
   const cfg = window.PLP_CONFIG;
   if (!cfg.categoryRoot) return;
-  const { l2, l3 } = plpActiveTabChain();
-  const active = l3 || l2 || cfg.categoryRoot;
+  const { l2, l3, l4 } = plpActiveTabChain();
+  const active = l4 || l3 || l2 || cfg.categoryRoot;
   const heading = plpRegionText(active, 'heading') || plpRegionText(active) || cfg.categoryRoot.heading;
   const description = active.description || cfg.categoryRoot.description;
   const sessionVehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
@@ -494,10 +500,11 @@ document.addEventListener('click', e => {
 // every PLP-family page since 2026-10-06 (was search page only, 2026-09-22), to match the Level 2
 // tabs, which now keep filters too (see plpSelectSubcat).
 function plpIconCardHTML(child, count) {
-  const active = plpState.activeSubsubcat === child.key ? ' active' : '';
+  const sub = plpState.activeSubsubcat;
+  const active = (sub === child.key || (child.children || []).some(x => x.key === sub)) ? ' active' : '';
   const countStr = count === undefined ? '' : ` (${count})`;
   return `
-    <button type="button" class="plp-icon-card${active}" data-subsubcat="${child.key}">
+    <button type="button" class="plp-icon-card${active}" data-subsubcat="${child.key}"${child.parentKey ? ` data-parent="${child.parentKey}"` : ''}>
       <span class="plp-shopby-icon">${child.icon}</span>
       <span class="plp-shopby-label">${child.label}${countStr}</span>
     </button>
@@ -2031,6 +2038,7 @@ function plpRenderResults() {
       wrap.parentElement.insertBefore(level3Row, wrap);
     }
     level3Row.hidden = false;
+    level3Row.style.setProperty('--plp-cards', Math.min(6, Math.max(5, activeTile.children.filter(plpInRegion).length))); // 6 cards fill one row instead of orphaning the 6th
     level3Row.innerHTML = activeTile.children.filter(plpInRegion).map(child => {
       const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, child.key)).length;
       return plpIconCardHTML(child, count);
@@ -2038,6 +2046,31 @@ function plpRenderResults() {
   } else if (level3Row) {
     level3Row.hidden = true;
     level3Row.innerHTML = '';
+  }
+
+  // Level 4 (2026-11-25, Brenton): when the selected Level 3 card has children of its own, a
+  // second card row sits directly under the Level 3 row (which stays put, so the shopper can
+  // still jump sideways to another Level 3). Same card, same size.
+  const l3Active = !cfg.isSearch && activeTile && activeTile.children
+    ? activeTile.children.find(c => c.key === plpState.activeSubsubcat || (c.children || []).some(x => x.key === plpState.activeSubsubcat))
+    : null;
+  const showLevel4 = l3Active && l3Active.children && l3Active.children.length && (isMobile || plpState.page === 1);
+  let level4Row = document.getElementById('plpLevel4Row');
+  if (showLevel4) {
+    if (!level4Row) {
+      level4Row = document.createElement('div');
+      level4Row.className = 'plp-level3-row plp-level4-row';
+      level4Row.id = 'plpLevel4Row';
+      wrap.parentElement.insertBefore(level4Row, wrap);
+    }
+    level4Row.hidden = false;
+    level4Row.innerHTML = l3Active.children.filter(plpInRegion).map(child => {
+      const count = cfg.products.filter(p => plpMatchesFiltersExcept(p, plpState.activeFilters, null, plpState.activeSubcat, child.key)).length;
+      return plpIconCardHTML({ ...child, parentKey: l3Active.key }, count);
+    }).join('');
+  } else if (level4Row) {
+    level4Row.hidden = true;
+    level4Row.innerHTML = '';
   }
 
   // Fitment Gallery, once per results page, at position 2 (spec Section 9): 2nd row in list
@@ -2140,8 +2173,8 @@ function plpBindCardEvents() {
       if (product) plpMaybeShowVehicleNotice(product);
     });
   });
-  document.querySelectorAll('#plpLevel3Row [data-subsubcat]').forEach(btn => {
-    btn.addEventListener('click', () => plpSelectSubsubcat(btn.dataset.subsubcat));
+  document.querySelectorAll('#plpLevel3Row [data-subsubcat], #plpLevel4Row [data-subsubcat]').forEach(btn => {
+    btn.addEventListener('click', () => plpSelectSubsubcat(btn.dataset.subsubcat, btn.dataset.parent));
   });
 }
 

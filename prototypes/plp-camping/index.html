@@ -440,13 +440,13 @@ window.PLP_CONFIG = {
   // not just the results grid (see plpRenderCategoryContent() in plp.js). heroImage is a real
   // product photo from within that tab's own range (never the blurry SHOP BY icon).
   categoryRoot: {
-    breadcrumbLabel: 'Camping',
-    heading: 'Camping Gear',
+    breadcrumbLabel: 'Camping & Offroad',
+    heading: 'Camping & Offroad',
     // Long on purpose so the hero shows Read more (demo copy: live /camping-offroad/camping has no category description).
     description: "Here at Roof Racks Galore, we’ve got everything you need for your next trip away: touring and family tents, swags, gazebos and walls, camp chairs, tables, stretchers and sleeping gear, plus the camp kitchen, lighting and storage gear that makes life at camp easier. Whether it’s a weekend at the local campground or an extended trip off the beaten track, our range is built to handle Australian conditions and pack down to fit your 4WD, ute tray or roof. Shop by category below, or use Show All to browse the full Camping range. Questions about camping gear? Get in touch with our experienced and knowledgeable team, and we'll be more than happy to help you put together the right setup for your trip. Don’t forget the first aid kit: our vehicle first aid and CPR kits are built to cover common injuries on the road or at camp.",
     heroImage: 'https://www.roofracksgalore.com.au/marcwatts/theme/cache/media/product/240x240/pub/media/catalog/product/T/h/Thule-901520-Roof-Top-Tents._1.webp'
   },
-  breadcrumbRoot: [ { label: 'Home' }, { label: 'Camping & Off-Road' } ],
+  breadcrumbRoot: [ { label: 'Home' } ],
   vehicleHeadingSuffix: 'for your {vehicle}', // {vehicle} = the session vehicle (Site Admin)
   // Level 2 tabs, real icons + hrefs scraped from the live /camping-offroad/camping page's
   // .magento-category-tabs-related-default strip. Level 3 `children` are real too — scraped
@@ -624,6 +624,41 @@ window.PLP_CONFIG = {
   ],
   faqByCategory: CAMPING_FAQS
 };
+
+// ---- Three-tier hierarchy (2026-11-25, Brenton) ---------------------------------------------
+// Matches how the live site is actually organised: Camping & Offroad (Level 1 = Show All) →
+// Camping / 4x4 Accessories / Vehicle Accessories (Level 2 = the Shop By tabs) → Tents, Swags,
+// Gazebo, Camp Site, Camp Furniture, First Aid (Level 3 = icon cards) → Camp Bags & Storage, Camp
+// Cooking & Kitchen etc. (Level 4 = a second card row under the selected Level 3). Nothing is a
+// sidebar filter any more. The 6 tabs + children built above are the live Camping children, so
+// they are re-parented under a new Camping tab. L2 names/URLs scraped from the live
+// /camping-offroad page 2026-11-25; the L2 icons and the 4x4 / Vehicle Accessories products are
+// NOT scraped (no demo stock for those two, so their tabs show (0)).
+(function () {
+  const cfg = window.PLP_CONFIG;
+  const level3 = cfg.shopBy;
+  CAMPING_PRODUCTS.forEach(p => { if (!p.subcategories.includes('camping')) p.subcategories.unshift('camping'); });
+  const stand = '<img src="../_shared/shopby-show-all.png" alt="">'; // stand-in until real L2 icons are supplied
+  cfg.shopBy = [
+    { key: 'camping', label: 'Camping', icon: campIcon(CAMP_ICON_BASE + '2990.webp', 'Camping Icon'),
+      heading: 'Camping Gear', description: cfg.categoryRoot.description,
+      heroImage: cfg.categoryRoot.heroImage, children: level3 },
+    { key: '4x4-accessories', label: '4x4 Accessories', icon: stand,
+      heading: '4x4 Accessories', description: 'Recovery, protection and touring accessories for your 4x4.',
+      heroImage: cfg.categoryRoot.heroImage },
+    { key: 'vehicle-accessories', label: 'Vehicle Accessories', icon: stand,
+      heading: 'Vehicle Accessories', description: 'Accessories to suit your vehicle.',
+      heroImage: cfg.categoryRoot.heroImage }
+  ];
+  cfg.faqByCategory.camping = cfg.faqByCategory.all;
+  // Deep links for review: ?tab=camping&type=camp-site&type4=camp-cooking-kitchen
+  const q = new URLSearchParams(location.search);
+  if (q.get('tab') && cfg.shopBy.some(t => t.key === q.get('tab'))) {
+    plpState.activeSubcat = q.get('tab');
+    plpState.activeSubsubcat = q.get('type4') || q.get('type') || null;
+  }
+})();
+
 
 </script>
 </body>

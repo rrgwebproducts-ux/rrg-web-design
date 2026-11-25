@@ -192,7 +192,7 @@
    Fixed at 5 columns on desktop regardless of how many children a tab has (per Brenton) —
    Camp Furniture's 5 fills the row exactly, a tab with fewer children (e.g. Tents' 1) just
    leaves empty trailing cells rather than stretching what's there wider. */
-.plp-level3-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+.plp-level3-row{display:grid;grid-template-columns:repeat(var(--plp-cards,5),1fr);gap:14px;margin-bottom:20px;}
 @media (max-width:900px){
   .plp-level3-row{grid-template-columns:repeat(3,1fr);}
 }
