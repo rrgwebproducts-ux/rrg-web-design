@@ -730,8 +730,23 @@ document.addEventListener('click', e => {
   if (e.target.closest('[data-guarantee-close]') || e.target.id === 'guaranteeModal') document.getElementById('guaranteeModal')?.remove();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('guaranteeModal')?.remove(); });
-const rrgGuaranteeRowHTML = url => `<li class="cgi-guarantee"><img src="${rrgPath('_shared/fitgaurantee.svg')}" alt="">
-  <span class="cgi-name">Standard Rack Guarantee (DIY)<span class="cgi-sku">Included free with this rack · <button type="button" class="link-btn" data-guarantee-open>Upgrade to Gold</button> <button type="button" class="cgi-info" data-guarantee-open aria-label="About the Standard and Gold Rack Guarantee">i</button></span></span><span class="cgi-free">Free</span></li>`;
+const rrgGuaranteeGold = () => { try { return rrgCartGet().guarantee === 'gold'; } catch (e) { return false; } };
+function rrgGuaranteeRowHTML(url, editable = true) {
+  const img = rrgPath('_shared/fitgaurantee.svg'), info = '<button type="button" class="cgi-info" data-guarantee-open aria-label="About the Standard and Gold Rack Guarantee">i</button>';
+  if (rrgGuaranteeGold()) return `<li class="cgi-guarantee is-gold"><img src="${img}" alt="">
+    <span class="cgi-name">Gold Rack Guarantee<span class="cgi-sku">Expert fitting, a satisfaction guarantee and more. This is a paid upgrade: our team will contact you to discuss installation costs. <button type="button" class="link-btn" data-guarantee-open>Learn more</button></span>
+      ${editable ? `<span class="cgi-gact"><button type="button" class="btn btn-outline btn-sm" data-guarantee-set="standard">Revert to Standard</button>${info}</span>` : ''}</span><span class="cgi-free is-quote">Quoted</span></li>`;
+  return `<li class="cgi-guarantee"><img class="is-standard" src="${img}" alt="">
+    <span class="cgi-name">Standard Rack Guarantee (DIY)<span class="cgi-sku">Included free with this rack. Covers rack compatibility.</span>
+      ${editable ? `<span class="cgi-gact"><button type="button" class="btn btn-sm btn-gold" data-guarantee-set="gold">Upgrade to Gold</button>${info}</span>` : ''}</span><span class="cgi-free">Free</span></li>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-guarantee-set]');
+  if (!b) return;
+  const cart = rrgCartGet();
+  if (b.dataset.guaranteeSet === 'gold') cart.guarantee = 'gold'; else delete cart.guarantee;
+  rrgCartSave(cart);
+});
 function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPackageDeal(), paid = false } = {}) {
   const vehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const fit = line.fitsVehicle
@@ -746,7 +761,7 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
         <span class="cart-line-brand">${rrgEsc(line.brand || '')}</span>
         <a class="cart-line-name" href="${rrgPath(line.url || '#')}">${rrgEsc(line.name)}</a>
         ${line.variant ? `<span class="cart-line-meta">${rrgEsc(line.variant)}</span>` : ''}
-        ${line.parts ? `<span class="cart-group-tag">Product set · ${line.parts.length} items</span><ul class="cart-group-items" aria-label="Included in this set">${line.parts.map(rrgPartRowHTML).join('')}${line.fitsVehicle ? rrgGuaranteeRowHTML(line.url) : ''}</ul>` : ''}
+        ${line.parts ? `<span class="cart-group-tag">Product set · ${line.parts.length} items</span><ul class="cart-group-items" aria-label="Included in this set">${line.parts.map(rrgPartRowHTML).join('')}${line.fitsVehicle ? rrgGuaranteeRowHTML(line.url, editable) : ''}</ul>` : ''}
         ${fit}
         ${rrgIsRoofAccessory(line) ? rrgPackageCompatHTML(line, 'line') : '' /* Package Deal compatibility — on the accessory's line only, so each pairing shows once */}
         ${compact ? '' : `<span class="cart-line-meta">SKU ${rrgEsc(line.sku || '')}</span>`}
@@ -789,7 +804,7 @@ function rrgCartGroupHTML(gid, lines, { editable = true, compact = false, deal =
         <span class="cart-line-brand">${rrgEsc(head.groupBrand || head.brand || '')}</span>
         <a class="cart-line-name" href="${rrgPath(head.url || '#')}">${name}</a>
         <span class="cart-group-tag">Product set · ${items} items</span>
-        <ul class="cart-group-items" aria-label="Included in this set">${rows}${head.fitsVehicle ? rrgGuaranteeRowHTML(head.url) : ''}</ul>
+        <ul class="cart-group-items" aria-label="Included in this set">${rows}${head.fitsVehicle ? rrgGuaranteeRowHTML(head.url, editable) : ''}</ul>
         ${head.fitsVehicle ? '' : ''}
         ${lines.filter(rrgIsRoofAccessory).map(l => rrgPackageCompatHTML(l, 'line')).join('')}
         ${editable ? `
