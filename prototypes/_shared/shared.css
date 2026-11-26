@@ -3563,3 +3563,7 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .cart-group-items .cgi-name .cart-line-stock{display:block;margin-top:2px;font-size:12px;}
 .cart-group-items li:has(> .cgi-qty:nth-child(3)){grid-template-columns:36px 1fr auto;}
 .cart-group-items .cgi-sku{display:block;color:var(--rrg-grey-600);font-size:12px;}
+.cart-group-items li:has(> .cgi-free){grid-template-columns:36px 1fr auto;}
+.cart-group-items .cgi-free{font-weight:600;color:var(--rrg-fits);white-space:nowrap;}
+.cart-group-items .cgi-sku a{color:inherit;text-decoration:underline;}
+.cart-group-tag{margin:8px 0 0;}

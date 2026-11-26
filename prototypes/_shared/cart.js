@@ -695,6 +695,10 @@ function rrgPartRowHTML(p) {
   if (typeof p === 'string') { const m = /^(\d+)×\s*(.*)$/.exec(p); p = { qty: m ? +m[1] : 1, name: m ? m[2] : p }; }
   return `<li>${p.image ? `<img src="${rrgEsc(p.image)}" alt="" loading="lazy">` : '<span></span>'}<span class="cgi-name">${rrgEsc(p.name)}${p.sku ? `<span class="cgi-sku">SKU ${rrgEsc(p.sku)}</span>` : ''}</span><span class="cgi-qty">× ${p.qty}</span></li>`;
 }
+// Vehicle-specific products come with the Standard Rack Guarantee (DIY): free, added to the cart as its own line
+// on the live site (Brenton, 2026-11-26), so here it's the last row of the set's list, with the Gold upgrade.
+const rrgGuaranteeRowHTML = url => `<li class="cgi-guarantee"><img src="${rrgPath('_shared/fitgaurantee.svg')}" alt="">
+  <span class="cgi-name">Standard Rack Guarantee (DIY)<span class="cgi-sku">Included free with this rack · <a href="${rrgPath(url || '#')}">Upgrade to Gold</a></span></span><span class="cgi-free">Free</span></li>`;
 function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPackageDeal(), paid = false } = {}) {
   const vehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const fit = line.fitsVehicle
@@ -706,11 +710,10 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
     <li class="cart-line${compact ? ' is-compact' : ''}" data-cart-key="${rrgEsc(line.key)}">
       <a class="cart-line-img" href="${rrgPath(line.url || '#')}"><img src="${line.image}" alt="" loading="lazy"></a>
       <div class="cart-line-info">
-        ${line.parts ? `<span class="cart-group-tag">Product set · ${line.parts.length} items</span>` : ''}
         <span class="cart-line-brand">${rrgEsc(line.brand || '')}</span>
         <a class="cart-line-name" href="${rrgPath(line.url || '#')}">${rrgEsc(line.name)}</a>
         ${line.variant ? `<span class="cart-line-meta">${rrgEsc(line.variant)}</span>` : ''}
-        ${line.parts ? `<ul class="cart-group-items" aria-label="Included in this set">${line.parts.map(rrgPartRowHTML).join('')}</ul>` : ''}
+        ${line.parts ? `<span class="cart-group-tag">Product set · ${line.parts.length} items</span><ul class="cart-group-items" aria-label="Included in this set">${line.parts.map(rrgPartRowHTML).join('')}${line.fitsVehicle ? rrgGuaranteeRowHTML(line.url) : ''}</ul>` : ''}
         ${fit}
         ${rrgIsRoofAccessory(line) ? rrgPackageCompatHTML(line, 'line') : '' /* Package Deal compatibility — on the accessory's line only, so each pairing shows once */}
         ${compact ? '' : `<span class="cart-line-meta">SKU ${rrgEsc(line.sku || '')}</span>`}
@@ -750,10 +753,10 @@ function rrgCartGroupHTML(gid, lines, { editable = true, compact = false, deal =
     <li class="cart-line cart-group${compact ? ' is-compact' : ''}" data-cart-group="${rrgEsc(gid)}">
       <a class="cart-line-img" href="${rrgPath(head.url || '#')}"><img src="${head.groupImage || head.image}" alt="" loading="lazy"></a>
       <div class="cart-line-info">
-        <span class="cart-group-tag">Product set · ${items} items</span>
         <span class="cart-line-brand">${rrgEsc(head.groupBrand || head.brand || '')}</span>
         <a class="cart-line-name" href="${rrgPath(head.url || '#')}">${name}</a>
-        <ul class="cart-group-items" aria-label="Included in this set">${rows}</ul>
+        <span class="cart-group-tag">Product set · ${items} items</span>
+        <ul class="cart-group-items" aria-label="Included in this set">${rows}${head.fitsVehicle ? rrgGuaranteeRowHTML(head.url) : ''}</ul>
         ${head.fitsVehicle ? '' : ''}
         ${lines.filter(rrgIsRoofAccessory).map(l => rrgPackageCompatHTML(l, 'line')).join('')}
         ${editable ? `
