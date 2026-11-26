@@ -700,10 +700,11 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
     <li class="cart-line${compact ? ' is-compact' : ''}" data-cart-key="${rrgEsc(line.key)}">
       <a class="cart-line-img" href="${rrgPath(line.url || '#')}"><img src="${line.image}" alt="" loading="lazy"></a>
       <div class="cart-line-info">
+        ${line.parts ? `<span class="cart-group-tag">Product set · ${line.parts.length} items</span>` : ''}
         <span class="cart-line-brand">${rrgEsc(line.brand || '')}</span>
         <a class="cart-line-name" href="${rrgPath(line.url || '#')}">${rrgEsc(line.name)}</a>
         ${line.variant ? `<span class="cart-line-meta">${rrgEsc(line.variant)}</span>` : ''}
-        ${line.parts ? `<ul class="cart-line-parts" aria-label="Included in this bundle">${line.parts.map(p => `<li>${rrgEsc(p)}</li>`).join('')}</ul>` : ''}
+        ${line.parts ? `<ul class="cart-group-items is-text" aria-label="Included in this set">${line.parts.map(p => { const m = /^(\d+)×\s*(.*)$/.exec(p); return `<li><span class="cgi-name">${rrgEsc(m ? m[2] : p)}</span><span class="cgi-qty">× ${m ? m[1] : 1}</span></li>`; }).join('')}</ul>` : ''}
         ${fit}
         ${rrgIsRoofAccessory(line) ? rrgPackageCompatHTML(line, 'line') : '' /* Package Deal compatibility — on the accessory's line only, so each pairing shows once */}
         ${compact ? '' : `<span class="cart-line-meta">SKU ${rrgEsc(line.sku || '')}</span>`}

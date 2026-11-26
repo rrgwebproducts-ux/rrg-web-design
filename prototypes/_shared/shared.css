@@ -3561,3 +3561,4 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .cart-line.cart-group.is-compact .cart-group-items .cgi-price{display:none;}
 .cart-line.cart-group.is-compact .cart-group-items img{width:28px;height:28px;}
 .cart-group-items .cgi-name .cart-line-stock{display:block;margin-top:2px;font-size:12px;}
+.cart-group-items.is-text li{grid-template-columns:1fr auto;}
