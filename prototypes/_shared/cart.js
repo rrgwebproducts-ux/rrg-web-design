@@ -387,10 +387,12 @@ function rrgShortageBodyHTML(n) {
 }
 // One row of a choice: a tick box (adapter needed), a green ✓ with no box (already compatible, nothing to
 // choose), or a disabled row (not compatible). Same look from the accessory's side and the rack's side.
+const RRG_NOT_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 8.5 7 7m0-7-7 7"/></svg>';
 function rrgChooseRowHTML(groupKey, value, item, res, qty) {
   const name = rrgEsc(rrgShortName(rrgLineName(item))), img = `<img class="acr-img" src="${rrgEsc(item.image || '')}" alt="">`;
   if (res.status === 'yes') return `<div class="adapter-choose-row is-yes is-static"><span class="acr-tick" aria-hidden="true">${RRG_NOTICE_ICONS.fits}</span>${img}<span><b>${name}</b><span class="acr-note">Already compatible, no adapter needed</span></span></div>`;
-  const note = res.status === 'adapter' ? `needs the ${rrgAdapterLinkHTML(res.adapter)} · ${rrgMoney(res.adapter.price)}${qty > 1 ? ` × ${qty}` : ''}` : 'Not compatible';
+  if (res.status === 'no') return `<div class="adapter-choose-row is-no is-static"><span class="acr-tick" aria-hidden="true">${RRG_NOT_ICON}</span>${img}<span><b>${name}</b><span class="acr-note">Not compatible</span></span></div>`;
+  const note = `needs the ${rrgAdapterLinkHTML(res.adapter)} · ${rrgMoney(res.adapter.price)}${qty > 1 ? ` × ${qty}` : ''}`;
   return `<label class="adapter-choose-row is-${res.status}"><input type="checkbox" data-adapter-mount="${groupKey}" value="${rrgEsc(value)}" data-adapter-sku="${res.adapter ? rrgEsc(res.adapter.sku) : ''}" data-adapter-price="${res.adapter ? res.adapter.price : 0}" data-adapter-qty="${qty}"${res.status === 'no' ? ' disabled' : ''}>
       ${img}<span><b>${name}</b><span class="acr-note">${note}</span></span></label>`;
 }
@@ -472,22 +474,28 @@ function rrgAdapterTasksFor(key, cart = rrgCartGet()) {
   const t = rrgAdapterTasks(cart);
   return {
     choose: t.choose.filter(c => c.kind === 'rack' ? (c.rack.key === key || c.options.some(o => o.acc.key === key)) : (c.accessory.key === key || c.options.some(o => o.rack.key === key))),
-    short: t.short.filter(n => n.accessories.some(a => a.key === key) || n.racks.some(r => r.key === key))
+    short: t.short.filter(n => n.accessories.some(a => a.key === key) || n.racks.some(r => r.key === key)),
+    // The item just added doesn't fit things already in the cart: a warning, nothing to choose.
+    warn: (() => { const item = cart.lines.find(l => l.key === key); if (!item) return null;
+      const lines = rrgPackageCompatInCart(item, cart).filter(r => r.status === 'no').map(r => r.line);
+      return lines.length ? { item, lines } : null; })()
   };
 }
 function rrgAdapterModalHTML(t) {
-  const title = t.choose.length ? (t.choose[0].kind === 'rack' ? 'Which accessories are going on it?' : 'Which rack is it going on?') : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
+  const warnOnly = !!t.warn && !t.choose.length && !t.short.length;
+  const title = warnOnly ? 'Compatibility warning' : t.choose.length ? (t.choose[0].kind === 'rack' ? 'Which accessories are going on it?' : 'Which rack is it going on?') : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
   const card = n => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}"><img src="${n.adapter.image}" alt="">
     <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span><a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
     <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}${n.shortfall > 1 ? ` <span class="am-qty">× ${n.shortfall}</span>` : ''}</div></div>`;
-  return `<div class="adapter-modal-backdrop" id="adapterModal"><div class="adapter-modal${t.choose.length === 1 ? ' is-single' : ''}" role="dialog" aria-modal="true" aria-labelledby="amTitle">
+  return `<div class="adapter-modal-backdrop" id="adapterModal"><div class="adapter-modal${t.choose.length === 1 ? ' is-single' : ''}${warnOnly ? ' is-warn' : ''}" role="dialog" aria-modal="true" aria-labelledby="amTitle">
     <h2 id="amTitle">${title}</h2>
-    <p class="am-lead">Without the right adapter it won't fit. Choose now and we'll add it to your order.</p>
+    <p class="am-lead">${warnOnly ? "You can still order both. If you're not sure, contact us and we'll check your setup." : "Without the right adapter it won't fit. Choose now and we'll add it to your order."}</p>
+    ${t.warn ? `<div class="adapter-choose adapter-warn"><p class="adapter-choose-q">${rrgPackageCategory(t.warn.item) === 'rack' ? 'This rack is not compatible with the following accessories in your cart:' : 'This accessory is not compatible with the following racks in your cart:'}</p>${t.warn.lines.map(l => rrgChooseRowHTML('', l.key, l, { status: 'no' }, 1)).join('')}</div>` : ''}
     ${t.choose.map(c => rrgChooseHTML(c, 'modal')).join('')}
     ${t.short.map(n => `<p class="adapter-step-p">${rrgShortageBodyHTML(n)}</p>${card(n)}`).join('')}
     <div class="adapter-modal-actions">
-      <button type="button" class="btn btn-cta btn-block" data-adapter-modal-yes${t.choose.length ? ' disabled' : ''}>${t.short.length && !t.choose.length ? (t.short.length > 1 ? 'Yes, add the adapters' : 'Yes, add the adapter') : 'Add adapter'}</button>
-      <button type="button" class="btn btn-outline btn-block" data-adapter-modal-no>No thanks, continue</button>
+      ${warnOnly ? '<button type="button" class="btn btn-cta btn-block" data-adapter-modal-no>Continue</button>' : `<button type="button" class="btn btn-cta btn-block" data-adapter-modal-yes${t.choose.length ? ' disabled' : ''}>${t.short.length && !t.choose.length ? (t.short.length > 1 ? 'Yes, add the adapters' : 'Yes, add the adapter') : 'Add adapter'}</button>
+      <button type="button" class="btn btn-outline btn-block" data-adapter-modal-no>No thanks, continue</button>`}
     </div></div></div>`;
 }
 function rrgCloseAdapterModal() { document.getElementById('adapterModal')?.remove(); }
@@ -496,7 +504,7 @@ function rrgOpenAdapterModal(t) {
   document.body.insertAdjacentHTML('beforeend', rrgAdapterModalHTML(t));
   const m = document.getElementById('adapterModal');
   // The usual single-rack case needs no choice: the primary button is live straight away.
-  m.querySelector('[data-adapter-modal-yes]').focus({ preventScroll: true });
+  (m.querySelector('[data-adapter-modal-yes]') || m.querySelector('[data-adapter-modal-no]')).focus({ preventScroll: true });
 }
 document.addEventListener('click', e => {
   const add = e.target.closest('[data-add-adapter]');
@@ -534,8 +542,9 @@ function rrgCompatCombinedHTML(results, cat) {
   const has = s => results.some(r => r.status === s);
   const adapters = new Set(results.filter(r => r.status === 'adapter').map(r => r.adapter.sku)).size;
   const need = cat === 'rack' ? (adapters > 1 ? 'Accessories compatible with adapters' : 'Accessory compatible with an adapter') : (adapters > 1 ? 'Rack adapters required' : 'Rack adapter required');
-  const label = has('no') ? (results.every(r => r.status === 'no') ? 'Heads up: not compatible' : 'Heads up: not everything is compatible') : has('adapter') ? need : 'Compatible';
-  const state = has('no') ? 'unknown' : has('adapter') ? (rrgAdapterAmber() ? 'unknown' : 'fits') : 'fits';
+  const allNo = results.every(r => r.status === 'no');
+  const label = has('no') ? (allNo ? (cat === 'rack' ? 'This rack is not compatible with the accessories in your cart' : 'This accessory is not compatible with the racks in your cart') : 'Heads up: not everything is compatible') : has('adapter') ? need : 'Compatible';
+  const state = has('no') ? (allNo ? 'no_fit' : 'unknown') : has('adapter') ? (rrgAdapterAmber() ? 'unknown' : 'fits') : 'fits';
   const rows = results.map(({ line, status, adapter }) => {
     const name = `<b>${rrgEsc(rrgShortName(rrgLineName(line)))}</b>`;
     if (status === 'no') return `<li class="is-no">${name}: not compatible</li>`;
@@ -563,7 +572,7 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
         `Works with the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)} in your cart.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
       if (status === 'adapter') return rrgNoticeCardHTML(rrgAdapterAmber() ? 'unknown' : 'fits', cat === 'rack' ? 'Accessory compatible with an adapter' : 'Rack adapter required',
         `Works with the ${name} in your cart when fitted with the ${rrgAdapterLinkHTML(adapter)}.`, RRG_COMPAT_TIP, 'cart-conflict-banner');
-      return rrgNoticeCardHTML(compatible ? 'fits' : 'unknown', compatible ? 'Compatible' : 'Heads up: not compatible',
+      return rrgNoticeCardHTML(compatible ? 'fits' : 'no_fit', compatible ? 'Compatible' : `This ${cat === 'rack' ? 'rack' : 'accessory'} is not compatible with the ${cat === 'rack' ? 'accessory' : 'rack'} in your cart`,
         compatible ? `Works with the ${name} in your cart.` : `Not compatible with the ${name} in your cart. Choose a different ${swap}, or contact us and we'll help.`,
         RRG_COMPAT_TIP, 'cart-conflict-banner');
     }
@@ -572,7 +581,7 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
     const msg = have ? `✓ Fits the ${name} in your cart with the ${rrgAdapterLinkHTML(adapter)} in your cart`
       : status === 'adapter' ? `${rrgAdapterAmber() ? '' : '✓ '}${cat === 'rack' ? 'Compatible with an adapter' : 'Rack adapter required'} for the ${name} in your cart: ${rrgAdapterLinkHTML(adapter)}`
       : compatible ? `✓ Compatible with the ${name} in your cart` : `Heads up: not compatible with the ${name} in your cart.`;
-    return `<div class="cart-line-compat ${compatible && (have || !(status === 'adapter' && rrgAdapterAmber())) ? 'is-ok' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
+    return `<div class="cart-line-compat ${compatible && (have || !(status === 'adapter' && rrgAdapterAmber())) ? 'is-ok' : status === 'no' ? 'is-no' : 'is-warn'}"><span>${msg}</span>${rrgInfoTipHTML(RRG_COMPAT_TIP)}</div>`;
   }).join('');
 }
 // Decision-panel notice in the PDP's fitment-card style (Brenton, 2026-10-06: the compatibility
@@ -583,10 +592,11 @@ function rrgPackageCompatHTML(item, mode = 'banner', cart = rrgCartGet()) {
 // Names in the body use <b>: .fitment strong is the label style.
 const RRG_NOTICE_ICONS = {
   fits: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.5 3 3 6-6.5"/></svg>',
+  no_fit: null,
   unknown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>'
 };
 function rrgNoticeCardHTML(state, label, body, tip, extraClass = '') {
-  const icon = RRG_NOTICE_ICONS[state === 'deal-applied' ? 'fits' : state] || (typeof RRG_PACKAGE_ICON !== 'undefined' ? RRG_PACKAGE_ICON : '');
+  const icon = RRG_NOTICE_ICONS[state === 'deal-applied' ? 'fits' : state === 'no_fit' ? 'unknown' : state] || (typeof RRG_PACKAGE_ICON !== 'undefined' ? RRG_PACKAGE_ICON : '');
   return `<div class="fitment ${state === 'deal-applied' ? 'deal' : state} rrg-notice ${extraClass}">
     <span class="dot">${icon}</span>
     <div class="rrg-notice-text"><strong>${label}${tip ? ' ' + rrgInfoTipHTML(tip) : ''}</strong>${body}</div>
@@ -603,7 +613,7 @@ function rrgCartAdd(item, { open = true } = {}) {
   if (!open) return;
   // A product with an unresolved adapter need opens the adapter modal first, then the cart drawer.
   const t = rrgAdapterTasksFor(key);
-  if (t.choose.length || t.short.length) rrgOpenAdapterModal(t); else rrgOpenMiniCart(true);
+  if (t.choose.length || t.short.length || t.warn) rrgOpenAdapterModal(t); else rrgOpenMiniCart(true);
 }
 function rrgCartSetQty(key, qty) {
   const cart = rrgCartGet();

@@ -933,7 +933,7 @@ function applyCartConflict(state) {
       // Same fitment-style card as the real-cart message (cart.js rrgNoticeCardHTML).
       if (typeof rrgNoticeCardHTML === 'function') html = state === 'compatible'
         ? rrgNoticeCardHTML('fits', 'Compatible', `Works with <b>${item}</b> in your cart.`, RRG_COMPAT_TIP, 'cart-conflict-banner')
-        : rrgNoticeCardHTML('unknown', 'Heads up: not compatible', `Not compatible with <b>${item}</b> in your cart. Choose a different one, or contact us and we'll help.`,
+        : rrgNoticeCardHTML('no_fit', 'Heads up: not compatible', `Not compatible with <b>${item}</b> in your cart. Choose a different one, or contact us and we'll help.`,
           `Why: ${reason}. You can still order both. If you're not sure, contact us and we'll check your setup.`, 'cart-conflict-banner');
     }
     col.parentNode.querySelectorAll(':scope > .cart-conflict-banner').forEach(b => b.remove());
