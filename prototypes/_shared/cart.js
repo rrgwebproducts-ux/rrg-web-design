@@ -689,6 +689,12 @@ function rrgCartSyncBadges() {
 // ---- Shared line markup (mini-cart, cart page, order summaries) ----
 // deal / paid: the order's Package Deal (default: the live cart's) and past-tense wording, for the
 // order confirmation, whose lines aren't in the live cart any more.
+// One part of a kit / bundle (a single-SKU product made of several items): thumbnail, name + SKU, quantity.
+// Old string parts ('1× Name (SKU)') still draw, without a thumbnail.
+function rrgPartRowHTML(p) {
+  if (typeof p === 'string') { const m = /^(\d+)×\s*(.*)$/.exec(p); p = { qty: m ? +m[1] : 1, name: m ? m[2] : p }; }
+  return `<li>${p.image ? `<img src="${rrgEsc(p.image)}" alt="" loading="lazy">` : '<span></span>'}<span class="cgi-name">${rrgEsc(p.name)}${p.sku ? `<span class="cgi-sku">SKU ${rrgEsc(p.sku)}</span>` : ''}</span><span class="cgi-qty">× ${p.qty}</span></li>`;
+}
 function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPackageDeal(), paid = false } = {}) {
   const vehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const fit = line.fitsVehicle
@@ -704,7 +710,7 @@ function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPac
         <span class="cart-line-brand">${rrgEsc(line.brand || '')}</span>
         <a class="cart-line-name" href="${rrgPath(line.url || '#')}">${rrgEsc(line.name)}</a>
         ${line.variant ? `<span class="cart-line-meta">${rrgEsc(line.variant)}</span>` : ''}
-        ${line.parts ? `<ul class="cart-group-items is-text" aria-label="Included in this set">${line.parts.map(p => { const m = /^(\d+)×\s*(.*)$/.exec(p); return `<li><span class="cgi-name">${rrgEsc(m ? m[2] : p)}</span><span class="cgi-qty">× ${m ? m[1] : 1}</span></li>`; }).join('')}</ul>` : ''}
+        ${line.parts ? `<ul class="cart-group-items" aria-label="Included in this set">${line.parts.map(rrgPartRowHTML).join('')}</ul>` : ''}
         ${fit}
         ${rrgIsRoofAccessory(line) ? rrgPackageCompatHTML(line, 'line') : '' /* Package Deal compatibility — on the accessory's line only, so each pairing shows once */}
         ${compact ? '' : `<span class="cart-line-meta">SKU ${rrgEsc(line.sku || '')}</span>`}
@@ -1331,8 +1337,10 @@ function rrgPdpCartItem() {
   const num = el => el ? Number(el.textContent.replace(/[^0-9.]/g, '')) || 0 : 0;
   const was = panel.querySelector('.price-was');
   const brandImg = panel.querySelector('.brand-logo');
-  const parts = [...document.querySelectorAll('.package-items .package-item')].map(p =>
-    `${p.querySelector('.pi-qty')?.textContent.trim().replace('x', '×')} ${p.querySelector('.pi-name')?.textContent.trim()} (${p.querySelector('.pi-sku')?.textContent.trim()})`);
+  const parts = [...document.querySelectorAll('.package-items .package-item')].map(p => ({
+    qty: parseInt(p.querySelector('.pi-qty')?.textContent, 10) || 1, name: p.querySelector('.pi-name')?.textContent.trim(),
+    sku: p.querySelector('.pi-sku')?.textContent.trim(), image: p.dataset.itemImg || ''
+  }));
   const img = document.getElementById('mainImg') || document.querySelector('.gallery-main img');
   return {
     sku: document.getElementById('skuValue')?.textContent.trim() || document.querySelector('h1').textContent.trim(),
