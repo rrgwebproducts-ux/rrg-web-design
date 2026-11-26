@@ -697,8 +697,41 @@ function rrgPartRowHTML(p) {
 }
 // Vehicle-specific products come with the Standard Rack Guarantee (DIY): free, added to the cart as its own line
 // on the live site (Brenton, 2026-11-26), so here it's the last row of the set's list, with the Gold upgrade.
+// The Rack Guarantee pop-up: the Upgrade to Gold link, the (i) next to it and "Learn more" all open it (live site copy).
+function rrgGuaranteeModalHTML() {
+  return `<div class="adapter-modal-backdrop" id="guaranteeModal"><div class="adapter-modal guarantee-modal" role="dialog" aria-modal="true" aria-labelledby="gmTitle">
+    <button type="button" class="gm-close" data-guarantee-close aria-label="Close">×</button>
+    <h2 id="gmTitle">Standard Rack Guarantee – Fit Confidence, Always Free</h2>
+    <p>Our Standard Rack Guarantee comes automatically with every roof rack purchase. It ensures your rack fits your vehicle and performs as it should — giving you the confidence that your setup is right from day one.</p>
+    <h3>Gold Rack Guarantee – Book Fitting, Get Total Confidence</h3>
+    <p>When you book your roof racks to be professionally fitted at Roof Racks Galore, you're automatically covered by our Gold Rack Guarantee — the most comprehensive protection for your gear and your journey.</p>
+    <h4>Your fitting charge includes:</h4>
+    <h5>Professional Installation</h5>
+    <p>Enjoy complete confidence with a professional fit by our experienced Fit Technicians. With 37 stores nationwide, we ensure your setup is correct, secure, and safe for the long haul — whether you're carrying bikes, boxes, awnings, or kayaks.</p>
+    <h5>Rack Check – Yearly Peace of Mind</h5>
+    <p>We don't just fit it and forget it. With the Gold Rack Guarantee, you'll receive:</p>
+    <ul><li>A full safety check at time of install</li><li>Annual Rack Health Checks in Year 2 and Year 3</li></ul>
+    <p>So you can travel with peace of mind, year after year.</p>
+    <h5>Key Cover – 3 Years of Nationwide Support</h5>
+    <p>Lost your rack keys on the road? No problem. Your Gold Guarantee includes Key Cover for 3 years, with up to 2 replacement keys per year. With stores across Australia, help is never far away.</p>
+    <h5>Free Basic Accessory Fitting</h5>
+    <p>When your racks are fitted by us, we'll also fit your eligible accessories for free — giving you the reassurance that everything is compatible and fitted safely, no matter the brand.</p>
+    <p>Eligible accessories include:</p>
+    <ul><li>Roof boxes</li><li>Roof-mounted bike racks *</li><li>Cargo baskets *</li><li>Kayak carriers</li><li>Fishing rod holders</li><li>Ski carriers</li><li>Platform accessories (eye bolts, load stops, shovel holders, jerry can holders)</li></ul>
+    <p class="gm-note">* Please note: Rooftop tents, Awnings, ladder slide systems, and other technical accessories are excluded. All items must be on the same invoice and fitted at the same time as the roof racks.</p>
+    <h5>90-Day Exchanges and Hassle-Free Returns</h5>
+    <p>Not quite right? Changed your mind? With the Gold Rack Guarantee, you're covered for up to 90 days to exchange your racks if they're not the perfect fit for your needs. Returns are simple and supported at any of our locations nationwide.</p>
+    <p class="gm-note">Note: Fitting charges apply and will be confirmed in-store before installation.</p>
+    <a class="btn btn-cta btn-block" href="${rrgPath('installation/index.html')}">Book a fitting</a>
+  </div></div>`;
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-guarantee-open]')) { document.getElementById('guaranteeModal')?.remove(); document.body.insertAdjacentHTML('beforeend', rrgGuaranteeModalHTML()); return; }
+  if (e.target.closest('[data-guarantee-close]') || e.target.id === 'guaranteeModal') document.getElementById('guaranteeModal')?.remove();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('guaranteeModal')?.remove(); });
 const rrgGuaranteeRowHTML = url => `<li class="cgi-guarantee"><img src="${rrgPath('_shared/fitgaurantee.svg')}" alt="">
-  <span class="cgi-name">Standard Rack Guarantee (DIY)<span class="cgi-sku">Included free with this rack · <a href="${rrgPath(url || '#')}">Upgrade to Gold</a></span></span><span class="cgi-free">Free</span></li>`;
+  <span class="cgi-name">Standard Rack Guarantee (DIY)<span class="cgi-sku">Included free with this rack · <button type="button" class="link-btn" data-guarantee-open>Upgrade to Gold</button> <button type="button" class="cgi-info" data-guarantee-open aria-label="About the Standard and Gold Rack Guarantee">i</button></span></span><span class="cgi-free">Free</span></li>`;
 function rrgCartLineHTML(line, { editable = true, compact = false, deal = rrgPackageDeal(), paid = false } = {}) {
   const vehicle = typeof rrgVehicle === 'function' ? rrgVehicle() : null;
   const fit = line.fitsVehicle
