@@ -301,11 +301,14 @@ function rrgBarRows(key) {
 const RRG_COMPAT_PRORIDE = { product: 'Thule ProRide 598', sheet: true, focusAdapter: 'square', mixedFocus: 'yes', rows: rrgBarRows('proride').map(r =>
   r.group === 'Thule WingBar Evo Aero Thru-Bars' ? { ...r, focus: true, mixed: 'yes', adapterKey: 'square' }
   : r.group === 'Rhino Rack Reconn-Deck Thru-Bars' ? { ...r, focus: true, mixed: 'no', adapterKey: 'slot21' } : r) };
-// Scott's other two tabs: the data only, no product page yet (HighRoad, Race Dark).
-const RRG_COMPAT_HIGHROAD = { product: 'HighRoad', sheet: true, rows: rrgBarRows('highroad') };
-const RRG_COMPAT_RACEDARK = { product: 'Race Dark', sheet: true, rows: rrgBarRows('racedark') };
+// Scott's other two tabs: HighRoad = the Yakima HighRoad (Y8002139); "Race Dark" = the Cruz Race Black (C940-015),
+// the closest live listing (to confirm with Scott). The WingBar Evo row follows Demo State, as on the ProRide.
+const rrgBarSheet = (product, key) => ({ product, sheet: true, focusAdapter: 'square', mixedFocus: 'yes', rows: rrgBarRows(key).map(r =>
+  r.group === 'Thule WingBar Evo Aero Thru-Bars' ? { ...r, focus: true, mixed: 'yes', adapterKey: 'square' } : r) });
+const RRG_COMPAT_HIGHROAD = rrgBarSheet('Yakima HighRoad', 'highroad');
+const RRG_COMPAT_RACEDARK = rrgBarSheet('Cruz Race Black', 'racedark');
 const RRG_COMPAT_CRUZ = { ...RRG_COMPAT_MOTION_3L, product: 'CRUZ Easy 430', focusAdapter: 'square', mixedFocus: 'yes' };
-const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L, 598002: RRG_COMPAT_PRORIDE, 'C940-349U': RRG_COMPAT_CRUZ };
+const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L, 598002: RRG_COMPAT_PRORIDE, Y8002139: RRG_COMPAT_HIGHROAD, 'C940-015': RRG_COMPAT_RACEDARK, 'C940-349U': RRG_COMPAT_CRUZ };
 // Demo State → "Compatibility data" (Roof Box PDP): unknown | compatible | notcompatible | adapter.
 const RRG_COMPAT_DEMO_KEY = 'rrg-compat-demo';
 function rrgCompatDemoState() {

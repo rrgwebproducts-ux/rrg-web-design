@@ -40,7 +40,7 @@ function buildSiteAdminPanel(currentKey) {
       { key: 'config-variant', label: 'Config-Variant' },
       { key: 'sibling-color', label: 'Sibling / Colour' },
       { key: 'roof-box', label: 'Roof Box (Motion 3 L)' },
-      { key: 'proride', label: 'Bike Carrier (Thule ProRide)' },
+      { key: 'proride', label: 'Bike Carrier (Thule ProRide)' }, { key: 'highroad', label: 'Bike Carrier (Yakima HighRoad)' }, { key: 'cruz-race', label: 'Bike Carrier (Cruz Race Black)' },
       { key: 'simple', label: 'Simple' },
       { key: 'grouped-bundle', label: 'Grouped / Bundle' },
     ] },
