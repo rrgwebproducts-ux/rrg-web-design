@@ -4416,24 +4416,32 @@ function rrgCompatTabHTML(d, checked) {
   const fits = r => `<ul class="compat-multi compat-tab-fits">` + (r.status === 'yes' ? '<li class="is-yes">Yes, compatible with this accessory</li>'
     : r.status === 'no' ? '<li class="is-no">Not compatible with this accessory</li>'
     : `<li class="${rrgAdapterAmber() ? 'is-adapter-amber' : 'is-yes'}">Yes, compatible with the ${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</li>`) + '</ul>';
-  // Brands A to Z, and each brand's bars / platforms A to Z underneath (Brenton, 2026-11-27).
+  // Brand accordions (Graham/Scott 2026-11-27): the accessory's own brand first and open, every other brand
+  // A to Z and collapsed; inside a brand the bars / platforms A to Z. Expand all / Collapse all for store staff.
+  const norm = x => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   const brandOf = r => r.brand || (/^(Rhino-Rack|Thule|Prorack|Yakima|Whispbar|CRUZ)/i.exec(r.group) || [, 'Other'])[1];
+  const own = norm(rrgPdpCartItem().brand);
   const byBrand = {};
   d.rows.forEach(r => (byBrand[brandOf(r)] = byBrand[brandOf(r)] || []).push(r));
-  const brandGroups = Object.keys(byBrand).sort((x, y) => x.localeCompare(y)).map(brand => ({ brand, rows: byBrand[brand].slice().sort((x, y) => (x.label || x.group).localeCompare(y.label || y.group)) }));
+  const brandGroups = Object.keys(byBrand).sort((x, y) => (norm(y) === own) - (norm(x) === own) || x.localeCompare(y))
+    .map(brand => ({ brand, open: norm(brand) === own, rows: byBrand[brand].slice().sort((x, y) => (x.label || x.group).localeCompare(y.label || y.group)) }));
+  const brandHTML = g => `<details class="compat-acc"${g.open ? ' open' : ''}><summary><span>${rrgEsc(g.brand)}</span><em>${g.rows.length} bar range${g.rows.length > 1 ? 's' : ''}</em></summary>
+        <table class="compat-table"><caption class="visually-hidden">${rrgEsc(g.brand)} roof bar compatibility</caption><tbody>${g.rows.map(r => `<tr>
+          <th scope="row">${rrgEsc(r.label || r.group)}${racks.some(k => r.match.test(k.name)) ? ' <span class="chip chip-cart">In your cart</span>' : ''}</th>
+          <td>${fits(r)}</td></tr>`).join('')}</tbody></table></details>`;
   return `<input type="radio" name="tabs" id="tCompat"${checked ? ' checked' : ''}><label for="tCompat">Compatibility</label>
     <div class="content compat-tab">
       <p class="compat-intro">Roof bars that suit the <strong>${rrgEsc(d.product)}</strong> ${d.sheet ? '' : '<span class="store-demo-tag">Example data</span>'}</p>
-      <table class="compat-table">
-        <caption class="visually-hidden">Roof bar compatibility for this product</caption>
-        <thead><tr><th scope="col">Roof bars</th><th scope="col">Fits</th></tr></thead>
-        <tbody>${brandGroups.map(g => `<tr class="compat-brand"><th scope="rowgroup" colspan="2">${rrgEsc(g.brand)}</th></tr>` + g.rows.map(r => `<tr>
-          <th scope="row">${rrgEsc(r.label || r.group)}${racks.some(k => r.match.test(k.name)) ? ' <span class="chip chip-cart">In your cart</span>' : ''}</th>
-          <td>${fits(r)}</td></tr>`).join('')).join('')}</tbody>
-      </table>
+      <div class="compat-head"><span>Roof bars</span><span>Fits</span><button type="button" class="compat-expand" data-compat-expand>Expand all</button></div>
+      ${brandGroups.map(brandHTML).join('')}
       <p class="compat-foot">Platforms aren't listed yet. If you're not sure about your setup, contact us and we'll check it for you.</p>
     </div>`;
 }
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-compat-expand]'); if (!b) return;
+  const all = [...b.closest('.compat-tab').querySelectorAll('details.compat-acc')], open = !all.every(x => x.open);
+  all.forEach(x => { x.open = open; }); b.textContent = open ? 'Collapse all' : 'Expand all';
+});
 function rrgMountCompatTab() {
   const tabs = document.querySelector('.tabs');
   if (!tabs) return;

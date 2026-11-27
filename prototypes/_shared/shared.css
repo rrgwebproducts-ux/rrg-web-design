@@ -3589,3 +3589,18 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 
 .compat-table tr.compat-brand th{background:var(--rrg-grey-100,#f3f3f3);font-family:var(--font-display,inherit);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;text-align:left;}
 .compat-table td .compat-tab-fits{margin:0;}.compat-table td .compat-tab-fits li{padding:0 0 0 22px;font-weight:600;}.compat-table td .compat-tab-fits li a{font-weight:600;}.compat-table td:has(.compat-tab-fits){white-space:normal;}
+
+/* Compatibility tab: brand accordions (2026-11-27) */
+.compat-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;padding:8px 12px;border-bottom:1px solid var(--rrg-line);font-family:'Barlow Condensed',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--rrg-grey-600);position:relative;}
+.compat-expand{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:0;padding:4px 8px;font:inherit;font-size:13px;text-transform:none;letter-spacing:0;color:var(--rrg-red);text-decoration:underline;cursor:pointer;}
+.compat-acc{border-bottom:1px solid var(--rrg-line);}
+.compat-acc>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;background:var(--rrg-grey-100,#f3f3f3);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.compat-acc>summary::-webkit-details-marker{display:none;}
+.compat-acc>summary::after{content:'';margin-left:auto;width:8px;height:8px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg);transition:transform .15s;}
+.compat-acc[open]>summary::after{transform:rotate(-135deg);}
+.compat-acc>summary em{font-style:normal;font-weight:400;font-size:13px;letter-spacing:0;text-transform:none;color:var(--rrg-grey-600);}
+.compat-acc .compat-table{table-layout:fixed;}
+.compat-acc .compat-table th,.compat-acc .compat-table td{width:50%;padding-left:12px;}
+.compat-tab-fits li{font-size:14px;}
+.compat-tab-fits li::before{font-size:17px;line-height:1;top:3px;}
+.compat-tab-fits li a{color:var(--rrg-red);text-decoration:underline;}
