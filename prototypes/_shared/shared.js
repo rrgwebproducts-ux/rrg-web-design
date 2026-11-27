@@ -4412,9 +4412,10 @@ function rrgCompatPageRows(anyState) {
 }
 function rrgCompatTabHTML(d, checked) {
   const racks = rrgCartGet().lines.filter(l => rrgPackageCategory(l) === 'rack');
-  const fits = r => r.status === 'yes' ? '<span class="chip chip-fits">Yes</span>'
-    : r.status === 'no' ? '<span class="chip chip-no">No</span>'
-    : `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">Yes, with an adapter</span> <span class="compat-adapter">${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</span>`;
+  // Same icon + sentence rows as the compatibility card above Add to Cart (and the cart): green tick, red cross, orange warning.
+  const fits = r => `<ul class="compat-multi compat-tab-fits">` + (r.status === 'yes' ? '<li class="is-yes">Yes, compatible with this accessory</li>'
+    : r.status === 'no' ? '<li class="is-no">Not compatible with this accessory</li>'
+    : `<li class="${rrgAdapterAmber() ? 'is-adapter-amber' : 'is-yes'}">Yes, compatible with the ${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</li>`) + '</ul>';
   // Brands A to Z, and each brand's bars / platforms A to Z underneath (Brenton, 2026-11-27).
   const brandOf = g => (/^(Rhino-Rack|Thule|Prorack|Yakima|Whispbar|CRUZ)/i.exec(g) || [, 'Other'])[1];
   const byBrand = {};

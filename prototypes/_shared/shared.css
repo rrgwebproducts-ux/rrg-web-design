@@ -3588,3 +3588,4 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .cgi-free.is-quote{color:var(--rrg-grey-700);}
 
 .compat-table tr.compat-brand th{background:var(--rrg-grey-100,#f3f3f3);font-family:var(--font-display,inherit);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;text-align:left;}
+.compat-table td .compat-tab-fits{margin:0;}.compat-table td .compat-tab-fits li{padding:0 0 0 22px;font-weight:600;}.compat-table td .compat-tab-fits li a{font-weight:600;}.compat-table td:has(.compat-tab-fits){white-space:normal;}
