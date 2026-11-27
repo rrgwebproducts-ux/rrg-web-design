@@ -415,7 +415,13 @@ function rrgChooseHTML(t, scope) {
 // The cart / mini-cart cards: one per unresolved choice, one per adapter shortfall.
 function rrgAdapterNoticeHTML(cart = rrgCartGet()) {
   const t = rrgAdapterTasks(cart), tone = rrgAdapterTone();
-  return t.choose.map(c => rrgNoticeCardHTML(tone, c.kind === 'rack' ? 'Which accessories are going on it?' : 'Which rack is it for?', rrgChooseHTML(c, 'card'), '', 'adapter-notice')).join('')
+  // Unresolved choices: one summary band + a button that opens the stepped pop-up (one step per accessory).
+  const needAccs = [];
+  t.choose.forEach(c => (c.kind === 'rack' ? c.options.filter(o => o.res.status === 'adapter').map(o => o.acc) : [c.accessory]).forEach(a => { if (!needAccs.includes(a)) needAccs.push(a); }));
+  const chooseBand = needAccs.length ? rrgNoticeCardHTML(tone, needAccs.length > 1 ? 'Accessories in your cart need adapters' : 'An accessory in your cart needs an adapter',
+    `<span class="adapter-notice-body">The ${rrgNeedNames(needAccs)} ${needAccs.length > 1 ? 'need' : 'needs'} an adapter to fit. Choose which rack ${needAccs.length > 1 ? 'each is' : 'it is'} going on.</span>
+     <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-adapter-open>Add ${needAccs.length > 1 ? 'adapters' : 'adapter'}</button></div>`, '', 'adapter-notice') : '';
+  return chooseBand
     + t.short.map(n => rrgNoticeCardHTML(tone, n.have ? 'Add the missing adapters' : 'Add the adapter',
       `<span class="adapter-notice-body">${rrgShortageBodyHTML(n)}</span>
        <div class="actions"><button type="button" class="btn btn-outline btn-sm" data-add-adapter="${rrgEsc(n.adapter.sku)}" data-qty="${n.shortfall}">Add ${n.shortfall > 1 ? n.shortfall + ' adapters' : 'adapter'} · ${rrgMoney(n.adapter.price * n.shortfall)}</button></div>`,
@@ -481,13 +487,14 @@ function rrgAdapterTasksFor(key, cart = rrgCartGet()) {
       return lines.length ? { item, lines } : null; })()
   };
 }
-function rrgAdapterModalHTML(t) {
+function rrgAdapterModalHTML(t, step) {
   const warnOnly = !!t.warn && !t.choose.length && !t.short.length;
   const title = warnOnly ? 'Compatibility warning' : t.choose.length ? (t.choose[0].kind === 'rack' ? 'Which accessories are going on it?' : 'Which rack is it going on?') : (t.short.length > 1 ? 'Add the adapters?' : 'Add the adapter?');
   const card = n => `<div class="adapter-step-card${rrgAdapterAmber() ? ' is-amber' : ''}"><img src="${n.adapter.image}" alt="">
     <div><span class="cart-line-brand">${rrgEsc(n.adapter.brand)}</span><a class="cart-line-name" href="${n.adapter.pdp}" target="_blank" rel="noopener">${rrgEsc(n.adapter.name)}</a>
     <strong>${rrgMoney(n.adapter.price)}</strong>${n.adapter.wasPrice ? ` <s>${rrgMoney(n.adapter.wasPrice)}</s>` : ''}${n.shortfall > 1 ? ` <span class="am-qty">× ${n.shortfall}</span>` : ''}</div></div>`;
   return `<div class="adapter-modal-backdrop" id="adapterModal"><div class="adapter-modal${t.choose.length === 1 ? ' is-single' : ''}${warnOnly ? ' is-warn' : ''}" role="dialog" aria-modal="true" aria-labelledby="amTitle">
+    ${step ? `<p class="am-step">Step ${step.i + 1} of ${step.n}</p>` : ''}
     <h2 id="amTitle">${title}</h2>
     <p class="am-lead">${warnOnly ? "You can still order both. If you're not sure, contact us and we'll check your setup." : "Without the right adapter it won't fit. Choose now and we'll add it to your order."}</p>
     ${t.warn ? `<div class="adapter-choose adapter-warn"><p class="adapter-choose-q">${rrgPackageCategory(t.warn.item) === 'rack' ? 'This rack is not compatible with the following accessories in your cart:' : 'This accessory is not compatible with the following racks in your cart:'}</p>${t.warn.lines.map(l => rrgChooseRowHTML('', l.key, l, { status: 'no' }, 1)).join('')}</div>` : ''}
@@ -495,16 +502,39 @@ function rrgAdapterModalHTML(t) {
     ${t.short.map(n => `<p class="adapter-step-p">${rrgShortageBodyHTML(n)}</p>${card(n)}`).join('')}
     <div class="adapter-modal-actions">
       ${warnOnly ? '<button type="button" class="btn btn-cta btn-block" data-adapter-modal-no>Continue</button>' : `<button type="button" class="btn btn-cta btn-block" data-adapter-modal-yes${t.choose.length ? ' disabled' : ''}>${t.short.length && !t.choose.length ? (t.short.length > 1 ? 'Yes, add the adapters' : 'Yes, add the adapter') : 'Add adapter'}</button>
-      <button type="button" class="btn btn-outline btn-block" data-adapter-modal-no>No thanks, continue</button>`}
+      <button type="button" class="btn btn-outline btn-block" ${step && step.i < step.n - 1 ? 'data-adapter-modal-skip>Skip this one' : 'data-adapter-modal-no>No thanks, continue'}</button>`}
     </div></div></div>`;
 }
 function rrgCloseAdapterModal() { document.getElementById('adapterModal')?.remove(); }
-function rrgOpenAdapterModal(t) {
+// The pop-up runs as a flow: with several choices it steps through them, one accessory (or rack) per page.
+// "Add adapter" applies that page's answer straight away and moves on; no confirm page at the end.
+let rrgAdapterFlow = null;
+const rrgChooseOwner = c => c.kind === 'rack' ? 'r:' + c.rack.key : 'a:' + c.accessory.key;
+function rrgOpenAdapterModal(t, opts = {}) {
+  rrgAdapterFlow = { t, owners: t.choose.map(rrgChooseOwner), i: 0, openCart: opts.openCart !== false };
+  rrgAdapterShowStep();
+}
+function rrgAdapterShowStep() {
+  const f = rrgAdapterFlow; if (!f) return;
   rrgCloseAdapterModal();
-  document.body.insertAdjacentHTML('beforeend', rrgAdapterModalHTML(t));
+  let t = f.t, step = null;
+  if (f.owners.length > 1) {
+    const cur = rrgAdapterTasks().choose;
+    let c = null;
+    while (f.i < f.owners.length && !(c = cur.find(x => rrgChooseOwner(x) === f.owners[f.i]))) f.i++;
+    if (!c) { rrgAdapterFinish(); return; }
+    t = { choose: [c], short: [], warn: f.i === 0 ? f.t.warn : null };
+    step = { i: f.i, n: f.owners.length };
+  }
+  document.body.insertAdjacentHTML('beforeend', rrgAdapterModalHTML(t, step));
   const m = document.getElementById('adapterModal');
   // The usual single-rack case needs no choice: the primary button is live straight away.
   (m.querySelector('[data-adapter-modal-yes]') || m.querySelector('[data-adapter-modal-no]')).focus({ preventScroll: true });
+}
+function rrgAdapterFinish() {
+  const open = rrgAdapterFlow && rrgAdapterFlow.openCart;
+  rrgAdapterFlow = null; rrgCloseAdapterModal();
+  if (open) rrgOpenMiniCart(true);
 }
 document.addEventListener('click', e => {
   const add = e.target.closest('[data-add-adapter]');
@@ -513,20 +543,27 @@ document.addEventListener('click', e => {
     if (a) { const cur = (rrgCartGet().lines.find(l => l.key === a.sku) || {}).qty || 0; rrgCartEnsureQty(a, cur + (+add.dataset.qty || 1)); }
     return;
   }
+  if (e.target.closest('[data-adapter-open]')) {         // the cart / drawer band: step through the choices
+    const t = rrgAdapterTasks();
+    if (t.choose.length) rrgOpenAdapterModal({ choose: t.choose, short: [], warn: null }, { openCart: false });
+    return;
+  }
   const apply = e.target.closest('[data-adapter-apply]');
   if (apply) { rrgAdapterApply(apply.closest('.adapter-notice')); return; }
   if (e.target.closest('[data-adapter-modal-yes]')) {
-    const m = document.getElementById('adapterModal');
-    rrgAdapterApply(m); rrgCloseAdapterModal(); rrgOpenMiniCart(true); return;
+    rrgAdapterApply(document.getElementById('adapterModal'));
+    if (rrgAdapterFlow && rrgAdapterFlow.owners.length > 1) { rrgAdapterFlow.i++; rrgAdapterShowStep(); } else rrgAdapterFinish();
+    return;
   }
-  if (e.target.closest('[data-adapter-modal-no]') || e.target.id === 'adapterModal') { rrgCloseAdapterModal(); rrgOpenMiniCart(true); }
+  if (e.target.closest('[data-adapter-modal-skip]')) { if (rrgAdapterFlow) { rrgAdapterFlow.i++; rrgAdapterShowStep(); } return; }
+  if (e.target.closest('[data-adapter-modal-no]') || e.target.id === 'adapterModal') rrgAdapterFinish();
 });
 document.addEventListener('change', e => {
   const t = e.target;
   if (t.matches('[data-adapter-none]') && t.checked) t.closest('[data-adapter-choose]').querySelectorAll('[data-adapter-mount]').forEach(i => { i.checked = false; });
   if (t.matches('[data-adapter-mount], [data-adapter-none]')) rrgAdapterTickChanged(t.closest('[data-adapter-choose]'));
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('adapterModal')) { rrgCloseAdapterModal(); rrgOpenMiniCart(true); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('adapterModal')) rrgAdapterFinish(); });
 // Chip on a drawer suggestion: only when the pair is a known yes (or yes with an adapter).
 function rrgCompatChipHTML(accessory, rack) {
   const r = rrgCompatResult(accessory, rack);

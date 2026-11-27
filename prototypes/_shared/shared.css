@@ -3517,6 +3517,7 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .adapter-modal-backdrop{position:fixed;inset:0;background:var(--overlay,rgba(14,19,17,.55));z-index:480;display:flex;align-items:center;justify-content:center;padding:16px;}
 .adapter-modal{background:#fff;border-radius:var(--radius);width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:22px 22px 20px;box-shadow:var(--shadow-modal,0 12px 40px rgba(0,0,0,.3));}
 .adapter-modal h2{margin:16px 0 4px;font-size:28px;}
+.adapter-modal .am-step{margin:0 0 4px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--rrg-grey-600,#666);}
 .adapter-modal .am-lead{margin:0 0 14px;font-size:14px;color:var(--rrg-grey-700);}
 .adapter-modal .adapter-step-items{padding-top:0;}
 .adapter-modal-actions{display:grid;gap:10px;margin-top:18px;}
