@@ -3586,3 +3586,5 @@ html[data-build-phase="1"] .home-hero-stage{height:404px;}
 .cgi-gact .btn{padding:7px 12px;font-size:13px;}
 .btn-gold{background:var(--rrg-red);color:#fff;border-color:var(--rrg-red);}
 .cgi-free.is-quote{color:var(--rrg-grey-700);}
+
+.compat-table tr.compat-brand th{background:var(--rrg-grey-100,#f3f3f3);font-family:var(--font-display,inherit);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;text-align:left;}

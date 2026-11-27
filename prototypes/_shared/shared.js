@@ -4415,15 +4415,20 @@ function rrgCompatTabHTML(d, checked) {
   const fits = r => r.status === 'yes' ? '<span class="chip chip-fits">Yes</span>'
     : r.status === 'no' ? '<span class="chip chip-no">No</span>'
     : `<span class="chip chip-adapter${rrgAdapterAmber() ? ' is-amber' : ''}">Yes, with an adapter</span> <span class="compat-adapter">${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</span>`;
+  // Brands A to Z, and each brand's bars / platforms A to Z underneath (Brenton, 2026-11-27).
+  const brandOf = g => (/^(Rhino-Rack|Thule|Prorack|Yakima|Whispbar|CRUZ)/i.exec(g) || [, 'Other'])[1];
+  const byBrand = {};
+  d.rows.forEach(r => (byBrand[brandOf(r.group)] = byBrand[brandOf(r.group)] || []).push(r));
+  const brandGroups = Object.keys(byBrand).sort((x, y) => x.localeCompare(y)).map(brand => ({ brand, rows: byBrand[brand].slice().sort((x, y) => x.group.localeCompare(y.group)) }));
   return `<input type="radio" name="tabs" id="tCompat"${checked ? ' checked' : ''}><label for="tCompat">Compatibility</label>
     <div class="content compat-tab">
       <p class="compat-intro">Roof bars that suit the <strong>${rrgEsc(d.product)}</strong> <span class="store-demo-tag">Example data</span></p>
       <table class="compat-table">
         <caption class="visually-hidden">Roof bar compatibility for this product</caption>
         <thead><tr><th scope="col">Roof bars</th><th scope="col">Fits</th></tr></thead>
-        <tbody>${d.rows.map(r => `<tr>
+        <tbody>${brandGroups.map(g => `<tr class="compat-brand"><th scope="rowgroup" colspan="2">${rrgEsc(g.brand)}</th></tr>` + g.rows.map(r => `<tr>
           <th scope="row">${rrgEsc(r.group)}${racks.some(k => r.match.test(k.name)) ? ' <span class="chip chip-cart">In your cart</span>' : ''}</th>
-          <td>${fits(r)}</td></tr>`).join('')}</tbody>
+          <td>${fits(r)}</td></tr>`).join('')).join('')}</tbody>
       </table>
       <p class="compat-foot">Platforms aren't listed yet. If you're not sure about your setup, contact us and we'll check it for you.</p>
     </div>`;
@@ -4441,6 +4446,8 @@ function rrgMountCompatTab() {
   tpl.innerHTML = rrgCompatTabHTML(d, wasChecked);
   first.after(tpl.content);
 }
-['DOMContentLoaded', 'rrg-cart-change', 'rrg-session-change'].forEach(evt => document.addEventListener(evt, () => {
-  if (document.querySelector('.cta-col[data-pkg-category]')) rrgMountCompatTab();
-}));
+// Also on 'load' and straight away when the script runs late (the tab was missing on first load: the page
+// scripts can finish after DOMContentLoaded has already fired).
+const rrgCompatTabInit = () => { if (document.querySelector('.cta-col[data-pkg-category]')) rrgMountCompatTab(); };
+['DOMContentLoaded', 'load', 'rrg-cart-change', 'rrg-session-change'].forEach(evt => (evt === 'load' ? window : document).addEventListener(evt, rrgCompatTabInit));
+if (document.readyState !== 'loading') rrgCompatTabInit();
