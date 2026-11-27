@@ -267,15 +267,43 @@ const RRG_COMPAT_MOTION_3L = {
     { group: 'Thule SmartRack XT', match: /smartrack/i, status: 'adapter', adapter: 'square' }
   ]
 };
-// The ProRide 598's rows follow Scott's real adapters (square bars -> 889500, "T" HD bars -> PR3110);
-// its focus row needs the slot adapter so two accessories can need two different adapters.
-// ProRide (Scott's real adapters). Two focus rows so one page shows the double-rack case: the roof bars follow
-  // the Demo State switch, the ute tub system follows it too ("Mixed" = fits the roof, not the tub).
-  const RRG_COMPAT_PRORIDE = { product: 'Thule ProRide 598', focusAdapter: 'square', mixedFocus: 'yes', rows: [
-    { focus: true, group: 'Thule WingBar Evo', match: /wingbar/i, mixed: 'yes', adapterKey: 'square' },
-    ...RRG_COMPAT_MOTION_3L.rows.slice(1),
-    { focus: true, group: 'Rhino-Rack Reconn-Deck / ute tub systems', match: /reconn|tub system|platform/i, mixed: 'no', adapterKey: 'slot21' }
-  ] };
+// ---- Scott's sheet "Crossbar Bar Range New Groups" (2026-11-27): the real results, one tab per product. ----
+// The 39 bar range groups, in the sheet's order, with the result per product: Y compatible, N not compatible,
+// A = adapter (the sheet's adapter: 1 = Thule ProRide Square Bar Adapter 889500, 2 = Prorack 21mm Slot Adapter
+// PR3110), T = "Yet to be confirmed" (treated as unknown: no row, nothing shown, 2026-11-27).
+// Production matches a rack to its group by SKU (the sheet's first tab: 617 bar SKUs -> group); the demo
+// racks are full kits, so here a rack is matched by its name (the `match` below).
+const RRG_BAR_GROUPS = ['Cruz Airo Thru-Bars', 'Cruz Airo Flush Bars', 'Cruz Cargo Thru-Bars', 'Cruz Cargo Square Pro Thru-Bars', 'Cruz Cargo Xpro Thru-Bars', 'Cruz Euro Square Thru-Bars', 'Cruz Euro Lane Thru-Bars', 'Front Runner Dometic Delta Thru-Bars', 'Jaram Red Dirt Aero Thru-Bars', 'Jaram Red Dirt HD Thru-Bars', 'Prorack Tradesman HD Thru-Bars', 'Prorack HD Thru-Bars', 'Prorack Euro Square Thru-Bars', 'Prorack Aero Flush Bars', 'Prorack Aero Rail Flush Bars', 'Prorack Aero Thru-Bars', 'Rhino Rack Euro Square Thru-Bars', 'Rhino Rack HD Thru-Bars', 'Rhino Rack Reconn-Deck Thru-Bars', 'Rhino Rack Vortex Aero Flush Bars', 'Rhino Rack Vortex Aero Thru-Bars', 'Rhino Rack Sportz Aero Thru-Bars', 'Rola HD Thru-Bars', 'Rola Aero Flush Bars', 'Rola Aero Thru-Bars', 'Thule WingBar Edge Aero Flush Bars', 'Thule ProBar Evo Thru-Bars', 'Thule SlideBar Evo Thru-Bars', 'Thule SmartRack XT Aero Thru-Bars', 'Thule SmartRack XT Euro Square Thru-Bars', 'Thule Euro SquareBar Thru-Bars', 'Thule Euro SquareBar Evo Thru-Bars', 'Thule WingBar Evo Aero Thru-Bars', 'Tracklander Bush Rider HD Thru-Bars', 'Tree Frog Aero Thru-Bars', 'Turtle Aero Flush Bars', 'Wedgetail TradeMax HD Thru-Bars', 'Yakima Aero Flush Bars', 'Yakima Aero Rail Flush Bars'];
+const RRG_BAR_RESULTS = {
+  proride:  'Y Y Y N T A1 A1 T Y T N A2 A1 Y Y Y A1 A2 Y Y Y Y T Y Y Y Y Y Y A1 A1 A1 Y T T Y T Y Y',
+  highroad: 'Y Y Y Y Y Y Y T Y N N Y Y Y Y Y Y T N Y Y Y Y Y Y Y T T Y Y Y Y Y N Y Y T Y Y',
+  racedark: 'Y Y Y Y Y Y Y T Y Y N N Y Y Y Y Y N Y Y Y Y N Y Y Y Y Y Y Y Y Y Y T Y Y T Y Y'
+};
+const RRG_BAR_BRANDS = [['Rhino Rack', 'Rhino-Rack'], ['Front Runner', 'Front Runner'], ['Tree Frog', 'Tree Frog'], ['Cruz', 'CRUZ'], ['Jaram', 'Jaram'], ['Prorack', 'Prorack'], ['Rola', 'Rola'], ['Thule', 'Thule'], ['Tracklander', 'Tracklander'], ['Turtle', 'Turtle'], ['Wedgetail', 'Wedgetail'], ['Yakima', 'Yakima']];
+// Demo kits: how a rack's name reads (specific groups first; the first match wins).
+const RRG_BAR_MATCH = { 'Rhino Rack Vortex Aero Flush Bars': /vortex.*(flush|track|rail)/i, 'Rhino Rack Vortex Aero Thru-Bars': /vortex/i, 'Rhino Rack Reconn-Deck Thru-Bars': /reconn|\brdb\b|\brcp\b|tub system|tub mount|platform/i,
+  'Thule WingBar Edge Aero Flush Bars': /wingbar edge/i, 'Thule WingBar Evo Aero Thru-Bars': /wingbar/i, 'Thule SmartRack XT Euro Square Thru-Bars': /smartrack xt euro/i, 'Thule SmartRack XT Aero Thru-Bars': /smartrack/i,
+  'Thule Euro SquareBar Evo Thru-Bars': /squarebar evo/i, 'Thule Euro SquareBar Thru-Bars': /squarebar|square bar/i, 'Rhino Rack HD Thru-Bars': /heavy duty|rhino.*\bhd\b/i, 'Prorack HD Thru-Bars': /prorack.*\bhd\b|\bt-?(16|17|18)\b/i };
+function rrgBarRows(key) {
+  const codes = RRG_BAR_RESULTS[key].split(' ');
+  return RRG_BAR_GROUPS.map((group, i) => {
+    const c = codes[i]; if (c === 'T') return null;                       // yet to be confirmed: unknown, no row
+    const brand = RRG_BAR_BRANDS.find(b => group.toLowerCase().startsWith(b[0].toLowerCase()));
+    const core = group.replace(/ (Aero )?(Flush|Thru)[- ]Bars?$/i, '$1').trim();
+    const words = core.slice(brand[0].length).trim().split(/\s+/).filter(Boolean);
+    const match = RRG_BAR_MATCH[group] || new RegExp((brand[0].replace(/ /g, '[ -]?')) + words.map(w => `(?=.*${w})`).join(''), 'i');
+    const row = { group, brand: brand[1], label: group.slice(brand[0].length).trim(), match, status: c === 'Y' ? 'yes' : c === 'N' ? 'no' : 'adapter', adapter: c === 'A1' ? 'square' : c === 'A2' ? 'slot21' : null };
+    return row;
+  }).filter(Boolean);
+}
+// ProRide 598: the Demo State switch drives two rows so one page shows every state and the double-rack case:
+// the roof bars (WingBar Evo) and the ute tub system (Reconn-Deck; "Mixed" = fits the roof, not the tub).
+const RRG_COMPAT_PRORIDE = { product: 'Thule ProRide 598', sheet: true, focusAdapter: 'square', mixedFocus: 'yes', rows: rrgBarRows('proride').map(r =>
+  r.group === 'Thule WingBar Evo Aero Thru-Bars' ? { ...r, focus: true, mixed: 'yes', adapterKey: 'square' }
+  : r.group === 'Rhino Rack Reconn-Deck Thru-Bars' ? { ...r, focus: true, mixed: 'no', adapterKey: 'slot21' } : r) };
+// Scott's other two tabs: the data only, no product page yet (HighRoad, Race Dark).
+const RRG_COMPAT_HIGHROAD = { product: 'HighRoad', sheet: true, rows: rrgBarRows('highroad') };
+const RRG_COMPAT_RACEDARK = { product: 'Race Dark', sheet: true, rows: rrgBarRows('racedark') };
 const RRG_COMPAT_CRUZ = { ...RRG_COMPAT_MOTION_3L, product: 'CRUZ Easy 430', focusAdapter: 'square', mixedFocus: 'yes' };
 const RRG_COMPAT_DATA = { T639700: RRG_COMPAT_MOTION_3L, T639701: RRG_COMPAT_MOTION_3L, 598002: RRG_COMPAT_PRORIDE, 'C940-349U': RRG_COMPAT_CRUZ };
 // Demo State → "Compatibility data" (Roof Box PDP): unknown | compatible | notcompatible | adapter.

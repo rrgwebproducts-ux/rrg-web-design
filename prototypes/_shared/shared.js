@@ -4417,18 +4417,18 @@ function rrgCompatTabHTML(d, checked) {
     : r.status === 'no' ? '<li class="is-no">Not compatible with this accessory</li>'
     : `<li class="${rrgAdapterAmber() ? 'is-adapter-amber' : 'is-yes'}">Yes, compatible with the ${rrgAdapterLinkHTML(RRG_COMPAT_ADAPTERS[r.adapter])}</li>`) + '</ul>';
   // Brands A to Z, and each brand's bars / platforms A to Z underneath (Brenton, 2026-11-27).
-  const brandOf = g => (/^(Rhino-Rack|Thule|Prorack|Yakima|Whispbar|CRUZ)/i.exec(g) || [, 'Other'])[1];
+  const brandOf = r => r.brand || (/^(Rhino-Rack|Thule|Prorack|Yakima|Whispbar|CRUZ)/i.exec(r.group) || [, 'Other'])[1];
   const byBrand = {};
-  d.rows.forEach(r => (byBrand[brandOf(r.group)] = byBrand[brandOf(r.group)] || []).push(r));
-  const brandGroups = Object.keys(byBrand).sort((x, y) => x.localeCompare(y)).map(brand => ({ brand, rows: byBrand[brand].slice().sort((x, y) => x.group.localeCompare(y.group)) }));
+  d.rows.forEach(r => (byBrand[brandOf(r)] = byBrand[brandOf(r)] || []).push(r));
+  const brandGroups = Object.keys(byBrand).sort((x, y) => x.localeCompare(y)).map(brand => ({ brand, rows: byBrand[brand].slice().sort((x, y) => (x.label || x.group).localeCompare(y.label || y.group)) }));
   return `<input type="radio" name="tabs" id="tCompat"${checked ? ' checked' : ''}><label for="tCompat">Compatibility</label>
     <div class="content compat-tab">
-      <p class="compat-intro">Roof bars that suit the <strong>${rrgEsc(d.product)}</strong> <span class="store-demo-tag">Example data</span></p>
+      <p class="compat-intro">Roof bars that suit the <strong>${rrgEsc(d.product)}</strong> ${d.sheet ? '' : '<span class="store-demo-tag">Example data</span>'}</p>
       <table class="compat-table">
         <caption class="visually-hidden">Roof bar compatibility for this product</caption>
         <thead><tr><th scope="col">Roof bars</th><th scope="col">Fits</th></tr></thead>
         <tbody>${brandGroups.map(g => `<tr class="compat-brand"><th scope="rowgroup" colspan="2">${rrgEsc(g.brand)}</th></tr>` + g.rows.map(r => `<tr>
-          <th scope="row">${rrgEsc(r.group)}${racks.some(k => r.match.test(k.name)) ? ' <span class="chip chip-cart">In your cart</span>' : ''}</th>
+          <th scope="row">${rrgEsc(r.label || r.group)}${racks.some(k => r.match.test(k.name)) ? ' <span class="chip chip-cart">In your cart</span>' : ''}</th>
           <td>${fits(r)}</td></tr>`).join('')).join('')}</tbody>
       </table>
       <p class="compat-foot">Platforms aren't listed yet. If you're not sure about your setup, contact us and we'll check it for you.</p>
